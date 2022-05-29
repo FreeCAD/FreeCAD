@@ -9,6 +9,7 @@
       <translation>Kalkylark</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>Cell</translation>
@@ -54,6 +55,7 @@
       <translation type="unfinished">Add controller</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
       <translation type="unfinished">Add property controller</translation>
@@ -67,7 +69,7 @@
       <translation type="unfinished">Add controller</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
       <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
     </message>
@@ -80,7 +82,7 @@
       <translation>Kalkylark</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation>Lägger till ett kalkylbladsobjekt i det aktiva dokumentet</translation>
     </message>
@@ -93,7 +95,7 @@
       <translation type="unfinished">Add property controller</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
       <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
     </message>

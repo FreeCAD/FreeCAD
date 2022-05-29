@@ -131,7 +131,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     ui->listTransformFeatures->clear();
     for (std::vector<App::DocumentObject*>::const_iterator i = transformFeatures.begin(); i != transformFeatures.end(); i++)
     {
-        if ((*i) != NULL)
+        if (*i)
             ui->listTransformFeatures->addItem(QString::fromUtf8((*i)->Label.getValue()));
     }
     if (transformFeatures.size() > 0) {
@@ -148,7 +148,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++) {
         const App::DocumentObject* obj = *i;
-        if (obj != nullptr) {
+        if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -559,7 +559,7 @@ bool TaskDlgMultiTransformParameters::accept()
     str << Gui::Command::getObjectCmd(vp->getObject()) << ".Transformations = [";
     for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
     {
-        if ((*it) != NULL)
+        if (*it)
             str << Gui::Command::getObjectCmd(*it) << ",";
     }
     str << "]";

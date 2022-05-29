@@ -199,7 +199,6 @@ private:
   static void eventCallback(void * userdata, SoEventCallback * node);
 
 private:
-  float _fMaxX, _fMinX, _fMaxY, _fMinY;
   QElapsedTimer _timer;
 
   SoSwitch* pColorMode;

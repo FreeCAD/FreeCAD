@@ -754,20 +754,20 @@
       <translation>Amaraunaren informazioa</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Puntu kopurua:</translation>
+      <source>Number of faces:</source>
+      <translation>Aurpegi kopurua:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Informaziorik ez</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Aurpegi kopurua:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Ertz kopurua:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Puntu kopurua:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
       <translation>Solido erregularra</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Sortu</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>It&amp;xi</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Solidoa:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
       <translation>Torua</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Altuera:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Luzera:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
       <translation>Zabalera:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Altuera:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Erradioa:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Itxita</translation>
+      <source>Edge length:</source>
+      <translation>Ertz-luzera:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Laginketa:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Ertz-luzera:</translation>
+      <source>Closed</source>
+      <translation>Itxita</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <source>Radius 2:</source>
       <translation>2. erradioa:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Sortu</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>It&amp;xi</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
       <translation>Esportatu</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Amaraunaren eta objektuaren arteko desbideratze maximoa</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Uneko azaleraren teselazio-desbideratzea</translation>
     </message>
@@ -1101,6 +1097,10 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Amaraun-desbideratze maximoa</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Amaraunaren eta objektuaren arteko desbideratze maximoa</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1136,36 +1136,36 @@ erabiliko den fitxategi bat AMF formatuan idaztean</translation>
       <translation>Amaraun berrien itxura lehenetsia</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Lerro-kolore lehenetsia</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Amaraunaren gardentasuna</translation>
+      <source>Default mesh color</source>
+      <translation>Amaraun-kolore lehenetsia</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Amaraun berrien kolore lehenetsia</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Amaraunaren gardentasuna</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Amaraun-kolore lehenetsia</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Muga-koadro bat bistaratuko da</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Erakutsi nabarmendutako edo hautatutako amaraunen muga-kutxa</translation>
+      <source>Default line color</source>
+      <translation>Lerro-kolore lehenetsia</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Amaraun berrien lerro-kolore lehenetsia</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Lerroaren gardentasuna</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Atzeko aurpegiaren kolorea</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1182,24 +1182,16 @@ beltza erabiliko da.</translation>
       <translation>Bi aldeko errendatzea</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Lerroaren gardentasuna</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Muga-koadro bat bistaratuko da</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Atzeko aurpegiaren kolorea</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Erakutsi nabarmendutako edo hautatutako amaraunen muga-kutxa</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Leuntzea</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Itzaleztadura lauaren normalak kalkulatzeko bi aurpegiren artean egon behar duen angelurik txikiena da hau.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Auzoko bi aurpegiren normalen arteko angelua izur-angelua baino txikiagoa bada, aurpegien itzaleztadura ertz komunaren inguruan leunduko da.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Izur-angelua</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1220,6 +1212,14 @@ itxura leunagoa ematen du.
     <message>
       <source>Define normal per vertex</source>
       <translation>Definitu normala erpineko</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Itzaleztadura lauaren normalak kalkulatzeko bi aurpegiren artean egon behar duen angelurik txikiena da hau.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Auzoko bi aurpegiren normalen arteko angelua izur-angelua baino txikiagoa bada, aurpegien itzaleztadura ertz komunaren inguruan leunduko da.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Izur-angelua</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1386,6 +1386,10 @@ itxura leunagoa ematen du.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation>Birsortu amarauna Gmsh erabilita</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Amarauna birsortzeko parametroa</translation>
     </message>
@@ -1425,10 +1429,6 @@ itxura leunagoa ematen du.
       <source>Clear</source>
       <translation>Garbitu</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1441,40 +1441,40 @@ itxura leunagoa ematen du.
       <translation>Hautatu</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Hautatu osagai osoa</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Aukeratu triangelua</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>baino aurpegi gutxiago</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Eskualdea</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Osagaiak</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Dena</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Osagaiak</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>baino aurpegi gutxiago</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Aukeratu triangelua</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Hautatu osagai osoa</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Kendu hautapena</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Kendu hautapen osagai osotik</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>baino aurpegi gehiago</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Kendu hautapen osagai osotik</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1551,8 +1551,12 @@ itxura leunagoa ematen du.
       <translation>Amaraun-segmentazioa</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Esfera</translation>
+      <source>Plane</source>
+      <translation>Planoa</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametroak...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1563,16 +1567,12 @@ itxura leunagoa ematen du.
       <translation>Aurpegien kopuru minimoa</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parametroak...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Planoa</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Zilindroa</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Esfera</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1759,6 +1759,10 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
       <translation>Asintota-formatua</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Esportatu amarauna</translation>
     </message>
@@ -1815,6 +1819,10 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
       <translation>Bistaratu segmentuak</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation>Bistaratu koloreak</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Utzi informazio modua</translation>
     </message>
@@ -1842,10 +1850,6 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
       <source>Annotation</source>
       <translation>Oharpena</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1862,12 +1866,32 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
       <translation>&amp;Amaraunak</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Moztea</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Amaraun-tresnak</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Moztea</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Amaraun-segmentazioa</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

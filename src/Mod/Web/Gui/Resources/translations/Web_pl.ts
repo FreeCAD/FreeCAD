@@ -90,7 +90,7 @@
     <name>CmdWebOpenWebsite</name>
     <message>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <source>Open website...</source>

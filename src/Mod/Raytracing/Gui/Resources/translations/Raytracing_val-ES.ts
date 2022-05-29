@@ -270,22 +270,6 @@ Voleu continuar?</translation>
       <translation>Traçat de raigs</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Paràmetres de l'exportació de malles</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Màxima desviació de malla:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>No calcules les normals als vèrtexs.</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Escriviu les coordenades u,v</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Renderitzador</translation>
     </message>
@@ -334,28 +318,44 @@ Voleu continuar?</translation>
       <translation>Directoris</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Nom del fitxer de la peça:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Nom del fitxer de la càmera:</translation>
+      <source>Default Project dir:</source>
+      <translation>Directori per defecte del projecte:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Utilitzat per les eines d'utilitats</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Directori per defecte del projecte:</translation>
+      <source>Camera file name:</source>
+      <translation>Nom del fitxer de la càmera:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Nom del fitxer de la peça:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Paràmetres de l'exportació de malles</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Màxima desviació de malla:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>No calcules les normals als vèrtexs.</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Escriviu les coordenades u,v</translation>
     </message>
   </context>
   <context>

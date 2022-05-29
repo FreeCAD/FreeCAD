@@ -754,20 +754,20 @@
       <translation>Información de malla</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Número de puntos:</translation>
+      <source>Number of faces:</source>
+      <translation>Número de caras:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Ninguna información</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Número de caras:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Número de aristas:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Número de puntos:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Primero ejecute el comando para reparar pliegues</translation>
       <translation>Sólido Regular</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Crear</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Ce&amp;rrar</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Sólido:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Primero ejecute el comando para reparar pliegues</translation>
       <translation>Toroide</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Altura:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Longitud:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Primero ejecute el comando para reparar pliegues</translation>
       <translation>Ancho:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Altura:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Radio:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Cerrado</translation>
+      <source>Edge length:</source>
+      <translation>Longitud del borde:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Muestreo:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Longitud del borde:</translation>
+      <source>Closed</source>
+      <translation>Cerrado</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Primero ejecute el comando para reparar pliegues</translation>
     <message>
       <source>Radius 2:</source>
       <translation>Radio 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Crear</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Ce&amp;rrar</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Primero ejecute el comando para reparar pliegues</translation>
       <translation>Exportar</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Desviacion maxima entre la malla y el objeto</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Desviacion de teselacion a la superficie actual</translation>
     </message>
@@ -1101,6 +1097,10 @@ Primero ejecute el comando para reparar pliegues</translation>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Máxima desviación de malla</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Desviacion maxima entre la malla y el objeto</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1136,36 +1136,36 @@ se usa al escribir un archivo en formato AMF</translation>
       <translation>Apariencia predeterminada para nuevas mallas</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Color de línea predeterminado</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Transparencia de la malla</translation>
+      <source>Default mesh color</source>
+      <translation>Color predeterminado de la malla</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Color predeterminado para nuevas mallas</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Transparencia de la malla</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Color predeterminado de la malla</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Se mostrará un cuadro delimitador</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Mostrar cuadro delimitador para mallas resaltadas o seleccionadas</translation>
+      <source>Default line color</source>
+      <translation>Color de línea predeterminado</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Color de linea predeterminado para nuevas mallas</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Transparencia de línea</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Color de la cara posterior</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1180,24 +1180,16 @@ Si no está marcado, este depende de la opción "Activar el color de la iluminac
       <translation>Renderizado en dos caras</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Transparencia de línea</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Se mostrará un cuadro delimitador</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Color de la cara posterior</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Mostrar cuadro delimitador para mallas resaltadas o seleccionadas</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Suavizado</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Este es el ángulo más pequeño entre las dos caras donde se calculan las normales para hacer sombreado plano.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Si el ángulo entre las normales de dos caras cercanas es menor que el ángulo del pliegue, las caras se sombrearán suavemente alrededor de la arista común.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Ángulo del pliegue</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1217,6 +1209,14 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <source>Define normal per vertex</source>
       <translation>Definir normal por vértice</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Este es el ángulo más pequeño entre las dos caras donde se calculan las normales para hacer sombreado plano.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Si el ángulo entre las normales de dos caras cercanas es menor que el ángulo del pliegue, las caras se sombrearán suavemente alrededor de la arista común.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Ángulo del pliegue</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1383,6 +1383,10 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation>Remallar por Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Parámetro de Remallado</translation>
     </message>
@@ -1422,10 +1426,6 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
       <source>Clear</source>
       <translation>Limpiar</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1438,40 +1438,40 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
       <translation>Seleccionar</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Seleccionar componente completo</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Elegir triángulo</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; caras que</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Región</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Componentes</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Todos</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Componentes</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; caras que</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Elegir triángulo</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Seleccionar componente completo</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Deseleccionar</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Deseleccionar todo el componente</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; caras que</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Deseleccionar todo el componente</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1548,8 +1548,12 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
       <translation>Segmentación de la malla</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Esfera</translation>
+      <source>Plane</source>
+      <translation>Plano</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parámetros...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1560,16 +1564,12 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
       <translation>Cantidad mínima de caras</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parámetros...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Plano</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Cilindro</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Esfera</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1755,6 +1755,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Formato Asymptote</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation>Formato de Manufactura 3D</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Exportar la malla</translation>
     </message>
@@ -1811,6 +1815,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Mostrar segmentos</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Salir del modo información</translation>
     </message>
@@ -1838,10 +1846,6 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Anotación</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1858,12 +1862,32 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>&amp;Mallas</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Corte</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Herramientas de malla</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Corte</translation>
+      <source>Mesh modify</source>
+      <translation>Modificar malla</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation>Malla booleana</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation>Corte de la malla</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentación de la malla</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation>Análisis de la malla</translation>
     </message>
   </context>
 </TS>

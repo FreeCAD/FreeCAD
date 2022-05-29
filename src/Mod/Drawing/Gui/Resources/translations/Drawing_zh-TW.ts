@@ -296,16 +296,60 @@ Do you want to continue?</source>
       <translation>正交投影</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>投影</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>第三視角</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>第一視角</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>檢視自：</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>正向X軸</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>正向Y軸</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>正向Z軸</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>負向X軸</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>負向Y軸</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>負向Z軸</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>對齊軸右側：</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>輔助視圖</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>按右鍵來進行軸測設定</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>主視圖</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>輔助視圖</translation>
     </message>
     <message>
       <source>General</source>
@@ -340,36 +384,8 @@ Do you want to continue?</source>
       <translation>軸測圖</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>軸向右外側</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>垂直傾斜</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>正向X軸</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>正向Y軸</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>正向Z軸</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>負向X軸</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>負向Y軸</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>負向Z軸</translation>
+      <source>View projection</source>
+      <translation>檢視專案</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -384,44 +400,28 @@ Do you want to continue?</source>
       <translation>不等角立體</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation>比例</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>檢視專案</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation>軸已對齊</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>軸向右外側</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>垂直傾斜</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>翻轉</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation>比例</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation>不等角立體</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>投影</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>第三視角</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>第一視角</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>檢視自：</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>對齊軸右側：</translation>
     </message>
   </context>
   <context>

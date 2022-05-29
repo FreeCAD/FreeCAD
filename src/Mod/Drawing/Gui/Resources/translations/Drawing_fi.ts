@@ -298,16 +298,60 @@ Haluatko jatkaa?</translation>
       <translation>Ortografinen projektio</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Projektio</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Kolmas kulma</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Ensimmäinen kulma</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Näkymä:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X + ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y + ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z + ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X - ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y - ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z - ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Akseli tasattu oikealle:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Toissijaiset näkymät</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Napsauta hiiren oikeata nappia aksonometrisille asetuksille</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Ensisijainen näkymä</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Toissijaiset näkymät</translation>
     </message>
     <message>
       <source>General</source>
@@ -342,36 +386,8 @@ Haluatko jatkaa?</translation>
       <translation>Aksonometrisiä</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Akseli ulos ja oikealle</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Pystysuora kallistus</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X + ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y + ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z + ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X - ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y - ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z - ve</translation>
+      <source>View projection</source>
+      <translation>Näytä projekti</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -386,44 +402,28 @@ Haluatko jatkaa?</translation>
       <translation>Trimetrinen</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Mittakaava</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Näytä projekti</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Akseli tasattu ylös</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Akseli ulos ja oikealle</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Pystysuora kallistus</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Käännä</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Mittakaava</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetrinen</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Projektio</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Kolmas kulma</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Ensimmäinen kulma</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Näkymä:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Akseli tasattu oikealle:</translation>
     </message>
   </context>
   <context>

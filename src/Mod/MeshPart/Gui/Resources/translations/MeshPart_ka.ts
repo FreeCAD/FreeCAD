@@ -9,7 +9,8 @@
       <translation>ბადის განშლა</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="80"/>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
       <translation>ბადის ბრტყელი ვარიანტის ნახვა.</translation>
     </message>

@@ -61,7 +61,7 @@ bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) 
     // if the multitransform object was deleted the transformed features must be deleted, too
     for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); ++it)
     {
-        if ((*it) != NULL)
+        if (*it)
             Gui::Command::doCommand(
                 Gui::Command::Doc,"App.getDocument('%s').removeObject(\"%s\")", \
                     (*it)->getDocument()->getName(), (*it)->getNameInDocument());

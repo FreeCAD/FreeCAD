@@ -270,22 +270,6 @@ Czy chcesz kontynuować?</translation>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Ustawienia eksportu siatki</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Maksymalne odchylenie siatki:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Nie przeliczaj wierzchołków normalnych</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Zapisz współrzędne U,V</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Renderowanie</translation>
     </message>
@@ -334,28 +318,44 @@ Czy chcesz kontynuować?</translation>
       <translation>Katalogi</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Nazwa pliku części:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Nazwa pliku dla ujęcia widoku:</translation>
+      <source>Default Project dir:</source>
+      <translation>Domyślny katalog projektu:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Używany przez narzędzia</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Domyślny katalog projektu:</translation>
+      <source>Camera file name:</source>
+      <translation>Nazwa pliku dla ujęcia widoku:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Nazwa pliku części:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Ustawienia eksportu siatki</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Maksymalne odchylenie siatki:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Nie przeliczaj wierzchołków normalnych</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Zapisz współrzędne U,V</translation>
     </message>
   </context>
   <context>

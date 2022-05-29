@@ -754,20 +754,20 @@
       <translation>Informations sur le maillage</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Nombre de points :</translation>
+      <source>Number of faces:</source>
+      <translation>Nombre de faces :</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Aucune information</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Nombre de faces :</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Nombre de contours :</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Nombre de points :</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -984,22 +984,6 @@ Please run the command to repair folds first</source>
       <translation>Solide régulier</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Créer</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>&amp;Fermer</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+F</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Solide :</translation>
     </message>
@@ -1028,10 +1012,6 @@ Please run the command to repair folds first</source>
       <translation>Tore</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Hauteur :</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Longueur :</translation>
     </message>
@@ -1040,20 +1020,24 @@ Please run the command to repair folds first</source>
       <translation>Largeur :</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Hauteur :</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Rayon :</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Fermé</translation>
+      <source>Edge length:</source>
+      <translation>Longueur du contour :</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Numérisation :</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Longueur du contour :</translation>
+      <source>Closed</source>
+      <translation>Fermé</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1062,6 +1046,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Rayon 2 :</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Créer</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>&amp;Fermer</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+F</translation>
     </message>
   </context>
   <context>
@@ -1086,10 +1086,6 @@ Please run the command to repair folds first</source>
       <translation>Exporter</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Déviation maximale entre le maillage et l'objet</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Déviation de la tessellation vers la surface réelle</translation>
     </message>
@@ -1100,6 +1096,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Déviation maximale du maillage</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Déviation maximale entre le maillage et l'objet</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ est utilisée lors de l'écriture d'un fichier au format AMF</translation>
       <translation>Apparence par défaut pour les nouveaux maillages</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Couleur de ligne par défaut</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Transparence des maillages</translation>
+      <source>Default mesh color</source>
+      <translation>Couleur par défaut des maillages</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Couleur par défaut pour les nouveaux maillages</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Transparence des maillages</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Couleur par défaut des maillages</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Une boîte englobante sera affichée</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Afficher le volume capable des mailles en surbrillance ou sélectionnées</translation>
+      <source>Default line color</source>
+      <translation>Couleur de ligne par défaut</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Couleur de ligne par défaut pour les nouveaux maillages</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Transparence de ligne</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Couleur de la face arrière</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ sera utilisée soit du noir.</translation>
       <translation>Rendu biface</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Transparence de ligne</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Une boîte englobante sera affichée</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Couleur de la face arrière</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Afficher le volume capable des mailles en surbrillance ou sélectionnées</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Lissage</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Il s'agit du plus petit angle entre deux faces dont les normales sont calculées pour un ombrage plat.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Si l'angle entre les normales de deux faces voisines est plus petit que l'angle de pliage, les faces seront traitées en ombrage lissé autour de leur arête commune.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Angle de pliage</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1221,6 +1213,14 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
       <translation>Définir les normales par vertex</translation>
     </message>
     <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Il s'agit du plus petit angle entre deux faces dont les normales sont calculées pour un ombrage plat.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Si l'angle entre les normales de deux faces voisines est plus petit que l'angle de pliage, les faces seront traitées en ombrage lissé autour de leur arête commune.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Angle de pliage</translation>
+    </message>
+    <message>
       <source>Crease angle is a threshold angle between two faces.
 
  If face angle ≥ crease angle, facet shading is used
@@ -1236,7 +1236,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Définir les normales par vertex est aussi appelé &lt;span style=" font-style:italic;"&gt;ombrage Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;alors que définir les normales par face est appelé&lt;/span&gt;ombrage plat&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Définir les normales par vertex est aussi appelé &lt;span style=" font-style:italic;"&gt;ombrage de Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;alors que définir les normales par face est appelé&lt;/span&gt; ombrage plat&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1385,6 +1385,10 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation>Remaillage(remesh) par Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Paramètre de remaillage</translation>
     </message>
@@ -1424,10 +1428,6 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
       <source>Clear</source>
       <translation>Effacer</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1440,40 +1440,40 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
       <translation>Sélectionner</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Sélectionner le composant entier</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Choisissez un triangle</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; de faces que</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Région</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Composants</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Tous</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Composants</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; de faces que</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Choisissez un triangle</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Sélectionner le composant entier</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Dé-sélectionner</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Dé-sélectionner le composant entier</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; de faces que</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Dé-sélectionner le composant entier</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1550,8 +1550,12 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
       <translation>Segmentation du maillage</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Sphère</translation>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Paramètres...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1562,16 +1566,12 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
       <translation>Nombre minimum de faces</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Paramètres...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Plan</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Cylindre</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sphère</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1758,6 +1758,10 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
       <translation>Format Asymptote</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation>Format de fabrication 3D</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Exporter un maillage</translation>
     </message>
@@ -1814,6 +1818,10 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
       <translation>Afficher les segments</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation>Affichage des couleurs</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Quitter le mode d'information</translation>
     </message>
@@ -1841,10 +1849,6 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
       <source>Annotation</source>
       <translation>Annotation</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1861,12 +1865,32 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
       <translation>&amp;Maillages</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Coupe</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Outils de maillage</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Coupe</translation>
+      <source>Mesh modify</source>
+      <translation>Modifier le maillage</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation>Opération booléenne sur le maillage</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation>Découpage du maillage</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentation du maillage</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation>Analyse du maillage</translation>
     </message>
   </context>
 </TS>

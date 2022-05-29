@@ -754,20 +754,20 @@
       <translation>Podatki ploskovja</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Število točk:</translation>
+      <source>Number of faces:</source>
+      <translation>Število ploskev:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Ni podatkov</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Število ploskev:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Število robov:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Število točk:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
       <translation>Preprosto telo</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Ustvari</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>&amp;Zapri</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Telo:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
       <translation>Svitek</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Višina:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Dolžina:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
       <translation>Širina:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Višina:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Polmer:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Zaprto</translation>
+      <source>Edge length:</source>
+      <translation>Dolžina roba:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Vzorčenje:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Dolžina roba:</translation>
+      <source>Closed</source>
+      <translation>Zaprto</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
     <message>
       <source>Radius 2:</source>
       <translation>Polmer 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Ustvari</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>&amp;Zapri</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
       <translation type="unfinished">Export</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Največje odstopanje med ploskovjem in predmetom</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Odstopanje tlakovanja od dejanskega površja</translation>
     </message>
@@ -1101,6 +1097,10 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Največje odstopanje ploskovja</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Največje odstopanje med ploskovjem in predmetom</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1136,36 +1136,36 @@ is used when writing a file in AMF format</source>
       <translation>Privzeti videz novih ploskovij</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Privzeta barva črt</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Prozornost ploskovja</translation>
+      <source>Default mesh color</source>
+      <translation>Privzeta barva ploskovja</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Privzeta barva novih ploskovij</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Prozornost ploskovja</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Privzeta barva ploskovja</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Prikazan bo mejni kvader</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Prikaži mejni kvader za poudarjena ali izbrana ploskovja</translation>
+      <source>Default line color</source>
+      <translation>Privzeta barva črt</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Privzeta barva črt novih ploskovij</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Prozornost črt</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Barva hrbtne ploskve</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1182,24 +1182,16 @@ protisvetlobe ali pa črna.</translation>
       <translation>Obojestransko upodabljanje</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Prozornost črt</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Prikazan bo mejni kvader</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Barva hrbtne ploskve</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Prikaži mejni kvader za poudarjena ali izbrana ploskovja</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Glajenje</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;To je najmanjši kot med dvema ploskvama, kjer se izračunata normali za plosko senčenje.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Če je kot med dvema normalama sosednjih ploskev manjši od kota pregiba, bosta ploskvi na skupnem robu zglajeno osenčeni.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Kot pregiba</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1220,6 +1212,14 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <source>Define normal per vertex</source>
       <translation>Določite normalo na teme</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;To je najmanjši kot med dvema ploskvama, kjer se izračunata normali za plosko senčenje.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Če je kot med dvema normalama sosednjih ploskev manjši od kota pregiba, bosta ploskvi na skupnem robu zglajeno osenčeni.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Kot pregiba</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1386,6 +1386,10 @@ s Phongovim senčenjem doseže gladkejši videz.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Določilka preploskovljenja</translation>
     </message>
@@ -1425,10 +1429,6 @@ s Phongovim senčenjem doseže gladkejši videz.
       <source>Clear</source>
       <translation>Počisti</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1441,40 +1441,40 @@ s Phongovim senčenjem doseže gladkejši videz.
       <translation>Izberite</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Izberite celo sestavino</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Izberite trikotnik</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; ploskev od</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Območje</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Sestavine</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Vse</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Sestavine</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; ploskev od</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Izberite trikotnik</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Izberite celo sestavino</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Odstrani izbiro</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Odstrani izbiro cele sestavine</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; ploskev od</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Odstrani izbiro cele sestavine</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1551,8 +1551,12 @@ s Phongovim senčenjem doseže gladkejši videz.
       <translation>Razčlenitev ploskovja</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Krogla</translation>
+      <source>Plane</source>
+      <translation>Ravnina</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Določilke ...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1563,16 +1567,12 @@ s Phongovim senčenjem doseže gladkejši videz.
       <translation>Najmanjše št. ploskev</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Določilke ...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Ravnina</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Valj</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Krogla</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1759,6 +1759,10 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>Oblika približevalnice</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Izvozi ploskovje</translation>
     </message>
@@ -1815,6 +1819,10 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>Prikaži odseke</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation>Barve prikaza</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Zapusti podatkovni način</translation>
     </message>
@@ -1842,10 +1850,6 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <source>Annotation</source>
       <translation>Opis</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1862,12 +1866,32 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>&amp;Ploskovja</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Prerez</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Orodja za ploskovja</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Prerez</translation>
+      <source>Mesh modify</source>
+      <translation>Preoblikuj ploskovje</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation>Logična vrednost ploskovja</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation>Rezanje ploskovja</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Razčlenitev ploskovja</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation>Razčlemba ploskovja</translation>
     </message>
   </context>
 </TS>

@@ -314,6 +314,17 @@ public:
     virtual ~ShapeUpgradeModule() {}
 };
 
+class ChFi2dModule : public Py::ExtensionModule<ChFi2dModule>
+{
+public:
+    ChFi2dModule() : Py::ExtensionModule<ChFi2dModule>("ChFi2d")
+    {
+        initialize("This is a module working with the ChFi2d framework."); // register with Python
+    }
+
+    virtual ~ChFi2dModule() {}
+};
+
 class Module : public Py::ExtensionModule<Module>
 {
     BRepFeatModule brepFeat;
@@ -322,6 +333,7 @@ class Module : public Py::ExtensionModule<Module>
     GeomPlateModule geomPlate;
     HLRBRepModule HLRBRep;
     ShapeUpgradeModule shapeUpgrade;
+    ChFi2dModule chFi2d;
 public:
     Module() : Py::ExtensionModule<Module>("Part")
     {
@@ -548,6 +560,7 @@ public:
         PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
         PyModule_AddObject(m_module, "HLRBRep", HLRBRep.module().ptr());
         PyModule_AddObject(m_module, "ShapeUpgrade", shapeUpgrade.module().ptr());
+        PyModule_AddObject(m_module, "ChFi2d", chFi2d.module().ptr());
     }
 
     virtual ~Module() {}

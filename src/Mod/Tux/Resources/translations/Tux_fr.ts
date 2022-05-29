@@ -4,57 +4,57 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="66"/>
+      <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Select</source>
       <translation>Sélectionner</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="67"/>
+      <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Zoom</source>
       <translation>Zoom</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="68"/>
+      <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotate</source>
       <translation>Pivoter</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="69"/>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Pan</source>
       <translation>Panoramique</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Tilt</source>
       <translation>Inclinaison</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="71"/>
+      <location filename="../../NavigationIndicatorGui.py" line="72"/>
       <source>Navigation style</source>
       <translation>Style de navigation</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="72"/>
+      <location filename="../../NavigationIndicatorGui.py" line="73"/>
       <source>Page Up or Page Down key.</source>
       <translation>Touche clavier Page haut ou Page bas.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="73"/>
+      <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Rotation focus</source>
       <translation>Focus de rotation</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="74"/>
+      <location filename="../../NavigationIndicatorGui.py" line="75"/>
       <source>Middle mouse button or H key.</source>
       <translation>Bouton central de la souris ou touche H.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="75"/>
+      <location filename="../../NavigationIndicatorGui.py" line="77"/>
       <source>Middle mouse button.</source>
       <translation>Bouton central de la souris.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="78"/>
+      <location filename="../../NavigationIndicatorGui.py" line="80"/>
       <source>Navigation style not recognized.</source>
       <translation>Style de navigation non reconnu.</translation>
     </message>

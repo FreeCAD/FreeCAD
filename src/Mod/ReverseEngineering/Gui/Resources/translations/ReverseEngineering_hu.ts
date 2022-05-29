@@ -240,6 +240,14 @@
       <translation>Méret tényező</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Felhasználó által definiált u/v irányba</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Elhelyezés létrehozása</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Simítás</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Görbület variáció</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Felhasználó által definiált u/v irányba</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Elhelyezés létrehozása</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Háló szegmentálás</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Egyesítés létrehozása</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Sima háló</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Háló létrehozás fel nem használt háromszögekből</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Egyesítés létrehozása</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Kiválaszt</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Összetevők</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Régió</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Összetevő kiválasztása</translation>
+      <source>All</source>
+      <translation>Minden</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Háromszög választása</translation>
+      <source>Components</source>
+      <translation>Összetevők</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt;felületek mint</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Minden</translation>
+      <source>Pick triangle</source>
+      <translation>Háromszög választása</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Összetevő kiválasztása</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Sík</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Észlelés</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tűrés</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Felületek minimum száma</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Észlelés</translation>
     </message>
     <message>
       <source>Cylinder</source>

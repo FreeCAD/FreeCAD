@@ -754,20 +754,20 @@
       <translation>Informações de malha</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Número de pontos:</translation>
+      <source>Number of faces:</source>
+      <translation>Número de faces:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Nenhuma informação</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Número de faces:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Número de arestas:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Número de pontos:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -984,22 +984,6 @@ Please run the command to repair folds first</source>
       <translation>Sólido regular</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Criar</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt + C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>&amp;Fechar</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt + O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation> Sólido: </translation>
     </message>
@@ -1028,10 +1012,6 @@ Please run the command to repair folds first</source>
       <translation>Torus</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Altura:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Comprimento:</translation>
     </message>
@@ -1040,20 +1020,24 @@ Please run the command to repair folds first</source>
       <translation>Largura:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Altura:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Raio:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Fechado</translation>
+      <source>Edge length:</source>
+      <translation>Comprimento da aresta:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Amostragem:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Comprimento da aresta:</translation>
+      <source>Closed</source>
+      <translation>Fechado</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1062,6 +1046,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Raio 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Criar</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt + C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>&amp;Fechar</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt + O</translation>
     </message>
   </context>
   <context>
@@ -1086,10 +1086,6 @@ Please run the command to repair folds first</source>
       <translation>Exportar</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Desvio máximo entre malha e objeto</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Desvio da tesselação para a superfície atual</translation>
     </message>
@@ -1100,6 +1096,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Desvio máximo da malha</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Desvio máximo entre malha e objeto</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</source>
       <translation>Aparência predefinida para novas malhas</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Cor predefinida de linha</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Transparência da malha</translation>
+      <source>Default mesh color</source>
+      <translation>Cor predefinida da malha</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Cor padrão para novas malhas</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Transparência da malha</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Cor predefinida da malha</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Uma caixa delimitadora será exibida</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Mostrar caixa delimitadora para malhas realçadas ou selecionadas</translation>
+      <source>Default line color</source>
+      <translation>Cor predefinida de linha</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Cor de linha padrão para novas malhas</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Transparência da linha</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Cor da face posterior</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ será usada ou preta.</translation>
       <translation>Renderização dos dois lados</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Transparência da linha</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Uma caixa delimitadora será exibida</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Cor da face posterior</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Mostrar caixa delimitadora para malhas realçadas ou selecionadas</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Suavização</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Este é o menor ângulo entre duas faces onde será usado o sombreamento plano.&lt;/p&gt;&lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; se o ângulo entre as normais de duas faces vizinhas é menor do que o ângulo de vincos, as faces serão suavizadas ao redor de sua aresta comum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Ângulo de dobra</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1219,6 +1211,14 @@ a uma aparência mais suave.
     <message>
       <source>Define normal per vertex</source>
       <translation>Definir normal por vértice</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Este é o menor ângulo entre duas faces onde será usado o sombreamento plano.&lt;/p&gt;&lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; se o ângulo entre as normais de duas faces vizinhas é menor do que o ângulo de vincos, as faces serão suavizadas ao redor de sua aresta comum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Ângulo de dobra</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1385,6 +1385,10 @@ a uma aparência mais suave.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Parâmetro de Remalha</translation>
     </message>
@@ -1424,10 +1428,6 @@ a uma aparência mais suave.
       <source>Clear</source>
       <translation>Limpar</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1440,40 +1440,40 @@ a uma aparência mais suave.
       <translation>Selecionar</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Selecione o componente completo</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Escolher triângulo</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; faces do que</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Região</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Componentes</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Tudo</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Componentes</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; faces do que</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Escolher triângulo</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Selecione o componente completo</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Desselecionar</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Desselecionar componente completo</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; faces do que</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Desselecionar componente completo</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1550,8 +1550,12 @@ a uma aparência mais suave.
       <translation>Segmentação de malha</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Esfera</translation>
+      <source>Plane</source>
+      <translation>Plano</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parâmetros...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1562,16 +1566,12 @@ a uma aparência mais suave.
       <translation>Número mínimo de faces</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parâmetros...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Plano</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Cilindro</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Esfera</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1758,6 +1758,10 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
       <translation>Formato Assimptota</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Exportar malha</translation>
     </message>
@@ -1814,6 +1818,10 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
       <translation>Exibir segmentos</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Sair do modo de informação</translation>
     </message>
@@ -1841,10 +1849,6 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
       <source>Annotation</source>
       <translation>Anotação</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1861,12 +1865,32 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
       <translation>&amp;Malhas</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Corte</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Ferramentas de malha (mesh)</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Corte</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentação de malha</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

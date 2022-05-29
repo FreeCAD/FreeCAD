@@ -9,7 +9,7 @@
       <translation>Mugitu bista</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandMoveView.py" line="48"/>
+      <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
       <translation>Eraman bista bat orrialde berri batera</translation>
     </message>
@@ -34,6 +34,7 @@
       <translation>Hautatu jatorrizko orrialdea.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
       <source>Select Page</source>
       <translation>Hautatu orrialdea</translation>
@@ -46,16 +47,6 @@
   </context>
   <context>
     <name>ShareView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
-      <source>Share View</source>
-      <translation>Partekatu bista</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="48"/>
-      <source>Share a View on a second Page</source>
-      <translation>Partekatu bista bat bigarren orrialde batean</translation>
-    </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
@@ -82,6 +73,7 @@
       <translation>Hautatu jatorrizko orrialdea.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
       <source>Select Page</source>
       <translation>Hautatu orrialdea</translation>
@@ -90,6 +82,16 @@
       <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
       <translation>Hautatu helburuko orrialdea.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Partekatu bista</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>Partekatu bista bat bigarren orrialde batean</translation>
     </message>
   </context>
   <context>
@@ -437,12 +439,12 @@
     <message>
       <location filename="../../Command.cpp" line="1445"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Gorde DXF fitxategia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
   </context>
   <context>
@@ -468,7 +470,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1642"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>Hedatu lerroa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1643"/>
@@ -674,12 +676,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1770"/>
       <source>Create Horizontal Coordinate Dimensions</source>
-      <translation type="unfinished">Create Horizontal Coordinate Dimensions</translation>
+      <translation>Sortu koordenatu-kota horizontalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1771"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu uniformeki banatutako kota horizontal anitz, oinarri-lerro beretik hasita:&lt;br&gt;- Zehaztu teilakatze-tartea (aukerakoa)&lt;br&gt;- Hautatu hiru erpin edo gehiago&lt;br&gt;- Lehen bi erpinen hautapen-ordenak oinarri-lerroaren posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -733,13 +735,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1561"/>
       <location filename="../../CommandExtensionDims.cpp" line="1846"/>
       <source>Create Horizontal Coordinate Dimensions</source>
-      <translation type="unfinished">Create Horizontal Coordinate Dimensions</translation>
+      <translation>Sortu koordenatu-kota horizontalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1562"/>
       <location filename="../../CommandExtensionDims.cpp" line="1847"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu uniformeki banatutako kota horizontal anitz, oinarri-lerro beretik hasita:&lt;br&gt;- Zehaztu teilakatze-tartea (aukerakoa)&lt;br&gt;- Hautatu hiru erpin edo gehiago&lt;br&gt;- Lehen bi erpinen hautapen-ordenak oinarri-lerroaren posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -797,7 +799,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1735"/>
       <location filename="../../CommandExtensionDims.cpp" line="1865"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu uniformeki banatutako zeharkako kota anitz, oinarri-lerro beretik hasita:&lt;br&gt;- Zehaztu teilakatze-tartea (aukerakoa)&lt;br&gt;- Hautatu hiru erpin edo gehiago&lt;br&gt;- Lehen bi erpinen hautapen-ordenak oinarri-lerroaren posizioa zehazten du&lt;br&gt;- Lehen bi erpinek norabidea ere definitzen dute&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -857,7 +859,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1636"/>
       <location filename="../../CommandExtensionDims.cpp" line="1856"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu uniformeki banatutako kota bertikal anitz, oinarri-lerro beretik hasita:&lt;br&gt;- Zehaztu teilakatze-tartea (aukerakoa)&lt;br&gt;- Hautatu hiru erpin edo gehiago&lt;br&gt;- Lehen bi erpinen hautapen-ordenak oinarri-lerroaren posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -908,12 +910,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1056"/>
       <source>Add Cosmetic Circle</source>
-      <translation type="unfinished">Add Cosmetic Circle</translation>
+      <translation>Gehitu zirkulu kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1057"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu zirkulu kosmetiko bat bi erpinetan oinarrituta:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu 1. erpina (erdiko puntua)&lt;br&gt;- Hautatu 2. erpina (erradioa)&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -927,13 +929,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="895"/>
       <location filename="../../CommandExtensionPack.cpp" line="1141"/>
       <source>Add Cosmetic Arc</source>
-      <translation type="unfinished">Add Cosmetic Arc</translation>
+      <translation>Gehitu arku kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="896"/>
       <location filename="../../CommandExtensionPack.cpp" line="1142"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu erlojuaren noranzkoaren aurkako arku kosmetiko bat hiru erpinetan oinarrituta:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu 1. erpina (erdiko puntua)&lt;br&gt;- Hautatu 2. erpina (erradioa eta hasierako angelua)&lt;br&gt;- Hautatu 3. angelua (amaierako angelua)&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -947,13 +949,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="956"/>
       <location filename="../../CommandExtensionPack.cpp" line="1132"/>
       <source>Add Cosmetic Circle</source>
-      <translation type="unfinished">Add Cosmetic Circle</translation>
+      <translation>Gehitu zirkulu kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="957"/>
       <location filename="../../CommandExtensionPack.cpp" line="1133"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu zirkulu kosmetiko bat bi erpinetan oinarrituta:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu 1. erpina (erdiko puntua)&lt;br&gt;- Hautatu 2. erpina (erradioa)&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -991,7 +993,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1572"/>
       <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>Hedatu lerroa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1573"/>
@@ -1093,7 +1095,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="249"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Txertatu &apos;⌀&apos; ikurra kota-testuaren hasieran:&lt;br&gt;- Hautatu kota bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1106,14 +1108,14 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <source>Insert &apos;〼&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;〼&apos; Prefix</translation>
+      <source>Insert &apos;□&apos; Prefix</source>
+      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="160"/>
       <location filename="../../CommandExtensionDims.cpp" line="330"/>
-      <source>Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
+      <translation type="unfinished">Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
   </context>
   <context>
@@ -1131,7 +1133,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1289"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu lerro kosmetikoa beste lerro batekiko paraleloan, erpin batean zehar:&lt;br&gt;- Hautatu lerro bat&lt;br&gt;- Hautatu erpin bat&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1151,7 +1153,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1221"/>
       <location filename="../../CommandExtensionPack.cpp" line="1357"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu lerro kosmetikoa beste lerro batekiko paraleloan, erpin batean zehar:&lt;br&gt;- Hautatu lerro bat&lt;br&gt;- Hautatu erpin bat&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1171,7 +1173,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1255"/>
       <location filename="../../CommandExtensionPack.cpp" line="1365"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu lerro kosmetikoa beste lerro batekiko perpendikularrean, erpin batean zehar:&lt;br&gt;- Hautatu lerro bat&lt;br&gt;- Hautatu erpin bat&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1184,7 +1186,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1391"/>
       <source>Lock/Unlock View</source>
-      <translation type="unfinished">Lock/Unlock View</translation>
+      <translation>Blokeatu/desblokeatu bista</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1392"/>
@@ -1298,7 +1300,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="215"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Kendu aurrizkia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="216"/>
@@ -1335,7 +1337,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1607"/>
       <location filename="../../CommandExtensionPack.cpp" line="1718"/>
       <source>Shorten Line</source>
-      <translation type="unfinished">Shorten Line</translation>
+      <translation>Laburtu lerroa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1608"/>
@@ -1457,7 +1459,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="806"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges (lines, circles and/or arcs)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges (lines, circles and/or arcs)&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu erpin kosmetikoa(k) hautatutako ertzen ebakiduretan:&lt;br&gt;- Hautatu bi ertz (lerroak, zirkuluak eta/edo arkuak)&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -2066,7 +2068,7 @@
       <translation>Sortu sekzio-bista</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="465"/>
+      <location filename="../../TaskSectionView.cpp" line="463"/>
       <source>Edit SectionView</source>
       <translation type="unfinished">Edit SectionView</translation>
     </message>
@@ -2088,17 +2090,17 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="105"/>
       <source>Insert Prefix</source>
-      <translation type="unfinished">Insert Prefix</translation>
+      <translation>Txertatu aurrizkia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="189"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Kendu aurrizkia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="359"/>
       <source>Increase/Decrease Decimal</source>
-      <translation type="unfinished">Increase/Decrease Decimal</translation>
+      <translation>Gehitu/gutxitu dezimalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="552"/>
@@ -2218,12 +2220,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="868"/>
       <source>Cosmetic Arc</source>
-      <translation type="unfinished">Cosmetic Arc</translation>
+      <translation>Arku kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="931"/>
       <source>Cosmetic Circle</source>
-      <translation type="unfinished">Cosmetic Circle</translation>
+      <translation>Zirkulu kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="991"/>
@@ -2238,22 +2240,22 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1407"/>
       <source>Lock/Unlock View</source>
-      <translation type="unfinished">Lock/Unlock View</translation>
+      <translation>Blokeatu/desblokeatu bista</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1500"/>
       <source>Extend/Shorten Line</source>
-      <translation type="unfinished">Extend/Shorten Line</translation>
+      <translation>Luzatu/laburtu lerroa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1806"/>
       <source>Calculate Face Area</source>
-      <translation type="unfinished">Calculate Face Area</translation>
+      <translation>Kalkulatu aurpegi-area</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="221"/>
       <source>Customize Format</source>
-      <translation type="unfinished">Customize Format</translation>
+      <translation>Pertsonalizatu formatua</translation>
     </message>
   </context>
   <context>
@@ -3137,7 +3139,7 @@
       <translation>Editatu sekzio-bista</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="504"/>
+      <location filename="../../TaskSectionView.cpp" line="500"/>
       <source>Operation Failed</source>
       <translation>Eragiketak huts egin du</translation>
     </message>
@@ -3186,7 +3188,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="558"/>
       <location filename="../../CommandExtensionDims.cpp" line="861"/>
       <source>No horizontal dimensions selected</source>
-      <translation type="unfinished">No horizontal dimensions selected</translation>
+      <translation>Ez da kota horizontalik hautatu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="616"/>
@@ -3467,7 +3469,7 @@ bistaren goiko eta ezkerreko ertzetatik</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="22"/>
       <source>View to move</source>
-      <translation type="unfinished">View to move</translation>
+      <translation>Ikusi lekuz aldatzeko</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="36"/>
@@ -3479,7 +3481,7 @@ bistaren goiko eta ezkerreko ertzetatik</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="43"/>
       <source>From Page</source>
-      <translation type="unfinished">From Page</translation>
+      <translation>Orrialdetik</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
@@ -3639,7 +3641,7 @@ This directory will be used for the symbol selection.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="17"/>
       <source>Page Chooser</source>
-      <translation type="unfinished">Page Chooser</translation>
+      <translation>Orrialde-aukeratzailea</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
@@ -4242,7 +4244,7 @@ erabiliko den itzal-lerro kopuru maximoa</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="493"/>
       <source>Grid Color</source>
-      <translation type="unfinished">Grid Color</translation>
+      <translation>Sareta-kolorea</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="528"/>
@@ -4336,7 +4338,7 @@ erabiliko den itzal-lerro kopuru maximoa</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="219"/>
       <source>Dimension Format</source>
-      <translation type="unfinished">Dimension Format</translation>
+      <translation>Kota-lerroen formatua</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
@@ -4639,12 +4641,12 @@ proiekzio-taldeetarako</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="808"/>
       <source>Show Grid</source>
-      <translation type="unfinished">Show Grid</translation>
+      <translation>Erakutsi sareta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="829"/>
       <source>Grid Spacing</source>
-      <translation type="unfinished">Grid Spacing</translation>
+      <translation>Sareta-tarteak</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="849"/>
@@ -4939,12 +4941,12 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="902"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Gorde DXF fitxategia</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="904"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1389"/>
@@ -5389,99 +5391,99 @@ Jarraitu nahi duzu?</translation>
       <translation type="unfinished">Format Symbols</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="34"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="32"/>
       <source>GD&amp;T</source>
       <translation type="unfinished">GD&amp;T</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="41"/>
       <source>Straightness</source>
-      <translation type="unfinished">Straightness</translation>
+      <translation>Zuzentasuna</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="44"/>
       <source>⏤</source>
-      <translation type="unfinished">⏤</translation>
+      <translation>⏤</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="51"/>
       <source>Flatness</source>
-      <translation type="unfinished">Flatness</translation>
+      <translation>Lautasuna</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="54"/>
       <source>⏥</source>
-      <translation type="unfinished">⏥</translation>
+      <translation>⏥</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="61"/>
       <source>Circularity</source>
-      <translation type="unfinished">Circularity</translation>
+      <translation>Zirkulartasuna</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="64"/>
       <source>○</source>
-      <translation type="unfinished">○</translation>
+      <translation>○</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="71"/>
       <source>Cylindricity</source>
-      <translation type="unfinished">Cylindricity</translation>
+      <translation>Zilindrotasuna</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="74"/>
       <source>⌭</source>
-      <translation type="unfinished">⌭</translation>
+      <translation>⌭</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="81"/>
       <source>Parallelism</source>
-      <translation type="unfinished">Parallelism</translation>
+      <translation>Paralelismoa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="84"/>
       <source>∥</source>
-      <translation type="unfinished">∥</translation>
+      <translation>∥</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="91"/>
       <source>Perpendicularity</source>
-      <translation type="unfinished">Perpendicularity</translation>
+      <translation>Perpendikulartasuna</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="94"/>
       <source>⟂</source>
-      <translation type="unfinished">⟂</translation>
+      <translation>⟂</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="101"/>
       <source>Angularity</source>
-      <translation type="unfinished">Angularity</translation>
+      <translation>Angulartasuna</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="104"/>
       <source>∠</source>
-      <translation type="unfinished">∠</translation>
+      <translation>∠</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="116"/>
       <source>Profile of a line</source>
-      <translation type="unfinished">Profile of a line</translation>
+      <translation>Lerro baten profila</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="119"/>
       <source>⌒</source>
-      <translation type="unfinished">⌒</translation>
+      <translation>⌒</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="126"/>
       <source>Profile of a surface</source>
-      <translation type="unfinished">Profile of a surface</translation>
+      <translation>Gainazal baten profila</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="129"/>
       <source>⌓</source>
-      <translation type="unfinished">⌓</translation>
+      <translation>⌓</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="136"/>
@@ -5491,7 +5493,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="139"/>
       <source>↗</source>
-      <translation type="unfinished">↗</translation>
+      <translation>↗</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="146"/>
@@ -5501,7 +5503,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="149"/>
       <source>⌰</source>
-      <translation type="unfinished">⌰</translation>
+      <translation>⌰</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="156"/>
@@ -5511,7 +5513,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="159"/>
       <source>⌖</source>
-      <translation type="unfinished">⌖</translation>
+      <translation>⌖</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="166"/>
@@ -5521,7 +5523,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="169"/>
       <source>◎</source>
-      <translation type="unfinished">◎</translation>
+      <translation>◎</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="176"/>
@@ -5531,12 +5533,12 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="179"/>
       <source>⌯</source>
-      <translation type="unfinished">⌯</translation>
+      <translation>⌯</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="188"/>
       <source>Modifiers</source>
-      <translation type="unfinished">Modifiers</translation>
+      <translation>Aldatzaileak</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="202"/>
@@ -5546,7 +5548,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="205"/>
       <source>Ⓐ</source>
-      <translation type="unfinished">Ⓐ</translation>
+      <translation>Ⓐ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="217"/>
@@ -5556,7 +5558,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="220"/>
       <source>Ⓒ</source>
-      <translation type="unfinished">Ⓒ</translation>
+      <translation>Ⓒ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="232"/>
@@ -5566,17 +5568,17 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="235"/>
       <source>Ⓔ</source>
-      <translation type="unfinished">Ⓔ</translation>
+      <translation>Ⓔ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="247"/>
       <source>Free state</source>
-      <translation type="unfinished">Free state</translation>
+      <translation>Egoera librea</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="250"/>
       <source>Ⓕ</source>
-      <translation type="unfinished">Ⓕ</translation>
+      <translation>Ⓕ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="262"/>
@@ -5586,7 +5588,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="265"/>
       <source>Ⓖ</source>
-      <translation type="unfinished">Ⓖ</translation>
+      <translation>Ⓖ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="277"/>
@@ -5596,7 +5598,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="280"/>
       <source>Ⓛ</source>
-      <translation type="unfinished">Ⓛ</translation>
+      <translation>Ⓛ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="292"/>
@@ -5606,7 +5608,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="295"/>
       <source>Ⓜ</source>
-      <translation type="unfinished">Ⓜ</translation>
+      <translation>Ⓜ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="307"/>
@@ -5616,7 +5618,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="310"/>
       <source>Ⓝ</source>
-      <translation type="unfinished">Ⓝ</translation>
+      <translation>Ⓝ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="322"/>
@@ -5626,7 +5628,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="325"/>
       <source>Ⓟ</source>
-      <translation type="unfinished">Ⓟ</translation>
+      <translation>Ⓟ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="337"/>
@@ -5636,7 +5638,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="340"/>
       <source>Ⓡ</source>
-      <translation type="unfinished">Ⓡ</translation>
+      <translation>Ⓡ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="352"/>
@@ -5646,7 +5648,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="355"/>
       <source>Ⓢ</source>
-      <translation type="unfinished">Ⓢ</translation>
+      <translation>Ⓢ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="367"/>
@@ -5656,7 +5658,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="370"/>
       <source>Ⓣ</source>
-      <translation type="unfinished">Ⓣ</translation>
+      <translation>Ⓣ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="382"/>
@@ -5666,7 +5668,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="385"/>
       <source>Ⓤ</source>
-      <translation type="unfinished">Ⓤ</translation>
+      <translation>Ⓤ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="397"/>
@@ -5676,12 +5678,12 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="400"/>
       <source>Ⓧ</source>
-      <translation type="unfinished">Ⓧ</translation>
+      <translation>Ⓧ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="409"/>
       <source>Radius &amp; Diameter</source>
-      <translation type="unfinished">Radius &amp; Diameter</translation>
+      <translation>Erradioa eta diametroa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="418"/>
@@ -5706,7 +5708,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="438"/>
       <source>Radius of sphere</source>
-      <translation type="unfinished">Radius of sphere</translation>
+      <translation>Esferaren erradioa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="441"/>
@@ -5716,7 +5718,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="448"/>
       <source>Diameter of sphere</source>
-      <translation type="unfinished">Diameter of sphere</translation>
+      <translation>Esferaren diametroa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="451"/>
@@ -5731,12 +5733,12 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="461"/>
       <source>□</source>
-      <translation type="unfinished">□</translation>
+      <translation>□</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="470"/>
       <source>Angles</source>
-      <translation type="unfinished">Angles</translation>
+      <translation>Angeluak</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="479"/>
@@ -5756,7 +5758,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="492"/>
       <source>′</source>
-      <translation type="unfinished">′</translation>
+      <translation>′</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="499"/>
@@ -5766,7 +5768,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="502"/>
       <source>″</source>
-      <translation type="unfinished">″</translation>
+      <translation>″</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="509"/>
@@ -5776,7 +5778,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="512"/>
       <source>‴</source>
-      <translation type="unfinished">‴</translation>
+      <translation>‴</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="521"/>
@@ -5791,7 +5793,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="536"/>
       <source>⌲</source>
-      <translation type="unfinished">⌲</translation>
+      <translation>⌲</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="543"/>
@@ -5801,7 +5803,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="546"/>
       <source>⌳</source>
-      <translation type="unfinished">⌳</translation>
+      <translation>⌳</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="553"/>
@@ -5811,7 +5813,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="556"/>
       <source>⌴</source>
-      <translation type="unfinished">⌴</translation>
+      <translation>⌴</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="563"/>
@@ -5821,17 +5823,17 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="566"/>
       <source>⌵</source>
-      <translation type="unfinished">⌵</translation>
+      <translation>⌵</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="573"/>
       <source>Plus - Minus</source>
-      <translation type="unfinished">Plus - Minus</translation>
+      <translation>Plus - Minus</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="576"/>
       <source>±</source>
-      <translation type="unfinished">±</translation>
+      <translation>±</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="583"/>
@@ -5841,17 +5843,17 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="586"/>
       <source>℄</source>
-      <translation type="unfinished">℄</translation>
+      <translation>℄</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="593"/>
       <source>Left/right arrow</source>
-      <translation type="unfinished">Left/right arrow</translation>
+      <translation>Ezkerreko/eskuineko gezia</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="596"/>
       <source>↔</source>
-      <translation type="unfinished">↔</translation>
+      <translation>↔</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="603"/>
@@ -5861,17 +5863,17 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="606"/>
       <source>↧</source>
-      <translation type="unfinished">↧</translation>
+      <translation>↧</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="613"/>
       <source>Multiplication sign</source>
-      <translation type="unfinished">Multiplication sign</translation>
+      <translation>Biderketa-ikurra</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="616"/>
       <source>×</source>
-      <translation type="unfinished">×</translation>
+      <translation>×</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="625"/>
@@ -5886,72 +5888,72 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="637"/>
       <source>Δ</source>
-      <translation type="unfinished">Δ</translation>
+      <translation>Δ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="644"/>
       <source>Capital sigma</source>
-      <translation type="unfinished">Capital sigma</translation>
+      <translation>Sigma maiuskula</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="647"/>
       <source>Σ</source>
-      <translation type="unfinished">Σ</translation>
+      <translation>Σ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="654"/>
       <source>Capital omega</source>
-      <translation type="unfinished">Capital omega</translation>
+      <translation>Omega maiuskula</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="657"/>
       <source>Ω</source>
-      <translation type="unfinished">Ω</translation>
+      <translation>Ω</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="664"/>
       <source>Small mu</source>
-      <translation type="unfinished">Small mu</translation>
+      <translation>Mu minuskula</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="667"/>
       <source>μ</source>
-      <translation type="unfinished">μ</translation>
+      <translation>μ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="674"/>
       <source>Small sigma</source>
-      <translation type="unfinished">Small sigma</translation>
+      <translation>Sigma minuskula</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="677"/>
       <source>σ</source>
-      <translation type="unfinished">σ</translation>
+      <translation>σ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="684"/>
       <source>Small phi</source>
-      <translation type="unfinished">Small phi</translation>
+      <translation>Phi minuskula</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="687"/>
       <source>φ</source>
-      <translation type="unfinished">φ</translation>
+      <translation>φ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="694"/>
       <source>Small omega</source>
-      <translation type="unfinished">Small omega</translation>
+      <translation>Omega minuskula</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="697"/>
       <source>⍵</source>
-      <translation type="unfinished">⍵</translation>
+      <translation>⍵</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="708"/>
       <source>Format:</source>
-      <translation type="unfinished">Format:</translation>
+      <translation>Formatua:</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
@@ -5961,7 +5963,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="111"/>
       <source>Customize Format</source>
-      <translation type="unfinished">Customize Format</translation>
+      <translation>Pertsonalizatu formatua</translation>
     </message>
   </context>
   <context>
@@ -6260,7 +6262,7 @@ edukia erabiliko da kota-balioaren ordez</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="322"/>
       <source>Override angles</source>
-      <translation type="unfinished">Override angles</translation>
+      <translation>Gainidatzi angeluak</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="329"/>
@@ -6281,7 +6283,7 @@ edukia erabiliko da kota-balioaren ordez</translation>
       <location filename="../../TaskDimension.ui" line="355"/>
       <location filename="../../TaskDimension.ui" line="398"/>
       <source>Use default</source>
-      <translation type="unfinished">Use default</translation>
+      <translation>Erabili lehenetsia</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="362"/>
@@ -7209,7 +7211,7 @@ emandako X/Y espazioa erabilita</translation>
       <translation>Ez dago aplikatzeko ezer. Oraindik ez da sekzio-norabiderik aukeratu</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="503"/>
+      <location filename="../../TaskSectionView.cpp" line="499"/>
       <source>Can not continue. Object * %1 * not found.</source>
       <translation>Ezin da jarraitu. Ez da * %1 * objektua aurkitu.</translation>
     </message>
@@ -7219,7 +7221,7 @@ emandako X/Y espazioa erabilita</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="26"/>
       <source>Line attributes</source>
-      <translation type="unfinished">Line attributes</translation>
+      <translation>Marraren atributuak</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
@@ -7289,7 +7291,7 @@ emandako X/Y espazioa erabilita</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="192"/>
       <source>Grey</source>
-      <translation type="unfinished">Grey</translation>
+      <translation>Grisa</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="205"/>
@@ -7409,7 +7411,7 @@ emandako X/Y espazioa erabilita</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="336"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Kendu aurrizkia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="337"/>

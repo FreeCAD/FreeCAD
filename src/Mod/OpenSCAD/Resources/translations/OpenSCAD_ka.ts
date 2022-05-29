@@ -4,24 +4,30 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="709"/>
+      <location filename="../../OpenSCADUtils.py" line="710"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>OpenSCAD ფაილი შეიცავს ორივე, 2D და 3D მოხაზულობებს. შემომტანს ამის მხარდაჭერა არ გააჩნია. ყველა მოხაზულობა ერთ განზომილებაში უნდა იყოს.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="721"/>
+      <location filename="../../OpenSCADUtils.py" line="722"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>შეცდომა. ყველა კონტური ან 2 ან 3განზომილებიანი უნდა იყოს. შერევა აკრძალულია</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Unsupported Function</source>
-      <translation>მხარდაუჭერელი ფუნქცია</translation>
+      <location filename="../../InitGui.py" line="130"/>
+      <source>It looks like you may be using a Snap version of OpenSCAD.</source>
+      <translation>როგორც ჩანს OpenSCAD-ის Snap-ის ვერსიას იყენებთ.</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Press OK</source>
-      <translation>დააჭირეთ დიახ-ს</translation>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="148"/>
+      <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
+      <translation>თუ OpenSCAD-ის შესრულებისას დროებითი ფაილის წაკითხვის შეცდომა ხდება, გადაცემის მექანისზმის შესაცვლელად FreeCAD-ის სამუშაო მაგიდის პარამეტრები გამოიყენეთ.</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="143"/>
+      <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
+      <translation>როგორც ჩანს FreeCAD-ის შეზღუდულ ვერსიას იყენებთ.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
@@ -29,7 +35,7 @@
       <translation>%s-ის დაშლის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="146"/>
+      <location filename="../../OpenSCADCommands.py" line="148"/>
       <source>Convert Edges to Faces</source>
       <translation>წიბოების ზედაპრებად გარდაქმნა</translation>
     </message>
@@ -39,49 +45,70 @@
       <translation>ჯერ აირჩიეთ 3 ობიექტი</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="340"/>
       <location filename="../../OpenSCADCommands.py" line="363"/>
       <source>Add</source>
       <translation>დამატება</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="341"/>
       <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Clear</source>
       <translation>გასუფთავება</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="342"/>
       <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Load</source>
       <translation>ჩატვირთვა</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="343"/>
       <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Save</source>
       <translation>შენახვა</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="344"/>
       <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Refresh</source>
       <translation>განახლება</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="345"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>as Mesh</source>
       <translation>როგორც მრავალკუთხა ბადე</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="358"/>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Add OpenSCAD Element</source>
       <translation>OpenSCAD-ის ელემენტის დამატება</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <location filename="../../OpenSCADCommands.py" line="472"/>
       <source>Perform</source>
       <translation>შესრულება</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="469"/>
       <location filename="../../OpenSCADCommands.py" line="473"/>
       <source>Mesh Boolean</source>
       <translation>მრავალკუთხა ბადის ბულევური ოპერაციები</translation>
+    </message>
+    <message>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1385"/>
+      <source>Unsupported Function</source>
+      <translation>მხარდაუჭერელი ფუნქცია</translation>
+    </message>
+    <message>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1385"/>
+      <source>Press OK</source>
+      <translation>დააჭირეთ დიახ-ს</translation>
     </message>
   </context>
   <context>
@@ -92,7 +119,7 @@
       <translation>OpenSCAD-ის ელემენტის დამატება...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="517"/>
+      <location filename="../../OpenSCADCommands.py" line="520"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>OpenSCAD-ის კოდის ჩასმით და OpenSCAD-ის გაშვებით OpenSCAD-ის ელემენტის დამატება</translation>
     </message>
@@ -105,7 +132,7 @@
       <translation>ფერით მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="126"/>
+      <location filename="../../OpenSCADCommands.py" line="128"/>
       <source>Color Shapes by validity and type</source>
       <translation>მონახაზების შეფერადება სისწორისა და ტიპის მიხედვით</translation>
     </message>
@@ -126,7 +153,7 @@
       <translation>მდებარეობების განშლა</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="291"/>
+      <location filename="../../OpenSCADCommands.py" line="293"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>ყველა განლაგება თვისებების ხის ქვემოთ გაფართოება</translation>
     </message>
@@ -139,7 +166,7 @@
       <translation>ჯგუფის დაშლა</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="110"/>
+      <location filename="../../OpenSCADCommands.py" line="112"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
       <translation>შერწყმის მოცილება და ბავშვებზე მდებარეობის და შემთხვევითი ფერების გადატარება</translation>
     </message>
@@ -152,7 +179,7 @@
       <translation>გარსი</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="552"/>
+      <location filename="../../OpenSCADCommands.py" line="554"/>
       <source>Perform Hull</source>
       <translation>გარსის გადაფარება</translation>
     </message>
@@ -165,7 +192,7 @@
       <translation>დაშვების გაზრდის თვისება</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="274"/>
+      <location filename="../../OpenSCADCommands.py" line="276"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>ისეთი თვისების შექმნა, რომელიც უფლებას გაძლევთ გაზარდოთ დაშვება</translation>
     </message>
@@ -178,7 +205,7 @@
       <translation>მრავალკუთხა ბადის ბულევური ოპერაციები...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="532"/>
+      <location filename="../../OpenSCADCommands.py" line="535"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>ობიექტების, როგორც პოლიხაზური ბადეების გატანა და ბულევური ოპერაციებისთვის OpenSCAD-ის გამოყენება</translation>
     </message>
@@ -191,7 +218,7 @@
       <translation>მინკოვსკის მეტრიკა</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="571"/>
+      <location filename="../../OpenSCADCommands.py" line="573"/>
       <source>Perform Minkowski</source>
       <translation>მინკოვსკის მეტრიკის შესრულება</translation>
     </message>
@@ -204,7 +231,7 @@
       <translation>ბადის თვისების ასლი...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="195"/>
+      <location filename="../../OpenSCADCommands.py" line="197"/>
       <source>Create Mirror Mesh Feature</source>
       <translation>ბადის ასლის ელემენტის სექმნა</translation>
     </message>
@@ -217,7 +244,7 @@
       <translation>ფორმის ჩამაგრების ელემენტი</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="165"/>
+      <location filename="../../OpenSCADCommands.py" line="167"/>
       <source>Create Refine Shape Feature</source>
       <translation>ბადის ფორმის დაზუსტების თვისების შექმნა</translation>
     </message>
@@ -230,7 +257,7 @@
       <translation>ობიექტების და მათი ქვეობიექტების წაშლა</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="324"/>
+      <location filename="../../OpenSCADCommands.py" line="326"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
       <translation>წაშლის მონიშნულ ობიექტებს და ყველა ქვეობიექტს, რომლებიც არ არის ბმული სხვა ობიექტებიდან</translation>
     </message>
@@ -243,7 +270,7 @@
       <translation>ობიექტის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="312"/>
+      <location filename="../../OpenSCADCommands.py" line="314"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>ობიექტის ჩანაცვლება თვისებების ხეში. აირჩიეთ ძველი, ახალი და მშობელი ობიექტი</translation>
     </message>
@@ -256,7 +283,7 @@
       <translation>ბადის თვისების ზომა...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="254"/>
+      <location filename="../../OpenSCADCommands.py" line="257"/>
       <source>Create Resize Mesh Feature</source>
       <translation>ბადის ზომის შეცვლის თვისების შექმნა</translation>
     </message>
@@ -269,7 +296,7 @@
       <translation>ბადის ელემენტის მასშტაბირება...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="224"/>
+      <location filename="../../OpenSCADCommands.py" line="227"/>
       <source>Create Scale Mesh Feature</source>
       <translation>ბადის თვისების მასშტაბირების შექმნა</translation>
     </message>
@@ -277,7 +304,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="../../InitGui.py" line="155"/>
+      <location filename="../../InitGui.py" line="156"/>
       <source>OpenSCAD Part tools</source>
       <translation>OpenSCAD-ის ხელსაწყოები ნაწილებისთვის</translation>
     </message>
@@ -285,7 +312,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="151"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCADTools</source>
       <translation>OenSCAD-ის ხელსაწყოები</translation>
     </message>
@@ -356,37 +383,37 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via:</source>
-      <translation type="unfinished">Send to OpenSCAD via:</translation>
+      <translation>OpenSCAD-თან გაგზავნის გზა:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation type="unfinished">The transfer mechanism for getting data to and from OpenSCAD</translation>
+      <translation>OpenSCAD-თან მონაცემების მიმოცვლის მექანიზმი</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
       <source>Standard temp directory</source>
-      <translation type="unfinished">Standard temp directory</translation>
+      <translation>სტანდარტული დროებითი საქაღალდე</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
       <source>User-specified directory</source>
-      <translation type="unfinished">User-specified directory</translation>
+      <translation>მომხმარებლის მიერ მითითებული საქაღლდე</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>stdout pipe (requires OpenSCAD &gt;= 2021.1)</source>
-      <translation type="unfinished">stdout pipe (requires OpenSCAD &gt;= 2021.1)</translation>
+      <translation>stdout pipe (საჭიროა OpenSCAD &gt;= 2021.1)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
       <source>Transfer directory</source>
-      <translation type="unfinished">Transfer directory</translation>
+      <translation>გაგზავნის საქაღალდე</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="240"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation type="unfinished">The path to the directory for transferring files to and from OpenSCAD</translation>
+      <translation>OpenSCAD-თან ფაილების მიმოცვლის საქაღალდე</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="258"/>

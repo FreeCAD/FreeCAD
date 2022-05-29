@@ -754,20 +754,20 @@
       <translation>Tinklo duomenys</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Taškų kiekis:</translation>
+      <source>Number of faces:</source>
+      <translation>Sienų kiekis:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Nėra duomenų</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Sienų kiekis:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Kraštinių kiekis:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Taškų kiekis:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -984,22 +984,6 @@ Please run the command to repair folds first</source>
       <translation>Taisyklingasis pilnaviduris daugiasienis</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Sukurti</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>&amp;Užverti</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Pilnaviduris kūnas:</translation>
     </message>
@@ -1028,10 +1012,6 @@ Please run the command to repair folds first</source>
       <translation>Žiedas</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Aukštis:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Ilgis:</translation>
     </message>
@@ -1040,20 +1020,24 @@ Please run the command to repair folds first</source>
       <translation>Plotis:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Aukštis:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Spindulys:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Uždaras</translation>
+      <source>Edge length:</source>
+      <translation>Kraštinės ilgis:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Parinkimas:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Kraštinės ilgis:</translation>
+      <source>Closed</source>
+      <translation>Uždaras</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1062,6 +1046,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Spindulys 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Sukurti</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>&amp;Užverti</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1086,10 +1086,6 @@ Please run the command to repair folds first</source>
       <translation>Eksportuoti</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Didžiausias tinklo pavidalo nuokrypis nuo kūno pavidalo</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Daugiasienio tinklo nuokrypis nuo tikrojo paviršiaus</translation>
     </message>
@@ -1100,6 +1096,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Didžiausias tinklo nuokrypis</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Didžiausias tinklo pavidalo nuokrypis nuo kūno pavidalo</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1134,36 +1134,36 @@ is used when writing a file in AMF format</source>
       <translation>Numatytoji naujų tinklų išvaizda</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Numatytoji brūkšnio spalva</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Tinklo skaidrumas</translation>
+      <source>Default mesh color</source>
+      <translation>Numatytoji tinklo spalva</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Numatytoji naujų tinklų spalva</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Tinklo skaidrumas</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Numatytoji tinklo spalva</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Bus rodomas gaubiantysis stačiakampis gretasienis</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Rodyti paryškintų tinklų gaubiantį stačiakampį gretasienį</translation>
+      <source>Default line color</source>
+      <translation>Numatytoji brūkšnio spalva</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Numatytoji naujų tinklų spalva</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Linijos skaidrumas</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Atbulinio daugiakampio spalva</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1179,24 +1179,16 @@ Jei nepasirinkta, tai priklauso nuo parinkties „Įgalinti galinį pašvietimą
       <translation>Abiejų sienų atvaizdavimas</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Linijos skaidrumas</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Bus rodomas gaubiantysis stačiakampis gretasienis</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Atbulinio daugiakampio spalva</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Rodyti paryškintų tinklų gaubiantį stačiakampį gretasienį</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Glodinimas</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tai yra mažiausias kampas tarp dviejų daugiakampių, kai iš jų paskaičiuotų normalių gaunamas plokščias šešėlis.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jei kampas tarp kaimyninių normalių yra mažesnis už nelygumo kampą, ant paviršių, turinčių bendrą kraštinę kris tolygus šešėlis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Nelygumo kampas</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1214,6 +1206,14 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
     <message>
       <source>Define normal per vertex</source>
       <translation>Nustatyti normalę kiekvienai viršūnei</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tai yra mažiausias kampas tarp dviejų daugiakampių, kai iš jų paskaičiuotų normalių gaunamas plokščias šešėlis.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jei kampas tarp kaimyninių normalių yra mažesnis už nelygumo kampą, ant paviršių, turinčių bendrą kraštinę kris tolygus šešėlis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Nelygumo kampas</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1379,6 +1379,10 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Perkūrimo dydis</translation>
     </message>
@@ -1418,10 +1422,6 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
       <source>Clear</source>
       <translation>Išvalyti</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1434,40 +1434,40 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
       <translation>Pasirinkti</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Pažymėti visą dalį</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Pasirinkti trukampį</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; daugiakampių, nei</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Sritis</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Dalys</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Visi</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Dalys</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; daugiakampių, nei</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Pasirinkti trukampį</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Pažymėti visą dalį</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Atžymėti</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Atžymėti visą dalį</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; daugiakampių, nei</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Atžymėti visą dalį</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1544,8 +1544,12 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
       <translation>Tinklo skaidymas</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Rutulys</translation>
+      <source>Plane</source>
+      <translation>Plokštuma</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Dydžiai...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1556,16 +1560,12 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
       <translation>Mažiausias daugiakampių kiekis</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Dydžiai...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Plokštuma</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Ritinys</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Rutulys</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1752,6 +1752,10 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
       <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Eksportuoti tinklą</translation>
     </message>
@@ -1808,6 +1812,10 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
       <translation>Rodyti atkarpas</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Išeiti iš duomenų pateikimo režimo</translation>
     </message>
@@ -1835,10 +1843,6 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
       <source>Annotation</source>
       <translation>Santrauka</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1855,12 +1859,32 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
       <translation>&amp;Tinklai</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation type="unfinished">Cutting</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Tinklo įrankiai</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation type="unfinished">Cutting</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Tinklo skaidymas</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

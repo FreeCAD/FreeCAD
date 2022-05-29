@@ -9,6 +9,7 @@
       <translation>Hoja de cálculo</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>celda</translation>
@@ -54,6 +55,7 @@
       <translation>Añadir controlador</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
       <translation>Añadir controlador de propiedad</translation>
@@ -67,7 +69,7 @@
       <translation>Añadir controlador</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
       <translation>Añade un controlador de celda a la hoja de cálculo seleccionada</translation>
     </message>
@@ -80,7 +82,7 @@
       <translation>Hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation>Añade un objeto de hoja de cálculo al documento activo</translation>
     </message>
@@ -93,7 +95,7 @@
       <translation>Añadir controlador de propiedad</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
       <translation>Añade un controlador de propiedad a la hoja de cálculo seleccionada</translation>
     </message>
@@ -488,29 +490,29 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Enlazar celdas de hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="20"/>
       <source>From cells:</source>
-      <translation type="unfinished">From cells:</translation>
+      <translation>De las celdas:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="27"/>
       <source>Binding cell range start</source>
-      <translation type="unfinished">Binding cell range start</translation>
+      <translation>Enlazando el inicio de rango de celdas</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="34"/>
       <source>Binding cell range end
 </source>
-      <translation type="unfinished">Binding cell range end
+      <translation>Enlazando el fin de rango de celdas
 </translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="42"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>A las celdas:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -529,12 +531,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="65"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Hoja:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="72"/>
       <source>Select which spread sheet to bind to.</source>
-      <translation type="unfinished">Select which spread sheet to bind to.</translation>
+      <translation>Seleccione la hoja de cálculo a la que enlazar.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="79"/>
@@ -544,12 +546,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Use hidden reference</source>
-      <translation type="unfinished">Use hidden reference</translation>
+      <translation>Usar referencia oculta</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="91"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Desenlazar</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="98"/>
@@ -567,12 +569,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Configurar tabla de configuración</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Rango de celda:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -619,24 +621,24 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Propiedad:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Escriba una expresión para especificar el nombre de objeto y propiedad para cambiar dinámicamente
+la configuración de diseño. La propiedad se creará si no existe.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Grupo:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Nombre de grupo de propiedades opcional.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -962,12 +964,12 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="180"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Enlazar celdas</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Desenlazar celdas</translation>
     </message>
   </context>
   <context>
@@ -1133,17 +1135,17 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="182"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Recalcular</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>Enlazar...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Tabla de configuración...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="198"/>
@@ -1153,7 +1155,7 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="200"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Dividir celdas</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>

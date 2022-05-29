@@ -20,7 +20,8 @@
 #**************************************************************************
 
 import FreeCAD, unittest, Part
-import copy 
+import copy
+import math
 from FreeCAD import Units
 from FreeCAD import Base
 App = FreeCAD
@@ -201,3 +202,74 @@ class PartTestCircle2D(unittest.TestCase):
         p3 = App.Base.Vector2d(0.04, 0.0399)
         with self.assertRaises(ValueError):
             Part.Geom2d.Circle2d.getCircleCenter(p1, p2, p3)
+
+class PartTestCone(unittest.TestCase):
+    def testderivatives(self):
+        def get_dn(surface, u, v):
+            pos = surface.value(u, v)
+            v10 = surface.getDN(u, v, 1, 0)
+            v01 = surface.getDN(u, v, 0, 1)
+            v11 = surface.getDN(u, v, 1, 1)
+            return (pos, v10, v01, v11)
+
+        cone = Part.Cone()
+        cone.SemiAngle = 0.2
+        cone.Radius = 2.0
+
+        u, v = (5.0, 5.0)
+        vp, v1, v2, v3 = get_dn(cone, u, v)
+
+        shape = cone.toShape(0, 2*math.pi, 0, 10)
+        shape = shape.toNurbs()
+        spline = shape.Face1.Surface
+
+        u, v = spline.parameter(vp)
+        wp, w1, w2, w3 = get_dn(spline, u, v)
+
+        self.assertAlmostEqual(vp.distanceToPoint(wp), 0)
+        self.assertAlmostEqual(v1.getAngle(w1), 0)
+        self.assertAlmostEqual(v2.getAngle(w2), 0)
+        self.assertAlmostEqual(v3.getAngle(w3), 0)
+
+class PartTestFilletAlgo(unittest.TestCase):
+    def testChFi2d_FilletAlgo(self):
+        v = FreeCAD.Vector
+        edge1 = Part.makeLine(v(0,0,0), v(0,10,0))
+        edge2 = Part.makeLine(v(0,10,0), v(10,10,0))
+        wire = Part.Wire([edge1, edge2])
+        pln = Part.Plane()
+
+        with self.assertRaises(TypeError):
+            alg = Part.ChFi2d.FilletAlgo(pln)
+
+        alg = Part.ChFi2d.FilletAlgo()
+        with self.assertRaises(TypeError):
+            alg.init()
+
+        print (alg)
+        # Test without shape
+        with self.assertRaises(Base.CADKernelError):
+            alg.perform(1)
+
+        with self.assertRaises(TypeError):
+            alg.perform()
+
+        alg = Part.ChFi2d.FilletAlgo(wire, pln)
+        alg.init(edge1, edge2, pln)
+        alg.init(wire, pln)
+
+        alg = Part.ChFi2d.FilletAlgo(edge1, edge2, pln)
+        alg.perform(1.0)
+
+        with self.assertRaises(TypeError):
+            alg.numberOfResults()
+
+        with self.assertRaises(TypeError):
+            alg.result(1)
+
+        self.assertEqual(alg.numberOfResults(Base.Vector(0,10,0)), 1)
+        result = alg.result(Base.Vector(0,10,0))
+        curve = result[0].Curve
+        self.assertEqual(type(curve), Part.Circle)
+        self.assertEqual(curve.Axis, pln.Axis)
+        self.assertEqual(curve.Radius, 1.0)

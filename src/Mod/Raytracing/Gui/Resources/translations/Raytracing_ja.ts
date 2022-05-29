@@ -270,22 +270,6 @@ Do you want to continue?</source>
       <translation>レイトレーシング</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>メッシュエクスポート設定</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>最大メッシュ偏差：</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>頂点の法線を計算しない</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>u, v 座標を書く</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>レンダー</translation>
     </message>
@@ -334,28 +318,44 @@ Do you want to continue?</source>
       <translation>ディレクトリ</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>部品のファイル名:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>カメラファイル名:</translation>
+      <source>Default Project dir:</source>
+      <translation>デフォルトのプロジェクトディレクトリ:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>ユーティリティ ツールで使用</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>デフォルトのプロジェクトディレクトリ:</translation>
+      <source>Camera file name:</source>
+      <translation>カメラファイル名:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>部品のファイル名:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>メッシュエクスポート設定</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>最大メッシュ偏差：</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>頂点の法線を計算しない</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>u, v 座標を書く</translation>
     </message>
   </context>
   <context>

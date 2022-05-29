@@ -754,20 +754,20 @@
       <translation>Πληροφορίες πλέγματος</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Αριθμός σημείων:</translation>
+      <source>Number of faces:</source>
+      <translation>Αριθμός όψεων:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Καμία πληροφορία</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Αριθμός όψεων:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Αριθμός ακμών:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Αριθμός σημείων:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Please run the command to repair folds first</source>
       <translation>Κανονικό Στερεό</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>Δημιουργία</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Κλείσιμ&amp;ο</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Στερεό:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Please run the command to repair folds first</source>
       <translation>Τόρος</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Ύψος:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Μήκος:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Please run the command to repair folds first</source>
       <translation>Πλάτος:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Ύψος:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Ακτίνα:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Κλειστό</translation>
+      <source>Edge length:</source>
+      <translation>Μήκος ακμής:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Δειγματοληψία:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Μήκος ακμής:</translation>
+      <source>Closed</source>
+      <translation>Κλειστό</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Ακτίνα 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>Δημιουργία</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Κλείσιμ&amp;ο</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Please run the command to repair folds first</source>
       <translation>Εξαγωγή</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
     </message>
@@ -1101,6 +1097,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Μέγιστη απόκλιση πλέγματος</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation type="unfinished">Maximal deviation between mesh and object</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</source>
       <translation>Προεπιλεγμένη εμφάνιση για νέα πλέγματα</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Προεπιλεγμένο χρώμα γραμμής</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Διαφάνεια πλέγματος</translation>
+      <source>Default mesh color</source>
+      <translation>Προεπιλεγμένο χρώμα πλέγματος</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation type="unfinished">Default color for new meshes</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Διαφάνεια πλέγματος</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Προεπιλεγμένο χρώμα πλέγματος</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Εμφάνιση πλαισίου οριοθέτησης για επισημασμένα ή επιλεγμένα πλέγματα</translation>
+      <source>Default line color</source>
+      <translation>Προεπιλεγμένο χρώμα γραμμής</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation type="unfinished">Default line color for new meshes</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Διαφάνεια γραμμής</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Χρώμα πίσω όψης</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ will be used or black.</translation>
       <translation>Αποτύπωση διπλής όψης</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Διαφάνεια γραμμής</translation>
+      <source>A bounding box will be displayed</source>
+      <translation type="unfinished">A bounding box will be displayed</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Χρώμα πίσω όψης</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Εμφάνιση πλαισίου οριοθέτησης για επισημασμένα ή επιλεγμένα πλέγματα</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Εξομάλυνση</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Αυτή είναι η ελάχιστη γωνία μεταξύ δύο όψεων των οποίων τα κάθετα διανύσματα υπολογίζονται για την πραγματοποίηση επίπεδης σκίασης.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Αν η γωνία μεταξύ των καθέτων διανυσμάτων δύο γειτονικών όψεων είναι μικρότερη από την γωνία κλίσης, οι όψεις θα δέχονται ομαλή σκίαση στις περιοχές γύρω από την κοινή τους ακμή.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Γωνία κλίσης</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1219,6 +1211,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>Ορίστε κάθετο διάνυσμα για κάθε κορυφή</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Αυτή είναι η ελάχιστη γωνία μεταξύ δύο όψεων των οποίων τα κάθετα διανύσματα υπολογίζονται για την πραγματοποίηση επίπεδης σκίασης.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Αν η γωνία μεταξύ των καθέτων διανυσμάτων δύο γειτονικών όψεων είναι μικρότερη από την γωνία κλίσης, οι όψεις θα δέχονται ομαλή σκίαση στις περιοχές γύρω από την κοινή τους ακμή.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Γωνία κλίσης</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1385,6 +1385,10 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Remeshing Parameter</translation>
     </message>
@@ -1424,10 +1428,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>Εκκαθάριση</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1440,40 +1440,40 @@ to a smoother appearance.
       <translation>Επιλέξτε</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Επιλέξτε ολόκληρο στοιχείο</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Διαλέξτε τρίγωνο</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; όψεις από</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Περιοχή</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Στοιχεία</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Όλα</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Στοιχεία</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; όψεις από</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Διαλέξτε τρίγωνο</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Επιλέξτε ολόκληρο στοιχείο</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Απο-επιλογή</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Αναίρεση επιλογής ολόκληρου στοιχείου</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; όψεις από</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Αναίρεση επιλογής ολόκληρου στοιχείου</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1550,8 +1550,12 @@ to a smoother appearance.
       <translation>Τμηματοποίηση πλέγματος</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Σφαίρα</translation>
+      <source>Plane</source>
+      <translation>Επίπεδο</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Παράμετροι...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1562,16 +1566,12 @@ to a smoother appearance.
       <translation>Ελάχιστος αριθμός όψεων</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Παράμετροι...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Επίπεδο</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Κύλινδρος</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Σφαίρα</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1758,6 +1758,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Asymptote Format</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Εξαγωγή πλέγματος</translation>
     </message>
@@ -1814,6 +1818,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Display segments</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Έξοδος από τη λειτουργία πληροφοριών</translation>
     </message>
@@ -1841,10 +1849,6 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Σχολιασμός</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1861,12 +1865,32 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Πλέγ&amp;ματα</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Περικοπή</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Εργαλεία πλέγματος</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Περικοπή</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Τμηματοποίηση πλέγματος</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

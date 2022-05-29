@@ -240,6 +240,14 @@
       <translation>尺寸因子</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation type="unfinished">User-defined u/v directions</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation type="unfinished">Create placement</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>平滑</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>曲率變化</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>網格分割</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>平滑化網格</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation type="unfinished">Create mesh from unused triangles</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>選擇</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>組件</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>面域</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>選擇整個組件</translation>
+      <source>All</source>
+      <translation>所有</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>選取三角形</translation>
+      <source>Components</source>
+      <translation>組件</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt;面數</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>所有</translation>
+      <source>Pick triangle</source>
+      <translation>選取三角形</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>選擇整個組件</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>平面</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation type="unfinished">Detect</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>公差</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>面之最小數量</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <source>Cylinder</source>

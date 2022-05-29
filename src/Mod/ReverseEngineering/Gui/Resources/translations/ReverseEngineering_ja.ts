@@ -240,6 +240,14 @@
       <translation>サイズ係数</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>ユーザー定義によるUV方向</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>配置を作成</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>スムージング</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>曲率変化</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>ユーザー定義によるUV方向</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>配置を作成</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>メッシュの分割</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>コンパウンドを作成</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>メッシュのスムージング</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>使用されていない三角形からメッシュを作成</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>コンパウンドを作成</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>選択</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>コンポーネント</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>領域</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>コンポーネント全体を選択</translation>
+      <source>All</source>
+      <translation>すべて</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>三角要素を選択</translation>
+      <source>Components</source>
+      <translation>コンポーネント</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; 面以下</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>すべて</translation>
+      <source>Pick triangle</source>
+      <translation>三角要素を選択</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>コンポーネント全体を選択</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>平面</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>検知</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>公差</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>面の最小数</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>検知</translation>
     </message>
     <message>
       <source>Cylinder</source>

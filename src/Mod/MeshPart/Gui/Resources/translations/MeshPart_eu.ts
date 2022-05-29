@@ -9,7 +9,8 @@
       <translation>Desestali amarauna</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="80"/>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
       <translation>Aurkitu amaraun baten irudikapen laua.</translation>
     </message>

@@ -296,16 +296,60 @@ Do you want to continue?</source>
       <translation>正交投影</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>投影</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>第三视角投影法</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>第一视角投影法</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>视图:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X 轴正向</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y 轴正向</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z 轴正向</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X 轴负向</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y 轴负向</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z 轴负向</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>轴右对齐：</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>辅助视图</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>单击右键设置轴测图</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>主视图</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>辅助视图</translation>
     </message>
     <message>
       <source>General</source>
@@ -340,36 +384,8 @@ Do you want to continue?</source>
       <translation>轴测图</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>轴外侧靠右</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>垂直倾斜</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X 轴正向</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y 轴正向</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z 轴正向</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X 轴负向</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y 轴负向</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z 轴负向</translation>
+      <source>View projection</source>
+      <translation>视图投影</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -384,44 +400,28 @@ Do you want to continue?</source>
       <translation>三轴测</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> 比例</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>视图投影</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> 轴对齐</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>轴外侧靠右</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>垂直倾斜</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>翻转</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> 比例</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> 三轴测</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>投影</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>第三视角投影法</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>第一视角投影法</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>视图:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>轴右对齐：</translation>
     </message>
   </context>
   <context>

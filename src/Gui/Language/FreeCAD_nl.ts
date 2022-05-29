@@ -83,12 +83,12 @@
       <translation>Positie</translation>
     </message>
     <message>
-      <source>Base</source>
-      <translation>Basis</translation>
-    </message>
-    <message>
       <source>Enum</source>
       <translation type="unfinished">Enum</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Basis</translation>
     </message>
   </context>
   <context>
@@ -179,16 +179,16 @@
       <translation>Transformeren</translation>
     </message>
     <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
       <source>Link Transform</source>
       <translation>Koppeling transformeren</translation>
     </message>
     <message>
       <source>Measure distance</source>
       <translation>Afstand meten</translation>
-    </message>
-    <message>
-      <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
     </message>
   </context>
   <context>
@@ -261,6 +261,10 @@
       <translation>Spaceball beweging</translation>
     </message>
     <message>
+      <source>Global Sensitivity:</source>
+      <translation>Algemene gevoeligheid:</translation>
+    </message>
+    <message>
       <source>Dominant Mode</source>
       <translation>Dominante modus</translation>
     </message>
@@ -292,10 +296,6 @@
       <source>Reverse</source>
       <translation>Omdraaien</translation>
     </message>
-    <message>
-      <source>Global Sensitivity:</source>
-      <translation>Algemene gevoeligheid:</translation>
-    </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
@@ -308,16 +308,16 @@
       <translation>Resultaat:</translation>
     </message>
     <message>
-      <source>Ok</source>
-      <translation>Ok</translation>
-    </message>
-    <message>
       <source>&amp;Clear</source>
       <translation>&amp;Wissen</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
       <translation>Zet laatst berekende waarde terug (als constante)</translation>
+    </message>
+    <message>
+      <source>Ok</source>
+      <translation>Ok</translation>
     </message>
   </context>
   <context>
@@ -519,28 +519,16 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Info over</translation>
     </message>
     <message>
-      <source>Revision number</source>
-      <translation>Revisienummer</translation>
-    </message>
-    <message>
       <source>Version</source>
       <translation>Versie</translation>
     </message>
     <message>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>''</translation>
+      <source>Revision number</source>
+      <translation>Revisienummer</translation>
     </message>
     <message>
       <source>Release date</source>
       <translation>Uitgifte datum</translation>
-    </message>
-    <message>
-      <source>Copy to clipboard</source>
-      <translation>Naar klembord kopiëren</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -551,28 +539,24 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Woordlengte</translation>
     </message>
     <message>
+      <source>Copy to clipboard</source>
+      <translation>Naar klembord kopiëren</translation>
+    </message>
+    <message>
       <source>License</source>
       <translation>Licentie</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
-    <message>
-      <source>Libraries</source>
-      <translation>Bibliotheken</translation>
-    </message>
-    <message>
-      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Deze software maakt gebruik van open source componenten waarvan copyright en andere eigendomsrechten tot hun respectievelijke eigenaars behoren:</translation>
-    </message>
-    <message>
-      <source>License</source>
-      <translation>Licentie</translation>
-    </message>
-    <message>
-      <source>Collection</source>
-      <translation>Collectie</translation>
-    </message>
     <message>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
@@ -591,6 +575,22 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organisaties</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Licentie</translation>
+    </message>
+    <message>
+      <source>Libraries</source>
+      <translation>Bibliotheken</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Deze software maakt gebruik van open source componenten waarvan copyright en andere eigendomsrechten tot hun respectievelijke eigenaars behoren:</translation>
+    </message>
+    <message>
+      <source>Collection</source>
+      <translation>Collectie</translation>
     </message>
   </context>
   <context>
@@ -615,20 +615,20 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
-      <source>Button %1</source>
-      <translation>Knop %1</translation>
-    </message>
-    <message>
-      <source>Out Of Range</source>
-      <translation>Buiten het bereik</translation>
-    </message>
-    <message>
       <source> "</source>
       <translation> "</translation>
     </message>
     <message>
       <source>"</source>
       <translation>"</translation>
+    </message>
+    <message>
+      <source>Button %1</source>
+      <translation>Knop %1</translation>
+    </message>
+    <message>
+      <source>Out Of Range</source>
+      <translation>Buiten het bereik</translation>
     </message>
   </context>
   <context>
@@ -673,12 +673,12 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Knipsel X</translation>
     </message>
     <message>
-      <source>Flip</source>
-      <translation>Omdraaien</translation>
-    </message>
-    <message>
       <source>Offset</source>
       <translation>Verschuiving</translation>
+    </message>
+    <message>
+      <source>Flip</source>
+      <translation>Omdraaien</translation>
     </message>
     <message>
       <source>Clipping Y</source>
@@ -719,16 +719,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Draaitafel tonen</translation>
     </message>
     <message>
+      <source>Angle</source>
+      <translation>Hoek</translation>
+    </message>
+    <message>
+      <source>-90°</source>
+      <translation>-90 °</translation>
+    </message>
+    <message>
+      <source>90°</source>
+      <translation>90 °</translation>
+    </message>
+    <message>
       <source>Speed</source>
       <translation>Snelheid</translation>
     </message>
     <message>
-      <source>Maximum</source>
-      <translation>Maximale</translation>
-    </message>
-    <message>
       <source>Minimum</source>
       <translation>Minimum</translation>
+    </message>
+    <message>
+      <source>Maximum</source>
+      <translation>Maximale</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -743,28 +755,16 @@ while doing a left or right click and move the mouse up or down</source>
       <translation> s</translation>
     </message>
     <message>
-      <source>Angle</source>
-      <translation>Hoek</translation>
-    </message>
-    <message>
-      <source>90°</source>
-      <translation>90 °</translation>
-    </message>
-    <message>
-      <source>-90°</source>
-      <translation>-90 °</translation>
-    </message>
-    <message>
       <source>Play</source>
       <translation>Afspelen</translation>
     </message>
     <message>
-      <source>Stop</source>
-      <translation>Stop</translation>
-    </message>
-    <message>
       <source>Close</source>
       <translation>Sluiten</translation>
+    </message>
+    <message>
+      <source>Stop</source>
+      <translation>Stop</translation>
     </message>
   </context>
   <context>
@@ -839,24 +839,24 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Autorisatie</translation>
     </message>
     <message>
-      <source>Password:</source>
-      <translation>Wachtwoord:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>''</translation>
-    </message>
-    <message>
-      <source>Username:</source>
-      <translation>Gebruikersnaam:</translation>
-    </message>
-    <message>
       <source>Site:</source>
       <translation>Site:</translation>
     </message>
     <message>
       <source>%1 at %2</source>
       <translation>%1 op %2</translation>
+    </message>
+    <message>
+      <source>Username:</source>
+      <translation>Gebruikersnaam:</translation>
+    </message>
+    <message>
+      <source>Password:</source>
+      <translation>Wachtwoord:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
@@ -926,32 +926,32 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Macro:</translation>
     </message>
     <message>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
-      <source>Pixmap</source>
-      <translation>Symbool</translation>
-    </message>
-    <message>
-      <source>Accelerator:</source>
-      <translation>Sneltoets:</translation>
-    </message>
-    <message>
-      <source>What's this:</source>
-      <translation>Wat is dit:</translation>
-    </message>
-    <message>
-      <source>Status text:</source>
-      <translation>Status tekst:</translation>
+      <source>Menu text:</source>
+      <translation>Menutekst:</translation>
     </message>
     <message>
       <source>Tool tip:</source>
       <translation>Tooltip:</translation>
     </message>
     <message>
-      <source>Menu text:</source>
-      <translation>Menutekst:</translation>
+      <source>Status text:</source>
+      <translation>Status tekst:</translation>
+    </message>
+    <message>
+      <source>What's this:</source>
+      <translation>Wat is dit:</translation>
+    </message>
+    <message>
+      <source>Accelerator:</source>
+      <translation>Sneltoets:</translation>
+    </message>
+    <message>
+      <source>Pixmap</source>
+      <translation>Symbool</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
     <message>
       <source>Add</source>
@@ -1042,10 +1042,6 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Toetsenbord</translation>
     </message>
     <message>
-      <source>Description:</source>
-      <translation>Omschrijving:</translation>
-    </message>
-    <message>
       <source>&amp;Category:</source>
       <translation>&amp;Categorie:</translation>
     </message>
@@ -1074,6 +1070,10 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Alt+A</translation>
     </message>
     <message>
+      <source>Clear</source>
+      <translation>Wissen</translation>
+    </message>
+    <message>
       <source>&amp;Reset</source>
       <translation>&amp;Herstellen</translation>
     </message>
@@ -1090,12 +1090,12 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Alt+S</translation>
     </message>
     <message>
-      <source/>
-      <translation>''</translation>
+      <source>Description:</source>
+      <translation>Omschrijving:</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Wissen</translation>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
@@ -1117,12 +1117,12 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Meervoudig gedefinieerde snelkoppeling</translation>
     </message>
     <message>
-      <source>Already defined shortcut</source>
-      <translation>Reeds gedefinieerde sneltoets</translation>
-    </message>
-    <message>
       <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
       <translation>De snelkoppeling '%1' is meer dan één keer gedefinieerd. Dit kan leiden tot onverwacht gedrag.</translation>
+    </message>
+    <message>
+      <source>Already defined shortcut</source>
+      <translation>Reeds gedefinieerde sneltoets</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.</source>
@@ -1147,8 +1147,16 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Werkbalken</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; De instellingen worden geactiveerd op de volgende initialisatie van de bestemde werkbank&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>New...</source>
+      <translation>Nieuw...</translation>
+    </message>
+    <message>
+      <source>Rename...</source>
+      <translation>Hernoemen...</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Verwijderen</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -1167,14 +1175,6 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>&lt;b&gt;Verplaats het geselecteerde item één niveau omhoog.&lt;/b&gt; &lt;p&gt;Dit verandert ook het niveau van het bovenliggende item.&lt;/p&gt;</translation>
     </message>
     <message>
-      <source>Move down</source>
-      <translation>Naar beneden verplaatsen</translation>
-    </message>
-    <message>
-      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Verplaats het geselecteerde item omlaag.&lt;/b&gt; &lt;p&gt;Het item wordt verplaatst binnen het hiërarchie niveau.&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Naar boven verplaatsen</translation>
     </message>
@@ -1183,16 +1183,20 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>&lt;b&gt;Verplaats het geselecteerde item omlaag.&lt;/b&gt;&lt;p&gt;Het item wordt verplaatst binnen het hiërarchie niveau.&lt;/p&gt;</translation>
     </message>
     <message>
-      <source>New...</source>
-      <translation>Nieuw...</translation>
+      <source>Move down</source>
+      <translation>Naar beneden verplaatsen</translation>
     </message>
     <message>
-      <source>Rename...</source>
-      <translation>Hernoemen...</translation>
+      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Verplaats het geselecteerde item omlaag.&lt;/b&gt; &lt;p&gt;Het item wordt verplaatst binnen het hiërarchie niveau.&lt;/p&gt;</translation>
     </message>
     <message>
-      <source>Delete</source>
-      <translation>Verwijderen</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; De instellingen worden geactiveerd op de volgende initialisatie van de bestemde werkbank&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Global</source>
+      <translation>Overal</translation>
     </message>
     <message>
       <source>Icon</source>
@@ -1205,6 +1209,10 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     <message>
       <source>&lt;Separator&gt;</source>
       <translation>&lt;Separator&gt;</translation>
+    </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 module niet geladen</translation>
     </message>
     <message>
       <source>New toolbar</source>
@@ -1229,14 +1237,6 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     <message>
       <source/>
       <translation>''</translation>
-    </message>
-    <message>
-      <source>Global</source>
-      <translation>Overal</translation>
-    </message>
-    <message>
-      <source>%1 module not loaded</source>
-      <translation>%1 module niet geladen</translation>
     </message>
   </context>
   <context>
@@ -1268,6 +1268,10 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
+    </message>
+    <message>
       <source>No Spaceball Present</source>
       <translation>Geen Spaceball aanwezig</translation>
     </message>
@@ -1276,16 +1280,12 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Knoppen</translation>
     </message>
     <message>
-      <source>Print Reference</source>
-      <translation>Afdruk referentie</translation>
-    </message>
-    <message>
-      <source>Spaceball Buttons</source>
-      <translation>Spaceball Buttons</translation>
-    </message>
-    <message>
       <source>Reset</source>
       <translation>Herstel</translation>
+    </message>
+    <message>
+      <source>Print Reference</source>
+      <translation>Afdruk referentie</translation>
     </message>
   </context>
   <context>
@@ -1295,20 +1295,16 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Weergave eigenschappen</translation>
     </message>
     <message>
-      <source>Display</source>
-      <translation>Weergave</translation>
+      <source>Viewing mode</source>
+      <translation>Weergavemodus</translation>
     </message>
     <message>
-      <source>Transparency:</source>
-      <translation>Transparantie:</translation>
+      <source>Document window:</source>
+      <translation>Documentvenster:</translation>
     </message>
     <message>
-      <source>Line width:</source>
-      <translation>Lijndikte:</translation>
-    </message>
-    <message>
-      <source>Point size:</source>
-      <translation>Puntgrootte:</translation>
+      <source>Plot mode:</source>
+      <translation>Plot modus:</translation>
     </message>
     <message>
       <source>Material</source>
@@ -1319,36 +1315,40 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>...</translation>
     </message>
     <message>
-      <source>Viewing mode</source>
-      <translation>Weergavemodus</translation>
-    </message>
-    <message>
-      <source>Plot mode:</source>
-      <translation>Plot modus:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>''</translation>
-    </message>
-    <message>
-      <source>Line transparency:</source>
-      <translation>Lijn transparantie:</translation>
-    </message>
-    <message>
-      <source>Line color:</source>
-      <translation>Lijnkleur:</translation>
+      <source>Color plot:</source>
+      <translation>Kleuren afdruk:</translation>
     </message>
     <message>
       <source>Shape color:</source>
       <translation>Kleur van de vorm:</translation>
     </message>
     <message>
-      <source>Color plot:</source>
-      <translation>Kleuren afdruk:</translation>
+      <source>Line color:</source>
+      <translation>Lijnkleur:</translation>
     </message>
     <message>
-      <source>Document window:</source>
-      <translation>Documentvenster:</translation>
+      <source>Display</source>
+      <translation>Weergave</translation>
+    </message>
+    <message>
+      <source>Point size:</source>
+      <translation>Puntgrootte:</translation>
+    </message>
+    <message>
+      <source>Line width:</source>
+      <translation>Lijndikte:</translation>
+    </message>
+    <message>
+      <source>Transparency:</source>
+      <translation>Transparantie:</translation>
+    </message>
+    <message>
+      <source>Line transparency:</source>
+      <translation>Lijn transparantie:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
@@ -1453,8 +1453,20 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Opties</translation>
     </message>
     <message>
+      <source>Code lines will be numbered</source>
+      <translation>Code-regels worden genummerd</translation>
+    </message>
+    <message>
       <source>Enable line numbers</source>
       <translation>Activeer regelnummers</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
     </message>
     <message>
       <source>Enable folding</source>
@@ -1465,44 +1477,16 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Indrukking</translation>
     </message>
     <message>
-      <source>Insert spaces</source>
-      <translation>Spaties invoegen</translation>
-    </message>
-    <message>
       <source>Tab size:</source>
       <translation>Tabgrootte:</translation>
     </message>
     <message>
-      <source>Indent size:</source>
-      <translation>Inspring grootte:</translation>
-    </message>
-    <message>
-      <source>Keep tabs</source>
-      <translation>Behoud tabs</translation>
-    </message>
-    <message>
-      <source>Family:</source>
-      <translation>Familie:</translation>
-    </message>
-    <message>
-      <source>Size:</source>
-      <translation>Grootte:</translation>
-    </message>
-    <message>
-      <source>Preview:</source>
-      <translation>Voorbeeldweergave:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>''</translation>
-    </message>
-    <message>
-      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation>Op &lt;Tab&gt; klikken zal de grootte van de gedefinieerde inspringen invoegen</translation>
-    </message>
-    <message>
       <source>Tabulator raster (how many spaces)</source>
       <translation>Tabulator raster (hoeveel spaties)</translation>
+    </message>
+    <message>
+      <source>Indent size:</source>
+      <translation>Inspring grootte:</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
@@ -1513,36 +1497,52 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Op &lt;Tab&gt; drukken zal een tabulator invoegen met een gedefinieerde tabgrootte</translation>
     </message>
     <message>
-      <source>Display items</source>
-      <translation>Items tonen</translation>
+      <source>Keep tabs</source>
+      <translation>Behoud tabs</translation>
     </message>
     <message>
-      <source>Font size to be used for selected code type</source>
-      <translation>Lettergrootte die gebruikt moet worden voor het geselecteerde codetype</translation>
+      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
+      <translation>Op &lt;Tab&gt; klikken zal de grootte van de gedefinieerde inspringen invoegen</translation>
+    </message>
+    <message>
+      <source>Insert spaces</source>
+      <translation>Spaties invoegen</translation>
+    </message>
+    <message>
+      <source>Display items</source>
+      <translation>Items tonen</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
       <translation>Kleur- en lettertype-instellingen worden toegepast op het geselecteerde type</translation>
     </message>
     <message>
+      <source>Family:</source>
+      <translation>Familie:</translation>
+    </message>
+    <message>
       <source>Font family to be used for selected code type</source>
       <translation>Lettertypefamilie die gebruikt moet worden voor het geselecteerde codetype</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Grootte:</translation>
+    </message>
+    <message>
+      <source>Font size to be used for selected code type</source>
+      <translation>Lettergrootte die gebruikt moet worden voor het geselecteerde codetype</translation>
     </message>
     <message>
       <source>Color:</source>
       <translation>Kleur:</translation>
     </message>
     <message>
-      <source>Code lines will be numbered</source>
-      <translation>Code-regels worden genummerd</translation>
+      <source>Preview:</source>
+      <translation>Voorbeeldweergave:</translation>
     </message>
     <message>
-      <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
-    </message>
-    <message>
-      <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
@@ -1550,18 +1550,6 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     <message>
       <source>General</source>
       <translation>Algemeen</translation>
-    </message>
-    <message>
-      <source>Start up</source>
-      <translation>Opstarten</translation>
-    </message>
-    <message>
-      <source>Enable splash screen at start up</source>
-      <translation>Activeer splash-scherm tijdens het opstarten</translation>
-    </message>
-    <message>
-      <source>Auto load module after start up:</source>
-      <translation>Automatisch laden module na het opstarten:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1572,78 +1560,8 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
       <translation>Taal wijzigen:</translation>
     </message>
     <message>
-      <source>Main window</source>
-      <translation>Hoofdvenster</translation>
-    </message>
-    <message>
-      <source>Size of recent file list</source>
-      <translation>Grootte van de recente-bestanden lijst</translation>
-    </message>
-    <message>
-      <source>Size of toolbar icons:</source>
-      <translation>Grootte van de werkbalk-pictogrammen:</translation>
-    </message>
-    <message>
-      <source>Enable tiled background</source>
-      <translation>Betegelde achtergrond inschakelen</translation>
-    </message>
-    <message>
-      <source>Style sheet:</source>
-      <translation>Stijlblad:</translation>
-    </message>
-    <message>
       <source>Language of the application's user interface</source>
       <translation>Taal van de gebruikersinterface van de applicatie</translation>
-    </message>
-    <message>
-      <source>How many files should be listed in recent files list</source>
-      <translation>Hoeveel bestanden moeten er in de lijst met recente bestanden worden opgenomen</translation>
-    </message>
-    <message>
-      <source>Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</source>
-      <translation>Achtergrond van het hoofdvenster zal bestaan uit tegels van een speciale afbeelding.
-Zie de FreeCAD-Wiki voor details over de afbeelding.</translation>
-    </message>
-    <message>
-      <source>Style sheet how user interface will look like</source>
-      <translation>Stijlblad hoe de gebruikersinterface eruit zal zien</translation>
-    </message>
-    <message>
-      <source>Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</source>
-      <translation>Kies uw voorkeur voor de grootte van de werkbalkpictogrammen. U kunt
-dit aanpassen aan uw schermgrootte of persoonlijke smaak</translation>
-    </message>
-    <message>
-      <source>Tree view mode:</source>
-      <translation>Boomstructuurweergavemodus:</translation>
-    </message>
-    <message>
-      <source>Customize how tree view is shown in the panel (restart required).
-
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>Pas aan hoe de Structuurweergave wordt weergegeven in het paneel (herstart vereist).
-
-'ComboView': combineer de SructuurWeergave en eigenschap in een paneel.
-'TreeView and PropertyView': splits de Structuur- en eigenschapsweergave in aparte panelen.
-'Both': houd alle drie de panelen bij, en u kunt twee sets Structuur- en eigenschapsweergave hebben.</translation>
-    </message>
-    <message>
-      <source>A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</source>
-      <translation>Een Splashscherm is een klein laadvenster dat wordt weergegeven
-wanneer FreeCAD wordt opgestart. Als deze optie aangevinkt is, zal FreeCAD
-het splashscherm weergeven</translation>
-    </message>
-    <message>
-      <source>Choose which workbench will be activated and shown
-after FreeCAD launches</source>
-      <translation>Kies welke werkbank zal worden geactiveerd en weergegeven
-nadat FreeCAD opgestart is</translation>
     </message>
     <message>
       <source>Number format:</source>
@@ -1698,6 +1616,28 @@ nadat FreeCAD opgestart is</translation>
       <translation type="unfinished">Revert...</translation>
     </message>
     <message>
+      <source>Main window</source>
+      <translation>Hoofdvenster</translation>
+    </message>
+    <message>
+      <source>Size of recent file list</source>
+      <translation>Grootte van de recente-bestanden lijst</translation>
+    </message>
+    <message>
+      <source>How many files should be listed in recent files list</source>
+      <translation>Hoeveel bestanden moeten er in de lijst met recente bestanden worden opgenomen</translation>
+    </message>
+    <message>
+      <source>Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</source>
+      <translation>Achtergrond van het hoofdvenster zal bestaan uit tegels van een speciale afbeelding.
+Zie de FreeCAD-Wiki voor details over de afbeelding.</translation>
+    </message>
+    <message>
+      <source>Enable tiled background</source>
+      <translation>Betegelde achtergrond inschakelen</translation>
+    </message>
+    <message>
       <source>The text cursor will be blinking</source>
       <translation type="unfinished">The text cursor will be blinking</translation>
     </message>
@@ -1705,12 +1645,72 @@ nadat FreeCAD opgestart is</translation>
       <source>Enable cursor blinking</source>
       <translation type="unfinished">Enable cursor blinking</translation>
     </message>
+    <message>
+      <source>Style sheet:</source>
+      <translation>Stijlblad:</translation>
+    </message>
+    <message>
+      <source>Style sheet how user interface will look like</source>
+      <translation>Stijlblad hoe de gebruikersinterface eruit zal zien</translation>
+    </message>
+    <message>
+      <source>Size of toolbar icons:</source>
+      <translation>Grootte van de werkbalk-pictogrammen:</translation>
+    </message>
+    <message>
+      <source>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</source>
+      <translation>Kies uw voorkeur voor de grootte van de werkbalkpictogrammen. U kunt
+dit aanpassen aan uw schermgrootte of persoonlijke smaak</translation>
+    </message>
+    <message>
+      <source>Tree view mode:</source>
+      <translation>Boomstructuurweergavemodus:</translation>
+    </message>
+    <message>
+      <source>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
+      <translation>Pas aan hoe de Structuurweergave wordt weergegeven in het paneel (herstart vereist).
+
+'ComboView': combineer de SructuurWeergave en eigenschap in een paneel.
+'TreeView and PropertyView': splits de Structuur- en eigenschapsweergave in aparte panelen.
+'Both': houd alle drie de panelen bij, en u kunt twee sets Structuur- en eigenschapsweergave hebben.</translation>
+    </message>
+    <message>
+      <source>Start up</source>
+      <translation>Opstarten</translation>
+    </message>
+    <message>
+      <source>Auto load module after start up:</source>
+      <translation>Automatisch laden module na het opstarten:</translation>
+    </message>
+    <message>
+      <source>Choose which workbench will be activated and shown
+after FreeCAD launches</source>
+      <translation>Kies welke werkbank zal worden geactiveerd en weergegeven
+nadat FreeCAD opgestart is</translation>
+    </message>
+    <message>
+      <source>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</source>
+      <translation>Een Splashscherm is een klein laadvenster dat wordt weergegeven
+wanneer FreeCAD wordt opgestart. Als deze optie aangevinkt is, zal FreeCAD
+het splashscherm weergeven</translation>
+    </message>
+    <message>
+      <source>Enable splash screen at start up</source>
+      <translation>Activeer splash-scherm tijdens het opstarten</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
-      <source>No style sheet</source>
-      <translation>Geen stijlblad</translation>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
@@ -1745,8 +1745,8 @@ nadat FreeCAD opgestart is</translation>
       <translation>Beide</translation>
     </message>
     <message>
-      <source>Manage preference packs</source>
-      <translation type="unfinished">Manage preference packs</translation>
+      <source>No style sheet</source>
+      <translation>Geen stijlblad</translation>
     </message>
     <message>
       <source>Preference Pack Name</source>
@@ -1794,6 +1794,14 @@ nadat FreeCAD opgestart is</translation>
       <translation>Macro-naam:</translation>
     </message>
     <message>
+      <source>User macros</source>
+      <translation>Gebruikers macro's</translation>
+    </message>
+    <message>
+      <source>System macros</source>
+      <translation>Systeem macro's</translation>
+    </message>
+    <message>
       <source>Execute</source>
       <translation>Uitvoeren</translation>
     </message>
@@ -1814,18 +1822,6 @@ nadat FreeCAD opgestart is</translation>
       <translation>Bewerken</translation>
     </message>
     <message>
-      <source>User macros</source>
-      <translation>Gebruikers macro's</translation>
-    </message>
-    <message>
-      <source>System macros</source>
-      <translation>Systeem macro's</translation>
-    </message>
-    <message>
-      <source>User macros location:</source>
-      <translation>Locatie gebruikers macro's:</translation>
-    </message>
-    <message>
       <source>Rename</source>
       <translation>Hernoemen</translation>
     </message>
@@ -1834,12 +1830,12 @@ nadat FreeCAD opgestart is</translation>
       <translation>Dupliceer</translation>
     </message>
     <message>
-      <source>Toolbar</source>
-      <translation>Werkbalk</translation>
-    </message>
-    <message>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
       <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Toolbar</source>
+      <translation>Werkbalk</translation>
     </message>
     <message>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
@@ -1849,12 +1845,20 @@ nadat FreeCAD opgestart is</translation>
       <source>Download</source>
       <translation>Downloaden</translation>
     </message>
+    <message>
+      <source>User macros location:</source>
+      <translation>Locatie gebruikers macro's:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <source>Macros</source>
       <translation>Macro's</translation>
+    </message>
+    <message>
+      <source>Read-only</source>
+      <translation>Alleen-lezen</translation>
     </message>
     <message>
       <source>Macro file</source>
@@ -1874,14 +1878,6 @@ This file already exists.</source>
       <translation>'%1'. Dit bestand bestaat reeds.</translation>
     </message>
     <message>
-      <source>Delete macro</source>
-      <translation>Verwijder macro</translation>
-    </message>
-    <message>
-      <source>Do you really want to delete the macro '%1'?</source>
-      <translation>Weet u zeker dat u macro '%1' wilt verwijderen?</translation>
-    </message>
-    <message>
       <source>Cannot create file</source>
       <translation>Kan bestand niet aanmaken</translation>
     </message>
@@ -1890,46 +1886,12 @@ This file already exists.</source>
       <translation>Creëren van bestand '%1' mislukt. </translation>
     </message>
     <message>
-      <source>Read-only</source>
-      <translation>Alleen-lezen</translation>
+      <source>Delete macro</source>
+      <translation>Verwijder macro</translation>
     </message>
     <message>
-      <source>Renaming Macro File</source>
-      <translation>Hernoemen van macrobestand</translation>
-    </message>
-    <message>
-      <source>Enter new name:</source>
-      <translation>Nieuwe naam invoeren:</translation>
-    </message>
-    <message>
-      <source>'%1'
- already exists.</source>
-      <translation>'%1'
-bestaat al.</translation>
-    </message>
-    <message>
-      <source>Rename Failed</source>
-      <translation>Hernoemen is mislukt</translation>
-    </message>
-    <message>
-      <source>Failed to rename to '%1'.
-Perhaps a file permission error?</source>
-      <translation>Kan de naam '%1' niet wijzigen.
-Misschien een fout met bestandsrechten?</translation>
-    </message>
-    <message>
-      <source>Duplicate Macro</source>
-      <translation>Macro dupliceren</translation>
-    </message>
-    <message>
-      <source>Duplicate Failed</source>
-      <translation>Dupliceren mislukt</translation>
-    </message>
-    <message>
-      <source>Failed to duplicate to '%1'.
-Perhaps a file permission error?</source>
-      <translation>Kan niet naar '%1' dupliceren.
-Misschien een fout met bestandsrechten?</translation>
+      <source>Do you really want to delete the macro '%1'?</source>
+      <translation>Weet u zeker dat u macro '%1' wilt verwijderen?</translation>
     </message>
     <message>
       <source>Do not show again</source>
@@ -1973,6 +1935,44 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation>Stappeninstructies: Klik op de knop Nieuw, vervolgens op de rechter pijltjestoets (-&gt;) en dan op Sluiten.</translation>
     </message>
+    <message>
+      <source>Renaming Macro File</source>
+      <translation>Hernoemen van macrobestand</translation>
+    </message>
+    <message>
+      <source>Enter new name:</source>
+      <translation>Nieuwe naam invoeren:</translation>
+    </message>
+    <message>
+      <source>'%1'
+ already exists.</source>
+      <translation>'%1'
+bestaat al.</translation>
+    </message>
+    <message>
+      <source>Rename Failed</source>
+      <translation>Hernoemen is mislukt</translation>
+    </message>
+    <message>
+      <source>Failed to rename to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Kan de naam '%1' niet wijzigen.
+Misschien een fout met bestandsrechten?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Macro dupliceren</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Dupliceren mislukt</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Kan niet naar '%1' dupliceren.
+Misschien een fout met bestandsrechten?</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
@@ -1983,14 +1983,6 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
     <message>
       <source>Macro name:</source>
       <translation>Macro-naam:</translation>
-    </message>
-    <message>
-      <source>Stop</source>
-      <translation>Stop</translation>
-    </message>
-    <message>
-      <source>Cancel</source>
-      <translation>Annuleren</translation>
     </message>
     <message>
       <source>Macro path:</source>
@@ -2004,6 +1996,14 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
       <source>Record</source>
       <translation>Opnemen</translation>
     </message>
+    <message>
+      <source>Stop</source>
+      <translation>Stop</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Annuleren</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
@@ -2016,6 +2016,10 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
       <translation>Geef eerst de locatie om op te slaan.</translation>
     </message>
     <message>
+      <source>The macro directory doesn't exist. Please, choose another one.</source>
+      <translation>De macro-map bestaat niet. Gelieve een andere te kiezen.</translation>
+    </message>
+    <message>
       <source>Existing macro</source>
       <translation>Bestaande macro</translation>
     </message>
@@ -2024,16 +2028,12 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
       <translation>De macro '%1' bestaat reeds. Wilt u het overschrijven?</translation>
     </message>
     <message>
-      <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>De macro-map bestaat niet. Gelieve een andere te kiezen.</translation>
+      <source>You have no write permission for the directory. Please, choose another one.</source>
+      <translation>U hebt geen schrijfrechten voor deze map. Kies een andere map.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
       <translation>Kies macro-map</translation>
-    </message>
-    <message>
-      <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>U hebt geen schrijfrechten voor deze map. Kies een andere map.</translation>
     </message>
   </context>
   <context>
@@ -2047,8 +2047,16 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
       <translation>Materiaal</translation>
     </message>
     <message>
+      <source>Ambient color:</source>
+      <translation>Omgevingskleur:</translation>
+    </message>
+    <message>
       <source>Diffuse color:</source>
       <translation>Diffuse kleur:</translation>
+    </message>
+    <message>
+      <source>Emissive color:</source>
+      <translation>Emissieve kleur:</translation>
     </message>
     <message>
       <source>Specular color:</source>
@@ -2063,16 +2071,8 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
       <translation>%</translation>
     </message>
     <message>
-      <source>Ambient color:</source>
-      <translation>Omgevingskleur:</translation>
-    </message>
-    <message>
       <source/>
       <translation>''</translation>
-    </message>
-    <message>
-      <source>Emissive color:</source>
-      <translation>Emissieve kleur:</translation>
     </message>
   </context>
   <context>
@@ -2093,6 +2093,10 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
   <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
+      <source>HTML files</source>
+      <translation>HTML-bestanden</translation>
+    </message>
+    <message>
       <source>Access denied</source>
       <translation>Toegang geweigerd</translation>
     </message>
@@ -2103,32 +2107,12 @@ Specify another directory, please.</source>
       <translation>Toegang geweigerd '%1'
 Kies een andere map, alstublieft.</translation>
     </message>
-    <message>
-      <source>HTML files</source>
-      <translation>HTML-bestanden</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
       <source>Parameter Editor</source>
       <translation>Parameter-editor</translation>
-    </message>
-    <message>
-      <source>Save to disk</source>
-      <translation>Opslaan op schijf</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>&amp;Close</source>
-      <translation>&amp; Sluiten</translation>
-    </message>
-    <message>
-      <source>Find...</source>
-      <translation>Zoek...</translation>
     </message>
     <message>
       <source>Sorted</source>
@@ -2145,6 +2129,22 @@ Kies een andere map, alstublieft.</translation>
     <message>
       <source>Search Group</source>
       <translation>Zoek naar Groepen</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Zoek...</translation>
+    </message>
+    <message>
+      <source>Save to disk</source>
+      <translation>Opslaan op schijf</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>&amp;Close</source>
+      <translation>&amp; Sluiten</translation>
     </message>
   </context>
   <context>
@@ -2209,8 +2209,16 @@ Kies een andere map, alstublieft.</translation>
       <translation>Waarde</translation>
     </message>
     <message>
+      <source>System parameter</source>
+      <translation>Systeem-parameter</translation>
+    </message>
+    <message>
       <source>User parameter</source>
       <translation>Gebruikersparameter</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Zoek naar Groepen</translation>
     </message>
     <message>
       <source>Invalid input</source>
@@ -2219,14 +2227,6 @@ Kies een andere map, alstublieft.</translation>
     <message>
       <source>Invalid key name '%1'</source>
       <translation>Ongeldige sleutelnaam '%1'</translation>
-    </message>
-    <message>
-      <source>System parameter</source>
-      <translation>Systeem-parameter</translation>
-    </message>
-    <message>
-      <source>Search Group</source>
-      <translation>Zoek naar Groepen</translation>
     </message>
   </context>
   <context>
@@ -2285,10 +2285,6 @@ Kies een andere map, alstublieft.</translation>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <source>Wrong parameter</source>
-      <translation>Verkeerde parameter</translation>
-    </message>
-    <message>
       <source>Clear user settings</source>
       <translation>Gebruikersinstellingen wissen</translation>
     </message>
@@ -2299,6 +2295,10 @@ Kies een andere map, alstublieft.</translation>
     <message>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Als u akkoord gaat zullen alle uw instellingen worden gewist.</translation>
+    </message>
+    <message>
+      <source>Wrong parameter</source>
+      <translation>Verkeerde parameter</translation>
     </message>
   </context>
   <context>
@@ -2316,40 +2316,36 @@ Kies een andere map, alstublieft.</translation>
       <translation>&amp;Naam:</translation>
     </message>
     <message>
-      <source>Commen&amp;t:</source>
-      <translation>Commen&amp;taar:</translation>
-    </message>
-    <message>
       <source>Path:</source>
       <translation>PAD:</translation>
     </message>
     <message>
-      <source>&amp;Last modified by:</source>
-      <translation>&amp;Laatst gewijzigd door:</translation>
+      <source>UUID:</source>
+      <translation>UUID:</translation>
+    </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Programma versie:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
       <translation>Gemaakt &amp;door:</translation>
     </message>
     <message>
-      <source>Com&amp;pany:</source>
-      <translation>&amp;Firma:</translation>
+      <source>Creation &amp;date:</source>
+      <translation>Aanmaak&amp;datum:</translation>
+    </message>
+    <message>
+      <source>&amp;Last modified by:</source>
+      <translation>&amp;Laatst gewijzigd door:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
       <translation>Laatste &amp;wijzigingsdatum:</translation>
     </message>
     <message>
-      <source>Creation &amp;date:</source>
-      <translation>Aanmaak&amp;datum:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>''</translation>
-    </message>
-    <message>
-      <source>UUID:</source>
-      <translation>UUID:</translation>
+      <source>Com&amp;pany:</source>
+      <translation>&amp;Firma:</translation>
     </message>
     <message>
       <source>License information:</source>
@@ -2364,8 +2360,12 @@ Kies een andere map, alstublieft.</translation>
       <translation>In browser openen</translation>
     </message>
     <message>
-      <source>Program version:</source>
-      <translation>Programma versie:</translation>
+      <source>Commen&amp;t:</source>
+      <translation>Commen&amp;taar:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
@@ -2403,6 +2403,10 @@ Kies een andere map, alstublieft.</translation>
       <translation>Laad projectbestand na het creëren</translation>
     </message>
     <message>
+      <source>Project file</source>
+      <translation>Project-bestand</translation>
+    </message>
+    <message>
       <source>Empty source</source>
       <translation>Lege bron</translation>
     </message>
@@ -2418,16 +2422,24 @@ Kies een andere map, alstublieft.</translation>
       <source>No destination is defined.</source>
       <translation>Geen bestemming is gedefinieerd.</translation>
     </message>
-    <message>
-      <source>Project file</source>
-      <translation>Project-bestand</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
       <source>Link</source>
       <translation>Link</translation>
+    </message>
+    <message>
+      <source>Filter by type</source>
+      <translation>Filteren op type</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Indien ingeschakeld, dan zal de 3D-weergaveselectie gesynchroniseerd worden met de volledige objecthiërarchie.</translation>
+    </message>
+    <message>
+      <source>Sync sub-object selection</source>
+      <translation>Synchroniseer subobject selectie</translation>
     </message>
     <message>
       <source>Search</source>
@@ -2438,24 +2450,12 @@ Kies een andere map, alstublieft.</translation>
       <translation>Een zoekpatroon om de bovenstaande resultaten te filteren</translation>
     </message>
     <message>
-      <source>Filter by type</source>
-      <translation>Filteren op type</translation>
-    </message>
-    <message>
-      <source>Sync sub-object selection</source>
-      <translation>Synchroniseer subobject selectie</translation>
-    </message>
-    <message>
       <source>Reset</source>
       <translation>Herstel</translation>
     </message>
     <message>
       <source>Clear</source>
       <translation>Wissen</translation>
-    </message>
-    <message>
-      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation>Indien ingeschakeld, dan zal de 3D-weergaveselectie gesynchroniseerd worden met de volledige objecthiërarchie.</translation>
     </message>
   </context>
   <context>
@@ -2469,64 +2469,36 @@ Kies een andere map, alstublieft.</translation>
       <translation>Uitvoer</translation>
     </message>
     <message>
-      <source>Record log messages</source>
-      <translation>logboek-berichten bewaren</translation>
+      <source>Normal messages will be recorded</source>
+      <translation>Normale berichten worden opgenomen</translation>
     </message>
     <message>
-      <source>Record warnings</source>
-      <translation>Waarschuwingen bewaren</translation>
-    </message>
-    <message>
-      <source>Record error messages</source>
-      <translation>Foutmeldingen bewaren</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Kleuren</translation>
-    </message>
-    <message>
-      <source>Normal messages:</source>
-      <translation>Normale berichten:</translation>
-    </message>
-    <message>
-      <source>Log messages:</source>
-      <translation>Logboekberichten:</translation>
-    </message>
-    <message>
-      <source>Warnings:</source>
-      <translation>Waarschuwingen:</translation>
-    </message>
-    <message>
-      <source>Errors:</source>
-      <translation>Fouten:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>''</translation>
-    </message>
-    <message>
-      <source>Redirect internal Python errors to report view</source>
-      <translation>Interne Python fouten omleiden naar rapportweergave</translation>
-    </message>
-    <message>
-      <source>Redirect internal Python output to report view</source>
-      <translation>Interne Python uitvoer omleiden naar de rapportweergave</translation>
-    </message>
-    <message>
-      <source>Python interpreter</source>
-      <translation>Python-interpreter</translation>
+      <source>Record normal messages</source>
+      <translation>Neem normale berichten op</translation>
     </message>
     <message>
       <source>Log messages will be recorded</source>
       <translation>Logberichten worden opgenomen</translation>
     </message>
     <message>
+      <source>Record log messages</source>
+      <translation>logboek-berichten bewaren</translation>
+    </message>
+    <message>
       <source>Warnings will be recorded</source>
       <translation>Waarschuwingen zullen worden opgenomen</translation>
     </message>
     <message>
+      <source>Record warnings</source>
+      <translation>Waarschuwingen bewaren</translation>
+    </message>
+    <message>
       <source>Error messages will be recorded</source>
       <translation>Foutberichten worden opgenomen</translation>
+    </message>
+    <message>
+      <source>Record error messages</source>
+      <translation>Foutmeldingen bewaren</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
@@ -2569,34 +2541,6 @@ op het scherm zichtbaar terwijl het bericht wordt weergegeven</translation>
       <translation>Rapportweergave weergeven op logbericht</translation>
     </message>
     <message>
-      <source>Font color for normal messages in Report view panel</source>
-      <translation>Letterkleur voor normale berichten in rapportweergavepaneel</translation>
-    </message>
-    <message>
-      <source>Font color for log messages in Report view panel</source>
-      <translation>Letterkleur voor logberichten in rapportweergavepaneel</translation>
-    </message>
-    <message>
-      <source>Font color for warning messages in Report view panel</source>
-      <translation>Letterkleur voor waarschuwingsberichten in rapportweergavepaneel</translation>
-    </message>
-    <message>
-      <source>Font color for error messages in Report view panel</source>
-      <translation>Letterkleur voor foutberichten in rapportweergavepaneel</translation>
-    </message>
-    <message>
-      <source>Internal Python output will be redirected
-from Python console to Report view panel</source>
-      <translation>De interne Python-uitvoer wordt omgeleid 
-van de Python-console naar het rapportweergavepaneel</translation>
-    </message>
-    <message>
-      <source>Internal Python error messages will be redirected
-from Python console to Report view panel</source>
-      <translation>Interne Python-foutberichten worden omgeleid 
-van de Python-console naar het rapportweergavepaneel</translation>
-    </message>
-    <message>
       <source>Include a timecode for each report</source>
       <translation>Voeg een tijdcode toe voor elk rapport</translation>
     </message>
@@ -2605,12 +2549,68 @@ van de Python-console naar het rapportweergavepaneel</translation>
       <translation>Voeg een tijdcode toe voor elke invoer</translation>
     </message>
     <message>
-      <source>Normal messages will be recorded</source>
-      <translation>Normale berichten worden opgenomen</translation>
+      <source>Colors</source>
+      <translation>Kleuren</translation>
     </message>
     <message>
-      <source>Record normal messages</source>
-      <translation>Neem normale berichten op</translation>
+      <source>Normal messages:</source>
+      <translation>Normale berichten:</translation>
+    </message>
+    <message>
+      <source>Font color for normal messages in Report view panel</source>
+      <translation>Letterkleur voor normale berichten in rapportweergavepaneel</translation>
+    </message>
+    <message>
+      <source>Log messages:</source>
+      <translation>Logboekberichten:</translation>
+    </message>
+    <message>
+      <source>Font color for log messages in Report view panel</source>
+      <translation>Letterkleur voor logberichten in rapportweergavepaneel</translation>
+    </message>
+    <message>
+      <source>Warnings:</source>
+      <translation>Waarschuwingen:</translation>
+    </message>
+    <message>
+      <source>Font color for warning messages in Report view panel</source>
+      <translation>Letterkleur voor waarschuwingsberichten in rapportweergavepaneel</translation>
+    </message>
+    <message>
+      <source>Errors:</source>
+      <translation>Fouten:</translation>
+    </message>
+    <message>
+      <source>Font color for error messages in Report view panel</source>
+      <translation>Letterkleur voor foutberichten in rapportweergavepaneel</translation>
+    </message>
+    <message>
+      <source>Python interpreter</source>
+      <translation>Python-interpreter</translation>
+    </message>
+    <message>
+      <source>Internal Python output will be redirected
+from Python console to Report view panel</source>
+      <translation>De interne Python-uitvoer wordt omgeleid 
+van de Python-console naar het rapportweergavepaneel</translation>
+    </message>
+    <message>
+      <source>Redirect internal Python output to report view</source>
+      <translation>Interne Python uitvoer omleiden naar de rapportweergave</translation>
+    </message>
+    <message>
+      <source>Internal Python error messages will be redirected
+from Python console to Report view panel</source>
+      <translation>Interne Python-foutberichten worden omgeleid 
+van de Python-console naar het rapportweergavepaneel</translation>
+    </message>
+    <message>
+      <source>Redirect internal Python errors to report view</source>
+      <translation>Interne Python fouten omleiden naar rapportweergave</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
@@ -2681,58 +2681,6 @@ van de Python-console naar het rapportweergavepaneel</translation>
       <translation>3D-weergave</translation>
     </message>
     <message>
-      <source>Show coordinate system in the corner</source>
-      <translation>Toon coördinatenstelsel in de hoek</translation>
-    </message>
-    <message>
-      <source>Show counter of frames per second</source>
-      <translation>Toon teller van frames per seconde</translation>
-    </message>
-    <message>
-      <source>Camera type</source>
-      <translation>Cameratype</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>''</translation>
-    </message>
-    <message>
-      <source>Anti-Aliasing</source>
-      <translation>Anti-aliasing</translation>
-    </message>
-    <message>
-      <source>None</source>
-      <translation>Geen</translation>
-    </message>
-    <message>
-      <source>Line Smoothing</source>
-      <translation>Lijn vloeiend maken</translation>
-    </message>
-    <message>
-      <source>MSAA 2x</source>
-      <translation>MSAA 2x</translation>
-    </message>
-    <message>
-      <source>MSAA 4x</source>
-      <translation>MSAA 4x</translation>
-    </message>
-    <message>
-      <source>MSAA 8x</source>
-      <translation>MSAA 8x</translation>
-    </message>
-    <message>
-      <source>Or&amp;thographic rendering</source>
-      <translation>Or&amp;thografische weergave</translation>
-    </message>
-    <message>
-      <source>Perspective renderin&amp;g</source>
-      <translation>Perspectief renderin&amp;g</translation>
-    </message>
-    <message>
-      <source>Marker size:</source>
-      <translation>Markergrootte:</translation>
-    </message>
-    <message>
       <source>General</source>
       <translation>Algemeen</translation>
     </message>
@@ -2743,10 +2691,42 @@ lower right corner within opened files</source>
 rechtsonder in de geopende bestanden getoond</translation>
     </message>
     <message>
+      <source>Show coordinate system in the corner</source>
+      <translation>Toon coördinatenstelsel in de hoek</translation>
+    </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation>Assenkruis wordt standaard getoond 
+het openen of aanmaken van bestand</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation>Toon assenkruis standaard</translation>
+    </message>
+    <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
       <translation>De tijd die nodig is voor de laatste bewerking en de resulterende framerate
 worden in geopende bestanden linksonder getoond</translation>
+    </message>
+    <message>
+      <source>Show counter of frames per second</source>
+      <translation>Toon teller van frames per seconde</translation>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
@@ -2759,6 +2739,18 @@ worden in geopende bestanden linksonder getoond</translation>
     <message>
       <source>Rendering</source>
       <translation>Rendering</translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Deze optie is handig voor het oplossen van problemen met grafische kaarten en stuurprogramma.
+
+Het wijzigen van deze optie vereist een herstart van de toepassing.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Gebruik software OpenGL</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2819,6 +2811,34 @@ maar een tragere reactie op eventuele scèneveranderingen.</translation>
       <translation>Gecentraliseerd</translation>
     </message>
     <message>
+      <source>Anti-Aliasing</source>
+      <translation>Anti-aliasing</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Wat voor soort multisample anti-aliasing wordt gebruikt</translation>
+    </message>
+    <message>
+      <source>None</source>
+      <translation>Geen</translation>
+    </message>
+    <message>
+      <source>Line Smoothing</source>
+      <translation>Lijn vloeiend maken</translation>
+    </message>
+    <message>
+      <source>MSAA 2x</source>
+      <translation>MSAA 2x</translation>
+    </message>
+    <message>
+      <source>MSAA 4x</source>
+      <translation>MSAA 4x</translation>
+    </message>
+    <message>
+      <source>MSAA 8x</source>
+      <translation>MSAA 8x</translation>
+    </message>
+    <message>
       <source>Transparent objects:</source>
       <translation>Transparante objecten:</translation>
     </message>
@@ -2835,12 +2855,35 @@ maar een tragere reactie op eventuele scèneveranderingen.</translation>
       <translation>Passage op de achterkant</translation>
     </message>
     <message>
+      <source>Marker size:</source>
+      <translation>Markergrootte:</translation>
+    </message>
+    <message>
       <source>Size of vertices in the Sketcher workbench</source>
       <translation>Grootte van eindpunten in de schetserwerkbank</translation>
     </message>
     <message>
+      <source>Pick radius (px):</source>
+      <translation>Kies straal (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Ruimte voor het selecteren van elementen in 3D-weergave.
+Grotere waarde vergemakkelijkt de selectie van dingen, maar kan de selectie van kleine functies onmogelijk maken.               </translation>
+    </message>
+    <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Oog-naar-oog-afstand voor stereomodi</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Oog-naar-oog afstand wordt gebruikt voor stereo projecties.
+De opgegeven waarde is een factor die zal worden vermenigvuldigd met
+de begrenzingsvakgrootte van het 3D-object dat op dat moment wordt weergegeven.</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2859,83 +2902,32 @@ maar een tragere reactie op eventuele scèneveranderingen.</translation>
       <translation>Intensiteit van het tegenlicht</translation>
     </message>
     <message>
-      <source>Objects will be projected in orthographic projection</source>
-      <translation>Objecten zullen geprojecteerd worden in orthografische projectie</translation>
+      <source>Camera type</source>
+      <translation>Cameratype</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation>Objecten verschijnen in een perspectiefprojectie</translation>
     </message>
     <message>
-      <source>Axis cross will be shown by default at file
-opening or creation</source>
-      <translation>Assenkruis wordt standaard getoond 
-het openen of aanmaken van bestand</translation>
+      <source>Perspective renderin&amp;g</source>
+      <translation>Perspectief renderin&amp;g</translation>
     </message>
     <message>
-      <source>Show axis cross by default</source>
-      <translation>Toon assenkruis standaard</translation>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>Objecten zullen geprojecteerd worden in orthografische projectie</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Kies straal (px):</translation>
+      <source>Or&amp;thographic rendering</source>
+      <translation>Or&amp;thografische weergave</translation>
     </message>
     <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </source>
-      <translation>Ruimte voor het selecteren van elementen in 3D-weergave.
-Grotere waarde vergemakkelijkt de selectie van dingen, maar kan de selectie van kleine functies onmogelijk maken.               </translation>
-    </message>
-    <message>
-      <source>This option is useful for troubleshooting graphics card and driver problems.
-
-Changing this option requires a restart of the application.</source>
-      <translation>Deze optie is handig voor het oplossen van problemen met grafische kaarten en stuurprogramma.
-
-Het wijzigen van deze optie vereist een herstart van de toepassing.</translation>
-    </message>
-    <message>
-      <source>Use software OpenGL</source>
-      <translation>Gebruik software OpenGL</translation>
-    </message>
-    <message>
-      <source>What kind of multisample anti-aliasing is used</source>
-      <translation>Wat voor soort multisample anti-aliasing wordt gebruikt</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</source>
-      <translation>Oog-naar-oog afstand wordt gebruikt voor stereo projecties.
-De opgegeven waarde is een factor die zal worden vermenigvuldigd met
-de begrenzingsvakgrootte van het 3D-object dat op dat moment wordt weergegeven.</translation>
-    </message>
-    <message>
-      <source>Relative size :   </source>
-      <translation type="unfinished">Relative size :   </translation>
-    </message>
-    <message>
-      <source>Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</translation>
-    </message>
-    <message>
-      <source>%</source>
-      <translation>%</translation>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-      <source>Anti-aliasing</source>
-      <translation>Anti-aliasing</translation>
-    </message>
-    <message>
-      <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Open een nieuwe viewer of %1 herstart om anti-aliasing wijzigingen toepassen.</translation>
-    </message>
     <message>
       <source>5px</source>
       <translation>5px</translation>
@@ -2959,6 +2951,14 @@ in the corner -- in % of height/width of viewport</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Anti-aliasing</source>
+      <translation>Anti-aliasing</translation>
+    </message>
+    <message>
+      <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
+      <translation>Open een nieuwe viewer of %1 herstart om anti-aliasing wijzigingen toepassen.</translation>
     </message>
   </context>
   <context>
@@ -3027,6 +3027,10 @@ in the corner -- in % of height/width of viewport</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsColorGradient</name>
     <message>
+      <source>Color-gradient settings</source>
+      <translation>Kleurverloop instellingen</translation>
+    </message>
+    <message>
       <source>Color model</source>
       <translation>Kleurenmodel</translation>
     </message>
@@ -3051,32 +3055,12 @@ in the corner -- in % of height/width of viewport</translation>
       <translation>zwart-wit</translation>
     </message>
     <message>
-      <source>Visibility</source>
-      <translation>Zichtbaarheid</translation>
-    </message>
-    <message>
-      <source>Out g&amp;rayed</source>
-      <translation>Uit geg&amp;rijsd</translation>
-    </message>
-    <message>
-      <source>Alt+R</source>
-      <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Alt+I</source>
-      <translation>Alt+I</translation>
-    </message>
-    <message>
       <source>Style</source>
       <translation>Stijl</translation>
     </message>
     <message>
-      <source>&amp;Zero</source>
-      <translation>&amp;Nul</translation>
-    </message>
-    <message>
-      <source>Alt+Z</source>
-      <translation>Alt+Z</translation>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
     </message>
     <message>
       <source>&amp;Flow</source>
@@ -3087,46 +3071,34 @@ in the corner -- in % of height/width of viewport</translation>
       <translation>Alt+F</translation>
     </message>
     <message>
-      <source>Parameter range</source>
-      <translation>Parameterbereik</translation>
-    </message>
-    <message>
-      <source>Mi&amp;nimum:</source>
-      <translation>Mi&amp;nimum:</translation>
-    </message>
-    <message>
-      <source>Ma&amp;ximum:</source>
-      <translation>Ma&amp;ximum:</translation>
-    </message>
-    <message>
-      <source>&amp;Labels:</source>
-      <translation>&amp;Benamingen:</translation>
-    </message>
-    <message>
-      <source>&amp;Decimals:</source>
-      <translation>Aantal &amp;decimalen:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>''</translation>
-    </message>
-    <message>
-      <source>Color-gradient settings</source>
-      <translation>Kleurverloop instellingen</translation>
-    </message>
-    <message>
-      <source>Color gradient is used with its full color range</source>
-      <translation type="unfinished">Color gradient is used with its full color range</translation>
-    </message>
-    <message>
       <source>Color gradient starts from the zero value</source>
       <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>&amp;Zero</source>
+      <translation>&amp;Nul</translation>
+    </message>
+    <message>
+      <source>Alt+Z</source>
+      <translation>Alt+Z</translation>
+    </message>
+    <message>
+      <source>Visibility</source>
+      <translation>Zichtbaarheid</translation>
     </message>
     <message>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
       <translation type="unfinished">Data outside the specified min-max range
 will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Out g&amp;rayed</source>
+      <translation>Uit geg&amp;rijsd</translation>
+    </message>
+    <message>
+      <source>Alt+R</source>
+      <translation>Alt+R</translation>
     </message>
     <message>
       <source>Data outside the specified min-max range
@@ -3139,14 +3111,42 @@ will be displayed with transparency</translation>
       <translation type="unfinished">Out &amp;transparent</translation>
     </message>
     <message>
+      <source>Alt+I</source>
+      <translation>Alt+I</translation>
+    </message>
+    <message>
+      <source>Parameter range</source>
+      <translation>Parameterbereik</translation>
+    </message>
+    <message>
+      <source>Ma&amp;ximum:</source>
+      <translation>Ma&amp;ximum:</translation>
+    </message>
+    <message>
+      <source>&amp;Labels:</source>
+      <translation>&amp;Benamingen:</translation>
+    </message>
+    <message>
       <source>Number of labels besides the color bar</source>
       <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Mi&amp;nimum:</source>
+      <translation>Mi&amp;nimum:</translation>
+    </message>
+    <message>
+      <source>&amp;Decimals:</source>
+      <translation>Aantal &amp;decimalen:</translation>
     </message>
     <message>
       <source>Number of decimals for labels
 besides the color bar</source>
       <translation type="unfinished">Number of decimals for labels
 besides the color bar</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>''</translation>
     </message>
   </context>
   <context>
@@ -3171,105 +3171,17 @@ besides the color bar</translation>
       <translation>Algemeen</translation>
     </message>
     <message>
-      <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
-      <translation>Document op te slaan compressie-niveau (0=geen, 9=hoogste, 3=standaard)</translation>
+      <source>The application will create a new document when started</source>
+      <translation>De applicatie maakt een nieuw document aan wanneer deze wordt opgestart</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
       <translation>Maak een nieuw document aan bij het opstarten</translation>
     </message>
     <message>
-      <source>Storage</source>
-      <translation>Opslag</translation>
-    </message>
-    <message>
-      <source>Saving transactions (Auto-save)</source>
-      <translation>Opslaan van transacties (automatisch opslaan)</translation>
-    </message>
-    <message>
-      <source>Discard saved transaction after saving document</source>
-      <translation>Opgeslagen transactie na het opslaan van het document negeren</translation>
-    </message>
-    <message>
-      <source>Save thumbnail into project file when saving document</source>
-      <translation>Miniatuur opslaat in projectbestand bij het opslaan van document</translation>
-    </message>
-    <message>
-      <source>Maximum number of backup files to keep when resaving document</source>
-      <translation>Maximaal aantal back-upbestanden dat moet worden bewaard bij het opslaan van het document</translation>
-    </message>
-    <message>
-      <source>Document objects</source>
-      <translation>Document objecten</translation>
-    </message>
-    <message>
-      <source>Allow duplicate object labels in one document</source>
-      <translation>Dubbele voorwerpnamen in een document toestaan</translation>
-    </message>
-    <message>
-      <source>Maximum Undo/Redo steps</source>
-      <translation>Maximale 'ongedaan maken' / 'Opnieuw' stappen</translation>
-    </message>
-    <message>
-      <source>Using Undo/Redo on documents</source>
-      <translation>Gebruik undo/redo op documenten</translation>
-    </message>
-    <message>
-      <source>Authoring and License</source>
-      <translation>Auteur en licentie</translation>
-    </message>
-    <message>
-      <source>Author name</source>
-      <translation>Auteursnaam</translation>
-    </message>
-    <message>
-      <source>Set on save</source>
-      <translation>Instellen met opslaan</translation>
-    </message>
-    <message>
-      <source>Company</source>
-      <translation>Bedrijf</translation>
-    </message>
-    <message>
-      <source>Default license</source>
-      <translation>Standaardlicentie</translation>
-    </message>
-    <message>
-      <source>All rights reserved</source>
-      <translation>Alle rechten voorbehouden</translation>
-    </message>
-    <message>
-      <source>Public Domain</source>
-      <translation>Publiek domein</translation>
-    </message>
-    <message>
-      <source>FreeArt</source>
-      <translation>FreeArt</translation>
-    </message>
-    <message>
-      <source>Other</source>
-      <translation>Andere</translation>
-    </message>
-    <message>
-      <source>License URL</source>
-      <translation>Licentie URL</translation>
-    </message>
-    <message>
-      <source>Run AutoRecovery at startup</source>
-      <translation>AutoHerstel bij het opstarten uitvoeren</translation>
-    </message>
-    <message>
-      <source>Save AutoRecovery information every</source>
-      <translation>AutoHerstel-informatie opslaan elke</translation>
-    </message>
-    <message>
-      <source>Add the program logo to the generated thumbnail</source>
-      <translation>Voeg het programmalogo toe aan de gegenereerde miniatuur</translation>
-    </message>
-    <message>
-      <source>The application will create a new document when started</source>
-      <translation>De applicatie maakt een nieuw document aan wanneer deze wordt opgestart</translation>
+      <source>Document save compression level
+(0 = none, 9 = highest, 3 = default)</source>
+      <translation>Document op te slaan compressie-niveau (0=geen, 9=hoogste, 3=standaard)</translation>
     </message>
     <message>
       <source>Compression level for FCStd files</source>
@@ -3278,6 +3190,14 @@ besides the color bar</translation>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
       <translation>Alle wijzigingen in documenten worden opgeslagen en kunnen zo ongedaan worden gemaakt of opnieuw aangemaakt</translation>
+    </message>
+    <message>
+      <source>Using Undo/Redo on documents</source>
+      <translation>Gebruik undo/redo op documenten</translation>
+    </message>
+    <message>
+      <source>Maximum Undo/Redo steps</source>
+      <translation>Maximale 'ongedaan maken' / 'Opnieuw' stappen</translation>
     </message>
     <message>
       <source>How many Undo/Redo steps should be recorded</source>
@@ -3294,18 +3214,42 @@ Deze functie kan de herberekeningstijd enigszins verlengen.</translation>
       <translation>Afbreken van herberekening toestaan</translation>
     </message>
     <message>
+      <source>Storage</source>
+      <translation>Opslag</translation>
+    </message>
+    <message>
+      <source>Saving transactions (Auto-save)</source>
+      <translation>Opslaan van transacties (automatisch opslaan)</translation>
+    </message>
+    <message>
+      <source>Discard saved transaction after saving document</source>
+      <translation>Opgeslagen transactie na het opslaan van het document negeren</translation>
+    </message>
+    <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
       <translation>Als er een herstelbestand beschikbaar is, zal de applicatie
 automatisch een bestandsherstel uitvoeren wanneer deze wordt gestart.</translation>
     </message>
     <message>
+      <source>Run AutoRecovery at startup</source>
+      <translation>AutoHerstel bij het opstarten uitvoeren</translation>
+    </message>
+    <message>
       <source>How often a recovery file is written</source>
       <translation>Hoe vaak een herstelbestand wordt geschreven</translation>
     </message>
     <message>
+      <source>Save AutoRecovery information every</source>
+      <translation>AutoHerstel-informatie opslaan elke</translation>
+    </message>
+    <message>
       <source>A thumbnail will be stored when document is saved</source>
       <translation>Een miniatuur wordt opgeslagen wanneer het document wordt opgeslagen</translation>
+    </message>
+    <message>
+      <source>Save thumbnail into project file when saving document</source>
+      <translation>Miniatuur opslaat in projectbestand bij het opslaan van document</translation>
     </message>
     <message>
       <source>Size</source>
@@ -3322,8 +3266,16 @@ Gebruikelijke maten zijn 128, 256 en 512</translation>
       <translation>Het logo van het programma wordt toegevoegd aan de miniatuur</translation>
     </message>
     <message>
+      <source>Add the program logo to the generated thumbnail</source>
+      <translation>Voeg het programmalogo toe aan de gegenereerde miniatuur</translation>
+    </message>
+    <message>
       <source>How many backup files will be kept when saving document</source>
       <translation>Hoeveel back-upbestanden worden bewaard bij het opslaan van document</translation>
+    </message>
+    <message>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Maximaal aantal back-upbestanden dat moet worden bewaard bij het opslaan van het document</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
@@ -3340,8 +3292,16 @@ krijgen het achtervoegsel van de datum volgens het opgegeven formaat</translatio
       <translation>Datumformaat</translation>
     </message>
     <message>
+      <source>Document objects</source>
+      <translation>Document objecten</translation>
+    </message>
+    <message>
       <source>Allow objects to have same label/name</source>
       <translation>Objecten toestaan om hetzelfde label/naam te hebben</translation>
+    </message>
+    <message>
+      <source>Allow duplicate object labels in one document</source>
+      <translation>Dubbele voorwerpnamen in een document toestaan</translation>
     </message>
     <message>
       <source>Enable partial loading of external linked documents.
@@ -3360,6 +3320,14 @@ in de boomstructuurweergave om het volledig te herladen.</translation>
       <translation>Gedeeltelijk laden van externe gekoppelde objecten uitschakelen</translation>
     </message>
     <message>
+      <source>Authoring and License</source>
+      <translation>Auteur en licentie</translation>
+    </message>
+    <message>
+      <source>Author name</source>
+      <translation>Auteursnaam</translation>
+    </message>
+    <message>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -3372,12 +3340,28 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Het veld 'Laatst gewijzigd door' wordt bij het opslaan van het bestand op de opgegeven auteur ingesteld</translation>
     </message>
     <message>
+      <source>Set on save</source>
+      <translation>Instellen met opslaan</translation>
+    </message>
+    <message>
+      <source>Company</source>
+      <translation>Bedrijf</translation>
+    </message>
+    <message>
       <source>Default company name to use for new files</source>
       <translation>Standaardbedrijfsnaam om te gebruiken voor nieuwe bestanden</translation>
     </message>
     <message>
+      <source>Default license</source>
+      <translation>Standaardlicentie</translation>
+    </message>
+    <message>
       <source>Default license for new documents</source>
       <translation>Standaardlicentie voor nieuwe documenten</translation>
+    </message>
+    <message>
+      <source>All rights reserved</source>
+      <translation>Alle rechten voorbehouden</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
@@ -3402,6 +3386,22 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
       <translation>Creative Commons-Naamsvermelding-NietComercieel-GeenAfgeleideWerken</translation>
+    </message>
+    <message>
+      <source>Public Domain</source>
+      <translation>Publiek domein</translation>
+    </message>
+    <message>
+      <source>FreeArt</source>
+      <translation>FreeArt</translation>
+    </message>
+    <message>
+      <source>Other</source>
+      <translation>Andere</translation>
+    </message>
+    <message>
+      <source>License URL</source>
+      <translation>Licentie URL</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
@@ -3482,12 +3482,12 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Python-fout</translation>
     </message>
     <message>
-      <source>Items</source>
-      <translation>Items</translation>
-    </message>
-    <message>
       <source>Current line highlight</source>
       <translation>Nadruk van tegenwoordige lijn</translation>
+    </message>
+    <message>
+      <source>Items</source>
+      <translation>Items</translation>
     </message>
   </context>
   <context>
@@ -3497,36 +3497,12 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Afbeeldingsinstellingen</translation>
     </message>
     <message>
-      <source>Image properties</source>
-      <translation>Afbeeldingeigenschappen</translation>
-    </message>
-    <message>
-      <source>Back&amp;ground:</source>
-      <translation>achter&amp;grond:</translation>
-    </message>
-    <message>
-      <source>Current</source>
-      <translation>Huidige</translation>
-    </message>
-    <message>
-      <source>White</source>
-      <translation>Wit</translation>
-    </message>
-    <message>
-      <source>Black</source>
-      <translation>Zwart</translation>
-    </message>
-    <message>
       <source>Image dimensions</source>
       <translation>Afbeeldings-afmetingen</translation>
     </message>
     <message>
-      <source>Pixel</source>
-      <translation>beeldpunt</translation>
-    </message>
-    <message>
-      <source>&amp;Width:</source>
-      <translation>&amp;Breedte:</translation>
+      <source>Standard sizes:</source>
+      <translation>Standaard formaten:</translation>
     </message>
     <message>
       <source>Current screen</source>
@@ -3545,8 +3521,12 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Pictogram 128 x 128</translation>
     </message>
     <message>
-      <source>Standard sizes:</source>
-      <translation>Standaard formaten:</translation>
+      <source>&amp;Width:</source>
+      <translation>&amp;Breedte:</translation>
+    </message>
+    <message>
+      <source>Pixel</source>
+      <translation>beeldpunt</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
@@ -3589,6 +3569,34 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Alt+1</translation>
     </message>
     <message>
+      <source>Image properties</source>
+      <translation>Afbeeldingeigenschappen</translation>
+    </message>
+    <message>
+      <source>Back&amp;ground:</source>
+      <translation>achter&amp;grond:</translation>
+    </message>
+    <message>
+      <source>Current</source>
+      <translation>Huidige</translation>
+    </message>
+    <message>
+      <source>White</source>
+      <translation>Wit</translation>
+    </message>
+    <message>
+      <source>Black</source>
+      <translation>Zwart</translation>
+    </message>
+    <message>
+      <source>Transparent</source>
+      <translation>Transparantie</translation>
+    </message>
+    <message>
+      <source>Creation method:</source>
+      <translation>Creatiemethode:</translation>
+    </message>
+    <message>
       <source>Image comment</source>
       <translation>Bijschrift</translation>
     </message>
@@ -3601,16 +3609,8 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Opmerking invoegen</translation>
     </message>
     <message>
-      <source>Transparent</source>
-      <translation>Transparantie</translation>
-    </message>
-    <message>
       <source>Add watermark</source>
       <translation>Watermerk toevoegen</translation>
-    </message>
-    <message>
-      <source>Creation method:</source>
-      <translation>Creatiemethode:</translation>
     </message>
   </context>
   <context>
@@ -3635,6 +3635,14 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
+      <source>Available Workbenches</source>
+      <translation>Beschikbare werkbanken</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om hulpbronnen te behouden, laadt FreeCAD geen werkbanken totdat ze worden gebruikt. Het laden ervan kan toegang bieden tot extra voorkeuren met betrekking tot hun functionaliteit.&lt;/p&gt;&lt;p&gt;De volgende werkbanken zijn beschikbaar in uw installatie:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
       <source>Workbench Name</source>
       <translation>Werkbank Naam</translation>
     </message>
@@ -3645,14 +3653,6 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>Load Now</source>
       <translation>Laad nu</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om hulpbronnen te behouden, laadt FreeCAD geen werkbanken totdat ze worden gebruikt. Het laden ervan kan toegang bieden tot extra voorkeuren met betrekking tot hun functionaliteit.&lt;/p&gt;&lt;p&gt;De volgende werkbanken zijn beschikbaar in uw installatie:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Available Workbenches</source>
-      <translation>Beschikbare werkbanken</translation>
     </message>
   </context>
   <context>
@@ -3693,12 +3693,56 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Macro</translation>
     </message>
     <message>
+      <source>General macro settings</source>
+      <translation>Algemene macro instellingen</translation>
+    </message>
+    <message>
+      <source>Variables defined by macros are created as local variables</source>
+      <translation>Variabelen gedefinieerd door macro's worden gemaakt als lokale variabelen</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Macro's uitvoeren in de lokale omgeving</translation>
+    </message>
+    <message>
       <source>Macro recording settings</source>
       <translation>Macro-opname-instellingen</translation>
     </message>
     <message>
+      <source>Macro path</source>
+      <translation>Macro-pad</translation>
+    </message>
+    <message>
+      <source>The directory in which the application will search for macros</source>
+      <translation>De map waarin de applicatie naar macro's zoekt</translation>
+    </message>
+    <message>
+      <source>Gui commands</source>
+      <translation>Gui commando's</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands</source>
+      <translation>Opgenomen macro's zullen ook gebruikersinterfacecommando's bevatten</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Neem GUI-commando's op</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands as comments</source>
+      <translation>Opgenomen macro's zullen ook gebruikersinterfacecommando's als commentaren bevatten</translation>
+    </message>
+    <message>
+      <source>Record as comment</source>
+      <translation>Opnemen als commentaar</translation>
+    </message>
+    <message>
       <source>Logging Commands</source>
       <translation>Loggen van commando's</translation>
+    </message>
+    <message>
+      <source>Commands executed by macro scripts are shown in Python console</source>
+      <translation>Commando's uitgevoerd door macroscripts worden weergegeven in Pythonconsole</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
@@ -3711,50 +3755,6 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>FullScript.FCScript</source>
       <translation>FullScript.FCScript</translation>
-    </message>
-    <message>
-      <source>Gui commands</source>
-      <translation>Gui commando's</translation>
-    </message>
-    <message>
-      <source>Record as comment</source>
-      <translation>Opnemen als commentaar</translation>
-    </message>
-    <message>
-      <source>Macro path</source>
-      <translation>Macro-pad</translation>
-    </message>
-    <message>
-      <source>General macro settings</source>
-      <translation>Algemene macro instellingen</translation>
-    </message>
-    <message>
-      <source>Run macros in local environment</source>
-      <translation>Macro's uitvoeren in de lokale omgeving</translation>
-    </message>
-    <message>
-      <source>Record GUI commands</source>
-      <translation>Neem GUI-commando's op</translation>
-    </message>
-    <message>
-      <source>Variables defined by macros are created as local variables</source>
-      <translation>Variabelen gedefinieerd door macro's worden gemaakt als lokale variabelen</translation>
-    </message>
-    <message>
-      <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation>Commando's uitgevoerd door macroscripts worden weergegeven in Pythonconsole</translation>
-    </message>
-    <message>
-      <source>Recorded macros will also contain user interface commands</source>
-      <translation>Opgenomen macro's zullen ook gebruikersinterfacecommando's bevatten</translation>
-    </message>
-    <message>
-      <source>Recorded macros will also contain user interface commands as comments</source>
-      <translation>Opgenomen macro's zullen ook gebruikersinterfacecommando's als commentaren bevatten</translation>
-    </message>
-    <message>
-      <source>The directory in which the application will search for macros</source>
-      <translation>De map waarin de applicatie naar macro's zoekt</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
@@ -3828,6 +3828,22 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Rechts Onder</translation>
     </message>
     <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Draait naar dichtstbijzijnde mogelijke status bij het klikken op een kubus</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Draai naar dichtstbijzijnde</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Kubus grootte</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Grootte van de navigatie kubus</translation>
+    </message>
+    <message>
       <source>3D Navigation</source>
       <translation>3D-navigatie</translation>
     </message>
@@ -3866,6 +3882,38 @@ Draaitafel: het deel wordt rond de z-as gedraaid.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
+      <source>Rotation mode</source>
+      <translation>Draai modus</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation>Rotaties in 3D zullen de huidige cursorpositie als middelpunt voor de rotatie gebruiken</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Venster midden</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Sleep bij cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Object midden</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Standaard cameraoriëntatie</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Standaard cameraoriëntatie bij het aanmaken van een nieuw document of het selecteren van het startscherm</translation>
+    </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Stelt de camerazoom in voor nieuwe documenten.
@@ -3892,8 +3940,14 @@ De waarde is de diameter van de bol die op het scherm past.</translation>
       <translation>Inzoomen bij cursor</translation>
     </message>
     <message>
-      <source>Zoom step</source>
-      <translation>Zoom stap</translation>
+      <source> Zoom step</source>
+      <translation type="unfinished"> Zoom step</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Hoeveel zal er worden ingezoomd.
+Zoomstap van '1' betekent een factor 7,5 voor elke zoomstap.</translation>
     </message>
     <message>
       <source>Direction of zoom operations will be inverted</source>
@@ -3914,10 +3968,6 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     <message>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Touchscreen kantel gebaar uitschakelen</translation>
-    </message>
-    <message>
-      <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation>Rotaties in 3D zullen de huidige cursorpositie als middelpunt voor de rotatie gebruiken</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3958,56 +4008,6 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     <message>
       <source>Custom</source>
       <translation>Eigen</translation>
-    </message>
-    <message>
-      <source>Default camera orientation</source>
-      <translation>Standaard cameraoriëntatie</translation>
-    </message>
-    <message>
-      <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation>Standaard cameraoriëntatie bij het aanmaken van een nieuw document of het selecteren van het startscherm</translation>
-    </message>
-    <message>
-      <source>Rotation mode</source>
-      <translation>Draai modus</translation>
-    </message>
-    <message>
-      <source>Window center</source>
-      <translation>Venster midden</translation>
-    </message>
-    <message>
-      <source>Drag at cursor</source>
-      <translation>Sleep bij cursor</translation>
-    </message>
-    <message>
-      <source>Object center</source>
-      <translation>Object midden</translation>
-    </message>
-    <message>
-      <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation>Draait naar dichtstbijzijnde mogelijke status bij het klikken op een kubus</translation>
-    </message>
-    <message>
-      <source>Rotate to nearest</source>
-      <translation>Draai naar dichtstbijzijnde</translation>
-    </message>
-    <message>
-      <source>Cube size</source>
-      <translation>Kubus grootte</translation>
-    </message>
-    <message>
-      <source>Size of the navigation cube</source>
-      <translation>Grootte van de navigatie kubus</translation>
-    </message>
-    <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation>Hoeveel zal er worden ingezoomd.
-Zoomstap van '1' betekent een factor 7,5 voor elke zoomstap.</translation>
-    </message>
-    <message>
-      <source>Camera zoom</source>
-      <translation type="unfinished">Camera zoom</translation>
     </message>
   </context>
   <context>
@@ -4085,44 +4085,28 @@ horizontale ruimte in de Python-console overschrijden</translation>
       <translation>Instellingen van de eenheden</translation>
     </message>
     <message>
-      <source>Standard (mm/kg/s/degree)</source>
-      <translation>Standaard (mm/kg/s/graad)</translation>
+      <source>Unit system:</source>
+      <translation>Eenheidssysteem:</translation>
     </message>
     <message>
-      <source>MKS (m/kg/s/degree)</source>
-      <translation>MKS (m/kg/s/graad)</translation>
-    </message>
-    <message>
-      <source>Magnitude</source>
-      <translation>Omvang</translation>
-    </message>
-    <message>
-      <source>Unit</source>
-      <translation>Eenheid</translation>
-    </message>
-    <message>
-      <source>US customary (in/lb)</source>
-      <translation>US customary (in/lb)</translation>
+      <source>Unit system that should be used for all parts the application</source>
+      <translation>Eenheidssysteem dat moet worden gebruikt voor alle onderdelen van de applicatie</translation>
     </message>
     <message>
       <source>Number of decimals:</source>
       <translation>Aantal decimalen:</translation>
     </message>
     <message>
-      <source>Imperial decimal (in/lb)</source>
-      <translation>Imperial decimal (in/lb)</translation>
-    </message>
-    <message>
-      <source>Building Euro (cm/m²/m³)</source>
-      <translation>Euro bouwen (cm/m²/m³)</translation>
-    </message>
-    <message>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Metrische kleine onderdelen en CNC (mm, mm / min)</translation>
+      <source>Number of decimals that should be shown for numbers and dimensions</source>
+      <translation>Aantal decimalen dat moet worden weergegeven voor aantallen en afmetingen</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
       <translation>Minimale fractie van een duim:</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch to be displayed</source>
+      <translation>Minimale fractionele inch om weer te geven</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -4153,24 +4137,40 @@ horizontale ruimte in de Python-console overschrijden</translation>
       <translation>1/128"</translation>
     </message>
     <message>
-      <source>Unit system:</source>
-      <translation>Eenheidssysteem:</translation>
+      <source>Magnitude</source>
+      <translation>Omvang</translation>
     </message>
     <message>
-      <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>Aantal decimalen dat moet worden weergegeven voor aantallen en afmetingen</translation>
+      <source>Unit</source>
+      <translation>Eenheid</translation>
     </message>
     <message>
-      <source>Unit system that should be used for all parts the application</source>
-      <translation>Eenheidssysteem dat moet worden gebruikt voor alle onderdelen van de applicatie</translation>
+      <source>Standard (mm/kg/s/degree)</source>
+      <translation>Standaard (mm/kg/s/graad)</translation>
     </message>
     <message>
-      <source>Minimum fractional inch to be displayed</source>
-      <translation>Minimale fractionele inch om weer te geven</translation>
+      <source>MKS (m/kg/s/degree)</source>
+      <translation>MKS (m/kg/s/graad)</translation>
+    </message>
+    <message>
+      <source>US customary (in/lb)</source>
+      <translation>US customary (in/lb)</translation>
+    </message>
+    <message>
+      <source>Imperial decimal (in/lb)</source>
+      <translation>Imperial decimal (in/lb)</translation>
+    </message>
+    <message>
+      <source>Building Euro (cm/m²/m³)</source>
+      <translation>Euro bouwen (cm/m²/m³)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
       <translation>US bouwen (ft-in/sqft/cft)</translation>
+    </message>
+    <message>
+      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+      <translation>Metrische kleine onderdelen en CNC (mm, mm / min)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
@@ -4192,76 +4192,76 @@ horizontale ruimte in de Python-console overschrijden</translation>
       <translation>Selectie</translation>
     </message>
     <message>
-      <source>Enable selection highlighting</source>
-      <translation>Activeer selectie markeren</translation>
+      <source>Enable preselection and highlight by specified color</source>
+      <translation>Voorselectie inschakelen en markeren op basis van kleur</translation>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
       <translation>Activeer voorselectie markeren</translation>
     </message>
     <message>
-      <source>Background color</source>
-      <translation>Achtergrond</translation>
-    </message>
-    <message>
-      <source>Middle color</source>
-      <translation>Middelste kleur</translation>
-    </message>
-    <message>
-      <source>Color gradient</source>
-      <translation>Kleurverloop</translation>
-    </message>
-    <message>
-      <source>Simple color</source>
-      <translation>Eenvoudige kleur</translation>
-    </message>
-    <message>
-      <source>Object being edited</source>
-      <translation>Object in bewerking</translation>
-    </message>
-    <message>
-      <source>Active container</source>
-      <translation>Actieve container</translation>
-    </message>
-    <message>
-      <source>Enable preselection and highlight by specified color</source>
-      <translation>Voorselectie inschakelen en markeren op basis van kleur</translation>
-    </message>
-    <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Selectiemarkering mogelijk maken en een bepaalde kleur gebruiken</translation>
+    </message>
+    <message>
+      <source>Enable selection highlighting</source>
+      <translation>Activeer selectie markeren</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
       <translation>Achtergrondkleur voor de modelweergave</translation>
     </message>
     <message>
+      <source>Background color</source>
+      <translation>Achtergrond</translation>
+    </message>
+    <message>
       <source>Background will have selected color</source>
       <translation>Achtergrond zal de geselecteerde kleur hebben</translation>
     </message>
     <message>
-      <source>Color gradient will get selected color as middle color</source>
-      <translation>Kleurverloop krijgt de geselecteerde kleur als middelste kleur</translation>
-    </message>
-    <message>
-      <source>Bottom color</source>
-      <translation>Onderkleur</translation>
+      <source>Simple color</source>
+      <translation>Eenvoudige kleur</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
       <translation>Achtergrond zal een geselecteerd kleurverloop hebben</translation>
     </message>
     <message>
+      <source>Color gradient</source>
+      <translation>Kleurverloop</translation>
+    </message>
+    <message>
       <source>Top color</source>
       <translation>Bovenkleur</translation>
+    </message>
+    <message>
+      <source>Bottom color</source>
+      <translation>Onderkleur</translation>
+    </message>
+    <message>
+      <source>Color gradient will get selected color as middle color</source>
+      <translation>Kleurverloop krijgt de geselecteerde kleur als middelste kleur</translation>
+    </message>
+    <message>
+      <source>Middle color</source>
+      <translation>Middelste kleur</translation>
     </message>
     <message>
       <source>Tree view</source>
       <translation>Boomstructuurweergave</translation>
     </message>
     <message>
+      <source>Object being edited</source>
+      <translation>Object in bewerking</translation>
+    </message>
+    <message>
       <source>Background color for objects in tree view that are currently edited</source>
       <translation>Achtergrondkleur voor objecten in de boomstructuurweergave die momenteel zijn bewerkt</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Actieve container</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
@@ -4282,40 +4282,38 @@ horizontale ruimte in de Python-console overschrijden</translation>
       <translation>Eenheden rekenmachine</translation>
     </message>
     <message>
-      <source>as:</source>
-      <translation>als:</translation>
-    </message>
-    <message>
-      <source>=&gt;</source>
-      <translation>=&gt;</translation>
-    </message>
-    <message>
-      <source>Quantity:</source>
-      <translation>Aantal:</translation>
-    </message>
-    <message>
-      <source>Copy</source>
-      <translation>Kopie</translation>
-    </message>
-    <message>
-      <source>Close</source>
-      <translation>Sluiten</translation>
-    </message>
-    <message>
       <source>Input the source value and unit</source>
       <translation>Voer de bronwaarde en eenheid in</translation>
+    </message>
+    <message>
+      <source>as:</source>
+      <translation>als:</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
       <translation>Voer hier de eenheid voor het resultaat in</translation>
     </message>
     <message>
+      <source>=&gt;</source>
+      <translation>=&gt;</translation>
+    </message>
+    <message>
       <source>Result</source>
       <translation>Resultaat</translation>
     </message>
     <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
+    </message>
+    <message>
       <source>Quantity</source>
       <translation>Aantal</translation>
+    </message>
+    <message>
+      <source>Quantity:</source>
+      <translation>Aantal:</translation>
     </message>
     <message>
       <source>Unit system:</source>
@@ -4348,21 +4346,23 @@ Het voorkeurssysteem is het systeem dat in de algemene voorkeuren is ingesteld.<
       <translation>Kopieer het resultaat naar het klembord</translation>
     </message>
     <message>
-      <source>List of last used calculations.
-To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations.
-To add a calculation press Return in the value input field</translation>
+      <source>Copy</source>
+      <translation>Kopie</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Sluiten</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unit mismatch</source>
-      <translation>wanverhouding van eenheid</translation>
-    </message>
-    <message>
       <source>unknown unit:</source>
       <translation>onbekende eenheid:</translation>
+    </message>
+    <message>
+      <source>unit mismatch</source>
+      <translation>wanverhouding van eenheid</translation>
     </message>
   </context>
   <context>
@@ -4372,28 +4372,12 @@ To add a calculation press Return in the value input field</translation>
       <translation>Werkbanken</translation>
     </message>
     <message>
-      <source>Enabled workbenches</source>
-      <translation>Ingeschakelde werkbanken</translation>
-    </message>
-    <message>
       <source>Disabled workbenches</source>
       <translation>Uitgeschakelde werkbanken</translation>
     </message>
     <message>
-      <source>Move down</source>
-      <translation>Naar beneden verplaatsen</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Het geselecteerde item omlaag verplaatsen.&lt;/span&gt;&lt;/p&gt; &lt;p&gt;Het item zal naar beneden worden verplaatst&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Move left</source>
-      <translation>Naar links verplaatsen</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;De geselecteerde workbench van ingeschakelde werkbanken verwijderen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Enabled workbenches</source>
+      <translation>Ingeschakelde werkbanken</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -4402,10 +4386,6 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Verplaatst de geselecteerde werkbank naar ingeschakelde werkbanken.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Sort enabled workbenches</source>
-      <translation>Ingeschakelde werkbanken sorteren</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -4420,8 +4400,28 @@ To add a calculation press Return in the value input field</translation>
       <translation>Alle tot ingeschakelde werkbanken toevoegen</translation>
     </message>
     <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;De geselecteerde workbench van ingeschakelde werkbanken verwijderen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Sort enabled workbenches</source>
+      <translation>Ingeschakelde werkbanken sorteren</translation>
+    </message>
+    <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
       <translation>&lt;p&gt;Ingeschakelde werkbanken sorteren&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move left</source>
+      <translation>Naar links verplaatsen</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Naar beneden verplaatsen</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Het geselecteerde item omlaag verplaatsen.&lt;/span&gt;&lt;/p&gt; &lt;p&gt;Het item zal naar beneden worden verplaatst&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -4442,6 +4442,12 @@ To add a calculation press Return in the value input field</translation>
       <translation>Documentherstel</translation>
     </message>
     <message>
+      <source>Press 'Start Recovery' to start the recovery process of the document listed below.
+
+The 'Status' column shows whether the document could be recovered.</source>
+      <translation>Druk op 'Start Herstellen' om te beginnen met het proces van herstel van het document hieronder opgesomd. De kolom 'Status' wordt weergegeven of het document kan worden hersteld.</translation>
+    </message>
+    <message>
       <source>Status of recovered documents:</source>
       <translation>Status van herstelde documenten:</translation>
     </message>
@@ -4452,6 +4458,10 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>Status</source>
       <translation>Status</translation>
+    </message>
+    <message>
+      <source>Cleanup...</source>
+      <translation>Opruimen...</translation>
     </message>
     <message>
       <source>Start Recovery</source>
@@ -4478,10 +4488,6 @@ To add a calculation press Return in the value input field</translation>
       <translation>Voltooien</translation>
     </message>
     <message>
-      <source>Cleanup...</source>
-      <translation>Opruimen...</translation>
-    </message>
-    <message>
       <source>Delete</source>
       <translation>Verwijderen</translation>
     </message>
@@ -4502,18 +4508,12 @@ To add a calculation press Return in the value input field</translation>
       <translation>Weet u zeker dat u alle voorbijgaande mappen wilt verwijderen?</translation>
     </message>
     <message>
-      <source>Transient directories deleted.</source>
-      <translation>Tijdelijke mappen verwijderd.</translation>
-    </message>
-    <message>
-      <source>Press 'Start Recovery' to start the recovery process of the document listed below.
-
-The 'Status' column shows whether the document could be recovered.</source>
-      <translation>Druk op 'Start Herstellen' om te beginnen met het proces van herstel van het document hieronder opgesomd. De kolom 'Status' wordt weergegeven of het document kan worden hersteld.</translation>
-    </message>
-    <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>Herstel van bestanden is niet mogelijk na het verwijderen van alle tijdelijke mappen.</translation>
+    </message>
+    <message>
+      <source>Transient directories deleted.</source>
+      <translation>Tijdelijke mappen verwijderd.</translation>
     </message>
     <message>
       <source>Transient deleted</source>
@@ -4647,16 +4647,16 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Vector</translation>
     </message>
     <message>
-      <source>Z:</source>
-      <translation>Z:</translation>
+      <source>X:</source>
+      <translation>X:</translation>
     </message>
     <message>
       <source>Y:</source>
       <translation>Y:</translation>
     </message>
     <message>
-      <source>X:</source>
-      <translation>X:</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
   </context>
   <context>
@@ -4717,6 +4717,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Samenvouwen</translation>
     </message>
     <message>
+      <source>Do you really want to remove this parameter group?</source>
+      <translation>Wenst u echt deze parametergroep te verwijderen?</translation>
+    </message>
+    <message>
       <source>Existing sub-group</source>
       <translation>Bestaande subgroep</translation>
     </message>
@@ -4739,10 +4743,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Reading from '%1' failed.</source>
       <translation>Het lezen van '%1' is mislukt.</translation>
-    </message>
-    <message>
-      <source>Do you really want to remove this parameter group?</source>
-      <translation>Wenst u echt deze parametergroep te verwijderen?</translation>
     </message>
   </context>
   <context>
@@ -4799,100 +4799,64 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Plaatsing</translation>
     </message>
     <message>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Verplaatsing:</translation>
-    </message>
-    <message>
-      <source>Z:</source>
-      <translation>Z:</translation>
-    </message>
-    <message>
-      <source>Y:</source>
-      <translation>Y:</translation>
     </message>
     <message>
       <source>X:</source>
       <translation>X:</translation>
     </message>
     <message>
-      <source>Rotation:</source>
-      <translation>Rotatie:</translation>
+      <source>Y:</source>
+      <translation>Y:</translation>
     </message>
     <message>
-      <source>Angle:</source>
-      <translation>Hoek:</translation>
-    </message>
-    <message>
-      <source>Axis:</source>
-      <translation>Assen:</translation>
-    </message>
-    <message>
-      <source>Center:</source>
-      <translation>Middelpunt:</translation>
-    </message>
-    <message>
-      <source>Rotation axis with angle</source>
-      <translation>Rotatieas met hoek</translation>
-    </message>
-    <message>
-      <source>Apply</source>
-      <translation>Toepassen</translation>
-    </message>
-    <message>
-      <source>Reset</source>
-      <translation>Herstel</translation>
-    </message>
-    <message>
-      <source>Close</source>
-      <translation>Sluiten</translation>
-    </message>
-    <message>
-      <source>Incorrect quantity</source>
-      <translation>Verkeerd aantal</translation>
-    </message>
-    <message>
-      <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation>Er zijn invoervelden met verkeerde input, zorg voor geldige waarden van plaatsing!</translation>
-    </message>
-    <message>
-      <source>Use center of mass</source>
-      <translation>Zwaartepunt gebruiken</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
     <message>
       <source>Axial:</source>
       <translation>Axiaal:</translation>
     </message>
     <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Shift-klik voor de tegenovergestelde richting</translation>
+    </message>
+    <message>
       <source>Apply axial</source>
       <translation>Axiaal toepassen</translation>
     </message>
     <message>
-      <source>Shift click for opposite direction</source>
-      <translation>Shift-klik voor de tegenovergestelde richting</translation>
+      <source>Center:</source>
+      <translation>Middelpunt:</translation>
+    </message>
+    <message>
+      <source>Use center of mass</source>
+      <translation>Zwaartepunt gebruiken</translation>
     </message>
     <message>
       <source>Selected points</source>
       <translation>Geselecteerde punten</translation>
     </message>
     <message>
-      <source>Apply incremental changes</source>
-      <translation>Pas incrementele wijzigingen toe</translation>
+      <source>Rotation:</source>
+      <translation>Rotatie:</translation>
     </message>
     <message>
-      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Gelieve 1, 2 of 3 punten te selecteren voordat u op deze knop klikt. Een punt kan op een eindpunt, vlak of rand zijn. Indien op een vlak of rand, zal het gebruikte punt het punt zijn dat zich op de positie van de muis langs het vlak of de rand bevindt. Als 1 punt wordt geselecteerd, wordt het gebruikt als draaipunt. Als 2 punten worden geselecteerd, is het middelpunt daarvan het draaipunt en wordt er zo nodig een nieuwe aangepaste as gemaakt. Als 3 punten worden geselecteerd, wordt het eerste punt het draaipunt en ligt het op de vector die normaal is voor het vlak gedefinieerd door de 3 punten. Enige informatie over afstand en hoek wordt in de rapportweergave gegeven, wat nuttig kan zijn bij het uitlijnen van objecten. Voor uw gemak wordt, wanneer Shift + klik gebruikt worden, de juiste afstand of hoek naar het klembord gekopieerd.</translation>
+      <source>Rotation axis with angle</source>
+      <translation>Rotatieas met hoek</translation>
     </message>
     <message>
-      <source>Pitch (around y-axis):</source>
-      <translation>Pitch (rond y-as):</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation>Euler hoeken (zy'x'')</translation>
     </message>
     <message>
-      <source>Roll (around x-axis):</source>
-      <translation>Rol (rond x-as):</translation>
+      <source>Axis:</source>
+      <translation>Assen:</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Hoek:</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
@@ -4903,16 +4867,52 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Rol (rond z-as)</translation>
     </message>
     <message>
+      <source>Pitch (around y-axis):</source>
+      <translation>Pitch (rond y-as):</translation>
+    </message>
+    <message>
       <source>Pitch (around y-axis)</source>
       <translation>Pitch (rond y-as)</translation>
+    </message>
+    <message>
+      <source>Roll (around x-axis):</source>
+      <translation>Rol (rond x-as):</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
       <translation>Rol (rond x-as)</translation>
     </message>
     <message>
-      <source>Euler angles (zy'x'')</source>
-      <translation>Euler hoeken (zy'x'')</translation>
+      <source>Apply incremental changes</source>
+      <translation>Pas incrementele wijzigingen toe</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Herstel</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Sluiten</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>Toepassen</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Gelieve 1, 2 of 3 punten te selecteren voordat u op deze knop klikt. Een punt kan op een eindpunt, vlak of rand zijn. Indien op een vlak of rand, zal het gebruikte punt het punt zijn dat zich op de positie van de muis langs het vlak of de rand bevindt. Als 1 punt wordt geselecteerd, wordt het gebruikt als draaipunt. Als 2 punten worden geselecteerd, is het middelpunt daarvan het draaipunt en wordt er zo nodig een nieuwe aangepaste as gemaakt. Als 3 punten worden geselecteerd, wordt het eerste punt het draaipunt en ligt het op de vector die normaal is voor het vlak gedefinieerd door de 3 punten. Enige informatie over afstand en hoek wordt in de rapportweergave gegeven, wat nuttig kan zijn bij het uitlijnen van objecten. Voor uw gemak wordt, wanneer Shift + klik gebruikt worden, de juiste afstand of hoek naar het klembord gekopieerd.</translation>
+    </message>
+    <message>
+      <source>Incorrect quantity</source>
+      <translation>Verkeerd aantal</translation>
+    </message>
+    <message>
+      <source>There are input fields with incorrect input, please ensure valid placement values!</source>
+      <translation>Er zijn invoervelden met verkeerde input, zorg voor geldige waarden van plaatsing!</translation>
     </message>
   </context>
   <context>
@@ -4964,12 +4964,12 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Dialoog</translation>
     </message>
     <message>
-      <source>Close</source>
-      <translation>Sluiten</translation>
-    </message>
-    <message>
       <source>Refresh</source>
       <translation>Vernieuwen</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Sluiten</translation>
     </message>
   </context>
   <context>
@@ -4979,12 +4979,12 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Inventorboom</translation>
     </message>
     <message>
-      <source>Nodes</source>
-      <translation>Knopen</translation>
-    </message>
-    <message>
       <source>Name</source>
       <translation>Naam</translation>
+    </message>
+    <message>
+      <source>Nodes</source>
+      <translation>Knopen</translation>
     </message>
   </context>
   <context>
@@ -5048,30 +5048,20 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>De geselecteerde objecten bevatten andere afhankelijkheden. Selecteer welke objecten u wilt exporteren. Alle afhankelijkheden zijn standaard automatisch geselecteerd.</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Document</translation>
-    </message>
-    <message>
-      <source>Name</source>
-      <translation>Naam</translation>
-    </message>
-    <message>
-      <source>&amp;Use Original Selections</source>
-      <translation>&amp;Originele selecties gebruiken</translation>
-    </message>
-    <message>
-      <source>Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</source>
-      <translation>Afhankelijkheden negeren en doorgaan met objecten
-oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</translation>
-    </message>
-    <message>
       <source>Auto select depending objects</source>
       <translation type="unfinished">Auto select depending objects</translation>
     </message>
     <message>
       <source>Depending on</source>
       <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Document</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Naam</translation>
     </message>
     <message>
       <source>Depended by</source>
@@ -5084,6 +5074,16 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
     <message>
       <source>All</source>
       <translation>Alle</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;Originele selecties gebruiken</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Afhankelijkheden negeren en doorgaan met objecten
+oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</translation>
     </message>
   </context>
   <context>
@@ -5130,34 +5130,6 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
       <translation>Opties</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Wissen</translation>
-    </message>
-    <message>
-      <source>Save As...</source>
-      <translation>Opslaan als...</translation>
-    </message>
-    <message>
-      <source>Save Report Output</source>
-      <translation>Rapport-uitvoer opslaan</translation>
-    </message>
-    <message>
-      <source>Go to end</source>
-      <translation>Ga naar het einde</translation>
-    </message>
-    <message>
-      <source>Redirect Python output</source>
-      <translation>Python-uitvoer omleiden</translation>
-    </message>
-    <message>
-      <source>Redirect Python errors</source>
-      <translation>Omleiden van Python fouten</translation>
-    </message>
-    <message>
-      <source>Plain Text Files</source>
-      <translation>Gewone tekstbestanden</translation>
-    </message>
-    <message>
       <source>Display message types</source>
       <translation>Toon berichttypes</translation>
     </message>
@@ -5181,6 +5153,34 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
       <source>Show output window on</source>
       <translation type="unfinished">Show output window on</translation>
     </message>
+    <message>
+      <source>Redirect Python output</source>
+      <translation>Python-uitvoer omleiden</translation>
+    </message>
+    <message>
+      <source>Redirect Python errors</source>
+      <translation>Omleiden van Python fouten</translation>
+    </message>
+    <message>
+      <source>Go to end</source>
+      <translation>Ga naar het einde</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Wissen</translation>
+    </message>
+    <message>
+      <source>Save As...</source>
+      <translation>Opslaan als...</translation>
+    </message>
+    <message>
+      <source>Save Report Output</source>
+      <translation>Rapport-uitvoer opslaan</translation>
+    </message>
+    <message>
+      <source>Plain Text Files</source>
+      <translation>Gewone tekstbestanden</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportView</name>
@@ -5196,6 +5196,10 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
   <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
+      <source>Selection View</source>
+      <translation>Selectieweergave</translation>
+    </message>
+    <message>
       <source>Search</source>
       <translation>Zoeken</translation>
     </message>
@@ -5206,6 +5210,14 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
     <message>
       <source>Clears the search field</source>
       <translation>Het zoekveld wissen</translation>
+    </message>
+    <message>
+      <source>The number of selected items</source>
+      <translation>Het aantal geselecteerde items</translation>
+    </message>
+    <message>
+      <source>Picked object list</source>
+      <translation>Gekozen objectlijst</translation>
     </message>
     <message>
       <source>Select only</source>
@@ -5240,14 +5252,6 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
       <translation>Dit object selecteren en in de documentstructuur vinden</translation>
     </message>
     <message>
-      <source>To python console</source>
-      <translation>Naar python console</translation>
-    </message>
-    <message>
-      <source>Reveals this object and its subelements in the python console.</source>
-      <translation>Drukt dit object en haar subelementen in de python console uit.</translation>
-    </message>
-    <message>
       <source>Mark to recompute</source>
       <translation>Markeren om te herberekenen</translation>
     </message>
@@ -5256,12 +5260,12 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
       <translation>Object opnieuw berekenen</translation>
     </message>
     <message>
-      <source>Selection View</source>
-      <translation>Selectieweergave</translation>
+      <source>To python console</source>
+      <translation>Naar python console</translation>
     </message>
     <message>
-      <source>The number of selected items</source>
-      <translation>Het aantal geselecteerde items</translation>
+      <source>Reveals this object and its subelements in the python console.</source>
+      <translation>Drukt dit object en haar subelementen in de python console uit.</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
@@ -5270,10 +5274,6 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Maakt een eigen kopie van deze subvorm in het document</translation>
-    </message>
-    <message>
-      <source>Picked object list</source>
-      <translation>Gekozen objectlijst</translation>
     </message>
   </context>
   <context>
@@ -5310,8 +5310,16 @@ Do you want to save your changes?</source>
 Wilt u uw wijzigingen opslaan?</translation>
     </message>
     <message>
+      <source>FreeCAD macro</source>
+      <translation>FreeCAD macro</translation>
+    </message>
+    <message>
       <source>Export PDF</source>
       <translation>Exporteren als PDF</translation>
+    </message>
+    <message>
+      <source>PDF file</source>
+      <translation>PDF-bestand</translation>
     </message>
     <message>
       <source>untitled[*]</source>
@@ -5332,14 +5340,6 @@ Wilt u uw wijzigingen opslaan?</translation>
     <message>
       <source>Formatted</source>
       <translation>Geformatteerd</translation>
-    </message>
-    <message>
-      <source>FreeCAD macro</source>
-      <translation>FreeCAD macro</translation>
-    </message>
-    <message>
-      <source>PDF file</source>
-      <translation>PDF-bestand</translation>
     </message>
   </context>
   <context>
@@ -5434,34 +5434,6 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <source>Export graph</source>
-      <translation>Grafiek exporteren</translation>
-    </message>
-    <message>
-      <source>PNG format</source>
-      <translation>PNG formaat</translation>
-    </message>
-    <message>
-      <source>Bitmap format</source>
-      <translation>Bitmap formaat</translation>
-    </message>
-    <message>
-      <source>GIF format</source>
-      <translation>GIF formaat</translation>
-    </message>
-    <message>
-      <source>JPG format</source>
-      <translation>JPG formaat</translation>
-    </message>
-    <message>
-      <source>SVG format</source>
-      <translation>SVG formaat</translation>
-    </message>
-    <message>
-      <source>PDF format</source>
-      <translation>PDF formaat</translation>
-    </message>
-    <message>
       <source>Graphviz not found</source>
       <translation>Graphviz niet gevonden</translation>
     </message>
@@ -5488,6 +5460,34 @@ Wilt u uw wijzigingen opslaan?</translation>
     <message>
       <source>Graphviz failed to create an image file</source>
       <translation>Graphviz kon geen afbeeldingsbestand creëren</translation>
+    </message>
+    <message>
+      <source>PNG format</source>
+      <translation>PNG formaat</translation>
+    </message>
+    <message>
+      <source>Bitmap format</source>
+      <translation>Bitmap formaat</translation>
+    </message>
+    <message>
+      <source>GIF format</source>
+      <translation>GIF formaat</translation>
+    </message>
+    <message>
+      <source>JPG format</source>
+      <translation>JPG formaat</translation>
+    </message>
+    <message>
+      <source>SVG format</source>
+      <translation>SVG formaat</translation>
+    </message>
+    <message>
+      <source>PDF format</source>
+      <translation>PDF formaat</translation>
+    </message>
+    <message>
+      <source>Export graph</source>
+      <translation>Grafiek exporteren</translation>
     </message>
   </context>
   <context>
@@ -5530,14 +5530,6 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <source>Wrong direction</source>
-      <translation>Verkeerde richting</translation>
-    </message>
-    <message>
-      <source>Direction must not be the null vector</source>
-      <translation>Richting mag niet de nul-vector zijn</translation>
-    </message>
-    <message>
       <source>X</source>
       <translation>x</translation>
     </message>
@@ -5552,6 +5544,14 @@ Wilt u uw wijzigingen opslaan?</translation>
     <message>
       <source>User defined...</source>
       <translation>Door gebruiker gedefinieerd...</translation>
+    </message>
+    <message>
+      <source>Wrong direction</source>
+      <translation>Verkeerde richting</translation>
+    </message>
+    <message>
+      <source>Direction must not be the null vector</source>
+      <translation>Richting mag niet de nul-vector zijn</translation>
     </message>
   </context>
   <context>
@@ -5599,16 +5599,28 @@ Wilt u uw wijzigingen opslaan?</translation>
       <translation>Gereed</translation>
     </message>
     <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
+    <message>
+      <source>Close All</source>
+      <translation>Alles sluiten</translation>
+    </message>
+    <message>
       <source>Toggles this toolbar</source>
       <translation>Schakelt deze werkbalk in/uit</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
       <translation>Schakelt dit dokbare venster in/uit</translation>
-    </message>
-    <message>
-      <source>Close All</source>
-      <translation>Alles sluiten</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -5623,18 +5635,6 @@ Wilt u uw wijzigingen opslaan?</translation>
 Do you want to save the document now?</source>
       <translation>Om een link naar externe objecten te kunnen maken, moet het document minstens één keer worden opgeslagen.
 Wilt u het document nu opslaan?</translation>
-    </message>
-    <message>
-      <source>Help addon needed!</source>
-      <translation type="unfinished">Help addon needed!</translation>
-    </message>
-    <message>
-      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
-      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
-    </message>
-    <message>
-      <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
     </message>
   </context>
   <context>
@@ -5717,12 +5717,12 @@ How do you want to proceed?</source>
       <translation>Punt gepakt bij (%1,%2,%3)</translation>
     </message>
     <message>
-      <source>No point was picked</source>
-      <translation>Geen punt was geselecteerd</translation>
-    </message>
-    <message>
       <source>No point was found on model</source>
       <translation>Op het model is geen punt gevonden</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>Geen punt was geselecteerd</translation>
     </message>
   </context>
   <context>
@@ -5870,28 +5870,28 @@ How do you want to proceed?</source>
       <translation>eigenschap</translation>
     </message>
     <message>
+      <source>Auto expand</source>
+      <translation>Automatisch uitbreiden</translation>
+    </message>
+    <message>
       <source>Show all</source>
       <translation>Alles tonen</translation>
-    </message>
-    <message>
-      <source>Add property</source>
-      <translation>Voeg eigenschap toe</translation>
-    </message>
-    <message>
-      <source>Remove property</source>
-      <translation>Eigenschap verwijderen</translation>
     </message>
     <message>
       <source>Expression...</source>
       <translation>Uitdrukking...</translation>
     </message>
     <message>
-      <source>Auto expand</source>
-      <translation>Automatisch uitbreiden</translation>
+      <source>Add property</source>
+      <translation>Voeg eigenschap toe</translation>
     </message>
     <message>
       <source>Rename property group</source>
       <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Remove property</source>
+      <translation>Eigenschap verwijderen</translation>
     </message>
     <message>
       <source>Group name:</source>
@@ -5944,8 +5944,16 @@ Do you want to exit without saving your data?</source>
       <translation>Niet-verwerkte uitzondering voor FreeCAD.</translation>
     </message>
     <message>
+      <source>Unhandled std C++ exception.</source>
+      <translation>Onverwerkte std C++ uitzondering.</translation>
+    </message>
+    <message>
       <source>Unhandled unknown C++ exception.</source>
       <translation>Niet-verwerkte uitzondering voor onbekende C++.</translation>
+    </message>
+    <message>
+      <source>&amp;Copy</source>
+      <translation>&amp;Kopiëren</translation>
     </message>
     <message>
       <source>&amp;Copy command</source>
@@ -5960,28 +5968,12 @@ Do you want to exit without saving your data?</source>
       <translation>Geschiedenis opslaan als...</translation>
     </message>
     <message>
-      <source>Insert file name...</source>
-      <translation>Bestandsnaam invoeren...</translation>
-    </message>
-    <message>
-      <source>Save History</source>
+      <source>Save history</source>
       <translation>Geschiedenis opslaan</translation>
     </message>
     <message>
-      <source>Insert file name</source>
-      <translation>Bestandsnaam invoeren</translation>
-    </message>
-    <message>
-      <source>Unhandled std C++ exception.</source>
-      <translation>Onverwerkte std C++ uitzondering.</translation>
-    </message>
-    <message>
-      <source>Word wrap</source>
-      <translation>Tekstterugloop</translation>
-    </message>
-    <message>
-      <source>&amp;Copy</source>
-      <translation>&amp;Kopiëren</translation>
+      <source>Saves Python history across %1 sessions</source>
+      <translation>Bewaart Pythongeschiedenis over %1 sessies</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -5996,20 +5988,28 @@ Do you want to exit without saving your data?</source>
       <translation>Maak console leeg</translation>
     </message>
     <message>
+      <source>Insert file name...</source>
+      <translation>Bestandsnaam invoeren...</translation>
+    </message>
+    <message>
+      <source>Word wrap</source>
+      <translation>Tekstterugloop</translation>
+    </message>
+    <message>
+      <source>Save History</source>
+      <translation>Geschiedenis opslaan</translation>
+    </message>
+    <message>
       <source>Macro Files</source>
       <translation>Macro Bestanden</translation>
     </message>
     <message>
+      <source>Insert file name</source>
+      <translation>Bestandsnaam invoeren</translation>
+    </message>
+    <message>
       <source>All Files</source>
       <translation>Alle bestanden</translation>
-    </message>
-    <message>
-      <source>Save history</source>
-      <translation>Geschiedenis opslaan</translation>
-    </message>
-    <message>
-      <source>Saves Python history across %1 sessions</source>
-      <translation>Bewaart Pythongeschiedenis over %1 sessies</translation>
     </message>
   </context>
   <context>
@@ -6041,6 +6041,10 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
+      <source>none</source>
+      <translation>geen</translation>
+    </message>
+    <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
       <translation>Voer macro %1 uit (Shift+klik om te bewerken) snelkoppeling: %2</translation>
     </message>
@@ -6051,10 +6055,6 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>The file '%1' cannot be opened.</source>
       <translation>Het bestand '%1' kan niet worden geopend.</translation>
-    </message>
-    <message>
-      <source>none</source>
-      <translation>geen</translation>
     </message>
   </context>
   <context>
@@ -6209,28 +6209,28 @@ Wilt u een andere map opgeven?</translation>
       <translation>Tekstbenaming</translation>
     </message>
     <message>
-      <source>Recompute after commit</source>
-      <translation>Herbereken na bijdrage</translation>
-    </message>
-    <message>
-      <source>Remove</source>
-      <translation>Verwijderen</translation>
-    </message>
-    <message>
       <source>Edit</source>
       <translation>Bewerken</translation>
-    </message>
-    <message>
-      <source>Remove all</source>
-      <translation>Alles wissen</translation>
     </message>
     <message>
       <source>Hide</source>
       <translation>Verbergen</translation>
     </message>
     <message>
+      <source>Remove</source>
+      <translation>Verwijderen</translation>
+    </message>
+    <message>
+      <source>Remove all</source>
+      <translation>Alles wissen</translation>
+    </message>
+    <message>
       <source>Box select</source>
       <translation>Doosselectie</translation>
+    </message>
+    <message>
+      <source>Recompute after commit</source>
+      <translation>Herbereken na bijdrage</translation>
     </message>
     <message>
       <source>On-top when selected</source>
@@ -6239,6 +6239,14 @@ Wilt u een andere map opgeven?</translation>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
+    <message>
+      <source>Appearance</source>
+      <translation>Uiterlijk</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Documentvenster:</translation>
+    </message>
     <message>
       <source>Plot mode:</source>
       <translation>Plot modus:</translation>
@@ -6254,14 +6262,6 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <source>Transparency:</source>
       <translation>Transparantie:</translation>
-    </message>
-    <message>
-      <source>Appearance</source>
-      <translation>Uiterlijk</translation>
-    </message>
-    <message>
-      <source>Document window:</source>
-      <translation>Documentvenster:</translation>
     </message>
   </context>
   <context>
@@ -6365,28 +6365,24 @@ Wilt u een andere map opgeven?</translation>
   <context>
     <name>Gui::Translator</name>
     <message>
-      <source>English</source>
-      <translation>Engels</translation>
+      <source>Afrikaans</source>
+      <translation>Afrikaans</translation>
     </message>
     <message>
-      <source>German</source>
-      <translation>Duits</translation>
+      <source>Arabic</source>
+      <translation>Arabisch</translation>
     </message>
     <message>
-      <source>Spanish</source>
-      <translation>Spaans</translation>
+      <source>Basque</source>
+      <translation>Baskisch</translation>
     </message>
     <message>
-      <source>French</source>
-      <translation>Frans</translation>
+      <source>Bulgarian</source>
+      <translation>Bulgaars</translation>
     </message>
     <message>
-      <source>Italian</source>
-      <translation>Italiaans</translation>
-    </message>
-    <message>
-      <source>Japanese</source>
-      <translation>Japans</translation>
+      <source>Catalan</source>
+      <translation>Catalaans</translation>
     </message>
     <message>
       <source>Chinese Simplified</source>
@@ -6397,24 +6393,80 @@ Wilt u een andere map opgeven?</translation>
       <translation>Chinees (traditioneel)</translation>
     </message>
     <message>
+      <source>Croatian</source>
+      <translation>Kroatisch</translation>
+    </message>
+    <message>
+      <source>Czech</source>
+      <translation>Tsjechisch</translation>
+    </message>
+    <message>
+      <source>Dutch</source>
+      <translation>Nederlands</translation>
+    </message>
+    <message>
+      <source>English</source>
+      <translation>Engels</translation>
+    </message>
+    <message>
+      <source>Filipino</source>
+      <translation>Filipijns</translation>
+    </message>
+    <message>
+      <source>Finnish</source>
+      <translation>Fins</translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation>Frans</translation>
+    </message>
+    <message>
+      <source>Galician</source>
+      <translation>Galicisch</translation>
+    </message>
+    <message>
+      <source>German</source>
+      <translation>Duits</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Grieks</translation>
+    </message>
+    <message>
+      <source>Hungarian</source>
+      <translation>Hongaars</translation>
+    </message>
+    <message>
+      <source>Indonesian</source>
+      <translation>Indonesisch</translation>
+    </message>
+    <message>
+      <source>Italian</source>
+      <translation>Italiaans</translation>
+    </message>
+    <message>
+      <source>Japanese</source>
+      <translation>Japans</translation>
+    </message>
+    <message>
+      <source>Kabyle</source>
+      <translation>Kabylisch</translation>
+    </message>
+    <message>
       <source>Korean</source>
       <translation>Koreaans</translation>
     </message>
     <message>
-      <source>Russian</source>
-      <translation>Russisch</translation>
-    </message>
-    <message>
-      <source>Swedish</source>
-      <translation>Zweeds</translation>
-    </message>
-    <message>
-      <source>Afrikaans</source>
-      <translation>Afrikaans</translation>
+      <source>Lithuanian</source>
+      <translation>Litouws</translation>
     </message>
     <message>
       <source>Norwegian</source>
       <translation>Noors</translation>
+    </message>
+    <message>
+      <source>Polish</source>
+      <translation>Pools</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
@@ -6425,100 +6477,48 @@ Wilt u een andere map opgeven?</translation>
       <translation>Portugees</translation>
     </message>
     <message>
-      <source>Dutch</source>
-      <translation>Nederlands</translation>
-    </message>
-    <message>
-      <source>Ukrainian</source>
-      <translation>Oekraïens</translation>
-    </message>
-    <message>
-      <source>Finnish</source>
-      <translation>Fins</translation>
-    </message>
-    <message>
-      <source>Croatian</source>
-      <translation>Kroatisch</translation>
-    </message>
-    <message>
-      <source>Polish</source>
-      <translation>Pools</translation>
-    </message>
-    <message>
-      <source>Czech</source>
-      <translation>Tsjechisch</translation>
-    </message>
-    <message>
-      <source>Hungarian</source>
-      <translation>Hongaars</translation>
-    </message>
-    <message>
       <source>Romanian</source>
       <translation>Roemeens</translation>
+    </message>
+    <message>
+      <source>Russian</source>
+      <translation>Russisch</translation>
     </message>
     <message>
       <source>Slovak</source>
       <translation>Slowaaks</translation>
     </message>
     <message>
-      <source>Turkish</source>
-      <translation>Turks</translation>
-    </message>
-    <message>
       <source>Slovenian</source>
       <translation>Sloveens</translation>
     </message>
     <message>
-      <source>Basque</source>
-      <translation>Baskisch</translation>
+      <source>Spanish</source>
+      <translation>Spaans</translation>
     </message>
     <message>
-      <source>Catalan</source>
-      <translation>Catalaans</translation>
+      <source>Spanish, Argentina</source>
+      <translation>Spaans, Argentinië</translation>
     </message>
     <message>
-      <source>Galician</source>
-      <translation>Galicisch</translation>
+      <source>Swedish</source>
+      <translation>Zweeds</translation>
     </message>
     <message>
-      <source>Kabyle</source>
-      <translation>Kabylisch</translation>
+      <source>Turkish</source>
+      <translation>Turks</translation>
     </message>
     <message>
-      <source>Filipino</source>
-      <translation>Filipijns</translation>
-    </message>
-    <message>
-      <source>Indonesian</source>
-      <translation>Indonesisch</translation>
-    </message>
-    <message>
-      <source>Lithuanian</source>
-      <translation>Litouws</translation>
+      <source>Ukrainian</source>
+      <translation>Oekraïens</translation>
     </message>
     <message>
       <source>Valencian</source>
       <translation>Valenciaans</translation>
     </message>
     <message>
-      <source>Arabic</source>
-      <translation>Arabisch</translation>
-    </message>
-    <message>
       <source>Vietnamese</source>
       <translation>Vietnamees</translation>
-    </message>
-    <message>
-      <source>Bulgarian</source>
-      <translation>Bulgaars</translation>
-    </message>
-    <message>
-      <source>Greek</source>
-      <translation>Grieks</translation>
-    </message>
-    <message>
-      <source>Spanish, Argentina</source>
-      <translation>Spaans, Argentinië</translation>
     </message>
     <message>
       <source>Georgian</source>
@@ -6542,40 +6542,12 @@ Wilt u een andere map opgeven?</translation>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <source>Create group...</source>
-      <translation>Groep maken...</translation>
+      <source>Search...</source>
+      <translation>Zoeken...</translation>
     </message>
     <message>
-      <source>Create a group</source>
-      <translation>Maak een groep</translation>
-    </message>
-    <message>
-      <source>Group</source>
-      <translation>Groep</translation>
-    </message>
-    <message>
-      <source>Rename</source>
-      <translation>Hernoemen</translation>
-    </message>
-    <message>
-      <source>Rename object</source>
-      <translation>Object hernoemen</translation>
-    </message>
-    <message>
-      <source>Labels &amp; Attributes</source>
-      <translation>Labels &amp; attributen</translation>
-    </message>
-    <message>
-      <source>Application</source>
-      <translation>Applicatie</translation>
-    </message>
-    <message>
-      <source>Finish editing</source>
-      <translation>Bewerken gereed</translation>
-    </message>
-    <message>
-      <source>Finish editing object</source>
-      <translation>Beëindig bewerken object</translation>
+      <source>Search for objects</source>
+      <translation>Zoeken naar objecten</translation>
     </message>
     <message>
       <source>Activate document</source>
@@ -6586,36 +6558,20 @@ Wilt u een andere map opgeven?</translation>
       <translation>Activeer document %1</translation>
     </message>
     <message>
-      <source>Skip recomputes</source>
-      <translation>Herberekening overslaan</translation>
+      <source>Group</source>
+      <translation>Groep</translation>
     </message>
     <message>
-      <source>Enable or disable recomputations of document</source>
-      <translation>Herberekening van het document in- of uitschakelen</translation>
-    </message>
-    <message>
-      <source>Mark to recompute</source>
-      <translation>Markeren om te herberekenen</translation>
-    </message>
-    <message>
-      <source>Mark this object to be recomputed</source>
-      <translation>Object opnieuw berekenen</translation>
-    </message>
-    <message>
-      <source>%1, Internal name: %2</source>
-      <translation>%1, interne naam: %2</translation>
-    </message>
-    <message>
-      <source>Search...</source>
-      <translation>Zoeken...</translation>
-    </message>
-    <message>
-      <source>Search for objects</source>
-      <translation>Zoeken naar objecten</translation>
+      <source>Labels &amp; Attributes</source>
+      <translation>Labels &amp; attributen</translation>
     </message>
     <message>
       <source>Description</source>
       <translation>Omschrijving</translation>
+    </message>
+    <message>
+      <source>Application</source>
+      <translation>Applicatie</translation>
     </message>
     <message>
       <source>Show hidden items</source>
@@ -6634,6 +6590,38 @@ Wilt u een andere map opgeven?</translation>
       <translation>Verberg item in de boomstructuur</translation>
     </message>
     <message>
+      <source>Create group...</source>
+      <translation>Groep maken...</translation>
+    </message>
+    <message>
+      <source>Create a group</source>
+      <translation>Maak een groep</translation>
+    </message>
+    <message>
+      <source>Rename</source>
+      <translation>Hernoemen</translation>
+    </message>
+    <message>
+      <source>Rename object</source>
+      <translation>Object hernoemen</translation>
+    </message>
+    <message>
+      <source>Finish editing</source>
+      <translation>Bewerken gereed</translation>
+    </message>
+    <message>
+      <source>Finish editing object</source>
+      <translation>Beëindig bewerken object</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+    </message>
+    <message>
       <source>Close document</source>
       <translation>Sluit document</translation>
     </message>
@@ -6650,12 +6638,28 @@ Wilt u een andere map opgeven?</translation>
       <translation>Herlaad een gedeeltelijk geladen document</translation>
     </message>
     <message>
+      <source>Skip recomputes</source>
+      <translation>Herberekening overslaan</translation>
+    </message>
+    <message>
+      <source>Enable or disable recomputations of document</source>
+      <translation>Herberekening van het document in- of uitschakelen</translation>
+    </message>
+    <message>
       <source>Allow partial recomputes</source>
       <translation>Sta gedeeltelijke herberekeningen toe</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Herberekening van het bewerkingsobject in- of uitschakelen wanneer 'herberekening overslaan' is ingeschakeld</translation>
+    </message>
+    <message>
+      <source>Mark to recompute</source>
+      <translation>Markeren om te herberekenen</translation>
+    </message>
+    <message>
+      <source>Mark this object to be recomputed</source>
+      <translation>Object opnieuw berekenen</translation>
     </message>
     <message>
       <source>Recompute object</source>
@@ -6670,12 +6674,8 @@ Wilt u een andere map opgeven?</translation>
       <translation> (maar moet worden uitgevoerd)</translation>
     </message>
     <message>
-      <source>Add dependent objects to selection</source>
-      <translation type="unfinished">Add dependent objects to selection</translation>
-    </message>
-    <message>
-      <source>Adds all dependent objects to the selection</source>
-      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+      <source>%1, Internal name: %2</source>
+      <translation>%1, interne naam: %2</translation>
     </message>
   </context>
   <context>
@@ -6780,6 +6780,10 @@ Wilt u een andere map opgeven?</translation>
       <translation>Z:</translation>
     </message>
     <message>
+      <source>Grid Snap in</source>
+      <translation>Raster kleven in</translation>
+    </message>
+    <message>
       <source>0.1 mm</source>
       <translation>0,1 mm</translation>
     </message>
@@ -6835,10 +6839,6 @@ Wilt u een andere map opgeven?</translation>
       <source>5 m </source>
       <translation>5 m </translation>
     </message>
-    <message>
-      <source>Grid Snap in</source>
-      <translation>Raster kleven in</translation>
-    </message>
   </context>
   <context>
     <name>PropertyListDialog</name>
@@ -6854,6 +6854,10 @@ Wilt u een andere map opgeven?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
+      <source>Toolbox</source>
+      <translation>Gereedschapskist</translation>
+    </message>
+    <message>
       <source>Tree view</source>
       <translation>Boomstructuurweergave</translation>
     </message>
@@ -6866,28 +6870,24 @@ Wilt u een andere map opgeven?</translation>
       <translation>Selectieweergave</translation>
     </message>
     <message>
-      <source>Report view</source>
-      <translation>Rapportweergave</translation>
-    </message>
-    <message>
       <source>Combo View</source>
       <translation>Combi-weergave</translation>
     </message>
     <message>
-      <source>Toolbox</source>
-      <translation>Gereedschapskist</translation>
+      <source>Report view</source>
+      <translation>Rapportweergave</translation>
     </message>
     <message>
       <source>Python console</source>
       <translation>Python Console</translation>
     </message>
     <message>
-      <source>Display properties</source>
-      <translation>Weergave eigenschappen</translation>
-    </message>
-    <message>
       <source>DAG View</source>
       <translation>DAG weergave</translation>
+    </message>
+    <message>
+      <source>Display properties</source>
+      <translation>Weergave eigenschappen</translation>
     </message>
   </context>
   <context>
@@ -6901,12 +6901,20 @@ Wilt u een andere map opgeven?</translation>
       <translation>Weergave</translation>
     </message>
     <message>
+      <source>Workbenches</source>
+      <translation>Werkbanken</translation>
+    </message>
+    <message>
       <source>Unknown filetype</source>
       <translation>Onbekend bestandstype</translation>
     </message>
     <message>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Kan onbekende bestandstype niet openen: %1</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Exporteren mislukt</translation>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
@@ -6929,6 +6937,18 @@ Wilt u een andere map opgeven?</translation>
       <translation>Document openen</translation>
     </message>
     <message>
+      <source>Error</source>
+      <translation>Fout</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Er zijn fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn misschien gewijzigd of helemaal hersteld. Kijk in de rapportweergave voor meer specifieke informatie over de objecten die hierbij zijn betrokken.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Er zijn ernstige fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn mogelijk gewijzigd of helemaal niet hersteld. Het opslaan van het project zal waarschijnlijk leiden tot data-verlies.</translation>
+    </message>
+    <message>
       <source>Import file</source>
       <translation>Bestand importeren</translation>
     </message>
@@ -6941,12 +6961,78 @@ Wilt u een andere map opgeven?</translation>
       <translation>Afdrukken...</translation>
     </message>
     <message>
+      <source>Exporting PDF...</source>
+      <translation>Exporteren van PDF ...</translation>
+    </message>
+    <message>
+      <source>Unsaved document</source>
+      <translation>Niet-opgeslagen document</translation>
+    </message>
+    <message>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>Het geëxporteerde object bevat een externe link. Sla het document minstens één keer op voordat u het exporteert.</translation>
+    </message>
+    <message>
+      <source>Delete failed</source>
+      <translation>Verwijderen mislukt</translation>
+    </message>
+    <message>
+      <source>Dependency error</source>
+      <translation>Afhankelijkheidsfout</translation>
+    </message>
+    <message>
+      <source>Copy selected</source>
+      <translation>Kopieer geselecteerde</translation>
+    </message>
+    <message>
+      <source>Copy active document</source>
+      <translation>Kopieer actief document</translation>
+    </message>
+    <message>
+      <source>Copy all documents</source>
+      <translation>Kopieer alle documenten</translation>
+    </message>
+    <message>
+      <source>Paste</source>
+      <translation>Plakken</translation>
+    </message>
+    <message>
+      <source>Expression error</source>
+      <translation>Expressiefout</translation>
+    </message>
+    <message>
+      <source>Failed to parse some of the expressions.
+Please check the Report View for more details.</source>
+      <translation>Het ontleden van sommige uitdrukkingen is mislukt.
+Gelieve de rapportweergave te raadplegen voor meer details.</translation>
+    </message>
+    <message>
+      <source>Failed to paste expressions</source>
+      <translation>Fout bij het plakken van expressie</translation>
+    </message>
+    <message>
       <source>Cannot load workbench</source>
       <translation>Kan werkbank niet laden</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>Een algemene fout is opgetreden tijdens het laden van de werkbank</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>Verkeerde selectie</translation>
+    </message>
+    <message>
+      <source>Only one object selected. Please select two objects.
+Be aware the point where you click matters.</source>
+      <translation>Slechts één object geselecteerd. Selecteer twee objecten.
+Let op, het maakt uit waar je klikt.</translation>
+    </message>
+    <message>
+      <source>Please select two objects.
+Be aware the point where you click matters.</source>
+      <translation>Selecteer twee objecten.
+Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -6971,6 +7057,10 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <source>Save frozen views</source>
       <translation>Bevroren zichten opslaan</translation>
+    </message>
+    <message>
+      <source>Frozen views</source>
+      <translation>Bevroren views</translation>
     </message>
     <message>
       <source>Restore views</source>
@@ -7038,6 +7128,10 @@ Do you want to continue?</source>
       <translation>Kies een item:</translation>
     </message>
     <message>
+      <source>New boolean item</source>
+      <translation>Nieuw Booleaans element</translation>
+    </message>
+    <message>
       <source>Rename group</source>
       <translation>Groep hernoemen</translation>
     </message>
@@ -7058,16 +7152,132 @@ Do you want to continue?</source>
       <translation>Waarde wijzigen</translation>
     </message>
     <message>
-      <source>Save document under new filename...</source>
-      <translation>Document opslaan onder een nieuwe bestandsnaam...</translation>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Identiek fysiek pad gedetecteerd. Het kan ongewenste overschrijvingen van bestaand document veroorzaken!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Weet u zeker dat u wilt doorgaan?</translation>
+    </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>PAD:</translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Identische fysieke pad</translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation>Kan verzending niet opslaan</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation>Er is een probleem opgetreden bij het opslaan van het bestand. Dit kan komen doordat sommige van de bovenliggende mappen niet bestaan, of omdat je niet voldoende rechten hebt, of om andere redenen. Foutdetails:
+
+"%1"
+
+Wilt u het bestand met een andere naam opslaan?</translation>
     </message>
     <message>
       <source>Saving aborted</source>
       <translation>Opslaan afgebroken</translation>
     </message>
     <message>
-      <source>Unsaved document</source>
-      <translation>Niet-opgeslagen document</translation>
+      <source>Save dependent files</source>
+      <translation>Bewaar afhankelijke bestanden</translation>
+    </message>
+    <message>
+      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
+      <translation>Het bestand bevat externe afhankelijkheden. Wilt u ook de afhankelijke bestanden opslaan?</translation>
+    </message>
+    <message>
+      <source>Saving document failed</source>
+      <translation>Document opslaan is mislukt</translation>
+    </message>
+    <message>
+      <source>Save document under new filename...</source>
+      <translation>Document opslaan onder een nieuwe bestandsnaam...</translation>
+    </message>
+    <message>
+      <source>Save %1 Document</source>
+      <translation>Document %1 opslaan</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Document</translation>
+    </message>
+    <message>
+      <source>Failed to save document</source>
+      <translation>Opslaan document mislukt</translation>
+    </message>
+    <message>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation>Documenten bevatten cyclische afhankelijkheden. Wilt u ze nog opslaan?</translation>
+    </message>
+    <message>
+      <source>Save a copy of the document under new filename...</source>
+      <translation>Bewaar een copy van het actieve document onder een nieuwe naam...</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 document (*.FCStd)</translation>
+    </message>
+    <message>
+      <source>Document not closable</source>
+      <translation>Document niet te sluiten</translation>
+    </message>
+    <message>
+      <source>The document is not closable for the moment.</source>
+      <translation>Het document kan nu niet gesloten worden.</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation>Document niet opgeslagen</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation>Het document%1 kon niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
+    </message>
+    <message>
+      <source>Undo</source>
+      <translation>Ongedaan maken</translation>
+    </message>
+    <message>
+      <source>Redo</source>
+      <translation>Herstel ongedaan maken</translation>
+    </message>
+    <message>
+      <source>There are grouped transactions in the following documents with other preceding transactions</source>
+      <translation>Er zijn gegroepeerde transacties in de volgende documenten met andere voorgaande transacties</translation>
+    </message>
+    <message>
+      <source>Choose 'Yes' to roll back all preceding transactions.
+Choose 'No' to roll back in the active document only.
+Choose 'Abort' to abort</source>
+      <translation>Kies 'Ja' om alle voorgaande transacties terug te draaien.
+Kies 'Nee' om alleen in het actieve document terug te draaien.
+Kies 'Afbreken' om af te breken</translation>
     </message>
     <message>
       <source>Save Macro</source>
@@ -7092,6 +7302,10 @@ Do you want to continue?</source>
     <message>
       <source>Outer</source>
       <translation>buitenste</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Delen</translation>
     </message>
     <message>
       <source>No Browser</source>
@@ -7137,46 +7351,6 @@ Open een browservenster en typ: http://localhost:%1.</translation>
       <translation>Kan bestand %1 niet vinden noch in %2, noch in %3</translation>
     </message>
     <message>
-      <source>Save %1 Document</source>
-      <translation>Document %1 opslaan</translation>
-    </message>
-    <message>
-      <source>%1 document (*.FCStd)</source>
-      <translation>%1 document (*.FCStd)</translation>
-    </message>
-    <message>
-      <source>Document not closable</source>
-      <translation>Document niet te sluiten</translation>
-    </message>
-    <message>
-      <source>The document is not closable for the moment.</source>
-      <translation>Het document kan nu niet gesloten worden.</translation>
-    </message>
-    <message>
-      <source>Exporting PDF...</source>
-      <translation>Exporteren van PDF ...</translation>
-    </message>
-    <message>
-      <source>Wrong selection</source>
-      <translation>Verkeerde selectie</translation>
-    </message>
-    <message>
-      <source>Only one object selected. Please select two objects.
-Be aware the point where you click matters.</source>
-      <translation>Slechts één object geselecteerd. Selecteer twee objecten.
-Let op, het maakt uit waar je klikt.</translation>
-    </message>
-    <message>
-      <source>Please select two objects.
-Be aware the point where you click matters.</source>
-      <translation>Selecteer twee objecten.
-Let op, het maakt uit waar je klikt.</translation>
-    </message>
-    <message>
-      <source>New boolean item</source>
-      <translation>Nieuw Booleaans element</translation>
-    </message>
-    <message>
       <source>Navigation styles</source>
       <translation>Navigatie stijlen</translation>
     </message>
@@ -7197,24 +7371,24 @@ Let op, het maakt uit waar je klikt.</translation>
       <translation>Wil je de wijzigingen in het document '%1' opslaan alvorens te sluiten?</translation>
     </message>
     <message>
+      <source>Do you want to save your changes to document before closing?</source>
+      <translation>Wilt u de wijzigingen aan het document opslaan voordat u afsluit?</translation>
+    </message>
+    <message>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Als u niet opslaat, zullen uw wijzigingen verloren gaan.</translation>
     </message>
     <message>
-      <source>Save a copy of the document under new filename...</source>
-      <translation>Bewaar een copy van het actieve document onder een nieuwe naam...</translation>
+      <source>Apply answer to all</source>
+      <translation>Antwoord op alles toepassen</translation>
     </message>
     <message>
-      <source>Frozen views</source>
-      <translation>Bevroren views</translation>
+      <source>%1 Document(s) not saved</source>
+      <translation>%1 Document(en) niet opgeslagen</translation>
     </message>
     <message>
-      <source>Saving document failed</source>
-      <translation>Document opslaan is mislukt</translation>
-    </message>
-    <message>
-      <source>Document</source>
-      <translation>Document</translation>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation>Sommige documenten konden niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
     </message>
     <message>
       <source>Delete macro</source>
@@ -7237,14 +7411,6 @@ Let op, het maakt uit waar je klikt.</translation>
       <translation>De %1 is niet leeg. Mag de inhoud worden verwijderd?</translation>
     </message>
     <message>
-      <source>Export failed</source>
-      <translation>Exporteren mislukt</translation>
-    </message>
-    <message>
-      <source>Split</source>
-      <translation>Delen</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Verplaatsing:</translation>
     </message>
@@ -7259,48 +7425,6 @@ Let op, het maakt uit waar je klikt.</translation>
     <message>
       <source>Edit text</source>
       <translation>Tekst bewerken</translation>
-    </message>
-    <message>
-      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation>Het geëxporteerde object bevat een externe link. Sla het document minstens één keer op voordat u het exporteert.</translation>
-    </message>
-    <message>
-      <source>Delete failed</source>
-      <translation>Verwijderen mislukt</translation>
-    </message>
-    <message>
-      <source>Dependency error</source>
-      <translation>Afhankelijkheidsfout</translation>
-    </message>
-    <message>
-      <source>Copy selected</source>
-      <translation>Kopieer geselecteerde</translation>
-    </message>
-    <message>
-      <source>Copy active document</source>
-      <translation>Kopieer actief document</translation>
-    </message>
-    <message>
-      <source>Copy all documents</source>
-      <translation>Kopieer alle documenten</translation>
-    </message>
-    <message>
-      <source>Paste</source>
-      <translation>Plakken</translation>
-    </message>
-    <message>
-      <source>Expression error</source>
-      <translation>Expressiefout</translation>
-    </message>
-    <message>
-      <source>Failed to parse some of the expressions.
-Please check the Report View for more details.</source>
-      <translation>Het ontleden van sommige uitdrukkingen is mislukt.
-Gelieve de rapportweergave te raadplegen voor meer details.</translation>
-    </message>
-    <message>
-      <source>Failed to paste expressions</source>
-      <translation>Fout bij het plakken van expressie</translation>
     </message>
     <message>
       <source>Simple group</source>
@@ -7365,148 +7489,16 @@ underscore bevatten en mag niet beginnen met een cijfer.</translation>
       <translation>Eigenschap toevoegen aan '%1': %2 mislukt</translation>
     </message>
     <message>
-      <source>Save dependent files</source>
-      <translation>Bewaar afhankelijke bestanden</translation>
-    </message>
-    <message>
-      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation>Het bestand bevat externe afhankelijkheden. Wilt u ook de afhankelijke bestanden opslaan?</translation>
-    </message>
-    <message>
-      <source>Failed to save document</source>
-      <translation>Opslaan document mislukt</translation>
-    </message>
-    <message>
-      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation>Documenten bevatten cyclische afhankelijkheden. Wilt u ze nog opslaan?</translation>
-    </message>
-    <message>
-      <source>Undo</source>
-      <translation>Ongedaan maken</translation>
-    </message>
-    <message>
-      <source>Redo</source>
-      <translation>Herstel ongedaan maken</translation>
-    </message>
-    <message>
-      <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation>Er zijn gegroepeerde transacties in de volgende documenten met andere voorgaande transacties</translation>
-    </message>
-    <message>
-      <source>Choose 'Yes' to roll back all preceding transactions.
-Choose 'No' to roll back in the active document only.
-Choose 'Abort' to abort</source>
-      <translation>Kies 'Ja' om alle voorgaande transacties terug te draaien.
-Kies 'Nee' om alleen in het actieve document terug te draaien.
-Kies 'Afbreken' om af te breken</translation>
-    </message>
-    <message>
-      <source>Do you want to save your changes to document before closing?</source>
-      <translation>Wilt u de wijzigingen aan het document opslaan voordat u afsluit?</translation>
-    </message>
-    <message>
-      <source>Apply answer to all</source>
-      <translation>Antwoord op alles toepassen</translation>
-    </message>
-    <message>
       <source>Drag &amp; drop failed</source>
       <translation>Verslepen en neerzetten mislukt</translation>
-    </message>
-    <message>
-      <source>Override colors...</source>
-      <translation>Kleuren overschrijven...</translation>
-    </message>
-    <message>
-      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
-
-</source>
-      <translation>Identiek fysiek pad gedetecteerd. Het kan ongewenste overschrijvingen van bestaand document veroorzaken!
-
-</translation>
-    </message>
-    <message>
-      <source>Are you sure you want to continue?</source>
-      <translation>Weet u zeker dat u wilt doorgaan?</translation>
-    </message>
-    <message>
-      <source>Identical physical path</source>
-      <translation>Identische fysieke pad</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Fout</translation>
-    </message>
-    <message>
-      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Er zijn fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn misschien gewijzigd of helemaal hersteld. Kijk in de rapportweergave voor meer specifieke informatie over de objecten die hierbij zijn betrokken.</translation>
-    </message>
-    <message>
-      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation>Er zijn ernstige fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn mogelijk gewijzigd of helemaal niet hersteld. Het opslaan van het project zal waarschijnlijk leiden tot data-verlies.</translation>
-    </message>
-    <message>
-      <source>Workbenches</source>
-      <translation>Werkbanken</translation>
-    </message>
-    <message>
-      <source>Could not save document</source>
-      <translation>Kan verzending niet opslaan</translation>
-    </message>
-    <message>
-      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
-
-"%1"
-
-Would you like to save the file with a different name?</source>
-      <translation>Er is een probleem opgetreden bij het opslaan van het bestand. Dit kan komen doordat sommige van de bovenliggende mappen niet bestaan, of omdat je niet voldoende rechten hebt, of om andere redenen. Foutdetails:
-
-"%1"
-
-Wilt u het bestand met een andere naam opslaan?</translation>
-    </message>
-    <message>
-      <source>Document not saved</source>
-      <translation>Document niet opgeslagen</translation>
-    </message>
-    <message>
-      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation>Het document%1 kon niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
-    </message>
-    <message>
-      <source>%1 Document(s) not saved</source>
-      <translation>%1 Document(en) niet opgeslagen</translation>
-    </message>
-    <message>
-      <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation>Sommige documenten konden niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
-    </message>
-    <message>
-      <source>Please check report view for more...</source>
-      <translation type="unfinished">Please check report view for more...</translation>
-    </message>
-    <message>
-      <source>Physical path:</source>
-      <translation type="unfinished">Physical path:</translation>
-    </message>
-    <message>
-      <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
-    </message>
-    <message>
-      <source>Path:</source>
-      <translation>PAD:</translation>
-    </message>
-    <message>
-      <source>Edit %1</source>
-      <translation>Bewerken %1</translation>
     </message>
     <message>
       <source>Setup configurable object</source>
       <translation type="unfinished">Setup configurable object</translation>
     </message>
     <message>
-      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+      <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
     </message>
     <message>
       <source>Please select which objects to copy when the configuration is changed</source>
@@ -7575,6 +7567,14 @@ the current copy will be lost.
     <message>
       <source>Transform at the origin of the placement</source>
       <translation type="unfinished">Transform at the origin of the placement</translation>
+    </message>
+    <message>
+      <source>Override colors...</source>
+      <translation>Kleuren overschrijven...</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>Bewerken %1</translation>
     </message>
   </context>
   <context>
@@ -8262,12 +8262,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdMeasurementSimple</name>
     <message>
-      <source>Measures distance between two selected objects</source>
-      <translation>Meet afstand tussen twee geselecteerde objecten</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>Afstand meten</translation>
+    </message>
+    <message>
+      <source>Measures distance between two selected objects</source>
+      <translation>Meet afstand tussen twee geselecteerde objecten</translation>
     </message>
   </context>
   <context>
@@ -8281,12 +8281,12 @@ the current copy will be lost.
       <translation>Voeg project samen</translation>
     </message>
     <message>
-      <source>Cannot merge project with itself.</source>
-      <translation>Kan project niet met zichzelf samenvoegen.</translation>
-    </message>
-    <message>
       <source>%1 document (*.FCStd)</source>
       <translation>%1 document (*.FCStd)</translation>
+    </message>
+    <message>
+      <source>Cannot merge project with itself.</source>
+      <translation>Kan project niet met zichzelf samenvoegen.</translation>
     </message>
   </context>
   <context>
@@ -9316,12 +9316,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <source>Display all documents in the tree view</source>
-      <translation>Alle documenten in de structuurweergave weergeven</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>Multidocument</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Alle documenten in de structuurweergave weergeven</translation>
     </message>
   </context>
   <context>
@@ -9360,12 +9360,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <source>Only display the active document in the tree view</source>
-      <translation>Geef alleen het actieve document weer in de boomstructuurweergave</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>Enkel document</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Geef alleen het actieve document weer in de boomstructuurweergave</translation>
     </message>
   </context>
   <context>
@@ -9490,12 +9490,12 @@ Weet u zeker dat u wilt doorgaan?
 </translation>
     </message>
     <message>
-      <source>Object dependencies</source>
-      <translation>Object afhankelijkheden</translation>
-    </message>
-    <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
       <translation>Deze items worden geselecteerd voor verwijdering, maar staan niet in het actieve document.</translation>
+    </message>
+    <message>
+      <source>Object dependencies</source>
+      <translation>Object afhankelijkheden</translation>
     </message>
   </context>
   <context>
@@ -9516,36 +9516,20 @@ Weet u zeker dat u wilt doorgaan?
       <translation>Standaard modus</translation>
     </message>
     <message>
-      <source>Wireframe</source>
-      <translation>Draadmodel</translation>
-    </message>
-    <message>
-      <source>Wireframe mode</source>
-      <translation>Draadmodelmodus</translation>
-    </message>
-    <message>
-      <source>Flat lines</source>
-      <translation>Platte lijn</translation>
-    </message>
-    <message>
-      <source>Flat lines mode</source>
-      <translation>Platte lijnen modus</translation>
-    </message>
-    <message>
-      <source>Shaded</source>
-      <translation>Schaduw</translation>
-    </message>
-    <message>
-      <source>Shaded mode</source>
-      <translation>Schaduw modus</translation>
-    </message>
-    <message>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
     <message>
       <source>Points mode</source>
       <translation>Punten modus</translation>
+    </message>
+    <message>
+      <source>Wireframe</source>
+      <translation>Draadmodel</translation>
+    </message>
+    <message>
+      <source>Wireframe mode</source>
+      <translation>Draadmodelmodus</translation>
     </message>
     <message>
       <source>Hidden line</source>
@@ -9562,6 +9546,22 @@ Weet u zeker dat u wilt doorgaan?
     <message>
       <source>No shading mode</source>
       <translation>Geen schaduw modus</translation>
+    </message>
+    <message>
+      <source>Shaded</source>
+      <translation>Schaduw</translation>
+    </message>
+    <message>
+      <source>Shaded mode</source>
+      <translation>Schaduw modus</translation>
+    </message>
+    <message>
+      <source>Flat lines</source>
+      <translation>Platte lijn</translation>
+    </message>
+    <message>
+      <source>Flat lines mode</source>
+      <translation>Platte lijnen modus</translation>
     </message>
   </context>
   <context>
@@ -9600,12 +9600,12 @@ Wilt u toch doorgaan?</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <source>This will discard all the changes since last file save.</source>
-      <translation>Dit zal alle wijzigingen annuleren sinds de laatste keer dat het bestand werd bewaard.</translation>
-    </message>
-    <message>
       <source>Revert document</source>
       <translation>Document herstellen</translation>
+    </message>
+    <message>
+      <source>This will discard all the changes since last file save.</source>
+      <translation>Dit zal alle wijzigingen annuleren sinds de laatste keer dat het bestand werd bewaard.</translation>
     </message>
     <message>
       <source>Do you want to continue?</source>
@@ -9671,6 +9671,10 @@ Wilt u toch doorgaan?</translation>
       <translation>Standaardweergaves</translation>
     </message>
     <message>
+      <source>Axonometric</source>
+      <translation>Axonometrisch</translation>
+    </message>
+    <message>
       <source>&amp;Stereo</source>
       <translation>&amp;Stereo</translation>
     </message>
@@ -9721,10 +9725,6 @@ Wilt u toch doorgaan?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Speciale functies</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometrisch</translation>
     </message>
     <message>
       <source>Link actions</source>

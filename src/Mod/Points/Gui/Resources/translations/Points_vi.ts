@@ -140,14 +140,6 @@
       <translation>Dòng đặc biệt</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Bỏ qua các dòng bắt đầu bằng:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Nhóm theo dòng bắt đầu bằng:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Dòng đầu tiên:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Số điểm</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Nhóm theo dòng bắt đầu bằng:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Bỏ qua các dòng bắt đầu bằng:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Định dạng điểm</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Bộ tách số:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Định dạng điểm:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Khối tiếp theo:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I(giá trị xám)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Bộ tách số:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Khối tiếp theo:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Định dạng điểm:</translation>
     </message>
     <message>
       <source>Preview</source>

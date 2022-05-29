@@ -297,6 +297,54 @@ Do you want to continue?</source>
       <translation>Ортогональна проекція</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Проекція</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Третій кут</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Перший кут</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Вигляд з:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Вісь вирівняна праворуч:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Вторинні перегляди</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Клацніть правою кнопкою миші для налаштувань аксонометричного виду</translation>
     </message>
@@ -305,12 +353,8 @@ Do you want to continue?</source>
       <translation>Головний вид</translation>
     </message>
     <message>
-      <source>Secondary Views</source>
-      <translation>Вторинні перегляди</translation>
-    </message>
-    <message>
       <source>General</source>
-      <translation>Загальне</translation>
+      <translation>Загальні</translation>
     </message>
     <message>
       <source>Auto scale / position</source>
@@ -341,36 +385,8 @@ Do you want to continue?</source>
       <translation>Аксонометрія</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Осі назовні та ліворуч</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Вертикальний нахил</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>Переглянути проекцію</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -385,44 +401,28 @@ Do you want to continue?</source>
       <translation>Триметрія</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Масштаб</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Переглянути проекцію</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation>Вісь вирівняна вгору</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Осі назовні та ліворуч</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Вертикальний нахил</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Перевернути</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Масштаб</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Триметрія</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Проекція</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Третій кут</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Перший кут</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Вигляд з:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Вісь вирівняна праворуч:</translation>
     </message>
   </context>
   <context>

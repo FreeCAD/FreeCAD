@@ -270,22 +270,6 @@ Haluatko jatkaa?</translation>
       <translation>Säteenseuranta</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Verkkopinnan vientiasetukset</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Suurin verkkopinnan poikkeama:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Älä laske normaaleja kärkipisteitä</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Kirjoita u,v koordinaatit</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Mallinna/render</translation>
     </message>
@@ -334,28 +318,44 @@ Haluatko jatkaa?</translation>
       <translation>Hakemistot</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Osan tiedostonimi:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Kameran tiedostonimi:</translation>
+      <source>Default Project dir:</source>
+      <translation>Projektin oletushakemisto:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Aputyökalujen käytössä</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Projektin oletushakemisto:</translation>
+      <source>Camera file name:</source>
+      <translation>Kameran tiedostonimi:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempKamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Osan tiedostonimi:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempOsa.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Verkkopinnan vientiasetukset</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Suurin verkkopinnan poikkeama:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Älä laske normaaleja kärkipisteitä</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Kirjoita u,v koordinaatit</translation>
     </message>
   </context>
   <context>

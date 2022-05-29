@@ -240,6 +240,14 @@
       <translation>Größen-Faktor</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Nutzer-definierte u/v-Richtungen</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Placement erstellen</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Glättung</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Variation der Krümmung</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Nutzer-definierte u/v-Richtungen</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Placement erstellen</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Netz Segmentierung</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Verbund erstellen</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Netz glätten</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Erstelle Netz aus ungenutzten Dreiecken</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Verbund erstellen</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Wähle</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Komponenten</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Bereich</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Ganze Komponente auswählen</translation>
+      <source>All</source>
+      <translation>Alles</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Dreieck aufnehmen</translation>
+      <source>Components</source>
+      <translation>Komponenten</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; Dreiecke als</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Alles</translation>
+      <source>Pick triangle</source>
+      <translation>Dreieck aufnehmen</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Ganze Komponente auswählen</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Ebene</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Erkennen</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Toleranz</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Minimale Anzahl von Dreiecken</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Erkennen</translation>
     </message>
     <message>
       <source>Cylinder</source>

@@ -240,6 +240,14 @@
       <translation>Storleksfaktor</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Användardefinierade u-/v-riktningar</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Skapa placering</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Utjämning</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Böjningsvariation</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Användardefinierade u-/v-riktningar</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Skapa placering</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Nätsegmentering</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Utjämnat nät</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Skapa nät från oanvända trianglar</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Markera</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Komponenter</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Område</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Välj hela komponenten</translation>
+      <source>All</source>
+      <translation>Alla</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Markera triangel</translation>
+      <source>Components</source>
+      <translation>Komponenter</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; ytor än</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Alla</translation>
+      <source>Pick triangle</source>
+      <translation>Markera triangel</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Välj hela komponenten</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Plan</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Upptäck</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolerans</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Minsta antal ytor</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Upptäck</translation>
     </message>
     <message>
       <source>Cylinder</source>

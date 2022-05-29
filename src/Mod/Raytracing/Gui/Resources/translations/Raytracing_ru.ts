@@ -268,22 +268,6 @@ Do you want to continue?</source>
       <translation>Трасcировщик лучей</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Экспорт настроек полигональной сетки</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Максимальное отклонение полигональной сетки:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Не вычислять нормали вершины</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Записать u, v координаты</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Визуализация</translation>
     </message>
@@ -332,28 +316,44 @@ Do you want to continue?</source>
       <translation>Каталоги</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Имя файла детали:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Имя файла камеры:</translation>
+      <source>Default Project dir:</source>
+      <translation>Каталог проекта по умолчанию:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Используется вспомогательными утилитами</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Каталог проекта по умолчанию:</translation>
+      <source>Camera file name:</source>
+      <translation>Имя файла камеры:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Имя файла детали:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Экспорт настроек полигональной сетки</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Максимальное отклонение полигональной сетки:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Не вычислять нормали вершины</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Записать u, v координаты</translation>
     </message>
   </context>
   <context>

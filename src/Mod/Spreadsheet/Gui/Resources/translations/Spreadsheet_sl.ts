@@ -9,6 +9,7 @@
       <translation>Preglednica</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>Celica</translation>
@@ -54,6 +55,7 @@
       <translation>Dodaj krmilnik</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
       <translation>Dodaj lastnostni krmilnik</translation>
@@ -67,7 +69,7 @@
       <translation>Dodaj krmilnik</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
       <translation>Doda izbrani preglednici krmilnik polj</translation>
     </message>
@@ -80,7 +82,7 @@
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation>Doda dejavnemu dokumentu predmet preglednico</translation>
     </message>
@@ -93,7 +95,7 @@
       <translation>Dodaj lastnostni krmilnik</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
       <translation>Doda izbrani preglednici lastnostni krmilnik</translation>
     </message>

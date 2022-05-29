@@ -9,6 +9,7 @@
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>Komórka</translation>
@@ -41,7 +42,7 @@
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
       <source>Updates the values handled by controllers</source>
-      <translation>Aktualizuje wartości obsługiwane przez formuły</translation>
+      <translation>Aktualizuje wartości obsługiwane przez kontrolery</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
@@ -51,12 +52,13 @@
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation>Dodaj formułę</translation>
+      <translation>Dodaj kontroler</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
-      <translation>Dodaj formułę właściwości</translation>
+      <translation>Dodaj kontroler właściwości</translation>
     </message>
   </context>
   <context>
@@ -64,12 +66,12 @@
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation>Dodaj formułę</translation>
+      <translation>Dodaj kontroler</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>Do wybranego arkusza kalkulacyjnego dodaje formułę komórki</translation>
+      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler komórki</translation>
     </message>
   </context>
   <context>
@@ -80,7 +82,7 @@
       <translation>Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation>Dodaje do aktywnego dokumentu obiekt arkusza kalkulacyjnego</translation>
     </message>
@@ -90,12 +92,12 @@
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
       <source>Add property controller</source>
-      <translation>Dodaj formułę właściwości</translation>
+      <translation>Dodaj kontroler właściwości</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>Do wybranego arkusza kalkulacyjnego dodaje formułę własności</translation>
+      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler własności</translation>
     </message>
   </context>
   <context>
@@ -488,68 +490,68 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Powiąż komórki arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="20"/>
       <source>From cells:</source>
-      <translation type="unfinished">From cells:</translation>
+      <translation>Z komórek:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="27"/>
       <source>Binding cell range start</source>
-      <translation type="unfinished">Binding cell range start</translation>
+      <translation>Powiązanie komórek, rozpoczęcie zakresu</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="34"/>
       <source>Binding cell range end
 </source>
-      <translation type="unfinished">Binding cell range end
+      <translation>Powiązanie komórek, zakończenie zakresu
 </translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="42"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>Do komórek:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Starting cell address to bind to. Type '=' if you want to use expression.
 The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
+      <translation>Początkowy adres komórki do powiązania. Wpisz '=' jeśli chcesz użyć wyrażenia.
+Wyrażenie musi zostać obliczone jako ciąg adresów wybranych komórek.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="57"/>
       <source>Ending cell address to bind to. Type '=' if you want to use expression.
 The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
+      <translation>Końcowy adresu komórki, aby powiązać. Wpisz '=' jeśli chcesz użyć wyrażenia.
+Wyrażenie musi zostać obliczone jako ciąg adresów wybranych komórek.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="65"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Arkusz:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="72"/>
       <source>Select which spread sheet to bind to.</source>
-      <translation type="unfinished">Select which spread sheet to bind to.</translation>
+      <translation>Wybierz arkusz kalkulacyjny z którym chcesz powiązać.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="79"/>
       <source>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</source>
-      <translation type="unfinished">Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</translation>
+      <translation>Użyj ukrytego odniesienia, nie unikaj tworzenia zależności z obiektem odniesienia. Używaj ostrożnie!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Use hidden reference</source>
-      <translation type="unfinished">Use hidden reference</translation>
+      <translation>Użyj ukrytego odniesienia</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="91"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Usuń powiązanie</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="98"/>
@@ -567,12 +569,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Ustawienia tabeli konfiguracji</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Zakres komórek:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -585,14 +587,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Adres komórki początkowej.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Przyjmuje się, że pierwsza kolumna zakresu zawiera listę nazw konfiguracji,
+które zostaną użyte do wygenerowania listy ciągów znaków i powiązania
+z wybraną właściwością aby użytkownik mógł dynamicznie przełączać konfigurację.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Pierwszy wiersz zakresu zostanie powiązany z wierszem (pośrednio) wybranym
+przez daną właściwość.
 </translation>
     </message>
     <message>
@@ -606,42 +608,41 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Adres komórki końcowej.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Przyjmuje się, że pierwsza kolumna zakresu zawiera listę nazw konfiguracji,
+które zostaną użyte do wygenerowania listy ciągów znaków i powiązania
+z wybraną właściwością aby użytkownik mógł dynamicznie przełączać konfigurację.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Pierwszy wiersz zakresu zostanie powiązany z wierszem (pośrednio) wybranym
+przez daną właściwość.
 </translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Właściwość:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Wpisz wyrażenie, aby określić nazwę obiektu i właściwości, które będą dynamicznie przełączać konfigurację projektu. Właściwość zostanie utworzona, jeśli nie istnieje.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Grupa:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Opcjonalna nazwa grupy właściwości.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Usuń ustawienia</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -962,12 +963,12 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="180"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Powiąż komórki</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Usuń powiązanie komórek</translation>
     </message>
   </context>
   <context>
@@ -1043,12 +1044,12 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="245"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Ustawienia tabeli konfiguracji</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="292"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Usuń ustawienia tabeli konfiguracji</translation>
     </message>
   </context>
   <context>
@@ -1149,17 +1150,17 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="182"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Przelicz ponownie</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>Łącznik ...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Tabela konfiguracyjna ...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="198"/>
@@ -1169,7 +1170,7 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="200"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Podziel komórkę</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>
@@ -1215,7 +1216,7 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Arkusz kalkulacyjny</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1225,7 +1226,7 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Style</translation>
     </message>
   </context>
 </TS>

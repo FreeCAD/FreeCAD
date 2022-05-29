@@ -9,7 +9,7 @@
       <translation>Создать шестиугольный профиль</translation>
     </message>
     <message>
-      <location filename="../../../Profiles.py" line="56"/>
+      <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
       <translation>Создать шестиугольный профиль в эскизе</translation>
     </message>
@@ -1213,12 +1213,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1165"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Вставить узел</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
       <source>Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</source>
-      <translation type="unfinished">Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</translation>
+      <translation>Вставляет узел с заданным параметром. Если узел уже существует с этим параметром, то его кратность увеличивается на единицу.</translation>
     </message>
   </context>
   <context>
@@ -1717,7 +1717,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1925"/>
       <source>Swap edge tangency with ptp tangency</source>
-      <translation type="unfinished">Swap edge tangency with ptp tangency</translation>
+      <translation>Поменять рёберное касание на ptp касание</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2172"/>
@@ -1802,7 +1802,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4030"/>
       <source>Swap coincident+tangency with ptp tangency</source>
-      <translation type="unfinished">Swap coincident+tangency with ptp tangency</translation>
+      <translation>Поменять совпадение + касание на ptp касание</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4049"/>
@@ -2013,7 +2013,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4628"/>
       <source>Add Pole circle</source>
-      <translation type="unfinished">Add Pole circle</translation>
+      <translation>Добавить полюс окружности</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5552"/>
@@ -2089,7 +2089,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1059"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Вставить узел</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1027"/>

@@ -83,12 +83,12 @@
       <translation type="unfinished">Position</translation>
     </message>
     <message>
-      <source>Base</source>
-      <translation>Base</translation>
-    </message>
-    <message>
       <source>Enum</source>
       <translation type="unfinished">Enum</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Base</translation>
     </message>
   </context>
   <context>
@@ -179,16 +179,16 @@
       <translation>Transforma</translation>
     </message>
     <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
       <source>Link Transform</source>
       <translation type="unfinished">Link Transform</translation>
     </message>
     <message>
       <source>Measure distance</source>
       <translation>Mesura la distància</translation>
-    </message>
-    <message>
-      <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
     </message>
   </context>
   <context>
@@ -261,6 +261,10 @@
       <translation>Moviment del ratolí 3D</translation>
     </message>
     <message>
+      <source>Global Sensitivity:</source>
+      <translation>Sensibilitat global:</translation>
+    </message>
+    <message>
       <source>Dominant Mode</source>
       <translation>Mode dominant</translation>
     </message>
@@ -292,10 +296,6 @@
       <source>Reverse</source>
       <translation>Inverteix</translation>
     </message>
-    <message>
-      <source>Global Sensitivity:</source>
-      <translation>Sensibilitat global:</translation>
-    </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
@@ -308,16 +308,16 @@
       <translation>Resultat:</translation>
     </message>
     <message>
-      <source>Ok</source>
-      <translation>D'acord</translation>
-    </message>
-    <message>
       <source>&amp;Clear</source>
       <translation>&amp;Neteja</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
       <translation>Reverteix a l'últim valor calculat (com a constant)</translation>
+    </message>
+    <message>
+      <source>Ok</source>
+      <translation>D'acord</translation>
     </message>
   </context>
   <context>
@@ -519,28 +519,16 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Quant a</translation>
     </message>
     <message>
-      <source>Revision number</source>
-      <translation>Número de revisió</translation>
-    </message>
-    <message>
       <source>Version</source>
       <translation>Versió</translation>
     </message>
     <message>
-      <source>OK</source>
-      <translation>D'acord</translation>
-    </message>
-    <message>
-      <source/>
-      <translation type="unfinished"/>
+      <source>Revision number</source>
+      <translation>Número de revisió</translation>
     </message>
     <message>
       <source>Release date</source>
       <translation>Data de publicació</translation>
-    </message>
-    <message>
-      <source>Copy to clipboard</source>
-      <translation>Copia al porta-retalls</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -551,28 +539,24 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Mida de paraula</translation>
     </message>
     <message>
+      <source>Copy to clipboard</source>
+      <translation>Copia al porta-retalls</translation>
+    </message>
+    <message>
       <source>License</source>
       <translation>Llicència</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>D'acord</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
-    <message>
-      <source>Libraries</source>
-      <translation>Biblioteques</translation>
-    </message>
-    <message>
-      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Aquest programari utilitza components de codi obert, el copyright i altres drets de propietat dels quals pertanyen als seus respectius propietaris:</translation>
-    </message>
-    <message>
-      <source>License</source>
-      <translation>Llicència</translation>
-    </message>
-    <message>
-      <source>Collection</source>
-      <translation>Col·lecció</translation>
-    </message>
     <message>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
@@ -591,6 +575,22 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation type="unfinished">Organizations</translation>
+    </message>
+    <message>
+      <source>License</source>
+      <translation>Llicència</translation>
+    </message>
+    <message>
+      <source>Libraries</source>
+      <translation>Biblioteques</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Aquest programari utilitza components de codi obert, el copyright i altres drets de propietat dels quals pertanyen als seus respectius propietaris:</translation>
+    </message>
+    <message>
+      <source>Collection</source>
+      <translation>Col·lecció</translation>
     </message>
   </context>
   <context>
@@ -615,20 +615,20 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
-      <source>Button %1</source>
-      <translation>Botó %1</translation>
-    </message>
-    <message>
-      <source>Out Of Range</source>
-      <translation>Fora d'abast</translation>
-    </message>
-    <message>
       <source> "</source>
       <translation type="unfinished"> "</translation>
     </message>
     <message>
       <source>"</source>
       <translation type="unfinished">"</translation>
+    </message>
+    <message>
+      <source>Button %1</source>
+      <translation>Botó %1</translation>
+    </message>
+    <message>
+      <source>Out Of Range</source>
+      <translation>Fora d'abast</translation>
     </message>
   </context>
   <context>
@@ -673,12 +673,12 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Retallada X</translation>
     </message>
     <message>
-      <source>Flip</source>
-      <translation>Inverteix</translation>
-    </message>
-    <message>
       <source>Offset</source>
       <translation>Separació</translation>
+    </message>
+    <message>
+      <source>Flip</source>
+      <translation>Inverteix</translation>
     </message>
     <message>
       <source>Clipping Y</source>
@@ -719,16 +719,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Visualitza en rotació</translation>
     </message>
     <message>
+      <source>Angle</source>
+      <translation>Angle</translation>
+    </message>
+    <message>
+      <source>-90°</source>
+      <translation>-90°</translation>
+    </message>
+    <message>
+      <source>90°</source>
+      <translation>90°</translation>
+    </message>
+    <message>
       <source>Speed</source>
       <translation>Velocitat</translation>
     </message>
     <message>
-      <source>Maximum</source>
-      <translation>Màxim</translation>
-    </message>
-    <message>
       <source>Minimum</source>
       <translation>Mínim</translation>
+    </message>
+    <message>
+      <source>Maximum</source>
+      <translation>Màxim</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -743,28 +755,16 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>s</translation>
     </message>
     <message>
-      <source>Angle</source>
-      <translation>Angle</translation>
-    </message>
-    <message>
-      <source>90°</source>
-      <translation>90°</translation>
-    </message>
-    <message>
-      <source>-90°</source>
-      <translation>-90°</translation>
-    </message>
-    <message>
       <source>Play</source>
       <translation>Reprodueix</translation>
     </message>
     <message>
-      <source>Stop</source>
-      <translation>Para</translation>
-    </message>
-    <message>
       <source>Close</source>
       <translation>Tanca</translation>
+    </message>
+    <message>
+      <source>Stop</source>
+      <translation>Para</translation>
     </message>
   </context>
   <context>
@@ -839,24 +839,24 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Autorització</translation>
     </message>
     <message>
-      <source>Password:</source>
-      <translation>Contrasenya:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Username:</source>
-      <translation>Nom d'usuari:</translation>
-    </message>
-    <message>
       <source>Site:</source>
       <translation>Lloc web:</translation>
     </message>
     <message>
       <source>%1 at %2</source>
       <translation>%1 a %2</translation>
+    </message>
+    <message>
+      <source>Username:</source>
+      <translation>Nom d'usuari:</translation>
+    </message>
+    <message>
+      <source>Password:</source>
+      <translation>Contrasenya:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -926,32 +926,32 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Macro:</translation>
     </message>
     <message>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
-      <source>Pixmap</source>
-      <translation>Mapa de píxels</translation>
-    </message>
-    <message>
-      <source>Accelerator:</source>
-      <translation>Drecera:</translation>
-    </message>
-    <message>
-      <source>What's this:</source>
-      <translation>Què és això:</translation>
-    </message>
-    <message>
-      <source>Status text:</source>
-      <translation>Text d'estat:</translation>
+      <source>Menu text:</source>
+      <translation>Text de menú:</translation>
     </message>
     <message>
       <source>Tool tip:</source>
       <translation>Consell d'eina:</translation>
     </message>
     <message>
-      <source>Menu text:</source>
-      <translation>Text de menú:</translation>
+      <source>Status text:</source>
+      <translation>Text d'estat:</translation>
+    </message>
+    <message>
+      <source>What's this:</source>
+      <translation>Què és això:</translation>
+    </message>
+    <message>
+      <source>Accelerator:</source>
+      <translation>Drecera:</translation>
+    </message>
+    <message>
+      <source>Pixmap</source>
+      <translation>Mapa de píxels</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
     <message>
       <source>Add</source>
@@ -1042,10 +1042,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Teclat</translation>
     </message>
     <message>
-      <source>Description:</source>
-      <translation>Descripció:</translation>
-    </message>
-    <message>
       <source>&amp;Category:</source>
       <translation>&amp;Categoria:</translation>
     </message>
@@ -1074,6 +1070,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Alt + A</translation>
     </message>
     <message>
+      <source>Clear</source>
+      <translation>Neteja</translation>
+    </message>
+    <message>
       <source>&amp;Reset</source>
       <translation>&amp;Reinicia</translation>
     </message>
@@ -1090,12 +1090,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Alt + S</translation>
     </message>
     <message>
-      <source/>
-      <translation type="unfinished"/>
+      <source>Description:</source>
+      <translation>Descripció:</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Neteja</translation>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1117,12 +1117,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>La drecera s'ha definit múltiples vegades</translation>
     </message>
     <message>
-      <source>Already defined shortcut</source>
-      <translation>La decera ja s'ha definit.</translation>
-    </message>
-    <message>
       <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
       <translation>La drecera «%1» s'ha definit més d'una vegada. Açò pot provocar un comportament inesperat.</translation>
+    </message>
+    <message>
+      <source>Already defined shortcut</source>
+      <translation>La decera ja s'ha definit.</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.</source>
@@ -1147,8 +1147,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Barres d'eines</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Nota:&lt;/span&gt; Els canvis seran efectius la pròxima vegada que carregueu el banc de treball adequat&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>New...</source>
+      <translation>Nou...</translation>
+    </message>
+    <message>
+      <source>Rename...</source>
+      <translation>Reanomena...</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Elimina</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -1167,14 +1175,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>&lt;b&gt;Mou l'element seleccionat un nivell cap amunt.&lt;/b&gt;&lt;p&gt;Això també canvia el nivell de l'element pare.&lt;/p&gt;</translation>
     </message>
     <message>
-      <source>Move down</source>
-      <translation>Mou avall</translation>
-    </message>
-    <message>
-      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Mou l'element seleccionat cap avall.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Mou amunt</translation>
     </message>
@@ -1183,16 +1183,20 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>&lt;b&gt;Mou l'element seleccionat cap amunt.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;1</translation>
     </message>
     <message>
-      <source>New...</source>
-      <translation>Nou...</translation>
+      <source>Move down</source>
+      <translation>Mou avall</translation>
     </message>
     <message>
-      <source>Rename...</source>
-      <translation>Reanomena...</translation>
+      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Mou l'element seleccionat cap avall.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;</translation>
     </message>
     <message>
-      <source>Delete</source>
-      <translation>Elimina</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Nota:&lt;/span&gt; Els canvis seran efectius la pròxima vegada que carregueu el banc de treball adequat&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Global</source>
+      <translation>Global</translation>
     </message>
     <message>
       <source>Icon</source>
@@ -1205,6 +1209,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>&lt;Separator&gt;</source>
       <translation>&lt;Separador&gt;</translation>
+    </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation type="unfinished">%1 module not loaded</translation>
     </message>
     <message>
       <source>New toolbar</source>
@@ -1229,14 +1237,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source/>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Global</source>
-      <translation>Global</translation>
-    </message>
-    <message>
-      <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
     </message>
   </context>
   <context>
@@ -1268,6 +1268,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
+      <source>Spaceball Buttons</source>
+      <translation>Botons del ratolí 3D</translation>
+    </message>
+    <message>
       <source>No Spaceball Present</source>
       <translation>No hi ha cap ratolí 3D.</translation>
     </message>
@@ -1276,16 +1280,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Botons</translation>
     </message>
     <message>
-      <source>Print Reference</source>
-      <translation>Imprimeix les referències</translation>
-    </message>
-    <message>
-      <source>Spaceball Buttons</source>
-      <translation>Botons del ratolí 3D</translation>
-    </message>
-    <message>
       <source>Reset</source>
       <translation>Reinicialitza</translation>
+    </message>
+    <message>
+      <source>Print Reference</source>
+      <translation>Imprimeix les referències</translation>
     </message>
   </context>
   <context>
@@ -1295,20 +1295,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Propietats de visualització</translation>
     </message>
     <message>
-      <source>Display</source>
-      <translation>Visualització</translation>
+      <source>Viewing mode</source>
+      <translation>Mode de visualització</translation>
     </message>
     <message>
-      <source>Transparency:</source>
-      <translation>Transparència:</translation>
+      <source>Document window:</source>
+      <translation>Finestra del document:</translation>
     </message>
     <message>
-      <source>Line width:</source>
-      <translation>Amplària de línia:</translation>
-    </message>
-    <message>
-      <source>Point size:</source>
-      <translation>Mida del punt:</translation>
+      <source>Plot mode:</source>
+      <translation>Mode de representació gràfica:</translation>
     </message>
     <message>
       <source>Material</source>
@@ -1319,36 +1315,40 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>...</translation>
     </message>
     <message>
-      <source>Viewing mode</source>
-      <translation>Mode de visualització</translation>
-    </message>
-    <message>
-      <source>Plot mode:</source>
-      <translation>Mode de representació gràfica:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Line transparency:</source>
-      <translation>Transparència de la línia:</translation>
-    </message>
-    <message>
-      <source>Line color:</source>
-      <translation>Color de la línia:</translation>
+      <source>Color plot:</source>
+      <translation>Gràfic de color:</translation>
     </message>
     <message>
       <source>Shape color:</source>
       <translation>Color de la forma:</translation>
     </message>
     <message>
-      <source>Color plot:</source>
-      <translation>Gràfic de color:</translation>
+      <source>Line color:</source>
+      <translation>Color de la línia:</translation>
     </message>
     <message>
-      <source>Document window:</source>
-      <translation>Finestra del document:</translation>
+      <source>Display</source>
+      <translation>Visualització</translation>
+    </message>
+    <message>
+      <source>Point size:</source>
+      <translation>Mida del punt:</translation>
+    </message>
+    <message>
+      <source>Line width:</source>
+      <translation>Amplària de línia:</translation>
+    </message>
+    <message>
+      <source>Transparency:</source>
+      <translation>Transparència:</translation>
+    </message>
+    <message>
+      <source>Line transparency:</source>
+      <translation>Transparència de la línia:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1453,8 +1453,20 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Opcions</translation>
     </message>
     <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
+    </message>
+    <message>
       <source>Enable line numbers</source>
       <translation>Activa els números de línia</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
     </message>
     <message>
       <source>Enable folding</source>
@@ -1465,44 +1477,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Sagnat</translation>
     </message>
     <message>
-      <source>Insert spaces</source>
-      <translation>Insereix espais</translation>
-    </message>
-    <message>
       <source>Tab size:</source>
       <translation>Mida de la tabulació:</translation>
     </message>
     <message>
-      <source>Indent size:</source>
-      <translation>Mida del sagnat:</translation>
-    </message>
-    <message>
-      <source>Keep tabs</source>
-      <translation>Mantín les tabulacions</translation>
-    </message>
-    <message>
-      <source>Family:</source>
-      <translation>Família:</translation>
-    </message>
-    <message>
-      <source>Size:</source>
-      <translation>Mida:</translation>
-    </message>
-    <message>
-      <source>Preview:</source>
-      <translation>Previsualització:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation>Si premeu &lt;Tab&gt; s'inserirà la quantitat de la mida del sagnat definit</translation>
-    </message>
-    <message>
       <source>Tabulator raster (how many spaces)</source>
       <translation>Ràster del tabulador (quants espais)</translation>
+    </message>
+    <message>
+      <source>Indent size:</source>
+      <translation>Mida del sagnat:</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
@@ -1513,36 +1497,52 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Si premeu &lt;Tab&gt; s'inserirà un tabulador amb la mida de tabulació definida</translation>
     </message>
     <message>
-      <source>Display items</source>
-      <translation>Visualitza els elements</translation>
+      <source>Keep tabs</source>
+      <translation>Mantín les tabulacions</translation>
     </message>
     <message>
-      <source>Font size to be used for selected code type</source>
-      <translation>Mida del tipus de lletra que s'utilitzarà per al tipus de codi seleccionat</translation>
+      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
+      <translation>Si premeu &lt;Tab&gt; s'inserirà la quantitat de la mida del sagnat definit</translation>
+    </message>
+    <message>
+      <source>Insert spaces</source>
+      <translation>Insereix espais</translation>
+    </message>
+    <message>
+      <source>Display items</source>
+      <translation>Visualitza els elements</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
       <translation>La configuració del color i del tipus de lletra s'aplicaran al tipus seleccionat</translation>
     </message>
     <message>
+      <source>Family:</source>
+      <translation>Família:</translation>
+    </message>
+    <message>
       <source>Font family to be used for selected code type</source>
       <translation>El tipus de lletra que s'utilitzarà per al tipus de codi seleccionat</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Mida:</translation>
+    </message>
+    <message>
+      <source>Font size to be used for selected code type</source>
+      <translation>Mida del tipus de lletra que s'utilitzarà per al tipus de codi seleccionat</translation>
     </message>
     <message>
       <source>Color:</source>
       <translation>Color:</translation>
     </message>
     <message>
-      <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <source>Preview:</source>
+      <translation>Previsualització:</translation>
     </message>
     <message>
-      <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
-    </message>
-    <message>
-      <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1550,18 +1550,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>General</source>
       <translation>General</translation>
-    </message>
-    <message>
-      <source>Start up</source>
-      <translation>Inici</translation>
-    </message>
-    <message>
-      <source>Enable splash screen at start up</source>
-      <translation>Habilita la pantalla de presentació a l'inici</translation>
-    </message>
-    <message>
-      <source>Auto load module after start up:</source>
-      <translation>Carrega automàticament el mòdul després de l'inici:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1572,77 +1560,8 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Canvia l'idioma:</translation>
     </message>
     <message>
-      <source>Main window</source>
-      <translation>Finestra principal</translation>
-    </message>
-    <message>
-      <source>Size of recent file list</source>
-      <translation>Mida de la llista de fitxers recents</translation>
-    </message>
-    <message>
-      <source>Size of toolbar icons:</source>
-      <translation>Mida de les icones de la barra d'eines:</translation>
-    </message>
-    <message>
-      <source>Enable tiled background</source>
-      <translation>Habilita el fons en mosaic</translation>
-    </message>
-    <message>
-      <source>Style sheet:</source>
-      <translation>Full d'estil:</translation>
-    </message>
-    <message>
       <source>Language of the application's user interface</source>
       <translation>Idioma de la interfície d’usuari de l’aplicació</translation>
-    </message>
-    <message>
-      <source>How many files should be listed in recent files list</source>
-      <translation>Indica la quantitat de fitxers s’han d’enumerar en la llista de fitxers recents</translation>
-    </message>
-    <message>
-      <source>Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</source>
-      <translation>El fons de la finestra principal estarà format per mosaics d'una imatge especial.
-Consulteu el wiki de FreeCAD per obtenir detalls sobre la imatge.</translation>
-    </message>
-    <message>
-      <source>Style sheet how user interface will look like</source>
-      <translation>Full d’estil que defineix com serà la interfície d’usuari</translation>
-    </message>
-    <message>
-      <source>Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</source>
-      <translation>Trieu la vostra preferència per a la mida de la icona de la barra d’eines. Podeu ajustar
-això segons la mida de la pantalla o el gust personal</translation>
-    </message>
-    <message>
-      <source>Tree view mode:</source>
-      <translation>Mode vista d'arbre:</translation>
-    </message>
-    <message>
-      <source>Customize how tree view is shown in the panel (restart required).
-
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>Personalitzeu com es mostra la vista d'arbre en el tauler (cal reiniciar-lo).
-
-«ComboView»: combina la vista d'arbre i la de propietats en un únic tauler.
-«TreeView i PropertyView»: separa la vista d'arbre i la de propietats en taulers separats.
-«Ambdós»: conserva els tres taulers i podeu tindre dos conjunts de vista d'arbre i de vista de propietats.</translation>
-    </message>
-    <message>
-      <source>A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</source>
-      <translation>Una pantalla de presentació és una xicoteta finestra de càrrega que es mostra
-quan FreeCAD s'executa. Si aquesta opció està marcada, FreeCAD en mostrarà una</translation>
-    </message>
-    <message>
-      <source>Choose which workbench will be activated and shown
-after FreeCAD launches</source>
-      <translation>Trieu quin banc de treball s’activarà i es mostrarà
-després que s'execute FreeCAD</translation>
     </message>
     <message>
       <source>Number format:</source>
@@ -1697,6 +1616,28 @@ després que s'execute FreeCAD</translation>
       <translation type="unfinished">Revert...</translation>
     </message>
     <message>
+      <source>Main window</source>
+      <translation>Finestra principal</translation>
+    </message>
+    <message>
+      <source>Size of recent file list</source>
+      <translation>Mida de la llista de fitxers recents</translation>
+    </message>
+    <message>
+      <source>How many files should be listed in recent files list</source>
+      <translation>Indica la quantitat de fitxers s’han d’enumerar en la llista de fitxers recents</translation>
+    </message>
+    <message>
+      <source>Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</source>
+      <translation>El fons de la finestra principal estarà format per mosaics d'una imatge especial.
+Consulteu el wiki de FreeCAD per obtenir detalls sobre la imatge.</translation>
+    </message>
+    <message>
+      <source>Enable tiled background</source>
+      <translation>Habilita el fons en mosaic</translation>
+    </message>
+    <message>
       <source>The text cursor will be blinking</source>
       <translation type="unfinished">The text cursor will be blinking</translation>
     </message>
@@ -1704,12 +1645,71 @@ després que s'execute FreeCAD</translation>
       <source>Enable cursor blinking</source>
       <translation type="unfinished">Enable cursor blinking</translation>
     </message>
+    <message>
+      <source>Style sheet:</source>
+      <translation>Full d'estil:</translation>
+    </message>
+    <message>
+      <source>Style sheet how user interface will look like</source>
+      <translation>Full d’estil que defineix com serà la interfície d’usuari</translation>
+    </message>
+    <message>
+      <source>Size of toolbar icons:</source>
+      <translation>Mida de les icones de la barra d'eines:</translation>
+    </message>
+    <message>
+      <source>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</source>
+      <translation>Trieu la vostra preferència per a la mida de la icona de la barra d’eines. Podeu ajustar
+això segons la mida de la pantalla o el gust personal</translation>
+    </message>
+    <message>
+      <source>Tree view mode:</source>
+      <translation>Mode vista d'arbre:</translation>
+    </message>
+    <message>
+      <source>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
+      <translation>Personalitzeu com es mostra la vista d'arbre en el tauler (cal reiniciar-lo).
+
+«ComboView»: combina la vista d'arbre i la de propietats en un únic tauler.
+«TreeView i PropertyView»: separa la vista d'arbre i la de propietats en taulers separats.
+«Ambdós»: conserva els tres taulers i podeu tindre dos conjunts de vista d'arbre i de vista de propietats.</translation>
+    </message>
+    <message>
+      <source>Start up</source>
+      <translation>Inici</translation>
+    </message>
+    <message>
+      <source>Auto load module after start up:</source>
+      <translation>Carrega automàticament el mòdul després de l'inici:</translation>
+    </message>
+    <message>
+      <source>Choose which workbench will be activated and shown
+after FreeCAD launches</source>
+      <translation>Trieu quin banc de treball s’activarà i es mostrarà
+després que s'execute FreeCAD</translation>
+    </message>
+    <message>
+      <source>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</source>
+      <translation>Una pantalla de presentació és una xicoteta finestra de càrrega que es mostra
+quan FreeCAD s'executa. Si aquesta opció està marcada, FreeCAD en mostrarà una</translation>
+    </message>
+    <message>
+      <source>Enable splash screen at start up</source>
+      <translation>Habilita la pantalla de presentació a l'inici</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
-      <source>No style sheet</source>
-      <translation>No hi ha cap full d'estil.</translation>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
@@ -1744,8 +1744,8 @@ després que s'execute FreeCAD</translation>
       <translation>Ambdós</translation>
     </message>
     <message>
-      <source>Manage preference packs</source>
-      <translation type="unfinished">Manage preference packs</translation>
+      <source>No style sheet</source>
+      <translation>No hi ha cap full d'estil.</translation>
     </message>
     <message>
       <source>Preference Pack Name</source>
@@ -1793,6 +1793,14 @@ després que s'execute FreeCAD</translation>
       <translation>Nom de la macro:</translation>
     </message>
     <message>
+      <source>User macros</source>
+      <translation>Macros de l'usuari</translation>
+    </message>
+    <message>
+      <source>System macros</source>
+      <translation>Macros del sistema</translation>
+    </message>
+    <message>
       <source>Execute</source>
       <translation>Executa</translation>
     </message>
@@ -1813,18 +1821,6 @@ després que s'execute FreeCAD</translation>
       <translation>Edita</translation>
     </message>
     <message>
-      <source>User macros</source>
-      <translation>Macros de l'usuari</translation>
-    </message>
-    <message>
-      <source>System macros</source>
-      <translation>Macros del sistema</translation>
-    </message>
-    <message>
-      <source>User macros location:</source>
-      <translation>Ubicació de les macros de l'usuari:</translation>
-    </message>
-    <message>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
@@ -1833,12 +1829,12 @@ després que s'execute FreeCAD</translation>
       <translation>Duplica</translation>
     </message>
     <message>
-      <source>Toolbar</source>
-      <translation>Barra d'eines</translation>
-    </message>
-    <message>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
       <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Toolbar</source>
+      <translation>Barra d'eines</translation>
     </message>
     <message>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
@@ -1848,12 +1844,20 @@ després que s'execute FreeCAD</translation>
       <source>Download</source>
       <translation>Baixades</translation>
     </message>
+    <message>
+      <source>User macros location:</source>
+      <translation>Ubicació de les macros de l'usuari:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <source>Macros</source>
       <translation>Macros</translation>
+    </message>
+    <message>
+      <source>Read-only</source>
+      <translation>Només de lectura</translation>
     </message>
     <message>
       <source>Macro file</source>
@@ -1873,14 +1877,6 @@ This file already exists.</source>
       <translation>'%1'. Aquest fitxer ja existeix.</translation>
     </message>
     <message>
-      <source>Delete macro</source>
-      <translation>Suprimeix la macro</translation>
-    </message>
-    <message>
-      <source>Do you really want to delete the macro '%1'?</source>
-      <translation>Esteu segur que voleu suprimir la macro '%1'?</translation>
-    </message>
-    <message>
       <source>Cannot create file</source>
       <translation>No es pot crear el fitxer.</translation>
     </message>
@@ -1889,46 +1885,12 @@ This file already exists.</source>
       <translation>La creació del fitxer '%1' ha fallat.</translation>
     </message>
     <message>
-      <source>Read-only</source>
-      <translation>Només de lectura</translation>
+      <source>Delete macro</source>
+      <translation>Suprimeix la macro</translation>
     </message>
     <message>
-      <source>Renaming Macro File</source>
-      <translation>S'està canviant el nom del fitxer de Macro</translation>
-    </message>
-    <message>
-      <source>Enter new name:</source>
-      <translation>Introduïu el nom nou:</translation>
-    </message>
-    <message>
-      <source>'%1'
- already exists.</source>
-      <translation>'%1'
- ja existeix.</translation>
-    </message>
-    <message>
-      <source>Rename Failed</source>
-      <translation>Error en canviar el nom</translation>
-    </message>
-    <message>
-      <source>Failed to rename to '%1'.
-Perhaps a file permission error?</source>
-      <translation>No ha pogut canviar el nom per '%1'.
-Pot ser un problema de permisos d'arxiu?</translation>
-    </message>
-    <message>
-      <source>Duplicate Macro</source>
-      <translation>Duplica la macro</translation>
-    </message>
-    <message>
-      <source>Duplicate Failed</source>
-      <translation>Ha fallat el duplicat</translation>
-    </message>
-    <message>
-      <source>Failed to duplicate to '%1'.
-Perhaps a file permission error?</source>
-      <translation>No s'ha pogut duplicar «%1».
-Potser per un error de permís de fitxer?</translation>
+      <source>Do you really want to delete the macro '%1'?</source>
+      <translation>Esteu segur que voleu suprimir la macro '%1'?</translation>
     </message>
     <message>
       <source>Do not show again</source>
@@ -1972,6 +1934,44 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation>Instruccions del procediment guiat: feu clic en Nou, després en el botó de fletxa dreta (-&gt;) i després en Tanca.</translation>
     </message>
+    <message>
+      <source>Renaming Macro File</source>
+      <translation>S'està canviant el nom del fitxer de Macro</translation>
+    </message>
+    <message>
+      <source>Enter new name:</source>
+      <translation>Introduïu el nom nou:</translation>
+    </message>
+    <message>
+      <source>'%1'
+ already exists.</source>
+      <translation>'%1'
+ ja existeix.</translation>
+    </message>
+    <message>
+      <source>Rename Failed</source>
+      <translation>Error en canviar el nom</translation>
+    </message>
+    <message>
+      <source>Failed to rename to '%1'.
+Perhaps a file permission error?</source>
+      <translation>No ha pogut canviar el nom per '%1'.
+Pot ser un problema de permisos d'arxiu?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Duplica la macro</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Ha fallat el duplicat</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>No s'ha pogut duplicar «%1».
+Potser per un error de permís de fitxer?</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
@@ -1982,14 +1982,6 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
     <message>
       <source>Macro name:</source>
       <translation>Nom de la macro:</translation>
-    </message>
-    <message>
-      <source>Stop</source>
-      <translation>Para</translation>
-    </message>
-    <message>
-      <source>Cancel</source>
-      <translation>Cancel·la</translation>
     </message>
     <message>
       <source>Macro path:</source>
@@ -2003,6 +1995,14 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
       <source>Record</source>
       <translation>Grava</translation>
     </message>
+    <message>
+      <source>Stop</source>
+      <translation>Para</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Cancel·la</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
@@ -2015,6 +2015,10 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
       <translation>Especifiqueu en primer lloc una ubicació on guardar.</translation>
     </message>
     <message>
+      <source>The macro directory doesn't exist. Please, choose another one.</source>
+      <translation>El directori de macro no existeix. Trieu-ne un altre</translation>
+    </message>
+    <message>
       <source>Existing macro</source>
       <translation>Macro existent</translation>
     </message>
@@ -2023,16 +2027,12 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
       <translation>La macro '%1' ja existeix. Voleu sobreescriure-la?</translation>
     </message>
     <message>
-      <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>El directori de macro no existeix. Trieu-ne un altre</translation>
+      <source>You have no write permission for the directory. Please, choose another one.</source>
+      <translation>No teniu permisos d'escriptura en el directori. Trieu-ne un altre.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
       <translation>Trieu el directori de macro</translation>
-    </message>
-    <message>
-      <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>No teniu permisos d'escriptura en el directori. Trieu-ne un altre.</translation>
     </message>
   </context>
   <context>
@@ -2046,8 +2046,16 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
       <translation>Material</translation>
     </message>
     <message>
+      <source>Ambient color:</source>
+      <translation>Color ambient:</translation>
+    </message>
+    <message>
       <source>Diffuse color:</source>
       <translation>Color difús:</translation>
+    </message>
+    <message>
+      <source>Emissive color:</source>
+      <translation>Color emissiu:</translation>
     </message>
     <message>
       <source>Specular color:</source>
@@ -2062,16 +2070,8 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
       <translation>%</translation>
     </message>
     <message>
-      <source>Ambient color:</source>
-      <translation>Color ambient:</translation>
-    </message>
-    <message>
       <source/>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Emissive color:</source>
-      <translation>Color emissiu:</translation>
     </message>
   </context>
   <context>
@@ -2092,6 +2092,10 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
   <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
+      <source>HTML files</source>
+      <translation>Fitxers HTML</translation>
+    </message>
+    <message>
       <source>Access denied</source>
       <translation>Accés denegat</translation>
     </message>
@@ -2101,32 +2105,12 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
 Specify another directory, please.</source>
       <translation>S'ha denegat l'accés a '%1' Especifiqueu un altre directori.</translation>
     </message>
-    <message>
-      <source>HTML files</source>
-      <translation>Fitxers HTML</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
       <source>Parameter Editor</source>
       <translation>Editor de paràmetres</translation>
-    </message>
-    <message>
-      <source>Save to disk</source>
-      <translation>Guarda al disc</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>&amp;Close</source>
-      <translation>Tan&amp;ca</translation>
-    </message>
-    <message>
-      <source>Find...</source>
-      <translation>Busca...</translation>
     </message>
     <message>
       <source>Sorted</source>
@@ -2143,6 +2127,22 @@ Specify another directory, please.</source>
     <message>
       <source>Search Group</source>
       <translation>Busca un grup</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Busca...</translation>
+    </message>
+    <message>
+      <source>Save to disk</source>
+      <translation>Guarda al disc</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>&amp;Close</source>
+      <translation>Tan&amp;ca</translation>
     </message>
   </context>
   <context>
@@ -2207,8 +2207,16 @@ Specify another directory, please.</source>
       <translation>Valor</translation>
     </message>
     <message>
+      <source>System parameter</source>
+      <translation>Paràmetres del sistema</translation>
+    </message>
+    <message>
       <source>User parameter</source>
       <translation>Paràmetre de l'usuari</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Busca un grup</translation>
     </message>
     <message>
       <source>Invalid input</source>
@@ -2217,14 +2225,6 @@ Specify another directory, please.</source>
     <message>
       <source>Invalid key name '%1'</source>
       <translation>El nom de clau '%1' no ś vàlid.</translation>
-    </message>
-    <message>
-      <source>System parameter</source>
-      <translation>Paràmetres del sistema</translation>
-    </message>
-    <message>
-      <source>Search Group</source>
-      <translation>Busca un grup</translation>
     </message>
   </context>
   <context>
@@ -2283,10 +2283,6 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <source>Wrong parameter</source>
-      <translation>El paràmetre és incorrecte.</translation>
-    </message>
-    <message>
       <source>Clear user settings</source>
       <translation>Esborra els paràmetres d'usuari</translation>
     </message>
@@ -2297,6 +2293,10 @@ Specify another directory, please.</source>
     <message>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Si hi esteu d'acord, tots els vostres paràmetres s'esborraran.</translation>
+    </message>
+    <message>
+      <source>Wrong parameter</source>
+      <translation>El paràmetre és incorrecte.</translation>
     </message>
   </context>
   <context>
@@ -2314,40 +2314,36 @@ Specify another directory, please.</source>
       <translation>&amp;Nom:</translation>
     </message>
     <message>
-      <source>Commen&amp;t:</source>
-      <translation>Comen&amp;tari:</translation>
-    </message>
-    <message>
       <source>Path:</source>
       <translation>Camí:</translation>
     </message>
     <message>
-      <source>&amp;Last modified by:</source>
-      <translation>Ú&amp;ltima modificació per:</translation>
+      <source>UUID:</source>
+      <translation>UUID:</translation>
+    </message>
+    <message>
+      <source>Program version:</source>
+      <translation type="unfinished">Program version:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
       <translation>Creat &amp;per:</translation>
     </message>
     <message>
-      <source>Com&amp;pany:</source>
-      <translation>Em&amp;presa:</translation>
+      <source>Creation &amp;date:</source>
+      <translation>&amp;Data de creació:</translation>
+    </message>
+    <message>
+      <source>&amp;Last modified by:</source>
+      <translation>Ú&amp;ltima modificació per:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
       <translation>Data de l'última &amp;modificació:</translation>
     </message>
     <message>
-      <source>Creation &amp;date:</source>
-      <translation>&amp;Data de creació:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>UUID:</source>
-      <translation>UUID:</translation>
+      <source>Com&amp;pany:</source>
+      <translation>Em&amp;presa:</translation>
     </message>
     <message>
       <source>License information:</source>
@@ -2362,8 +2358,12 @@ Specify another directory, please.</source>
       <translation>Obri en el navegador</translation>
     </message>
     <message>
-      <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <source>Commen&amp;t:</source>
+      <translation>Comen&amp;tari:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2401,6 +2401,10 @@ Specify another directory, please.</source>
       <translation>Carrega el fitxer del projecte després de la creació</translation>
     </message>
     <message>
+      <source>Project file</source>
+      <translation>Fitxer del projecte</translation>
+    </message>
+    <message>
       <source>Empty source</source>
       <translation>La font és buida.</translation>
     </message>
@@ -2416,16 +2420,24 @@ Specify another directory, please.</source>
       <source>No destination is defined.</source>
       <translation>No s'ha definit cap destinació.</translation>
     </message>
-    <message>
-      <source>Project file</source>
-      <translation>Fitxer del projecte</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
       <source>Link</source>
       <translation>Enllaç</translation>
+    </message>
+    <message>
+      <source>Filter by type</source>
+      <translation>Filtra per tipus</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+    </message>
+    <message>
+      <source>Sync sub-object selection</source>
+      <translation>Sincronitza la selecció dels subobjectes</translation>
     </message>
     <message>
       <source>Search</source>
@@ -2436,24 +2448,12 @@ Specify another directory, please.</source>
       <translation>Un patró de cerca per a filtrar els resultats anteriors</translation>
     </message>
     <message>
-      <source>Filter by type</source>
-      <translation>Filtra per tipus</translation>
-    </message>
-    <message>
-      <source>Sync sub-object selection</source>
-      <translation>Sincronitza la selecció dels subobjectes</translation>
-    </message>
-    <message>
       <source>Reset</source>
       <translation>Reinicialitza</translation>
     </message>
     <message>
       <source>Clear</source>
       <translation>Neteja</translation>
-    </message>
-    <message>
-      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -2467,64 +2467,36 @@ Specify another directory, please.</source>
       <translation>Eixida</translation>
     </message>
     <message>
-      <source>Record log messages</source>
-      <translation>Grava els missatges de registre</translation>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
     </message>
     <message>
-      <source>Record warnings</source>
-      <translation>Grava els avisos</translation>
-    </message>
-    <message>
-      <source>Record error messages</source>
-      <translation>Grava els missatges d'error</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Colors</translation>
-    </message>
-    <message>
-      <source>Normal messages:</source>
-      <translation>Missatges normals:</translation>
-    </message>
-    <message>
-      <source>Log messages:</source>
-      <translation>Resgistre de missatges:</translation>
-    </message>
-    <message>
-      <source>Warnings:</source>
-      <translation>Avisos:</translation>
-    </message>
-    <message>
-      <source>Errors:</source>
-      <translation>Errors:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Redirect internal Python errors to report view</source>
-      <translation>Redirigeix els errors interns de Python a la visualització d'informe</translation>
-    </message>
-    <message>
-      <source>Redirect internal Python output to report view</source>
-      <translation>Redirigeix l'eixida interna de Python a la visualització d'informe1</translation>
-    </message>
-    <message>
-      <source>Python interpreter</source>
-      <translation>Intèrpret de Python</translation>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
     <message>
       <source>Log messages will be recorded</source>
       <translation>Es gravarà el registre de missatges</translation>
     </message>
     <message>
+      <source>Record log messages</source>
+      <translation>Grava els missatges de registre</translation>
+    </message>
+    <message>
       <source>Warnings will be recorded</source>
       <translation>Es gravaran els avisos</translation>
     </message>
     <message>
+      <source>Record warnings</source>
+      <translation>Grava els avisos</translation>
+    </message>
+    <message>
       <source>Error messages will be recorded</source>
       <translation>Es gravaran els missatges d'error</translation>
+    </message>
+    <message>
+      <source>Record error messages</source>
+      <translation>Grava els missatges d'error</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
@@ -2566,34 +2538,6 @@ on-screen while displaying the log message</source>
       <translation>Mostra la vista de l'informe en cas d'un missatge de registre</translation>
     </message>
     <message>
-      <source>Font color for normal messages in Report view panel</source>
-      <translation>Color del tipus de lletra per a missatges normals en el tauler de Vista d'informes</translation>
-    </message>
-    <message>
-      <source>Font color for log messages in Report view panel</source>
-      <translation>Color del tipus de lletra per a missatges de registre en el tauler de Vista d'informes</translation>
-    </message>
-    <message>
-      <source>Font color for warning messages in Report view panel</source>
-      <translation>Color del tipus de lletra per a missatges d'avís en el tauler de Vista d'informes</translation>
-    </message>
-    <message>
-      <source>Font color for error messages in Report view panel</source>
-      <translation>Color del tipus de lletra per a missatges d'error en el tauler de Vista d'informes</translation>
-    </message>
-    <message>
-      <source>Internal Python output will be redirected
-from Python console to Report view panel</source>
-      <translation>L'eixida interna de Python es redirigirà
-de la consola Python al tauler de Vista d'informes</translation>
-    </message>
-    <message>
-      <source>Internal Python error messages will be redirected
-from Python console to Report view panel</source>
-      <translation>Els missatges d'error interns de Python es redirigiran
-de la consola Python al tauler de Vista d'informes</translation>
-    </message>
-    <message>
       <source>Include a timecode for each report</source>
       <translation type="unfinished">Include a timecode for each report</translation>
     </message>
@@ -2602,12 +2546,68 @@ de la consola Python al tauler de Vista d'informes</translation>
       <translation type="unfinished">Include a timecode for each entry</translation>
     </message>
     <message>
-      <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <source>Colors</source>
+      <translation>Colors</translation>
     </message>
     <message>
-      <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <source>Normal messages:</source>
+      <translation>Missatges normals:</translation>
+    </message>
+    <message>
+      <source>Font color for normal messages in Report view panel</source>
+      <translation>Color del tipus de lletra per a missatges normals en el tauler de Vista d'informes</translation>
+    </message>
+    <message>
+      <source>Log messages:</source>
+      <translation>Resgistre de missatges:</translation>
+    </message>
+    <message>
+      <source>Font color for log messages in Report view panel</source>
+      <translation>Color del tipus de lletra per a missatges de registre en el tauler de Vista d'informes</translation>
+    </message>
+    <message>
+      <source>Warnings:</source>
+      <translation>Avisos:</translation>
+    </message>
+    <message>
+      <source>Font color for warning messages in Report view panel</source>
+      <translation>Color del tipus de lletra per a missatges d'avís en el tauler de Vista d'informes</translation>
+    </message>
+    <message>
+      <source>Errors:</source>
+      <translation>Errors:</translation>
+    </message>
+    <message>
+      <source>Font color for error messages in Report view panel</source>
+      <translation>Color del tipus de lletra per a missatges d'error en el tauler de Vista d'informes</translation>
+    </message>
+    <message>
+      <source>Python interpreter</source>
+      <translation>Intèrpret de Python</translation>
+    </message>
+    <message>
+      <source>Internal Python output will be redirected
+from Python console to Report view panel</source>
+      <translation>L'eixida interna de Python es redirigirà
+de la consola Python al tauler de Vista d'informes</translation>
+    </message>
+    <message>
+      <source>Redirect internal Python output to report view</source>
+      <translation>Redirigeix l'eixida interna de Python a la visualització d'informe1</translation>
+    </message>
+    <message>
+      <source>Internal Python error messages will be redirected
+from Python console to Report view panel</source>
+      <translation>Els missatges d'error interns de Python es redirigiran
+de la consola Python al tauler de Vista d'informes</translation>
+    </message>
+    <message>
+      <source>Redirect internal Python errors to report view</source>
+      <translation>Redirigeix els errors interns de Python a la visualització d'informe</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2678,58 +2678,6 @@ de la consola Python al tauler de Vista d'informes</translation>
       <translation>Vista 3D</translation>
     </message>
     <message>
-      <source>Show coordinate system in the corner</source>
-      <translation>Mostra el sistema de coordenades en la cantonada</translation>
-    </message>
-    <message>
-      <source>Show counter of frames per second</source>
-      <translation>Mostra el comptador d'imatges per segon</translation>
-    </message>
-    <message>
-      <source>Camera type</source>
-      <translation>Tipus de càmera</translation>
-    </message>
-    <message>
-      <source/>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Anti-Aliasing</source>
-      <translation>Antialiàsing</translation>
-    </message>
-    <message>
-      <source>None</source>
-      <translation>Cap</translation>
-    </message>
-    <message>
-      <source>Line Smoothing</source>
-      <translation>Suavització de línies</translation>
-    </message>
-    <message>
-      <source>MSAA 2x</source>
-      <translation>MSAA 2x</translation>
-    </message>
-    <message>
-      <source>MSAA 4x</source>
-      <translation>MSAA 4x</translation>
-    </message>
-    <message>
-      <source>MSAA 8x</source>
-      <translation>MSAA 8x</translation>
-    </message>
-    <message>
-      <source>Or&amp;thographic rendering</source>
-      <translation>Renderització or&amp;togràfica</translation>
-    </message>
-    <message>
-      <source>Perspective renderin&amp;g</source>
-      <translation>&amp;Renderització en perspectiva</translation>
-    </message>
-    <message>
-      <source>Marker size:</source>
-      <translation>Mida del marcador:</translation>
-    </message>
-    <message>
       <source>General</source>
       <translation>General</translation>
     </message>
@@ -2740,10 +2688,42 @@ lower right corner within opened files</source>
 cantó inferior dret dels fitxers oberts</translation>
     </message>
     <message>
+      <source>Show coordinate system in the corner</source>
+      <translation>Mostra el sistema de coordenades en la cantonada</translation>
+    </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
       <translation>El temps necessari per a l'última operació i la freqüència de marcs resultant
 es mostrarà en el cantó inferior esquerre dels fitxers oberts</translation>
+    </message>
+    <message>
+      <source>Show counter of frames per second</source>
+      <translation>Mostra el comptador d'imatges per segon</translation>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
@@ -2756,6 +2736,18 @@ es mostrarà en el cantó inferior esquerre dels fitxers oberts</translation>
     <message>
       <source>Rendering</source>
       <translation>Renderització</translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2812,6 +2804,34 @@ Hi ha 3 opcions disponibles per a aconseguir-ho:
       <translation>Centralitzada</translation>
     </message>
     <message>
+      <source>Anti-Aliasing</source>
+      <translation>Antialiàsing</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>None</source>
+      <translation>Cap</translation>
+    </message>
+    <message>
+      <source>Line Smoothing</source>
+      <translation>Suavització de línies</translation>
+    </message>
+    <message>
+      <source>MSAA 2x</source>
+      <translation>MSAA 2x</translation>
+    </message>
+    <message>
+      <source>MSAA 4x</source>
+      <translation>MSAA 4x</translation>
+    </message>
+    <message>
+      <source>MSAA 8x</source>
+      <translation>MSAA 8x</translation>
+    </message>
+    <message>
       <source>Transparent objects:</source>
       <translation>Objectes transparents:</translation>
     </message>
@@ -2828,12 +2848,36 @@ Hi ha 3 opcions disponibles per a aconseguir-ho:
       <translation>Passada per la cara posterior</translation>
     </message>
     <message>
+      <source>Marker size:</source>
+      <translation>Mida del marcador:</translation>
+    </message>
+    <message>
       <source>Size of vertices in the Sketcher workbench</source>
       <translation>Mida de vèrtexs en el banc de treball de l'entorn d'esbós</translation>
     </message>
     <message>
+      <source>Pick radius (px):</source>
+      <translation>Trieu el radi (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
+    <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distància entre els ulls per a la visió estereoscòpica</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2852,84 +2896,32 @@ Hi ha 3 opcions disponibles per a aconseguir-ho:
       <translation>Intensitat de la retroil·luminació</translation>
     </message>
     <message>
-      <source>Objects will be projected in orthographic projection</source>
-      <translation>Els objectes es projectaran en projecció ortogràfica</translation>
+      <source>Camera type</source>
+      <translation>Tipus de càmera</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation>Els objectes apareixeran en una projecció en perspectiva</translation>
     </message>
     <message>
-      <source>Axis cross will be shown by default at file
-opening or creation</source>
-      <translation type="unfinished">Axis cross will be shown by default at file
-opening or creation</translation>
+      <source>Perspective renderin&amp;g</source>
+      <translation>&amp;Renderització en perspectiva</translation>
     </message>
     <message>
-      <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>Els objectes es projectaran en projecció ortogràfica</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Trieu el radi (px):</translation>
+      <source>Or&amp;thographic rendering</source>
+      <translation>Renderització or&amp;togràfica</translation>
     </message>
     <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </translation>
-    </message>
-    <message>
-      <source>This option is useful for troubleshooting graphics card and driver problems.
-
-Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
-
-Changing this option requires a restart of the application.</translation>
-    </message>
-    <message>
-      <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
-    </message>
-    <message>
-      <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
-    </message>
-    <message>
-      <source>Relative size :   </source>
-      <translation type="unfinished">Relative size :   </translation>
-    </message>
-    <message>
-      <source>Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</translation>
-    </message>
-    <message>
-      <source>%</source>
-      <translation>%</translation>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-      <source>Anti-aliasing</source>
-      <translation>Antialiàsing</translation>
-    </message>
-    <message>
-      <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Obriu un visualitzador nou o reinicieu %1 perquè s'apliquen els canvis d'antialiàsing</translation>
-    </message>
     <message>
       <source>5px</source>
       <translation>5px</translation>
@@ -2953,6 +2945,14 @@ in the corner -- in % of height/width of viewport</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Anti-aliasing</source>
+      <translation>Antialiàsing</translation>
+    </message>
+    <message>
+      <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
+      <translation>Obriu un visualitzador nou o reinicieu %1 perquè s'apliquen els canvis d'antialiàsing</translation>
     </message>
   </context>
   <context>
@@ -3021,6 +3021,10 @@ in the corner -- in % of height/width of viewport</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsColorGradient</name>
     <message>
+      <source>Color-gradient settings</source>
+      <translation>Paràmetres del degradat del color</translation>
+    </message>
+    <message>
       <source>Color model</source>
       <translation>Model de color</translation>
     </message>
@@ -3045,32 +3049,12 @@ in the corner -- in % of height/width of viewport</translation>
       <translation>negre-blanc</translation>
     </message>
     <message>
-      <source>Visibility</source>
-      <translation>Visibilitat</translation>
-    </message>
-    <message>
-      <source>Out g&amp;rayed</source>
-      <translation>No &amp;seleccionable</translation>
-    </message>
-    <message>
-      <source>Alt+R</source>
-      <translation>Alt + R</translation>
-    </message>
-    <message>
-      <source>Alt+I</source>
-      <translation>Alt+I</translation>
-    </message>
-    <message>
       <source>Style</source>
       <translation>Estil</translation>
     </message>
     <message>
-      <source>&amp;Zero</source>
-      <translation>&amp;Zero</translation>
-    </message>
-    <message>
-      <source>Alt+Z</source>
-      <translation>Alt+Z</translation>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
     </message>
     <message>
       <source>&amp;Flow</source>
@@ -3081,46 +3065,34 @@ in the corner -- in % of height/width of viewport</translation>
       <translation>Alt+F</translation>
     </message>
     <message>
-      <source>Parameter range</source>
-      <translation>Abast dels paràmetres</translation>
-    </message>
-    <message>
-      <source>Mi&amp;nimum:</source>
-      <translation>Mí&amp;nim:</translation>
-    </message>
-    <message>
-      <source>Ma&amp;ximum:</source>
-      <translation>Mà&amp;xim:</translation>
-    </message>
-    <message>
-      <source>&amp;Labels:</source>
-      <translation>&amp;Etiquetes:</translation>
-    </message>
-    <message>
-      <source>&amp;Decimals:</source>
-      <translation>&amp;Decimals:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>Color-gradient settings</source>
-      <translation>Paràmetres del degradat del color</translation>
-    </message>
-    <message>
-      <source>Color gradient is used with its full color range</source>
-      <translation type="unfinished">Color gradient is used with its full color range</translation>
-    </message>
-    <message>
       <source>Color gradient starts from the zero value</source>
       <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>&amp;Zero</source>
+      <translation>&amp;Zero</translation>
+    </message>
+    <message>
+      <source>Alt+Z</source>
+      <translation>Alt+Z</translation>
+    </message>
+    <message>
+      <source>Visibility</source>
+      <translation>Visibilitat</translation>
     </message>
     <message>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
       <translation type="unfinished">Data outside the specified min-max range
 will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Out g&amp;rayed</source>
+      <translation>No &amp;seleccionable</translation>
+    </message>
+    <message>
+      <source>Alt+R</source>
+      <translation>Alt + R</translation>
     </message>
     <message>
       <source>Data outside the specified min-max range
@@ -3133,14 +3105,42 @@ will be displayed with transparency</translation>
       <translation type="unfinished">Out &amp;transparent</translation>
     </message>
     <message>
+      <source>Alt+I</source>
+      <translation>Alt+I</translation>
+    </message>
+    <message>
+      <source>Parameter range</source>
+      <translation>Abast dels paràmetres</translation>
+    </message>
+    <message>
+      <source>Ma&amp;ximum:</source>
+      <translation>Mà&amp;xim:</translation>
+    </message>
+    <message>
+      <source>&amp;Labels:</source>
+      <translation>&amp;Etiquetes:</translation>
+    </message>
+    <message>
       <source>Number of labels besides the color bar</source>
       <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Mi&amp;nimum:</source>
+      <translation>Mí&amp;nim:</translation>
+    </message>
+    <message>
+      <source>&amp;Decimals:</source>
+      <translation>&amp;Decimals:</translation>
     </message>
     <message>
       <source>Number of decimals for labels
 besides the color bar</source>
       <translation type="unfinished">Number of decimals for labels
 besides the color bar</translation>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -3165,105 +3165,17 @@ besides the color bar</translation>
       <translation>General</translation>
     </message>
     <message>
-      <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
-      <translation>Nivell de compressió per a guardar el document (0 = cap, 9 = el més alt, 3 = per defecte)</translation>
+      <source>The application will create a new document when started</source>
+      <translation>L’aplicació crearà un document nou quan s’inicie</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
       <translation>Crea un document nou a l'inici</translation>
     </message>
     <message>
-      <source>Storage</source>
-      <translation>Emmagatzematge</translation>
-    </message>
-    <message>
-      <source>Saving transactions (Auto-save)</source>
-      <translation>S'estan guardant les transaccions (guarda automàticament)</translation>
-    </message>
-    <message>
-      <source>Discard saved transaction after saving document</source>
-      <translation>Descarta les transaccions guardades després de guardar el document</translation>
-    </message>
-    <message>
-      <source>Save thumbnail into project file when saving document</source>
-      <translation>Guarda la miniatura en el fitxer del projecte quan es guarde el document</translation>
-    </message>
-    <message>
-      <source>Maximum number of backup files to keep when resaving document</source>
-      <translation>Nombre màxim de fitxers de còpia de seguretat que cal mantenir quan es torna a guardar el document</translation>
-    </message>
-    <message>
-      <source>Document objects</source>
-      <translation>Objectes del document</translation>
-    </message>
-    <message>
-      <source>Allow duplicate object labels in one document</source>
-      <translation>Permet etiquetes duplicades d'objectes en un document</translation>
-    </message>
-    <message>
-      <source>Maximum Undo/Redo steps</source>
-      <translation>Nombre màxim d'accions de fer/desfer</translation>
-    </message>
-    <message>
-      <source>Using Undo/Redo on documents</source>
-      <translation>Ús de les opcions Fes/Desfés en els documents</translation>
-    </message>
-    <message>
-      <source>Authoring and License</source>
-      <translation>Autoria i llicència</translation>
-    </message>
-    <message>
-      <source>Author name</source>
-      <translation>Nom de l'autor</translation>
-    </message>
-    <message>
-      <source>Set on save</source>
-      <translation>En guardar</translation>
-    </message>
-    <message>
-      <source>Company</source>
-      <translation>Empresa</translation>
-    </message>
-    <message>
-      <source>Default license</source>
-      <translation>Llicència per defecte</translation>
-    </message>
-    <message>
-      <source>All rights reserved</source>
-      <translation>Tots els drets reservats</translation>
-    </message>
-    <message>
-      <source>Public Domain</source>
-      <translation>Domini públic</translation>
-    </message>
-    <message>
-      <source>FreeArt</source>
-      <translation>FreeArt</translation>
-    </message>
-    <message>
-      <source>Other</source>
-      <translation>Altres</translation>
-    </message>
-    <message>
-      <source>License URL</source>
-      <translation>URL de la llicència</translation>
-    </message>
-    <message>
-      <source>Run AutoRecovery at startup</source>
-      <translation>Executa l'autorecuperació a l'inici</translation>
-    </message>
-    <message>
-      <source>Save AutoRecovery information every</source>
-      <translation>Guarda la informació d'autorecuperació cada</translation>
-    </message>
-    <message>
-      <source>Add the program logo to the generated thumbnail</source>
-      <translation>Afig el logotip del programa a la miniatura generada</translation>
-    </message>
-    <message>
-      <source>The application will create a new document when started</source>
-      <translation>L’aplicació crearà un document nou quan s’inicie</translation>
+      <source>Document save compression level
+(0 = none, 9 = highest, 3 = default)</source>
+      <translation>Nivell de compressió per a guardar el document (0 = cap, 9 = el més alt, 3 = per defecte)</translation>
     </message>
     <message>
       <source>Compression level for FCStd files</source>
@@ -3272,6 +3184,14 @@ besides the color bar</translation>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
       <translation>Tots els canvis en els documents s’emmagatzemen perquè es puguen desfer/refer</translation>
+    </message>
+    <message>
+      <source>Using Undo/Redo on documents</source>
+      <translation>Ús de les opcions Fes/Desfés en els documents</translation>
+    </message>
+    <message>
+      <source>Maximum Undo/Redo steps</source>
+      <translation>Nombre màxim d'accions de fer/desfer</translation>
     </message>
     <message>
       <source>How many Undo/Redo steps should be recorded</source>
@@ -3288,18 +3208,42 @@ Aquesta característica pot augmentar lleugerament el temps de recàlcul.</trans
       <translation>Permet interrompre el recàlcul</translation>
     </message>
     <message>
+      <source>Storage</source>
+      <translation>Emmagatzematge</translation>
+    </message>
+    <message>
+      <source>Saving transactions (Auto-save)</source>
+      <translation>S'estan guardant les transaccions (guarda automàticament)</translation>
+    </message>
+    <message>
+      <source>Discard saved transaction after saving document</source>
+      <translation>Descarta les transaccions guardades després de guardar el document</translation>
+    </message>
+    <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
       <translation>Si hi ha un fitxer de recuperació disponible, l’aplicació
 executa automàticament la recuperació d’un fitxer quan s'inicie.</translation>
     </message>
     <message>
+      <source>Run AutoRecovery at startup</source>
+      <translation>Executa l'autorecuperació a l'inici</translation>
+    </message>
+    <message>
       <source>How often a recovery file is written</source>
       <translation>La freqüència amb què s’escriu un fitxer de recuperació</translation>
     </message>
     <message>
+      <source>Save AutoRecovery information every</source>
+      <translation>Guarda la informació d'autorecuperació cada</translation>
+    </message>
+    <message>
       <source>A thumbnail will be stored when document is saved</source>
       <translation>Una miniatura s'emmagatzemarà quan es guarde el document</translation>
+    </message>
+    <message>
+      <source>Save thumbnail into project file when saving document</source>
+      <translation>Guarda la miniatura en el fitxer del projecte quan es guarde el document</translation>
     </message>
     <message>
       <source>Size</source>
@@ -3316,8 +3260,16 @@ Les mides habituals són 128, 256 i 512</translation>
       <translation>El logo del programa s’afegirà a la miniatura</translation>
     </message>
     <message>
+      <source>Add the program logo to the generated thumbnail</source>
+      <translation>Afig el logotip del programa a la miniatura generada</translation>
+    </message>
+    <message>
       <source>How many backup files will be kept when saving document</source>
       <translation>Nombre de fitxers de còpia de seguretat es conservaran en guardar el document</translation>
+    </message>
+    <message>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Nombre màxim de fitxers de còpia de seguretat que cal mantenir quan es torna a guardar el document</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
@@ -3334,8 +3286,16 @@ tindran el sufix de data segons el format especificat</translation>
       <translation>Format de la data</translation>
     </message>
     <message>
+      <source>Document objects</source>
+      <translation>Objectes del document</translation>
+    </message>
+    <message>
       <source>Allow objects to have same label/name</source>
       <translation>Permet que els objectes tinguen la mateixa etiqueta/nom</translation>
+    </message>
+    <message>
+      <source>Allow duplicate object labels in one document</source>
+      <translation>Permet etiquetes duplicades d'objectes en un document</translation>
     </message>
     <message>
       <source>Enable partial loading of external linked documents.
@@ -3352,6 +3312,14 @@ No es pot editar un document carregat parcialment. Feu doble clic a la icona del
       <translation>Desactiva la càrrega parcial d'objectes enllaçats externs</translation>
     </message>
     <message>
+      <source>Authoring and License</source>
+      <translation>Autoria i llicència</translation>
+    </message>
+    <message>
+      <source>Author name</source>
+      <translation>Nom de l'autor</translation>
+    </message>
+    <message>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -3364,12 +3332,28 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>El camp «Última modificació per" estarà configurat per a l'autor especificat en guardar el fitxer</translation>
     </message>
     <message>
+      <source>Set on save</source>
+      <translation>En guardar</translation>
+    </message>
+    <message>
+      <source>Company</source>
+      <translation>Empresa</translation>
+    </message>
+    <message>
       <source>Default company name to use for new files</source>
       <translation>El nom de l'empresa per defecte que s'utilitza per als fitxers nous</translation>
     </message>
     <message>
+      <source>Default license</source>
+      <translation>Llicència per defecte</translation>
+    </message>
+    <message>
       <source>Default license for new documents</source>
       <translation>La llicència per defecte per als documents nous</translation>
+    </message>
+    <message>
+      <source>All rights reserved</source>
+      <translation>Tots els drets reservats</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
@@ -3394,6 +3378,22 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
       <translation>Llicència Creative Commons Reconeixement-NoComercial-SenseObraDerivada</translation>
+    </message>
+    <message>
+      <source>Public Domain</source>
+      <translation>Domini públic</translation>
+    </message>
+    <message>
+      <source>FreeArt</source>
+      <translation>FreeArt</translation>
+    </message>
+    <message>
+      <source>Other</source>
+      <translation>Altres</translation>
+    </message>
+    <message>
+      <source>License URL</source>
+      <translation>URL de la llicència</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
@@ -3474,12 +3474,12 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>Error de Python</translation>
     </message>
     <message>
-      <source>Items</source>
-      <translation>Elements</translation>
-    </message>
-    <message>
       <source>Current line highlight</source>
       <translation>Ressaltat de la línia actual</translation>
+    </message>
+    <message>
+      <source>Items</source>
+      <translation>Elements</translation>
     </message>
   </context>
   <context>
@@ -3489,36 +3489,12 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>Configuració de la imatge</translation>
     </message>
     <message>
-      <source>Image properties</source>
-      <translation>Propietats de la imatge</translation>
-    </message>
-    <message>
-      <source>Back&amp;ground:</source>
-      <translation>&amp;Fons:</translation>
-    </message>
-    <message>
-      <source>Current</source>
-      <translation>Actual</translation>
-    </message>
-    <message>
-      <source>White</source>
-      <translation>Blanc</translation>
-    </message>
-    <message>
-      <source>Black</source>
-      <translation>Negre</translation>
-    </message>
-    <message>
       <source>Image dimensions</source>
       <translation>Dimensions de la imatge</translation>
     </message>
     <message>
-      <source>Pixel</source>
-      <translation>Píxel</translation>
-    </message>
-    <message>
-      <source>&amp;Width:</source>
-      <translation>A&amp;mplària:</translation>
+      <source>Standard sizes:</source>
+      <translation>Mides estàndard:</translation>
     </message>
     <message>
       <source>Current screen</source>
@@ -3537,8 +3513,12 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>Icona 128 x 128</translation>
     </message>
     <message>
-      <source>Standard sizes:</source>
-      <translation>Mides estàndard:</translation>
+      <source>&amp;Width:</source>
+      <translation>A&amp;mplària:</translation>
+    </message>
+    <message>
+      <source>Pixel</source>
+      <translation>Píxel</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
@@ -3581,6 +3561,34 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>Alt+1</translation>
     </message>
     <message>
+      <source>Image properties</source>
+      <translation>Propietats de la imatge</translation>
+    </message>
+    <message>
+      <source>Back&amp;ground:</source>
+      <translation>&amp;Fons:</translation>
+    </message>
+    <message>
+      <source>Current</source>
+      <translation>Actual</translation>
+    </message>
+    <message>
+      <source>White</source>
+      <translation>Blanc</translation>
+    </message>
+    <message>
+      <source>Black</source>
+      <translation>Negre</translation>
+    </message>
+    <message>
+      <source>Transparent</source>
+      <translation>Transparent</translation>
+    </message>
+    <message>
+      <source>Creation method:</source>
+      <translation>Mètode de creació:</translation>
+    </message>
+    <message>
       <source>Image comment</source>
       <translation>Comentari de la imatge</translation>
     </message>
@@ -3593,16 +3601,8 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>Insereix un comentari</translation>
     </message>
     <message>
-      <source>Transparent</source>
-      <translation>Transparent</translation>
-    </message>
-    <message>
       <source>Add watermark</source>
       <translation>Afig una marca d'aigua</translation>
-    </message>
-    <message>
-      <source>Creation method:</source>
-      <translation>Mètode de creació:</translation>
     </message>
   </context>
   <context>
@@ -3627,6 +3627,14 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
       <source>Workbench Name</source>
       <translation type="unfinished">Workbench Name</translation>
     </message>
@@ -3637,14 +3645,6 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <source>Load Now</source>
       <translation type="unfinished">Load Now</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
     </message>
   </context>
   <context>
@@ -3685,12 +3685,56 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>Macro</translation>
     </message>
     <message>
+      <source>General macro settings</source>
+      <translation>Configuració general de macros</translation>
+    </message>
+    <message>
+      <source>Variables defined by macros are created as local variables</source>
+      <translation>Les variables definides per macros es creen com a variables locals</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Executa les macros en un entorn local</translation>
+    </message>
+    <message>
       <source>Macro recording settings</source>
       <translation>Paràmetres de gravació d'una macro</translation>
     </message>
     <message>
+      <source>Macro path</source>
+      <translation>Camí de la macro</translation>
+    </message>
+    <message>
+      <source>The directory in which the application will search for macros</source>
+      <translation>El directori en què l’aplicació buscarà macros</translation>
+    </message>
+    <message>
+      <source>Gui commands</source>
+      <translation>Ordres de la GUI</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands</source>
+      <translation>Les macros gravades també contindran ordres de la interfície d'usuari</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Gravació de les ordres de la GUI</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands as comments</source>
+      <translation>Les macros gravades també contindran com a comentaris ordres de la interfície d'usuari</translation>
+    </message>
+    <message>
+      <source>Record as comment</source>
+      <translation>Grava com a comentari</translation>
+    </message>
+    <message>
       <source>Logging Commands</source>
       <translation>Ordres d'inici de sessió</translation>
+    </message>
+    <message>
+      <source>Commands executed by macro scripts are shown in Python console</source>
+      <translation>Les ordres executades per scripts de macro es mostren en la consola Python</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
@@ -3703,50 +3747,6 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <source>FullScript.FCScript</source>
       <translation>FullScript.FCScript</translation>
-    </message>
-    <message>
-      <source>Gui commands</source>
-      <translation>Ordres de la GUI</translation>
-    </message>
-    <message>
-      <source>Record as comment</source>
-      <translation>Grava com a comentari</translation>
-    </message>
-    <message>
-      <source>Macro path</source>
-      <translation>Camí de la macro</translation>
-    </message>
-    <message>
-      <source>General macro settings</source>
-      <translation>Configuració general de macros</translation>
-    </message>
-    <message>
-      <source>Run macros in local environment</source>
-      <translation>Executa les macros en un entorn local</translation>
-    </message>
-    <message>
-      <source>Record GUI commands</source>
-      <translation>Gravació de les ordres de la GUI</translation>
-    </message>
-    <message>
-      <source>Variables defined by macros are created as local variables</source>
-      <translation>Les variables definides per macros es creen com a variables locals</translation>
-    </message>
-    <message>
-      <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation>Les ordres executades per scripts de macro es mostren en la consola Python</translation>
-    </message>
-    <message>
-      <source>Recorded macros will also contain user interface commands</source>
-      <translation>Les macros gravades també contindran ordres de la interfície d'usuari</translation>
-    </message>
-    <message>
-      <source>Recorded macros will also contain user interface commands as comments</source>
-      <translation>Les macros gravades també contindran com a comentaris ordres de la interfície d'usuari</translation>
-    </message>
-    <message>
-      <source>The directory in which the application will search for macros</source>
-      <translation>El directori en què l’aplicació buscarà macros</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
@@ -3820,6 +3820,22 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
       <translation>Inferior dreta</translation>
     </message>
     <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
       <source>3D Navigation</source>
       <translation>Navegació 3D</translation>
     </message>
@@ -3858,6 +3874,38 @@ Torn: la peça girarà al voltant de l’eix z.</translation>
       <translation>Ratolí de bola</translation>
     </message>
     <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation>Les rotacions en 3D utilitzaran la posició actual del cursor com a centre de rotació</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation type="unfinished">Default camera orientation</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Configura el zoom de la càmera per als nous documents.
@@ -3884,8 +3932,14 @@ El valor és el diàmetre de l’esfera per a ajustar-se a la pantalla.</transla
       <translation>Zoom en el cursor</translation>
     </message>
     <message>
-      <source>Zoom step</source>
-      <translation>Pas de zoom</translation>
+      <source> Zoom step</source>
+      <translation type="unfinished"> Zoom step</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Direction of zoom operations will be inverted</source>
@@ -3904,10 +3958,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Desactiva el gest d'inclinació de la pantalla tàctil</translation>
-    </message>
-    <message>
-      <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation>Les rotacions en 3D utilitzaran la posició actual del cursor com a centre de rotació</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3948,56 +3998,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Custom</source>
       <translation>Personalitzat</translation>
-    </message>
-    <message>
-      <source>Default camera orientation</source>
-      <translation type="unfinished">Default camera orientation</translation>
-    </message>
-    <message>
-      <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
-    </message>
-    <message>
-      <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
-    </message>
-    <message>
-      <source>Window center</source>
-      <translation type="unfinished">Window center</translation>
-    </message>
-    <message>
-      <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
-    </message>
-    <message>
-      <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
-    </message>
-    <message>
-      <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
-    </message>
-    <message>
-      <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
-    </message>
-    <message>
-      <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
-    </message>
-    <message>
-      <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
-    </message>
-    <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
-    </message>
-    <message>
-      <source>Camera zoom</source>
-      <translation type="unfinished">Camera zoom</translation>
     </message>
   </context>
   <context>
@@ -4074,44 +4074,28 @@ horizontal space in Python console</source>
       <translation>Configuració de les unitats</translation>
     </message>
     <message>
-      <source>Standard (mm/kg/s/degree)</source>
-      <translation>Estàndard (mm/kg/s/grau)</translation>
+      <source>Unit system:</source>
+      <translation>Sistema de la unitat:</translation>
     </message>
     <message>
-      <source>MKS (m/kg/s/degree)</source>
-      <translation>MKS (m/kg/s/grau)</translation>
-    </message>
-    <message>
-      <source>Magnitude</source>
-      <translation>Magnitud</translation>
-    </message>
-    <message>
-      <source>Unit</source>
-      <translation>Unitat</translation>
-    </message>
-    <message>
-      <source>US customary (in/lb)</source>
-      <translation>Sistema US (in/lb)</translation>
+      <source>Unit system that should be used for all parts the application</source>
+      <translation>Sistema d'unitats que s’ha d’utilitzar per a totes les parts de l’aplicació</translation>
     </message>
     <message>
       <source>Number of decimals:</source>
       <translation>Nombre de decimals:</translation>
     </message>
     <message>
-      <source>Imperial decimal (in/lb)</source>
-      <translation>Imperial decimal (in/lb)</translation>
-    </message>
-    <message>
-      <source>Building Euro (cm/m²/m³)</source>
-      <translation>Construcció Euro (cm/m²/m³)</translation>
-    </message>
-    <message>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Mètrica per a peces menudes i CNC (mm, mm/min)</translation>
+      <source>Number of decimals that should be shown for numbers and dimensions</source>
+      <translation>Nombre de decimals que s’han de mostrar per als números i dimensions</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
       <translation>Polzada fraccionària mínima:</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch to be displayed</source>
+      <translation>Polzada fraccionària mínima que cal mostrar</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -4142,24 +4126,40 @@ horizontal space in Python console</source>
       <translation>1/128"</translation>
     </message>
     <message>
-      <source>Unit system:</source>
-      <translation>Sistema de la unitat:</translation>
+      <source>Magnitude</source>
+      <translation>Magnitud</translation>
     </message>
     <message>
-      <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>Nombre de decimals que s’han de mostrar per als números i dimensions</translation>
+      <source>Unit</source>
+      <translation>Unitat</translation>
     </message>
     <message>
-      <source>Unit system that should be used for all parts the application</source>
-      <translation>Sistema d'unitats que s’ha d’utilitzar per a totes les parts de l’aplicació</translation>
+      <source>Standard (mm/kg/s/degree)</source>
+      <translation>Estàndard (mm/kg/s/grau)</translation>
     </message>
     <message>
-      <source>Minimum fractional inch to be displayed</source>
-      <translation>Polzada fraccionària mínima que cal mostrar</translation>
+      <source>MKS (m/kg/s/degree)</source>
+      <translation>MKS (m/kg/s/grau)</translation>
+    </message>
+    <message>
+      <source>US customary (in/lb)</source>
+      <translation>Sistema US (in/lb)</translation>
+    </message>
+    <message>
+      <source>Imperial decimal (in/lb)</source>
+      <translation>Imperial decimal (in/lb)</translation>
+    </message>
+    <message>
+      <source>Building Euro (cm/m²/m³)</source>
+      <translation>Construcció Euro (cm/m²/m³)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
       <translation>Construcció US (ft-in/sqft/cuft)</translation>
+    </message>
+    <message>
+      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+      <translation>Mètrica per a peces menudes i CNC (mm, mm/min)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
@@ -4181,76 +4181,76 @@ horizontal space in Python console</source>
       <translation>Selecció</translation>
     </message>
     <message>
-      <source>Enable selection highlighting</source>
-      <translation>Habilita el ressaltat de la selecció</translation>
+      <source>Enable preselection and highlight by specified color</source>
+      <translation>Habilita la preselecció i ressalta pel color especificat</translation>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
       <translation>Habilita el ressaltat de la preselecció</translation>
     </message>
     <message>
-      <source>Background color</source>
-      <translation>Color de fons</translation>
-    </message>
-    <message>
-      <source>Middle color</source>
-      <translation>Color mitjà</translation>
-    </message>
-    <message>
-      <source>Color gradient</source>
-      <translation>Degradat del color</translation>
-    </message>
-    <message>
-      <source>Simple color</source>
-      <translation>Color simple</translation>
-    </message>
-    <message>
-      <source>Object being edited</source>
-      <translation>Objecte que s'està editant</translation>
-    </message>
-    <message>
-      <source>Active container</source>
-      <translation>Contenidor actiu</translation>
-    </message>
-    <message>
-      <source>Enable preselection and highlight by specified color</source>
-      <translation>Habilita la preselecció i ressalta pel color especificat</translation>
-    </message>
-    <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Activa el ressaltat de la selecció i utilitza el color especificat</translation>
+    </message>
+    <message>
+      <source>Enable selection highlighting</source>
+      <translation>Habilita el ressaltat de la selecció</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
       <translation>Color del fons per a la vista del model</translation>
     </message>
     <message>
+      <source>Background color</source>
+      <translation>Color de fons</translation>
+    </message>
+    <message>
       <source>Background will have selected color</source>
       <translation>El fons tindrà el color seleccionat</translation>
     </message>
     <message>
-      <source>Color gradient will get selected color as middle color</source>
-      <translation>El degradat de color tindrà el color seleccionat com a color mitjà</translation>
-    </message>
-    <message>
-      <source>Bottom color</source>
-      <translation>Color de la part inferior</translation>
+      <source>Simple color</source>
+      <translation>Color simple</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
       <translation>El fons tindrà el degradat del color seleccionat</translation>
     </message>
     <message>
+      <source>Color gradient</source>
+      <translation>Degradat del color</translation>
+    </message>
+    <message>
       <source>Top color</source>
       <translation>Color de la part superior</translation>
+    </message>
+    <message>
+      <source>Bottom color</source>
+      <translation>Color de la part inferior</translation>
+    </message>
+    <message>
+      <source>Color gradient will get selected color as middle color</source>
+      <translation>El degradat de color tindrà el color seleccionat com a color mitjà</translation>
+    </message>
+    <message>
+      <source>Middle color</source>
+      <translation>Color mitjà</translation>
     </message>
     <message>
       <source>Tree view</source>
       <translation>Vista d'arbre</translation>
     </message>
     <message>
+      <source>Object being edited</source>
+      <translation>Objecte que s'està editant</translation>
+    </message>
+    <message>
       <source>Background color for objects in tree view that are currently edited</source>
       <translation>Color de fons per a objectes en vista d’arbre que s’editen actualment</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Contenidor actiu</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
@@ -4271,40 +4271,38 @@ horizontal space in Python console</source>
       <translation>Calculadora d'unitats</translation>
     </message>
     <message>
-      <source>as:</source>
-      <translation>com:</translation>
-    </message>
-    <message>
-      <source>=&gt;</source>
-      <translation>=&gt;</translation>
-    </message>
-    <message>
-      <source>Quantity:</source>
-      <translation>Quantitat:</translation>
-    </message>
-    <message>
-      <source>Copy</source>
-      <translation>Copia</translation>
-    </message>
-    <message>
-      <source>Close</source>
-      <translation>Tanca</translation>
-    </message>
-    <message>
       <source>Input the source value and unit</source>
       <translation>Introduïu el valor de la font i la unitat</translation>
+    </message>
+    <message>
+      <source>as:</source>
+      <translation>com:</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
       <translation>Introduïu aci la unitat per al resultat</translation>
     </message>
     <message>
+      <source>=&gt;</source>
+      <translation>=&gt;</translation>
+    </message>
+    <message>
       <source>Result</source>
       <translation>Resultat</translation>
     </message>
     <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
+    </message>
+    <message>
       <source>Quantity</source>
       <translation>Quantitat</translation>
+    </message>
+    <message>
+      <source>Quantity:</source>
+      <translation>Quantitat:</translation>
     </message>
     <message>
       <source>Unit system:</source>
@@ -4337,21 +4335,23 @@ El sistema de preferències és el fixat en les preferències generals.</transla
       <translation>Copia el resultat en el porta-retalls</translation>
     </message>
     <message>
-      <source>List of last used calculations.
-To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations.
-To add a calculation press Return in the value input field</translation>
+      <source>Copy</source>
+      <translation>Copia</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Tanca</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unit mismatch</source>
-      <translation>la unitat no coincideix</translation>
-    </message>
-    <message>
       <source>unknown unit:</source>
       <translation type="unfinished">unknown unit:</translation>
+    </message>
+    <message>
+      <source>unit mismatch</source>
+      <translation>la unitat no coincideix</translation>
     </message>
   </context>
   <context>
@@ -4361,28 +4361,12 @@ To add a calculation press Return in the value input field</translation>
       <translation>Bancs de treball</translation>
     </message>
     <message>
-      <source>Enabled workbenches</source>
-      <translation>Bancs de treball habilitats</translation>
-    </message>
-    <message>
       <source>Disabled workbenches</source>
       <translation>Bancs de treball inhabilitats</translation>
     </message>
     <message>
-      <source>Move down</source>
-      <translation>Mou avall</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mou avall l'element seleccionat.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;L'element es mourà cap avall.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Move left</source>
-      <translation>Mou a l'esquerra</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Elimina el banc de treball seleccionat des dels bancs de treball habilitats&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Enabled workbenches</source>
+      <translation>Bancs de treball habilitats</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -4391,10 +4375,6 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mou el banc de treball seleccionat als bancs de treball habilitats.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Sort enabled workbenches</source>
-      <translation>Ordena els bancs de treball habilitats</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -4409,8 +4389,28 @@ To add a calculation press Return in the value input field</translation>
       <translation>Afig-ho tot als bancs de treball habilitats</translation>
     </message>
     <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Elimina el banc de treball seleccionat des dels bancs de treball habilitats&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Sort enabled workbenches</source>
+      <translation>Ordena els bancs de treball habilitats</translation>
+    </message>
+    <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
       <translation>&lt;p&gt;Ordena els bancs de treball habilitats&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move left</source>
+      <translation>Mou a l'esquerra</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Mou avall</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mou avall l'element seleccionat.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;L'element es mourà cap avall.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -4431,6 +4431,13 @@ To add a calculation press Return in the value input field</translation>
       <translation>Recuperació del document</translation>
     </message>
     <message>
+      <source>Press 'Start Recovery' to start the recovery process of the document listed below.
+
+The 'Status' column shows whether the document could be recovered.</source>
+      <translation>Premeu 'Comença la recuperació' per a iniciar el procés de recuperació del document que s'indica a continuació.
+La columna 'Estat? mostra si el document es pot recuperar.</translation>
+    </message>
+    <message>
       <source>Status of recovered documents:</source>
       <translation>Estat dels documents recuperats:</translation>
     </message>
@@ -4441,6 +4448,10 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>Status</source>
       <translation>Estat</translation>
+    </message>
+    <message>
+      <source>Cleanup...</source>
+      <translation>Neteja...</translation>
     </message>
     <message>
       <source>Start Recovery</source>
@@ -4467,10 +4478,6 @@ To add a calculation press Return in the value input field</translation>
       <translation>Finalitza</translation>
     </message>
     <message>
-      <source>Cleanup...</source>
-      <translation>Neteja...</translation>
-    </message>
-    <message>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
@@ -4491,19 +4498,12 @@ To add a calculation press Return in the value input field</translation>
       <translation>Esteu segur que voleu eliminar tots els directoris transitoris?</translation>
     </message>
     <message>
-      <source>Transient directories deleted.</source>
-      <translation>Directoris transitoris eliminats</translation>
-    </message>
-    <message>
-      <source>Press 'Start Recovery' to start the recovery process of the document listed below.
-
-The 'Status' column shows whether the document could be recovered.</source>
-      <translation>Premeu 'Comença la recuperació' per a iniciar el procés de recuperació del document que s'indica a continuació.
-La columna 'Estat? mostra si el document es pot recuperar.</translation>
-    </message>
-    <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>Si suprimiu tots els directoris transitoris després no podreu recuperar cap fitxer.</translation>
+    </message>
+    <message>
+      <source>Transient directories deleted.</source>
+      <translation>Directoris transitoris eliminats</translation>
     </message>
     <message>
       <source>Transient deleted</source>
@@ -4637,16 +4637,16 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Vector</translation>
     </message>
     <message>
-      <source>Z:</source>
-      <translation>Z:</translation>
+      <source>X:</source>
+      <translation>X:</translation>
     </message>
     <message>
       <source>Y:</source>
       <translation>Y:</translation>
     </message>
     <message>
-      <source>X:</source>
-      <translation>X:</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
   </context>
   <context>
@@ -4707,6 +4707,10 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Redueix</translation>
     </message>
     <message>
+      <source>Do you really want to remove this parameter group?</source>
+      <translation>Segur que voleu eliminar aquest grup de paràmetres?</translation>
+    </message>
+    <message>
       <source>Existing sub-group</source>
       <translation>Subgrup existent</translation>
     </message>
@@ -4729,10 +4733,6 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
     <message>
       <source>Reading from '%1' failed.</source>
       <translation>La lectura de '%1' ha fallat.</translation>
-    </message>
-    <message>
-      <source>Do you really want to remove this parameter group?</source>
-      <translation>Segur que voleu eliminar aquest grup de paràmetres?</translation>
     </message>
   </context>
   <context>
@@ -4789,100 +4789,64 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Posició</translation>
     </message>
     <message>
-      <source>OK</source>
-      <translation>D'acord</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Translació:</translation>
-    </message>
-    <message>
-      <source>Z:</source>
-      <translation>Z:</translation>
-    </message>
-    <message>
-      <source>Y:</source>
-      <translation>Y:</translation>
     </message>
     <message>
       <source>X:</source>
       <translation>X:</translation>
     </message>
     <message>
-      <source>Rotation:</source>
-      <translation>Rotació:</translation>
+      <source>Y:</source>
+      <translation>Y:</translation>
     </message>
     <message>
-      <source>Angle:</source>
-      <translation>Angle:</translation>
-    </message>
-    <message>
-      <source>Axis:</source>
-      <translation>Eix:</translation>
-    </message>
-    <message>
-      <source>Center:</source>
-      <translation>Centre:</translation>
-    </message>
-    <message>
-      <source>Rotation axis with angle</source>
-      <translation>Eix de rotació i angle</translation>
-    </message>
-    <message>
-      <source>Apply</source>
-      <translation>Aplica</translation>
-    </message>
-    <message>
-      <source>Reset</source>
-      <translation>Reinicialitza</translation>
-    </message>
-    <message>
-      <source>Close</source>
-      <translation>Tanca</translation>
-    </message>
-    <message>
-      <source>Incorrect quantity</source>
-      <translation>La quantitat és incorrecta.</translation>
-    </message>
-    <message>
-      <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation>Hi ha camps d'entrada amb entrada incorrecta, assegureu-vos que els valors d'emplaçament són vàlids.</translation>
-    </message>
-    <message>
-      <source>Use center of mass</source>
-      <translation>Utilitza el centre de massa</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
     <message>
       <source>Axial:</source>
       <translation>Axial:</translation>
     </message>
     <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Majúscules clic per a la direcció oposada</translation>
+    </message>
+    <message>
       <source>Apply axial</source>
       <translation>Aplica axial</translation>
     </message>
     <message>
-      <source>Shift click for opposite direction</source>
-      <translation>Majúscules clic per a la direcció oposada</translation>
+      <source>Center:</source>
+      <translation>Centre:</translation>
+    </message>
+    <message>
+      <source>Use center of mass</source>
+      <translation>Utilitza el centre de massa</translation>
     </message>
     <message>
       <source>Selected points</source>
       <translation>Punts seleccionats</translation>
     </message>
     <message>
-      <source>Apply incremental changes</source>
-      <translation>Aplica els canvis incrementals</translation>
+      <source>Rotation:</source>
+      <translation>Rotació:</translation>
     </message>
     <message>
-      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Seleccioneu 1, 2 o 3 punts abans de fer clic en aquest botó.  Un punt pot estar en un vèrtex, cara o aresta.  Si esteu en una cara o aresta, el punt utilitzat serà el punt en la cara o aresta en la posició del ratolí.  Si 1 punt és seleccionat serà utilitzat com a centre de rotació. Si se seleccionen 2 punts, el punt mig entre ells serà el centre de rotació i un nou eix personalitzat es crearà, si és necessari. Si se seleccionen 3 punts, el primer punt es converteix en el centre de rotació i es troba en el vector que és normal al pla definit per 3 punts. Alguns detalls de distància i angle es proporcionen en la visualització d'informe, que pot ser útil per a alinear objectes.  Per a la vostra comoditat, quan feu Majúscules + clic s'utilitza la distància adequada o l'angle es copia al porta-retalls.</translation>
+      <source>Rotation axis with angle</source>
+      <translation>Eix de rotació i angle</translation>
     </message>
     <message>
-      <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
     <message>
-      <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <source>Axis:</source>
+      <translation>Eix:</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Angle:</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
@@ -4893,16 +4857,52 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
+    </message>
+    <message>
       <source>Pitch (around y-axis)</source>
       <translation type="unfinished">Pitch (around y-axis)</translation>
+    </message>
+    <message>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
       <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <source>Apply incremental changes</source>
+      <translation>Aplica els canvis incrementals</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Reinicialitza</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>D'acord</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Tanca</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>Aplica</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Seleccioneu 1, 2 o 3 punts abans de fer clic en aquest botó.  Un punt pot estar en un vèrtex, cara o aresta.  Si esteu en una cara o aresta, el punt utilitzat serà el punt en la cara o aresta en la posició del ratolí.  Si 1 punt és seleccionat serà utilitzat com a centre de rotació. Si se seleccionen 2 punts, el punt mig entre ells serà el centre de rotació i un nou eix personalitzat es crearà, si és necessari. Si se seleccionen 3 punts, el primer punt es converteix en el centre de rotació i es troba en el vector que és normal al pla definit per 3 punts. Alguns detalls de distància i angle es proporcionen en la visualització d'informe, que pot ser útil per a alinear objectes.  Per a la vostra comoditat, quan feu Majúscules + clic s'utilitza la distància adequada o l'angle es copia al porta-retalls.</translation>
+    </message>
+    <message>
+      <source>Incorrect quantity</source>
+      <translation>La quantitat és incorrecta.</translation>
+    </message>
+    <message>
+      <source>There are input fields with incorrect input, please ensure valid placement values!</source>
+      <translation>Hi ha camps d'entrada amb entrada incorrecta, assegureu-vos que els valors d'emplaçament són vàlids.</translation>
     </message>
   </context>
   <context>
@@ -4954,12 +4954,12 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Diàleg</translation>
     </message>
     <message>
-      <source>Close</source>
-      <translation>Tanca</translation>
-    </message>
-    <message>
       <source>Refresh</source>
       <translation>Actualitza</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Tanca</translation>
     </message>
   </context>
   <context>
@@ -4969,12 +4969,12 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Arbre d'Inventor</translation>
     </message>
     <message>
-      <source>Nodes</source>
-      <translation>Nodes</translation>
-    </message>
-    <message>
       <source>Name</source>
       <translation>Nom</translation>
+    </message>
+    <message>
+      <source>Nodes</source>
+      <translation>Nodes</translation>
     </message>
   </context>
   <context>
@@ -5038,30 +5038,20 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Els objectes seleccionats contenen altres dependències. Seleccioneu quins objectes voleu exportar. Totes les dependències se seleccionen automàticament per defecte.</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Document</translation>
-    </message>
-    <message>
-      <source>Name</source>
-      <translation>Nom</translation>
-    </message>
-    <message>
-      <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
-    </message>
-    <message>
-      <source>Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
-    </message>
-    <message>
       <source>Auto select depending objects</source>
       <translation type="unfinished">Auto select depending objects</translation>
     </message>
     <message>
       <source>Depending on</source>
       <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Document</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Nom</translation>
     </message>
     <message>
       <source>Depended by</source>
@@ -5074,6 +5064,16 @@ originally selected prior to opening this dialog</translation>
     <message>
       <source>All</source>
       <translation>Tot</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -5120,34 +5120,6 @@ originally selected prior to opening this dialog</translation>
       <translation>Opcions</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Neteja</translation>
-    </message>
-    <message>
-      <source>Save As...</source>
-      <translation>Anomena i guarda...</translation>
-    </message>
-    <message>
-      <source>Save Report Output</source>
-      <translation>Guarda l'eixida de l'informe</translation>
-    </message>
-    <message>
-      <source>Go to end</source>
-      <translation>Vés al final</translation>
-    </message>
-    <message>
-      <source>Redirect Python output</source>
-      <translation>Redirigeix l'eixida de Python</translation>
-    </message>
-    <message>
-      <source>Redirect Python errors</source>
-      <translation>Redirigeix els errors de Python</translation>
-    </message>
-    <message>
-      <source>Plain Text Files</source>
-      <translation>Fitxers de text net </translation>
-    </message>
-    <message>
       <source>Display message types</source>
       <translation type="unfinished">Display message types</translation>
     </message>
@@ -5171,6 +5143,34 @@ originally selected prior to opening this dialog</translation>
       <source>Show output window on</source>
       <translation type="unfinished">Show output window on</translation>
     </message>
+    <message>
+      <source>Redirect Python output</source>
+      <translation>Redirigeix l'eixida de Python</translation>
+    </message>
+    <message>
+      <source>Redirect Python errors</source>
+      <translation>Redirigeix els errors de Python</translation>
+    </message>
+    <message>
+      <source>Go to end</source>
+      <translation>Vés al final</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Neteja</translation>
+    </message>
+    <message>
+      <source>Save As...</source>
+      <translation>Anomena i guarda...</translation>
+    </message>
+    <message>
+      <source>Save Report Output</source>
+      <translation>Guarda l'eixida de l'informe</translation>
+    </message>
+    <message>
+      <source>Plain Text Files</source>
+      <translation>Fitxers de text net </translation>
+    </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportView</name>
@@ -5186,6 +5186,10 @@ originally selected prior to opening this dialog</translation>
   <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
+      <source>Selection View</source>
+      <translation>Vista de selecció</translation>
+    </message>
+    <message>
       <source>Search</source>
       <translation>Cerca</translation>
     </message>
@@ -5196,6 +5200,14 @@ originally selected prior to opening this dialog</translation>
     <message>
       <source>Clears the search field</source>
       <translation>Neteja el camp de cerca</translation>
+    </message>
+    <message>
+      <source>The number of selected items</source>
+      <translation>El nombre d'elements decimals</translation>
+    </message>
+    <message>
+      <source>Picked object list</source>
+      <translation>Llista d'objectes seleccionats</translation>
     </message>
     <message>
       <source>Select only</source>
@@ -5230,14 +5242,6 @@ originally selected prior to opening this dialog</translation>
       <translation>Selecciona i col·loca l'objecte en una vista d'arbre</translation>
     </message>
     <message>
-      <source>To python console</source>
-      <translation>A la consola Python</translation>
-    </message>
-    <message>
-      <source>Reveals this object and its subelements in the python console.</source>
-      <translation>Mostra aquest objecte i els seus subelements en la consola Python.</translation>
-    </message>
-    <message>
       <source>Mark to recompute</source>
       <translation>Marca per a recalcular</translation>
     </message>
@@ -5246,12 +5250,12 @@ originally selected prior to opening this dialog</translation>
       <translation>Marca aquest objecte per a recalcular-lo</translation>
     </message>
     <message>
-      <source>Selection View</source>
-      <translation>Vista de selecció</translation>
+      <source>To python console</source>
+      <translation>A la consola Python</translation>
     </message>
     <message>
-      <source>The number of selected items</source>
-      <translation>El nombre d'elements decimals</translation>
+      <source>Reveals this object and its subelements in the python console.</source>
+      <translation>Mostra aquest objecte i els seus subelements en la consola Python.</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
@@ -5260,10 +5264,6 @@ originally selected prior to opening this dialog</translation>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Crea una còpia independent d'aquesta subforma en el document</translation>
-    </message>
-    <message>
-      <source>Picked object list</source>
-      <translation>Llista d'objectes seleccionats</translation>
     </message>
   </context>
   <context>
@@ -5301,8 +5301,16 @@ Do you want to save your changes?</source>
       <translation>El document s'ha modificat. Voleu guardar els canvis?</translation>
     </message>
     <message>
+      <source>FreeCAD macro</source>
+      <translation>Macro de FreeCAD</translation>
+    </message>
+    <message>
       <source>Export PDF</source>
       <translation>Exporta a PDF</translation>
+    </message>
+    <message>
+      <source>PDF file</source>
+      <translation>Fitxer PDF</translation>
     </message>
     <message>
       <source>untitled[*]</source>
@@ -5323,14 +5331,6 @@ Do you want to save your changes?</source>
     <message>
       <source>Formatted</source>
       <translation>Formatat</translation>
-    </message>
-    <message>
-      <source>FreeCAD macro</source>
-      <translation>Macro de FreeCAD</translation>
-    </message>
-    <message>
-      <source>PDF file</source>
-      <translation>Fitxer PDF</translation>
     </message>
   </context>
   <context>
@@ -5425,34 +5425,6 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <source>Export graph</source>
-      <translation>Exporta el gràfic</translation>
-    </message>
-    <message>
-      <source>PNG format</source>
-      <translation>Format PNG</translation>
-    </message>
-    <message>
-      <source>Bitmap format</source>
-      <translation>Format de mapa de bits</translation>
-    </message>
-    <message>
-      <source>GIF format</source>
-      <translation>Format GIF</translation>
-    </message>
-    <message>
-      <source>JPG format</source>
-      <translation>Format JPG</translation>
-    </message>
-    <message>
-      <source>SVG format</source>
-      <translation>Format SVG</translation>
-    </message>
-    <message>
-      <source>PDF format</source>
-      <translation>Format PDF</translation>
-    </message>
-    <message>
       <source>Graphviz not found</source>
       <translation>No s'ha trobat el Graphviz.</translation>
     </message>
@@ -5479,6 +5451,34 @@ Do you want to save your changes?</source>
     <message>
       <source>Graphviz failed to create an image file</source>
       <translation>El Graphviz no ha pogut crear un fitxer d'imatge.</translation>
+    </message>
+    <message>
+      <source>PNG format</source>
+      <translation>Format PNG</translation>
+    </message>
+    <message>
+      <source>Bitmap format</source>
+      <translation>Format de mapa de bits</translation>
+    </message>
+    <message>
+      <source>GIF format</source>
+      <translation>Format GIF</translation>
+    </message>
+    <message>
+      <source>JPG format</source>
+      <translation>Format JPG</translation>
+    </message>
+    <message>
+      <source>SVG format</source>
+      <translation>Format SVG</translation>
+    </message>
+    <message>
+      <source>PDF format</source>
+      <translation>Format PDF</translation>
+    </message>
+    <message>
+      <source>Export graph</source>
+      <translation>Exporta el gràfic</translation>
     </message>
   </context>
   <context>
@@ -5521,14 +5521,6 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <source>Wrong direction</source>
-      <translation>Direcció incorrecta</translation>
-    </message>
-    <message>
-      <source>Direction must not be the null vector</source>
-      <translation>La direcció no pot ser un vector nul.</translation>
-    </message>
-    <message>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -5543,6 +5535,14 @@ Do you want to save your changes?</source>
     <message>
       <source>User defined...</source>
       <translation>Definit per l'usuari...</translation>
+    </message>
+    <message>
+      <source>Wrong direction</source>
+      <translation>Direcció incorrecta</translation>
+    </message>
+    <message>
+      <source>Direction must not be the null vector</source>
+      <translation>La direcció no pot ser un vector nul.</translation>
     </message>
   </context>
   <context>
@@ -5590,16 +5590,28 @@ Do you want to save your changes?</source>
       <translation>Preparat</translation>
     </message>
     <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
+    <message>
+      <source>Close All</source>
+      <translation>Tanca-ho tot</translation>
+    </message>
+    <message>
       <source>Toggles this toolbar</source>
       <translation>Commuta la barra d'eines</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
       <translation>Commuta la finestra flotant</translation>
-    </message>
-    <message>
-      <source>Close All</source>
-      <translation>Tanca-ho tot</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -5614,18 +5626,6 @@ Do you want to save your changes?</source>
 Do you want to save the document now?</source>
       <translation>Per a enllaçar amb objectes externs, el document s’ha de guardar almenys una vegada.
 Voleu guardar el document ara?</translation>
-    </message>
-    <message>
-      <source>Help addon needed!</source>
-      <translation type="unfinished">Help addon needed!</translation>
-    </message>
-    <message>
-      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
-      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
-    </message>
-    <message>
-      <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
     </message>
   </context>
   <context>
@@ -5706,12 +5706,12 @@ How do you want to proceed?</source>
       <translation>Punt seleccionat en (%1,%2,%3)</translation>
     </message>
     <message>
-      <source>No point was picked</source>
-      <translation>No s'ha seleccionat cap punt.</translation>
-    </message>
-    <message>
       <source>No point was found on model</source>
       <translation>No s'ha trobat cap punt en el model.</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>No s'ha seleccionat cap punt.</translation>
     </message>
   </context>
   <context>
@@ -5859,28 +5859,28 @@ How do you want to proceed?</source>
       <translation>propietat</translation>
     </message>
     <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
+    <message>
       <source>Show all</source>
       <translation>Mostra-ho tot</translation>
-    </message>
-    <message>
-      <source>Add property</source>
-      <translation>Afig una propietat</translation>
-    </message>
-    <message>
-      <source>Remove property</source>
-      <translation>Elimina la propietat</translation>
     </message>
     <message>
       <source>Expression...</source>
       <translation>Expressió...</translation>
     </message>
     <message>
-      <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <source>Add property</source>
+      <translation>Afig una propietat</translation>
     </message>
     <message>
       <source>Rename property group</source>
       <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Remove property</source>
+      <translation>Elimina la propietat</translation>
     </message>
     <message>
       <source>Group name:</source>
@@ -5933,8 +5933,16 @@ Do you want to exit without saving your data?</source>
       <translation>S'ha produït una excepció no gestionada de FreeCAD</translation>
     </message>
     <message>
+      <source>Unhandled std C++ exception.</source>
+      <translation>S'ha produït una excepció no gestionada de C++ estàndard.</translation>
+    </message>
+    <message>
       <source>Unhandled unknown C++ exception.</source>
       <translation>S'ha produït una excepció de C++ no gestionada desconeguda.</translation>
+    </message>
+    <message>
+      <source>&amp;Copy</source>
+      <translation>&amp;Copia</translation>
     </message>
     <message>
       <source>&amp;Copy command</source>
@@ -5949,28 +5957,12 @@ Do you want to exit without saving your data?</source>
       <translation>Anomena i guarda l'historial...</translation>
     </message>
     <message>
-      <source>Insert file name...</source>
-      <translation>Inseriu un nom de fitxer...</translation>
-    </message>
-    <message>
-      <source>Save History</source>
+      <source>Save history</source>
       <translation>Guarda l'historial</translation>
     </message>
     <message>
-      <source>Insert file name</source>
-      <translation>Inseriu un nom de fitxer</translation>
-    </message>
-    <message>
-      <source>Unhandled std C++ exception.</source>
-      <translation>S'ha produït una excepció no gestionada de C++ estàndard.</translation>
-    </message>
-    <message>
-      <source>Word wrap</source>
-      <translation>Ajust de paraules</translation>
-    </message>
-    <message>
-      <source>&amp;Copy</source>
-      <translation>&amp;Copia</translation>
+      <source>Saves Python history across %1 sessions</source>
+      <translation>Guarda l'historial de Python entre %1 sessions</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -5985,20 +5977,28 @@ Do you want to exit without saving your data?</source>
       <translation>Neteja la consola</translation>
     </message>
     <message>
+      <source>Insert file name...</source>
+      <translation>Inseriu un nom de fitxer...</translation>
+    </message>
+    <message>
+      <source>Word wrap</source>
+      <translation>Ajust de paraules</translation>
+    </message>
+    <message>
+      <source>Save History</source>
+      <translation>Guarda l'historial</translation>
+    </message>
+    <message>
       <source>Macro Files</source>
       <translation>Fitxers de macro</translation>
     </message>
     <message>
+      <source>Insert file name</source>
+      <translation>Inseriu un nom de fitxer</translation>
+    </message>
+    <message>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
-    </message>
-    <message>
-      <source>Save history</source>
-      <translation>Guarda l'historial</translation>
-    </message>
-    <message>
-      <source>Saves Python history across %1 sessions</source>
-      <translation>Guarda l'historial de Python entre %1 sessions</translation>
     </message>
   </context>
   <context>
@@ -6030,6 +6030,10 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
+      <source>none</source>
+      <translation>cap</translation>
+    </message>
+    <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
       <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
@@ -6040,10 +6044,6 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>The file '%1' cannot be opened.</source>
       <translation>El fitxer '%1' no es pot obrir.</translation>
-    </message>
-    <message>
-      <source>none</source>
-      <translation>cap</translation>
     </message>
   </context>
   <context>
@@ -6196,28 +6196,28 @@ Do you want to specify another directory?</source>
       <translation>EtiquetaText</translation>
     </message>
     <message>
-      <source>Recompute after commit</source>
-      <translation>Recalcula després de confirmar</translation>
-    </message>
-    <message>
-      <source>Remove</source>
-      <translation>Elimina</translation>
-    </message>
-    <message>
       <source>Edit</source>
       <translation>Edita</translation>
-    </message>
-    <message>
-      <source>Remove all</source>
-      <translation>Elimina-ho tot</translation>
     </message>
     <message>
       <source>Hide</source>
       <translation>Amaga</translation>
     </message>
     <message>
+      <source>Remove</source>
+      <translation>Elimina</translation>
+    </message>
+    <message>
+      <source>Remove all</source>
+      <translation>Elimina-ho tot</translation>
+    </message>
+    <message>
       <source>Box select</source>
       <translation>Quadre de selecció</translation>
+    </message>
+    <message>
+      <source>Recompute after commit</source>
+      <translation>Recalcula després de confirmar</translation>
     </message>
     <message>
       <source>On-top when selected</source>
@@ -6226,6 +6226,14 @@ Do you want to specify another directory?</source>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
+    <message>
+      <source>Appearance</source>
+      <translation>Aparença</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Finestra del document:</translation>
+    </message>
     <message>
       <source>Plot mode:</source>
       <translation>Mode de representació gràfica:</translation>
@@ -6241,14 +6249,6 @@ Do you want to specify another directory?</source>
     <message>
       <source>Transparency:</source>
       <translation>Transparència:</translation>
-    </message>
-    <message>
-      <source>Appearance</source>
-      <translation>Aparença</translation>
-    </message>
-    <message>
-      <source>Document window:</source>
-      <translation>Finestra del document:</translation>
     </message>
   </context>
   <context>
@@ -6352,28 +6352,24 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::Translator</name>
     <message>
-      <source>English</source>
-      <translation>Anglés</translation>
+      <source>Afrikaans</source>
+      <translation>Afrikaans</translation>
     </message>
     <message>
-      <source>German</source>
-      <translation>Alemany</translation>
+      <source>Arabic</source>
+      <translation>Àrab</translation>
     </message>
     <message>
-      <source>Spanish</source>
-      <translation>Espanyol</translation>
+      <source>Basque</source>
+      <translation>Basc</translation>
     </message>
     <message>
-      <source>French</source>
-      <translation>Francés</translation>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
     </message>
     <message>
-      <source>Italian</source>
-      <translation>Italià</translation>
-    </message>
-    <message>
-      <source>Japanese</source>
-      <translation>Japonés</translation>
+      <source>Catalan</source>
+      <translation>Català</translation>
     </message>
     <message>
       <source>Chinese Simplified</source>
@@ -6384,24 +6380,80 @@ Do you want to specify another directory?</source>
       <translation>Xinés tradicional</translation>
     </message>
     <message>
+      <source>Croatian</source>
+      <translation>Croat</translation>
+    </message>
+    <message>
+      <source>Czech</source>
+      <translation>Txec</translation>
+    </message>
+    <message>
+      <source>Dutch</source>
+      <translation>Holandés</translation>
+    </message>
+    <message>
+      <source>English</source>
+      <translation>Anglés</translation>
+    </message>
+    <message>
+      <source>Filipino</source>
+      <translation>Filipí</translation>
+    </message>
+    <message>
+      <source>Finnish</source>
+      <translation>Finés</translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation>Francés</translation>
+    </message>
+    <message>
+      <source>Galician</source>
+      <translation>Gallec</translation>
+    </message>
+    <message>
+      <source>German</source>
+      <translation>Alemany</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Grec</translation>
+    </message>
+    <message>
+      <source>Hungarian</source>
+      <translation>Hongarés</translation>
+    </message>
+    <message>
+      <source>Indonesian</source>
+      <translation>Indonesi</translation>
+    </message>
+    <message>
+      <source>Italian</source>
+      <translation>Italià</translation>
+    </message>
+    <message>
+      <source>Japanese</source>
+      <translation>Japonés</translation>
+    </message>
+    <message>
+      <source>Kabyle</source>
+      <translation>Cabilenc</translation>
+    </message>
+    <message>
       <source>Korean</source>
       <translation>Coreà</translation>
     </message>
     <message>
-      <source>Russian</source>
-      <translation>Rus</translation>
-    </message>
-    <message>
-      <source>Swedish</source>
-      <translation>Suec</translation>
-    </message>
-    <message>
-      <source>Afrikaans</source>
-      <translation>Afrikaans</translation>
+      <source>Lithuanian</source>
+      <translation>Lituà</translation>
     </message>
     <message>
       <source>Norwegian</source>
       <translation>Noruec</translation>
+    </message>
+    <message>
+      <source>Polish</source>
+      <translation>Polonés</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
@@ -6412,100 +6464,48 @@ Do you want to specify another directory?</source>
       <translation>Portugués</translation>
     </message>
     <message>
-      <source>Dutch</source>
-      <translation>Holandés</translation>
-    </message>
-    <message>
-      <source>Ukrainian</source>
-      <translation>Ucraïnés</translation>
-    </message>
-    <message>
-      <source>Finnish</source>
-      <translation>Finés</translation>
-    </message>
-    <message>
-      <source>Croatian</source>
-      <translation>Croat</translation>
-    </message>
-    <message>
-      <source>Polish</source>
-      <translation>Polonés</translation>
-    </message>
-    <message>
-      <source>Czech</source>
-      <translation>Txec</translation>
-    </message>
-    <message>
-      <source>Hungarian</source>
-      <translation>Hongarés</translation>
-    </message>
-    <message>
       <source>Romanian</source>
       <translation>Romanés</translation>
+    </message>
+    <message>
+      <source>Russian</source>
+      <translation>Rus</translation>
     </message>
     <message>
       <source>Slovak</source>
       <translation>Eslovac</translation>
     </message>
     <message>
-      <source>Turkish</source>
-      <translation>Turc</translation>
-    </message>
-    <message>
       <source>Slovenian</source>
       <translation>Eslové</translation>
     </message>
     <message>
-      <source>Basque</source>
-      <translation>Basc</translation>
+      <source>Spanish</source>
+      <translation>Espanyol</translation>
     </message>
     <message>
-      <source>Catalan</source>
-      <translation>Català</translation>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
     </message>
     <message>
-      <source>Galician</source>
-      <translation>Gallec</translation>
+      <source>Swedish</source>
+      <translation>Suec</translation>
     </message>
     <message>
-      <source>Kabyle</source>
-      <translation>Cabilenc</translation>
+      <source>Turkish</source>
+      <translation>Turc</translation>
     </message>
     <message>
-      <source>Filipino</source>
-      <translation>Filipí</translation>
-    </message>
-    <message>
-      <source>Indonesian</source>
-      <translation>Indonesi</translation>
-    </message>
-    <message>
-      <source>Lithuanian</source>
-      <translation>Lituà</translation>
+      <source>Ukrainian</source>
+      <translation>Ucraïnés</translation>
     </message>
     <message>
       <source>Valencian</source>
       <translation>Valencià</translation>
     </message>
     <message>
-      <source>Arabic</source>
-      <translation>Àrab</translation>
-    </message>
-    <message>
       <source>Vietnamese</source>
       <translation>Vietnamita</translation>
-    </message>
-    <message>
-      <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
-    </message>
-    <message>
-      <source>Greek</source>
-      <translation>Grec</translation>
-    </message>
-    <message>
-      <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
     </message>
     <message>
       <source>Georgian</source>
@@ -6529,40 +6529,12 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <source>Create group...</source>
-      <translation>Crea un grup...</translation>
+      <source>Search...</source>
+      <translation>Busca...</translation>
     </message>
     <message>
-      <source>Create a group</source>
-      <translation>Crea un grup</translation>
-    </message>
-    <message>
-      <source>Group</source>
-      <translation>Grup</translation>
-    </message>
-    <message>
-      <source>Rename</source>
-      <translation>Reanomena</translation>
-    </message>
-    <message>
-      <source>Rename object</source>
-      <translation>Reanomena l'objecte</translation>
-    </message>
-    <message>
-      <source>Labels &amp; Attributes</source>
-      <translation>Etiquetes i atributs</translation>
-    </message>
-    <message>
-      <source>Application</source>
-      <translation>Aplicació</translation>
-    </message>
-    <message>
-      <source>Finish editing</source>
-      <translation>Finalitza l'edició</translation>
-    </message>
-    <message>
-      <source>Finish editing object</source>
-      <translation>Finalitza l'edició de l'objecte</translation>
+      <source>Search for objects</source>
+      <translation>Busca objectes</translation>
     </message>
     <message>
       <source>Activate document</source>
@@ -6573,36 +6545,20 @@ Do you want to specify another directory?</source>
       <translation>Activa el document %1</translation>
     </message>
     <message>
-      <source>Skip recomputes</source>
-      <translation>Omet el recàlcul</translation>
+      <source>Group</source>
+      <translation>Grup</translation>
     </message>
     <message>
-      <source>Enable or disable recomputations of document</source>
-      <translation>Activa o desactiva els recàlculs del document</translation>
-    </message>
-    <message>
-      <source>Mark to recompute</source>
-      <translation>Marca per a recalcular</translation>
-    </message>
-    <message>
-      <source>Mark this object to be recomputed</source>
-      <translation>Marca aquest objecte per a recalcular-lo</translation>
-    </message>
-    <message>
-      <source>%1, Internal name: %2</source>
-      <translation>%1, nom intern: %2</translation>
-    </message>
-    <message>
-      <source>Search...</source>
-      <translation>Busca...</translation>
-    </message>
-    <message>
-      <source>Search for objects</source>
-      <translation>Busca objectes</translation>
+      <source>Labels &amp; Attributes</source>
+      <translation>Etiquetes i atributs</translation>
     </message>
     <message>
       <source>Description</source>
       <translation>Descripció</translation>
+    </message>
+    <message>
+      <source>Application</source>
+      <translation>Aplicació</translation>
     </message>
     <message>
       <source>Show hidden items</source>
@@ -6621,6 +6577,38 @@ Do you want to specify another directory?</source>
       <translation>Amaga l'ítem en l'arbre</translation>
     </message>
     <message>
+      <source>Create group...</source>
+      <translation>Crea un grup...</translation>
+    </message>
+    <message>
+      <source>Create a group</source>
+      <translation>Crea un grup</translation>
+    </message>
+    <message>
+      <source>Rename</source>
+      <translation>Reanomena</translation>
+    </message>
+    <message>
+      <source>Rename object</source>
+      <translation>Reanomena l'objecte</translation>
+    </message>
+    <message>
+      <source>Finish editing</source>
+      <translation>Finalitza l'edició</translation>
+    </message>
+    <message>
+      <source>Finish editing object</source>
+      <translation>Finalitza l'edició de l'objecte</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+    </message>
+    <message>
       <source>Close document</source>
       <translation>Tanca el document</translation>
     </message>
@@ -6637,12 +6625,28 @@ Do you want to specify another directory?</source>
       <translation>Torna a carregar un document que s'ha carregat parcialment</translation>
     </message>
     <message>
+      <source>Skip recomputes</source>
+      <translation>Omet el recàlcul</translation>
+    </message>
+    <message>
+      <source>Enable or disable recomputations of document</source>
+      <translation>Activa o desactiva els recàlculs del document</translation>
+    </message>
+    <message>
       <source>Allow partial recomputes</source>
       <translation>Permet recàlculs parcials</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Habilita o inhabilita el recàlcul de l'edició d'objectes quan estiga activat «Omet el recàlcul»</translation>
+    </message>
+    <message>
+      <source>Mark to recompute</source>
+      <translation>Marca per a recalcular</translation>
+    </message>
+    <message>
+      <source>Mark this object to be recomputed</source>
+      <translation>Marca aquest objecte per a recalcular-lo</translation>
     </message>
     <message>
       <source>Recompute object</source>
@@ -6657,12 +6661,8 @@ Do you want to specify another directory?</source>
       <translation type="unfinished"> (but must be executed)</translation>
     </message>
     <message>
-      <source>Add dependent objects to selection</source>
-      <translation type="unfinished">Add dependent objects to selection</translation>
-    </message>
-    <message>
-      <source>Adds all dependent objects to the selection</source>
-      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+      <source>%1, Internal name: %2</source>
+      <translation>%1, nom intern: %2</translation>
     </message>
   </context>
   <context>
@@ -6767,6 +6767,10 @@ Do you want to specify another directory?</source>
       <translation>Z:</translation>
     </message>
     <message>
+      <source>Grid Snap in</source>
+      <translation>Ajust de la quadrícula</translation>
+    </message>
+    <message>
       <source>0.1 mm</source>
       <translation>0,1 mm</translation>
     </message>
@@ -6822,10 +6826,6 @@ Do you want to specify another directory?</source>
       <source>5 m </source>
       <translation>5 m</translation>
     </message>
-    <message>
-      <source>Grid Snap in</source>
-      <translation>Ajust de la quadrícula</translation>
-    </message>
   </context>
   <context>
     <name>PropertyListDialog</name>
@@ -6841,6 +6841,10 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
+      <source>Toolbox</source>
+      <translation>Caixa d'eines</translation>
+    </message>
+    <message>
       <source>Tree view</source>
       <translation>Vista d'arbre</translation>
     </message>
@@ -6853,28 +6857,24 @@ Do you want to specify another directory?</source>
       <translation>Visualització de la selecció</translation>
     </message>
     <message>
-      <source>Report view</source>
-      <translation>Visualització de l'informe</translation>
-    </message>
-    <message>
       <source>Combo View</source>
       <translation>Visualització combinada</translation>
     </message>
     <message>
-      <source>Toolbox</source>
-      <translation>Caixa d'eines</translation>
+      <source>Report view</source>
+      <translation>Visualització de l'informe</translation>
     </message>
     <message>
       <source>Python console</source>
       <translation>Consola de Python</translation>
     </message>
     <message>
-      <source>Display properties</source>
-      <translation>Propietats de visualització</translation>
-    </message>
-    <message>
       <source>DAG View</source>
       <translation>Vista DAG</translation>
+    </message>
+    <message>
+      <source>Display properties</source>
+      <translation>Propietats de visualització</translation>
     </message>
   </context>
   <context>
@@ -6888,12 +6888,20 @@ Do you want to specify another directory?</source>
       <translation>Visualització</translation>
     </message>
     <message>
+      <source>Workbenches</source>
+      <translation>Bancs de treball</translation>
+    </message>
+    <message>
       <source>Unknown filetype</source>
       <translation>El tipus de fitxer és desconegut.</translation>
     </message>
     <message>
       <source>Cannot open unknown filetype: %1</source>
       <translation>No es pot obrir el tipus de fitxer desconegut: %1</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Exportació fallida</translation>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
@@ -6916,6 +6924,18 @@ Do you want to specify another directory?</source>
       <translation>Obri el document</translation>
     </message>
     <message>
+      <source>Error</source>
+      <translation>Error</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Hi hagué errors quan es carregava el fitxer. Algunes dades s'han pogut modificar o no s'han recuperat. Busqueu en la vista d'informes per a obtindre informació més específica sobre els objectes implicats.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
       <source>Import file</source>
       <translation>Importa el fitxer</translation>
     </message>
@@ -6928,12 +6948,76 @@ Do you want to specify another directory?</source>
       <translation>S'està imprimint...</translation>
     </message>
     <message>
+      <source>Exporting PDF...</source>
+      <translation>S'està exportant a PDF...</translation>
+    </message>
+    <message>
+      <source>Unsaved document</source>
+      <translation>El document no s'ha guardat.</translation>
+    </message>
+    <message>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>L’objecte exportat conté un enllaç extern. Guardeu el documenta almenys una vegada abans d’exportar-lo.</translation>
+    </message>
+    <message>
+      <source>Delete failed</source>
+      <translation>No s'ha pogut eliminar</translation>
+    </message>
+    <message>
+      <source>Dependency error</source>
+      <translation>Error de dependència</translation>
+    </message>
+    <message>
+      <source>Copy selected</source>
+      <translation>Copia la selecció</translation>
+    </message>
+    <message>
+      <source>Copy active document</source>
+      <translation>Copia el document actiu</translation>
+    </message>
+    <message>
+      <source>Copy all documents</source>
+      <translation>Copia tots el documents</translation>
+    </message>
+    <message>
+      <source>Paste</source>
+      <translation>Apega</translation>
+    </message>
+    <message>
+      <source>Expression error</source>
+      <translation>S'ha produït un error d'expressió</translation>
+    </message>
+    <message>
+      <source>Failed to parse some of the expressions.
+Please check the Report View for more details.</source>
+      <translation>No s'han pogut analitzar algunes de les expressions.
+Per a obtindre més detalls, consulteu la vista de l'informe.</translation>
+    </message>
+    <message>
+      <source>Failed to paste expressions</source>
+      <translation>No s'han pogut apegar les expressions</translation>
+    </message>
+    <message>
       <source>Cannot load workbench</source>
       <translation>No es pot carregar el banc de treball.</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>S'ha produït un error mentre es carregava el banc de treball.</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>Selecció incorrecta</translation>
+    </message>
+    <message>
+      <source>Only one object selected. Please select two objects.
+Be aware the point where you click matters.</source>
+      <translation>Només s'ha seleccionat un objecte. Seleccioneu-ne dos. Tingueu en compte el punt on cliqueu.</translation>
+    </message>
+    <message>
+      <source>Please select two objects.
+Be aware the point where you click matters.</source>
+      <translation>Seleccioneu dos objectes. Tingueu en compte el punt on cliqueu.</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -6958,6 +7042,10 @@ Do you want to specify another directory?</source>
     <message>
       <source>Save frozen views</source>
       <translation>Guarda les visualitzacions congelades</translation>
+    </message>
+    <message>
+      <source>Frozen views</source>
+      <translation>Visualitzacions congelades</translation>
     </message>
     <message>
       <source>Restore views</source>
@@ -7025,6 +7113,10 @@ Do you want to continue?</source>
       <translation>Trieu un element:</translation>
     </message>
     <message>
+      <source>New boolean item</source>
+      <translation>Element booleà nou</translation>
+    </message>
+    <message>
       <source>Rename group</source>
       <translation>Reanomena el grup</translation>
     </message>
@@ -7045,16 +7137,132 @@ Do you want to continue?</source>
       <translation>Canvia el valor</translation>
     </message>
     <message>
-      <source>Save document under new filename...</source>
-      <translation>Guarda el document amb un altre nom...</translation>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>Camí:</translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Saving aborted</source>
       <translation>S'avorta el procés de guardar.</translation>
     </message>
     <message>
-      <source>Unsaved document</source>
-      <translation>El document no s'ha guardat.</translation>
+      <source>Save dependent files</source>
+      <translation>Guarda els fitxers dependents</translation>
+    </message>
+    <message>
+      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
+      <translation>El fitxer conté dependències externes. Voleu guardar també els fitxers dependents?</translation>
+    </message>
+    <message>
+      <source>Saving document failed</source>
+      <translation>No s'ha pogut guardar el document.</translation>
+    </message>
+    <message>
+      <source>Save document under new filename...</source>
+      <translation>Guarda el document amb un altre nom...</translation>
+    </message>
+    <message>
+      <source>Save %1 Document</source>
+      <translation>Guarda el document %1</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Document</translation>
+    </message>
+    <message>
+      <source>Failed to save document</source>
+      <translation>No s'ha pogut guardar el document</translation>
+    </message>
+    <message>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation>Els documents contenen dependències cícliques. Encara voleu guardar-los?</translation>
+    </message>
+    <message>
+      <source>Save a copy of the document under new filename...</source>
+      <translation>Guarda una còpia del document amb un altre nom...</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>Document %1 (*.FCStd)</translation>
+    </message>
+    <message>
+      <source>Document not closable</source>
+      <translation>No es pot tancar el document.</translation>
+    </message>
+    <message>
+      <source>The document is not closable for the moment.</source>
+      <translation>De moment el document no es pot tancar.</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>Undo</source>
+      <translation>Desfés</translation>
+    </message>
+    <message>
+      <source>Redo</source>
+      <translation>Refés</translation>
+    </message>
+    <message>
+      <source>There are grouped transactions in the following documents with other preceding transactions</source>
+      <translation>Hi ha transaccions agrupades en els documents següents amb altres transaccions anteriors</translation>
+    </message>
+    <message>
+      <source>Choose 'Yes' to roll back all preceding transactions.
+Choose 'No' to roll back in the active document only.
+Choose 'Abort' to abort</source>
+      <translation>Trieu «Sí» per a desfer totes les transaccions anteriors.
+Trieu «No» per a desfer només en el document actiu.
+Trieu «Interromp» per a interrompre</translation>
     </message>
     <message>
       <source>Save Macro</source>
@@ -7079,6 +7287,10 @@ Do you want to continue?</source>
     <message>
       <source>Outer</source>
       <translation>Exterior</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Divideix</translation>
     </message>
     <message>
       <source>No Browser</source>
@@ -7123,44 +7335,6 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>No s'ha trobat el fitxer %1 ni en %2 ni en %3</translation>
     </message>
     <message>
-      <source>Save %1 Document</source>
-      <translation>Guarda el document %1</translation>
-    </message>
-    <message>
-      <source>%1 document (*.FCStd)</source>
-      <translation>Document %1 (*.FCStd)</translation>
-    </message>
-    <message>
-      <source>Document not closable</source>
-      <translation>No es pot tancar el document.</translation>
-    </message>
-    <message>
-      <source>The document is not closable for the moment.</source>
-      <translation>De moment el document no es pot tancar.</translation>
-    </message>
-    <message>
-      <source>Exporting PDF...</source>
-      <translation>S'està exportant a PDF...</translation>
-    </message>
-    <message>
-      <source>Wrong selection</source>
-      <translation>Selecció incorrecta</translation>
-    </message>
-    <message>
-      <source>Only one object selected. Please select two objects.
-Be aware the point where you click matters.</source>
-      <translation>Només s'ha seleccionat un objecte. Seleccioneu-ne dos. Tingueu en compte el punt on cliqueu.</translation>
-    </message>
-    <message>
-      <source>Please select two objects.
-Be aware the point where you click matters.</source>
-      <translation>Seleccioneu dos objectes. Tingueu en compte el punt on cliqueu.</translation>
-    </message>
-    <message>
-      <source>New boolean item</source>
-      <translation>Element booleà nou</translation>
-    </message>
-    <message>
       <source>Navigation styles</source>
       <translation>Estils de navegació</translation>
     </message>
@@ -7181,24 +7355,24 @@ Be aware the point where you click matters.</source>
       <translation>Voleu guardar els vostres canvis en el document '%1' abans de tancar?</translation>
     </message>
     <message>
+      <source>Do you want to save your changes to document before closing?</source>
+      <translation>Voleu guardar els vostres canvis en el document abans de tancar?</translation>
+    </message>
+    <message>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Si no guardeu els canvis, es perdran.</translation>
     </message>
     <message>
-      <source>Save a copy of the document under new filename...</source>
-      <translation>Guarda una còpia del document amb un altre nom...</translation>
+      <source>Apply answer to all</source>
+      <translation>Envia la resposta a tots</translation>
     </message>
     <message>
-      <source>Frozen views</source>
-      <translation>Visualitzacions congelades</translation>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
     </message>
     <message>
-      <source>Saving document failed</source>
-      <translation>No s'ha pogut guardar el document.</translation>
-    </message>
-    <message>
-      <source>Document</source>
-      <translation>Document</translation>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
     <message>
       <source>Delete macro</source>
@@ -7221,14 +7395,6 @@ Be aware the point where you click matters.</source>
       <translation>L'%1 no és buit, voleu esborrar-ne le contingut?</translation>
     </message>
     <message>
-      <source>Export failed</source>
-      <translation>Exportació fallida</translation>
-    </message>
-    <message>
-      <source>Split</source>
-      <translation>Divideix</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Translació:</translation>
     </message>
@@ -7243,48 +7409,6 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Edit text</source>
       <translation>Edita el text</translation>
-    </message>
-    <message>
-      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation>L’objecte exportat conté un enllaç extern. Guardeu el documenta almenys una vegada abans d’exportar-lo.</translation>
-    </message>
-    <message>
-      <source>Delete failed</source>
-      <translation>No s'ha pogut eliminar</translation>
-    </message>
-    <message>
-      <source>Dependency error</source>
-      <translation>Error de dependència</translation>
-    </message>
-    <message>
-      <source>Copy selected</source>
-      <translation>Copia la selecció</translation>
-    </message>
-    <message>
-      <source>Copy active document</source>
-      <translation>Copia el document actiu</translation>
-    </message>
-    <message>
-      <source>Copy all documents</source>
-      <translation>Copia tots el documents</translation>
-    </message>
-    <message>
-      <source>Paste</source>
-      <translation>Apega</translation>
-    </message>
-    <message>
-      <source>Expression error</source>
-      <translation>S'ha produït un error d'expressió</translation>
-    </message>
-    <message>
-      <source>Failed to parse some of the expressions.
-Please check the Report View for more details.</source>
-      <translation>No s'han pogut analitzar algunes de les expressions.
-Per a obtindre més detalls, consulteu la vista de l'informe.</translation>
-    </message>
-    <message>
-      <source>Failed to paste expressions</source>
-      <translation>No s'han pogut apegar les expressions</translation>
     </message>
     <message>
       <source>Simple group</source>
@@ -7349,148 +7473,16 @@ guions baixos i no ha de començar amb un dígit.</translation>
       <translation>No s'ha pogut afegir la propietat a «%1»: %2</translation>
     </message>
     <message>
-      <source>Save dependent files</source>
-      <translation>Guarda els fitxers dependents</translation>
-    </message>
-    <message>
-      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation>El fitxer conté dependències externes. Voleu guardar també els fitxers dependents?</translation>
-    </message>
-    <message>
-      <source>Failed to save document</source>
-      <translation>No s'ha pogut guardar el document</translation>
-    </message>
-    <message>
-      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation>Els documents contenen dependències cícliques. Encara voleu guardar-los?</translation>
-    </message>
-    <message>
-      <source>Undo</source>
-      <translation>Desfés</translation>
-    </message>
-    <message>
-      <source>Redo</source>
-      <translation>Refés</translation>
-    </message>
-    <message>
-      <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation>Hi ha transaccions agrupades en els documents següents amb altres transaccions anteriors</translation>
-    </message>
-    <message>
-      <source>Choose 'Yes' to roll back all preceding transactions.
-Choose 'No' to roll back in the active document only.
-Choose 'Abort' to abort</source>
-      <translation>Trieu «Sí» per a desfer totes les transaccions anteriors.
-Trieu «No» per a desfer només en el document actiu.
-Trieu «Interromp» per a interrompre</translation>
-    </message>
-    <message>
-      <source>Do you want to save your changes to document before closing?</source>
-      <translation>Voleu guardar els vostres canvis en el document abans de tancar?</translation>
-    </message>
-    <message>
-      <source>Apply answer to all</source>
-      <translation>Envia la resposta a tots</translation>
-    </message>
-    <message>
       <source>Drag &amp; drop failed</source>
       <translation>S'ha produït un error en arrossegar i deixar anar</translation>
-    </message>
-    <message>
-      <source>Override colors...</source>
-      <translation>Sobreescriu els colors...</translation>
-    </message>
-    <message>
-      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
-
-</source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
-
-</translation>
-    </message>
-    <message>
-      <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
-    </message>
-    <message>
-      <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Error</translation>
-    </message>
-    <message>
-      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Hi hagué errors quan es carregava el fitxer. Algunes dades s'han pogut modificar o no s'han recuperat. Busqueu en la vista d'informes per a obtindre informació més específica sobre els objectes implicats.</translation>
-    </message>
-    <message>
-      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
-    </message>
-    <message>
-      <source>Workbenches</source>
-      <translation>Bancs de treball</translation>
-    </message>
-    <message>
-      <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
-    </message>
-    <message>
-      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
-
-"%1"
-
-Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
-
-"%1"
-
-Would you like to save the file with a different name?</translation>
-    </message>
-    <message>
-      <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
-    </message>
-    <message>
-      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
-    </message>
-    <message>
-      <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
-    </message>
-    <message>
-      <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
-    </message>
-    <message>
-      <source>Please check report view for more...</source>
-      <translation type="unfinished">Please check report view for more...</translation>
-    </message>
-    <message>
-      <source>Physical path:</source>
-      <translation type="unfinished">Physical path:</translation>
-    </message>
-    <message>
-      <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
-    </message>
-    <message>
-      <source>Path:</source>
-      <translation>Camí:</translation>
-    </message>
-    <message>
-      <source>Edit %1</source>
-      <translation>Edita %1</translation>
     </message>
     <message>
       <source>Setup configurable object</source>
       <translation type="unfinished">Setup configurable object</translation>
     </message>
     <message>
-      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+      <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
     </message>
     <message>
       <source>Please select which objects to copy when the configuration is changed</source>
@@ -7559,6 +7551,14 @@ the current copy will be lost.
     <message>
       <source>Transform at the origin of the placement</source>
       <translation type="unfinished">Transform at the origin of the placement</translation>
+    </message>
+    <message>
+      <source>Override colors...</source>
+      <translation>Sobreescriu els colors...</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>Edita %1</translation>
     </message>
   </context>
   <context>
@@ -8246,12 +8246,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdMeasurementSimple</name>
     <message>
-      <source>Measures distance between two selected objects</source>
-      <translation>Mesura la distància entre dos objectes seleccionats</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>Mesura la distància</translation>
+    </message>
+    <message>
+      <source>Measures distance between two selected objects</source>
+      <translation>Mesura la distància entre dos objectes seleccionats</translation>
     </message>
   </context>
   <context>
@@ -8265,12 +8265,12 @@ the current copy will be lost.
       <translation>Fusiona el projecte</translation>
     </message>
     <message>
-      <source>Cannot merge project with itself.</source>
-      <translation>No es pot fusionar el projecte amb si mateix.</translation>
-    </message>
-    <message>
       <source>%1 document (*.FCStd)</source>
       <translation>Document %1 (*.FCStd)</translation>
+    </message>
+    <message>
+      <source>Cannot merge project with itself.</source>
+      <translation>No es pot fusionar el projecte amb si mateix.</translation>
     </message>
   </context>
   <context>
@@ -9300,12 +9300,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <source>Display all documents in the tree view</source>
-      <translation>Mostra tots els documents en la vista d'arbre</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>Document múltiple</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Mostra tots els documents en la vista d'arbre</translation>
     </message>
   </context>
   <context>
@@ -9344,12 +9344,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <source>Only display the active document in the tree view</source>
-      <translation>Mostra només el document actiu a la vista d'arbre</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>Document únic</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Mostra només el document actiu a la vista d'arbre</translation>
     </message>
   </context>
   <context>
@@ -9474,12 +9474,12 @@ Segur que voleu continuar?
 </translation>
     </message>
     <message>
-      <source>Object dependencies</source>
-      <translation>Dependències de l'objecte</translation>
-    </message>
-    <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
       <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+    <message>
+      <source>Object dependencies</source>
+      <translation>Dependències de l'objecte</translation>
     </message>
   </context>
   <context>
@@ -9500,36 +9500,20 @@ Segur que voleu continuar?
       <translation>Mode normal</translation>
     </message>
     <message>
-      <source>Wireframe</source>
-      <translation>Filferro</translation>
-    </message>
-    <message>
-      <source>Wireframe mode</source>
-      <translation>Mode de filferro</translation>
-    </message>
-    <message>
-      <source>Flat lines</source>
-      <translation>Línies planes</translation>
-    </message>
-    <message>
-      <source>Flat lines mode</source>
-      <translation>Mode de línies planes</translation>
-    </message>
-    <message>
-      <source>Shaded</source>
-      <translation>Ombrejat</translation>
-    </message>
-    <message>
-      <source>Shaded mode</source>
-      <translation>Mode ombrejat</translation>
-    </message>
-    <message>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
       <source>Points mode</source>
       <translation>Mode de punts</translation>
+    </message>
+    <message>
+      <source>Wireframe</source>
+      <translation>Filferro</translation>
+    </message>
+    <message>
+      <source>Wireframe mode</source>
+      <translation>Mode de filferro</translation>
     </message>
     <message>
       <source>Hidden line</source>
@@ -9546,6 +9530,22 @@ Segur que voleu continuar?
     <message>
       <source>No shading mode</source>
       <translation>Mode sense ombrejat</translation>
+    </message>
+    <message>
+      <source>Shaded</source>
+      <translation>Ombrejat</translation>
+    </message>
+    <message>
+      <source>Shaded mode</source>
+      <translation>Mode ombrejat</translation>
+    </message>
+    <message>
+      <source>Flat lines</source>
+      <translation>Línies planes</translation>
+    </message>
+    <message>
+      <source>Flat lines mode</source>
+      <translation>Mode de línies planes</translation>
     </message>
   </context>
   <context>
@@ -9584,12 +9584,12 @@ Encara voleu continuar?</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <source>This will discard all the changes since last file save.</source>
-      <translation>Això descartarà tots els canvis des de l'última acció de guardar el fitxer. </translation>
-    </message>
-    <message>
       <source>Revert document</source>
       <translation>Torneu a la versió anterior del document</translation>
+    </message>
+    <message>
+      <source>This will discard all the changes since last file save.</source>
+      <translation>Això descartarà tots els canvis des de l'última acció de guardar el fitxer. </translation>
     </message>
     <message>
       <source>Do you want to continue?</source>
@@ -9655,6 +9655,10 @@ Encara voleu continuar?</translation>
       <translation>Vistes estàndard</translation>
     </message>
     <message>
+      <source>Axonometric</source>
+      <translation>Axonomètrica</translation>
+    </message>
+    <message>
       <source>&amp;Stereo</source>
       <translation>E&amp;stèreo</translation>
     </message>
@@ -9705,10 +9709,6 @@ Encara voleu continuar?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Operacions especials</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonomètrica</translation>
     </message>
     <message>
       <source>Link actions</source>

@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepFill.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepLib_MakeWire.hxx>
@@ -100,6 +101,7 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
 
     if (!part.getShape().IsNull()) {
         if (!element[0].empty()) {
+            //shape = Part::Feature::getTopoShape(obj, element[0].c_str(), true /*need element*/).getShape();
             shape = part.getSubShape(element[0].c_str());
         }
         else {
@@ -142,16 +144,9 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         //
         // if both shapes are sub-elements of one common shape then the fill algorithm
         // leads to problems if the shape has set a placement
-        // The workaround is to reset the placement before calling BRepFill and then
-        // applying the placement to the output shape
-        TopLoc_Location Loc;
-        if (Curve1.getValue() == Curve2.getValue()) {
-            Loc = S1.Location();
-            if (!Loc.IsIdentity() && Loc == S2.Location()) {
-                S1.Location(TopLoc_Location());
-                S2.Location(TopLoc_Location());
-            }
-        }
+        // The workaround is to copy the sub-shape
+        S1 = BRepBuilderAPI_Copy(S1).Shape();
+        S2 = BRepBuilderAPI_Copy(S2).Shape();
 
         // make both shapes to have the same type
         Standard_Boolean isWire = Standard_False;
@@ -234,20 +229,6 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         }
         else {
             ruledShape = BRepFill::Shell(TopoDS::Wire(S1), TopoDS::Wire(S2));
-        }
-
-        // re-apply the placement in case we reset it
-        if (!Loc.IsIdentity())
-            ruledShape.Move(Loc);
-        Loc = ruledShape.Location();
-
-        if (!Loc.IsIdentity()) {
-            // reset the placement of the shape because the Placement
-            // property will be changed
-            ruledShape.Location(TopLoc_Location());
-            Base::Matrix4D transform;
-            TopoShape::convertToMatrix(Loc.Transformation(), transform);
-            this->Placement.setValue(Base::Placement(transform));
         }
 
         this->Shape.setValue(ruledShape);
@@ -431,7 +412,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
             if (!subedge.empty()) {
                 BRepBuilderAPI_MakeWire mkWire;
                 for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {
-                    TopoDS_Shape subshape = shape.getSubShape(it->c_str());
+                    TopoDS_Shape subshape = Feature::getTopoShape(spine, it->c_str(), true /*need element*/).getShape();
                     mkWire.Add(TopoDS::Edge(subshape));
                 }
                 path = mkWire.Wire();

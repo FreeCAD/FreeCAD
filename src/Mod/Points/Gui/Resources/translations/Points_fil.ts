@@ -140,14 +140,6 @@
       <translation>Espesyal na mga linya</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Huwag pansinin ang mga linya na nagsisimula sa:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Pag ugnay-ugnayin ang mga linya simula sa:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Unang linya:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Bilang ng mga point</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Pag ugnay-ugnayin ang mga linya simula sa:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Huwag pansinin ang mga linya na nagsisimula sa:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Format ng Point</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Naghihiwalay sa numero:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Format ng mga point:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X, Y, Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X, Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Sunod na block:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (Gray value)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Naghihiwalay sa numero:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Sunod na block:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X, Y, Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X, Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Format ng mga point:</translation>
     </message>
     <message>
       <source>Preview</source>

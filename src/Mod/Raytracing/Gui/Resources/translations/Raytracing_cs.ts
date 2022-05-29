@@ -270,22 +270,6 @@ Přejete si pokračovat?</translation>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Nastavení exportu sítě</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Max. odchylka sítě:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Nepočítat vrcholové normály</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Zapsat u,v souřadnice</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Vykreslit</translation>
     </message>
@@ -334,28 +318,44 @@ Přejete si pokračovat?</translation>
       <translation>Adresáře</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Název dílu:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Název souboru fotoaparátu:</translation>
+      <source>Default Project dir:</source>
+      <translation>Výchozí adresář projektu:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Užíváno nástroji</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Výchozí adresář projektu:</translation>
+      <source>Camera file name:</source>
+      <translation>Název souboru fotoaparátu:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Název dílu:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Nastavení exportu sítě</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Max. odchylka sítě:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Nepočítat vrcholové normály</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Zapsat u,v souřadnice</translation>
     </message>
   </context>
   <context>

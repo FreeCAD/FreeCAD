@@ -240,6 +240,14 @@
       <translation>Facteur de taille</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Directions u/v personnalisés</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Créer un placement</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Lissage</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Variation de courbure</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Directions u/v personnalisés</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Créer un placement</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentation du maillage</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Créer un composé</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Lissage du maillage</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Créer un maillage à partir de triangles inutilisés</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Créer un composé</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Sélectionner</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Composants</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Région</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Sélectionner le composant entier</translation>
+      <source>All</source>
+      <translation>Tous</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Choisissez un triangle</translation>
+      <source>Components</source>
+      <translation>Composants</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; de faces que</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Tous</translation>
+      <source>Pick triangle</source>
+      <translation>Choisissez un triangle</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Sélectionner le composant entier</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Plan</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Détecter</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolérance</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Nombre minimum de faces</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Détecter</translation>
     </message>
     <message>
       <source>Cylinder</source>

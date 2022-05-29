@@ -297,16 +297,60 @@ Do you want to continue?</source>
       <translation>Ortografinis vaizdavimas</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Vaizdavimas (projekcija)</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Trečiasis kampas</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Pirmasis kampas</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Vaizdas nuo:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Ašis lygiuojama dešinėje:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Nepagrindiniai vaizdai</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Spustelėkite dešinįjį pelės mygtuką, aksonometrinio vaizdavimo nustatymams</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Pagrindinis vaizdas</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Nepagrindiniai vaizdai</translation>
     </message>
     <message>
       <source>General</source>
@@ -341,36 +385,8 @@ Do you want to continue?</source>
       <translation>Aksonometrinis</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Ašis į išorę ir į dešinę</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Statmenasis polinkis</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>Rodyti projekciją</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -385,44 +401,28 @@ Do you want to continue?</source>
       <translation>Trimetrinis vaizdavimas</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Mastelis</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Rodyti projekciją</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Ašis lygiuojama į viršų</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Ašis į išorę ir į dešinę</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Statmenasis polinkis</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Apgręžti</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Mastelis</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetrinis vaizdavimas</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Vaizdavimas (projekcija)</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Trečiasis kampas</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Pirmasis kampas</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Vaizdas nuo:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Ašis lygiuojama dešinėje:</translation>
     </message>
   </context>
   <context>

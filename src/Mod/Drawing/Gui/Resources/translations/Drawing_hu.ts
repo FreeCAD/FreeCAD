@@ -298,16 +298,60 @@ Szeretné folytatni?</translation>
       <translation>Merőleges vetítés</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Vetítés</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Harmadik szög</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Első szög</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Nézet ebből:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X + füg</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y + füg</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z + füg</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X - füg</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -füg</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -füg</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Tengelyek jobbra igazítottak:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Másodlagos nézetek</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Jobb kattintás az axonometrikus beállításokhoz</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Elsődleges nézet</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Másodlagos nézetek</translation>
     </message>
     <message>
       <source>General</source>
@@ -342,36 +386,8 @@ Szeretné folytatni?</translation>
       <translation>Axonometric</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Tengely ki és jobbra</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Függőleges döntés</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X + füg</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y + füg</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z + füg</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X - füg</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -füg</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -füg</translation>
+      <source>View projection</source>
+      <translation>Nézet vetítése</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -386,44 +402,28 @@ Szeretné folytatni?</translation>
       <translation>Trimetrikus</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Méretarány</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Nézet vetítése</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Tengely felfelé igazítása</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Tengely ki és jobbra</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Függőleges döntés</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Átfordít</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Méretarány</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetrikus</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Vetítés</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Harmadik szög</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Első szög</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Nézet ebből:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Tengelyek jobbra igazítottak:</translation>
     </message>
   </context>
   <context>

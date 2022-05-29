@@ -58,7 +58,7 @@
     </message>
     <message>
       <source>Cross-sections</source>
-      <translation>Поперечні перерізи</translation>
+      <translation>Створює поперечні перерізи</translation>
     </message>
   </context>
   <context>
@@ -754,20 +754,20 @@
       <translation>Інформація про сітку</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Кількість точок:</translation>
+      <source>Number of faces:</source>
+      <translation>Кількість граней:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Інформація відсутня</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Кількість граней:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Кількість ребер:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Кількість точок:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -984,22 +984,6 @@ Please run the command to repair folds first</source>
       <translation>Правильне суцільне тіло</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Створити</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Закрити</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Суцільне тіло:</translation>
     </message>
@@ -1028,10 +1012,6 @@ Please run the command to repair folds first</source>
       <translation>Тор</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Висота:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Довжина:</translation>
     </message>
@@ -1040,20 +1020,24 @@ Please run the command to repair folds first</source>
       <translation>Ширина:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Висота:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Радіус:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Замкнене</translation>
+      <source>Edge length:</source>
+      <translation>Довжина ребра:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Вибірка:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Довжина ребра:</translation>
+      <source>Closed</source>
+      <translation>Замкнене</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1062,6 +1046,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Радіус 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Створити</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Закрити</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1086,10 +1086,6 @@ Please run the command to repair folds first</source>
       <translation>Експорт</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Максимальне відхилення між сіткою і об'єктом</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
     </message>
@@ -1100,6 +1096,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Максимальне відхилення полігональної сітки</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Максимальне відхилення між сіткою і об'єктом</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</source>
       <translation>Стандартний вигляд для нових сіток</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Стандартний колір лінії</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Прозорість сітки</translation>
+      <source>Default mesh color</source>
+      <translation>Стандартний колір сітки</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Типовий колір для нових сіток</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Прозорість сітки</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Стандартний колір сітки</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Буде показано обмежувальну рамку</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Показувати прямокутник обмеження для підсвічених чи обраних сіток</translation>
+      <source>Default line color</source>
+      <translation>Стандартний колір лінії</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Типовий колір лінії для нових сіток</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Прозорість лінії</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Колір зворотньої сторони</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ will be used or black.</source>
       <translation>Дво-стороння побудова</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Прозорість лінії</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Буде показано обмежувальну рамку</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Колір зворотньої сторони</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Показувати прямокутник обмеження для підсвічених чи обраних сіток</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Згладжування</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Це найменший кут між двома поверхнями, де обраховані нормалі для отримання рівного затінення.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Якщо кути між нормалями двох сусідніх поверхонь менші за кут згину, поверхні будуть гладко затінені навколо їх загального ребра&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Кут згину</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1218,6 +1210,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>Визначити нормаль для кожної вершини</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Це найменший кут між двома поверхнями, де обраховані нормалі для отримання рівного затінення.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Якщо кути між нормалями двох сусідніх поверхонь менші за кут згину, поверхні будуть гладко затінені навколо їх загального ребра&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Кут згину</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1354,7 +1354,7 @@ to a smoother appearance.
     </message>
     <message>
       <source>Selection</source>
-      <translation>Вибір</translation>
+      <translation>Виділення</translation>
     </message>
     <message>
       <source>Region</source>
@@ -1383,6 +1383,10 @@ to a smoother appearance.
   </context>
   <context>
     <name>MeshGui::RemeshGmsh</name>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
     <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
@@ -1423,10 +1427,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>Очистити</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1439,40 +1439,40 @@ to a smoother appearance.
       <translation>Вибрати</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Вибрати всі компоненти</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Вибрати трикутник</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&gt; граней, ніж</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Область</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Компоненти</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Все</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Компоненти</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&gt; граней, ніж</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Вибрати трикутник</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Вибрати всі компоненти</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Зняти виділення</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Зняти виділення з усіх компонентів</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; граней, ніж</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Зняти виділення з усіх компонентів</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1549,8 +1549,12 @@ to a smoother appearance.
       <translation>Сегментація сітки</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Сфера</translation>
+      <source>Plane</source>
+      <translation>Площини</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Параметри...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1561,16 +1565,12 @@ to a smoother appearance.
       <translation>Мінімальна кількість граней</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Параметри...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Площини</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Циліндр</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Сфера</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1597,7 +1597,7 @@ to a smoother appearance.
     <name>MeshGui::Selection</name>
     <message>
       <source>Selection</source>
-      <translation>Вибір</translation>
+      <translation>Виділення</translation>
     </message>
     <message>
       <source>Add</source>
@@ -1756,6 +1756,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation>Формат виробництва в 3D</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Експорт сітки</translation>
     </message>
@@ -1812,6 +1816,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Показати відрізки</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Вийти з інформаційного режиму</translation>
     </message>
@@ -1839,10 +1847,6 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Анотація</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1859,12 +1863,32 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>&amp;Сітки(Mesh)</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Перерізання</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Інструменти для сітки</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Перерізання</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Сегментація сітки</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

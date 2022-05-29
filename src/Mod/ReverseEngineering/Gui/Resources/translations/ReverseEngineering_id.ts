@@ -240,6 +240,14 @@
       <translation>Faktor ukuran</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Petunjuk u / v yang ditentukan pengguna</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation type="unfinished">Create placement</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Smoothing</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Variasi kelengkungan</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Petunjuk u / v yang ditentukan pengguna</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentasi Mesh</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Jajaran halus</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation type="unfinished">Create mesh from unused triangles</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Memilih</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Komponen</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Wilayah</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Pilih seluruh komponen</translation>
+      <source>All</source>
+      <translation>Semua</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Pilih segitiga</translation>
+      <source>Components</source>
+      <translation>Komponen</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; wajah dari</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Semua</translation>
+      <source>Pick triangle</source>
+      <translation>Pilih segitiga</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Pilih seluruh komponen</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Pesawat</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation type="unfinished">Detect</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Toleransi</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Minimal jumlah wajah</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <source>Cylinder</source>
