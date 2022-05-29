@@ -26,7 +26,8 @@ __url__ = "https://www.freecadweb.org"
 __version__ = "00.01"
 __date__ = "2022/01/11"
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
+from PySide import QtCore
+import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -44,8 +45,8 @@ class CommandMoveView:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_MoveView.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("MoveView", "Move View"),
-                'ToolTip': QT_TRANSLATE_NOOP("MoveView", "Move a View to a new Page")}
+                'MenuText': QtGui.QApplication.translate("MoveView", "Move View", None),
+                'ToolTip': QtGui.QApplication.translate("MoveView", "Move a View to a new Page", None)}
 
     def Activated(self):
         """Run the following code when the command is activated (button press)."""

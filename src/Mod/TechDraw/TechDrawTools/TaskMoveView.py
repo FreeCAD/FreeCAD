@@ -26,12 +26,13 @@ __url__ = "https://www.freecadweb.org"
 __version__ = "00.01"
 __date__ = "2022/01/11"
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore
 import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
+
+#from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from TechDrawTools import TDToolsMovers
 
@@ -44,7 +45,7 @@ class TaskMoveView:
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskMoveView.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
-        self.form.setWindowTitle(QT_TRANSLATE_NOOP("MoveView", "Move View to a different Page"))
+        self.form.setWindowTitle(QtGui.QApplication.translate("MoveView", "Move View to a different Page", None))
 
         self.form.pbView.clicked.connect(self.pickView)
         self.form.pbFromPage.clicked.connect(self.pickFromPage)
@@ -71,8 +72,8 @@ class TaskMoveView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("MoveView", "Select View to move from list."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("MoveView", "Select View"))
+        dlg.lPrompt.setText(QtGui.QApplication.translate("MoveView", "Select View to move from list.", None))
+        dlg.setWindowTitle(QtGui.QApplication.translate("MoveView", "Select View", None))
 
         views = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawView")]
         for v in views:
@@ -90,8 +91,8 @@ class TaskMoveView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("MoveView", "Select From Page."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("MoveView", "Select Page"))
+        dlg.lPrompt.setText(QtGui.QApplication.translate("MoveView", "Select From Page.", None))
+        dlg.setWindowTitle(QtGui.QApplication.translate("MoveView", "Select Page", None))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
@@ -109,8 +110,8 @@ class TaskMoveView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("MoveView", "Select To Page."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("MoveView", "Select Page"))
+        dlg.lPrompt.setText(QtGui.QApplication.translate("MoveView", "Select To Page.", None))
+        dlg.setWindowTitle(QtGui.QApplication.translate("MoveView", "Select Page", None))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
