@@ -999,12 +999,29 @@ class CommandAddonManager:
                 if option not in self.python_required
             ]
 
+    def update_allowed_packages_list(self) -> None:
+        FreeCAD.Console.PrintLog("Attempting to fetch remote copy of ALLOWED_PYTHON_PACKAGES.txt...\n")
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
+            "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/ALLOWED_PYTHON_PACKAGES.txt"
+        )
+        if p:
+            FreeCAD.Console.PrintLog("Remote ALLOWED_PYTHON_PACKAGES.txt file located, overriding locally-installed copy\n")
+            p = p.data().decode("utf8")
+            lines = p.split("\n")
+            self.allowed_packages.clear() # Unset the locally-defined list
+            for line in lines:
+                if line and len(line) > 0 and line[0] != "#":
+                    self.allowed_packages.add(line.strip())
+        else:
+            FreeCAD.Console.PrintLog("Could not fetch remote ALLOWED_PYTHON_PACKAGES.txt, using local copy\n")
+
     def handle_disallowed_python(self, python_required: List[str]) -> bool:
         """Determine if we are missing any required Python packages that are not in the allowed
         packages list. If so, display a message to the user, and return True. Otherwise return
         False."""
 
         bad_packages = []
+        self.update_allowed_packages_list()
         for dep in python_required:
             if dep not in self.allowed_packages:
                 bad_packages.append(dep)

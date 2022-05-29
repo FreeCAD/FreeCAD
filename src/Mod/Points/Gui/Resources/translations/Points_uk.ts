@@ -84,11 +84,11 @@
     </message>
     <message>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Хмара структурованих точок</translation>
     </message>
     <message>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Конвертувати точки в хмару структурованих точок</translation>
     </message>
   </context>
   <context>
@@ -110,11 +110,11 @@
     <name>Command</name>
     <message>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Імпортувати точки</translation>
     </message>
     <message>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>Трансформувати точки</translation>
     </message>
     <message>
       <source>Convert to points</source>
@@ -122,7 +122,7 @@
     </message>
     <message>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Точки розрізу</translation>
     </message>
   </context>
   <context>

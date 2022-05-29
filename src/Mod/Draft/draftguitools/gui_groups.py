@@ -62,16 +62,16 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(AddToGroup, self).__init__(name=translate("draft","Add to group"))
-        self.ungroup = QT_TRANSLATE_NOOP("Draft_AddToGroup","Ungroup")
+        super(AddToGroup, self).__init__(name=translate("draft", "Add to group"))
+        self.ungroup = translate("draft", "Ungroup")
         #add new group string option
         self.addNewGroupStr = "+ " + translate("draft", "Add new group")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {'Pixmap': 'Draft_AddToGroup',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_AddToGroup","Move to group")+"...",
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup","Moves the selected objects to an existing group, or removes them from any group.\nCreate a group first to use this tool.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_AddToGroup", "Move to group..."),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup", "Moves the selected objects to an existing group, or removes them from any group.\nCreate a group first to use this tool.")}
 
     def Activated(self):
         """Execute when the command is called."""

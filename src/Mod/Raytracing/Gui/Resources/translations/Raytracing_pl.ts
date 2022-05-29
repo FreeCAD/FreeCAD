@@ -9,7 +9,7 @@
     </message>
     <message>
       <source>&amp;Export project...</source>
-      <translation>&amp;Eksportuj projekt...</translation>
+      <translation>&amp;Eksportuj projekt ...</translation>
     </message>
     <message>
       <source>Export a Raytracing project to a file</source>

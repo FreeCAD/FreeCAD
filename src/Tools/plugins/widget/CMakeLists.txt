@@ -52,7 +52,7 @@ if(MSVC)
     endif()
 endif()
 
-target_link_libraries(FreeCAD_widgets PRIVATE ${Qt5Widgets_LIBRARIES} ${Qt5Designer_LIBRARIES})
+target_link_libraries(FreeCAD_widgets PRIVATE ${FreeCAD_widgets_LIBS})
 target_compile_options(FreeCAD_widgets PRIVATE ${COMPILE_OPTIONS})
 
 

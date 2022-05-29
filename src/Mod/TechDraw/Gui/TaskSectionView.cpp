@@ -436,11 +436,9 @@ void TaskSectionView::createSectionView(void)
         Command::doCommand(Command::Doc,"App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(),
                            ui->sbScale->value().getValue());
-        QString qScaleType = ui->cmbScaleType->currentText();
-        std::string sScaleType = Base::Tools::toStdString(qScaleType);
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.ScaleType = '%s'",
-                           m_sectionName.c_str(),
-                           sScaleType.c_str());
+        int scaleType = ui->cmbScaleType->currentIndex();
+        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.ScaleType = %d",
+                           m_sectionName.c_str(), scaleType);
 
         App::DocumentObject* newObj = m_base->getDocument()->getObject(m_sectionName.c_str());
         m_section = dynamic_cast<TechDraw::DrawViewSection*>(newObj);
@@ -487,11 +485,9 @@ void TaskSectionView::updateSectionView(void)
         Command::doCommand(Command::Doc,"App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(),
                            ui->sbScale->value().getValue());
-        QString qScaleType = ui->cmbScaleType->currentText();
-        std::string sScaleType = Base::Tools::toStdString(qScaleType);
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.ScaleType = '%s'",
-                           m_sectionName.c_str(),
-                           sScaleType.c_str());
+        int scaleType = ui->cmbScaleType->currentIndex();
+        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.ScaleType = %d",
+                           m_sectionName.c_str(), scaleType);
         m_section->setCSFromBase(m_dirName.c_str());
     }
     Gui::Command::commitCommand();

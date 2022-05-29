@@ -2484,8 +2484,8 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
             QAction *act = menu->addAction(
                     QObject::tr("Setup configurable object"));
             act->setToolTip(QObject::tr(
-                        "Select which object to copy or exclude when configuration changes."
-                        "All external linked object are excluded by default."));
+                        "Select which object to copy or exclude when configuration changes. "
+                        "All external linked objects are excluded by default."));
             act->setData(-1);
             if (!func) func = new Gui::ActionFunction(menu);
             func->trigger(act, [ext](){
@@ -2519,7 +2519,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     auto sels = dlg.getSelections(DlgObjectSelection::SelectionOptions::InvertSort);
                     for (auto it=excludes.begin(); it!=excludes.end(); ++it) {
                         auto iter = std::lower_bound(sels.begin(), sels.end(), *it);
-                        if (iter == objs.end() || *iter != *it) {
+                        if (iter == sels.end() || *iter != *it) {
                             ext->setOnChangeCopyObject(*it, options);
                         } else
                             sels.erase(iter);

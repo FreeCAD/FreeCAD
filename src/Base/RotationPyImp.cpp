@@ -37,7 +37,7 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string RotationPy::representation() const
 {
-    RotationPy::PointerType ptr = reinterpret_cast<RotationPy::PointerType>(_pcTwinPointer);
+    RotationPy::PointerType ptr = getRotationPtr();
     Py::Float q0(ptr->getValue()[0]);
     Py::Float q1(ptr->getValue()[1]);
     Py::Float q2(ptr->getValue()[2]);

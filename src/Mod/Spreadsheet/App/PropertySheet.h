@@ -113,7 +113,9 @@ public:
 
     bool isValidAlias(const std::string &candidate);
 
-    std::set<App::CellAddress> getUsedCells() const;
+    std::vector<App::CellAddress> getUsedCells() const;
+
+    std::vector<App::CellAddress> getNonEmptyCells() const;
 
     Sheet * sheet() const { return owner; }
 

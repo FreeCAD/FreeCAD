@@ -1379,10 +1379,6 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Perkurti tinklą su „gmsh“</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Perkūrimo dydis</translation>
     </message>
@@ -1421,6 +1417,10 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
     <message>
       <source>Clear</source>
       <translation>Išvalyti</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1835,6 +1835,10 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
       <source>Annotation</source>
       <translation>Santrauka</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1853,6 +1857,10 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <source>Mesh tools</source>
       <translation>Tinklo įrankiai</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation type="unfinished">Cutting</translation>
     </message>
   </context>
 </TS>

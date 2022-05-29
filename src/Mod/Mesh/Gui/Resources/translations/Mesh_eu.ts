@@ -1386,10 +1386,6 @@ itxura leunagoa ematen du.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Birsortu amarauna gmsh erabilita</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Amarauna birsortzeko parametroa</translation>
     </message>
@@ -1428,6 +1424,10 @@ itxura leunagoa ematen du.
     <message>
       <source>Clear</source>
       <translation>Garbitu</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1842,6 +1842,10 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
       <source>Annotation</source>
       <translation>Oharpena</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1860,6 +1864,10 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
     <message>
       <source>Mesh tools</source>
       <translation>Amaraun-tresnak</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Moztea</translation>
     </message>
   </context>
 </TS>

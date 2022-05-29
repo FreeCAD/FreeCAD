@@ -1382,10 +1382,6 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Изменить сетку с помощью gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Параметр перестроения сетки</translation>
     </message>
@@ -1424,6 +1420,10 @@ to a smoother appearance.
     <message>
       <source>Clear</source>
       <translation>Очистить</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1838,6 +1838,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Заметка</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1856,6 +1860,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <source>Mesh tools</source>
       <translation>Инструменты полигональной сетки</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Обрезка</translation>
     </message>
   </context>
 </TS>

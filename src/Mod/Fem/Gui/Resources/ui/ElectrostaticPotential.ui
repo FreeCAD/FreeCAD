@@ -156,7 +156,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Counter of the body (or face) with a capcitance</string>
+        <string>Counter of the body (or face) with a capacitance</string>
        </property>
        <property name="minimum">
         <number>1</number>

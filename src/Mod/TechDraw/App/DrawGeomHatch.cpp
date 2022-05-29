@@ -126,7 +126,12 @@ void DrawGeomHatch::onChanged(const App::Property* prop)
             (doc != nullptr) ) {
             if (!FilePattern.isEmpty()) {
                 replacePatIncluded(FilePattern.getValue());
+                DrawGeomHatch::execute();         //remake the line sets
             }
+        }
+        if ((prop == &NamePattern) &&
+                (doc != nullptr)) {
+            DrawGeomHatch::execute();            //remake the line sets
         }
     } else {
         if ((prop == &FilePattern) ||                //make sure right pattern gets loaded at start up
@@ -144,7 +149,8 @@ short DrawGeomHatch::mustExecute() const
     if (!isRestoring()) {
         result  =  (Source.isTouched()  ||
                     FilePattern.isTouched() ||
-                    NamePattern.isTouched() );
+                    NamePattern.isTouched() ||
+                    ScalePattern.isTouched());
     }
 
     if (result) {
@@ -171,18 +177,13 @@ void DrawGeomHatch::makeLineSets(void)
 //    Base::Console().Message("DGH::makeLineSets()\n");
     if ((!PatIncluded.isEmpty())  &&
         (!NamePattern.isEmpty())) {
-        if ((m_saveFile != PatIncluded.getValue()) ||
-            (m_saveName != NamePattern.getValue()))  {
-            m_saveFile = PatIncluded.getValue();
-            m_saveName = NamePattern.getValue();
-            std::vector<PATLineSpec> specs = getDecodedSpecsFromFile();
-            m_lineSets.clear();
-            for (auto& hl: specs) {
-                //hl.dump("hl from file");
-                LineSet ls;
-                ls.setPATLineSpec(hl);
-                m_lineSets.push_back(ls);
-            }
+        std::vector<PATLineSpec> specs = getDecodedSpecsFromFile();
+        m_lineSets.clear();
+        for (auto& hl: specs) {
+            //hl.dump("hl from file");
+            LineSet ls;
+            ls.setPATLineSpec(hl);
+            m_lineSets.push_back(ls);
         }
     }
 }

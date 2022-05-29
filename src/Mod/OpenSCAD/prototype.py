@@ -161,7 +161,7 @@ class Node:
                         p1.Placement = FreeCAD.Placement(\
                         FreeCAD.Vector(0.0,0.0,-h/2.0),FreeCAD.Rotation())
                         p2.Placement = FreeCAD.Placement(\
-                        FreeCAD.Vector(0.0,0.0,h/2.0), F reeCAD.Rotation())
+                        FreeCAD.Vector(0.0,0.0,h/2.0), FreeCAD.Rotation())
                     else:
                         p2.Placement = FreeCAD.Placement(\
                         FreeCAD.Vector(0.0,0.0,h),FreeCAD.Rotation())

@@ -1378,10 +1378,6 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Reconstrueix la malla amb gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Paràmetre de reconstrucció de la malla</translation>
     </message>
@@ -1420,6 +1416,10 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <source>Clear</source>
       <translation>Neteja</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1833,6 +1833,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Anotació</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1851,6 +1855,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <source>Mesh tools</source>
       <translation>Eines de malla</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Tall</translation>
     </message>
   </context>
 </TS>

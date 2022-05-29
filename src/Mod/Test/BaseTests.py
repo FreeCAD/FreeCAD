@@ -369,6 +369,13 @@ class MatrixTestCase(unittest.TestCase):
     def setUp(self):
         self.mat = FreeCAD.Matrix()
 
+    def testOrder(self):
+        self.mat = FreeCAD.Matrix(1.0,2.0,3.0,4.0)
+        self.assertEqual(self.mat.A11, 1.0)
+        self.assertEqual(self.mat.A12, 2.0)
+        self.assertEqual(self.mat.A13, 3.0)
+        self.assertEqual(self.mat.A14, 4.0)
+
     def testScalar(self):
         res = self.mat * 0.0
         for i in range(16):
@@ -406,6 +413,24 @@ class MatrixTestCase(unittest.TestCase):
         mat = FreeCAD.Matrix()
         res = self.mat * mat
         self.assertEqual(type(res), FreeCAD.Matrix)
+
+    def testMatrixPlacementMatrix(self):
+        # Example taken from https://forum.freecadweb.org/viewtopic.php?f=3&t=61000
+        mat = FreeCAD.Matrix(-0.470847778020266,
+                             0.8150598976807029,
+                             0.3376088628746235,
+                             -11.25290913640202,
+                             -0.8822144756796808,
+                             -0.4350066260577338,
+                             -0.180185641360483,
+                             -2876.45492562325,
+                             1.955470978815492e-9,
+                             -0.3826834326750831,
+                             0.923879538425552,
+                             941.3822018176414)
+        plm = FreeCAD.Placement(mat)
+        mat = plm.toMatrix()
+        self.assertEqual(mat.hasScale(), FreeCAD.ScaleType.NoScaling)
 
     def testAnything(self):
         with self.assertRaises(NotImplementedError):

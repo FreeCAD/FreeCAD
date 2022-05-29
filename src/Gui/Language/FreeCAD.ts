@@ -86,13 +86,13 @@
         <source>Base</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enum</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CmdTestConsoleOutput</name>
-    <message>
-        <source>Standard-Test</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Test console output</source>
         <translation type="unfinished"></translation>
@@ -101,20 +101,12 @@
 <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-        <source>Measure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clear measurement</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdViewMeasureToggleAll</name>
-    <message>
-        <source>Measure</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Toggle measurement</source>
         <translation type="unfinished"></translation>
@@ -192,6 +184,73 @@
     </message>
     <message>
         <source>Measure distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle array elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CommandGroup</name>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Structure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TreeView</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Measure</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -312,6 +371,10 @@
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Press a keyboard shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::ActionSelector</name>
@@ -409,13 +472,6 @@
     <message>
         <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Gui::Command</name>
-    <message>
-        <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -534,6 +590,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>Organizations</source>
         <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::ApplicationCache</name>
+    <message>
+        <source>Cache directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The cache directory %1 exceeds the size of %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to clear it now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -807,6 +882,32 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
+    <message>
+        <source>Create New Preference Pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Property group templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
+    <message>
+        <source>Pack already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
         <source>Macros</source>
@@ -869,14 +970,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source>Macros</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No macros found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1439,6 +1532,14 @@ If this is not ticked, then the property must be uniquely named, and it is acces
         <source>Code lines will be numbered</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The cursor shape will be a block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable block cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1487,14 +1588,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Python console</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable word wrap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Language of the application&apos;s user interface</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1540,8 +1633,63 @@ after FreeCAD launches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
+        <source>Number format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Operating system</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>C/POSIX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Substitute decimal separator (needs restart)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preference packs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save new...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Revert...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The text cursor will be blinking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable cursor blinking</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1581,6 +1729,26 @@ horizontal space in Python console</source>
     </message>
     <message>
         <source>Both</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage preference packs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preference Pack Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply the %1 preference pack</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1653,11 +1821,19 @@ horizontal space in Python console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Addons...</source>
+        <source>Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Toolbar</source>
+        <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2034,6 +2210,48 @@ Specify another directory, please.</source>
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::DlgPreferencePackManagement</name>
+    <message>
+        <source>Manage Preference Packs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Addon Manager...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
+    <message>
+        <source>User-Saved Preference Packs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-In Preference Packs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle visibility of built-in preference pack &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete user-saved preference pack &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle visibility of Addon preference pack &apos;%1&apos; (use Addon Manager to permanently remove)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete saved preference pack?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the preference pack named &apos;%1&apos;? This cannot be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
         <source>Preferences</source>
@@ -2370,6 +2588,28 @@ from Python console to Report view panel</source>
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfig</name>
+    <message>
+        <source>Revert to Backup Config</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available backup files:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
+    <message>
+        <source>No selection in dialog, cannot load backup file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
         <source>Running external program</source>
@@ -2622,6 +2862,19 @@ The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Relative size :   </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2655,6 +2908,69 @@ bounding box size of the 3D object that is currently displayed.</source>
     </message>
     <message>
         <source>15px</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
+    <message>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check periodically at program start:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weekly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monthly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yearly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache size limit:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check now...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify the user if the cache size exceeds the specified limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current cache size: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2694,10 +3010,6 @@ bounding box size of the 3D object that is currently displayed.</source>
     </message>
     <message>
         <source>Alt+R</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Out &amp;invisible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2750,6 +3062,37 @@ bounding box size of the 3D object that is currently displayed.</source>
     </message>
     <message>
         <source>Color-gradient settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color gradient is used with its full color range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color gradient starts from the zero value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data outside the specified min-max range
+will be displayed in gray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data outside the specified min-max range
+will be displayed with transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Out &amp;transparent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of labels besides the color bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of decimals for labels
+besides the color bar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3457,10 +3800,6 @@ Turntable: the part will be rotated around the z-axis.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New document scale</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
         <translation type="unfinished"></translation>
@@ -3594,6 +3933,46 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
         <source>How much will be zoomed.
 Zoom step of &apos;1&apos; means a factor of 7.5 for every zoom step.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera zoom</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgSettingsPythonConsole</name>
+    <message>
+        <source>Python console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable word wrap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The cursor shape will be a block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable block cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saves Python history across sessions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save history</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3864,11 +4243,6 @@ Zoom step of &apos;1&apos; means a factor of 7.5 for every zoom step.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Quantity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3899,6 +4273,11 @@ The preference system is the one set in the general preferences.</source>
     </message>
     <message>
         <source>Copy the result into the clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4050,10 +4429,6 @@ The preference system is the one set in the general preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Finished</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Transient directories deleted.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4065,6 +4440,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>When deleting all transient directories you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient deleted</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4596,31 +4975,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Dependency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hierarchy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Partial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4630,6 +4989,26 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto select depending objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depending on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depended by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4725,7 +5104,7 @@ originally selected prior to opening this dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show report view on</source>
+        <source>Show output window on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5169,6 +5548,18 @@ Do you want to save your changes?</source>
 Do you want to save the document now?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Help addon needed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Help system of %1 is now handled by the &quot;Help&quot; addon. It can easily be installed via the Addons Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Addon Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::ManualAlignment</name>
@@ -5276,6 +5667,13 @@ How do you want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>Gui::ModifierLineEdit</name>
+    <message>
+        <source>Press modifier keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::NetworkRetriever</name>
     <message>
         <source>Download started...</source>
@@ -5298,6 +5696,25 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Press CTRL and left mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::OpenSCADNavigationStyle</name>
+    <message>
+        <source>Press left mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press right mouse button and move mouse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press left mouse button and move mouse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press middle mouse button or SHIFT and right mouse button</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5392,6 +5809,14 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Auto expand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename property group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5549,6 +5974,10 @@ Do you want to exit without saving your data?</source>
         <source>The file &apos;%1&apos; cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::RevitNavigationStyle</name>
@@ -5570,6 +5999,25 @@ Do you want to exit without saving your data?</source>
     </message>
 </context>
 <context>
+    <name>Gui::SearchBar</name>
+    <message>
+        <source>Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Case sensitive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whole words</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::SelectModule</name>
     <message>
         <source>Select module</source>
@@ -5587,10 +6035,6 @@ Do you want to exit without saving your data?</source>
 <context>
     <name>Gui::StdCmdDescription</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Des&amp;cription</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5601,10 +6045,6 @@ Do you want to exit without saving your data?</source>
 </context>
 <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
-    <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Download online help</source>
         <translation type="unfinished"></translation>
@@ -5640,10 +6080,6 @@ Do you want to specify another directory?</source>
 </context>
 <context>
     <name>Gui::StdCmdPythonHelp</name>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Automatic python modules documentation</source>
         <translation type="unfinished"></translation>
@@ -5805,6 +6241,25 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Edit text</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::TinkerCADNavigationStyle</name>
+    <message>
+        <source>Press left mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press middle mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press right mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll middle mouse button</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5985,6 +6440,10 @@ Do you want to specify another directory?</source>
         <source>Spanish, Argentina</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Georgian</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::TreeDockWidget</name>
@@ -6128,6 +6587,14 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source> (but must be executed)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add dependent objects to selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adds all dependent objects to the selection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6605,23 +7072,6 @@ Please open a browser window and type in: http://localhost:%1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No OpenGL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This system does not support OpenGL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Exporting PDF...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6890,22 +7340,6 @@ Choose &apos;Abort&apos; to abort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>
-
-Please check report view for more...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Document: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-  Path: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Identical physical path</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6923,12 +7357,6 @@ Document: </source>
     </message>
     <message>
         <source>Workbenches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-
-Physical path: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6959,6 +7387,96 @@ Would you like to save the file with a different name?</source>
         <source>Some documents could not be saved. Do you want to cancel closing?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Please check report view for more...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Physical path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Setup configurable object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please select which objects to copy when the configuration is changed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy on change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable auto copy of linked object when its configuration is changed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tracking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable copy on change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rerefresh configurable object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle array elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change whether show each link array element as individual objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform at the origin of the placement</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectionFilter</name>
@@ -6974,10 +7492,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdBoxElementSelection</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Box element selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6985,20 +7499,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdBoxSelection</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Box selection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdAbout</name>
-    <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;About %1</source>
         <translation type="unfinished"></translation>
@@ -7011,10 +7517,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdAboutQt</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7025,10 +7527,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdActivateNextWindow</name>
-    <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Ne&amp;xt</source>
         <translation type="unfinished"></translation>
@@ -7041,10 +7539,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Pre&amp;vious</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7055,10 +7549,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdAlignment</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Alignment...</source>
         <translation type="unfinished"></translation>
@@ -7071,10 +7561,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdArrangeIcons</name>
     <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Arrange &amp;Icons</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7086,20 +7572,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdAxisCross</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Toggle axis cross</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdCascadeWindows</name>
-    <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Cascade</source>
         <translation type="unfinished"></translation>
@@ -7112,10 +7590,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cl&amp;ose</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7126,10 +7600,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdCloseAllWindows</name>
-    <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Close Al&amp;l</source>
         <translation type="unfinished"></translation>
@@ -7142,10 +7612,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdCommandLine</name>
     <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start command &amp;line...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7156,10 +7622,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdCopy</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>C&amp;opy</source>
         <translation type="unfinished"></translation>
@@ -7172,10 +7634,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdCut</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cut</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7186,10 +7644,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdDelete</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
@@ -7202,10 +7656,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdDemoMode</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>View turntable...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7217,10 +7667,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Dependency graph...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7231,10 +7677,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdDlgCustomize</name>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Cu&amp;stomize...</source>
         <translation type="unfinished"></translation>
@@ -7254,17 +7696,9 @@ Would you like to save the file with a different name?</source>
         <source>Opens a dialog to let you execute a recorded macro</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
-    <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Execute macro</source>
         <translation type="unfinished"></translation>
@@ -7284,17 +7718,9 @@ Would you like to save the file with a different name?</source>
         <source>Opens a dialog to record a macro</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>StdCmdDlgParameter</name>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>E&amp;dit parameters ...</source>
         <translation type="unfinished"></translation>
@@ -7307,10 +7733,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Preferences ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7321,10 +7743,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdDockViewMenu</name>
-    <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Panels</source>
         <translation type="unfinished"></translation>
@@ -7337,10 +7755,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdDrawStyle</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Draw style</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7352,10 +7766,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Duplicate selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7366,10 +7776,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdEdit</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Toggle &amp;Edit mode</source>
         <translation type="unfinished"></translation>
@@ -7385,10 +7791,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdExport</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Export...</source>
         <translation type="unfinished"></translation>
@@ -7409,20 +7811,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdExpression</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Expression actions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdFeatRecompute</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Recompute</source>
         <translation type="unfinished"></translation>
@@ -7435,10 +7829,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Donate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7449,10 +7839,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdFreeCADFAQ</name>
-    <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>FreeCAD FAQ</source>
         <translation type="unfinished"></translation>
@@ -7469,10 +7855,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>FreeCAD Forum</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7487,10 +7869,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdFreeCADPowerUserHub</name>
-    <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Python scripting documentation</source>
         <translation type="unfinished"></translation>
@@ -7507,10 +7885,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Users documentation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7521,10 +7895,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdFreeCADWebsite</name>
-    <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>FreeCAD Website</source>
         <translation type="unfinished"></translation>
@@ -7537,10 +7907,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdFreezeViews</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Freeze display</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7551,10 +7917,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdGroup</name>
-    <message>
-        <source>Structure</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Create group</source>
         <translation type="unfinished"></translation>
@@ -7567,10 +7929,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdHideObjects</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Hide all objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7582,10 +7940,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdHideSelection</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Hide selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7596,10 +7950,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdImport</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Import...</source>
         <translation type="unfinished"></translation>
@@ -7620,20 +7970,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdLinkActions</name>
     <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Link actions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdLinkImport</name>
-    <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Import links</source>
         <translation type="unfinished"></translation>
@@ -7646,10 +7988,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Import all links</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7660,10 +7998,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdLinkMake</name>
-    <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Make link</source>
         <translation type="unfinished"></translation>
@@ -7676,10 +8010,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Make link group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7690,10 +8020,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdLinkMakeRelative</name>
-    <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Make sub-link</source>
         <translation type="unfinished"></translation>
@@ -7706,10 +8032,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdLinkReplace</name>
     <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Replace with link</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7720,10 +8042,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdLinkSelectActions</name>
-    <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Link navigation</source>
         <translation type="unfinished"></translation>
@@ -7736,10 +8054,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select all links</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7750,10 +8064,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdLinkSelectLinked</name>
-    <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Go to linked object</source>
         <translation type="unfinished"></translation>
@@ -7766,10 +8076,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Go to the deepest linked object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7780,10 +8086,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdLinkUnlink</name>
-    <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Unlink</source>
         <translation type="unfinished"></translation>
@@ -7796,10 +8098,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Attach to remote debugger...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7810,10 +8108,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdMacroStartDebug</name>
-    <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Debug macro</source>
         <translation type="unfinished"></translation>
@@ -7826,10 +8120,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdMacroStepInto</name>
     <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Step into</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7837,20 +8127,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdMacroStepOver</name>
     <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Step over</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStopDebug</name>
-    <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Stop debugging</source>
         <translation type="unfinished"></translation>
@@ -7863,10 +8145,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>S&amp;top macro recording</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7878,20 +8156,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Measure distance</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdMeasurementSimple</name>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Measures distance between two selected objects</source>
         <translation type="unfinished"></translation>
@@ -7903,10 +8173,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdMergeProjects</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Merge project...</source>
         <translation type="unfinished"></translation>
@@ -7926,10 +8192,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdNew</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
@@ -7957,10 +8219,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Help Website</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7971,10 +8229,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdOpen</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Open...</source>
         <translation type="unfinished"></translation>
@@ -8003,10 +8257,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdPart</name>
     <message>
-        <source>Structure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Create part</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8017,10 +8267,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdPaste</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Paste</source>
         <translation type="unfinished"></translation>
@@ -8033,10 +8279,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdPlacement</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Placement...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8047,10 +8289,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdPrint</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Print...</source>
         <translation type="unfinished"></translation>
@@ -8063,10 +8301,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdPrintPdf</name>
     <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Export PDF...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8077,10 +8311,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdPrintPreview</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Print preview...</source>
         <translation type="unfinished"></translation>
@@ -8097,10 +8327,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdProjectInfo</name>
     <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Project i&amp;nformation...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8111,10 +8337,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdProjectUtil</name>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Project utility...</source>
         <translation type="unfinished"></translation>
@@ -8127,10 +8349,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Python Website</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8141,10 +8359,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdQuit</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
@@ -8157,20 +8371,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdRandomColor</name>
     <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Random color</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdRecentFiles</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Recent files</source>
         <translation type="unfinished"></translation>
@@ -8183,10 +8389,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdRecentMacros</name>
     <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Recent macros</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8197,10 +8399,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdRedo</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Redo</source>
         <translation type="unfinished"></translation>
@@ -8213,10 +8411,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdRefresh</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Refresh</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8226,11 +8420,18 @@ Would you like to save the file with a different name?</source>
     </message>
 </context>
 <context>
-    <name>StdCmdRevert</name>
+    <name>StdCmdReportBug</name>
     <message>
-        <source>File</source>
+        <source>Report a bug</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Report a bug or suggest a feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdRevert</name>
     <message>
         <source>Revert</source>
         <translation type="unfinished"></translation>
@@ -8243,10 +8444,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdSave</name>
     <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8257,10 +8454,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdSaveAll</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Save All</source>
         <translation type="unfinished"></translation>
@@ -8273,10 +8466,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdSaveAs</name>
     <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save &amp;As...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8287,10 +8476,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdSaveCopy</name>
-    <message>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Save a &amp;Copy...</source>
         <translation type="unfinished"></translation>
@@ -8303,10 +8488,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdSceneInspector</name>
     <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Scene inspector...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8317,10 +8498,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdSelBack</name>
-    <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Back</source>
         <translation type="unfinished"></translation>
@@ -8333,10 +8510,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Bounding box</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8347,10 +8520,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdSelForward</name>
-    <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Forward</source>
         <translation type="unfinished"></translation>
@@ -8363,10 +8532,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdSelectAll</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select &amp;All</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8377,10 +8542,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdSelectVisibleObjects</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Select visible objects</source>
         <translation type="unfinished"></translation>
@@ -8393,10 +8554,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Send to Python Console</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8407,10 +8564,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdSetAppearance</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Appearance...</source>
         <translation type="unfinished"></translation>
@@ -8423,10 +8576,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdShowObjects</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show all objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8437,10 +8586,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdShowSelection</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Show selection</source>
         <translation type="unfinished"></translation>
@@ -8453,10 +8598,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdStatusBar</name>
     <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Status bar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8467,10 +8608,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdTextDocument</name>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Add text document</source>
         <translation type="unfinished"></translation>
@@ -8483,10 +8620,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdTextureMapping</name>
     <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Texture mapping...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8497,10 +8630,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdTileWindows</name>
-    <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Tile</source>
         <translation type="unfinished"></translation>
@@ -8513,20 +8642,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Toggle breakpoint</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleClipPlane</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Clipping plane</source>
         <translation type="unfinished"></translation>
@@ -8539,10 +8660,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Toggle navigation/Edit mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8553,10 +8670,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdToggleObjects</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Toggle all objects</source>
         <translation type="unfinished"></translation>
@@ -8569,10 +8682,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Toggle selectability</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8583,10 +8692,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdToggleVisibility</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Toggle visibility</source>
         <translation type="unfinished"></translation>
@@ -8599,10 +8704,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Tool&amp;bars</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8613,10 +8714,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdTransform</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Transform...</source>
         <translation type="unfinished"></translation>
@@ -8629,10 +8726,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdTransformManip</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8643,10 +8736,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdTreeCollapse</name>
-    <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Collapse selected item</source>
         <translation type="unfinished"></translation>
@@ -8659,10 +8748,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdTreeExpand</name>
     <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Expand selected item</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8673,10 +8758,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Select all instances</source>
         <translation type="unfinished"></translation>
@@ -8689,10 +8770,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>TreeView actions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8704,10 +8781,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdUndo</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Undo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8718,10 +8791,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdUnitsCalculator</name>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Units calculator...</source>
         <translation type="unfinished"></translation>
@@ -8745,10 +8814,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdUserInterface</name>
     <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Dock views</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8759,10 +8824,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewBottom</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
@@ -8775,10 +8836,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewCreate</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Create new view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8789,10 +8846,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewDimetric</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Dimetric</source>
         <translation type="unfinished"></translation>
@@ -8805,10 +8858,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewExample1</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Inventor example #1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8819,10 +8868,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewExample2</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Inventor example #2</source>
         <translation type="unfinished"></translation>
@@ -8835,10 +8880,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewExample3</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Inventor example #3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8849,10 +8890,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewFitAll</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Fit all</source>
         <translation type="unfinished"></translation>
@@ -8865,10 +8902,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Fit selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8879,10 +8912,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewFront</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Front</source>
         <translation type="unfinished"></translation>
@@ -8895,10 +8924,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewHome</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8909,10 +8934,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewIsometric</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Isometric</source>
         <translation type="unfinished"></translation>
@@ -8925,10 +8946,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Issue camera position</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8939,10 +8956,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Stereo Interleaved Columns</source>
         <translation type="unfinished"></translation>
@@ -8955,10 +8968,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Stereo Interleaved Rows</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8969,10 +8978,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewIvStereoOff</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Stereo Off</source>
         <translation type="unfinished"></translation>
@@ -8985,10 +8990,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Stereo quad buffer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8999,10 +9000,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewIvStereoRedGreen</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Stereo red/cyan</source>
         <translation type="unfinished"></translation>
@@ -9015,10 +9012,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewLeft</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9029,10 +9022,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewRear</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Rear</source>
         <translation type="unfinished"></translation>
@@ -9045,10 +9034,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Restore saved camera</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9059,10 +9044,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewRight</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Right</source>
         <translation type="unfinished"></translation>
@@ -9075,10 +9056,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rotate Left</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9089,10 +9066,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewRotateRight</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Rotate Right</source>
         <translation type="unfinished"></translation>
@@ -9105,10 +9078,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save current camera</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9119,10 +9088,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewTop</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Top</source>
         <translation type="unfinished"></translation>
@@ -9135,10 +9100,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Trimetric</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9149,10 +9110,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdViewVR</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>FreeCAD-VR</source>
         <translation type="unfinished"></translation>
@@ -9165,10 +9122,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdWhatsThis</name>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;What&apos;s This?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9179,10 +9132,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdCmdWindows</name>
-    <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;Windows...</source>
         <translation type="unfinished"></translation>
@@ -9195,20 +9144,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Activates this window</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdCmdWorkbench</name>
-    <message>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Workbench</source>
         <translation type="unfinished"></translation>
@@ -9221,10 +9162,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdMainFullscreen</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9236,10 +9173,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdOrthographicCamera</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Orthographic view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9250,10 +9183,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdPerspectiveCamera</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Perspective view</source>
         <translation type="unfinished"></translation>
@@ -9273,17 +9202,9 @@ Would you like to save the file with a different name?</source>
         <source>Expand active document and collapse all others</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>StdTreeDrag</name>
-    <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Initiate dragging</source>
         <translation type="unfinished"></translation>
@@ -9300,20 +9221,12 @@ Would you like to save the file with a different name?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Multi document</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdTreePreSelection</name>
-    <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Pre-selection</source>
         <translation type="unfinished"></translation>
@@ -9326,10 +9239,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdTreeRecordSelection</name>
     <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Record selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9340,10 +9249,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdTreeSelection</name>
-    <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Go to selection</source>
         <translation type="unfinished"></translation>
@@ -9360,20 +9265,12 @@ Would you like to save the file with a different name?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Single document</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdTreeSyncPlacement</name>
-    <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Sync placement</source>
         <translation type="unfinished"></translation>
@@ -9386,10 +9283,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdTreeSyncSelection</name>
     <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sync selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9400,10 +9293,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdTreeSyncView</name>
-    <message>
-        <source>TreeView</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Sync view</source>
         <translation type="unfinished"></translation>
@@ -9416,20 +9305,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdViewBoxZoom</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Box zoom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdViewDock</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Docked</source>
         <translation type="unfinished"></translation>
@@ -9442,10 +9323,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Document window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9456,10 +9333,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdViewFullscreen</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
@@ -9472,10 +9345,6 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdViewScreenShot</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save picture...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9486,10 +9355,6 @@ Would you like to save the file with a different name?</source>
 </context>
 <context>
     <name>StdViewUndock</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Undocked</source>
         <translation type="unfinished"></translation>
@@ -9502,20 +9367,12 @@ Would you like to save the file with a different name?</source>
 <context>
     <name>StdViewZoomIn</name>
     <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Zoom In</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdViewZoomOut</name>
-    <message>
-        <source>Standard-View</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Zoom Out</source>
         <translation type="unfinished"></translation>
@@ -9763,34 +9620,8 @@ Do you still want to proceed?</source>
         <source>Axonometric</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>testClass</name>
     <message>
-        <source>test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600;&quot;&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose the style of the Task Panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Windows XP</source>
+        <source>Link actions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

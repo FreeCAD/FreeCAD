@@ -77,8 +77,8 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_Output | App::Prop_NoRecompute), "X position");
-    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_Output | App::Prop_NoRecompute), "Y position");
+    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_None), "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_None), "Y position");
     ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_Output, "Lock View position to parent Page or Group");
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
@@ -96,19 +96,6 @@ DrawView::~DrawView()
 {
 }
 
-App::DocumentObjectExecReturn *DrawView::recompute(void)
-{
-    try {
-        return App::DocumentObject::recompute();
-    }
-    catch (Standard_Failure& e) {
-        App::DocumentObjectExecReturn* ret = new App::DocumentObjectExecReturn(e.GetMessageString());
-        if (ret->Why.empty())
-            ret->Why = "Unknown OCC exception";
-        return ret;
-    }
-}
-
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
 //    Base::Console().Message("DV::execute() - %s touched: %d\n", getNameInDocument(), isTouched());
@@ -117,11 +104,10 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
     }
     handleXYLock();
     requestPaint();
-    //documentobject::execute doesn't do anything useful for us.
     //documentObject::recompute causes an infinite loop.
     //should not be necessary to purgeTouched here, but it prevents a superfluous feature recompute
     purgeTouched();                           //this should not be necessary!
-    return App::DocumentObject::StdReturn;
+    return App::DocumentObject::execute();
 }
 
 void DrawView::checkScale(void)
@@ -140,8 +126,8 @@ void DrawView::checkScale(void)
 void DrawView::onChanged(const App::Property* prop)
 {
 //Coding note: calling execute, recompute or recomputeFeature inside an onChanged
-//method can create infinite loops.  In general don't do this!  There may be 
-//situations where it is OK, but careful analysis is a must. 
+//method can create infinite loops if the called method changes a property.  In general
+//don't do this!  There are situations where it is OK, but careful analysis is a must.
     if (!isRestoring()) {
         if (prop == &ScaleType) {
             auto page = findParentPage();
@@ -173,6 +159,7 @@ void DrawView::onChanged(const App::Property* prop)
             requestPaint();
         } else if ((prop == &X) ||
             (prop == &Y)) {
+            DrawView::execute();
             X.purgeTouched();
             Y.purgeTouched();
         }
@@ -401,7 +388,6 @@ bool DrawView::checkFit(void) const
 }
 
 //!check if View is too big for page
-//should check if unscaled rect is too big for page
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
     bool result = true;
@@ -409,12 +395,12 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 
     double width = 0.0;
     double height = 0.0;
-    QRectF viewBox = getRect();    //rect is scaled
+    QRectF viewBox = getRect();         //rect is scaled
     if (!viewBox.isValid()) {
         result = true;
     } else {
-        width = viewBox.width() / getScale();        //unscaled rect w x h
-        height = viewBox.height() / getScale(); 
+        width = viewBox.width();        //scaled rect w x h
+        height = viewBox.height();
         width *= fudge;
         height *= fudge;
         if ( (width > p->getPageWidth()) ||

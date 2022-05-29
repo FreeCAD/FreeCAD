@@ -274,8 +274,8 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
     if (!file.is_open())
         return false;
 
-    std::set<CellAddress> usedCells = cells.getUsedCells();
-    std::set<CellAddress>::const_iterator i = usedCells.begin();
+    auto usedCells = cells.getNonEmptyCells();
+    auto i = usedCells.begin();
 
     while (i != usedCells.end()) {
         Property * prop = getProperty(*i);
@@ -683,10 +683,12 @@ void Sheet::updateProperty(CellAddress key)
         else {
             std::string s;
 
-            if (cell->getStringContent(s))
+            if (cell->getStringContent(s) && !s.empty())
                 output.reset(new StringExpression(this, s));
-            else
-                output.reset(new StringExpression(this, ""));
+            else {
+                this->removeDynamicProperty(key.toString().c_str());
+                return;
+            }
         }
 
         /* Eval returns either NumberExpression or StringExpression, or
@@ -952,7 +954,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
         FC_LOG("recomputing " << getFullName());
         for(auto &pos : make_order) {
             const auto &addr = VertexIndexList[pos];
-            FC_LOG(addr.toString());
+            FC_TRACE(addr.toString());
             recomputeCell(addr);
         }
     } catch (std::exception &) {
@@ -1078,19 +1080,19 @@ short Sheet::mustExecute(void) const
 
 void Sheet::clear(CellAddress address, bool /*all*/)
 {
-    Cell * cell = getCell(address);
+    if (auto cell = getCell(address)) {
+        // Remove alias, if defined
+        std::string aliasStr;
+        if (cell->getAlias(aliasStr))
+            this->removeDynamicProperty(aliasStr.c_str());
+        cells.clear(address);
+    }
+
     std::string addr = address.toString();
-    Property * prop = props.getDynamicPropertyByName(addr.c_str());
-
-    // Remove alias, if defined
-    std::string aliasStr;
-    if (cell && cell->getAlias(aliasStr))
-        this->removeDynamicProperty(aliasStr.c_str());
-
-    cells.clear(address);
-
-    propAddress.erase(prop);
-    this->removeDynamicProperty(addr.c_str());
+    if (auto prop = props.getDynamicPropertyByName(addr.c_str())) {
+        propAddress.erase(prop);
+        this->removeDynamicProperty(addr.c_str());
+    }
 }
 
 /**
@@ -1180,12 +1182,8 @@ int Sheet::getRowHeight(int row) const
 std::vector<std::string> Sheet::getUsedCells() const
 {
     std::vector<std::string> usedCells;
-
-    // Insert int usedSet
-    std::set<CellAddress> usedSet = cells.getUsedCells();
-
-    for (std::set<CellAddress>::const_iterator i = usedSet.begin(); i != usedSet.end(); ++i)
-        usedCells.push_back(i->toString());
+    for (const auto &addr : cells.getUsedCells())
+        usedCells.push_back(addr.toString());
 
     return usedCells;
 }

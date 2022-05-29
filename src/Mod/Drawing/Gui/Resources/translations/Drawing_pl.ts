@@ -54,7 +54,7 @@
     </message>
     <message>
       <source>&amp;Export page...</source>
-      <translation>&amp;Eksportuj stronę...</translation>
+      <translation>&amp;Eksportuj stronę ...</translation>
     </message>
     <message>
       <source>Export a page to an SVG file</source>

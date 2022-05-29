@@ -1384,10 +1384,6 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>通过 gmsh 进行网格划分</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>删除参数</translation>
     </message>
@@ -1426,6 +1422,10 @@ to a smoother appearance.
     <message>
       <source>Clear</source>
       <translation>清除</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1840,6 +1840,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>注释</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1858,6 +1862,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <source>Mesh tools</source>
       <translation>网格工具</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>锯切</translation>
     </message>
   </context>
 </TS>

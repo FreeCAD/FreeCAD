@@ -48,6 +48,9 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     Qt::ItemFlags flags(const QModelIndex &) const;
 
+private Q_SLOTS:
+    void setCellData(QModelIndex index, QString str);
+
 private:
     void cellUpdated(App::CellAddress address);
     void rangeUpdated(const App::Range &range);

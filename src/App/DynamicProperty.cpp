@@ -307,7 +307,10 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
         doc = reader.getAttribute("doc");
     if (reader.hasAttribute("attr")) {
         attr = reader.getAttribute("attr");
-        if (attr) attribute = attr[0]-48;
+        if (attr) {
+            std::istringstream str(attr);
+            str >> attribute;
+        }
     }
     if (reader.hasAttribute("ro")) {
         ro = reader.getAttribute("ro");
@@ -317,6 +320,7 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
         hide = reader.getAttribute("hide");
         if (hide) hidden = (hide[0]-48) != 0;
     }
+
     return addDynamicProperty(pc,TypeName, PropName, group, doc, attribute, readonly, hidden);
 }
 

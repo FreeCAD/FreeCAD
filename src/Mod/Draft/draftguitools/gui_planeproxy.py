@@ -61,6 +61,7 @@ class Draft_WorkingPlaneProxy:
     def Activated(self):
         """Execute when the command is called."""
         if hasattr(App, "DraftWorkingPlane"):
+            App.DraftWorkingPlane.setup()
             App.ActiveDocument.openTransaction("Create WP proxy")
             Gui.addModule("Draft")
             _cmd = "Draft.make_workingplaneproxy("

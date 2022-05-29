@@ -1381,10 +1381,6 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Rigenera con gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Parametri di ricostruzione della maglie</translation>
     </message>
@@ -1423,6 +1419,10 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
     <message>
       <source>Clear</source>
       <translation>Pulisci</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1836,6 +1836,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Annotazione</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1854,6 +1858,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <source>Mesh tools</source>
       <translation>Strumenti Mesh</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Taglio</translation>
     </message>
   </context>
 </TS>

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <memory>
 # include <BRepOffsetAPI_MakeFilling.hxx>
 # include <gp_Pnt.hxx>
 # include <GeomAbs_Shape.hxx>

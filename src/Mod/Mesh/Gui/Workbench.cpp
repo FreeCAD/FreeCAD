@@ -47,6 +47,11 @@ using namespace MeshGui;
     qApp->translate("Workbench", "&Meshes");
     qApp->translate("Workbench", "Cutting");
     qApp->translate("Workbench", "Mesh tools");
+    qApp->translate("Workbench", "Mesh modify");
+    qApp->translate("Workbench", "Mesh boolean");
+    qApp->translate("Workbench", "Mesh cutting");
+    qApp->translate("Workbench", "Mesh segmentation");
+    qApp->translate("Workbench", "Mesh analyze");
 #endif
 
 /// @namespace MeshGui @class Workbench

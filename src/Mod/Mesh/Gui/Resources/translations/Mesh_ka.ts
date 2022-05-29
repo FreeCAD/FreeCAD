@@ -1385,10 +1385,6 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>ბადის Gmsh-ის საშუალებით შეცვლა</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>ბადის გადაწყობის პარამეტრი</translation>
     </message>
@@ -1427,6 +1423,10 @@ to a smoother appearance.
     <message>
       <source>Clear</source>
       <translation>გასუფთავება</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1841,6 +1841,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>შენიშვნა</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1859,6 +1863,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <source>Mesh tools</source>
       <translation>მრავალკუთხა ბადის ხელსაწყოები</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>ამოჭრა</translation>
     </message>
   </context>
 </TS>

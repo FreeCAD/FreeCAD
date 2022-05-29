@@ -262,7 +262,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
     # create IFC file
 
-    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs
+    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids
     ifcfile = ifcopenshell.open(templatefile)
     ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
     history = ifcfile.by_type("IfcOwnerHistory")[0]
@@ -325,6 +325,7 @@ def export(exportList, filename, colors=None, preferences=None):
     profiledefs = {} # { ProfileDefString:profiledef,...}
     shapedefs = {} # { ShapeDefString:[shapes],... }
     spatialelements = {} # {Name:IfcEntity, ... }
+    uids = [] # store used UIDs to avoid reuse (some FreeCAD objects might have same IFC UID, ex. copy/pasted objects
 
     # build clones table
 
@@ -2442,10 +2443,14 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
 def getUID(obj,preferences):
     """gets or creates an UUID for an object"""
 
+    global uids
     uid = None
     if hasattr(obj,"IfcData"):
         if "IfcUID" in obj.IfcData.keys():
             uid = str(obj.IfcData["IfcUID"])
+            if uid in uids:
+                # this UID  has already been used in another object
+                uid = None
     if not uid:
         uid = ifcopenshell.guid.new()
         # storing the uid for further use
@@ -2456,6 +2461,7 @@ def getUID(obj,preferences):
                 obj.IfcData = d
             if hasattr(obj, "GlobalId"):
                 obj.GlobalId = uid
+    uids.append(uid)
     return uid
 
 

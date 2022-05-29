@@ -1178,7 +1178,7 @@ will be used or black.</translation>
     </message>
     <message>
       <source>Two-side rendering</source>
-      <translation>雙面算繪</translation>
+      <translation>雙面渲染</translation>
     </message>
     <message>
       <source>Line transparency</source>
@@ -1385,10 +1385,6 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation type="unfinished">Remesh by gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
     </message>
@@ -1427,6 +1423,10 @@ to a smoother appearance.
     <message>
       <source>Clear</source>
       <translation>清除</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1841,6 +1841,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>注釋</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1859,6 +1863,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <source>Mesh tools</source>
       <translation>網面工具</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>切割</translation>
     </message>
   </context>
 </TS>

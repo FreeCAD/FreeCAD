@@ -211,6 +211,37 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     supportShape.setTransform(Base::Matrix4D());
     TopoDS_Shape support = supportShape.getShape();
 
+    auto getTransformedCompShape = [&](const auto& origShape)
+    {
+        TopTools_ListOfShape shapeTools;
+        std::vector<TopoDS_Shape> shapes;
+
+        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
+
+        // First transformation is skipped since it should not be part of the toolShape.
+        ++transformIter;
+
+        for (; transformIter != transformations.end(); ++transformIter) {
+            // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
+            // seems to be pretty broken
+            BRepBuilderAPI_Copy copy(origShape);
+
+            TopoDS_Shape shape = copy.Shape();
+
+            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
+            if (!mkTrf.IsDone())
+                return shapeTools;
+            shape = mkTrf.Shape();
+
+            shapes.emplace_back(shape);
+        }
+
+        for (auto shape : shapes)
+            shapeTools.Append(shape);
+
+        return shapeTools;
+    };
+
     // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
     // transform the compounds as a whole. But we choose to apply the transformations to each
     // Original separately. This way it is easier to discover what feature causes a fuse/cut
@@ -236,39 +267,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         else {
             return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");
         }
-        TopoDS_Shape origShape = fuseShape.isNull()?cutShape.getShape():fuseShape.getShape();
 
         TopoDS_Shape current = support;
-
-        std::vector<TopoDS_Shape> shapes;
-
-        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
-
-        // First transformation is skipped since it should not be part of the toolShape.
-        ++transformIter;
-
-        for (; transformIter != transformations.end(); ++transformIter) {
-            // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
-            // seems to be pretty broken
-            BRepBuilderAPI_Copy copy(origShape);
-
-            TopoDS_Shape shape = copy.Shape();
-
-            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
-            if (!mkTrf.IsDone())
-                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
-            shape = mkTrf.Shape();
-
-            shapes.emplace_back(shape);
-        }
-
-        TopTools_ListOfShape shapeArguments;
-        shapeArguments.Append(current);
-        TopTools_ListOfShape shapeTools;
-        for (auto shape : shapes)
-            shapeTools.Append(shape);
-
         if (!fuseShape.isNull()) {
+            TopTools_ListOfShape shapeArguments;
+            shapeArguments.Append(current);
+            TopTools_ListOfShape shapeTools = getTransformedCompShape(fuseShape.getShape());
+            if (shapeTools.Size() == 0)
+                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
             std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse());
             mkBool->SetArguments(shapeArguments);
             mkBool->SetTools(shapeTools);
@@ -279,7 +285,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn(error.str());
             }
             current = mkBool->Shape();
-        } else {
+        }
+        if (!cutShape.isNull()) {
+            TopTools_ListOfShape shapeArguments;
+            shapeArguments.Append(current);
+            TopTools_ListOfShape shapeTools = getTransformedCompShape(cutShape.getShape());
+            if (shapeTools.Size() == 0)
+                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
             std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut());
             mkBool->SetArguments(shapeArguments);
             mkBool->SetTools(shapeTools);

@@ -233,6 +233,17 @@ struct DocumentP
             _RecomputeLog.erase(obj);
     }
 
+    void clearDocument() {
+        objectArray.clear();
+        for(auto &v : objectMap) {
+            v.second->setStatus(ObjectStatus::Destroy, true);
+            delete(v.second);
+            v.second = nullptr;
+        }
+        objectMap.clear();
+        objectIdMap.clear();
+    }
+
     const char *findRecomputeLog(const App::DocumentObject *obj) {
         auto range = _RecomputeLog.equal_range(obj);
         if(range.first == range.second)
@@ -1320,17 +1331,11 @@ bool Document::isTransactionEmpty() const
 
 void Document::clearDocument()
 {
-    this->d->activeObject = nullptr;
+    d->activeObject = nullptr;
 
-    if(this->d->objectArray.size()) {
+    if (!d->objectArray.empty()) {
         GetApplication().signalDeleteDocument(*this);
-        this->d->objectArray.clear();
-        for(auto &v : this->d->objectMap) {
-            v.second->setStatus(ObjectStatus::Destroy, true);
-            delete(v.second);
-        }
-        this->d->objectMap.clear();
-        this->d->objectIdMap.clear();
+        d->clearDocument();
         GetApplication().signalNewDocument(*this,false);
     }
 
@@ -1338,11 +1343,11 @@ void Document::clearDocument()
 
     setStatus(Document::PartialDoc,false);
 
-    this->d->clearRecomputeLog();
-    this->d->objectArray.clear();
-    this->d->objectMap.clear();
-    this->d->objectIdMap.clear();
-    this->d->lastObjectId = 0;
+    d->clearRecomputeLog();
+    d->objectArray.clear();
+    d->objectMap.clear();
+    d->objectIdMap.clear();
+    d->lastObjectId = 0;
 }
 
 
@@ -1643,11 +1648,7 @@ Document::~Document()
     Console().Log("-Delete Features of %s \n",getName());
 #endif
 
-    d->objectArray.clear();
-    for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
-        it->second->setStatus(ObjectStatus::Destroy, true);
-        delete(it->second);
-    }
+    d->clearDocument();
 
     // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
     // Python object or not. In the constructor we forced the wrapper to own the object so we need
@@ -2714,13 +2715,7 @@ void Document::restore (const char *filename,
     if (!d->objectArray.empty()) {
         signal = true;
         GetApplication().signalDeleteDocument(*this);
-        d->objectArray.clear();
-        for(auto &v : d->objectMap) {
-            v.second->setStatus(ObjectStatus::Destroy, true);
-            delete(v.second);
-        }
-        d->objectMap.clear();
-        d->objectIdMap.clear();
+        d->clearDocument();
     }
 
     Base::FlagToggler<> flag(_IsRestoring,false);

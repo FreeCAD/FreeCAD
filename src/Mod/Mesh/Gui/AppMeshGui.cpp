@@ -27,6 +27,7 @@
 # include <Inventor/SoInput.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
+# include <QApplication>
 #endif
 
 #include <Base/Interpreter.h>
@@ -147,7 +148,9 @@ PyMOD_INIT_FUNC(MeshGui)
 
     // instantiating the commands
     CreateMeshCommands();
-    (void)new MeshGui::CleanupHandler;
+    if (qApp) {
+        (void)new MeshGui::CleanupHandler;
+    }
     
     // try to instantiate flat-mesh commands
     try{

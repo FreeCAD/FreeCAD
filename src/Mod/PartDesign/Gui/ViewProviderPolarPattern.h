@@ -30,10 +30,12 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransformed
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderPolarPattern)
     PROPERTY_HEADER(PartDesignGui::ViewProviderPolarPattern);
 public:
     ViewProviderPolarPattern() {
         featureName = std::string("PolarPattern");
+        menuName = tr("PolarPattern parameters");
         sPixmap = "PartDesign_PolarPattern.svg";
     }
 

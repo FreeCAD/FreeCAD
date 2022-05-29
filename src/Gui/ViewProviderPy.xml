@@ -15,213 +15,224 @@
         </Documentation>
         <Methode Name="addProperty">
             <Documentation>
-                <UserDocu>Add a generic property.
-addProperty(string, string)
---
-The first argument specifies the type, the second the name of the property.
-                </UserDocu>
+                <UserDocu>addProperty(type, name, group, doc, attr=0, ro=False, hd=False) -> ViewProvider\n
+Add a generic property.\n
+type : str\n    Property type.
+name : str\n    Property name. Optional.
+group : str\n    Property group. Optional.
+attr : int\n    Property attributes.
+ro : bool\n    Read only property.
+hd : bool\n    Hidden property.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="removeProperty">
             <Documentation>
-                <UserDocu>Remove a generic property.
-removeProperty(string)
---
-Note, you can only remove user-defined properties, not built-in ones.
-                </UserDocu>
+                <UserDocu>removeProperty(name) -> bool\n
+Remove a generic property.
+Only user-defined properties can be removed, not built-in ones.\n
+name : str\n    Property name.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="supportedProperties">
             <Documentation>
-                <UserDocu>A list of supported property types
-</UserDocu>
+                <UserDocu>supportedProperties() -> list\n
+A list of supported property types.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="show">
             <Documentation>
-                <UserDocu>Show the object
-</UserDocu>
+                <UserDocu>show() -> None\n
+Show the object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="hide">
             <Documentation>
-                <UserDocu>Hide the object
-</UserDocu>
+                <UserDocu>show() -> None\n
+Hide the object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="isVisible">
             <Documentation>
-                <UserDocu>Check if the object is visible
-</UserDocu>
+                <UserDocu>isVisible() -> bool\n
+Check if the object is visible.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="canDragObject">
             <Documentation>
-                <UserDocu>check whether the child object can be removed by dragging
-canDragObject(obj=None)
-</UserDocu>
+                <UserDocu>canDragObject(obj) -> bool\n
+Check whether the child object can be removed by dragging.
+If 'obj' is not given, check without filter by any particular object.\n
+obj : App.DocumentObject\n    Object to be dragged. Optional.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="dragObject">
             <Documentation>
-                <UserDocu>remove a child object by dropping
-dragObject(obj)
-</UserDocu>
+                <UserDocu>dragObject(obj) -> None\n
+Remove a child object by dropping.\n
+obj : App.DocumentObject\n    Object to be dragged.</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="canDropObject">
+        <Methode Name="canDropObject" Keyword="true">
             <Documentation>
-                <UserDocu>check whether the child object can be added by dropping
-canDropObject(obj=None,owner=None,subname=None)
-</UserDocu>
+                <UserDocu>canDropObject(obj, owner, subname, elem) -> bool\n
+Check whether the child object can be added by dropping.
+If 'obj' is not given, check without filter by any particular object.\n
+obj : App.DocumentObject\n    Object to be dropped. Optional.
+owner : App.DocumentObject\n    Parent object of the dropping object. Optional.
+subname : str\n    Subname reference to the dropping object. Optional.
+elem : sequence of str\n    Non-objects subelements selected when the object is
+    being dropped. Optional.</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="dropObject">
+        <Methode Name="dropObject" Keyword="true">
             <Documentation>
-                <UserDocu>add a child object by dropping
-dropObject(obj,owner=None,subname=None)</UserDocu>
+                <UserDocu>dropObject(obj, owner, subname, elem) -> str\n
+Add a child object by dropping.\n
+obj : App.DocumentObject\n    Object to be dropped.
+owner : App.DocumentObject\n    Parent object of the dropping object. Optional.
+subname : str\n    Subname reference to the dropping object. Optional.
+elem : sequence of str\n    Non-objects subelements selected when the object is
+    being dropped. Optional.</UserDocu>
 </Documentation>
         </Methode>
         <Methode Name="canDragAndDropObject">
             <Documentation>
-                <UserDocu>Check whether the child object can be removed from other parent and added here by drag and drop
-canDragAndDropObject(obj)
-</UserDocu>
+                <UserDocu>canDragAndDropObject(obj) -> bool\n
+Check whether the child object can be removed from
+other parent and added here by drag and drop.\n
+obj : App.DocumentObject\n    Object to be dragged and dropped.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="replaceObject">
             <Documentation>
-                <UserDocu>replace a child object
-replaceObject(oldObj, newObj) -> Int
---
-Returns 1 if succeeded, 0 if not found, -1 if not supported
-</UserDocu>
+                <UserDocu>replaceObject(oldObj, newObj) -> int\n
+Replace a child object.
+Returns 1 if succeeded, 0 if not found, -1 if not supported.\n
+oldObj : App.DocumentObject\n    Old object.
+newObj : App.DocumentObject\n    New object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="doubleClicked">
             <Documentation>
-                <UserDocu>Trigger double clicking the corresponding tree item of this view object
-</UserDocu>
+                <UserDocu>doubleClicked() -> bool\n
+Trigger double clicking the corresponding tree item of this view object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="addDisplayMode">
             <Documentation>
-                <UserDocu>Add a new display mode to the view provider
-</UserDocu>
+                <UserDocu>addDisplayMode(obj, mode) -> None\n
+Add a new display mode to the view provider.\n
+obj : coin.SoNode\n    Display mode.
+mode : str\n    Name of the display mode.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="listDisplayModes">
             <Documentation>
-                <UserDocu>Show a list of all display modes
-</UserDocu>
+                <UserDocu>listDisplayModes() -> list\n
+Show a list of all display modes.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toString">
             <Documentation>
-                <UserDocu>Return a string representation of the Inventor node
-</UserDocu>
+                <UserDocu>toString() -> str\n
+Return a string representation of the Inventor node.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setTransformation">
             <Documentation>
-                <UserDocu>Set a transformation on the Inventor node
-</UserDocu>
+                <UserDocu>setTransformation(trans) -> None\n
+Set a transformation on the Inventor node.\n
+trans : Base.Placement, Base.Matrix</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="claimChildren" Const="true">
             <Documentation>
-                <UserDocu>Returns list of objects that are to be grouped in tree under this object.
-</UserDocu>
+                <UserDocu>claimChildren() -> list\n
+Returns list of objects that are to be grouped in tree under this object.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="partialRender">
             <Documentation>
-                <UserDocu>render only part of the object
-partialRender(sub=None,clear=False)
---
-sub: string or list of string refer to the subelement. If it is None then reset the partial rendering.
-clear: true to add, or false to remove the subelement(s) for rendering.
-</UserDocu>
+                <UserDocu>partialRender(sub=None, clear=False) -> int\n
+Render only part of the object.\n
+sub: None, str, sequence of str\n    Refer to the subelement. If it is None then reset the partial rendering.
+clear: bool\n    True to add, or False to remove the subelement(s) for rendering.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getElementColors">
             <Documentation>
-                <UserDocu>
-getElementColors(elementName=None) -> dict(elementName:color)
-                </UserDocu>
+                <UserDocu>getElementColors(elementName) -> dict\n
+Get a dictionary of the form {elementName : (r,g,b,a)}.
+If no element name is given a dictionary with all the elements is returned.\n
+elementName : str\n    Name of the element. Optional.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setElementColors">
             <Documentation>
-                <UserDocu>
-setElementColors(colors): set element colors
---
-colors: color dictionary of type elementName:(r,g,b,a)
-                </UserDocu>
+                <UserDocu>setElementColors(colors) -> None\n
+Set element colors.\n
+colors: dict\n    Color dictionary of the form {elementName:(r,g,b,a)}.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getElementPicked" Const="true">
             <Documentation>
-                <UserDocu>return the picked subelement
-getElementPicked(pickPoint)
-</UserDocu>
+                <UserDocu>getElementPicked(pickPoint) -> str\n
+Return the picked subelement.\n
+pickPoint : coin.SoPickedPoint</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getDetailPath" Const="true">
             <Documentation>
-                <UserDocu>return Coin detail and path of an subelement
-getDetailPath(subname,path,append=True)
---
-subelement: dot separated string reference to the sub element
-pPath: output coin path leading to the returned element detail
-append: If true, path will be first appended with the root node and the mode
-switch node of this view provider.
-</UserDocu>
+                <UserDocu>getDetailPath(subelement, path, append=True) -> coin.SoDetail or None\n
+Return Coin detail and path of an subelement.\n
+subname: str\n    Dot separated string reference to the sub element.
+pPath: coin.SoPath\n    Output coin path leading to the returned element detail.
+append: bool\n    If True, path will be first appended with the root node and the mode
+    switch node of this view provider.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="signalChangeIcon" Const="true">
             <Documentation>
-                <UserDocu>Trigger icon changed signal</UserDocu>
+                <UserDocu>signalChangeIcon() -> None\n
+Trigger icon changed signal.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getBoundingBox">
             <Documentation>
-                <UserDocu>obtain the bounding box of this view object
-getBoundingBox(subname=None, transform=True, view=None)
---
-subname: the optional subname referring a sub-object
-transform: whether to apply the transformation matrix of this view provider
-view: the MDIView, default to active view
-</UserDocu>
+                <UserDocu>getBoundingBox(subName, transform=True, view) -> Base.BoundBox\n
+Obtain the bounding box of this view object.\n
+subName : str\n    Name referring a sub-object. Optional.
+transform: bool\n    Whether to apply the transformation matrix of this view provider.
+view: View3DInventorPy\n    Default to active view. Optional.</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Annotation" ReadOnly="false">
             <Documentation>
-                <UserDocu>A pivy Separator to add a custom scenegraph to this ViewProvider</UserDocu>
+                <UserDocu>A pivy Separator to add a custom scenegraph to this ViewProvider.</UserDocu>
             </Documentation>
             <Parameter Name="Annotation" Type="Object" />
         </Attribute>
     <Attribute Name="Icon" ReadOnly="true">
       <Documentation>
-        <UserDocu>The icon of this ViewProvider</UserDocu>
+        <UserDocu>The icon of this ViewProvider.</UserDocu>
       </Documentation>
       <Parameter Name="Icon" Type="Object" />
     </Attribute>
     <Attribute Name="RootNode" ReadOnly="false">
       <Documentation>
-        <UserDocu>A pivy Separator with the root of this ViewProvider</UserDocu>
+        <UserDocu>A pivy Separator with the root of this ViewProvider.</UserDocu>
       </Documentation>
       <Parameter Name="RootNode" Type="Object" />
     </Attribute>
     <Attribute Name="SwitchNode" ReadOnly="false">
       <Documentation>
-        <UserDocu>A pivy SoSwitch for the display mode switch of this ViewProvider</UserDocu>
+        <UserDocu>A pivy SoSwitch for the display mode switch of this ViewProvider.</UserDocu>
       </Documentation>
       <Parameter Name="SwitchNode" Type="Object" />
     </Attribute>
     <Attribute Name="DefaultMode" ReadOnly="false">
       <Documentation>
-        <UserDocu>Get/Set the default display mode in turns of coin node index</UserDocu>
+        <UserDocu>Get/Set the default display mode in turns of coin node index.</UserDocu>
       </Documentation>
       <Parameter Name="DefaultNode" Type="Int" />
     </Attribute>
@@ -233,19 +244,19 @@ view: the MDIView, default to active view
     </Attribute>
     <Attribute Name="CanRemoveChildrenFromRoot" ReadOnly="true">
       <Documentation>
-        <UserDocu>Tells the tree view whether to remove the children item from root or not</UserDocu>
+        <UserDocu>Tells the tree view whether to remove the children item from root or not.</UserDocu>
       </Documentation>
       <Parameter Name="CanRemoveChildrenFromRoot" Type="Boolean" />
     </Attribute>
     <Attribute Name="LinkVisibility">
       <Documentation>
-          <UserDocu>Get/set visibilities of all links to this view object</UserDocu>
+          <UserDocu>Get/set visibilities of all links to this view object.</UserDocu>
       </Documentation>
       <Parameter Name="LinkVisibility" Type="Boolean" />
     </Attribute>
     <Attribute Name="DropPrefix" ReadOnly="true" >
       <Documentation>
-          <UserDocu>Subname referecing the sub-object for holding dropped object</UserDocu>
+          <UserDocu>Subname referecing the sub-object for holding dropped object.</UserDocu>
       </Documentation>
       <Parameter Name="DropPrefix" Type="String" />
     </Attribute>

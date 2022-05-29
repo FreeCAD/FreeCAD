@@ -453,8 +453,8 @@ void MeshSelection::setRemoveComponentOnClick(bool on)
 void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
 {
     // When this callback function is invoked we must leave the edit mode
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    MeshSelection* self = reinterpret_cast<MeshSelection*>(ud);
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    MeshSelection* self = static_cast<MeshSelection*>(ud);
     self->stopInteractiveCallback(view);
     n->setHandled();
     std::vector<SbVec2f> polygon = view->getGLPolygon();
@@ -534,7 +534,7 @@ void MeshSelection::pickFaceCallback(void * ud, SoEventCallback * n)
     // handle only mouse button events
     if (n->getEvent()->isOfType(SoMouseButtonEvent::getClassTypeId())) {
         const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-        Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+        Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
         // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
         n->getAction()->setHandled();
@@ -553,7 +553,7 @@ void MeshSelection::pickFaceCallback(void * ud, SoEventCallback * n)
             if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
                 return;
             ViewProviderMesh* mesh = static_cast<ViewProviderMesh*>(vp);
-            MeshSelection* self = reinterpret_cast<MeshSelection*>(ud);
+            MeshSelection* self = static_cast<MeshSelection*>(ud);
             std::list<ViewProviderMesh*> views = self->getViewProviders();
             if (std::find(views.begin(), views.end(), mesh) == views.end())
                 return;

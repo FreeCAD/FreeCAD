@@ -651,6 +651,8 @@ gp_Dir DrawProjGroup::vec2dir(Base::Vector3d v)
 //this can be improved.  this implementation positions views too far apart.
 Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
 {
+//    Base::Console().Message("DPG::getXYPosition(%s)\n",Label.getValue());
+
     Base::Vector3d result(0.0,0.0,0.0);
     //Front view position is always (0,0)
     if (strcmp(viewTypeCStr, "Front") == 0 ) {  // Front!
@@ -663,6 +665,12 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
 
         //TODO: bounding boxes do not take view orientation into account
         //      i.e. X&Y widths might be swapped on page
+
+    if (viewPtrs[viewIndex]->LockPosition.getValue()) {
+        result.x = viewPtrs[viewIndex]->X.getValue();
+        result.y = viewPtrs[viewIndex]->Y.getValue();
+        return result;
+    }
 
     if (AutoDistribute.getValue()) {
         std::vector<Base::Vector3d> position(idxCount);

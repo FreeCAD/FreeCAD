@@ -60,6 +60,7 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+    void setEditorTabWidth(int);
 
 private:
     std::unique_ptr<Ui_DlgEditorSettings> ui;

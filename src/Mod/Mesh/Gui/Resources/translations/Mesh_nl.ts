@@ -1386,10 +1386,6 @@ tot een gladder uiterlijk leidt.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Remesh door gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Remeshparameter</translation>
     </message>
@@ -1428,6 +1424,10 @@ tot een gladder uiterlijk leidt.
     <message>
       <source>Clear</source>
       <translation>Wissen</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1842,6 +1842,10 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <source>Annotation</source>
       <translation>Aantekening</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1860,6 +1864,10 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
     <message>
       <source>Mesh tools</source>
       <translation>Mesh gereedschap</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Snijden</translation>
     </message>
   </context>
 </TS>

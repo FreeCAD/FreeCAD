@@ -86,13 +86,13 @@
       <source>Base</source>
       <translation>ფუძე</translation>
     </message>
+    <message>
+      <source>Enum</source>
+      <translation type="unfinished">Enum</translation>
+    </message>
   </context>
   <context>
     <name>CmdTestConsoleOutput</name>
-    <message>
-      <source>Standard-Test</source>
-      <translation>Standard-Test</translation>
-    </message>
     <message>
       <source>Test console output</source>
       <translation>სატესტო კონსოლის შემცველობა</translation>
@@ -101,20 +101,12 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <source>Measure</source>
-      <translation>საზომი</translation>
-    </message>
-    <message>
       <source>Clear measurement</source>
       <translation>გაზომვის გასუფთავება</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
-    <message>
-      <source>Measure</source>
-      <translation>საზომი</translation>
-    </message>
     <message>
       <source>Toggle measurement</source>
       <translation>გაზომვის გადართვა</translation>
@@ -193,6 +185,73 @@
     <message>
       <source>Measure distance</source>
       <translation>მანძილის გაზომვა</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+  </context>
+  <context>
+    <name>CommandGroup</name>
+    <message>
+      <source>File</source>
+      <translation>ფაილი</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>ჩასწორება</translation>
+    </message>
+    <message>
+      <source>Help</source>
+      <translation>დახმარება</translation>
+    </message>
+    <message>
+      <source>Link</source>
+      <translation>ბმა</translation>
+    </message>
+    <message>
+      <source>Tools</source>
+      <translation>ხელსაწყოები</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>ხედი</translation>
+    </message>
+    <message>
+      <source>Window</source>
+      <translation>ფანჯარა</translation>
+    </message>
+    <message>
+      <source>Standard</source>
+      <translation>ჩვეულებრივი</translation>
+    </message>
+    <message>
+      <source>Macros</source>
+      <translation>მაკროები</translation>
+    </message>
+    <message>
+      <source>Macro</source>
+      <translation>მაკრო</translation>
+    </message>
+    <message>
+      <source>Structure</source>
+      <translation>სტრუქტურა</translation>
+    </message>
+    <message>
+      <source>Standard-Test</source>
+      <translation>Standard-Test</translation>
+    </message>
+    <message>
+      <source>Standard-View</source>
+      <translation>სტანდარტული ხედი</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>ელემენტების ხე</translation>
+    </message>
+    <message>
+      <source>Measure</source>
+      <translation>საზომი</translation>
     </message>
   </context>
   <context>
@@ -312,6 +371,10 @@
       <source>none</source>
       <translation>არცერთი</translation>
     </message>
+    <message>
+      <source>Press a keyboard shortcut</source>
+      <translation type="unfinished">Press a keyboard shortcut</translation>
+    </message>
   </context>
   <context>
     <name>Gui::ActionSelector</name>
@@ -410,13 +473,6 @@
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>დაატრიალეთ თაგუნას შუა ღილაკი ან დააჭირეთ შუა ღილაკს მარცხენა ან მარჯვენა დაწკაპუნების დროს და გადაიტანეთ თაგუნა ზემოთ ან ქვემოთ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Command</name>
-    <message>
-      <source>Standard</source>
-      <translation>ჩვეულებრივი</translation>
     </message>
   </context>
   <context>
@@ -535,6 +591,25 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>ორგანიზაციები</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::ApplicationCache</name>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>The cache directory %1 exceeds the size of %2.</source>
+      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+    </message>
+    <message>
+      <source>Do you want to clear it now?</source>
+      <translation type="unfinished">Do you want to clear it now?</translation>
+    </message>
+    <message>
+      <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
+      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
     </message>
   </context>
   <context>
@@ -811,6 +886,32 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
+    <message>
+      <source>Create New Preference Pack</source>
+      <translation type="unfinished">Create New Preference Pack</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>სახელი</translation>
+    </message>
+    <message>
+      <source>Property group templates</source>
+      <translation type="unfinished">Property group templates</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
+    <message>
+      <source>Pack already exists</source>
+      <translation type="unfinished">Pack already exists</translation>
+    </message>
+    <message>
+      <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
+      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
       <source>Macros</source>
@@ -874,14 +975,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Macros</source>
       <translation>მაკროები</translation>
-    </message>
-    <message>
-      <source>No macro</source>
-      <translation>მაკროების გარეშე</translation>
-    </message>
-    <message>
-      <source>No macros found.</source>
-      <translation>მაკროები ნაპოვნი არაა.</translation>
     </message>
     <message>
       <source>Macro not found</source>
@@ -1443,6 +1536,14 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <source>Code lines will be numbered</source>
       <translation>კოდის ხაზები დაინომრება</translation>
     </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1489,14 +1590,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Style sheet:</source>
       <translation>ინტერფეისის სტილი:</translation>
-    </message>
-    <message>
-      <source>Python console</source>
-      <translation>Python-ის კონსოლი</translation>
-    </message>
-    <message>
-      <source>Enable word wrap</source>
-      <translation>სიტყვების გადატანის ჩართვა</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
@@ -1551,9 +1644,64 @@ after FreeCAD launches</source>
 FreeCAD-ის გაშვების შემდეგ</translation>
     </message>
     <message>
-      <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
-      <translation>როცა სიმბოლოების რიცხვი გადააჭარბებს ჰორიზონტალურად დაშვებულ რაოდენობას Python-ის კონსოლში, მოხდება სიტყვების გადატანა</translation>
+      <source>Number format:</source>
+      <translation type="unfinished">Number format:</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>ოპერაციული სისტემა</translation>
+    </message>
+    <message>
+      <source>Selected language</source>
+      <translation type="unfinished">Selected language</translation>
+    </message>
+    <message>
+      <source>C/POSIX</source>
+      <translation type="unfinished">C/POSIX</translation>
+    </message>
+    <message>
+      <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
+      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+    </message>
+    <message>
+      <source>Substitute decimal separator (needs restart)</source>
+      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+    </message>
+    <message>
+      <source>Preference packs</source>
+      <translation type="unfinished">Preference packs</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>სახელი</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>ტიპი</translation>
+    </message>
+    <message>
+      <source>Load</source>
+      <translation>ჩატვირთვა</translation>
+    </message>
+    <message>
+      <source>Save new...</source>
+      <translation type="unfinished">Save new...</translation>
+    </message>
+    <message>
+      <source>Manage...</source>
+      <translation type="unfinished">Manage...</translation>
+    </message>
+    <message>
+      <source>Revert...</source>
+      <translation type="unfinished">Revert...</translation>
+    </message>
+    <message>
+      <source>The text cursor will be blinking</source>
+      <translation type="unfinished">The text cursor will be blinking</translation>
+    </message>
+    <message>
+      <source>Enable cursor blinking</source>
+      <translation type="unfinished">Enable cursor blinking</translation>
     </message>
   </context>
   <context>
@@ -1593,6 +1741,26 @@ horizontal space in Python console</source>
     <message>
       <source>Both</source>
       <translation>ორივე</translation>
+    </message>
+    <message>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
+    </message>
+    <message>
+      <source>Preference Pack Name</source>
+      <translation type="unfinished">Preference Pack Name</translation>
+    </message>
+    <message>
+      <source>Tags</source>
+      <translation>ჭდეები</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>დადება</translation>
+    </message>
+    <message>
+      <source>Apply the %1 preference pack</source>
+      <translation type="unfinished">Apply the %1 preference pack</translation>
     </message>
   </context>
   <context>
@@ -1664,12 +1832,20 @@ horizontal space in Python console</source>
       <translation>დუბლირება</translation>
     </message>
     <message>
-      <source>Addons...</source>
-      <translation>დამატებები...</translation>
-    </message>
-    <message>
       <source>Toolbar</source>
       <translation>ხელსაწყოთა ზოლი</translation>
+    </message>
+    <message>
+      <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
+      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
+      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+    </message>
+    <message>
+      <source>Download</source>
+      <translation>გადმოწერა</translation>
     </message>
   </context>
   <context>
@@ -2054,6 +2230,48 @@ Specify another directory, please.</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgPreferencePackManagement</name>
+    <message>
+      <source>Manage Preference Packs</source>
+      <translation type="unfinished">Manage Preference Packs</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager...</source>
+      <translation type="unfinished">Open Addon Manager...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
+    <message>
+      <source>User-Saved Preference Packs</source>
+      <translation type="unfinished">User-Saved Preference Packs</translation>
+    </message>
+    <message>
+      <source>Built-In Preference Packs</source>
+      <translation type="unfinished">Built-In Preference Packs</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of built-in preference pack '%1'</source>
+      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Delete user-saved preference pack '%1'</source>
+      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
+      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+    </message>
+    <message>
+      <source>Delete saved preference pack?</source>
+      <translation type="unfinished">Delete saved preference pack?</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
+      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
@@ -2392,6 +2610,28 @@ from Python console to Report view panel</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfig</name>
+    <message>
+      <source>Revert to Backup Config</source>
+      <translation type="unfinished">Revert to Backup Config</translation>
+    </message>
+    <message>
+      <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
+      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+    </message>
+    <message>
+      <source>Available backup files:</source>
+      <translation type="unfinished">Available backup files:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
+    <message>
+      <source>No selection in dialog, cannot load backup file</source>
+      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
       <source>Running external program</source>
@@ -2661,6 +2901,20 @@ bounding box size of the 3D object that is currently displayed.</source>
 მითითებული მნიშვნელობა არის ფაქტორი, რომელიც გამრავლდება
 ამჟამად ნაჩვენები 3D ობიექტის შემოსაზღვრული ყუთის ზომაზე.</translation>
     </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2695,6 +2949,69 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
+    <message>
+      <source>Cache</source>
+      <translation type="unfinished">Cache</translation>
+    </message>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>Location:</source>
+      <translation type="unfinished">Location:</translation>
+    </message>
+    <message>
+      <source>Check periodically at program start:</source>
+      <translation type="unfinished">Check periodically at program start:</translation>
+    </message>
+    <message>
+      <source>Always</source>
+      <translation type="unfinished">Always</translation>
+    </message>
+    <message>
+      <source>Daily</source>
+      <translation type="unfinished">Daily</translation>
+    </message>
+    <message>
+      <source>Weekly</source>
+      <translation type="unfinished">Weekly</translation>
+    </message>
+    <message>
+      <source>Monthly</source>
+      <translation type="unfinished">Monthly</translation>
+    </message>
+    <message>
+      <source>Yearly</source>
+      <translation type="unfinished">Yearly</translation>
+    </message>
+    <message>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
+    </message>
+    <message>
+      <source>Cache size limit:</source>
+      <translation type="unfinished">Cache size limit:</translation>
+    </message>
+    <message>
+      <source>Check now...</source>
+      <translation type="unfinished">Check now...</translation>
+    </message>
+    <message>
+      <source>Notify the user if the cache size exceeds the specified limit</source>
+      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+    </message>
+    <message>
+      <source>Unknown</source>
+      <translation>უცნობი</translation>
+    </message>
+    <message>
+      <source>Current cache size: %1</source>
+      <translation type="unfinished">Current cache size: %1</translation>
     </message>
   </context>
   <context>
@@ -2734,10 +3051,6 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <source>Alt+R</source>
       <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Out &amp;invisible</source>
-      <translation>გაუჩინარება</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2790,6 +3103,40 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <source>Color-gradient settings</source>
       <translation>ფერების გრადიენტის მორგება</translation>
+    </message>
+    <message>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
+    </message>
+    <message>
+      <source>Color gradient starts from the zero value</source>
+      <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed in gray</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed with transparency</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed with transparency</translation>
+    </message>
+    <message>
+      <source>Out &amp;transparent</source>
+      <translation type="unfinished">Out &amp;transparent</translation>
+    </message>
+    <message>
+      <source>Number of labels besides the color bar</source>
+      <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Number of decimals for labels
+besides the color bar</source>
+      <translation type="unfinished">Number of decimals for labels
+besides the color bar</translation>
     </message>
   </context>
   <context>
@@ -3510,10 +3857,6 @@ Turntable: the part will be rotated around the z-axis.</source>
       <translation>ტრეკბოლი</translation>
     </message>
     <message>
-      <source>New document scale</source>
-      <translation>ახალი დოკუმენტის მასშტაბი</translation>
-    </message>
-    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>აყენებს ახალი დოკუმენტების კამერის მასშტაბს.
@@ -3652,6 +3995,46 @@ Mouse tilting is not disabled by this setting.</source>
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>რამდენად შეიძლება გაადიდოთ.
 გადიდების ბიჯი 1 ნიშნავს 7,5-ჯერ გადიდებას ყოველ ბიჯზე.</translation>
+    </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPythonConsole</name>
+    <message>
+      <source>Python console</source>
+      <translation>Python-ის კონსოლი</translation>
+    </message>
+    <message>
+      <source>Settings</source>
+      <translation>გამართვა</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>როცა სიმბოლოების რიცხვი გადააჭარბებს ჰორიზონტალურად დაშვებულ რაოდენობას Python-ის კონსოლში, მოხდება სიტყვების გადატანა</translation>
+    </message>
+    <message>
+      <source>Enable word wrap</source>
+      <translation>სიტყვების გადატანის ჩართვა</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
+    <message>
+      <source>Saves Python history across sessions</source>
+      <translation type="unfinished">Saves Python history across sessions</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>ისტორიის შენახვა</translation>
     </message>
   </context>
   <context>
@@ -3921,12 +4304,6 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>შედეგი</translation>
     </message>
     <message>
-      <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-      <translation>ბოლოს გამოყენებული გამოთვლების სია
-გამოთვლის დასამატებლად დააჭირეთ Enter-ს მნიშვნელობის შეყვანის ველში</translation>
-    </message>
-    <message>
       <source>Quantity</source>
       <translation>რაოდენობა</translation>
     </message>
@@ -3959,6 +4336,12 @@ The preference system is the one set in the general preferences.</source>
     <message>
       <source>Copy the result into the clipboard</source>
       <translation>შედეგის მიმოცვლის ბაფერში კოპირება</translation>
+    </message>
+    <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
     </message>
   </context>
   <context>
@@ -4109,10 +4492,6 @@ The preference system is the one set in the general preferences.</source>
       <translation>დარწმუნებული ხართ, რომ გსურთ წაშალოთ ყველა დროებითი საქაღალდე?</translation>
     </message>
     <message>
-      <source>Finished</source>
-      <translation>დასრულებულია</translation>
-    </message>
-    <message>
       <source>Transient directories deleted.</source>
       <translation>დროებითი საქაღალდეები წაშლილია.</translation>
     </message>
@@ -4127,6 +4506,10 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>გარდამავალი საქაღალდეების წაშლის შემდეგ თქვენ ვეღარ შეძლებთ ფაილის აღდგენას.</translation>
+    </message>
+    <message>
+      <source>Transient deleted</source>
+      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -4657,32 +5040,12 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>მონიშნული ობიექტები შეიცავს სხვა დამოკიდებულებებს. გთხოვთ, აირჩიოთ რომელი ობიექტების გატანა გნებავთ. ყველა დამოკიდებულება ნაგულისხმევად ავტომატურადაა მონიშნული.</translation>
     </message>
     <message>
-      <source>Dependency</source>
-      <translation>დამოკიდებულება</translation>
-    </message>
-    <message>
       <source>Document</source>
       <translation>დოკუმენტი</translation>
     </message>
     <message>
       <source>Name</source>
       <translation>სახელი</translation>
-    </message>
-    <message>
-      <source>State</source>
-      <translation>მდგომარეობა</translation>
-    </message>
-    <message>
-      <source>Hierarchy</source>
-      <translation>იერარქია</translation>
-    </message>
-    <message>
-      <source>Selected</source>
-      <translation>მონიშნული</translation>
-    </message>
-    <message>
-      <source>Partial</source>
-      <translation>ნაწილობრივ</translation>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
@@ -4693,6 +5056,26 @@ The 'Status' column shows whether the document could be recovered.</source>
 originally selected prior to opening this dialog</source>
       <translation>დამოკიდებულებების უგულებელყოფა და ამ 
 ფანჯრის გახსნამდე მონიშნული ობიექტებით გაგრძელება</translation>
+    </message>
+    <message>
+      <source>Auto select depending objects</source>
+      <translation type="unfinished">Auto select depending objects</translation>
+    </message>
+    <message>
+      <source>Depending on</source>
+      <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Depended by</source>
+      <translation type="unfinished">Depended by</translation>
+    </message>
+    <message>
+      <source>Selections</source>
+      <translation>მონიშნულები</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>ყველა</translation>
     </message>
   </context>
   <context>
@@ -4787,8 +5170,8 @@ originally selected prior to opening this dialog</source>
       <translation>შეცდომები</translation>
     </message>
     <message>
-      <source>Show report view on</source>
-      <translation>ანგარიშის ხედის ჩვენება</translation>
+      <source>Show output window on</source>
+      <translation type="unfinished">Show output window on</translation>
     </message>
   </context>
   <context>
@@ -5235,6 +5618,18 @@ Do you want to save the document now?</source>
       <translation>გარე ობიექტებთან დასაკავშირებლად, დოკუმენტი უნდა იყოს შენახული ერთხელ მაინც. 
 გსურთ ახლავე შეინახოთ დოკუმენტი?</translation>
     </message>
+    <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
   </context>
   <context>
     <name>Gui::ManualAlignment</name>
@@ -5345,6 +5740,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::ModifierLineEdit</name>
+    <message>
+      <source>Press modifier keys</source>
+      <translation type="unfinished">Press modifier keys</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
@@ -5368,6 +5770,25 @@ How do you want to proceed?</source>
     <message>
       <source>Press CTRL and left mouse button</source>
       <translation>დააწექით CTRL-ს და თაგუნას მარცხენა ღილაკს</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::OpenSCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>დააჭირეთ თაგუნის მარცხენა ღილაკს</translation>
+    </message>
+    <message>
+      <source>Press right mouse button and move mouse</source>
+      <translation type="unfinished">Press right mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press left mouse button and move mouse</source>
+      <translation type="unfinished">Press left mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button or SHIFT and right mouse button</source>
+      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
     </message>
   </context>
   <context>
@@ -5462,6 +5883,14 @@ How do you want to proceed?</source>
     <message>
       <source>Auto expand</source>
       <translation>ავტოგაფართოება</translation>
+    </message>
+    <message>
+      <source>Rename property group</source>
+      <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Group name:</source>
+      <translation type="unfinished">Group name:</translation>
     </message>
   </context>
   <context>
@@ -5619,6 +6048,10 @@ Do you want to exit without saving your data?</source>
       <source>The file '%1' cannot be opened.</source>
       <translation>ფაილ '%1'-ის გახსნა შეუძლებელია.</translation>
     </message>
+    <message>
+      <source>none</source>
+      <translation>არცერთი</translation>
+    </message>
   </context>
   <context>
     <name>Gui::RevitNavigationStyle</name>
@@ -5640,6 +6073,25 @@ Do you want to exit without saving your data?</source>
     </message>
   </context>
   <context>
+    <name>Gui::SearchBar</name>
+    <message>
+      <source>Previous</source>
+      <translation>წინა</translation>
+    </message>
+    <message>
+      <source>Next</source>
+      <translation type="unfinished">Next</translation>
+    </message>
+    <message>
+      <source>Case sensitive</source>
+      <translation type="unfinished">Case sensitive</translation>
+    </message>
+    <message>
+      <source>Whole words</source>
+      <translation type="unfinished">Whole words</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
@@ -5657,10 +6109,6 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
       <source>Des&amp;cription</source>
       <translation>აღწერა</translation>
     </message>
@@ -5671,10 +6119,6 @@ Do you want to exit without saving your data?</source>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
-    <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
     <message>
       <source>Download online help</source>
       <translation>ონლაინ დახმარების გადმოწერა</translation>
@@ -5714,10 +6158,6 @@ Do you want to specify another directory?</source>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
-    <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
     <message>
       <source>Automatic python modules documentation</source>
       <translation>Python-ის მოდულების ავტომატურად გენერირებული დოკუმენტაცია</translation>
@@ -5880,6 +6320,25 @@ Do you want to specify another directory?</source>
     <message>
       <source>Edit text</source>
       <translation>ტექსტის ჩასწორება</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TinkerCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>დააჭირეთ თაგუნის მარცხენა ღილაკს</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button</source>
+      <translation>დააჭირეთ თაგუნის შუა ღილაკს</translation>
+    </message>
+    <message>
+      <source>Press right mouse button</source>
+      <translation type="unfinished">Press right mouse button</translation>
+    </message>
+    <message>
+      <source>Scroll middle mouse button</source>
+      <translation>დაატრიალეთ თაგუნის ბორბალი</translation>
     </message>
   </context>
   <context>
@@ -6059,6 +6518,10 @@ Do you want to specify another directory?</source>
       <source>Spanish, Argentina</source>
       <translation>ესპანური, არგენინული</translation>
     </message>
+    <message>
+      <source>Georgian</source>
+      <translation type="unfinished">Georgian</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -6203,6 +6666,14 @@ Do you want to specify another directory?</source>
     <message>
       <source> (but must be executed)</source>
       <translation> (მაგრამ უნდა შესრულდეს)</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
     </message>
   </context>
   <context>
@@ -6682,24 +7153,6 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>დოკუმენტი ამ მომენტისთვის დახურვადი არაა.</translation>
     </message>
     <message>
-      <source>No OpenGL</source>
-      <translation>OpenGL-ის გარეშე</translation>
-    </message>
-    <message>
-      <source>This system does not support OpenGL</source>
-      <translation>ამ სისტემას არ აქვს OpenGL-ის მხარდაჭერა</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
-      <source>Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</source>
-      <translation>დოკუმენტაციის ჩატვირთვა შეუძლებელია.
-საჭიროა Qt ვერსია 4.4 ან უფრო მაღალი.</translation>
-    </message>
-    <message>
       <source>Exporting PDF...</source>
       <translation>PDF-ად გატანა...</translation>
     </message>
@@ -6975,26 +7428,6 @@ Choose 'Abort' to abort</source>
       <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ გააგრძელოთ?</translation>
     </message>
     <message>
-      <source>
-
-Please check report view for more...</source>
-      <translation>
-
-მეტის გასაგებად, გთხოვთ გაეცნოთ ანგარიშს...</translation>
-    </message>
-    <message>
-      <source>
-Document: </source>
-      <translation>
-დოკუმენტი: </translation>
-    </message>
-    <message>
-      <source>
-  Path: </source>
-      <translation>
-მისამართი: </translation>
-    </message>
-    <message>
       <source>Identical physical path</source>
       <translation>იგივე ფიზიკური მისამართი</translation>
     </message>
@@ -7013,14 +7446,6 @@ Document: </source>
     <message>
       <source>Workbenches</source>
       <translation>სამუშაო მაგიდები</translation>
-    </message>
-    <message>
-      <source>
-
-Physical path: </source>
-      <translation>
-
-ფიზიკური მისამართი: </translation>
     </message>
     <message>
       <source>Could not save document</source>
@@ -7054,6 +7479,102 @@ Would you like to save the file with a different name?</source>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>ზოგიერთი დოკუმენტის შენახვა შეუძლებელია. გნებავთ დახურვის გაუქმება?</translation>
     </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>მისამართი:</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>ჩასწორება %1</translation>
+    </message>
+    <message>
+      <source>Setup configurable object</source>
+      <translation type="unfinished">Setup configurable object</translation>
+    </message>
+    <message>
+      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+    </message>
+    <message>
+      <source>Please select which objects to copy when the configuration is changed</source>
+      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+    </message>
+    <message>
+      <source>Apply to all</source>
+      <translation type="unfinished">Apply to all</translation>
+    </message>
+    <message>
+      <source>Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</source>
+      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</translation>
+    </message>
+    <message>
+      <source>Copy on change</source>
+      <translation type="unfinished">Copy on change</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>ჩაართვა</translation>
+    </message>
+    <message>
+      <source>Enable auto copy of linked object when its configuration is changed</source>
+      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+    </message>
+    <message>
+      <source>Tracking</source>
+      <translation>სიმბოლოებს შორის მანძილი</translation>
+    </message>
+    <message>
+      <source>Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</source>
+      <translation type="unfinished">Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</translation>
+    </message>
+    <message>
+      <source>Disable copy on change</source>
+      <translation type="unfinished">Disable copy on change</translation>
+    </message>
+    <message>
+      <source>Rerefresh configurable object</source>
+      <translation type="unfinished">Rerefresh configurable object</translation>
+    </message>
+    <message>
+      <source>Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</source>
+      <translation type="unfinished">Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
+      <source>Change whether show each link array element as individual objects</source>
+      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+    </message>
+    <message>
+      <source>Transform at the origin of the placement</source>
+      <translation type="unfinished">Transform at the origin of the placement</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7069,10 +7590,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Box element selection</source>
       <translation>ელემენტების მონიშვნის არეალი</translation>
     </message>
@@ -7080,20 +7597,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Box selection</source>
       <translation>არეალის მონიშვნა</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
-    <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
     <message>
       <source>&amp;About %1</source>
       <translation>%1-ის &amp;შესახებ</translation>
@@ -7106,10 +7615,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
       <source>About &amp;Qt</source>
       <translation>&amp;Qt-ის შესახებ</translation>
     </message>
@@ -7120,10 +7625,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
-    <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
     <message>
       <source>Ne&amp;xt</source>
       <translation>შემ&amp;დეგი</translation>
@@ -7136,10 +7637,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
-    <message>
       <source>Pre&amp;vious</source>
       <translation>&amp;წინა</translation>
     </message>
@@ -7150,10 +7647,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdAlignment</name>
-    <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
     <message>
       <source>Alignment...</source>
       <translation>სწორება...</translation>
@@ -7166,10 +7659,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
-    <message>
       <source>Arrange &amp;Icons</source>
       <translation>ხატულების &amp;მოწესრიგება</translation>
     </message>
@@ -7181,20 +7670,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Toggle axis cross</source>
       <translation>ღერძების ჩვენების ჩართ/გამორთ</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCascadeWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
     <message>
       <source>&amp;Cascade</source>
       <translation>&amp;კასკადურად</translation>
@@ -7207,10 +7688,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
-    <message>
       <source>Cl&amp;ose</source>
       <translation>და&amp;ხურვა</translation>
     </message>
@@ -7221,10 +7698,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
     <message>
       <source>Close Al&amp;l</source>
       <translation>ყვე&amp;ლას დახურვა</translation>
@@ -7237,10 +7710,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
-    <message>
       <source>Start command &amp;line...</source>
       <translation>ბრძანების ვე&amp;ლის გაშვება...</translation>
     </message>
@@ -7251,10 +7720,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdCopy</name>
-    <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
     <message>
       <source>C&amp;opy</source>
       <translation>კოპირება</translation>
@@ -7267,10 +7732,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdCut</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>&amp;Cut</source>
       <translation>ამოჭრა</translation>
     </message>
@@ -7281,10 +7742,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdDelete</name>
-    <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
     <message>
       <source>&amp;Delete</source>
       <translation>&amp;წაშლა</translation>
@@ -7297,10 +7754,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>View turntable...</source>
       <translation>გრუნტის ნახვა...</translation>
     </message>
@@ -7312,10 +7765,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
-    <message>
       <source>Dependency graph...</source>
       <translation>დამოკიდებულებების გრაფიკი...</translation>
     </message>
@@ -7326,10 +7775,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
-    <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
     <message>
       <source>Cu&amp;stomize...</source>
       <translation>&amp;ხელით მითითება...</translation>
@@ -7349,17 +7794,9 @@ Would you like to save the file with a different name?</source>
       <source>Opens a dialog to let you execute a recorded macro</source>
       <translation>ხსნის ფანჯარას, რომელიც საშუალებას მოგცემთ შეასრულოთ ჩაწერილი მაკრო</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
-    <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
     <message>
       <source>Execute macro</source>
       <translation>მაკროს გაშვება</translation>
@@ -7379,17 +7816,9 @@ Would you like to save the file with a different name?</source>
       <source>Opens a dialog to record a macro</source>
       <translation>მაკროების ჩასაწერი ფანჯრის გახსნა</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
-    <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
     <message>
       <source>E&amp;dit parameters ...</source>
       <translation>პარამეტრების ჩასწორება ...</translation>
@@ -7402,10 +7831,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
-    <message>
       <source>&amp;Preferences ...</source>
       <translation>&amp;გამართვა ...</translation>
     </message>
@@ -7416,10 +7841,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
-    <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
     <message>
       <source>Panels</source>
       <translation>პანელები</translation>
@@ -7432,10 +7853,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Draw style</source>
       <translation>ხაზვის სტილი</translation>
     </message>
@@ -7447,10 +7864,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>Duplicate selection</source>
       <translation>მონიშნულის დუბლიკატი</translation>
     </message>
@@ -7461,10 +7874,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdEdit</name>
-    <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
       <translation>&amp;ჩასწორების რეჟიმის გამორთვა</translation>
@@ -7480,10 +7889,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdExport</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>&amp;Export...</source>
       <translation>&amp;გატანა...</translation>
@@ -7504,20 +7909,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>Expression actions</source>
       <translation>მოქმედებები გამოთქმით</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>&amp;Recompute</source>
       <translation>&amp;გადათვლა</translation>
@@ -7530,10 +7927,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
       <source>Donate</source>
       <translation>მხარდაჭერა</translation>
     </message>
@@ -7544,10 +7937,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdFreeCADFAQ</name>
-    <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
     <message>
       <source>FreeCAD FAQ</source>
       <translation>FreeCAD-ის ხ.დ.კ.</translation>
@@ -7564,10 +7953,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
       <source>FreeCAD Forum</source>
       <translation>FreeCAD-ის ფორუმი</translation>
     </message>
@@ -7582,10 +7967,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdFreeCADPowerUserHub</name>
-    <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
     <message>
       <source>Python scripting documentation</source>
       <translation>Python-ზე სკრიპტების შექმნის დოკუმენტაცია</translation>
@@ -7602,10 +7983,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
       <source>Users documentation</source>
       <translation>მომხმარებლის დოკუმენტაცია</translation>
     </message>
@@ -7616,10 +7993,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
-    <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
     <message>
       <source>FreeCAD Website</source>
       <translation>FreeCAD-ის ვებგვერდი</translation>
@@ -7632,10 +8005,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Freeze display</source>
       <translation>კამერის მდებარეობა</translation>
     </message>
@@ -7646,10 +8015,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdGroup</name>
-    <message>
-      <source>Structure</source>
-      <translation>სტრუქტურა</translation>
-    </message>
     <message>
       <source>Create group</source>
       <translation>ჯგუფის შექმნა</translation>
@@ -7662,10 +8027,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Hide all objects</source>
       <translation>ყველა ობიექტის დამალვა</translation>
     </message>
@@ -7677,10 +8038,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Hide selection</source>
       <translation>მონიშნულის დამალვა</translation>
     </message>
@@ -7691,10 +8048,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdImport</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>&amp;Import...</source>
       <translation>&amp;შემოტანა...</translation>
@@ -7715,20 +8068,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
-    <message>
       <source>Link actions</source>
       <translation>ბმული</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImport</name>
-    <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
     <message>
       <source>Import links</source>
       <translation>ბმების შემოტანა</translation>
@@ -7741,10 +8086,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
-    <message>
       <source>Import all links</source>
       <translation>ყველა ბმის შემოტანა</translation>
     </message>
@@ -7755,10 +8096,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdLinkMake</name>
-    <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
     <message>
       <source>Make link</source>
       <translation>ბმის შექმნა</translation>
@@ -7771,10 +8108,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
-    <message>
       <source>Make link group</source>
       <translation>ბმების ჯგუფის შექმნა</translation>
     </message>
@@ -7785,10 +8118,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdLinkMakeRelative</name>
-    <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
     <message>
       <source>Make sub-link</source>
       <translation>ქვებმის შექმნა</translation>
@@ -7801,10 +8130,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
-    <message>
       <source>Replace with link</source>
       <translation>ბმულით ჩანაცვლება</translation>
     </message>
@@ -7815,10 +8140,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
-    <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
     <message>
       <source>Link navigation</source>
       <translation>ბმულით ნავიგაცია</translation>
@@ -7831,10 +8152,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
-    <message>
       <source>Select all links</source>
       <translation>ყველა ბმის მონიშვნა</translation>
     </message>
@@ -7845,10 +8162,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdLinkSelectLinked</name>
-    <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
     <message>
       <source>Go to linked object</source>
       <translation>მიბმულ ობიექტზე გადასვლა</translation>
@@ -7861,10 +8174,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
-    <message>
       <source>Go to the deepest linked object</source>
       <translation>უღრმეს მიბმულ ობიექტზე გადასვლა</translation>
     </message>
@@ -7875,10 +8184,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdLinkUnlink</name>
-    <message>
-      <source>Link</source>
-      <translation>ბმა</translation>
-    </message>
     <message>
       <source>Unlink</source>
       <translation>ბმის მოხსნა</translation>
@@ -7891,10 +8196,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
-    <message>
       <source>Attach to remote debugger...</source>
       <translation>დისტანციურ გამართვის პროგრამაზე მიმაგრება...</translation>
     </message>
@@ -7905,10 +8206,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
     <message>
       <source>Debug macro</source>
       <translation>მაკროების გამართვა</translation>
@@ -7921,10 +8218,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdMacroStepInto</name>
     <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
-    <message>
       <source>Step into</source>
       <translation>შიგნით შესვლა</translation>
     </message>
@@ -7932,20 +8225,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
-    <message>
       <source>Step over</source>
       <translation>გადაბიჯება</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
     <message>
       <source>Stop debugging</source>
       <translation>გამართვის გამორთვა</translation>
@@ -7958,10 +8243,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
-    <message>
       <source>S&amp;top macro recording</source>
       <translation>მა&amp;კროს ჩაწერის შეწყვეტა</translation>
     </message>
@@ -7973,20 +8254,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>მანძილის გაზომვა</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
-    <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
     <message>
       <source>Measures distance between two selected objects</source>
       <translation>ორ მონიშნულ ობიექტს შორის მანძილის დათვლა</translation>
@@ -7998,10 +8271,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>Merge project...</source>
       <translation>პროექტის შერწყმა...</translation>
@@ -8021,10 +8290,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdNew</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>&amp;New</source>
       <translation>&amp;ახალი</translation>
@@ -8052,10 +8317,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
       <source>Help Website</source>
       <translation>დახმარების ვებგვერდი</translation>
     </message>
@@ -8066,10 +8327,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdOpen</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>&amp;Open...</source>
       <translation>&amp;გახსნა...</translation>
@@ -8098,10 +8355,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdPart</name>
     <message>
-      <source>Structure</source>
-      <translation>სტრუქტურა</translation>
-    </message>
-    <message>
       <source>Create part</source>
       <translation>ნაწილის შექმნა</translation>
     </message>
@@ -8112,10 +8365,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdPaste</name>
-    <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
     <message>
       <source>&amp;Paste</source>
       <translation>&amp;ჩასმა</translation>
@@ -8128,10 +8377,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>Placement...</source>
       <translation>მდებარეობა...</translation>
     </message>
@@ -8142,10 +8387,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdPrint</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>&amp;Print...</source>
       <translation>&amp;ბეჭდვა...</translation>
@@ -8158,10 +8399,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
-    <message>
       <source>&amp;Export PDF...</source>
       <translation>&amp;PDF-ად გატანა...</translation>
     </message>
@@ -8172,10 +8409,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>&amp;Print preview...</source>
       <translation>&amp;ნახვა ამობეჭდვამდე...</translation>
@@ -8192,10 +8425,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
-    <message>
       <source>Project i&amp;nformation...</source>
       <translation>ინფორმაცია &amp;პროექტზე...</translation>
     </message>
@@ -8206,10 +8435,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
-    <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
     <message>
       <source>Project utility...</source>
       <translation>პროექტის ფაილების განშლის პროგრამა...</translation>
@@ -8222,10 +8447,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
       <source>Python Website</source>
       <translation>Python-ის ვებგვერდი</translation>
     </message>
@@ -8236,10 +8457,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdQuit</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>E&amp;xit</source>
       <translation>გამოსვლა (&amp;X)</translation>
@@ -8252,20 +8469,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
-    <message>
       <source>Random color</source>
       <translation>შემთხვევითი ფერი</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>Recent files</source>
       <translation>უკანასკნელი ფაილები</translation>
@@ -8278,10 +8487,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
-    <message>
       <source>Recent macros</source>
       <translation>ახლახანს გამოყენებული მაკროები</translation>
     </message>
@@ -8292,10 +8497,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdRedo</name>
-    <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
     <message>
       <source>&amp;Redo</source>
       <translation>&amp;გამეორება</translation>
@@ -8308,10 +8509,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>&amp;Refresh</source>
       <translation>&amp;განახლება</translation>
     </message>
@@ -8321,11 +8518,18 @@ Would you like to save the file with a different name?</source>
     </message>
   </context>
   <context>
-    <name>StdCmdRevert</name>
+    <name>StdCmdReportBug</name>
     <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
+      <source>Report a bug</source>
+      <translation type="unfinished">Report a bug</translation>
     </message>
+    <message>
+      <source>Report a bug or suggest a feature</source>
+      <translation type="unfinished">Report a bug or suggest a feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRevert</name>
     <message>
       <source>Revert</source>
       <translation>დაბრუნება</translation>
@@ -8338,10 +8542,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdSave</name>
     <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
-    <message>
       <source>&amp;Save</source>
       <translation>&amp;შენახვა</translation>
     </message>
@@ -8352,10 +8552,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdSaveAll</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>Save All</source>
       <translation>ყველაფრის შენახვა</translation>
@@ -8368,10 +8564,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
-    <message>
       <source>Save &amp;As...</source>
       <translation>შენახვა &amp;როგორც...</translation>
     </message>
@@ -8382,10 +8574,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdSaveCopy</name>
-    <message>
-      <source>File</source>
-      <translation>ფაილი</translation>
-    </message>
     <message>
       <source>Save a &amp;Copy...</source>
       <translation>&amp;ასლის შენახვა...</translation>
@@ -8398,10 +8586,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
-    <message>
       <source>Scene inspector...</source>
       <translation>სცენის ინსპექტორი...</translation>
     </message>
@@ -8412,10 +8596,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdSelBack</name>
-    <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
     <message>
       <source>&amp;Back</source>
       <translation>&amp;უკან</translation>
@@ -8428,10 +8608,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
-    <message>
       <source>&amp;Bounding box</source>
       <translation>&amp;გაბარიტები</translation>
     </message>
@@ -8442,10 +8618,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdSelForward</name>
-    <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
     <message>
       <source>&amp;Forward</source>
       <translation>&amp;წინ</translation>
@@ -8458,10 +8630,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>Select &amp;All</source>
       <translation>ყველას &amp;მონიშვნა</translation>
     </message>
@@ -8472,10 +8640,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Select visible objects</source>
       <translation>ხილული ობიექტების მონიშვნა</translation>
@@ -8488,10 +8652,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Python-ის კონსოლზე გაგზავნა</translation>
     </message>
@@ -8502,10 +8662,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Appearance...</source>
       <translation>გარეგნობა...</translation>
@@ -8518,10 +8674,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Show all objects</source>
       <translation>ყველა ობიექტის ჩვენება</translation>
     </message>
@@ -8532,10 +8684,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Show selection</source>
       <translation>მონიშნულის ჩვენება</translation>
@@ -8548,10 +8696,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
-    <message>
       <source>Status bar</source>
       <translation>სტატუსის პანელი</translation>
     </message>
@@ -8562,10 +8706,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdTextDocument</name>
-    <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
     <message>
       <source>Add text document</source>
       <translation>ტექსტური დოკუმენტის დამატება</translation>
@@ -8578,10 +8718,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
-    <message>
       <source>Texture mapping...</source>
       <translation>ტექსტურების დალაგება...</translation>
     </message>
@@ -8592,10 +8728,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
     <message>
       <source>&amp;Tile</source>
       <translation>&amp;ფილა</translation>
@@ -8608,20 +8740,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
-      <source>Macro</source>
-      <translation>მაკრო</translation>
-    </message>
-    <message>
       <source>Toggle breakpoint</source>
       <translation>საკონტროლო წერტილის ჩართ/გამორთ</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Clipping plane</source>
       <translation>კვეთის სიბრტყე</translation>
@@ -8634,10 +8758,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Toggle navigation/Edit mode</source>
       <translation>ნავიგაცია / ჩასწორება</translation>
     </message>
@@ -8648,10 +8768,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Toggle all objects</source>
       <translation>ყველა ობიექტის ჩართ/გამორთ</translation>
@@ -8664,10 +8780,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Toggle selectability</source>
       <translation>მონიშვნადობის ჩართ/გამორთ</translation>
     </message>
@@ -8678,10 +8790,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Toggle visibility</source>
       <translation>ხილვადობის ჩართ/გამორთ</translation>
@@ -8694,10 +8802,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
-    <message>
       <source>Tool&amp;bars</source>
       <translation>&amp;ხელსაწყოთა ზოლები</translation>
     </message>
@@ -8708,10 +8812,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdTransform</name>
-    <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
     <message>
       <source>Transform...</source>
       <translation>გარდაქმნა...</translation>
@@ -8724,10 +8824,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>Transform</source>
       <translation>გარდაქმნა</translation>
     </message>
@@ -8738,10 +8834,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdTreeCollapse</name>
-    <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
     <message>
       <source>Collapse selected item</source>
       <translation>არჩეული ელემენტის ჩაკეცვა</translation>
@@ -8754,10 +8846,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
-    <message>
       <source>Expand selected item</source>
       <translation>მონიშნული ელემენტის გაშლა</translation>
     </message>
@@ -8768,10 +8856,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
     <message>
       <source>Select all instances</source>
       <translation>ყველა ნიმუშის მონიშვნა</translation>
@@ -8784,10 +8868,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
-    <message>
       <source>TreeView actions</source>
       <translation>TreeVIew-ის ფუნქციები</translation>
     </message>
@@ -8799,10 +8879,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <source>Edit</source>
-      <translation>ჩასწორება</translation>
-    </message>
-    <message>
       <source>&amp;Undo</source>
       <translation>დაბრუნება (&amp;U)</translation>
     </message>
@@ -8813,10 +8889,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdUnitsCalculator</name>
-    <message>
-      <source>Tools</source>
-      <translation>ხელსაწყოები</translation>
-    </message>
     <message>
       <source>&amp;Units calculator...</source>
       <translation>&amp;საზომი ერთეულების კალკულატორი...</translation>
@@ -8840,10 +8912,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdUserInterface</name>
     <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
-    <message>
       <source>Dock views</source>
       <translation>ხედების მიმაგრება</translation>
     </message>
@@ -8854,10 +8922,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewBottom</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Bottom</source>
       <translation>ძირზე</translation>
@@ -8870,10 +8934,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Create new view</source>
       <translation>ახალი ხედის შექმნა</translation>
     </message>
@@ -8884,10 +8944,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewDimetric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Dimetric</source>
       <translation>დიმეტრიული</translation>
@@ -8900,10 +8956,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Inventor example #1</source>
       <translation>Inventor-ის მაგალითი #1</translation>
     </message>
@@ -8914,10 +8966,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewExample2</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Inventor example #2</source>
       <translation>Inventor-ის მაგალითი #2</translation>
@@ -8930,10 +8978,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Inventor example #3</source>
       <translation>Inventor-ის მაგალითი #3</translation>
     </message>
@@ -8944,10 +8988,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewFitAll</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Fit all</source>
       <translation>ყველას ჩატევა</translation>
@@ -8960,10 +9000,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Fit selection</source>
       <translation>მონიშნულის ჩატევა</translation>
     </message>
@@ -8974,10 +9010,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewFront</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Front</source>
       <translation>წინ</translation>
@@ -8990,10 +9022,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Home</source>
       <translation>დასაწყისში</translation>
     </message>
@@ -9004,10 +9032,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewIsometric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Isometric</source>
       <translation>იზომეტრიული</translation>
@@ -9020,10 +9044,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Issue camera position</source>
       <translation>კამერის მდებარეობის ჩვენება</translation>
     </message>
@@ -9034,10 +9054,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Stereo Interleaved Columns</source>
       <translation>სტერეო მონაცვლეობითი სვეტები</translation>
@@ -9050,10 +9066,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Stereo Interleaved Rows</source>
       <translation>სტერეო მონაცვლეობითი მწკრივები</translation>
     </message>
@@ -9064,10 +9076,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewIvStereoOff</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Stereo Off</source>
       <translation>სტერეოს გამორთვა</translation>
@@ -9080,10 +9088,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Stereo quad buffer</source>
       <translation>სტერეოს ოთხმაგი ბაფერი</translation>
     </message>
@@ -9094,10 +9098,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Stereo red/cyan</source>
       <translation>სტერეო წითელი/ცისფერი</translation>
@@ -9110,10 +9110,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Left</source>
       <translation>მარცხნივ</translation>
     </message>
@@ -9124,10 +9120,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewRear</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Rear</source>
       <translation>უკან</translation>
@@ -9140,10 +9132,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Restore saved camera</source>
       <translation>შენახული კამერის აღდგენა</translation>
     </message>
@@ -9154,10 +9142,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewRight</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Right</source>
       <translation>მარჯვნივ</translation>
@@ -9170,10 +9154,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Rotate Left</source>
       <translation>მარცხნივ შებრუნება</translation>
     </message>
@@ -9184,10 +9164,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewRotateRight</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Rotate Right</source>
       <translation>მარჯვნივ შებრუნება</translation>
@@ -9200,10 +9176,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Save current camera</source>
       <translation>მიმდინარე კამერის შენახვა</translation>
     </message>
@@ -9214,10 +9186,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewTop</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Top</source>
       <translation>თავზე</translation>
@@ -9230,10 +9198,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Trimetric</source>
       <translation>ტრიმეტრული</translation>
     </message>
@@ -9244,10 +9208,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdViewVR</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>FreeCAD-VR</source>
       <translation>FreeCAD-VR</translation>
@@ -9260,10 +9220,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdWhatsThis</name>
     <message>
-      <source>Help</source>
-      <translation>დახმარება</translation>
-    </message>
-    <message>
       <source>&amp;What's This?</source>
       <translation>&amp;რა არის ეს?</translation>
     </message>
@@ -9274,10 +9230,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdCmdWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
     <message>
       <source>&amp;Windows...</source>
       <translation>&amp;ფანჯრები...</translation>
@@ -9290,20 +9242,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <source>Window</source>
-      <translation>ფანჯარა</translation>
-    </message>
-    <message>
       <source>Activates this window</source>
       <translation>ამ ფანჯრის გააქტიურება</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
-    <message>
-      <source>View</source>
-      <translation>ხედი</translation>
-    </message>
     <message>
       <source>Workbench</source>
       <translation>სამუშაო მაგიდა</translation>
@@ -9316,10 +9260,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Fullscreen</source>
       <translation>მთლიან ეკრანზე ჩვენების რეჟიმი</translation>
     </message>
@@ -9331,10 +9271,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Orthographic view</source>
       <translation>ორთოგონალური პროექცია</translation>
     </message>
@@ -9345,10 +9281,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Perspective view</source>
       <translation>პერსპექტიული პროექცია</translation>
@@ -9368,17 +9300,9 @@ Would you like to save the file with a different name?</source>
       <source>Expand active document and collapse all others</source>
       <translation>აქტიური დოკუმენტის გაფართოება და ყველა დანარჩენის ჩაკეცვა</translation>
     </message>
-    <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
     <message>
       <source>Initiate dragging</source>
       <translation>გადათრევის დასაწყისი</translation>
@@ -9395,20 +9319,12 @@ Would you like to save the file with a different name?</source>
       <translation>დოკუმენტის ხის ფანჯარაში ყველა დოკუმენტის ჩვენება</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>შედგენილი დოკუმენტი</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
     <message>
       <source>Pre-selection</source>
       <translation>წინასწარ მონიშნული</translation>
@@ -9421,10 +9337,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
-    <message>
       <source>Record selection</source>
       <translation>მონიშნულის ჩაწერა</translation>
     </message>
@@ -9435,10 +9347,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdTreeSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
     <message>
       <source>Go to selection</source>
       <translation>მონიშნულზე გადასვლა</translation>
@@ -9455,20 +9363,12 @@ Would you like to save the file with a different name?</source>
       <translation>ხის ხედში მხოლოდ აქტიური დოკუმენტის ჩვენება</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>ერთიანი დოკუმენტი</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
     <message>
       <source>Sync placement</source>
       <translation>მდებარეობის სინქრონიზაცია</translation>
@@ -9481,10 +9381,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
-    <message>
       <source>Sync selection</source>
       <translation>მონიშნულის სინქრონიზაცია</translation>
     </message>
@@ -9495,10 +9391,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdTreeSyncView</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ელემენტების ხე</translation>
-    </message>
     <message>
       <source>Sync view</source>
       <translation>სინქრონიზაციის ხედი</translation>
@@ -9511,20 +9403,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Box zoom</source>
       <translation>არეალის გაზრდა</translation>
     </message>
   </context>
   <context>
     <name>StdViewDock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Docked</source>
       <translation>დამაგრებული</translation>
@@ -9537,10 +9421,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Document window</source>
       <translation>დოკუმენტის ფანჯარა</translation>
     </message>
@@ -9551,10 +9431,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdViewFullscreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Fullscreen</source>
       <translation>მთლიან ეკრანზე ჩვენების რეჟიმი</translation>
@@ -9567,10 +9443,6 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Save picture...</source>
       <translation>გამოსახულების შენახვა...</translation>
     </message>
@@ -9581,10 +9453,6 @@ Would you like to save the file with a different name?</source>
   </context>
   <context>
     <name>StdViewUndock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Undocked</source>
       <translation>დამაგრება მოხსნილია</translation>
@@ -9597,20 +9465,12 @@ Would you like to save the file with a different name?</source>
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
-    <message>
       <source>Zoom In</source>
       <translation>გადიდება</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>სტანდარტული ხედი</translation>
-    </message>
     <message>
       <source>Zoom Out</source>
       <translation>დაპატარავება</translation>
@@ -9865,42 +9725,9 @@ Do you still want to proceed?</source>
       <source>Axonometric</source>
       <translation>აქსონომეტრიული</translation>
     </message>
-  </context>
-  <context>
-    <name>testClass</name>
     <message>
-      <source>test</source>
-      <translation>ტესტი</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;შექმნილია Qt 4.3.x-სთვის&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Choose the style of the Task Panel</source>
-      <translation>აირჩიეთ მონაცემების პანელის სტილი</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>ნაგულისხმევი</translation>
-    </message>
-    <message>
-      <source>Windows XP</source>
-      <translation>Windows XP</translation>
+      <source>Link actions</source>
+      <translation>ბმული</translation>
     </message>
   </context>
 </TS>
