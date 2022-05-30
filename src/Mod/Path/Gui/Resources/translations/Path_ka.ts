@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="320"/>
       <source>Set thread's TPI (turns per inch) - used for imperial threads</source>
-      <translation type="unfinished">Set thread's TPI (turns per inch) - used for imperial threads</translation>
+      <translation>კუთხვილის TPI(შემოტრიალება დუიმზე) - გამოიყენება იმპერიული კუთხვილებისთვის</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="328"/>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="136"/>
       <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</translation>
+      <translation>რაც მცირეა მნიშვნელობა, ბადე მით უფრო ზუსტი და მკაფიო იქნება. მცირე მნიშვნელობები ასევე საგრძნობლად ზრდიან დამუშავების დროს.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="145"/>
       <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</translation>
+      <translation>მცირე მნიშვნელობების შედეგია უფრო ზუსტი ბადე. მცირე მნიშვნელობები გადამუშავების დროს არც ისე ძალიან ზრდიან.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="153"/>
@@ -233,7 +233,7 @@
       <location filename="../../../PathScripts/PathSlot.py" line="178"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="371"/>
       <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
-      <translation type="unfinished">Complete the operation in a single pass at depth, or mulitiple passes to final depth.</translation>
+      <translation>ოპერაციის სიღრმეზე ერთი გავლის დასრულება. ან აირჩიეთ მრავალი გავლა, სრული სიღრმის მისაღწევად.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="334"/>
@@ -256,7 +256,7 @@
       <location filename="../../../PathScripts/PathSurface.py" line="360"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="397"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
-      <translation type="unfinished">Set the sampling resolution. Smaller values quickly increase processing time.</translation>
+      <translation>დააყენეთ სამპლინგის გაფართოება. მცირე მნიშვნელობები სწრაფად ზრდიან დამუშავების დროს.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="369"/>
@@ -274,7 +274,7 @@
       <location filename="../../../PathScripts/PathSurface.py" line="387"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="424"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
-      <translation type="unfinished">Enable separate optimization of transitions between, and breaks within, each step over path.</translation>
+      <translation>ტრაექტორიის თითოეული ბიჯის, მათ შორის გადასვლის და ჩატეხვების ცალცალკე გაუმჯობესება.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="396"/>
@@ -291,7 +291,7 @@
       <location filename="../../../PathScripts/PathSurface.py" line="414"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="442"/>
       <source>Feedback: three smallest gaps identified in the path geometry.</source>
-      <translation type="unfinished">Feedback: three smallest gaps identified in the path geometry.</translation>
+      <translation>კომენტარი: ტრაექტორიის გეომეტრიაში ნაპოვნია სამი ძალიან პატარა ღრიჭო.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="423"/>
@@ -311,7 +311,7 @@
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="110"/>
       <source>The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</translation>
+      <translation>წრიული ჭრილების მიმართულება: საათის მიმართულებით (ს. მ.) ან საათის საწინააღმდეგო მიმართულებით(ს. ს. მ)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="119"/>
@@ -353,7 +353,7 @@
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="65"/>
       <source>Solid object to be used to limit the generated Path.</source>
-      <translation type="unfinished">Solid object to be used to limit the generated Path.</translation>
+      <translation>გენერირებული ტრაექტორიის შესაზღუდად გამოყენებული მყარი სხეული.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="75"/>
@@ -477,7 +477,7 @@
       <location filename="../../../PathScripts/PathCopy.py" line="50"/>
       <location filename="../../../PathScripts/PathArray.py" line="134"/>
       <source>The tool controller that will be used to calculate the path</source>
-      <translation type="unfinished">The tool controller that will be used to calculate the path</translation>
+      <translation>ტრაექტორიის გამოსათვლელად გამოყენებული ხელსაწყოს კონტროლერი</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="228"/>
@@ -597,7 +597,7 @@
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="160"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
-      <translation type="unfinished">Positive extends the beginning of the path, negative shortens.</translation>
+      <translation>დადებითი მნიშვნელობა დააგრძელებს ტრაექტორიის დასაწყისს, უარყოფითი კი დაამოკლებს.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="169"/>
@@ -648,7 +648,7 @@
       <location filename="../../../PathScripts/PathPocketBase.py" line="127"/>
       <location filename="../../../PathScripts/PathProfile.py" line="109"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
+      <translation>ხელსაწყოს მჭრელი იარაღის მიმართულება საათის(ს. მ.) ან საათის საწინააღმდეგო (ს. ს. მ.) მიმართულებით მოძრაობა</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="136"/>
@@ -789,7 +789,7 @@
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="60"/>
       <source>The spacing between the array copies in Linear pattern</source>
-      <translation type="unfinished">The spacing between the array copies in Linear pattern</translation>
+      <translation>მასივის ასლებს შორის დაცილება ხაზოვან შაბლონში</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="68"/>
@@ -878,17 +878,17 @@
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="213"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</translation>
+      <translation>რაც მცირეა მნიშვნელობა, ბადე მით უფრო ზუსტი და მკაფიო იქნება. მცირე მნიშვნელობები ასევე საგრძნობლად ზრდიან დამუშავების დროს.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="222"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</translation>
+      <translation>მცირე მნიშვნელობების შედეგია უფრო ზუსტი ბადე. მცირე მნიშვნელობები გადამუშავების დროს არც ისე ძალიან ზრდიან.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="293"/>
       <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation type="unfinished">Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</translation>
+      <translation>გამოსაყენებელ ალგორითმად აირჩიეთ OCL Dropcutter*-ი ან ექსპერიმენტალური (არა-OCL-ზე ბაზირებული).</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="310"/>
@@ -1093,7 +1093,7 @@
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="147"/>
       <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
-      <translation type="unfinished">The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</translation>
+      <translation>ამ ველის გამოყენება დამოკიდებულია SafeHeightExpression-ზე. ნაგულისხმევად მისი მნიშვნელობა ემატება StarDepth-ს და გამოიყენება SafeHeight ოპერაციის მიერ.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="155"/>
@@ -1103,12 +1103,12 @@
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="164"/>
       <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
-      <translation type="unfinished">The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</translation>
+      <translation>ამ ველის გამოყენება დამოკიდებულია ClearanceHeightExpression-ზე - ნაგულისხმევად მისი მნიშვნელობა ემატება StartDepth-ს და გამოიყენება ClearanceHeight ოპერაციის მიერ.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="173"/>
       <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation type="unfinished">Expression set for the ClearanceHeight of new operations.</translation>
+      <translation>ახალი ოპერაციების ClearanceHeight-სთვის გამოყენებული გამოთქმების ნაკრები.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="181"/>
@@ -1356,32 +1356,32 @@
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="119"/>
       <source>Extra allowance from part bound box in negative X direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative X direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან უარყოფითი X მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="128"/>
       <source>Extra allowance from part bound box in positive X direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive X direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან დადებითი X მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="137"/>
       <source>Extra allowance from part bound box in negative Y direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative Y direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან უარყოფითი Y მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="146"/>
       <source>Extra allowance from part bound box in positive Y direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive Y direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან დადებითი Y მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="155"/>
       <source>Extra allowance from part bound box in negative Z direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative Z direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან უარყოფითი Z მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="164"/>
       <source>Extra allowance from part bound box in positive Z direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive Z direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან დადებითი Z მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="170"/>
@@ -1896,7 +1896,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathPocket.py" line="193"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
-      <translation type="unfinished">Final depth set below ZMin of face(s) selected.</translation>
+      <translation>საბოლოო სიღრმე მონიშნული ზედაპირ(ებ)-ზე ZMin-ზე ნაკლებია.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathFeatureExtensionsGui.py" line="180"/>
@@ -1976,7 +1976,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="638"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>ღია წიბოების პროფილირებისთვის წიბოს არჩევანისა და საბოლოო სიღრმის მოთხოვნების შემოწმება.</translation>
     </message>
   </context>
   <context>
@@ -2022,7 +2022,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="811"/>
       <source>Canceling 3D Surface operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling 3D Surface operation. Error creating OCL cutter.</translation>
+      <translation>3D ზედაპირის ოპერაციის გაუქმება. შეცდომა OCL მჭრელის შექმნისას.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="1042"/>
@@ -2100,7 +2100,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="509"/>
       <source>Face selection is unavailable for Rotational scans.</source>
-      <translation type="unfinished">Face selection is unavailable for Rotational scans.</translation>
+      <translation>ბრუნვადი სკანირებისთვის ზედაპირის მონიშვნა ხელმიუწვდომელია.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="512"/>
@@ -2110,12 +2110,12 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="614"/>
       <source>Failed to pre-process base as a whole.</source>
-      <translation type="unfinished">Failed to pre-process base as a whole.</translation>
+      <translation>ბაზის როგორც მთლიანის დამუშავების შეცდომა.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2419"/>
       <source>Failed to identify a horizontal cross-section for Face</source>
-      <translation type="unfinished">Failed to identify a horizontal cross-section for Face</translation>
+      <translation>ზედაპირის ჰორიზონტალური კვეთის ამოცნობის შეცდომა</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2655"/>
@@ -2166,7 +2166,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="283"/>
       <source>Unsupported Path tooltable template version %s</source>
-      <translation type="unfinished">Unsupported Path tooltable template version %s</translation>
+      <translation>ტრაექტორიის ხელსაწყოების ცხრილის შაბლონის მხარდაუჭერელი ვერსია %s</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="298"/>
@@ -2223,12 +2223,12 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="689"/>
       <source>AvoidLastX_Faces: Only zero or positive values permitted.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Only zero or positive values permitted.</translation>
+      <translation>AvoidLastX_Faces: დასაშვებია მხოლოდ ნულოვანი ან დადებითი მნიშვნელობები.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="697"/>
       <source>AvoidLastX_Faces: Avoid last X faces count limited to 100.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Avoid last X faces count limited to 100.</translation>
+      <translation>AvoidLastX_Faces: თავიდან ასაცილებელი ბოლო X ზედაპირების უდიდესი რიცხვი 100-ის ტოლია.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="771"/>
@@ -2428,7 +2428,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="608"/>
       <source>Modifies a path to add dragknife corner actions</source>
-      <translation type="unfinished">Modifies a path to add dragknife corner actions</translation>
+      <translation>ტრაექტორიის ჩასწორება დანის კუთხის მოქმედებების დასამატებლად</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="625"/>
@@ -2818,7 +2818,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathJobCmd.py" line="107"/>
       <source>Exports Path Job as a template to be used for other jobs</source>
-      <translation type="unfinished">Exports Path Job as a template to be used for other jobs</translation>
+      <translation>ტრაექტორიის დავალების შაბლონად გატანა</translation>
     </message>
   </context>
   <context>
@@ -3283,7 +3283,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathPropertyBagGui.py" line="438"/>
       <source>Creates an object which can be used to store reference properties.</source>
-      <translation type="unfinished">Creates an object which can be used to store reference properties.</translation>
+      <translation>ქმნს ობიექტს, რომელიც შეიძლება გამოიყენოთ ბმების თვისებების შესანახად.</translation>
     </message>
   </context>
   <context>

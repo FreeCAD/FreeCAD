@@ -2625,8 +2625,8 @@ Gdy to jest aktywne, następujące obiekty zostaną włączone do grupy konstruk
 When this is active, any drawing tool that is terminated will automatically start again.
 This can be used to draw several objects one after the other in succession.</source>
       <translation>Przełącza na tryb kontynuowania.
-Gdy jest to aktywne, każde narzędzie do rysowania, które zostanie zakończone, zostanie automatycznie uruchomione ponownie.
-To może być użyte do rysowania kilku obiektów jeden po drugim.</translation>
+Gdy opcja jest aktywna, każde narzędzie do rysowania, którego praca zostanie zakończona, zostanie automatycznie uruchomione ponownie.
+Funkcja może być użyta do rysowania kilku obiektów jeden po drugim.</translation>
     </message>
   </context>
   <context>
@@ -6926,7 +6926,7 @@ Zauważ, że nie jest to w pełni obsługiwane, a wiele obiektów nie będzie ed
     <message>
       <location filename="../ui/preferences-draft.ui" line="341"/>
       <source>Prefix labels of Clones with:</source>
-      <translation>Prefiksy etykiet klonów za pomocą:</translation>
+      <translation>Prefiks etykiet klonów:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="372"/>

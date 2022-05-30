@@ -1871,19 +1871,19 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     </message>
     <message>
       <source>Mesh tools</source>
-      <translation>Narzędzia siatki</translation>
+      <translation>Siatka — narzędzia</translation>
     </message>
     <message>
       <source>Mesh modify</source>
-      <translation>Modyfikacja siatki</translation>
+      <translation>Siatka — modyfikacja</translation>
     </message>
     <message>
       <source>Mesh boolean</source>
-      <translation>Funkcje logiczne dla siatki</translation>
+      <translation>Siatka — funkcje logiczne</translation>
     </message>
     <message>
       <source>Mesh cutting</source>
-      <translation>Cięcie siatki</translation>
+      <translation>Siatka — cięcie</translation>
     </message>
     <message>
       <source>Mesh segmentation</source>
@@ -1891,7 +1891,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     </message>
     <message>
       <source>Mesh analyze</source>
-      <translation>Analiza siatki</translation>
+      <translation>Siatka — analiza</translation>
     </message>
   </context>
 </TS>

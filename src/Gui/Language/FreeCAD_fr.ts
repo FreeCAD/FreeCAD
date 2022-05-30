@@ -84,7 +84,7 @@
     </message>
     <message>
       <source>Enum</source>
-      <translation type="unfinished">Enum</translation>
+      <translation>Enumération</translation>
     </message>
     <message>
       <source>Base</source>

@@ -597,7 +597,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::ApplicationCache</name>
     <message>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>缓存目录</translation>
     </message>
     <message>
       <source>The cache directory %1 exceeds the size of %2.</source>
@@ -1565,7 +1565,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Number format:</source>
-      <translation type="unfinished">Number format:</translation>
+      <translation>数字格式：</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -1573,11 +1573,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Selected language</source>
-      <translation type="unfinished">Selected language</translation>
+      <translation>选择语言</translation>
     </message>
     <message>
       <source>C/POSIX</source>
-      <translation type="unfinished">C/POSIX</translation>
+      <translation>C/POSIX</translation>
     </message>
     <message>
       <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
@@ -2959,15 +2959,15 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
     <message>
       <source>Cache</source>
-      <translation type="unfinished">Cache</translation>
+      <translation>缓存</translation>
     </message>
     <message>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>缓存目录</translation>
     </message>
     <message>
       <source>Location:</source>
-      <translation type="unfinished">Location:</translation>
+      <translation>位置：</translation>
     </message>
     <message>
       <source>Check periodically at program start:</source>
@@ -2999,7 +2999,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Cache size limit:</source>
-      <translation type="unfinished">Cache size limit:</translation>
+      <translation>缓存大小限制：</translation>
     </message>
     <message>
       <source>Check now...</source>
@@ -3363,23 +3363,23 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-ShareAlike</translation>
+      <translation>知识共享 署名-相同方式共享</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NoDerivatives</translation>
+      <translation>知识共享 署名-禁止演绎</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial</translation>
+      <translation>知识共享 署名-非商业性使用</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>知识共享 署名-非商业性使用-相同方式共享</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>知识共享 署名-非商业性使用-禁止演绎</translation>
     </message>
     <message>
       <source>Public Domain</source>
@@ -4924,11 +4924,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::RemoteDebugger</name>
     <message>
       <source>Attach to remote debugger</source>
-      <translation type="unfinished">Attach to remote debugger</translation>
+      <translation>附加到远程调试器</translation>
     </message>
     <message>
       <source>winpdb</source>
-      <translation type="unfinished">winpdb</translation>
+      <translation>winpdb</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -4936,7 +4936,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>VS Code</source>
-      <translation type="unfinished">VS Code</translation>
+      <translation>VS Code</translation>
     </message>
     <message>
       <source>Address:</source>
@@ -5603,7 +5603,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
+      <translation>打开插件管理器</translation>
     </message>
     <message>
       <source>Close All</source>
@@ -6082,11 +6082,11 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Case sensitive</source>
-      <translation type="unfinished">Case sensitive</translation>
+      <translation>大小写敏感</translation>
     </message>
     <message>
       <source>Whole words</source>
-      <translation type="unfinished">Whole words</translation>
+      <translation>全字匹配</translation>
     </message>
   </context>
   <context>
@@ -6372,7 +6372,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>保加利亚语</translation>
     </message>
     <message>
       <source>Catalan</source>
@@ -6492,7 +6492,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>西班牙语（阿根廷）</translation>
     </message>
     <message>
       <source>Swedish</source>
@@ -6516,7 +6516,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Georgian</source>
-      <translation type="unfinished">Georgian</translation>
+      <translation>格鲁吉亚语</translation>
     </message>
   </context>
   <context>
@@ -8515,11 +8515,11 @@ the current copy will be lost.
     <name>StdCmdReportBug</name>
     <message>
       <source>Report a bug</source>
-      <translation type="unfinished">Report a bug</translation>
+      <translation>报告错误</translation>
     </message>
     <message>
       <source>Report a bug or suggest a feature</source>
-      <translation type="unfinished">Report a bug or suggest a feature</translation>
+      <translation>报告错误/提出建议</translation>
     </message>
   </context>
   <context>

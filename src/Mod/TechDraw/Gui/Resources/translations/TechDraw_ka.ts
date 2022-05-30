@@ -6287,7 +6287,7 @@ be used instead if the dimension value</source>
     <message>
       <location filename="../../TaskDimension.ui" line="362"/>
       <source>Set dimension line angle to match selected edge or vertices.</source>
-      <translation type="unfinished">Set dimension line angle to match selected edge or vertices.</translation>
+      <translation>ზომის ხაზის კუთხის მონიშნული ჭდის ან წვეროების ტოლად დაყენება.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="365"/>

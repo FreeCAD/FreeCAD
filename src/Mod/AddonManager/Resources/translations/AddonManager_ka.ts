@@ -245,12 +245,12 @@
     <message>
       <location filename="../../addonmanager_macro.py" line="175"/>
       <source>In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.</source>
-      <translation type="unfinished">In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.</translation>
+      <translation>მაკროში {} ელემენტის {} ტექსტური მნიშვნელობა ვერ ვიპოვე. შევეცდები გამოვიცნო მისი დანიშნულება და გამოვიყენო სტრიქონი თარიღის ელემენტიდან.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="185"/>
       <source>In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.</source>
-      <translation type="unfinished">In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.</translation>
+      <translation>მაკროში {} ელემენტის {} ტექსტური მნიშვნელობა ვერ ვიპოვე. შევეცდები გამოვიცნო მისი დანიშნულება და გამოვიყენო მისი შემცველობის ტექსტური ფორმა.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="203"/>

@@ -9655,7 +9655,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>&amp; Edit</translation>
+      <translation>&amp;Edit</translation>
     </message>
     <message>
       <source>Standard views</source>
