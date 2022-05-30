@@ -42,9 +42,9 @@ class _CommandImageScaling:
     "Command to Scale an Image to an Image Plane"
     def GetResources(self):
         return {'Pixmap': "Image_Scaling",
-                'MenuText': QtGui.QApplication.translate("Image_Scaling", "Scale image plane", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scale image plane"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Image_Scaling", "Scales an image plane by defining a distance between two points", None)}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scales an image plane by defining a distance between two points")}
 
     def Activated(self):
         import draftguitools.gui_trackers as trackers

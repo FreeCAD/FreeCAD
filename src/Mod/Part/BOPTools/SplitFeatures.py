@@ -167,14 +167,14 @@ class CommandBooleanFragments:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_BooleanFragments.svg"),
-                'MenuText': QtGui.QApplication.translate("Part_SplitFeatures","Boolean fragments", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean fragments"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_SplitFeatures",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
                                                     "Create a 'Boolean Fragments' object from two or more selected objects,\n"
                                                     "or from the shapes inside a compound.\n"
                                                     "This is a boolean union which is then sliced at the intersections\n"
                                                     "of the original shapes.\n"
-                                                    "A 'Compound Filter' can be used to extract the individual slices.",None)}
+                                                    "A 'Compound Filter' can be used to extract the individual slices.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -326,12 +326,12 @@ class CommandSlice:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_Slice.svg"),
-                'MenuText': QtGui.QApplication.translate("Part_SplitFeatures","Slice to compound", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice to compound"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_SplitFeatures",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
                                                     "Slice a selected object by using other objects as cutting tools.\n"
                                                     "The resulting pieces will be stored in a compound.\n"
-                                                    "A 'Compound Filter' can be used to extract the individual slices.", None)}
+                                                    "A 'Compound Filter' can be used to extract the individual slices.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1:
@@ -358,11 +358,11 @@ class CommandSliceApart:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_SliceApart.svg"),
-                'MenuText': QtGui.QApplication.translate("Part_SplitFeatures","Slice apart", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice apart"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_SplitFeatures",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
                                                     "Slice a selected object by other objects, and split it apart.\n"
-                                                    "It will create a 'Compound Filter' for each slice.", None)}
+                                                    "It will create a 'Compound Filter' for each slice.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1:
@@ -508,13 +508,13 @@ class CommandXOR:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_XOR.svg"),
-                'MenuText': QtGui.QApplication.translate("Part_SplitFeatures","Boolean XOR", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean XOR"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_SplitFeatures",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
                                                     "Perform an 'exclusive OR' boolean operation with two or more selected objects,\n"
                                                     "or with the shapes inside a compound.\n"
                                                     "This means the overlapping volumes of the shapes will be removed.\n"
-                                                    "A 'Compound Filter' can be used to extract the remaining pieces.", None)}
+                                                    "A 'Compound Filter' can be used to extract the remaining pieces.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:

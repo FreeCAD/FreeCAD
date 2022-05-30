@@ -37,15 +37,15 @@ class _CommandCompoundFilter:
     "Command to create CompoundFilter feature"
     def GetResources(self):
         return {'Pixmap': "Part_CompoundFilter",
-                'MenuText': QtGui.QApplication.translate("Part_CompoundFilter", "Compound Filter", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_CompoundFilter", "Compound Filter"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_CompoundFilter",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_CompoundFilter",
                                                     "Filter out objects from a selected compound "
                                                     "by characteristics like volume,\n"
                                                     "area, or length, or by choosing specific items.\n"
                                                     "If a second object is selected, it will be used "
                                                     "as reference, for example,\n"
-                                                    "for collision or distance filtering.", None)}
+                                                    "for collision or distance filtering.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelection()) == 1 or len(FreeCADGui.Selection.getSelection()) == 2:

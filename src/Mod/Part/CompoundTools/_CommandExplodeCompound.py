@@ -37,11 +37,11 @@ class _CommandExplodeCompound:
     "Command to explode a compound"
     def GetResources(self):
         return {'Pixmap': "Part_ExplodeCompound",
-                'MenuText': QtGui.QApplication.translate("Part_ExplodeCompound", "Explode compound", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode compound"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_ExplodeCompound",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP
                                                     "Split up a compound of shapes into separate objects.\n"
-                                                    "It will create a 'Compound Filter' for each shape.", None)}
+                                                    "It will create a 'Compound Filter' for each shape.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelection()) == 1:

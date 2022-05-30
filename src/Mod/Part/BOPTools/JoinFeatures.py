@@ -172,10 +172,10 @@ class CommandConnect:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_JoinConnect.svg"),
-                'MenuText': QtGui.QApplication.translate("Part_JoinConnect","Connect objects", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Connect objects"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_JoinConnect",
-                                                    "Fuses objects, taking care to preserve voids.", None)}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect",
+                                                    "Fuses objects, taking care to preserve voids.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -268,10 +268,10 @@ class CommandEmbed:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_JoinEmbed.svg"),
-                'MenuText': QtGui.QApplication.translate("Part_JoinEmbed","Embed object", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed","Embed object"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_JoinEmbed",
-                                                    "Fuses one object into another, taking care to preserve voids.", None)}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed",
+                                                    "Fuses one object into another, taking care to preserve voids.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) == 2:
@@ -363,10 +363,10 @@ class CommandCutout:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_JoinCutout.svg"),
-                'MenuText': QtGui.QApplication.translate("Part_JoinCutout","Cutout for object", None),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout","Cutout for object"),
                 'Accel': "",
-                'ToolTip': QtGui.QApplication.translate("Part_JoinCutout",
-                                                    "Makes a cutout in one object to fit another object.", None)}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout",
+                                                    "Makes a cutout in one object to fit another object.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) == 2:
