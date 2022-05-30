@@ -77,8 +77,8 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_None | App::Prop_NoRecompute), "X position");
-    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_None | App::Prop_NoRecompute), "Y position");
+    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_Output), "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_Output), "Y position");
     ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_Output, "Lock View position to parent Page or Group");
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
@@ -103,8 +103,6 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
         return App::DocumentObject::execute();
     }
     handleXYLock();
-    requestPaint();
-    //documentObject::recompute causes an infinite loop.
     //should not be necessary to purgeTouched here, but it prevents a superfluous feature recompute
     purgeTouched();                           //this should not be necessary!
     return App::DocumentObject::execute();
@@ -159,10 +157,7 @@ void DrawView::onChanged(const App::Property* prop)
             requestPaint();
         } else if ((prop == &X) ||
             (prop == &Y)) {
-//            Base::Console().Message("DV::onChanged(X or Y)\n");
-            DrawView::execute();
-            X.purgeTouched();
-            Y.purgeTouched();
+            //X,Y changes are only interesting to DPGI and Gui side
         }
     }
     App::DocumentObject::onChanged(prop);
@@ -417,8 +412,14 @@ void DrawView::setPosition(double x, double y, bool force)
 //    Base::Console().Message("DV::setPosition(%.3f,%.3f) - \n",x,y,getNameInDocument());
     if ( (!isLocked()) ||
          (force) ) {
-        X.setValue(x);
-        Y.setValue(y);
+        double currX = X.getValue();
+        double currY = X.getValue();
+        if (!DrawUtil::fpCompare(currX, x, 0.001)) {    // 0.001mm tolerance
+            X.setValue(x);
+        }
+        if (!DrawUtil::fpCompare(currY, y, 0.001)) {
+            Y.setValue(y);
+        }
     }
 }
 
