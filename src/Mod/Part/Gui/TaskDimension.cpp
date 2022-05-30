@@ -63,6 +63,7 @@
 # include <Inventor/engines/SoComposeRotationFromTo.h>
 # include <Inventor/engines/SoComposeRotation.h>
 # include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoPickStyle.h>
 #endif
 
 #include <Base/Console.h>
@@ -408,6 +409,11 @@ SbBool PartGui::DimensionLinear::affectsState() const
 
 void PartGui::DimensionLinear::setupDimension()
 {
+  //make unpickable
+  SoPickStyle* ps = static_cast<SoPickStyle*>(getPart("pickStyle", true));
+  if (ps)
+      ps->style = SoPickStyle::UNPICKABLE;
+
   //transformation
   SoTransform *trans = static_cast<SoTransform *>(getPart("transformation", true));
   trans->translation.connectFrom(&point1);
