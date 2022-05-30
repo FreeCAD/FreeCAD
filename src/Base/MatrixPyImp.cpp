@@ -120,7 +120,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "matrix or up to 16 floats expected");
+    PyErr_SetString(PyExc_TypeError, "Base.Matrix, four Base.Vector or up to 16 floats expected");
     return -1;
 }
 
@@ -291,10 +291,9 @@ PyObject* MatrixPy::move(PyObject * args)
 
     PY_TRY {
         getMatrixPtr()->move(vec);
+        Py_Return;
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::scale(PyObject * args)
@@ -337,10 +336,9 @@ PyObject* MatrixPy::scale(PyObject * args)
 
     PY_TRY {
         getMatrixPtr()->scale(vec);
+        Py_Return;
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::hasScale(PyObject * args)
@@ -358,6 +356,7 @@ PyObject* MatrixPy::nullify(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
       return nullptr;
+
     PY_TRY {
         getMatrixPtr()->nullify();
         Py_Return;
@@ -369,6 +368,7 @@ PyObject* MatrixPy::isNull(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
       return nullptr;
+
     PY_TRY {
         bool ok = getMatrixPtr()->isNull();
         return Py::new_reference_to(Py::Boolean(ok));
@@ -380,18 +380,19 @@ PyObject* MatrixPy::unity(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
       return nullptr;
+
     PY_TRY {
         getMatrixPtr()->setToUnity();
+        Py_Return;
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::isUnity(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
       return nullptr;
+
     PY_TRY {
         bool ok = getMatrixPtr()->isUnity();
         return Py::new_reference_to(Py::Boolean(ok));
@@ -421,86 +422,91 @@ PyObject* MatrixPy::transform(PyObject * args)
 PyObject* MatrixPy::col(PyObject * args)
 {
     int index;
-    if (PyArg_ParseTuple(args, "i", &index)) {
-        index = index % 4;
-        Matrix4D* mat = getMatrixPtr();
-        Base::Vector3d v = mat->getCol(index);
-        return Py::new_reference_to(Py::Vector(v));
+    if (!PyArg_ParseTuple(args, "i", &index))
+        return nullptr;
+
+    if (index < 0 || index > 3) {
+        PyErr_SetString(PyExc_ValueError, "Index expected in the range [0, 3]");
+        return nullptr;
     }
 
-    PyErr_SetString(PyExc_TypeError, "int expected");
-    return nullptr;
+    Matrix4D* mat = getMatrixPtr();
+    Base::Vector3d v = mat->getCol(index);
+    return Py::new_reference_to(Py::Vector(v));
 }
 
 PyObject* MatrixPy::setCol(PyObject * args)
 {
     int index;
     PyObject* o;
-    if (PyArg_ParseTuple(args, "iO!", &index, &(VectorPy::Type), &o)) {
-        index = index % 4;
-        Base::Vector3d v = Py::Vector(o, false).toVector();
-        Matrix4D* mat = getMatrixPtr();
-        mat->setCol(index, v);
-        Py_Return;
+    if (!PyArg_ParseTuple(args, "iO!", &index, &(VectorPy::Type), &o))
+        return nullptr;
+
+    if (index < 0 || index > 3) {
+        PyErr_SetString(PyExc_ValueError, "Index expected in the range [0, 3]");
+        return nullptr;
     }
 
-    PyErr_SetString(PyExc_TypeError, "int and Vector expected");
-    return nullptr;
+    Base::Vector3d v = Py::Vector(o, false).toVector();
+    Matrix4D* mat = getMatrixPtr();
+    mat->setCol(index, v);
+    Py_Return;
 }
 
 PyObject* MatrixPy::row(PyObject * args)
 {
     int index;
-    if (PyArg_ParseTuple(args, "i", &index)) {
-        index = index % 4;
-        Matrix4D* mat = getMatrixPtr();
-        Base::Vector3d v = mat->getRow(index);
-        return Py::new_reference_to(Py::Vector(v));
+    if (!PyArg_ParseTuple(args, "i", &index))
+        return nullptr;
+
+    if (index < 0 || index > 3) {
+        PyErr_SetString(PyExc_ValueError, "Index expected in the range [0, 3]");
+        return nullptr;
     }
 
-    PyErr_SetString(PyExc_TypeError, "int expected");
-    return nullptr;
+    Matrix4D* mat = getMatrixPtr();
+    Base::Vector3d v = mat->getRow(index);
+    return Py::new_reference_to(Py::Vector(v));
 }
 
 PyObject* MatrixPy::setRow(PyObject * args)
 {
     int index;
     PyObject* o;
-    if (PyArg_ParseTuple(args, "iO!", &index, &(VectorPy::Type), &o)) {
-        index = index % 4;
-        Base::Vector3d v = Py::Vector(o, false).toVector();
-        Matrix4D* mat = getMatrixPtr();
-        mat->setRow(index, v);
-        Py_Return;
+    if (!PyArg_ParseTuple(args, "iO!", &index, &(VectorPy::Type), &o))
+        return nullptr;
+
+    if (index < 0 || index > 3) {
+        PyErr_SetString(PyExc_ValueError, "Index expected in the range [0, 3]");
+        return nullptr;
     }
 
-    PyErr_SetString(PyExc_TypeError, "int and Vector expected");
-    return nullptr;
+    Base::Vector3d v = Py::Vector(o, false).toVector();
+    Matrix4D* mat = getMatrixPtr();
+    mat->setRow(index, v);
+    Py_Return;
 }
 
 PyObject* MatrixPy::trace(PyObject * args)
 {
-    if (PyArg_ParseTuple(args, "")) {
-        Matrix4D* mat = getMatrixPtr();
-        Base::Vector3d v = mat->trace();
-        return Py::new_reference_to(Py::Vector(v));
-    }
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
-    return nullptr;
+    Matrix4D* mat = getMatrixPtr();
+    Base::Vector3d v = mat->trace();
+    return Py::new_reference_to(Py::Vector(v));
 }
 
 PyObject* MatrixPy::setTrace(PyObject * args)
 {
     PyObject* o;
-    if (PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &o)) {
-        Base::Vector3d v = Py::Vector(o, false).toVector();
-        Matrix4D* mat = getMatrixPtr();
-        mat->setTrace(v);
-        Py_Return;
-    }
+    if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &o))
+        return nullptr;
 
-    PyErr_SetString(PyExc_TypeError, "Vector expected");
-    return nullptr;
+    Base::Vector3d v = Py::Vector(o, false).toVector();
+    Matrix4D* mat = getMatrixPtr();
+    mat->setTrace(v);
+    Py_Return;
 }
 
 PyObject* MatrixPy::rotateX(PyObject * args)
@@ -528,10 +534,9 @@ PyObject* MatrixPy::rotateX(PyObject * args)
 
     PY_TRY {
         getMatrixPtr()->rotX(angle);
+        Py_Return;
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::rotateY(PyObject * args)
@@ -559,10 +564,9 @@ PyObject* MatrixPy::rotateY(PyObject * args)
 
     PY_TRY {
         getMatrixPtr()->rotY(angle);
+        Py_Return;
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::rotateZ(PyObject * args)
@@ -590,10 +594,9 @@ PyObject* MatrixPy::rotateZ(PyObject * args)
 
     PY_TRY {
         getMatrixPtr()->rotZ(angle);
+        Py_Return;
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::multiply(PyObject * args)
@@ -619,6 +622,7 @@ PyObject* MatrixPy::multVec(PyObject * args)
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
         return nullptr;
+
     Base::Vector3d vec(static_cast<VectorPy*>(obj)->value());
     getMatrixPtr()->multVec(vec, vec);
     return new VectorPy(new Vector3d(vec));
@@ -630,16 +634,16 @@ PyObject* MatrixPy::invert(PyObject * args)
         return nullptr;
 
     PY_TRY {
-        if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON)
+        if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON) {
             getMatrixPtr()->inverseGauss();
+            Py_Return;
+        }
         else {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
             return nullptr;
         }
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::inverse(PyObject * args)
@@ -659,14 +663,13 @@ PyObject* MatrixPy::inverse(PyObject * args)
         }
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::determinant(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
+
     return PyFloat_FromDouble(getMatrixPtr()->determinant());
 }
 
@@ -675,6 +678,7 @@ PyObject* MatrixPy::submatrix(PyObject * args)
     int dim;
     if (!PyArg_ParseTuple(args, "i", &dim))
         return nullptr;
+
     if (dim < 1 || dim > 4) {
         PyErr_SetString(PyExc_IndexError, "Dimension out of range");
         return nullptr;
@@ -709,6 +713,7 @@ PyObject* MatrixPy::isOrthogonal(PyObject * args)
     double eps=1.0e-06;
     if (!PyArg_ParseTuple(args, "|d",&eps))
         return nullptr;
+
     const Base::Matrix4D& mat = *getMatrixPtr();
     Base::Matrix4D trp = mat;
     trp.transpose();
@@ -747,8 +752,6 @@ PyObject* MatrixPy::transposed(PyObject * args)
         return new MatrixPy(m);
     }
     PY_CATCH;
-
-    Py_Return;
 }
 
 PyObject* MatrixPy::transpose(PyObject * args)
