@@ -240,6 +240,14 @@
       <translation>Παράγοντας μεγέθους</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Κατευθύνσεις u/v ορισμένες από τον χρήστη</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation type="unfinished">Create placement</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Εξομάλυνση</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Μεταβολή καμπυλότητας</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Κατευθύνσεις u/v ορισμένες από τον χρήστη</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Τμηματοποίηση πλέγματος</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Εξομάλυνση πλέγματος</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation type="unfinished">Create mesh from unused triangles</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Επιλέξτε</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Στοιχεία</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Περιοχή</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Επιλέξτε ολόκληρο στοιχείο</translation>
+      <source>All</source>
+      <translation>Όλα</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Διαλέξτε τρίγωνο</translation>
+      <source>Components</source>
+      <translation>Στοιχεία</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; όψεις από</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Όλα</translation>
+      <source>Pick triangle</source>
+      <translation>Διαλέξτε τρίγωνο</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Επιλέξτε ολόκληρο στοιχείο</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Επίπεδο</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation type="unfinished">Detect</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Ανοχή</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Ελάχιστος αριθμός όψεων</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <source>Cylinder</source>

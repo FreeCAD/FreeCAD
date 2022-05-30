@@ -140,14 +140,6 @@
       <translation>Özel doğrular</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>İle başlayan noktaları yoksay:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>İlgili değerle başlayan satırlara göre kümele:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>İlk satır:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Nokta sayısı</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>İlgili değerle başlayan satırlara göre kümele:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>İle başlayan noktaları yoksay:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Nokta biçimi</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Sayı ayıracı:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Nokta biçimi:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Sonraki kütük:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (Gri değerlik)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Sayı ayıracı:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Sonraki kütük:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Nokta biçimi:</translation>
     </message>
     <message>
       <source>Preview</source>

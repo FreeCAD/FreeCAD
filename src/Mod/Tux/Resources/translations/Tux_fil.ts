@@ -4,57 +4,57 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="66"/>
+      <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Select</source>
       <translation>Piliin</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="67"/>
+      <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Zoom</source>
       <translation>Palakihin</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="68"/>
+      <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotate</source>
       <translation>I-ikot</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="69"/>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Pan</source>
       <translation>Pan</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Tilt</source>
       <translation>Tilt</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="71"/>
+      <location filename="../../NavigationIndicatorGui.py" line="72"/>
       <source>Navigation style</source>
       <translation>Estilo ng Nabigasyon</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="72"/>
+      <location filename="../../NavigationIndicatorGui.py" line="73"/>
       <source>Page Up or Page Down key.</source>
       <translation>Key para sa Pag taas o baba ng page.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="73"/>
+      <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Rotation focus</source>
       <translation>Pokus ng Rotasyon</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="74"/>
+      <location filename="../../NavigationIndicatorGui.py" line="75"/>
       <source>Middle mouse button or H key.</source>
       <translation type="unfinished">Middle mouse button or H key.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="75"/>
+      <location filename="../../NavigationIndicatorGui.py" line="77"/>
       <source>Middle mouse button.</source>
       <translation>Gitnang mouse button.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="78"/>
+      <location filename="../../NavigationIndicatorGui.py" line="80"/>
       <source>Navigation style not recognized.</source>
       <translation>Ang estilo ng nabigasyon ay hindi kinikilala.</translation>
     </message>

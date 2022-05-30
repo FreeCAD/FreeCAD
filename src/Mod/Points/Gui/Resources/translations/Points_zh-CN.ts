@@ -140,14 +140,6 @@
       <translation>特殊行</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>忽略以此开头的行:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>按行开始集群:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>第一行：</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>点的数量</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>按行开始集群:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>忽略以此开头的行:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>点格式</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>数分隔符:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>点的格式:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>下一区块:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I(灰度值)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>数分隔符:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>下一区块:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>点的格式:</translation>
     </message>
     <message>
       <source>Preview</source>

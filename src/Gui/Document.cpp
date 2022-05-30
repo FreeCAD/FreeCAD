@@ -2413,6 +2413,8 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
     if (viewProvider && viewProvider->getChildRoot()) {
         std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
         SoGroup* childGroup =  viewProvider->getChildRoot();
+        SoGroup* frontGroup = viewProvider->getFrontRoot();
+        SoGroup* backGroup = viewProvider->getFrontRoot();
 
         // size not the same -> build up the list new
         if (deleting || childGroup->getNumChildren() != static_cast<int>(children.size())) {
@@ -2425,6 +2427,8 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
             }
 
             Gui::coinRemoveAllChildren(childGroup);
+            Gui::coinRemoveAllChildren(frontGroup);
+            Gui::coinRemoveAllChildren(backGroup);
 
             if(!deleting) {
                 for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
@@ -2435,6 +2439,14 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
 
                         SoSeparator* childRootNode =  ChildViewProvider->getRoot();
                         childGroup->addChild(childRootNode);
+
+                        SoSeparator* childFrontNode = ChildViewProvider->getFrontRoot();
+                        if (frontGroup && childFrontNode)
+                            frontGroup->addChild(childFrontNode);
+
+                        SoSeparator* childBackNode = ChildViewProvider->getBackRoot();
+                        if (backGroup && childBackNode)
+                            backGroup->addChild(childBackNode);
 
                         // cycling to all views of the document to remove the viewprovider from the viewer itself
                         for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {

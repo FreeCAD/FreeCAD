@@ -298,16 +298,60 @@ Ali želite nadaljevati?</translation>
       <translation>Pravokotna preslikava</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Preslikava</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Tretji kot</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Prvi kot</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Pogled od:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Os poravnana na desno:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Pomožni pogledi</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Desni klik za aksonometrične nastavitve</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Glavni pogled</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Pomožni pogledi</translation>
     </message>
     <message>
       <source>General</source>
@@ -342,36 +386,8 @@ Ali želite nadaljevati?</translation>
       <translation>Aksonometrično</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Osi navzven in desno</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Navpični nagib</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>Preslikava pogleda</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -386,44 +402,28 @@ Ali želite nadaljevati?</translation>
       <translation>Trimetrična</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Merilo</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Preslikava pogleda</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Os poravnana navzgor</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Osi navzven in desno</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Navpični nagib</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Obrni</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Merilo</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetrična</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Preslikava</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Tretji kot</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Prvi kot</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Pogled od:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Os poravnana na desno:</translation>
     </message>
   </context>
   <context>

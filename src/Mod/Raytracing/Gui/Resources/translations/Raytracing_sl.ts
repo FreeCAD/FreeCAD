@@ -270,22 +270,6 @@ Ali želite nadaljevati?</translation>
       <translation>Sledenje žarku</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Nastavitve izvoza ploskovja</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Najv. odstopanje ploskovja:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Ne izračunaj normal temen</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Zapiši koordinate u, v</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Izris</translation>
     </message>
@@ -334,28 +318,44 @@ Ali želite nadaljevati?</translation>
       <translation>Mape</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Ime datoteke dela:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Ime datoteke kamere:</translation>
+      <source>Default Project dir:</source>
+      <translation>Privzeta mapa projekta:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Uporabljano z orodji</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Privzeta mapa projekta:</translation>
+      <source>Camera file name:</source>
+      <translation>Ime datoteke kamere:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Ime datoteke dela:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Nastavitve izvoza ploskovja</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Najv. odstopanje ploskovja:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Ne izračunaj normal temen</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Zapiši koordinate u, v</translation>
     </message>
   </context>
   <context>

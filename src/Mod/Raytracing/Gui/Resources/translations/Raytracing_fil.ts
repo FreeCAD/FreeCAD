@@ -270,22 +270,6 @@ Do you want to continue?</translation>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Mga paglalagay ng pag-luluwas ng mesh</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Max mesh deviation:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Huwag kalkulahin ang vertex normals</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Isulat ang mga coordinate sa u,v</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Ibigay</translation>
     </message>
@@ -334,28 +318,44 @@ Do you want to continue?</translation>
       <translation>Direktoryo</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Pangalan ng bahagi ng file:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Pangalan ng file ng kamera:</translation>
+      <source>Default Project dir:</source>
+      <translation>Default na Proyekto dir:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Ginamit ng mga kasangkapan utility</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Default na Proyekto dir:</translation>
+      <source>Camera file name:</source>
+      <translation>Pangalan ng file ng kamera:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>Tempkamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Pangalan ng bahagi ng file:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>Tempbahagi.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Mga paglalagay ng pag-luluwas ng mesh</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Max mesh deviation:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Huwag kalkulahin ang vertex normals</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Isulat ang mga coordinate sa u,v</translation>
     </message>
   </context>
   <context>

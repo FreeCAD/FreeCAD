@@ -758,20 +758,20 @@ Düzenli bir katı oluşturma</translation>
       <translation>Ağ bilgisi</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Noktaların sayısı:</translation>
+      <source>Number of faces:</source>
+      <translation>Yüz sayısı:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Bilgi yok</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Yüz sayısı:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Kenarların sayısı:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Noktaların sayısı:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -989,22 +989,6 @@ Please run the command to repair folds first</source>
       <translation>Düzenli Katı</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp; Oluşturma</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt + C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>&amp;Kapat</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt + O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Katı:</translation>
     </message>
@@ -1033,10 +1017,6 @@ Please run the command to repair folds first</source>
       <translation>Simit</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Yükseklik:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Uzunluk:</translation>
     </message>
@@ -1045,20 +1025,24 @@ Please run the command to repair folds first</source>
       <translation>Genişlik:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Yükseklik:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Yarıçapı:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Kapalı</translation>
+      <source>Edge length:</source>
+      <translation>Kenar uzunluğu:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Örnekleme:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Kenar uzunluğu:</translation>
+      <source>Closed</source>
+      <translation>Kapalı</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1067,6 +1051,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Yarıçap 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp; Oluşturma</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt + C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>&amp;Kapat</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt + O</translation>
     </message>
   </context>
   <context>
@@ -1091,10 +1091,6 @@ Please run the command to repair folds first</source>
       <translation type="unfinished">Export</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Ağ ve nesne arasındaki en yüksek sapma</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Boşluksuz dizilimin mevcut yüzeye olan sapması</translation>
     </message>
@@ -1105,6 +1101,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Maksimum kafes sapması</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Ağ ve nesne arasındaki en yüksek sapma</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1139,36 +1139,36 @@ is used when writing a file in AMF format</source>
       <translation>Yeni örgüler için varsayılan görünüm</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Varsayılan çizgi rengi</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Kafes Saydamlığı</translation>
+      <source>Default mesh color</source>
+      <translation>Standart kafes rengi</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Yeni ağ örgüleri için varsayılan renk</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Kafes Saydamlığı</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Standart kafes rengi</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Bir sınır kutusu görüntülenecek</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Vurgulanan veya seçilen örgüler için sınırlayıcı kutuyu göster</translation>
+      <source>Default line color</source>
+      <translation>Varsayılan çizgi rengi</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Yeni şekiller için varsayılan çizgi rengi</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Çizgi şeffaflığı</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Arkayüz rengi</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1183,24 +1183,16 @@ Eğer işaretlenmezse, "Arka aydınlatma rengini etkinleştir" seçeneğine bağ
       <translation>İki taraflı işle (render)</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Çizgi şeffaflığı</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Bir sınır kutusu görüntülenecek</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Arkayüz rengi</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Vurgulanan veya seçilen örgüler için sınırlayıcı kutuyu göster</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Düzgünleştirme</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name = "qrichtext" content = "1"/&gt; &lt;/head&gt;&lt;body style = "beyaz-alan: ön-sarma; font-family: MS Shell Dlg 2; font-size: 7.8 punto, yazı tipi ağırlığı: 400, yazı tipi normal: metin süsleme: yok; "&gt; &lt;p style =" kenar boşluğu üstü: 12px; boşluk-altı: 12px; boşluk solu: 0px; boşluk-sağ: 0px; -qt-block-girintisi: 0; text-indent: 0px; font-size: 8pt; "&gt; Bu, normal gölgeleme yapmak için normaller hesaplanan iki yüz arasındaki en küçük açıdır. &lt;/P&gt; &lt;p style = "margin-top: 12px; margin-bottom: 12px; margin-left: 0px; margin-right: 0px; -qt-block-girintisi: 0; text-indent: 0px; font-size: 8pt;"&gt; iki komşu yüzün normalleri arasındaki açı kırışma açısından azsa, yüzler ortak kenarlarının etrafında düzgün gölgeli olacaktır. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Kırışma açısı</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1218,6 +1210,14 @@ Phong gölgeleme tekniği daha yumuşak bir dış görünüşe yol açarken, zem
     <message>
       <source>Define normal per vertex</source>
       <translation>Vertex başına normal tanımlayın</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name = "qrichtext" content = "1"/&gt; &lt;/head&gt;&lt;body style = "beyaz-alan: ön-sarma; font-family: MS Shell Dlg 2; font-size: 7.8 punto, yazı tipi ağırlığı: 400, yazı tipi normal: metin süsleme: yok; "&gt; &lt;p style =" kenar boşluğu üstü: 12px; boşluk-altı: 12px; boşluk solu: 0px; boşluk-sağ: 0px; -qt-block-girintisi: 0; text-indent: 0px; font-size: 8pt; "&gt; Bu, normal gölgeleme yapmak için normaller hesaplanan iki yüz arasındaki en küçük açıdır. &lt;/P&gt; &lt;p style = "margin-top: 12px; margin-bottom: 12px; margin-left: 0px; margin-right: 0px; -qt-block-girintisi: 0; text-indent: 0px; font-size: 8pt;"&gt; iki komşu yüzün normalleri arasındaki açı kırışma açısından azsa, yüzler ortak kenarlarının etrafında düzgün gölgeli olacaktır. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Kırışma açısı</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1384,6 +1384,10 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Tekrar Ağ Örme Değişkeni</translation>
     </message>
@@ -1423,10 +1427,6 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <source>Clear</source>
       <translation>Temizle</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1439,40 +1439,40 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <translation>Seç</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Bütün bileşeni seç</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Üçgeni seç</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>'den az yüzler</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Bölge</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Bileşenler</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Hepsi</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Bileşenler</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>'den az yüzler</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Üçgeni seç</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Bütün bileşeni seç</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Seçimi kaldır</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Tüm bileşen seçimini kaldırın</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>'den fazla yüz</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Tüm bileşen seçimini kaldırın</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1549,8 +1549,12 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <translation>Örgü bölütleme</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Küre</translation>
+      <source>Plane</source>
+      <translation>Düzlem</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametreler...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1561,16 +1565,12 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <translation>Minimum yüz sayısı</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parametreler...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Düzlem</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Silindir</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Küre</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1757,6 +1757,10 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
       <translation>Asimptot Biçimi</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Kafesi Dışa Aktar</translation>
     </message>
@@ -1813,6 +1817,10 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
       <translation>Parçaları görüntüle</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Bilgi modundan çık</translation>
     </message>
@@ -1840,10 +1848,6 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
       <source>Annotation</source>
       <translation>Not</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1860,12 +1864,32 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
       <translation>Kafesler</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Kesme</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Kafes araçları</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Kesme</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Örgü bölütleme</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

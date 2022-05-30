@@ -270,22 +270,6 @@ Do you want to continue?</source>
       <translation>სხივების აგება</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>მრავალკუთხა ბადის გატანის პარამეტრები</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>მრავალკუთხა ბადის მაქსიმალური გადახრა:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>არ გამოთვალოთ წვეროების ნორმალები</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>U,v კოორდინატების ჩაწერა</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>რენდერი</translation>
     </message>
@@ -334,28 +318,44 @@ Do you want to continue?</source>
       <translation>კატალოგები</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>ნაწილის ფაილის სახელი:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>კამერის ფაილის სახელი:</translation>
+      <source>Default Project dir:</source>
+      <translation>პროექტის ნაგულისხმევი საქაღალდე:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>გამოიყენება დამხმარე ხელსაწყოების მიერ</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>პროექტის ნაგულისხმევი საქაღალდე:</translation>
+      <source>Camera file name:</source>
+      <translation>კამერის ფაილის სახელი:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>ნაწილის ფაილის სახელი:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>მრავალკუთხა ბადის გატანის პარამეტრები</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>მრავალკუთხა ბადის მაქსიმალური გადახრა:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>არ გამოთვალოთ წვეროების ნორმალები</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>U,v კოორდინატების ჩაწერა</translation>
     </message>
   </context>
   <context>

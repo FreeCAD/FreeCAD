@@ -268,22 +268,6 @@ Do you want to continue?</source>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Ρυθμίσεις εξαγωγής πλέγματος</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Μέγιστη απόκλιση πλέγματος:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Να μην υπολογιστούν τα κάθετα διανύσματα κορυφών</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Εγγραφή συντεταγμένων u,v</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Αποτύπωση</translation>
     </message>
@@ -332,28 +316,44 @@ Do you want to continue?</source>
       <translation>Ευρετήρια</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Όνομα αρχείου εξαρτήματος:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Όνομα αρχείου κάμερας:</translation>
+      <source>Default Project dir:</source>
+      <translation>Προεπιλεγμένο ευρετήριο Έργων:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Χρησιμοποιείται από τα βοηθητικά εργαλεία</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Προεπιλεγμένο ευρετήριο Έργων:</translation>
+      <source>Camera file name:</source>
+      <translation>Όνομα αρχείου κάμερας:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Όνομα αρχείου εξαρτήματος:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Ρυθμίσεις εξαγωγής πλέγματος</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Μέγιστη απόκλιση πλέγματος:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Να μην υπολογιστούν τα κάθετα διανύσματα κορυφών</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Εγγραφή συντεταγμένων u,v</translation>
     </message>
   </context>
   <context>

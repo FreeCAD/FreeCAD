@@ -4,50 +4,50 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="144"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="128"/>
       <source>Scale image plane</source>
       <translation>Масштабувати зображення площини</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="145"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="129"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>Відстань [mm]</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="146"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="130"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>Оберіть першу точку</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="171"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="155"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Введіть відстань&lt;/font&gt;</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="174"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="158"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Оберіть зображення площини&lt;/font&gt;</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="199"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="183"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>Оберіть другу точку</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="208"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="192"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>Оберіть  Площину Зображення та введіть відстань</translation>
     </message>
   </context>
   <context>
     <name>Image_Scaling</name>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="62"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="46"/>
       <source>Scale image plane</source>
       <translation>Масштабувати зображення площини</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="64"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="50"/>
       <source>Scales an image plane by defining a distance between two points</source>
       <translation>Масштабує зображення площини, визначаючи відстань між двома точками</translation>
     </message>

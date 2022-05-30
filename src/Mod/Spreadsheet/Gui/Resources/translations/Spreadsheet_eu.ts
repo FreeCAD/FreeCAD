@@ -9,6 +9,7 @@
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>Gelaxka</translation>
@@ -54,6 +55,7 @@
       <translation>Gehitu kontrolagailua</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
       <translation>Gehitu propietate-kontrolagailua</translation>
@@ -67,7 +69,7 @@
       <translation>Gehitu kontrolagailua</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
       <translation>Gelaxka-kontrolagailu bat gehitzen dio hautatutako kalkulu-orriari</translation>
     </message>
@@ -80,7 +82,7 @@
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation>Kalkulu-orri bat gehitzen dio dokumentu aktiboari</translation>
     </message>
@@ -93,7 +95,7 @@
       <translation>Gehitu propietate-kontrolagailua</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
       <translation>Propietate-kontrolagailu bat gehitzen dio hautatutako kalkulu-orriari</translation>
     </message>
@@ -493,7 +495,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="20"/>
       <source>From cells:</source>
-      <translation type="unfinished">From cells:</translation>
+      <translation>Gelaxketatik:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="27"/>
@@ -510,7 +512,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="42"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>Gelaxketara:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -529,7 +531,7 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="65"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Orria:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="72"/>
@@ -544,12 +546,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Use hidden reference</source>
-      <translation type="unfinished">Use hidden reference</translation>
+      <translation>Erabili ezkutuko erreferentzia</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="91"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Deslotu</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="98"/>
@@ -572,7 +574,7 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Gelaxka-barrutia:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -585,14 +587,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Hasierako gelaxkaren helbidea.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Barrutiaren lehen zutabeak konfigurazio-izenen zerrenda bat duela suposatzen
+da. Zerrenda hori kate-zerrenda bat sortzeko erabiliko da eta emandako
+propietatearekin lotuko da erabiltzaileak konfigurazioa modu dinamikoan aldatzeko.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Barrutiaren lehen errenkada propietate horren bidez (zeharka) hautatutako edozein
+errenkadari lotuko zaio.
 </translation>
     </message>
     <message>
@@ -606,32 +608,32 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Amaierako gelaxkaren helbidea.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Barrutiaren lehen zutabeak konfigurazio-izenen zerrenda bat duela suposatzen
+da. Zerrenda hori kate-zerrenda bat sortzeko erabiliko da eta emandako
+propietatearekin lotuko da erabiltzaileak konfigurazioa modu dinamikoan aldatzeko.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Barrutiaren lehen errenkada propietate horren bidez (zeharka) hautatutako edozein
+errenkadari lotuko zaio.
 </translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Propietatea:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Idatzi adierazpen bat diseinu-konfigurazioa dinamikoki aldatzeko erabiliko den objektua
+eta propietate-izena zehazteko. Propietatea sortu egingo da lehendik ez badago.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Taldea:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
@@ -962,12 +964,12 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="180"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Lotu gelaxkak</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Deslotu gelaxkak</translation>
     </message>
   </context>
   <context>
@@ -1133,12 +1135,12 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../SheetTableView.cpp" line="182"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Birkalkulatu</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>Lotu...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="190"/>
@@ -1153,7 +1155,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../SheetTableView.cpp" line="200"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Zatitu gelaxkak</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>
@@ -1199,7 +1201,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Kalkulu-orria</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1209,7 +1211,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Estiloak</translation>
     </message>
   </context>
 </TS>

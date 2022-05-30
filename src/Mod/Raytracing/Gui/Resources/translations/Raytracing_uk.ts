@@ -270,22 +270,6 @@ Do you want to continue?</source>
       <translation>Трасування променів</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Налаштування експорту сітки(Mesh)</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Максимальне відхилення полігональної сітки:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Не розраховувати нормалі вершин</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Записувати u,v координати</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Візуалізувати</translation>
     </message>
@@ -334,28 +318,44 @@ Do you want to continue?</source>
       <translation>Каталоги</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Ім'я файлу деталі:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Ім'я файлу камери:</translation>
+      <source>Default Project dir:</source>
+      <translation>Каталог проекту за замовчуванням:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Використовується допоміжними інструментами</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Каталог проекту за замовчуванням:</translation>
+      <source>Camera file name:</source>
+      <translation>Ім'я файлу камери:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Ім'я файлу деталі:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Налаштування експорту сітки(Mesh)</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Максимальне відхилення полігональної сітки:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Не розраховувати нормалі вершин</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Записувати u,v координати</translation>
     </message>
   </context>
   <context>

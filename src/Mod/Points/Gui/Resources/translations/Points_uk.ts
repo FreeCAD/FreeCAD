@@ -140,14 +140,6 @@
       <translation>Спеціальні лінії</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Ігнорувати рядки, що починаються з:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Скупчення по лінії, починаючи з:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Перший рядок:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Кількість точок</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Скупчення по лінії, починаючи з:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Ігнорувати рядки, що починаються з:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Формат точки</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Номер роздільника:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Формат точок:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Наступний блок:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (Значення сірого)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Номер роздільника:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Наступний блок:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Формат точок:</translation>
     </message>
     <message>
       <source>Preview</source>

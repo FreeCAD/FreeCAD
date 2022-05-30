@@ -297,16 +297,60 @@ Do you want to continue?</source>
       <translation>Rzutowanie ortogonalne</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Rzutowanie</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Kąt trzeci</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Kąt pierwszy</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Widok z:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Oś wyrównana w prawo:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Inne Widoki</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Kliknij prawym przyciskiem myszki, aby uzyskać ustawienia aksonometryczne</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Widok główny</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Inne Widoki</translation>
     </message>
     <message>
       <source>General</source>
@@ -338,7 +382,27 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Axonometric</source>
-      <translation>Aksonometryczny</translation>
+      <translation>Aksonometria</translation>
+    </message>
+    <message>
+      <source>View projection</source>
+      <translation>Zobacz rzut</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Widok izometryczny</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetryczny</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetryczny</translation>
+    </message>
+    <message>
+      <source> Axis aligned up</source>
+      <translation> Wyrównanie osi</translation>
     </message>
     <message>
       <source>Axis out and right</source>
@@ -349,80 +413,16 @@ Do you want to continue?</source>
       <translation>Nachylenie w pionie</translation>
     </message>
     <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
-    </message>
-    <message>
-      <source>Isometric</source>
-      <translation>Izometryczny</translation>
-    </message>
-    <message>
-      <source>Dimetric</source>
-      <translation>Dimetryczny</translation>
-    </message>
-    <message>
-      <source>Trimetric</source>
-      <translation>Trymetryczny</translation>
+      <source>Flip</source>
+      <translation>Odwróć</translation>
     </message>
     <message>
       <source> Scale</source>
       <translation> Skala</translation>
     </message>
     <message>
-      <source>View projection</source>
-      <translation>Zobacz rzut</translation>
-    </message>
-    <message>
-      <source> Axis aligned up</source>
-      <translation> Wyrównanie osi</translation>
-    </message>
-    <message>
-      <source>Flip</source>
-      <translation>Odwróć</translation>
-    </message>
-    <message>
       <source> Trimetric</source>
-      <translation> Trymetryczny</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Rzutowanie</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Kąt trzeci</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Kąt pierwszy</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Widok z:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Oś wyrównana w prawo:</translation>
+      <translation> Trimetryczny</translation>
     </message>
   </context>
   <context>

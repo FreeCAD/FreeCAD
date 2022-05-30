@@ -9,6 +9,7 @@
       <translation>試算表</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>單元</translation>
@@ -54,6 +55,7 @@
       <translation type="unfinished">Add controller</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
       <translation type="unfinished">Add property controller</translation>
@@ -67,7 +69,7 @@
       <translation type="unfinished">Add controller</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
       <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
     </message>
@@ -80,7 +82,7 @@
       <translation>試算表</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
     </message>
@@ -93,7 +95,7 @@
       <translation type="unfinished">Add property controller</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
       <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
     </message>
@@ -689,7 +691,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>左</translation>
+      <translation>左視圖</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -700,7 +702,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>右</translation>
+      <translation>右視圖</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -710,12 +712,12 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>上</translation>
+      <translation>上視圖</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation>底部</translation>
+      <translation>底視圖</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>

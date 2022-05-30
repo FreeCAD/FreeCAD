@@ -754,20 +754,20 @@
       <translation>Thông tin lưới</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Số lượng điểm:</translation>
+      <source>Number of faces:</source>
+      <translation>Số mặt:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Không có thông tin</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Số mặt:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Số cạnh:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Số lượng điểm:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Hãy chọn lệnh để sửa các nếp uốn trước</translation>
       <translation>Chất rắn thông thường</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Tạo</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Đó&amp;ng</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Chất rắn:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Hãy chọn lệnh để sửa các nếp uốn trước</translation>
       <translation>Hình xuyến</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Chiều cao:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation type="unfinished">Length:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Hãy chọn lệnh để sửa các nếp uốn trước</translation>
       <translation>Bề rộng:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Chiều cao:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Bán kính:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Đã Đóng</translation>
+      <source>Edge length:</source>
+      <translation>Chiều dài cạnh:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Lấy mẫu:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Chiều dài cạnh:</translation>
+      <source>Closed</source>
+      <translation>Đã Đóng</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Hãy chọn lệnh để sửa các nếp uốn trước</translation>
     <message>
       <source>Radius 2:</source>
       <translation>Bán kính 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Tạo</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Đó&amp;ng</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Hãy chọn lệnh để sửa các nếp uốn trước</translation>
       <translation type="unfinished">Export</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
     </message>
@@ -1101,6 +1097,10 @@ Hãy chọn lệnh để sửa các nếp uốn trước</translation>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Độ lệch lưới tối đa</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation type="unfinished">Maximal deviation between mesh and object</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1136,36 +1136,36 @@ is used when writing a file in AMF format</translation>
       <translation>Giao diện mặc định cho các lưới mới</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Màu đường mặc định</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Độ trong suốt của lưới</translation>
+      <source>Default mesh color</source>
+      <translation>Màu lưới mặc định</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation type="unfinished">Default color for new meshes</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Độ trong suốt của lưới</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Màu lưới mặc định</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Hiển thị hộp giới hạn cho các lưới được đánh dấu hoặc được chọn</translation>
+      <source>Default line color</source>
+      <translation>Màu đường mặc định</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation type="unfinished">Default line color for new meshes</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Độ trong suốt đường vẽ</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Màu mặt sau</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1182,24 +1182,16 @@ will be used or black.</translation>
       <translation>Hiển thị hai mặt</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Độ trong suốt đường vẽ</translation>
+      <source>A bounding box will be displayed</source>
+      <translation type="unfinished">A bounding box will be displayed</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Màu mặt sau</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Hiển thị hộp giới hạn cho các lưới được đánh dấu hoặc được chọn</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Làm mịn</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Đây là góc nhỏ nhất giữa hai bề mặt mà các tiêu chuẩn được tính toán để làm bóng phẳng.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Nếu góc giữa các tiêu chuẩn của hai mặt lân cận nhỏ hơn góc mép gấp, các bề mặt sẽ được làm phẳng xung quanh cạnh chung của chúng.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Góc mép gấp</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1220,6 +1212,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>Xác định tiêu chuẩn trên mỗi đỉnh</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Đây là góc nhỏ nhất giữa hai bề mặt mà các tiêu chuẩn được tính toán để làm bóng phẳng.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Nếu góc giữa các tiêu chuẩn của hai mặt lân cận nhỏ hơn góc mép gấp, các bề mặt sẽ được làm phẳng xung quanh cạnh chung của chúng.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Góc mép gấp</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1386,6 +1386,10 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
     </message>
@@ -1425,10 +1429,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>Xóa</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1441,40 +1441,40 @@ to a smoother appearance.
       <translation>Chọn</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Chọn toàn bộ thành phần</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Chọn hình tam giác</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; các mặt như</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Khu vực</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Các bộ phận</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Tất cả</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Các bộ phận</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; các mặt như</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Chọn hình tam giác</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Chọn toàn bộ thành phần</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Bỏ chọn</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Bỏ chọn toàn bộ thành phần</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; các mặt như</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Bỏ chọn toàn bộ thành phần</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1551,8 +1551,12 @@ to a smoother appearance.
       <translation>Phân đoạn lưới</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Hình cầu</translation>
+      <source>Plane</source>
+      <translation>Mặt phẳng</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1563,16 +1567,12 @@ to a smoother appearance.
       <translation>Số lượng mặt tối thiểu</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation type="unfinished">Parameters...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Mặt phẳng</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Hình trụ</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Hình cầu</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1759,6 +1759,10 @@ Vui lòng truy cập http://www.openscad.org/index.html để cài đặt.</tran
       <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Xuất lưới</translation>
     </message>
@@ -1815,6 +1819,10 @@ Vui lòng truy cập http://www.openscad.org/index.html để cài đặt.</tran
       <translation type="unfinished">Display segments</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Rời khỏi chế độ thông tin</translation>
     </message>
@@ -1842,10 +1850,6 @@ Vui lòng truy cập http://www.openscad.org/index.html để cài đặt.</tran
       <source>Annotation</source>
       <translation>Chú thích</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1862,12 +1866,32 @@ Vui lòng truy cập http://www.openscad.org/index.html để cài đặt.</tran
       <translation>&amp;Lưới</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Cắt</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Công cụ lưới</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Cắt</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Phân đoạn lưới</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

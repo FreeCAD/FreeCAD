@@ -140,14 +140,6 @@
       <translation>Lerro bereziak</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Ez ikusi honekin hasten diren lerroak:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Multzokatu honekin hasten diren lerroen arabera:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Lehen lerroa:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Puntu kopurua</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Multzokatu honekin hasten diren lerroen arabera:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Ez ikusi honekin hasten diren lerroak:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Puntu-formatua</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Zenbaki-banatzailea:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Puntuen formatua:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Hurrengo blokea:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (gris-balioa)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Zenbaki-banatzailea:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Hurrengo blokea:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Puntuen formatua:</translation>
     </message>
     <message>
       <source>Preview</source>

@@ -754,20 +754,20 @@
       <translation>メッシュ情報</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>点の数:</translation>
+      <source>Number of faces:</source>
+      <translation>面の数：</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>情報なし</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>面の数：</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>エッジの数:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>点の数:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Please run the command to repair folds first</source>
       <translation>標準のソリッド</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>作成(&amp;C)</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>閉じる(&amp;O)</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>ソリッド:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Please run the command to repair folds first</source>
       <translation>トーラス</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>高さ:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>長さ:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Please run the command to repair folds first</source>
       <translation>幅：</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>高さ:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>半径:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>閉じる</translation>
+      <source>Edge length:</source>
+      <translation>エッジの長さ:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>サンプリング:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>エッジの長さ:</translation>
+      <source>Closed</source>
+      <translation>閉じる</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>半径 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>作成(&amp;C)</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>閉じる(&amp;O)</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Please run the command to repair folds first</source>
       <translation>エクスポート</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>メッシュとオブジェクト間の最大偏位</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>実サーフェスにテセレーションした偏差</translation>
     </message>
@@ -1101,6 +1097,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>最大メッシュ偏差</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>メッシュとオブジェクト間の最大偏位</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</source>
       <translation>新しいメッシュのデフォルトの外観</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>線の既定色</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>メッシュの透過性</translation>
+      <source>Default mesh color</source>
+      <translation>デフォルトのメッシュ色</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>新しいメッシュのデフォルト色</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>メッシュの透過性</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>デフォルトのメッシュ色</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>バウンディングボックスを表示する</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>ハイライト、または選択されたメッシュのバウンディングボックスを表示</translation>
+      <source>Default line color</source>
+      <translation>線の既定色</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>新しいメッシュのデフォルトの線色</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>線の透過性</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>裏面の色</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1179,24 +1179,16 @@ will be used or black.</source>
       <translation>両面を描画</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>線の透過性</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>バウンディングボックスを表示する</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>裏面の色</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>ハイライト、または選択されたメッシュのバウンディングボックスを表示</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>スムージング</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;フラットシェーディングを行うための法線を計算する2面間の最小角度です&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;隣り合う2面の法線のなす角が折り目の角より小さい場合、それらの面は共有するエッジの周りでスムースシェーディングされます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>折り目の角度</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1214,6 +1206,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>頂点ごとに法線を定義</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;フラットシェーディングを行うための法線を計算する2面間の最小角度です&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;隣り合う2面の法線のなす角が折り目の角より小さい場合、それらの面は共有するエッジの周りでスムースシェーディングされます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>折り目の角度</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1380,6 +1380,10 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>再メッシュのパラメータ</translation>
     </message>
@@ -1419,10 +1423,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>クリア</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1435,40 +1435,40 @@ to a smoother appearance.
       <translation>選択</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>コンポーネント全体を選択</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>三角要素を選択</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; 面以下</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>領域</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>コンポーネント</translation>
     </message>
     <message>
       <source>All</source>
       <translation>すべて</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>コンポーネント</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; 面以下</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>三角要素を選択</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>コンポーネント全体を選択</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>選択を解除</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>すべての選択を解除</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; 面以上</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>すべての選択を解除</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1545,8 +1545,12 @@ to a smoother appearance.
       <translation>メッシュの分割</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>球体</translation>
+      <source>Plane</source>
+      <translation>平面</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>パラメーター...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1557,16 +1561,12 @@ to a smoother appearance.
       <translation>面の最小数</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>パラメーター...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>平面</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>円柱</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>球体</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1753,6 +1753,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>漸近線フォーマット</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>メッシュをエクスポート</translation>
     </message>
@@ -1809,6 +1813,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>セグメントを表示</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>情報モードを解除</translation>
     </message>
@@ -1836,10 +1844,6 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>注釈</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1856,12 +1860,32 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>メッシュ(&amp;M)</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>切断</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>メッシュツール</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>切断</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>メッシュの分割</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

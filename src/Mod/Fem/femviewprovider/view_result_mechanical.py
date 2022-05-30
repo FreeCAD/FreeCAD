@@ -63,6 +63,8 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
 
     def onDelete(self, feature, subelements):
         children = self.claimChildren()
+        filtered = filter(lambda obj: not obj is None, children)
+        children = list(filtered)
         if len(children) > 0:
             # issue a warning
             bodyMessage = "The results object is not empty, therefore the\nfollowing referencing objects might be lost:\n"

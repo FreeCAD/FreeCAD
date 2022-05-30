@@ -754,20 +754,20 @@
       <translation>Informationen zum Netz</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Anzahl Punkte:</translation>
+      <source>Number of faces:</source>
+      <translation>Anzahl Facetten:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Keine Informationen</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Anzahl Facetten:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Anzahl Kanten:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Anzahl Punkte:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
       <translation>Regelgeometrie</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Erstellen</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+S</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Schl&amp;ießen</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+I</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Körper:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
       <translation>Torus</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Höhe:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Länge:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
       <translation>Breite:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Höhe:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Radius:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Geschlossen</translation>
+      <source>Edge length:</source>
+      <translation>Kantenlänge:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Abtastung:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Kantenlänge:</translation>
+      <source>Closed</source>
+      <translation>Geschlossen</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     <message>
       <source>Radius 2:</source>
       <translation>Radius 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Erstellen</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+S</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Schl&amp;ießen</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+I</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
       <translation>Exportieren</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Maximale Abweichung zwischen Netz und Objekt</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Abwichung des Mosaik-Netz zur aktuellen Oberfläche</translation>
     </message>
@@ -1101,6 +1097,10 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Maximale Netz Abweichung</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Maximale Abweichung zwischen Netz und Objekt</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1136,36 +1136,36 @@ beim Schreiben einer Datei im AMF-Format verwendet wird</translation>
       <translation>Standardmäßiges Erscheinungsbild für neue Netze</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Standard-Kantenfarbe</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Transparenz des Netzes</translation>
+      <source>Default mesh color</source>
+      <translation>Standard-Flächenfarbe</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Standardfarbe für neue Netze</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Transparenz des Netzes</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Standard-Flächenfarbe</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Ein Markierungsrahmen wird angezeigt</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Bounding-Box für gehighlightete oder selekierte Netze anzeigen</translation>
+      <source>Default line color</source>
+      <translation>Standard-Kantenfarbe</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Standard Linienfarbe für neue Netze</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Transparenz der Kanten</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Untergrundfarbe</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1179,24 +1179,16 @@ will be used or black.</source>
       <translation>Doppelseitiges Rendern</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Transparenz der Kanten</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Ein Markierungsrahmen wird angezeigt</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Untergrundfarbe</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Bounding-Box für gehighlightete oder selekierte Netze anzeigen</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Glättung</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Das ist der kleinste Winkel zwischen zwei Dreiecken zur Berechenung beider Normalen für das Flat-Shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Falls der Winkel zweier benachbarter dreiecke kleiner als der Knitterwinkel ist, werden die Dreiecke um die gemeinsame Kante geglättet gerendert.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Knitterwinkel</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1215,6 +1207,14 @@ Bei flacher Schattierungen sind die Oberflächennormen nicht pro Knotenpunkt def
     <message>
       <source>Define normal per vertex</source>
       <translation>Definiere Normale pro Vertex</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Das ist der kleinste Winkel zwischen zwei Dreiecken zur Berechenung beider Normalen für das Flat-Shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Falls der Winkel zweier benachbarter dreiecke kleiner als der Knitterwinkel ist, werden die Dreiecke um die gemeinsame Kante geglättet gerendert.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Knitterwinkel</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1382,6 +1382,10 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Wiedervernetzungs-Parameter</translation>
     </message>
@@ -1421,10 +1425,6 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <source>Clear</source>
       <translation>Löschen</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1437,40 +1437,40 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <translation>Auswählen</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Ganze Komponente auswählen</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Dreieck aufnehmen</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; Dreiecke als</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Bereich</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Komponenten</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Alles</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Komponenten</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; Dreiecke als</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Dreieck aufnehmen</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Ganze Komponente auswählen</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Auswahl aufheben</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Ganze Komponente abwählen</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; Dreiecke als</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Ganze Komponente abwählen</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1547,8 +1547,12 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <translation>Netz Segmentierung</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Kugel</translation>
+      <source>Plane</source>
+      <translation>Ebene</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parameter...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1559,16 +1563,12 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <translation>Minimale Anzahl von Dreiecken</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parameter...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Ebene</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Zylinder</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Kugel</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1755,6 +1755,10 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <translation>Asymptote-Format</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation>3D-Fertigungsformat</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Netz exportieren</translation>
     </message>
@@ -1811,6 +1815,10 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <translation>Segmente anzeigen</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Info-Modus verlassen</translation>
     </message>
@@ -1838,10 +1846,6 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <source>Annotation</source>
       <translation>Anmerkung</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1858,12 +1862,32 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <translation>&amp;Netze</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Schneiden</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Netz-Werkzeuge</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Schneiden</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Netz Segmentierung</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

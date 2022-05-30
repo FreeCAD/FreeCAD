@@ -240,6 +240,14 @@
       <translation>Współczynnik rozmiaru</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Kierunki U / V zdefiniowane przez użytkownika</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Utwórz umiejscowienie</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Wygładzanie</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Odchylenie krzywizny</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Kierunki U / V zdefiniowane przez użytkownika</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Utwórz umiejscowienie</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentacja siatki</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Utwórz kształt złożony</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Wygładź siatę</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Utwórz siatkę z nieużywanych trójkątów</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Utwórz kształt złożony</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Wybierz</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Fragmenty</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Obszar</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Zaznacz cały fragment</translation>
+      <source>All</source>
+      <translation>Wszystkie</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Wybierz trójkąt</translation>
+      <source>Components</source>
+      <translation>Fragmenty</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; niż ściany</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Wszystkie</translation>
+      <source>Pick triangle</source>
+      <translation>Wybierz trójkąt</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Zaznacz cały fragment</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Płaszczyzna</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Wykryj</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolerancja</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Minimalna liczba płaszczyzn</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Wykryj</translation>
     </message>
     <message>
       <source>Cylinder</source>

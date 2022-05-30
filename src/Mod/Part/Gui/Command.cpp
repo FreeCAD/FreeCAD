@@ -2108,11 +2108,11 @@ void CmdPartRuledSurface::activated(int iMsg)
             }
             if (ok && subnames1.size() <= 2) {
                 if (subnames1.size() >= 1) {
-                    curve1 = shape1.getSubShape(subnames1[0].c_str());
+                    curve1 = Part::Feature::getTopoShape(docobj1, subnames1[0].c_str(), true /*need element*/).getShape();
                     link1 = subnames1[0];
                 }
                 if (subnames1.size() == 2) {
-                    curve2 = shape1.getSubShape(subnames1[1].c_str());
+                    curve2 = Part::Feature::getTopoShape(docobj1, subnames1[1].c_str(), true /*need element*/).getShape();
                     link2 = subnames1[1];
                 }
                 if (subnames1.size() == 0) {
@@ -2132,7 +2132,7 @@ void CmdPartRuledSurface::activated(int iMsg)
                 ok = false;
             }
             if (ok && subnames2.size() == 1) {
-                curve2 = shape2.getSubShape(subnames2[0].c_str());
+                curve2 = Part::Feature::getTopoShape(docobj2, subnames2[0].c_str(), true /*need element*/).getShape();
                 link2 = subnames2[0];
             } else {
                 if (subnames2.size() == 0) {

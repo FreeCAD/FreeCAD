@@ -240,6 +240,14 @@
       <translation>Масштабирование</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Пользовательские u/v направления</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Создать размещение</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Сглаживание</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Варианты кривизны</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Пользовательские u/v направления</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Создать размещение</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Сегментация полигональной сетки</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Создать состав</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Сгладить полигональную сетку</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Создать сетку из неиспользуемых треугольников</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Создать состав</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Выбрать</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Компоненты</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Область</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Выбрать весь компонент</translation>
+      <source>All</source>
+      <translation>Все</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Выбрать треугольник</translation>
+      <source>Components</source>
+      <translation>Компоненты</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; граней</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Все</translation>
+      <source>Pick triangle</source>
+      <translation>Выбрать треугольник</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Выбрать весь компонент</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Плоскость</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Обнаружить</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Точность</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Минимальное количество граней</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Обнаружить</translation>
     </message>
     <message>
       <source>Cylinder</source>

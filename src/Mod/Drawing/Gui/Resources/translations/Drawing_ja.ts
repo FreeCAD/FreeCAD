@@ -297,16 +297,60 @@ Do you want to continue?</source>
       <translation>正投影図</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>投影</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>第三角法</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>第一角法</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>視点：</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>座標軸を右部に配置：</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>セカンダリ ビュー</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>右クリックでアクソノ メトリック設定</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>プライマリ ビュー</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>セカンダリ ビュー</translation>
     </message>
     <message>
       <source>General</source>
@@ -341,36 +385,8 @@ Do you want to continue?</source>
       <translation>不等角投影</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>座標軸を外側右部へ</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>垂直方向の傾き</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>ビュー投影</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -385,44 +401,28 @@ Do you want to continue?</source>
       <translation>不等角投影図法</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> 尺度</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>ビュー投影</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation>座標軸を上部に配置</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>座標軸を外側右部へ</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>垂直方向の傾き</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>反転</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> 尺度</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation>不等角投影図法</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>投影</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>第三角法</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>第一角法</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>視点：</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>座標軸を右部に配置：</translation>
     </message>
   </context>
   <context>

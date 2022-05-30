@@ -240,6 +240,14 @@
       <translation>Koeficient velikosti</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Uživatelsky definované směry u/v</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Vytvořit umístění</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Vyhlazování</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Variace křivosti</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Uživatelsky definované směry u/v</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Vytvořit umístění</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentace sítě</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Vytvořit celek</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Hladká síť</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Vytvořit síť z nepoužitých trojúhelníků</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Vytvořit celek</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Vybrat</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Komponenty</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Region</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Vybrat celý díl</translation>
+      <source>All</source>
+      <translation>Vše</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Vybrat trojúhelník</translation>
+      <source>Components</source>
+      <translation>Komponenty</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; než ploch</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Vše</translation>
+      <source>Pick triangle</source>
+      <translation>Vybrat trojúhelník</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Vybrat celý díl</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Rovina</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Detekovat</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Odchylka</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Minimální počet ploch</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Detekovat</translation>
     </message>
     <message>
       <source>Cylinder</source>

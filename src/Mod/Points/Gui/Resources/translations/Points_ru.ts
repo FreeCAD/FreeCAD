@@ -140,14 +140,6 @@
       <translation>Специальные линии</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Игнорировать строки, начинающиеся с:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Кластер по линии, начиная с:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Первая линия:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Количество точек</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Кластер по линии, начиная с:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Игнорировать строки, начинающиеся с:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Формат точек</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Числовой разделитель:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Формат точек:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X, Y, Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X, Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Следующий блок:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (значение серого)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Числовой разделитель:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Следующий блок:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X, Y, Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X, Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Формат точек:</translation>
     </message>
     <message>
       <source>Preview</source>

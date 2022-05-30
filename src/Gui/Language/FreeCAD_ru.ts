@@ -83,12 +83,12 @@
       <translation>Положение</translation>
     </message>
     <message>
-      <source>Base</source>
-      <translation>Основание</translation>
-    </message>
-    <message>
       <source>Enum</source>
       <translation>Перечисления</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Основание</translation>
     </message>
   </context>
   <context>
@@ -179,16 +179,16 @@
       <translation>Преобразовать</translation>
     </message>
     <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
       <source>Link Transform</source>
       <translation>Преобразование ссылок</translation>
     </message>
     <message>
       <source>Measure distance</source>
       <translation>Измерить расстояние</translation>
-    </message>
-    <message>
-      <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
     </message>
   </context>
   <context>
@@ -261,6 +261,10 @@
       <translation>Движение пространственного манипулятора</translation>
     </message>
     <message>
+      <source>Global Sensitivity:</source>
+      <translation>Глобальная чувствительность:</translation>
+    </message>
+    <message>
       <source>Dominant Mode</source>
       <translation>Доминантный режим</translation>
     </message>
@@ -292,10 +296,6 @@
       <source>Reverse</source>
       <translation>Инвертировать</translation>
     </message>
-    <message>
-      <source>Global Sensitivity:</source>
-      <translation>Глобальная чувствительность:</translation>
-    </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
@@ -308,16 +308,16 @@
       <translation>Результат:</translation>
     </message>
     <message>
-      <source>Ok</source>
-      <translation>Да</translation>
-    </message>
-    <message>
       <source>&amp;Clear</source>
       <translation>&amp;Очистить</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
       <translation>Вернуться к последнему рассчитанному значению (как постоянному)</translation>
+    </message>
+    <message>
+      <source>Ok</source>
+      <translation>Да</translation>
     </message>
   </context>
   <context>
@@ -519,28 +519,16 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>О программе</translation>
     </message>
     <message>
-      <source>Revision number</source>
-      <translation>Номер редакции</translation>
-    </message>
-    <message>
       <source>Version</source>
       <translation>Версия</translation>
     </message>
     <message>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>О программе</translation>
+      <source>Revision number</source>
+      <translation>Номер редакции</translation>
     </message>
     <message>
       <source>Release date</source>
       <translation>Дата выпуска</translation>
-    </message>
-    <message>
-      <source>Copy to clipboard</source>
-      <translation>Скопировать в буфер обмена</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -551,28 +539,24 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Размер слова</translation>
     </message>
     <message>
+      <source>Copy to clipboard</source>
+      <translation>Скопировать в буфер обмена</translation>
+    </message>
+    <message>
       <source>License</source>
       <translation>Лицензия</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
-    <message>
-      <source>Libraries</source>
-      <translation>Библиотеки</translation>
-    </message>
-    <message>
-      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Это программное обеспечение использует компоненты с открытым исходным кодом, чьи авторские права и другие права собственности принадлежат их соответствующим владельцам:</translation>
-    </message>
-    <message>
-      <source>License</source>
-      <translation>Лицензия</translation>
-    </message>
-    <message>
-      <source>Collection</source>
-      <translation>Коллекция</translation>
-    </message>
     <message>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
@@ -592,12 +576,28 @@ while doing a left or right click and move the mouse up or down</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Организации</translation>
     </message>
+    <message>
+      <source>License</source>
+      <translation>Лицензия</translation>
+    </message>
+    <message>
+      <source>Libraries</source>
+      <translation>Библиотеки</translation>
+    </message>
+    <message>
+      <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
+      <translation>Это программное обеспечение использует компоненты с открытым исходным кодом, чьи авторские права и другие права собственности принадлежат их соответствующим владельцам:</translation>
+    </message>
+    <message>
+      <source>Collection</source>
+      <translation>Коллекция</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ApplicationCache</name>
     <message>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Расположение кэша</translation>
     </message>
     <message>
       <source>The cache directory %1 exceeds the size of %2.</source>
@@ -615,20 +615,20 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
-      <source>Button %1</source>
-      <translation>Кнопка %1</translation>
-    </message>
-    <message>
-      <source>Out Of Range</source>
-      <translation>Вне диапазона</translation>
-    </message>
-    <message>
       <source> "</source>
       <translation> "</translation>
     </message>
     <message>
       <source>"</source>
       <translation>"</translation>
+    </message>
+    <message>
+      <source>Button %1</source>
+      <translation>Кнопка %1</translation>
+    </message>
+    <message>
+      <source>Out Of Range</source>
+      <translation>Вне диапазона</translation>
     </message>
   </context>
   <context>
@@ -673,12 +673,12 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Отсечение по X</translation>
     </message>
     <message>
-      <source>Flip</source>
-      <translation>инверт.</translation>
-    </message>
-    <message>
       <source>Offset</source>
       <translation>Смещение</translation>
+    </message>
+    <message>
+      <source>Flip</source>
+      <translation>инверт.</translation>
     </message>
     <message>
       <source>Clipping Y</source>
@@ -719,16 +719,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Поворотный просмотр</translation>
     </message>
     <message>
+      <source>Angle</source>
+      <translation>Угол</translation>
+    </message>
+    <message>
+      <source>-90°</source>
+      <translation>-90 °</translation>
+    </message>
+    <message>
+      <source>90°</source>
+      <translation>90 °</translation>
+    </message>
+    <message>
       <source>Speed</source>
       <translation>Скорость</translation>
     </message>
     <message>
-      <source>Maximum</source>
-      <translation>Максимум</translation>
-    </message>
-    <message>
       <source>Minimum</source>
       <translation>Минимум</translation>
+    </message>
+    <message>
+      <source>Maximum</source>
+      <translation>Максимум</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -743,28 +755,16 @@ while doing a left or right click and move the mouse up or down</source>
       <translation> c</translation>
     </message>
     <message>
-      <source>Angle</source>
-      <translation>Угол</translation>
-    </message>
-    <message>
-      <source>90°</source>
-      <translation>90 °</translation>
-    </message>
-    <message>
-      <source>-90°</source>
-      <translation>-90 °</translation>
-    </message>
-    <message>
       <source>Play</source>
       <translation>Начать просмотр</translation>
     </message>
     <message>
-      <source>Stop</source>
-      <translation>Остановить</translation>
-    </message>
-    <message>
       <source>Close</source>
       <translation>Закрыть</translation>
+    </message>
+    <message>
+      <source>Stop</source>
+      <translation>Остановить</translation>
     </message>
   </context>
   <context>
@@ -840,24 +840,24 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Авторизация</translation>
     </message>
     <message>
-      <source>Password:</source>
-      <translation>Пароль:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>О программе</translation>
-    </message>
-    <message>
-      <source>Username:</source>
-      <translation>Имя пользователя:</translation>
-    </message>
-    <message>
       <source>Site:</source>
       <translation>Сайт:</translation>
     </message>
     <message>
       <source>%1 at %2</source>
       <translation>%1 в %2</translation>
+    </message>
+    <message>
+      <source>Username:</source>
+      <translation>Имя пользователя:</translation>
+    </message>
+    <message>
+      <source>Password:</source>
+      <translation>Пароль:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
@@ -927,32 +927,32 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Макрос:</translation>
     </message>
     <message>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
-      <source>Pixmap</source>
-      <translation>Растровое изображение</translation>
-    </message>
-    <message>
-      <source>Accelerator:</source>
-      <translation>Сочетание клавиш:</translation>
-    </message>
-    <message>
-      <source>What's this:</source>
-      <translation>Что это:</translation>
-    </message>
-    <message>
-      <source>Status text:</source>
-      <translation>Текст состояния:</translation>
+      <source>Menu text:</source>
+      <translation>Текст меню:</translation>
     </message>
     <message>
       <source>Tool tip:</source>
       <translation>Подсказка:</translation>
     </message>
     <message>
-      <source>Menu text:</source>
-      <translation>Текст меню:</translation>
+      <source>Status text:</source>
+      <translation>Текст состояния:</translation>
+    </message>
+    <message>
+      <source>What's this:</source>
+      <translation>Что это:</translation>
+    </message>
+    <message>
+      <source>Accelerator:</source>
+      <translation>Сочетание клавиш:</translation>
+    </message>
+    <message>
+      <source>Pixmap</source>
+      <translation>Растровое изображение</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
     <message>
       <source>Add</source>
@@ -1043,10 +1043,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Клавиатура</translation>
     </message>
     <message>
-      <source>Description:</source>
-      <translation>Описание:</translation>
-    </message>
-    <message>
       <source>&amp;Category:</source>
       <translation>&amp;Категория:</translation>
     </message>
@@ -1075,6 +1071,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Alt+A</translation>
     </message>
     <message>
+      <source>Clear</source>
+      <translation>Очистить</translation>
+    </message>
+    <message>
       <source>&amp;Reset</source>
       <translation>&amp;Сбросить</translation>
     </message>
@@ -1091,12 +1091,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Alt+S</translation>
     </message>
     <message>
-      <source/>
-      <translation>О программе</translation>
+      <source>Description:</source>
+      <translation>Описание:</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Очистить</translation>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
@@ -1118,12 +1118,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Дублирующееся сочетание клавиш</translation>
     </message>
     <message>
-      <source>Already defined shortcut</source>
-      <translation>Уже назначенное сочетание клавиш</translation>
-    </message>
-    <message>
       <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
       <translation>Сочетание клавиш '%1' назначено для нескольких разных операций. Это может привести к неожиданному поведению.</translation>
+    </message>
+    <message>
+      <source>Already defined shortcut</source>
+      <translation>Уже назначенное сочетание клавиш</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.</source>
@@ -1148,8 +1148,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Панели инструментов</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Внимание:&lt;/span&gt; изменения вступят в силу только после повторной загрузки верстака&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>New...</source>
+      <translation>Создать...</translation>
+    </message>
+    <message>
+      <source>Rename...</source>
+      <translation>Переименовать...</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Удалить</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -1168,14 +1176,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>&lt;b&gt;Перемещение выбранного элемента на один уровень вверх.&lt;/b&gt; &lt;p&gt; Это повлечет за собой изменение уровня родительского элемента. &lt;/p&gt;</translation>
     </message>
     <message>
-      <source>Move down</source>
-      <translation>Переместить вниз </translation>
-    </message>
-    <message>
-      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Переместите выбранный элемент вниз.&lt;/b&gt;&lt;p&gt;Элемент будет перемещен внутри уровня иерархии.&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Переместить вверх</translation>
     </message>
@@ -1184,16 +1184,20 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>&lt;b&gt;Переместите выбранный элемент вверх.&lt;/b&gt;&lt;p&gt;Элемент будет перемещен внутри уровня иерархии.&lt;/p&gt;</translation>
     </message>
     <message>
-      <source>New...</source>
-      <translation>Создать...</translation>
+      <source>Move down</source>
+      <translation>Переместить вниз </translation>
     </message>
     <message>
-      <source>Rename...</source>
-      <translation>Переименовать...</translation>
+      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Переместите выбранный элемент вниз.&lt;/b&gt;&lt;p&gt;Элемент будет перемещен внутри уровня иерархии.&lt;/p&gt;</translation>
     </message>
     <message>
-      <source>Delete</source>
-      <translation>Удалить</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Внимание:&lt;/span&gt; изменения вступят в силу только после повторной загрузки верстака&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Global</source>
+      <translation>Глобальный</translation>
     </message>
     <message>
       <source>Icon</source>
@@ -1206,6 +1210,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>&lt;Separator&gt;</source>
       <translation>&lt;Разделитель&gt;</translation>
+    </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 модуль не загружен</translation>
     </message>
     <message>
       <source>New toolbar</source>
@@ -1230,14 +1238,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source/>
       <translation>О программе</translation>
-    </message>
-    <message>
-      <source>Global</source>
-      <translation>Глобальный</translation>
-    </message>
-    <message>
-      <source>%1 module not loaded</source>
-      <translation>%1 модуль не загружен</translation>
     </message>
   </context>
   <context>
@@ -1269,6 +1269,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
+      <source>Spaceball Buttons</source>
+      <translation>Кнопки пространственного манипулятора</translation>
+    </message>
+    <message>
       <source>No Spaceball Present</source>
       <translation>Не обнаружено пространственного манипулятора</translation>
     </message>
@@ -1277,16 +1281,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Кнопки</translation>
     </message>
     <message>
-      <source>Print Reference</source>
-      <translation>Напечатать шпаргалку</translation>
-    </message>
-    <message>
-      <source>Spaceball Buttons</source>
-      <translation>Кнопки пространственного манипулятора</translation>
-    </message>
-    <message>
       <source>Reset</source>
       <translation>Сброс</translation>
+    </message>
+    <message>
+      <source>Print Reference</source>
+      <translation>Напечатать шпаргалку</translation>
     </message>
   </context>
   <context>
@@ -1296,20 +1296,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Внешний вид</translation>
     </message>
     <message>
-      <source>Display</source>
-      <translation>Отображение</translation>
+      <source>Viewing mode</source>
+      <translation>Стиль представления</translation>
     </message>
     <message>
-      <source>Transparency:</source>
-      <translation>Прозрачность:</translation>
+      <source>Document window:</source>
+      <translation>Окно документа:</translation>
     </message>
     <message>
-      <source>Line width:</source>
-      <translation>Толщина линии:</translation>
-    </message>
-    <message>
-      <source>Point size:</source>
-      <translation>Размер точки:</translation>
+      <source>Plot mode:</source>
+      <translation>Режим графика:</translation>
     </message>
     <message>
       <source>Material</source>
@@ -1320,36 +1316,40 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>...</translation>
     </message>
     <message>
-      <source>Viewing mode</source>
-      <translation>Стиль представления</translation>
-    </message>
-    <message>
-      <source>Plot mode:</source>
-      <translation>Режим графика:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>О программе</translation>
-    </message>
-    <message>
-      <source>Line transparency:</source>
-      <translation>Прозрачность линий:</translation>
-    </message>
-    <message>
-      <source>Line color:</source>
-      <translation>Цвет линий:</translation>
+      <source>Color plot:</source>
+      <translation>Цветной график:</translation>
     </message>
     <message>
       <source>Shape color:</source>
       <translation>Цвет фигуры:</translation>
     </message>
     <message>
-      <source>Color plot:</source>
-      <translation>Цветной график:</translation>
+      <source>Line color:</source>
+      <translation>Цвет линий:</translation>
     </message>
     <message>
-      <source>Document window:</source>
-      <translation>Окно документа:</translation>
+      <source>Display</source>
+      <translation>Отображение</translation>
+    </message>
+    <message>
+      <source>Point size:</source>
+      <translation>Размер точки:</translation>
+    </message>
+    <message>
+      <source>Line width:</source>
+      <translation>Толщина линии:</translation>
+    </message>
+    <message>
+      <source>Transparency:</source>
+      <translation>Прозрачность:</translation>
+    </message>
+    <message>
+      <source>Line transparency:</source>
+      <translation>Прозрачность линий:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
@@ -1454,8 +1454,20 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Параметры</translation>
     </message>
     <message>
+      <source>Code lines will be numbered</source>
+      <translation>Строки кода будут пронумерованы</translation>
+    </message>
+    <message>
       <source>Enable line numbers</source>
       <translation>Показывать номера строк</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
     </message>
     <message>
       <source>Enable folding</source>
@@ -1466,44 +1478,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Отступы</translation>
     </message>
     <message>
-      <source>Insert spaces</source>
-      <translation>Заменять на пробелы</translation>
-    </message>
-    <message>
       <source>Tab size:</source>
       <translation>Шаг табуляции:</translation>
     </message>
     <message>
-      <source>Indent size:</source>
-      <translation>Размер отступа:</translation>
-    </message>
-    <message>
-      <source>Keep tabs</source>
-      <translation>Символы табуляции</translation>
-    </message>
-    <message>
-      <source>Family:</source>
-      <translation>Шрифт:</translation>
-    </message>
-    <message>
-      <source>Size:</source>
-      <translation>Размер:</translation>
-    </message>
-    <message>
-      <source>Preview:</source>
-      <translation>Предпросмотр:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>О программе</translation>
-    </message>
-    <message>
-      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation>Нажатие &lt;Tab&gt; для вставки  определенного размера отступа</translation>
-    </message>
-    <message>
       <source>Tabulator raster (how many spaces)</source>
       <translation>Число пробелов в одной табуляции</translation>
+    </message>
+    <message>
+      <source>Indent size:</source>
+      <translation>Размер отступа:</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
@@ -1514,36 +1498,52 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Нажатие &lt;Tab&gt; вставит табуляцию определенного размера</translation>
     </message>
     <message>
-      <source>Display items</source>
-      <translation>Показать пункты</translation>
+      <source>Keep tabs</source>
+      <translation>Символы табуляции</translation>
     </message>
     <message>
-      <source>Font size to be used for selected code type</source>
-      <translation>Размер шрифта, который будет использоваться для выбранного типа кода</translation>
+      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
+      <translation>Нажатие &lt;Tab&gt; для вставки  определенного размера отступа</translation>
+    </message>
+    <message>
+      <source>Insert spaces</source>
+      <translation>Заменять на пробелы</translation>
+    </message>
+    <message>
+      <source>Display items</source>
+      <translation>Показать пункты</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
       <translation>Настройки цвета и шрифта будут применены к выбранному типу</translation>
     </message>
     <message>
+      <source>Family:</source>
+      <translation>Шрифт:</translation>
+    </message>
+    <message>
       <source>Font family to be used for selected code type</source>
       <translation>Семейство шрифтов, которые будут использоваться для выбранного типа кода</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Размер:</translation>
+    </message>
+    <message>
+      <source>Font size to be used for selected code type</source>
+      <translation>Размер шрифта, который будет использоваться для выбранного типа кода</translation>
     </message>
     <message>
       <source>Color:</source>
       <translation>Цвет:</translation>
     </message>
     <message>
-      <source>Code lines will be numbered</source>
-      <translation>Строки кода будут пронумерованы</translation>
+      <source>Preview:</source>
+      <translation>Предпросмотр:</translation>
     </message>
     <message>
-      <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
-    </message>
-    <message>
-      <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
@@ -1551,18 +1551,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>General</source>
       <translation>Основные</translation>
-    </message>
-    <message>
-      <source>Start up</source>
-      <translation>Настройки запуска</translation>
-    </message>
-    <message>
-      <source>Enable splash screen at start up</source>
-      <translation>Включение экрана-заставки при запуске</translation>
-    </message>
-    <message>
-      <source>Auto load module after start up:</source>
-      <translation>При запуске автоматически загружать верстак:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1573,81 +1561,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Изменить язык:</translation>
     </message>
     <message>
-      <source>Main window</source>
-      <translation>Главное окно</translation>
-    </message>
-    <message>
-      <source>Size of recent file list</source>
-      <translation>Размер списка последних файлов</translation>
-    </message>
-    <message>
-      <source>Size of toolbar icons:</source>
-      <translation>Размер значков на панелях инструментов:</translation>
-    </message>
-    <message>
-      <source>Enable tiled background</source>
-      <translation>Включить фон из повторяющегося узора</translation>
-    </message>
-    <message>
-      <source>Style sheet:</source>
-      <translation>Стиль интерфейса:</translation>
-    </message>
-    <message>
       <source>Language of the application's user interface</source>
       <translation>Язык пользовательского интерфейса приложения</translation>
     </message>
     <message>
-      <source>How many files should be listed in recent files list</source>
-      <translation>Количество файлов в списке последних файлов</translation>
-    </message>
-    <message>
-      <source>Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</source>
-      <translation>Фон главного окна будет состоять из плиток специального изображения.
-Смотрите вики FreeCAD для подробностей об изображении.</translation>
-    </message>
-    <message>
-      <source>Style sheet how user interface will look like</source>
-      <translation>Таблица стилей, как будет выглядеть пользовательский интерфейс</translation>
-    </message>
-    <message>
-      <source>Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</source>
-      <translation>Выберите предпочтение для размера иконки в панели инструментов. Вы можете настроить
-этот размер в соответствии с размером Вашего экрана или индивидуальным вкусом</translation>
-    </message>
-    <message>
-      <source>Tree view mode:</source>
-      <translation>Режим древовидного отображения:</translation>
-    </message>
-    <message>
-      <source>Customize how tree view is shown in the panel (restart required).
-
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>Настроить отображение дерева в панели (требуется перезапуск).
-
-'ComboView: комбинирует вид дерева и свойства в одну панель.
-'TreeView и PropertyView': разделяет вид дерева и вид свойства в отдельную панель.
-'Оба ': сохраняет все три панели, и Вы можете иметь два набора вида дерева и вид свойств.</translation>
-    </message>
-    <message>
-      <source>A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</source>
-      <translation>Экран заставки — это небольшое окно загрузки, которое отображается
-при запуске FreeCAD. Если этот параметр отмечен, FreeCAD
-отобразит экран заставки</translation>
-    </message>
-    <message>
-      <source>Choose which workbench will be activated and shown
-after FreeCAD launches</source>
-      <translation>Выберите, какой верстак будет активным и отображён после запуска FreeCAD</translation>
-    </message>
-    <message>
       <source>Number format:</source>
-      <translation type="unfinished">Number format:</translation>
+      <translation>Формат чисел:</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -1655,11 +1574,11 @@ after FreeCAD launches</source>
     </message>
     <message>
       <source>Selected language</source>
-      <translation type="unfinished">Selected language</translation>
+      <translation>Выбранный язык</translation>
     </message>
     <message>
       <source>C/POSIX</source>
-      <translation type="unfinished">C/POSIX</translation>
+      <translation>C/POSIX</translation>
     </message>
     <message>
       <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
@@ -1698,19 +1617,100 @@ after FreeCAD launches</source>
       <translation type="unfinished">Revert...</translation>
     </message>
     <message>
+      <source>Main window</source>
+      <translation>Главное окно</translation>
+    </message>
+    <message>
+      <source>Size of recent file list</source>
+      <translation>Размер списка последних файлов</translation>
+    </message>
+    <message>
+      <source>How many files should be listed in recent files list</source>
+      <translation>Количество файлов в списке последних файлов</translation>
+    </message>
+    <message>
+      <source>Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</source>
+      <translation>Фон главного окна будет состоять из плиток специального изображения.
+Смотрите вики FreeCAD для подробностей об изображении.</translation>
+    </message>
+    <message>
+      <source>Enable tiled background</source>
+      <translation>Включить фон из повторяющегося узора</translation>
+    </message>
+    <message>
       <source>The text cursor will be blinking</source>
       <translation type="unfinished">The text cursor will be blinking</translation>
     </message>
     <message>
       <source>Enable cursor blinking</source>
-      <translation type="unfinished">Enable cursor blinking</translation>
+      <translation>Включить мигание курсора</translation>
+    </message>
+    <message>
+      <source>Style sheet:</source>
+      <translation>Стиль интерфейса:</translation>
+    </message>
+    <message>
+      <source>Style sheet how user interface will look like</source>
+      <translation>Таблица стилей, как будет выглядеть пользовательский интерфейс</translation>
+    </message>
+    <message>
+      <source>Size of toolbar icons:</source>
+      <translation>Размер значков на панелях инструментов:</translation>
+    </message>
+    <message>
+      <source>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</source>
+      <translation>Выберите предпочтение для размера иконки в панели инструментов. Вы можете настроить
+этот размер в соответствии с размером Вашего экрана или индивидуальным вкусом</translation>
+    </message>
+    <message>
+      <source>Tree view mode:</source>
+      <translation>Режим древовидного отображения:</translation>
+    </message>
+    <message>
+      <source>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
+      <translation>Настроить отображение дерева в панели (требуется перезапуск).
+
+'ComboView: комбинирует вид дерева и свойства в одну панель.
+'TreeView и PropertyView': разделяет вид дерева и вид свойства в отдельную панель.
+'Оба ': сохраняет все три панели, и Вы можете иметь два набора вида дерева и вид свойств.</translation>
+    </message>
+    <message>
+      <source>Start up</source>
+      <translation>Настройки запуска</translation>
+    </message>
+    <message>
+      <source>Auto load module after start up:</source>
+      <translation>При запуске автоматически загружать верстак:</translation>
+    </message>
+    <message>
+      <source>Choose which workbench will be activated and shown
+after FreeCAD launches</source>
+      <translation>Выберите, какой верстак будет активным и отображён после запуска FreeCAD</translation>
+    </message>
+    <message>
+      <source>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</source>
+      <translation>Экран заставки — это небольшое окно загрузки, которое отображается
+при запуске FreeCAD. Если этот параметр отмечен, FreeCAD
+отобразит экран заставки</translation>
+    </message>
+    <message>
+      <source>Enable splash screen at start up</source>
+      <translation>Включение экрана-заставки при запуске</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
-      <source>No style sheet</source>
-      <translation>Без особого стиля</translation>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
@@ -1745,8 +1745,8 @@ after FreeCAD launches</source>
       <translation>Оба</translation>
     </message>
     <message>
-      <source>Manage preference packs</source>
-      <translation type="unfinished">Manage preference packs</translation>
+      <source>No style sheet</source>
+      <translation>Без особого стиля</translation>
     </message>
     <message>
       <source>Preference Pack Name</source>
@@ -1794,6 +1794,14 @@ after FreeCAD launches</source>
       <translation>Имя макроса:</translation>
     </message>
     <message>
+      <source>User macros</source>
+      <translation>Пользовательские макросы</translation>
+    </message>
+    <message>
+      <source>System macros</source>
+      <translation>Системные макросы</translation>
+    </message>
+    <message>
       <source>Execute</source>
       <translation>Выполнить</translation>
     </message>
@@ -1814,18 +1822,6 @@ after FreeCAD launches</source>
       <translation>Редактировать</translation>
     </message>
     <message>
-      <source>User macros</source>
-      <translation>Пользовательские макросы</translation>
-    </message>
-    <message>
-      <source>System macros</source>
-      <translation>Системные макросы</translation>
-    </message>
-    <message>
-      <source>User macros location:</source>
-      <translation>Расположение пользовательских макросов:</translation>
-    </message>
-    <message>
       <source>Rename</source>
       <translation>Переименовать</translation>
     </message>
@@ -1834,12 +1830,12 @@ after FreeCAD launches</source>
       <translation>Дублировать</translation>
     </message>
     <message>
-      <source>Toolbar</source>
-      <translation>Панель инструментов</translation>
-    </message>
-    <message>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
       <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Toolbar</source>
+      <translation>Панель инструментов</translation>
     </message>
     <message>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
@@ -1849,12 +1845,20 @@ after FreeCAD launches</source>
       <source>Download</source>
       <translation>Скачать</translation>
     </message>
+    <message>
+      <source>User macros location:</source>
+      <translation>Расположение пользовательских макросов:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <source>Macros</source>
       <translation>Макрос</translation>
+    </message>
+    <message>
+      <source>Read-only</source>
+      <translation>Только для чтения</translation>
     </message>
     <message>
       <source>Macro file</source>
@@ -1875,14 +1879,6 @@ This file already exists.</source>
 Этот файл уже существует.</translation>
     </message>
     <message>
-      <source>Delete macro</source>
-      <translation>Удалить макрос</translation>
-    </message>
-    <message>
-      <source>Do you really want to delete the macro '%1'?</source>
-      <translation>Вы действительно хотите удалить макрос '%1' ?</translation>
-    </message>
-    <message>
       <source>Cannot create file</source>
       <translation>Не удается создать файл</translation>
     </message>
@@ -1891,45 +1887,12 @@ This file already exists.</source>
       <translation>Не удалось создать файл '%1'.</translation>
     </message>
     <message>
-      <source>Read-only</source>
-      <translation>Только для чтения</translation>
+      <source>Delete macro</source>
+      <translation>Удалить макрос</translation>
     </message>
     <message>
-      <source>Renaming Macro File</source>
-      <translation>Переименование файла макроса</translation>
-    </message>
-    <message>
-      <source>Enter new name:</source>
-      <translation>Введите новое имя:</translation>
-    </message>
-    <message>
-      <source>'%1'
- already exists.</source>
-      <translation>'%1' уже существует.</translation>
-    </message>
-    <message>
-      <source>Rename Failed</source>
-      <translation>Не удалось переименовать</translation>
-    </message>
-    <message>
-      <source>Failed to rename to '%1'.
-Perhaps a file permission error?</source>
-      <translation>Не удалось переименовать в '%1'.
-Возможно ошибка прав доступа к файлу?</translation>
-    </message>
-    <message>
-      <source>Duplicate Macro</source>
-      <translation>Дублировать макрос</translation>
-    </message>
-    <message>
-      <source>Duplicate Failed</source>
-      <translation>Не удалось дублировать</translation>
-    </message>
-    <message>
-      <source>Failed to duplicate to '%1'.
-Perhaps a file permission error?</source>
-      <translation>Не удалось дублировать в '%1'.
-Возможно ошибка прав доступа к файлу?</translation>
+      <source>Do you really want to delete the macro '%1'?</source>
+      <translation>Вы действительно хотите удалить макрос '%1' ?</translation>
     </message>
     <message>
       <source>Do not show again</source>
@@ -1973,6 +1936,43 @@ Note: your changes will be applied when you next switch workbenches
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation>Пошаговые инструкции: Нажмите новый, затем на кнопку со стрелкой вправо (-&gt;), затем закройте.</translation>
     </message>
+    <message>
+      <source>Renaming Macro File</source>
+      <translation>Переименование файла макроса</translation>
+    </message>
+    <message>
+      <source>Enter new name:</source>
+      <translation>Введите новое имя:</translation>
+    </message>
+    <message>
+      <source>'%1'
+ already exists.</source>
+      <translation>'%1' уже существует.</translation>
+    </message>
+    <message>
+      <source>Rename Failed</source>
+      <translation>Не удалось переименовать</translation>
+    </message>
+    <message>
+      <source>Failed to rename to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Не удалось переименовать в '%1'.
+Возможно ошибка прав доступа к файлу?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Дублировать макрос</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Не удалось дублировать</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Не удалось дублировать в '%1'.
+Возможно ошибка прав доступа к файлу?</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
@@ -1983,14 +1983,6 @@ Note: your changes will be applied when you next switch workbenches
     <message>
       <source>Macro name:</source>
       <translation>Имя макроса:</translation>
-    </message>
-    <message>
-      <source>Stop</source>
-      <translation>Остановить</translation>
-    </message>
-    <message>
-      <source>Cancel</source>
-      <translation>Отмена</translation>
     </message>
     <message>
       <source>Macro path:</source>
@@ -2004,6 +1996,14 @@ Note: your changes will be applied when you next switch workbenches
       <source>Record</source>
       <translation>Запись</translation>
     </message>
+    <message>
+      <source>Stop</source>
+      <translation>Остановить</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Отмена</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
@@ -2016,6 +2016,10 @@ Note: your changes will be applied when you next switch workbenches
       <translation>Сначала укажите место для сохранения.</translation>
     </message>
     <message>
+      <source>The macro directory doesn't exist. Please, choose another one.</source>
+      <translation>Указанная директория не существует. Пожалуйста, укажите другую.</translation>
+    </message>
+    <message>
       <source>Existing macro</source>
       <translation>Существующий макрос</translation>
     </message>
@@ -2024,16 +2028,12 @@ Note: your changes will be applied when you next switch workbenches
       <translation>Макрос '%1' уже существует. Хотите ли вы перезаписать его?</translation>
     </message>
     <message>
-      <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Указанная директория не существует. Пожалуйста, укажите другую.</translation>
+      <source>You have no write permission for the directory. Please, choose another one.</source>
+      <translation>У вас нет разрешения на запись в эту директорию. Пожалуйста, выберите другую.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
       <translation>Выберите директорию для макросов</translation>
-    </message>
-    <message>
-      <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>У вас нет разрешения на запись в эту директорию. Пожалуйста, выберите другую.</translation>
     </message>
   </context>
   <context>
@@ -2047,8 +2047,16 @@ Note: your changes will be applied when you next switch workbenches
       <translation>Материал</translation>
     </message>
     <message>
+      <source>Ambient color:</source>
+      <translation>Цвет окружающей среды:</translation>
+    </message>
+    <message>
       <source>Diffuse color:</source>
       <translation>Рассеиваемый цвет:</translation>
+    </message>
+    <message>
+      <source>Emissive color:</source>
+      <translation>Излучаемый цвет:</translation>
     </message>
     <message>
       <source>Specular color:</source>
@@ -2063,16 +2071,8 @@ Note: your changes will be applied when you next switch workbenches
       <translation>%</translation>
     </message>
     <message>
-      <source>Ambient color:</source>
-      <translation>Цвет окружающей среды:</translation>
-    </message>
-    <message>
       <source/>
       <translation>О программе</translation>
-    </message>
-    <message>
-      <source>Emissive color:</source>
-      <translation>Излучаемый цвет:</translation>
     </message>
   </context>
   <context>
@@ -2093,6 +2093,10 @@ Note: your changes will be applied when you next switch workbenches
   <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
+      <source>HTML files</source>
+      <translation>HTML файлы</translation>
+    </message>
+    <message>
       <source>Access denied</source>
       <translation>Доступ запрещен</translation>
     </message>
@@ -2104,32 +2108,12 @@ Specify another directory, please.</source>
 
 Укажите другую директорию, пожалуйста.</translation>
     </message>
-    <message>
-      <source>HTML files</source>
-      <translation>HTML файлы</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
       <source>Parameter Editor</source>
       <translation>Редактор параметров</translation>
-    </message>
-    <message>
-      <source>Save to disk</source>
-      <translation>Сохранить на диск</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>ALT+C</translation>
-    </message>
-    <message>
-      <source>&amp;Close</source>
-      <translation>&amp;Закрыть</translation>
-    </message>
-    <message>
-      <source>Find...</source>
-      <translation>Найти...</translation>
     </message>
     <message>
       <source>Sorted</source>
@@ -2146,6 +2130,22 @@ Specify another directory, please.</source>
     <message>
       <source>Search Group</source>
       <translation>Поиск группы</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Найти...</translation>
+    </message>
+    <message>
+      <source>Save to disk</source>
+      <translation>Сохранить на диск</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>ALT+C</translation>
+    </message>
+    <message>
+      <source>&amp;Close</source>
+      <translation>&amp;Закрыть</translation>
     </message>
   </context>
   <context>
@@ -2210,8 +2210,16 @@ Specify another directory, please.</source>
       <translation>Значение</translation>
     </message>
     <message>
+      <source>System parameter</source>
+      <translation>Системный параметр</translation>
+    </message>
+    <message>
       <source>User parameter</source>
       <translation>Пользовательский параметр</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Поиск группы</translation>
     </message>
     <message>
       <source>Invalid input</source>
@@ -2220,14 +2228,6 @@ Specify another directory, please.</source>
     <message>
       <source>Invalid key name '%1'</source>
       <translation>Недопустимое имя ключа '%1'</translation>
-    </message>
-    <message>
-      <source>System parameter</source>
-      <translation>Системный параметр</translation>
-    </message>
-    <message>
-      <source>Search Group</source>
-      <translation>Поиск группы</translation>
     </message>
   </context>
   <context>
@@ -2286,10 +2286,6 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <source>Wrong parameter</source>
-      <translation>Неверный параметр</translation>
-    </message>
-    <message>
       <source>Clear user settings</source>
       <translation>Очистка пользовательских настроек</translation>
     </message>
@@ -2300,6 +2296,10 @@ Specify another directory, please.</source>
     <message>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Если Вы согласны, то все Ваши пользовательские настройки будут сброшены.</translation>
+    </message>
+    <message>
+      <source>Wrong parameter</source>
+      <translation>Неверный параметр</translation>
     </message>
   </context>
   <context>
@@ -2317,40 +2317,36 @@ Specify another directory, please.</source>
       <translation>&amp;Название:</translation>
     </message>
     <message>
-      <source>Commen&amp;t:</source>
-      <translation>Коммен&amp;тарий:</translation>
-    </message>
-    <message>
       <source>Path:</source>
       <translation>Путь:</translation>
     </message>
     <message>
-      <source>&amp;Last modified by:</source>
-      <translation>&amp;Автор последних изменений:</translation>
+      <source>UUID:</source>
+      <translation>UUID:</translation>
+    </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Версия программы:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
       <translation>Создатели:</translation>
     </message>
     <message>
-      <source>Com&amp;pany:</source>
-      <translation>Организация:</translation>
+      <source>Creation &amp;date:</source>
+      <translation>&amp;Дата создания:</translation>
+    </message>
+    <message>
+      <source>&amp;Last modified by:</source>
+      <translation>&amp;Автор последних изменений:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
       <translation>Дата последнего изменения:</translation>
     </message>
     <message>
-      <source>Creation &amp;date:</source>
-      <translation>&amp;Дата создания:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>О программе</translation>
-    </message>
-    <message>
-      <source>UUID:</source>
-      <translation>UUID:</translation>
+      <source>Com&amp;pany:</source>
+      <translation>Организация:</translation>
     </message>
     <message>
       <source>License information:</source>
@@ -2365,8 +2361,12 @@ Specify another directory, please.</source>
       <translation>Открыть в браузере</translation>
     </message>
     <message>
-      <source>Program version:</source>
-      <translation>Версия программы:</translation>
+      <source>Commen&amp;t:</source>
+      <translation>Коммен&amp;тарий:</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
@@ -2404,6 +2404,10 @@ Specify another directory, please.</source>
       <translation>Открыть проект после запаковки</translation>
     </message>
     <message>
+      <source>Project file</source>
+      <translation>Файлы проекта</translation>
+    </message>
+    <message>
       <source>Empty source</source>
       <translation>Откуда?</translation>
     </message>
@@ -2419,16 +2423,24 @@ Specify another directory, please.</source>
       <source>No destination is defined.</source>
       <translation>Не указано, куда.</translation>
     </message>
-    <message>
-      <source>Project file</source>
-      <translation>Файлы проекта</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
       <source>Link</source>
       <translation>Зависимость</translation>
+    </message>
+    <message>
+      <source>Filter by type</source>
+      <translation>Фильтр по типу</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Если включено, то выбор вида 3D будет синхронизироваться с полной иерархией объектов.</translation>
+    </message>
+    <message>
+      <source>Sync sub-object selection</source>
+      <translation>Синхронизировать выбор субобъектов</translation>
     </message>
     <message>
       <source>Search</source>
@@ -2439,24 +2451,12 @@ Specify another directory, please.</source>
       <translation>Шаблон фильтрации приведенных выше результатов</translation>
     </message>
     <message>
-      <source>Filter by type</source>
-      <translation>Фильтр по типу</translation>
-    </message>
-    <message>
-      <source>Sync sub-object selection</source>
-      <translation>Синхронизировать выбор субобъектов</translation>
-    </message>
-    <message>
       <source>Reset</source>
       <translation>Сброс</translation>
     </message>
     <message>
       <source>Clear</source>
       <translation>Очистить</translation>
-    </message>
-    <message>
-      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation>Если включено, то выбор вида 3D будет синхронизироваться с полной иерархией объектов.</translation>
     </message>
   </context>
   <context>
@@ -2470,64 +2470,36 @@ Specify another directory, please.</source>
       <translation>Вывод</translation>
     </message>
     <message>
-      <source>Record log messages</source>
-      <translation>Выводить информационные сообщения (log)</translation>
+      <source>Normal messages will be recorded</source>
+      <translation>Обычные сообщения будут записаны</translation>
     </message>
     <message>
-      <source>Record warnings</source>
-      <translation>Выводить предупреждения (warnings)</translation>
-    </message>
-    <message>
-      <source>Record error messages</source>
-      <translation>Выводить сообщения об ошибках (errors)</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Выделение цветом</translation>
-    </message>
-    <message>
-      <source>Normal messages:</source>
-      <translation>Обычные сообщения:</translation>
-    </message>
-    <message>
-      <source>Log messages:</source>
-      <translation>Информационные сообщения (log):</translation>
-    </message>
-    <message>
-      <source>Warnings:</source>
-      <translation>Предупреждения (warnings):</translation>
-    </message>
-    <message>
-      <source>Errors:</source>
-      <translation>Ошибки (errors):</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>О программе</translation>
-    </message>
-    <message>
-      <source>Redirect internal Python errors to report view</source>
-      <translation>Перенаправить внутренние ошибки Python в отчёт</translation>
-    </message>
-    <message>
-      <source>Redirect internal Python output to report view</source>
-      <translation>Перенаправить внутренний вывод Python в отчёт</translation>
-    </message>
-    <message>
-      <source>Python interpreter</source>
-      <translation>Интерпретатор Python</translation>
+      <source>Record normal messages</source>
+      <translation>Записывать обычные сообщения (normal)</translation>
     </message>
     <message>
       <source>Log messages will be recorded</source>
       <translation>Сообщения журнала будут записаны</translation>
     </message>
     <message>
+      <source>Record log messages</source>
+      <translation>Выводить информационные сообщения (log)</translation>
+    </message>
+    <message>
       <source>Warnings will be recorded</source>
       <translation>Предупреждения будут записаны</translation>
     </message>
     <message>
+      <source>Record warnings</source>
+      <translation>Выводить предупреждения (warnings)</translation>
+    </message>
+    <message>
       <source>Error messages will be recorded</source>
       <translation>Сообщения об ошибках будут записаны</translation>
+    </message>
+    <message>
+      <source>Record error messages</source>
+      <translation>Выводить сообщения об ошибках (errors)</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
@@ -2570,34 +2542,6 @@ on-screen while displaying the log message</source>
       <translation>Показать отчёт в случае вывода информационного сообщения (log)</translation>
     </message>
     <message>
-      <source>Font color for normal messages in Report view panel</source>
-      <translation>Цвет шрифта для обычных сообщений на панели Отчёт</translation>
-    </message>
-    <message>
-      <source>Font color for log messages in Report view panel</source>
-      <translation>Цвет шрифта для сообщений журнала в панели просмотра Отчёт</translation>
-    </message>
-    <message>
-      <source>Font color for warning messages in Report view panel</source>
-      <translation>Цвет шрифта предупреждающих сообщений в панели просмотра Отчёт</translation>
-    </message>
-    <message>
-      <source>Font color for error messages in Report view panel</source>
-      <translation>Цвет шрифта для сообщений об ошибках на панели Report view</translation>
-    </message>
-    <message>
-      <source>Internal Python output will be redirected
-from Python console to Report view panel</source>
-      <translation>Внутренний вывод Python будет перенаправлен
-с консоли Python на панель просмотра отчета</translation>
-    </message>
-    <message>
-      <source>Internal Python error messages will be redirected
-from Python console to Report view panel</source>
-      <translation>Внутренние сообщения об ошибках Python будут перенаправлены
-с консоли Python на панель просмотра отчета</translation>
-    </message>
-    <message>
       <source>Include a timecode for each report</source>
       <translation>Включить код времени для каждого отчёта</translation>
     </message>
@@ -2606,12 +2550,68 @@ from Python console to Report view panel</source>
       <translation>Вставлять время вывода в каждую запись отчёта</translation>
     </message>
     <message>
-      <source>Normal messages will be recorded</source>
-      <translation>Обычные сообщения будут записаны</translation>
+      <source>Colors</source>
+      <translation>Выделение цветом</translation>
     </message>
     <message>
-      <source>Record normal messages</source>
-      <translation>Записывать обычные сообщения (normal)</translation>
+      <source>Normal messages:</source>
+      <translation>Обычные сообщения:</translation>
+    </message>
+    <message>
+      <source>Font color for normal messages in Report view panel</source>
+      <translation>Цвет шрифта для обычных сообщений на панели Отчёт</translation>
+    </message>
+    <message>
+      <source>Log messages:</source>
+      <translation>Информационные сообщения (log):</translation>
+    </message>
+    <message>
+      <source>Font color for log messages in Report view panel</source>
+      <translation>Цвет шрифта для сообщений журнала в панели просмотра Отчёт</translation>
+    </message>
+    <message>
+      <source>Warnings:</source>
+      <translation>Предупреждения (warnings):</translation>
+    </message>
+    <message>
+      <source>Font color for warning messages in Report view panel</source>
+      <translation>Цвет шрифта предупреждающих сообщений в панели просмотра Отчёт</translation>
+    </message>
+    <message>
+      <source>Errors:</source>
+      <translation>Ошибки (errors):</translation>
+    </message>
+    <message>
+      <source>Font color for error messages in Report view panel</source>
+      <translation>Цвет шрифта для сообщений об ошибках на панели Report view</translation>
+    </message>
+    <message>
+      <source>Python interpreter</source>
+      <translation>Интерпретатор Python</translation>
+    </message>
+    <message>
+      <source>Internal Python output will be redirected
+from Python console to Report view panel</source>
+      <translation>Внутренний вывод Python будет перенаправлен
+с консоли Python на панель просмотра отчета</translation>
+    </message>
+    <message>
+      <source>Redirect internal Python output to report view</source>
+      <translation>Перенаправить внутренний вывод Python в отчёт</translation>
+    </message>
+    <message>
+      <source>Internal Python error messages will be redirected
+from Python console to Report view panel</source>
+      <translation>Внутренние сообщения об ошибках Python будут перенаправлены
+с консоли Python на панель просмотра отчета</translation>
+    </message>
+    <message>
+      <source>Redirect internal Python errors to report view</source>
+      <translation>Перенаправить внутренние ошибки Python в отчёт</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
@@ -2682,58 +2682,6 @@ from Python console to Report view panel</source>
       <translation>3D Вид</translation>
     </message>
     <message>
-      <source>Show coordinate system in the corner</source>
-      <translation>Показывать систему координат в углу</translation>
-    </message>
-    <message>
-      <source>Show counter of frames per second</source>
-      <translation>Показывать счетчик кадров в секунду</translation>
-    </message>
-    <message>
-      <source>Camera type</source>
-      <translation>Тип камеры</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>О программе</translation>
-    </message>
-    <message>
-      <source>Anti-Aliasing</source>
-      <translation>Сглаживание</translation>
-    </message>
-    <message>
-      <source>None</source>
-      <translation>Нет</translation>
-    </message>
-    <message>
-      <source>Line Smoothing</source>
-      <translation>Сглаживание линий</translation>
-    </message>
-    <message>
-      <source>MSAA 2x</source>
-      <translation>MSAA 2x</translation>
-    </message>
-    <message>
-      <source>MSAA 4x</source>
-      <translation>MSAA 4x</translation>
-    </message>
-    <message>
-      <source>MSAA 8x</source>
-      <translation>MSAA 8x</translation>
-    </message>
-    <message>
-      <source>Or&amp;thographic rendering</source>
-      <translation>Прорисовка ор&amp;тогональной проекции</translation>
-    </message>
-    <message>
-      <source>Perspective renderin&amp;g</source>
-      <translation>Прорисовка &amp;перспективной проекции</translation>
-    </message>
-    <message>
-      <source>Marker size:</source>
-      <translation>Размер метки:</translation>
-    </message>
-    <message>
       <source>General</source>
       <translation>Основные</translation>
     </message>
@@ -2743,9 +2691,41 @@ lower right corner within opened files</source>
       <translation>Основная система координат всегда отображается в нижнем правом углу в открытых файлах</translation>
     </message>
     <message>
+      <source>Show coordinate system in the corner</source>
+      <translation>Показывать систему координат в углу</translation>
+    </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation>Перекрестие осей будет показано по умолчанию
+при открытии или создании файла</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation>Показывать перекрестие осей по умолчанию</translation>
+    </message>
+    <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
       <translation>Время, необходимое для последней операции, и результирующая частота кадров будут показаны в левом нижнем углу открытых файлов</translation>
+    </message>
+    <message>
+      <source>Show counter of frames per second</source>
+      <translation>Показывать счетчик кадров в секунду</translation>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
@@ -2758,6 +2738,18 @@ will be shown at the lower left corner in opened files</source>
     <message>
       <source>Rendering</source>
       <translation>Отрисовка</translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Эта опция полезна для диагностики графических карт и проблем с драйвером.
+
+Изменение этой опции требует перезапуска приложения.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Использовать программное обеспечение OpenGL</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2815,6 +2807,34 @@ but slower response to any scene changes.</source>
       <translation>Централизованный</translation>
     </message>
     <message>
+      <source>Anti-Aliasing</source>
+      <translation>Сглаживание</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Какой тип многопроходного сглаживания используется</translation>
+    </message>
+    <message>
+      <source>None</source>
+      <translation>Нет</translation>
+    </message>
+    <message>
+      <source>Line Smoothing</source>
+      <translation>Сглаживание линий</translation>
+    </message>
+    <message>
+      <source>MSAA 2x</source>
+      <translation>MSAA 2x</translation>
+    </message>
+    <message>
+      <source>MSAA 4x</source>
+      <translation>MSAA 4x</translation>
+    </message>
+    <message>
+      <source>MSAA 8x</source>
+      <translation>MSAA 8x</translation>
+    </message>
+    <message>
       <source>Transparent objects:</source>
       <translation>Прозрачные объекты:</translation>
     </message>
@@ -2831,12 +2851,35 @@ but slower response to any scene changes.</source>
       <translation>Проход фона</translation>
     </message>
     <message>
+      <source>Marker size:</source>
+      <translation>Размер метки:</translation>
+    </message>
+    <message>
       <source>Size of vertices in the Sketcher workbench</source>
       <translation>Размер вершин в верстаке Sketcher</translation>
     </message>
     <message>
+      <source>Pick radius (px):</source>
+      <translation>Укажите радиус (пикс.):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Область выбора элементов в 3D виде.
+Большее значение облегчает выбор элемента, но может сделать невозможным выбор небольших элементов.
+               </translation>
+    </message>
+    <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Расстояние между глаз для стерео режима</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Межцентровое расстояние глаз используется для стерео проекций.
+Указанное значение — это множитель, который будет умножаться на габаритный прямоугольный каркас текущего отображаемого трехмерного объекта.</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2855,83 +2898,32 @@ but slower response to any scene changes.</source>
       <translation>Интенсивность подсветки</translation>
     </message>
     <message>
-      <source>Objects will be projected in orthographic projection</source>
-      <translation>Объекты будут отображаться в ортографической проекции</translation>
+      <source>Camera type</source>
+      <translation>Тип камеры</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation>Объекты будут отображаться в перспективе</translation>
     </message>
     <message>
-      <source>Axis cross will be shown by default at file
-opening or creation</source>
-      <translation>Перекрестие осей будет показано по умолчанию
-при открытии или создании файла</translation>
+      <source>Perspective renderin&amp;g</source>
+      <translation>Прорисовка &amp;перспективной проекции</translation>
     </message>
     <message>
-      <source>Show axis cross by default</source>
-      <translation>Показывать перекрестие осей по умолчанию</translation>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>Объекты будут отображаться в ортографической проекции</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Укажите радиус (пикс.):</translation>
+      <source>Or&amp;thographic rendering</source>
+      <translation>Прорисовка ор&amp;тогональной проекции</translation>
     </message>
     <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </source>
-      <translation>Область выбора элементов в 3D виде.
-Большее значение облегчает выбор элемента, но может сделать невозможным выбор небольших элементов.
-               </translation>
-    </message>
-    <message>
-      <source>This option is useful for troubleshooting graphics card and driver problems.
-
-Changing this option requires a restart of the application.</source>
-      <translation>Эта опция полезна для диагностики графических карт и проблем с драйвером.
-
-Изменение этой опции требует перезапуска приложения.</translation>
-    </message>
-    <message>
-      <source>Use software OpenGL</source>
-      <translation>Использовать программное обеспечение OpenGL</translation>
-    </message>
-    <message>
-      <source>What kind of multisample anti-aliasing is used</source>
-      <translation>Какой тип многопроходного сглаживания используется</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</source>
-      <translation>Межцентровое расстояние глаз используется для стерео проекций.
-Указанное значение — это множитель, который будет умножаться на габаритный прямоугольный каркас текущего отображаемого трехмерного объекта.</translation>
-    </message>
-    <message>
-      <source>Relative size :   </source>
-      <translation type="unfinished">Relative size :   </translation>
-    </message>
-    <message>
-      <source>Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</translation>
-    </message>
-    <message>
-      <source>%</source>
-      <translation>%</translation>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-      <source>Anti-aliasing</source>
-      <translation>Сглаживание</translation>
-    </message>
-    <message>
-      <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Для вступления в силу изменений режима сглаживания, откройте новое окно просмотра или перезапустите %1.</translation>
-    </message>
     <message>
       <source>5px</source>
       <translation>5пикс.</translation>
@@ -2956,28 +2948,36 @@ in the corner -- in % of height/width of viewport</translation>
       <source>15px</source>
       <translation>15пикс.</translation>
     </message>
+    <message>
+      <source>Anti-aliasing</source>
+      <translation>Сглаживание</translation>
+    </message>
+    <message>
+      <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
+      <translation>Для вступления в силу изменений режима сглаживания, откройте новое окно просмотра или перезапустите %1.</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
     <message>
       <source>Cache</source>
-      <translation type="unfinished">Cache</translation>
+      <translation>Кэш</translation>
     </message>
     <message>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Расположение кэша</translation>
     </message>
     <message>
       <source>Location:</source>
-      <translation type="unfinished">Location:</translation>
+      <translation>Расположение:</translation>
     </message>
     <message>
       <source>Check periodically at program start:</source>
-      <translation type="unfinished">Check periodically at program start:</translation>
+      <translation>Проверять периодически при запуске программы:</translation>
     </message>
     <message>
       <source>Always</source>
-      <translation type="unfinished">Always</translation>
+      <translation>Всегда</translation>
     </message>
     <message>
       <source>Daily</source>
@@ -2989,11 +2989,11 @@ in the corner -- in % of height/width of viewport</translation>
     </message>
     <message>
       <source>Monthly</source>
-      <translation type="unfinished">Monthly</translation>
+      <translation>Ежемесячно</translation>
     </message>
     <message>
       <source>Yearly</source>
-      <translation type="unfinished">Yearly</translation>
+      <translation>Ежегодно</translation>
     </message>
     <message>
       <source>Never</source>
@@ -3001,15 +3001,15 @@ in the corner -- in % of height/width of viewport</translation>
     </message>
     <message>
       <source>Cache size limit:</source>
-      <translation type="unfinished">Cache size limit:</translation>
+      <translation>Ограничение размера кэша:</translation>
     </message>
     <message>
       <source>Check now...</source>
-      <translation type="unfinished">Check now...</translation>
+      <translation>Проверить сейчас...</translation>
     </message>
     <message>
       <source>Notify the user if the cache size exceeds the specified limit</source>
-      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+      <translation>Уведомить пользователя, если размер кэша превышает установленное ограничение</translation>
     </message>
     <message>
       <source>Unknown</source>
@@ -3017,11 +3017,15 @@ in the corner -- in % of height/width of viewport</translation>
     </message>
     <message>
       <source>Current cache size: %1</source>
-      <translation type="unfinished">Current cache size: %1</translation>
+      <translation>Текущий размер кэша: %1</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsColorGradient</name>
+    <message>
+      <source>Color-gradient settings</source>
+      <translation>Настройки цветовой шкалы</translation>
+    </message>
     <message>
       <source>Color model</source>
       <translation>Цветовая модель</translation>
@@ -3047,32 +3051,12 @@ in the corner -- in % of height/width of viewport</translation>
       <translation>черно-белый</translation>
     </message>
     <message>
-      <source>Visibility</source>
-      <translation>Видимость</translation>
-    </message>
-    <message>
-      <source>Out g&amp;rayed</source>
-      <translation>Зашкал - серым</translation>
-    </message>
-    <message>
-      <source>Alt+R</source>
-      <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Alt+I</source>
-      <translation>Alt+I</translation>
-    </message>
-    <message>
       <source>Style</source>
       <translation>Стиль</translation>
     </message>
     <message>
-      <source>&amp;Zero</source>
-      <translation>&amp; Начало градиента в нулевых значениях</translation>
-    </message>
-    <message>
-      <source>Alt+Z</source>
-      <translation>Alt+Z</translation>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
     </message>
     <message>
       <source>&amp;Flow</source>
@@ -3083,46 +3067,34 @@ in the corner -- in % of height/width of viewport</translation>
       <translation>Alt+F</translation>
     </message>
     <message>
-      <source>Parameter range</source>
-      <translation>Диапазон значений параметра</translation>
-    </message>
-    <message>
-      <source>Mi&amp;nimum:</source>
-      <translation>Минимум:</translation>
-    </message>
-    <message>
-      <source>Ma&amp;ximum:</source>
-      <translation>Максимум:</translation>
-    </message>
-    <message>
-      <source>&amp;Labels:</source>
-      <translation>Делений:</translation>
-    </message>
-    <message>
-      <source>&amp;Decimals:</source>
-      <translation>Точность:</translation>
-    </message>
-    <message>
-      <source/>
-      <translation>О программе</translation>
-    </message>
-    <message>
-      <source>Color-gradient settings</source>
-      <translation>Настройки цветовой шкалы</translation>
-    </message>
-    <message>
-      <source>Color gradient is used with its full color range</source>
-      <translation type="unfinished">Color gradient is used with its full color range</translation>
-    </message>
-    <message>
       <source>Color gradient starts from the zero value</source>
       <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>&amp;Zero</source>
+      <translation>&amp; Начало градиента в нулевых значениях</translation>
+    </message>
+    <message>
+      <source>Alt+Z</source>
+      <translation>Alt+Z</translation>
+    </message>
+    <message>
+      <source>Visibility</source>
+      <translation>Видимость</translation>
     </message>
     <message>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
       <translation type="unfinished">Data outside the specified min-max range
 will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Out g&amp;rayed</source>
+      <translation>Зашкал - серым</translation>
+    </message>
+    <message>
+      <source>Alt+R</source>
+      <translation>Alt+R</translation>
     </message>
     <message>
       <source>Data outside the specified min-max range
@@ -3135,14 +3107,42 @@ will be displayed with transparency</translation>
       <translation type="unfinished">Out &amp;transparent</translation>
     </message>
     <message>
+      <source>Alt+I</source>
+      <translation>Alt+I</translation>
+    </message>
+    <message>
+      <source>Parameter range</source>
+      <translation>Диапазон значений параметра</translation>
+    </message>
+    <message>
+      <source>Ma&amp;ximum:</source>
+      <translation>Максимум:</translation>
+    </message>
+    <message>
+      <source>&amp;Labels:</source>
+      <translation>Делений:</translation>
+    </message>
+    <message>
       <source>Number of labels besides the color bar</source>
       <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Mi&amp;nimum:</source>
+      <translation>Минимум:</translation>
+    </message>
+    <message>
+      <source>&amp;Decimals:</source>
+      <translation>Точность:</translation>
     </message>
     <message>
       <source>Number of decimals for labels
 besides the color bar</source>
       <translation type="unfinished">Number of decimals for labels
 besides the color bar</translation>
+    </message>
+    <message>
+      <source/>
+      <translation>О программе</translation>
     </message>
   </context>
   <context>
@@ -3167,106 +3167,18 @@ besides the color bar</translation>
       <translation>Основные</translation>
     </message>
     <message>
-      <source>Document save compression level
-(0 = none, 9 = highest, 3 = default)</source>
-      <translation>Уровень сжатия сохраняемого документа
-(0 = нет, 9 = наивысший, 3 = по умолчанию)</translation>
+      <source>The application will create a new document when started</source>
+      <translation>Приложение создаст новый документ при запуске</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
       <translation>Создавать новый документ при запуске</translation>
     </message>
     <message>
-      <source>Storage</source>
-      <translation>Сохранение</translation>
-    </message>
-    <message>
-      <source>Saving transactions (Auto-save)</source>
-      <translation>Записывать все операции (Автосохранение)</translation>
-    </message>
-    <message>
-      <source>Discard saved transaction after saving document</source>
-      <translation>Удалять сохраненные операции после сохранения документа</translation>
-    </message>
-    <message>
-      <source>Save thumbnail into project file when saving document</source>
-      <translation>Сохранить миниатюру в файл проекта при сохранении документа</translation>
-    </message>
-    <message>
-      <source>Maximum number of backup files to keep when resaving document</source>
-      <translation>Максимальное количество файлов резервных копий, при пересохранении документа</translation>
-    </message>
-    <message>
-      <source>Document objects</source>
-      <translation>Объекты в документе</translation>
-    </message>
-    <message>
-      <source>Allow duplicate object labels in one document</source>
-      <translation>Разрешить идентичные метки (Label) в одном документе</translation>
-    </message>
-    <message>
-      <source>Maximum Undo/Redo steps</source>
-      <translation>Максимум шагов отмен/повторов</translation>
-    </message>
-    <message>
-      <source>Using Undo/Redo on documents</source>
-      <translation>отмены/повторы</translation>
-    </message>
-    <message>
-      <source>Authoring and License</source>
-      <translation>Авторство и лицензия</translation>
-    </message>
-    <message>
-      <source>Author name</source>
-      <translation>Имя автора</translation>
-    </message>
-    <message>
-      <source>Set on save</source>
-      <translation>Устанавливать при сохранении</translation>
-    </message>
-    <message>
-      <source>Company</source>
-      <translation>Компания</translation>
-    </message>
-    <message>
-      <source>Default license</source>
-      <translation>Лицензия по умолчанию</translation>
-    </message>
-    <message>
-      <source>All rights reserved</source>
-      <translation>Все права защищены</translation>
-    </message>
-    <message>
-      <source>Public Domain</source>
-      <translation>Общественное достояние</translation>
-    </message>
-    <message>
-      <source>FreeArt</source>
-      <translation>FreeArt</translation>
-    </message>
-    <message>
-      <source>Other</source>
-      <translation>Другое</translation>
-    </message>
-    <message>
-      <source>License URL</source>
-      <translation>URL-адрес лицензии</translation>
-    </message>
-    <message>
-      <source>Run AutoRecovery at startup</source>
-      <translation>Запуск автоматического восстановления при запуске</translation>
-    </message>
-    <message>
-      <source>Save AutoRecovery information every</source>
-      <translation>Автосохранение каждые</translation>
-    </message>
-    <message>
-      <source>Add the program logo to the generated thumbnail</source>
-      <translation>Добавить логотип программы в генерируемую миниатюру</translation>
-    </message>
-    <message>
-      <source>The application will create a new document when started</source>
-      <translation>Приложение создаст новый документ при запуске</translation>
+      <source>Document save compression level
+(0 = none, 9 = highest, 3 = default)</source>
+      <translation>Уровень сжатия сохраняемого документа
+(0 = нет, 9 = наивысший, 3 = по умолчанию)</translation>
     </message>
     <message>
       <source>Compression level for FCStd files</source>
@@ -3275,6 +3187,14 @@ besides the color bar</translation>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
       <translation>Все изменения в документах хранятся, чтобы они могли быть отменены или восстановлены</translation>
+    </message>
+    <message>
+      <source>Using Undo/Redo on documents</source>
+      <translation>отмены/повторы</translation>
+    </message>
+    <message>
+      <source>Maximum Undo/Redo steps</source>
+      <translation>Максимум шагов отмен/повторов</translation>
     </message>
     <message>
       <source>How many Undo/Redo steps should be recorded</source>
@@ -3291,18 +3211,42 @@ This feature may slightly increase recomputation time.</source>
       <translation>Разрешить отмену перерасчёта</translation>
     </message>
     <message>
+      <source>Storage</source>
+      <translation>Сохранение</translation>
+    </message>
+    <message>
+      <source>Saving transactions (Auto-save)</source>
+      <translation>Записывать все операции (Автосохранение)</translation>
+    </message>
+    <message>
+      <source>Discard saved transaction after saving document</source>
+      <translation>Удалять сохраненные операции после сохранения документа</translation>
+    </message>
+    <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
       <translation>Если файл восстановления доступен приложение 
 автоматически выполнит восстановление при его запуске.</translation>
     </message>
     <message>
+      <source>Run AutoRecovery at startup</source>
+      <translation>Запуск автоматического восстановления при запуске</translation>
+    </message>
+    <message>
       <source>How often a recovery file is written</source>
       <translation>Как часто записывается файл восстановления</translation>
     </message>
     <message>
+      <source>Save AutoRecovery information every</source>
+      <translation>Автосохранение каждые</translation>
+    </message>
+    <message>
       <source>A thumbnail will be stored when document is saved</source>
       <translation>Миниатюра будет сохранена при сохранении документа</translation>
+    </message>
+    <message>
+      <source>Save thumbnail into project file when saving document</source>
+      <translation>Сохранить миниатюру в файл проекта при сохранении документа</translation>
     </message>
     <message>
       <source>Size</source>
@@ -3319,8 +3263,16 @@ Common sizes are 128, 256 and 512</source>
       <translation>Логотип программы будет добавлен к миниатюре</translation>
     </message>
     <message>
+      <source>Add the program logo to the generated thumbnail</source>
+      <translation>Добавить логотип программы в генерируемую миниатюру</translation>
+    </message>
+    <message>
       <source>How many backup files will be kept when saving document</source>
       <translation>Количество файлов резервных копий создаваемое при сохранении документа</translation>
+    </message>
+    <message>
+      <source>Maximum number of backup files to keep when resaving document</source>
+      <translation>Максимальное количество файлов резервных копий, при пересохранении документа</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
@@ -3337,8 +3289,16 @@ get date suffix according to the specified format</source>
       <translation>Формат даты</translation>
     </message>
     <message>
+      <source>Document objects</source>
+      <translation>Объекты в документе</translation>
+    </message>
+    <message>
       <source>Allow objects to have same label/name</source>
       <translation>Разрешить объектам иметь одинаковую Метку/Имя</translation>
+    </message>
+    <message>
+      <source>Allow duplicate object labels in one document</source>
+      <translation>Разрешить идентичные метки (Label) в одном документе</translation>
     </message>
     <message>
       <source>Enable partial loading of external linked documents.
@@ -3353,6 +3313,14 @@ icon in the tree view to fully reload it.</source>
     <message>
       <source>Disable partial loading of external linked objects</source>
       <translation>Отключить частичную загрузку внешних связанных объектов</translation>
+    </message>
+    <message>
+      <source>Authoring and License</source>
+      <translation>Авторство и лицензия</translation>
+    </message>
+    <message>
+      <source>Author name</source>
+      <translation>Имя автора</translation>
     </message>
     <message>
       <source>All documents that will be created will get the specified author name.
@@ -3373,12 +3341,28 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <translation>При сохранении файла поле 'Последнее изменение' будет заполнено именем указанного автора</translation>
     </message>
     <message>
+      <source>Set on save</source>
+      <translation>Устанавливать при сохранении</translation>
+    </message>
+    <message>
+      <source>Company</source>
+      <translation>Компания</translation>
+    </message>
+    <message>
       <source>Default company name to use for new files</source>
       <translation>Название компании по умолчанию для использования в новых файлах</translation>
     </message>
     <message>
+      <source>Default license</source>
+      <translation>Лицензия по умолчанию</translation>
+    </message>
+    <message>
       <source>Default license for new documents</source>
       <translation>Лицензия по умолчанию для новых документов</translation>
+    </message>
+    <message>
+      <source>All rights reserved</source>
+      <translation>Все права защищены</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
@@ -3403,6 +3387,22 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
       <translation>Лицензия «С указанием авторства — Некоммерческая — Без производных», сокращённо CC BY-NC-ND</translation>
+    </message>
+    <message>
+      <source>Public Domain</source>
+      <translation>Общественное достояние</translation>
+    </message>
+    <message>
+      <source>FreeArt</source>
+      <translation>FreeArt</translation>
+    </message>
+    <message>
+      <source>Other</source>
+      <translation>Другое</translation>
+    </message>
+    <message>
+      <source>License URL</source>
+      <translation>URL-адрес лицензии</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
@@ -3483,12 +3483,12 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <translation>Ошибка Python</translation>
     </message>
     <message>
-      <source>Items</source>
-      <translation>Элементы</translation>
-    </message>
-    <message>
       <source>Current line highlight</source>
       <translation>Выделение текущей строки</translation>
+    </message>
+    <message>
+      <source>Items</source>
+      <translation>Элементы</translation>
     </message>
   </context>
   <context>
@@ -3498,36 +3498,12 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <translation>Настройки изображения</translation>
     </message>
     <message>
-      <source>Image properties</source>
-      <translation>Свойства изображения</translation>
-    </message>
-    <message>
-      <source>Back&amp;ground:</source>
-      <translation>&amp;Фон:</translation>
-    </message>
-    <message>
-      <source>Current</source>
-      <translation>Текущий</translation>
-    </message>
-    <message>
-      <source>White</source>
-      <translation>Белый</translation>
-    </message>
-    <message>
-      <source>Black</source>
-      <translation>Чёрный</translation>
-    </message>
-    <message>
       <source>Image dimensions</source>
       <translation>Размеры изображения</translation>
     </message>
     <message>
-      <source>Pixel</source>
-      <translation>пикс.</translation>
-    </message>
-    <message>
-      <source>&amp;Width:</source>
-      <translation>Ширина:</translation>
+      <source>Standard sizes:</source>
+      <translation>Стандартные размеры:</translation>
     </message>
     <message>
       <source>Current screen</source>
@@ -3546,8 +3522,12 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <translation>Значок 128х128</translation>
     </message>
     <message>
-      <source>Standard sizes:</source>
-      <translation>Стандартные размеры:</translation>
+      <source>&amp;Width:</source>
+      <translation>Ширина:</translation>
+    </message>
+    <message>
+      <source>Pixel</source>
+      <translation>пикс.</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
@@ -3590,6 +3570,34 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <translation>Alt+1</translation>
     </message>
     <message>
+      <source>Image properties</source>
+      <translation>Свойства изображения</translation>
+    </message>
+    <message>
+      <source>Back&amp;ground:</source>
+      <translation>&amp;Фон:</translation>
+    </message>
+    <message>
+      <source>Current</source>
+      <translation>Текущий</translation>
+    </message>
+    <message>
+      <source>White</source>
+      <translation>Белый</translation>
+    </message>
+    <message>
+      <source>Black</source>
+      <translation>Чёрный</translation>
+    </message>
+    <message>
+      <source>Transparent</source>
+      <translation>Прозрачный</translation>
+    </message>
+    <message>
+      <source>Creation method:</source>
+      <translation>Метод создания:</translation>
+    </message>
+    <message>
       <source>Image comment</source>
       <translation>Комментарий к изображению</translation>
     </message>
@@ -3602,16 +3610,8 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <translation>Вставить комментарий</translation>
     </message>
     <message>
-      <source>Transparent</source>
-      <translation>Прозрачный</translation>
-    </message>
-    <message>
       <source>Add watermark</source>
       <translation>Добавить водяной знак</translation>
-    </message>
-    <message>
-      <source>Creation method:</source>
-      <translation>Метод создания:</translation>
     </message>
   </context>
   <context>
@@ -3636,6 +3636,14 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
+      <source>Available Workbenches</source>
+      <translation>Доступные верстаки</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Чтобы сэкономить ресурсы, FreeCAD не загружает верстаки до тех пор, пока они не будут использованы. После загрузки верстака, если это предусмотрено в настройках может появится дополнительный раздел с настройкам, связанным с функциональностью загруженного верстака.&lt;/p&gt;&lt;p&gt;В текущий момент доступны следующие верстаки, которые можно загрузить, если это требуется:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
       <source>Workbench Name</source>
       <translation>Название верстака</translation>
     </message>
@@ -3646,14 +3654,6 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     <message>
       <source>Load Now</source>
       <translation>Загрузить сейчас</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Чтобы сэкономить ресурсы, FreeCAD не загружает верстаки до тех пор, пока они не будут использованы. После загрузки верстака, если это предусмотрено в настройках может появится дополнительный раздел с настройкам, связанным с функциональностью загруженного верстака.&lt;/p&gt;&lt;p&gt;В текущий момент доступны следующие верстаки, которые можно загрузить, если это требуется:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Available Workbenches</source>
-      <translation>Доступные верстаки</translation>
     </message>
   </context>
   <context>
@@ -3694,12 +3694,56 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <translation>Макрос</translation>
     </message>
     <message>
+      <source>General macro settings</source>
+      <translation>Общие параметры макросов</translation>
+    </message>
+    <message>
+      <source>Variables defined by macros are created as local variables</source>
+      <translation>Переменные, определенные макросами создаются как локальные переменные</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Запуск макросов в локальном окружении</translation>
+    </message>
+    <message>
       <source>Macro recording settings</source>
       <translation>Настройки записи макросов</translation>
     </message>
     <message>
+      <source>Macro path</source>
+      <translation>Куда записывать макросы</translation>
+    </message>
+    <message>
+      <source>The directory in which the application will search for macros</source>
+      <translation>Каталог, в котором приложение будет искать макросы</translation>
+    </message>
+    <message>
+      <source>Gui commands</source>
+      <translation>Команды в графическом интерфейсе</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands</source>
+      <translation>Записанные макросы также будут содержать команды интерфейса пользователя</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Записать команды интерфейса</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands as comments</source>
+      <translation>Записанные макросы также будут содержать команды интерфейса пользователя в виде комментариев</translation>
+    </message>
+    <message>
+      <source>Record as comment</source>
+      <translation>Записывать как комментарий</translation>
+    </message>
+    <message>
       <source>Logging Commands</source>
       <translation>Ведение журнала команд</translation>
+    </message>
+    <message>
+      <source>Commands executed by macro scripts are shown in Python console</source>
+      <translation>Команды, выполняемые скриптами макросов, отображаются в консоли Python</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
@@ -3712,50 +3756,6 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     <message>
       <source>FullScript.FCScript</source>
       <translation>FullScript.FCScript</translation>
-    </message>
-    <message>
-      <source>Gui commands</source>
-      <translation>Команды в графическом интерфейсе</translation>
-    </message>
-    <message>
-      <source>Record as comment</source>
-      <translation>Записывать как комментарий</translation>
-    </message>
-    <message>
-      <source>Macro path</source>
-      <translation>Куда записывать макросы</translation>
-    </message>
-    <message>
-      <source>General macro settings</source>
-      <translation>Общие параметры макросов</translation>
-    </message>
-    <message>
-      <source>Run macros in local environment</source>
-      <translation>Запуск макросов в локальном окружении</translation>
-    </message>
-    <message>
-      <source>Record GUI commands</source>
-      <translation>Записать команды интерфейса</translation>
-    </message>
-    <message>
-      <source>Variables defined by macros are created as local variables</source>
-      <translation>Переменные, определенные макросами создаются как локальные переменные</translation>
-    </message>
-    <message>
-      <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation>Команды, выполняемые скриптами макросов, отображаются в консоли Python</translation>
-    </message>
-    <message>
-      <source>Recorded macros will also contain user interface commands</source>
-      <translation>Записанные макросы также будут содержать команды интерфейса пользователя</translation>
-    </message>
-    <message>
-      <source>Recorded macros will also contain user interface commands as comments</source>
-      <translation>Записанные макросы также будут содержать команды интерфейса пользователя в виде комментариев</translation>
-    </message>
-    <message>
-      <source>The directory in which the application will search for macros</source>
-      <translation>Каталог, в котором приложение будет искать макросы</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
@@ -3829,6 +3829,22 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <translation>Нижний правый угол</translation>
     </message>
     <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Поворачивать до ближайшего состояния при клике на кубическую грань</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Повернуть к ближайшему</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Размер куба</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Размер навигационного куба</translation>
+    </message>
+    <message>
       <source>3D Navigation</source>
       <translation>Трёхмерная навигация</translation>
     </message>
@@ -3867,6 +3883,38 @@ Turntable: the part will be rotated around the z-axis.</source>
       <translation>Trackball</translation>
     </message>
     <message>
+      <source>Rotation mode</source>
+      <translation>Режим вращения</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation>Вращение в 3D будет использовать текущую позицию курсора как центр вращения</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Центр окна</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Перенести к курсору</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Центр объекта</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Ориентация камеры по умолчанию</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Ориентация камеры по умолчанию при создании нового документа или выборе вида "Домой"</translation>
+    </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Устанавливает масштаб камеры для новых документов.
@@ -3893,8 +3941,14 @@ The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Зум туда, где мышь</translation>
     </message>
     <message>
-      <source>Zoom step</source>
-      <translation>Шаг масштабирования</translation>
+      <source> Zoom step</source>
+      <translation> Шаг масштабирования</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Насколько будет масштабировано.
+Шаг масштаба '1' означает коэффициент 7.5 для каждого шага масштаба.</translation>
     </message>
     <message>
       <source>Direction of zoom operations will be inverted</source>
@@ -3915,10 +3969,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Отключить жест наклона для сенсорного экрана</translation>
-    </message>
-    <message>
-      <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation>Вращение в 3D будет использовать текущую позицию курсора как центр вращения</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3959,56 +4009,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Custom</source>
       <translation>Дополнительно</translation>
-    </message>
-    <message>
-      <source>Default camera orientation</source>
-      <translation>Ориентация камеры по умолчанию</translation>
-    </message>
-    <message>
-      <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation>Ориентация камеры по умолчанию при создании нового документа или выборе вида "Домой"</translation>
-    </message>
-    <message>
-      <source>Rotation mode</source>
-      <translation>Режим вращения</translation>
-    </message>
-    <message>
-      <source>Window center</source>
-      <translation>Центр окна</translation>
-    </message>
-    <message>
-      <source>Drag at cursor</source>
-      <translation>Перенести к курсору</translation>
-    </message>
-    <message>
-      <source>Object center</source>
-      <translation>Центр объекта</translation>
-    </message>
-    <message>
-      <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation>Поворачивать до ближайшего состояния при клике на кубическую грань</translation>
-    </message>
-    <message>
-      <source>Rotate to nearest</source>
-      <translation>Повернуть к ближайшему</translation>
-    </message>
-    <message>
-      <source>Cube size</source>
-      <translation>Размер куба</translation>
-    </message>
-    <message>
-      <source>Size of the navigation cube</source>
-      <translation>Размер навигационного куба</translation>
-    </message>
-    <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation>Насколько будет масштабировано.
-Шаг масштаба '1' означает коэффициент 7.5 для каждого шага масштаба.</translation>
-    </message>
-    <message>
-      <source>Camera zoom</source>
-      <translation type="unfinished">Camera zoom</translation>
     </message>
   </context>
   <context>
@@ -4086,44 +4086,28 @@ horizontal space in Python console</source>
       <translation>Настройка единиц измерения</translation>
     </message>
     <message>
-      <source>Standard (mm/kg/s/degree)</source>
-      <translation>Стандартные (мм/кг/с/градус)</translation>
+      <source>Unit system:</source>
+      <translation>Система измерения:</translation>
     </message>
     <message>
-      <source>MKS (m/kg/s/degree)</source>
-      <translation>МКС (м/кг/с/градус)</translation>
-    </message>
-    <message>
-      <source>Magnitude</source>
-      <translation>Величина</translation>
-    </message>
-    <message>
-      <source>Unit</source>
-      <translation>Единица измерения</translation>
-    </message>
-    <message>
-      <source>US customary (in/lb)</source>
-      <translation>Английская система мер (дюймы, футы, ярды, ...)</translation>
+      <source>Unit system that should be used for all parts the application</source>
+      <translation>Система единиц измерения, которая должна использоваться для всех компонентов приложения</translation>
     </message>
     <message>
       <source>Number of decimals:</source>
       <translation>Количество десятичных знаков:</translation>
     </message>
     <message>
-      <source>Imperial decimal (in/lb)</source>
-      <translation>Английская десятичная (дюймы, фунты)</translation>
-    </message>
-    <message>
-      <source>Building Euro (cm/m²/m³)</source>
-      <translation>Строительство Евро (см/м²/м³)</translation>
-    </message>
-    <message>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Метрические мелкие детали &amp; ЧПУ (мм, мм/мин)</translation>
+      <source>Number of decimals that should be shown for numbers and dimensions</source>
+      <translation>Количество десятичных знаков, которые должны отображаться для чисел и размеров</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
       <translation>Минимальная часть дюйма:</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch to be displayed</source>
+      <translation>Минимальная часть дюйма для отображения</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -4154,24 +4138,40 @@ horizontal space in Python console</source>
       <translation>1/128"</translation>
     </message>
     <message>
-      <source>Unit system:</source>
-      <translation>Система измерения:</translation>
+      <source>Magnitude</source>
+      <translation>Величина</translation>
     </message>
     <message>
-      <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>Количество десятичных знаков, которые должны отображаться для чисел и размеров</translation>
+      <source>Unit</source>
+      <translation>Единица измерения</translation>
     </message>
     <message>
-      <source>Unit system that should be used for all parts the application</source>
-      <translation>Система единиц измерения, которая должна использоваться для всех компонентов приложения</translation>
+      <source>Standard (mm/kg/s/degree)</source>
+      <translation>Стандартные (мм/кг/с/градус)</translation>
     </message>
     <message>
-      <source>Minimum fractional inch to be displayed</source>
-      <translation>Минимальная часть дюйма для отображения</translation>
+      <source>MKS (m/kg/s/degree)</source>
+      <translation>МКС (м/кг/с/градус)</translation>
+    </message>
+    <message>
+      <source>US customary (in/lb)</source>
+      <translation>Английская система мер (дюймы, футы, ярды, ...)</translation>
+    </message>
+    <message>
+      <source>Imperial decimal (in/lb)</source>
+      <translation>Английская десятичная (дюймы, фунты)</translation>
+    </message>
+    <message>
+      <source>Building Euro (cm/m²/m³)</source>
+      <translation>Строительство Евро (см/м²/м³)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
       <translation>Строительство США (футы-дюймы/кв.футы/куб.футы)</translation>
+    </message>
+    <message>
+      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+      <translation>Метрические мелкие детали &amp; ЧПУ (мм, мм/мин)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
@@ -4193,76 +4193,76 @@ horizontal space in Python console</source>
       <translation>Выделение</translation>
     </message>
     <message>
-      <source>Enable selection highlighting</source>
-      <translation>Включить подсвечивание выделенного</translation>
+      <source>Enable preselection and highlight by specified color</source>
+      <translation>Включить предварительный выбор и подсветку заданным цветом</translation>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
       <translation>Включить подсвечивание при наведении курсора</translation>
     </message>
     <message>
-      <source>Background color</source>
-      <translation>Цвет фона</translation>
-    </message>
-    <message>
-      <source>Middle color</source>
-      <translation>Средний цвет</translation>
-    </message>
-    <message>
-      <source>Color gradient</source>
-      <translation>Цветовой градиент</translation>
-    </message>
-    <message>
-      <source>Simple color</source>
-      <translation>Один цвет</translation>
-    </message>
-    <message>
-      <source>Object being edited</source>
-      <translation>Объект редактируется</translation>
-    </message>
-    <message>
-      <source>Active container</source>
-      <translation>Активный контейнер</translation>
-    </message>
-    <message>
-      <source>Enable preselection and highlight by specified color</source>
-      <translation>Включить предварительный выбор и подсветку заданным цветом</translation>
-    </message>
-    <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Включить подсветку выделения и использовать указанный цвет</translation>
+    </message>
+    <message>
+      <source>Enable selection highlighting</source>
+      <translation>Включить подсвечивание выделенного</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
       <translation>Цвет фона для представления модели</translation>
     </message>
     <message>
+      <source>Background color</source>
+      <translation>Цвет фона</translation>
+    </message>
+    <message>
       <source>Background will have selected color</source>
       <translation>Фон будет иметь выбранный цвет</translation>
     </message>
     <message>
-      <source>Color gradient will get selected color as middle color</source>
-      <translation>Градиент цвета будет выбран в качестве среднего цвета</translation>
-    </message>
-    <message>
-      <source>Bottom color</source>
-      <translation>Нижний цвет</translation>
+      <source>Simple color</source>
+      <translation>Один цвет</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
       <translation>Фон будет иметь выбранный градиент цвета</translation>
     </message>
     <message>
+      <source>Color gradient</source>
+      <translation>Цветовой градиент</translation>
+    </message>
+    <message>
       <source>Top color</source>
       <translation>Верхний цвет</translation>
+    </message>
+    <message>
+      <source>Bottom color</source>
+      <translation>Нижний цвет</translation>
+    </message>
+    <message>
+      <source>Color gradient will get selected color as middle color</source>
+      <translation>Градиент цвета будет выбран в качестве среднего цвета</translation>
+    </message>
+    <message>
+      <source>Middle color</source>
+      <translation>Средний цвет</translation>
     </message>
     <message>
       <source>Tree view</source>
       <translation>Иерархия документа</translation>
     </message>
     <message>
+      <source>Object being edited</source>
+      <translation>Объект редактируется</translation>
+    </message>
+    <message>
       <source>Background color for objects in tree view that are currently edited</source>
       <translation>Цвет фона для объектов в виде дерева, которые в настоящее время редактируются</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Активный контейнер</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
@@ -4283,40 +4283,38 @@ horizontal space in Python console</source>
       <translation>Конвертер величин</translation>
     </message>
     <message>
-      <source>as:</source>
-      <translation>в</translation>
-    </message>
-    <message>
-      <source>=&gt;</source>
-      <translation>=</translation>
-    </message>
-    <message>
-      <source>Quantity:</source>
-      <translation>Количество:</translation>
-    </message>
-    <message>
-      <source>Copy</source>
-      <translation>Копировать</translation>
-    </message>
-    <message>
-      <source>Close</source>
-      <translation>Закрыть</translation>
-    </message>
-    <message>
       <source>Input the source value and unit</source>
       <translation>Введите значение источника и единицу измерения</translation>
+    </message>
+    <message>
+      <source>as:</source>
+      <translation>в</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
       <translation>Введите сюда единицу измерения для результата</translation>
     </message>
     <message>
+      <source>=&gt;</source>
+      <translation>=</translation>
+    </message>
+    <message>
       <source>Result</source>
       <translation>Результат</translation>
     </message>
     <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
+    </message>
+    <message>
       <source>Quantity</source>
       <translation>Количество</translation>
+    </message>
+    <message>
+      <source>Quantity:</source>
+      <translation>Количество:</translation>
     </message>
     <message>
       <source>Unit system:</source>
@@ -4350,21 +4348,23 @@ The preference system is the one set in the general preferences.</source>
       <translation>Скопировать результат в буфер обмена</translation>
     </message>
     <message>
-      <source>List of last used calculations.
-To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations.
-To add a calculation press Return in the value input field</translation>
+      <source>Copy</source>
+      <translation>Копировать</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Закрыть</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unit mismatch</source>
-      <translation>несоответствие единиц измерения</translation>
-    </message>
-    <message>
       <source>unknown unit:</source>
       <translation>неизвестная единица:</translation>
+    </message>
+    <message>
+      <source>unit mismatch</source>
+      <translation>несоответствие единиц измерения</translation>
     </message>
   </context>
   <context>
@@ -4374,28 +4374,12 @@ To add a calculation press Return in the value input field</translation>
       <translation>Рабочие окружения</translation>
     </message>
     <message>
-      <source>Enabled workbenches</source>
-      <translation>Включенные рабочие окружения</translation>
-    </message>
-    <message>
       <source>Disabled workbenches</source>
       <translation>Отключенные рабочие окружения</translation>
     </message>
     <message>
-      <source>Move down</source>
-      <translation>Переместить вниз </translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Переместить выбранный элемент вниз.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Выбранный элемент будет перемещён вниз&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Move left</source>
-      <translation>Переместить влево</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Удалить выбранный верстак из списка включенных верстаков.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Enabled workbenches</source>
+      <translation>Включенные рабочие окружения</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -4404,10 +4388,6 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Переместить выбранный верстак в список включенных верстаков.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Sort enabled workbenches</source>
-      <translation>Сортировка включенных верстаков</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -4422,8 +4402,28 @@ To add a calculation press Return in the value input field</translation>
       <translation>Добавьте все в список включенных верстаков</translation>
     </message>
     <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Удалить выбранный верстак из списка включенных верстаков.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Sort enabled workbenches</source>
+      <translation>Сортировка включенных верстаков</translation>
+    </message>
+    <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
       <translation>&lt;p&gt;Сортировка включенных верстаков&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>Move left</source>
+      <translation>Переместить влево</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Переместить вниз </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Переместить выбранный элемент вниз.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Выбранный элемент будет перемещён вниз&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -4444,6 +4444,14 @@ To add a calculation press Return in the value input field</translation>
       <translation>Восстановление документов</translation>
     </message>
     <message>
+      <source>Press 'Start Recovery' to start the recovery process of the document listed below.
+
+The 'Status' column shows whether the document could be recovered.</source>
+      <translation>Нажмите 'Начать восстановление' чтобы начать процесс восстановления документов, перечисленных ниже.
+
+Колонка 'Статус' отображает возможно ли восстановить документ.</translation>
+    </message>
+    <message>
       <source>Status of recovered documents:</source>
       <translation>Состояние восстановленных документов:</translation>
     </message>
@@ -4454,6 +4462,10 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>Status</source>
       <translation>Статус</translation>
+    </message>
+    <message>
+      <source>Cleanup...</source>
+      <translation>Очистка…</translation>
     </message>
     <message>
       <source>Start Recovery</source>
@@ -4480,10 +4492,6 @@ To add a calculation press Return in the value input field</translation>
       <translation>Завершить</translation>
     </message>
     <message>
-      <source>Cleanup...</source>
-      <translation>Очистка…</translation>
-    </message>
-    <message>
       <source>Delete</source>
       <translation>Удалить</translation>
     </message>
@@ -4504,20 +4512,12 @@ To add a calculation press Return in the value input field</translation>
       <translation>Вы уверены, что хотите удалить все временные директории?</translation>
     </message>
     <message>
-      <source>Transient directories deleted.</source>
-      <translation>Временные каталоги удалены.</translation>
-    </message>
-    <message>
-      <source>Press 'Start Recovery' to start the recovery process of the document listed below.
-
-The 'Status' column shows whether the document could be recovered.</source>
-      <translation>Нажмите 'Начать восстановление' чтобы начать процесс восстановления документов, перечисленных ниже.
-
-Колонка 'Статус' отображает возможно ли восстановить документ.</translation>
-    </message>
-    <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>При удалении всех временных директорий Вы не сможете потом восстановить какие-либо файлы.</translation>
+    </message>
+    <message>
+      <source>Transient directories deleted.</source>
+      <translation>Временные каталоги удалены.</translation>
     </message>
     <message>
       <source>Transient deleted</source>
@@ -4651,16 +4651,16 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Вектор</translation>
     </message>
     <message>
-      <source>Z:</source>
-      <translation>Z:</translation>
+      <source>X:</source>
+      <translation>X:</translation>
     </message>
     <message>
       <source>Y:</source>
       <translation>Y:</translation>
     </message>
     <message>
-      <source>X:</source>
-      <translation>X:</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
   </context>
   <context>
@@ -4721,6 +4721,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Свернуть</translation>
     </message>
     <message>
+      <source>Do you really want to remove this parameter group?</source>
+      <translation>Вы действительно хотите удалить эту группу параметров?</translation>
+    </message>
+    <message>
       <source>Existing sub-group</source>
       <translation>Уже есть</translation>
     </message>
@@ -4743,10 +4747,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Reading from '%1' failed.</source>
       <translation>Не удалось выполнить чтение из '%1'.</translation>
-    </message>
-    <message>
-      <source>Do you really want to remove this parameter group?</source>
-      <translation>Вы действительно хотите удалить эту группу параметров?</translation>
     </message>
   </context>
   <context>
@@ -4803,100 +4803,64 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Расположение</translation>
     </message>
     <message>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Перемещение:</translation>
-    </message>
-    <message>
-      <source>Z:</source>
-      <translation>Z:</translation>
-    </message>
-    <message>
-      <source>Y:</source>
-      <translation>Y:</translation>
     </message>
     <message>
       <source>X:</source>
       <translation>X:</translation>
     </message>
     <message>
-      <source>Rotation:</source>
-      <translation>Вращение:</translation>
+      <source>Y:</source>
+      <translation>Y:</translation>
     </message>
     <message>
-      <source>Angle:</source>
-      <translation>Угол:</translation>
-    </message>
-    <message>
-      <source>Axis:</source>
-      <translation>Ось:</translation>
-    </message>
-    <message>
-      <source>Center:</source>
-      <translation>Центр:</translation>
-    </message>
-    <message>
-      <source>Rotation axis with angle</source>
-      <translation>Ось вращения с углом</translation>
-    </message>
-    <message>
-      <source>Apply</source>
-      <translation>Применить</translation>
-    </message>
-    <message>
-      <source>Reset</source>
-      <translation>Сброс</translation>
-    </message>
-    <message>
-      <source>Close</source>
-      <translation>Закрыть</translation>
-    </message>
-    <message>
-      <source>Incorrect quantity</source>
-      <translation>Неправильное количество</translation>
-    </message>
-    <message>
-      <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation>Некоторые поля заполнены неправильно. Убедитесь в правильности выражений и единиц.</translation>
-    </message>
-    <message>
-      <source>Use center of mass</source>
-      <translation>Использовать центр масс</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
     <message>
       <source>Axial:</source>
       <translation>Осевой:</translation>
     </message>
     <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Shift+щелчок мыши для противоположного направления</translation>
+    </message>
+    <message>
       <source>Apply axial</source>
       <translation>Применить осевой</translation>
     </message>
     <message>
-      <source>Shift click for opposite direction</source>
-      <translation>Shift+щелчок мыши для противоположного направления</translation>
+      <source>Center:</source>
+      <translation>Центр:</translation>
+    </message>
+    <message>
+      <source>Use center of mass</source>
+      <translation>Использовать центр масс</translation>
     </message>
     <message>
       <source>Selected points</source>
       <translation>Выбранные точки</translation>
     </message>
     <message>
-      <source>Apply incremental changes</source>
-      <translation>Применить дополнительные изменения</translation>
+      <source>Rotation:</source>
+      <translation>Вращение:</translation>
     </message>
     <message>
-      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Пожалуйста, выберите 1, 2 или 3 точки, прежде чем нажать эту кнопку. Точка может быть на вершине, грани или кромке. Если используемая точка на грани или кромке, то она будет точкой на позиции мыши вдоль грани или кромки. Если выбрана 1 точка, то она будет использоваться в качестве центра вращения. Если выбраны 2 точки, то посредине между ними будет центр вращения, и, при необходимости, будет создана новая пользовательская ось. Если выбраны 3 точки, то первая точка становится центром вращения, и будет лежать на векторе, который перпендикулярен плоскости, проходящей через эти 3 точки. Некоторые расстояния и углы содержатся в отчёте, который может быть полезен при выравнивании объектов. Для Вашего удобства при использовании Shift + щелчок мыши соответствующее расстояние или угол копируются в буфер обмена.</translation>
+      <source>Rotation axis with angle</source>
+      <translation>Ось вращения с углом</translation>
     </message>
     <message>
-      <source>Pitch (around y-axis):</source>
-      <translation>Тангаж (вокруг y-оси):</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation>Углы Эйлера (zy'x'')</translation>
     </message>
     <message>
-      <source>Roll (around x-axis):</source>
-      <translation>Крен (вокруг y-оси):</translation>
+      <source>Axis:</source>
+      <translation>Ось:</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Угол:</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
@@ -4907,16 +4871,52 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Рыскание (вокруг z-оси)</translation>
     </message>
     <message>
+      <source>Pitch (around y-axis):</source>
+      <translation>Тангаж (вокруг y-оси):</translation>
+    </message>
+    <message>
       <source>Pitch (around y-axis)</source>
       <translation>Тангаж (вокруг y-оси)</translation>
+    </message>
+    <message>
+      <source>Roll (around x-axis):</source>
+      <translation>Крен (вокруг y-оси):</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
       <translation>Крен (вокруг x-оси)</translation>
     </message>
     <message>
-      <source>Euler angles (zy'x'')</source>
-      <translation>Углы Эйлера (zy'x'')</translation>
+      <source>Apply incremental changes</source>
+      <translation>Применить дополнительные изменения</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Сброс</translation>
+    </message>
+    <message>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Закрыть</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>Применить</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Пожалуйста, выберите 1, 2 или 3 точки, прежде чем нажать эту кнопку. Точка может быть на вершине, грани или кромке. Если используемая точка на грани или кромке, то она будет точкой на позиции мыши вдоль грани или кромки. Если выбрана 1 точка, то она будет использоваться в качестве центра вращения. Если выбраны 2 точки, то посредине между ними будет центр вращения, и, при необходимости, будет создана новая пользовательская ось. Если выбраны 3 точки, то первая точка становится центром вращения, и будет лежать на векторе, который перпендикулярен плоскости, проходящей через эти 3 точки. Некоторые расстояния и углы содержатся в отчёте, который может быть полезен при выравнивании объектов. Для Вашего удобства при использовании Shift + щелчок мыши соответствующее расстояние или угол копируются в буфер обмена.</translation>
+    </message>
+    <message>
+      <source>Incorrect quantity</source>
+      <translation>Неправильное количество</translation>
+    </message>
+    <message>
+      <source>There are input fields with incorrect input, please ensure valid placement values!</source>
+      <translation>Некоторые поля заполнены неправильно. Убедитесь в правильности выражений и единиц.</translation>
     </message>
   </context>
   <context>
@@ -4968,12 +4968,12 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Диалог</translation>
     </message>
     <message>
-      <source>Close</source>
-      <translation>Закрыть</translation>
-    </message>
-    <message>
       <source>Refresh</source>
       <translation>Обновить</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Закрыть</translation>
     </message>
   </context>
   <context>
@@ -4983,12 +4983,12 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Иерархия Inventor</translation>
     </message>
     <message>
-      <source>Nodes</source>
-      <translation>Узлов</translation>
-    </message>
-    <message>
       <source>Name</source>
       <translation>Название</translation>
+    </message>
+    <message>
+      <source>Nodes</source>
+      <translation>Узлов</translation>
     </message>
   </context>
   <context>
@@ -5052,29 +5052,20 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Выбранные объекты содержат другие зависимости. Пожалуйста, выберите объекты, которые нужно экспортировать. Все зависимости автоматически выбираются по умолчанию.</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Документ</translation>
-    </message>
-    <message>
-      <source>Name</source>
-      <translation>Название</translation>
-    </message>
-    <message>
-      <source>&amp;Use Original Selections</source>
-      <translation>&amp;Использовать выбор оригинала</translation>
-    </message>
-    <message>
-      <source>Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</source>
-      <translation>Игнорировать зависимости и продолжать работу с объектами, выбранными до открытия этого диалогового окна</translation>
-    </message>
-    <message>
       <source>Auto select depending objects</source>
       <translation type="unfinished">Auto select depending objects</translation>
     </message>
     <message>
       <source>Depending on</source>
       <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Документ</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Название</translation>
     </message>
     <message>
       <source>Depended by</source>
@@ -5087,6 +5078,15 @@ originally selected prior to opening this dialog</source>
     <message>
       <source>All</source>
       <translation>Все</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;Использовать выбор оригинала</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Игнорировать зависимости и продолжать работу с объектами, выбранными до открытия этого диалогового окна</translation>
     </message>
   </context>
   <context>
@@ -5133,34 +5133,6 @@ originally selected prior to opening this dialog</source>
       <translation>Параметры</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Очистить</translation>
-    </message>
-    <message>
-      <source>Save As...</source>
-      <translation>Сохранить как...</translation>
-    </message>
-    <message>
-      <source>Save Report Output</source>
-      <translation>Сохранить отчет</translation>
-    </message>
-    <message>
-      <source>Go to end</source>
-      <translation>Переход к концу</translation>
-    </message>
-    <message>
-      <source>Redirect Python output</source>
-      <translation>Вывод Python</translation>
-    </message>
-    <message>
-      <source>Redirect Python errors</source>
-      <translation>Ошибки Python</translation>
-    </message>
-    <message>
-      <source>Plain Text Files</source>
-      <translation>Текстовые файлы</translation>
-    </message>
-    <message>
       <source>Display message types</source>
       <translation>Показать типы сообщений</translation>
     </message>
@@ -5184,6 +5156,34 @@ originally selected prior to opening this dialog</source>
       <source>Show output window on</source>
       <translation type="unfinished">Show output window on</translation>
     </message>
+    <message>
+      <source>Redirect Python output</source>
+      <translation>Вывод Python</translation>
+    </message>
+    <message>
+      <source>Redirect Python errors</source>
+      <translation>Ошибки Python</translation>
+    </message>
+    <message>
+      <source>Go to end</source>
+      <translation>Переход к концу</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Очистить</translation>
+    </message>
+    <message>
+      <source>Save As...</source>
+      <translation>Сохранить как...</translation>
+    </message>
+    <message>
+      <source>Save Report Output</source>
+      <translation>Сохранить отчет</translation>
+    </message>
+    <message>
+      <source>Plain Text Files</source>
+      <translation>Текстовые файлы</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportView</name>
@@ -5199,6 +5199,10 @@ originally selected prior to opening this dialog</source>
   <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
+      <source>Selection View</source>
+      <translation>Обзор выбранного</translation>
+    </message>
+    <message>
       <source>Search</source>
       <translation>Поиск</translation>
     </message>
@@ -5209,6 +5213,14 @@ originally selected prior to opening this dialog</source>
     <message>
       <source>Clears the search field</source>
       <translation>Очистить поле поиска</translation>
+    </message>
+    <message>
+      <source>The number of selected items</source>
+      <translation>Количество выбранных элементов</translation>
+    </message>
+    <message>
+      <source>Picked object list</source>
+      <translation>Список выбранных объектов</translation>
     </message>
     <message>
       <source>Select only</source>
@@ -5243,14 +5255,6 @@ originally selected prior to opening this dialog</source>
       <translation>Выделить объект и показать его в дереве модели</translation>
     </message>
     <message>
-      <source>To python console</source>
-      <translation>К консоли Python</translation>
-    </message>
-    <message>
-      <source>Reveals this object and its subelements in the python console.</source>
-      <translation>Раскрывает в консоли python этот объект и его подэлементы.</translation>
-    </message>
-    <message>
       <source>Mark to recompute</source>
       <translation>Отметить для пересчета</translation>
     </message>
@@ -5259,12 +5263,12 @@ originally selected prior to opening this dialog</source>
       <translation>Пометить этот объект для повторного вычисления</translation>
     </message>
     <message>
-      <source>Selection View</source>
-      <translation>Обзор выбранного</translation>
+      <source>To python console</source>
+      <translation>К консоли Python</translation>
     </message>
     <message>
-      <source>The number of selected items</source>
-      <translation>Количество выбранных элементов</translation>
+      <source>Reveals this object and its subelements in the python console.</source>
+      <translation>Раскрывает в консоли python этот объект и его подэлементы.</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
@@ -5273,10 +5277,6 @@ originally selected prior to opening this dialog</source>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Создает стандартную копию этой подфигуры в документе</translation>
-    </message>
-    <message>
-      <source>Picked object list</source>
-      <translation>Список выбранных объектов</translation>
     </message>
   </context>
   <context>
@@ -5314,8 +5314,16 @@ Do you want to save your changes?</source>
       <translation>Этот документ был изменен. Вы хотите сохранить изменения?</translation>
     </message>
     <message>
+      <source>FreeCAD macro</source>
+      <translation>FreeCAD макрос</translation>
+    </message>
+    <message>
       <source>Export PDF</source>
       <translation>Экспортировать в PDF</translation>
+    </message>
+    <message>
+      <source>PDF file</source>
+      <translation>Файл PDF</translation>
     </message>
     <message>
       <source>untitled[*]</source>
@@ -5336,14 +5344,6 @@ Do you want to save your changes?</source>
     <message>
       <source>Formatted</source>
       <translation>Форматировано</translation>
-    </message>
-    <message>
-      <source>FreeCAD macro</source>
-      <translation>FreeCAD макрос</translation>
-    </message>
-    <message>
-      <source>PDF file</source>
-      <translation>Файл PDF</translation>
     </message>
   </context>
   <context>
@@ -5438,34 +5438,6 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <source>Export graph</source>
-      <translation>Экспорт графа</translation>
-    </message>
-    <message>
-      <source>PNG format</source>
-      <translation>Формат PNG</translation>
-    </message>
-    <message>
-      <source>Bitmap format</source>
-      <translation>Формат bitmap</translation>
-    </message>
-    <message>
-      <source>GIF format</source>
-      <translation>Формат GIF</translation>
-    </message>
-    <message>
-      <source>JPG format</source>
-      <translation>Формат JPG</translation>
-    </message>
-    <message>
-      <source>SVG format</source>
-      <translation>Формат SVG</translation>
-    </message>
-    <message>
-      <source>PDF format</source>
-      <translation>Формат PDF</translation>
-    </message>
-    <message>
       <source>Graphviz not found</source>
       <translation>GraphViz не найден</translation>
     </message>
@@ -5492,6 +5464,34 @@ Do you want to save your changes?</source>
     <message>
       <source>Graphviz failed to create an image file</source>
       <translation>GraphViz не удалось создать файл изображения</translation>
+    </message>
+    <message>
+      <source>PNG format</source>
+      <translation>Формат PNG</translation>
+    </message>
+    <message>
+      <source>Bitmap format</source>
+      <translation>Формат bitmap</translation>
+    </message>
+    <message>
+      <source>GIF format</source>
+      <translation>Формат GIF</translation>
+    </message>
+    <message>
+      <source>JPG format</source>
+      <translation>Формат JPG</translation>
+    </message>
+    <message>
+      <source>SVG format</source>
+      <translation>Формат SVG</translation>
+    </message>
+    <message>
+      <source>PDF format</source>
+      <translation>Формат PDF</translation>
+    </message>
+    <message>
+      <source>Export graph</source>
+      <translation>Экспорт графа</translation>
     </message>
   </context>
   <context>
@@ -5534,14 +5534,6 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <source>Wrong direction</source>
-      <translation>Неправильное направление</translation>
-    </message>
-    <message>
-      <source>Direction must not be the null vector</source>
-      <translation>Направление не должно быть нулевым вектором</translation>
-    </message>
-    <message>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -5556,6 +5548,14 @@ Do you want to save your changes?</source>
     <message>
       <source>User defined...</source>
       <translation>Задать...</translation>
+    </message>
+    <message>
+      <source>Wrong direction</source>
+      <translation>Неправильное направление</translation>
+    </message>
+    <message>
+      <source>Direction must not be the null vector</source>
+      <translation>Направление не должно быть нулевым вектором</translation>
     </message>
   </context>
   <context>
@@ -5603,16 +5603,28 @@ Do you want to save your changes?</source>
       <translation>Готово</translation>
     </message>
     <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
+    <message>
+      <source>Close All</source>
+      <translation>Закрыть все</translation>
+    </message>
+    <message>
       <source>Toggles this toolbar</source>
       <translation>Переключение этой панели инструментов</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
       <translation>Спрятать/показать это встраиваемое окно</translation>
-    </message>
-    <message>
-      <source>Close All</source>
-      <translation>Закрыть все</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -5627,18 +5639,6 @@ Do you want to save your changes?</source>
 Do you want to save the document now?</source>
       <translation>Для ссылки на внешние объекты документ необходимо сохранить хотя бы один раз.
 Хотите сохранить документ сейчас?</translation>
-    </message>
-    <message>
-      <source>Help addon needed!</source>
-      <translation type="unfinished">Help addon needed!</translation>
-    </message>
-    <message>
-      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
-      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
-    </message>
-    <message>
-      <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
     </message>
   </context>
   <context>
@@ -5721,12 +5721,12 @@ How do you want to proceed?</source>
       <translation>Выбраны точки: (%1, %2, %3)</translation>
     </message>
     <message>
-      <source>No point was picked</source>
-      <translation>Не выбрано ни одной точки</translation>
-    </message>
-    <message>
       <source>No point was found on model</source>
       <translation>В модели нет ни одной точки</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>Не выбрано ни одной точки</translation>
     </message>
   </context>
   <context>
@@ -5874,28 +5874,28 @@ How do you want to proceed?</source>
       <translation>свойства</translation>
     </message>
     <message>
+      <source>Auto expand</source>
+      <translation>Разворачивать автоматически</translation>
+    </message>
+    <message>
       <source>Show all</source>
       <translation>Показать все</translation>
-    </message>
-    <message>
-      <source>Add property</source>
-      <translation>Добавить свойство</translation>
-    </message>
-    <message>
-      <source>Remove property</source>
-      <translation>Удалить свойство</translation>
     </message>
     <message>
       <source>Expression...</source>
       <translation>Выражение...</translation>
     </message>
     <message>
-      <source>Auto expand</source>
-      <translation>Разворачивать автоматически</translation>
+      <source>Add property</source>
+      <translation>Добавить свойство</translation>
     </message>
     <message>
       <source>Rename property group</source>
       <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Remove property</source>
+      <translation>Удалить свойство</translation>
     </message>
     <message>
       <source>Group name:</source>
@@ -5948,8 +5948,16 @@ Do you want to exit without saving your data?</source>
       <translation>Необработанное исключение FreeCAD.</translation>
     </message>
     <message>
+      <source>Unhandled std C++ exception.</source>
+      <translation>Необработанное исключение, std C++.</translation>
+    </message>
+    <message>
       <source>Unhandled unknown C++ exception.</source>
       <translation>Необработанное неизвестное исключение C++.</translation>
+    </message>
+    <message>
+      <source>&amp;Copy</source>
+      <translation>&amp;Копировать</translation>
     </message>
     <message>
       <source>&amp;Copy command</source>
@@ -5964,28 +5972,12 @@ Do you want to exit without saving your data?</source>
       <translation>Сохранить историю как...</translation>
     </message>
     <message>
-      <source>Insert file name...</source>
-      <translation>Вставить путь к файлу...</translation>
-    </message>
-    <message>
-      <source>Save History</source>
+      <source>Save history</source>
       <translation>Сохранить историю</translation>
     </message>
     <message>
-      <source>Insert file name</source>
-      <translation>Вставить путь к файлу в консоль Python</translation>
-    </message>
-    <message>
-      <source>Unhandled std C++ exception.</source>
-      <translation>Необработанное исключение, std C++.</translation>
-    </message>
-    <message>
-      <source>Word wrap</source>
-      <translation>Переносить строки</translation>
-    </message>
-    <message>
-      <source>&amp;Copy</source>
-      <translation>&amp;Копировать</translation>
+      <source>Saves Python history across %1 sessions</source>
+      <translation>Сохраняет историю Python в %1 сеансах</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -6000,20 +5992,28 @@ Do you want to exit without saving your data?</source>
       <translation>Очистить консоль</translation>
     </message>
     <message>
+      <source>Insert file name...</source>
+      <translation>Вставить путь к файлу...</translation>
+    </message>
+    <message>
+      <source>Word wrap</source>
+      <translation>Переносить строки</translation>
+    </message>
+    <message>
+      <source>Save History</source>
+      <translation>Сохранить историю</translation>
+    </message>
+    <message>
       <source>Macro Files</source>
       <translation>Файлы макросов</translation>
     </message>
     <message>
+      <source>Insert file name</source>
+      <translation>Вставить путь к файлу в консоль Python</translation>
+    </message>
+    <message>
       <source>All Files</source>
       <translation>Все файлы</translation>
-    </message>
-    <message>
-      <source>Save history</source>
-      <translation>Сохранить историю</translation>
-    </message>
-    <message>
-      <source>Saves Python history across %1 sessions</source>
-      <translation>Сохраняет историю Python в %1 сеансах</translation>
     </message>
   </context>
   <context>
@@ -6045,6 +6045,10 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
+      <source>none</source>
+      <translation>Отсутствует</translation>
+    </message>
+    <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
       <translation>Запуск макроса %1 (Shift+клик для редактирования): %2</translation>
     </message>
@@ -6055,10 +6059,6 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>The file '%1' cannot be opened.</source>
       <translation>Не удаётся открыть файл '%1'.</translation>
-    </message>
-    <message>
-      <source>none</source>
-      <translation>Отсутствует</translation>
     </message>
   </context>
   <context>
@@ -6214,28 +6214,28 @@ Do you want to specify another directory?</source>
       <translation>Текстовая надпись</translation>
     </message>
     <message>
-      <source>Recompute after commit</source>
-      <translation>Пересчитать после коммита</translation>
-    </message>
-    <message>
-      <source>Remove</source>
-      <translation>Удалить</translation>
-    </message>
-    <message>
       <source>Edit</source>
       <translation>Редактировать</translation>
-    </message>
-    <message>
-      <source>Remove all</source>
-      <translation>Удалить всё</translation>
     </message>
     <message>
       <source>Hide</source>
       <translation>Спрятать</translation>
     </message>
     <message>
+      <source>Remove</source>
+      <translation>Удалить</translation>
+    </message>
+    <message>
+      <source>Remove all</source>
+      <translation>Удалить всё</translation>
+    </message>
+    <message>
       <source>Box select</source>
       <translation>Область выбора</translation>
+    </message>
+    <message>
+      <source>Recompute after commit</source>
+      <translation>Пересчитать после коммита</translation>
     </message>
     <message>
       <source>On-top when selected</source>
@@ -6244,6 +6244,14 @@ Do you want to specify another directory?</source>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
+    <message>
+      <source>Appearance</source>
+      <translation>Внешний вид</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Окно документа:</translation>
+    </message>
     <message>
       <source>Plot mode:</source>
       <translation>Режим графика:</translation>
@@ -6259,14 +6267,6 @@ Do you want to specify another directory?</source>
     <message>
       <source>Transparency:</source>
       <translation>Прозрачность:</translation>
-    </message>
-    <message>
-      <source>Appearance</source>
-      <translation>Внешний вид</translation>
-    </message>
-    <message>
-      <source>Document window:</source>
-      <translation>Окно документа:</translation>
     </message>
   </context>
   <context>
@@ -6370,28 +6370,24 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::Translator</name>
     <message>
-      <source>English</source>
-      <translation>Английский</translation>
+      <source>Afrikaans</source>
+      <translation>Африкаанс</translation>
     </message>
     <message>
-      <source>German</source>
-      <translation>Немецкий</translation>
+      <source>Arabic</source>
+      <translation>Арабский</translation>
     </message>
     <message>
-      <source>Spanish</source>
-      <translation>Испанский</translation>
+      <source>Basque</source>
+      <translation>Баскский</translation>
     </message>
     <message>
-      <source>French</source>
-      <translation>Французский</translation>
+      <source>Bulgarian</source>
+      <translation>Болгарский</translation>
     </message>
     <message>
-      <source>Italian</source>
-      <translation>Итальянский</translation>
-    </message>
-    <message>
-      <source>Japanese</source>
-      <translation>Японский</translation>
+      <source>Catalan</source>
+      <translation>Каталанский</translation>
     </message>
     <message>
       <source>Chinese Simplified</source>
@@ -6402,24 +6398,80 @@ Do you want to specify another directory?</source>
       <translation>Китайский (традиционный)</translation>
     </message>
     <message>
+      <source>Croatian</source>
+      <translation>Хорватский</translation>
+    </message>
+    <message>
+      <source>Czech</source>
+      <translation>Чешский</translation>
+    </message>
+    <message>
+      <source>Dutch</source>
+      <translation>Нидерландский</translation>
+    </message>
+    <message>
+      <source>English</source>
+      <translation>Английский</translation>
+    </message>
+    <message>
+      <source>Filipino</source>
+      <translation>Филиппинский</translation>
+    </message>
+    <message>
+      <source>Finnish</source>
+      <translation>Финский</translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation>Французский</translation>
+    </message>
+    <message>
+      <source>Galician</source>
+      <translation>Галисийский</translation>
+    </message>
+    <message>
+      <source>German</source>
+      <translation>Немецкий</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Греческий</translation>
+    </message>
+    <message>
+      <source>Hungarian</source>
+      <translation>Венгерский</translation>
+    </message>
+    <message>
+      <source>Indonesian</source>
+      <translation>Индонезийский</translation>
+    </message>
+    <message>
+      <source>Italian</source>
+      <translation>Итальянский</translation>
+    </message>
+    <message>
+      <source>Japanese</source>
+      <translation>Японский</translation>
+    </message>
+    <message>
+      <source>Kabyle</source>
+      <translation>Кабильский</translation>
+    </message>
+    <message>
       <source>Korean</source>
       <translation>Корейский</translation>
     </message>
     <message>
-      <source>Russian</source>
-      <translation>Русский</translation>
-    </message>
-    <message>
-      <source>Swedish</source>
-      <translation>Шведский</translation>
-    </message>
-    <message>
-      <source>Afrikaans</source>
-      <translation>Африкаанс</translation>
+      <source>Lithuanian</source>
+      <translation>Литовский</translation>
     </message>
     <message>
       <source>Norwegian</source>
       <translation>Норвежский</translation>
+    </message>
+    <message>
+      <source>Polish</source>
+      <translation>Польский</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
@@ -6430,100 +6482,48 @@ Do you want to specify another directory?</source>
       <translation>Португальский</translation>
     </message>
     <message>
-      <source>Dutch</source>
-      <translation>Нидерландский</translation>
-    </message>
-    <message>
-      <source>Ukrainian</source>
-      <translation>Украинский</translation>
-    </message>
-    <message>
-      <source>Finnish</source>
-      <translation>Финский</translation>
-    </message>
-    <message>
-      <source>Croatian</source>
-      <translation>Хорватский</translation>
-    </message>
-    <message>
-      <source>Polish</source>
-      <translation>Польский</translation>
-    </message>
-    <message>
-      <source>Czech</source>
-      <translation>Чешский</translation>
-    </message>
-    <message>
-      <source>Hungarian</source>
-      <translation>Венгерский</translation>
-    </message>
-    <message>
       <source>Romanian</source>
       <translation>Румынский</translation>
+    </message>
+    <message>
+      <source>Russian</source>
+      <translation>Русский</translation>
     </message>
     <message>
       <source>Slovak</source>
       <translation>Словацкий</translation>
     </message>
     <message>
-      <source>Turkish</source>
-      <translation>Турецкий</translation>
-    </message>
-    <message>
       <source>Slovenian</source>
       <translation>Словенский</translation>
     </message>
     <message>
-      <source>Basque</source>
-      <translation>Баскский</translation>
+      <source>Spanish</source>
+      <translation>Испанский</translation>
     </message>
     <message>
-      <source>Catalan</source>
-      <translation>Каталанский</translation>
+      <source>Spanish, Argentina</source>
+      <translation>Испанский, Аргенитна</translation>
     </message>
     <message>
-      <source>Galician</source>
-      <translation>Галисийский</translation>
+      <source>Swedish</source>
+      <translation>Шведский</translation>
     </message>
     <message>
-      <source>Kabyle</source>
-      <translation>Кабильский</translation>
+      <source>Turkish</source>
+      <translation>Турецкий</translation>
     </message>
     <message>
-      <source>Filipino</source>
-      <translation>Филиппинский</translation>
-    </message>
-    <message>
-      <source>Indonesian</source>
-      <translation>Индонезийский</translation>
-    </message>
-    <message>
-      <source>Lithuanian</source>
-      <translation>Литовский</translation>
+      <source>Ukrainian</source>
+      <translation>Украинский</translation>
     </message>
     <message>
       <source>Valencian</source>
       <translation>Валенсианский</translation>
     </message>
     <message>
-      <source>Arabic</source>
-      <translation>Арабский</translation>
-    </message>
-    <message>
       <source>Vietnamese</source>
       <translation>Вьетнамский</translation>
-    </message>
-    <message>
-      <source>Bulgarian</source>
-      <translation>Болгарский</translation>
-    </message>
-    <message>
-      <source>Greek</source>
-      <translation>Греческий</translation>
-    </message>
-    <message>
-      <source>Spanish, Argentina</source>
-      <translation>Испанский, Аргенитна</translation>
     </message>
     <message>
       <source>Georgian</source>
@@ -6547,40 +6547,12 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <source>Create group...</source>
-      <translation>Создать группу...</translation>
+      <source>Search...</source>
+      <translation>Поиск...</translation>
     </message>
     <message>
-      <source>Create a group</source>
-      <translation>Создать группу</translation>
-    </message>
-    <message>
-      <source>Group</source>
-      <translation>Группа</translation>
-    </message>
-    <message>
-      <source>Rename</source>
-      <translation>Переименовать</translation>
-    </message>
-    <message>
-      <source>Rename object</source>
-      <translation>Переименовать объект</translation>
-    </message>
-    <message>
-      <source>Labels &amp; Attributes</source>
-      <translation>Метки и атрибуты</translation>
-    </message>
-    <message>
-      <source>Application</source>
-      <translation>Приложение</translation>
-    </message>
-    <message>
-      <source>Finish editing</source>
-      <translation>Завершить редактирование</translation>
-    </message>
-    <message>
-      <source>Finish editing object</source>
-      <translation>Завершить редактирование объекта</translation>
+      <source>Search for objects</source>
+      <translation>Поиск объектов</translation>
     </message>
     <message>
       <source>Activate document</source>
@@ -6591,36 +6563,20 @@ Do you want to specify another directory?</source>
       <translation>Активировать документ %1</translation>
     </message>
     <message>
-      <source>Skip recomputes</source>
-      <translation>Пропуск пересчета</translation>
+      <source>Group</source>
+      <translation>Группа</translation>
     </message>
     <message>
-      <source>Enable or disable recomputations of document</source>
-      <translation>Включение или отключение повторных вычислений документа</translation>
-    </message>
-    <message>
-      <source>Mark to recompute</source>
-      <translation>Отметить для пересчета</translation>
-    </message>
-    <message>
-      <source>Mark this object to be recomputed</source>
-      <translation>Пометить этот объект для повторного вычисления</translation>
-    </message>
-    <message>
-      <source>%1, Internal name: %2</source>
-      <translation>%1, внутреннее название: %2</translation>
-    </message>
-    <message>
-      <source>Search...</source>
-      <translation>Поиск...</translation>
-    </message>
-    <message>
-      <source>Search for objects</source>
-      <translation>Поиск объектов</translation>
+      <source>Labels &amp; Attributes</source>
+      <translation>Метки и атрибуты</translation>
     </message>
     <message>
       <source>Description</source>
       <translation>Описание</translation>
+    </message>
+    <message>
+      <source>Application</source>
+      <translation>Приложение</translation>
     </message>
     <message>
       <source>Show hidden items</source>
@@ -6639,6 +6595,38 @@ Do you want to specify another directory?</source>
       <translation>Скрыть элемент в дереве</translation>
     </message>
     <message>
+      <source>Create group...</source>
+      <translation>Создать группу...</translation>
+    </message>
+    <message>
+      <source>Create a group</source>
+      <translation>Создать группу</translation>
+    </message>
+    <message>
+      <source>Rename</source>
+      <translation>Переименовать</translation>
+    </message>
+    <message>
+      <source>Rename object</source>
+      <translation>Переименовать объект</translation>
+    </message>
+    <message>
+      <source>Finish editing</source>
+      <translation>Завершить редактирование</translation>
+    </message>
+    <message>
+      <source>Finish editing object</source>
+      <translation>Завершить редактирование объекта</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+    </message>
+    <message>
       <source>Close document</source>
       <translation>Закрыть документ</translation>
     </message>
@@ -6655,6 +6643,14 @@ Do you want to specify another directory?</source>
       <translation>Перезагрузить частично загруженный документ</translation>
     </message>
     <message>
+      <source>Skip recomputes</source>
+      <translation>Пропуск пересчета</translation>
+    </message>
+    <message>
+      <source>Enable or disable recomputations of document</source>
+      <translation>Включение или отключение повторных вычислений документа</translation>
+    </message>
+    <message>
       <source>Allow partial recomputes</source>
       <translation>Разрешить частичные перерасчёты</translation>
     </message>
@@ -6662,6 +6658,14 @@ Do you want to specify another directory?</source>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Включить или выключить повторное вычисление объекта редактирования, если включен параметр  'пропустить пересчет '
 </translation>
+    </message>
+    <message>
+      <source>Mark to recompute</source>
+      <translation>Отметить для пересчета</translation>
+    </message>
+    <message>
+      <source>Mark this object to be recomputed</source>
+      <translation>Пометить этот объект для повторного вычисления</translation>
     </message>
     <message>
       <source>Recompute object</source>
@@ -6676,12 +6680,8 @@ Do you want to specify another directory?</source>
       <translation> (но должно быть выполнено)</translation>
     </message>
     <message>
-      <source>Add dependent objects to selection</source>
-      <translation type="unfinished">Add dependent objects to selection</translation>
-    </message>
-    <message>
-      <source>Adds all dependent objects to the selection</source>
-      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+      <source>%1, Internal name: %2</source>
+      <translation>%1, внутреннее название: %2</translation>
     </message>
   </context>
   <context>
@@ -6786,6 +6786,10 @@ Do you want to specify another directory?</source>
       <translation>Z:</translation>
     </message>
     <message>
+      <source>Grid Snap in</source>
+      <translation>Привязка к сетке с шагом</translation>
+    </message>
+    <message>
       <source>0.1 mm</source>
       <translation>0,1 мм</translation>
     </message>
@@ -6841,10 +6845,6 @@ Do you want to specify another directory?</source>
       <source>5 m </source>
       <translation>5 м</translation>
     </message>
-    <message>
-      <source>Grid Snap in</source>
-      <translation>Привязка к сетке с шагом</translation>
-    </message>
   </context>
   <context>
     <name>PropertyListDialog</name>
@@ -6860,6 +6860,10 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
+      <source>Toolbox</source>
+      <translation>Панель инструментов</translation>
+    </message>
+    <message>
       <source>Tree view</source>
       <translation>Иерархия документа</translation>
     </message>
@@ -6872,28 +6876,24 @@ Do you want to specify another directory?</source>
       <translation>Просмотр выделения</translation>
     </message>
     <message>
-      <source>Report view</source>
-      <translation>Отчет</translation>
-    </message>
-    <message>
       <source>Combo View</source>
       <translation>Комбо панель</translation>
     </message>
     <message>
-      <source>Toolbox</source>
-      <translation>Панель инструментов</translation>
+      <source>Report view</source>
+      <translation>Отчет</translation>
     </message>
     <message>
       <source>Python console</source>
       <translation>Консоль Python</translation>
     </message>
     <message>
-      <source>Display properties</source>
-      <translation>Внешний вид</translation>
-    </message>
-    <message>
       <source>DAG View</source>
       <translation>DAG Вид</translation>
+    </message>
+    <message>
+      <source>Display properties</source>
+      <translation>Внешний вид</translation>
     </message>
   </context>
   <context>
@@ -6907,12 +6907,20 @@ Do you want to specify another directory?</source>
       <translation>Отображение</translation>
     </message>
     <message>
+      <source>Workbenches</source>
+      <translation>Рабочие окружения</translation>
+    </message>
+    <message>
       <source>Unknown filetype</source>
       <translation>Неизвестный тип файла</translation>
     </message>
     <message>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Не удается открыть неизвестный файл: %1</translation>
+    </message>
+    <message>
+      <source>Export failed</source>
+      <translation>Экспорт не удался</translation>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
@@ -6935,6 +6943,18 @@ Do you want to specify another directory?</source>
       <translation>Открыть документ</translation>
     </message>
     <message>
+      <source>Error</source>
+      <translation>Ошибки</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Произошли ошибки при загрузке файла. Возможно, некоторые данные были изменены или не восстановлены. Посмотрите в окно отчета для более конкретной информации о затронутых объектах.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>При загрузке файла возникли серьезные ошибки. Некоторые данные могли быть изменены или не восстановлены вообще. Сохранение проекта скорее всего приведет к потере данных.</translation>
+    </message>
+    <message>
       <source>Import file</source>
       <translation>Импорт файла</translation>
     </message>
@@ -6947,12 +6967,76 @@ Do you want to specify another directory?</source>
       <translation>Печать...</translation>
     </message>
     <message>
+      <source>Exporting PDF...</source>
+      <translation>Экспорт PDF...</translation>
+    </message>
+    <message>
+      <source>Unsaved document</source>
+      <translation>Документ не сохранён</translation>
+    </message>
+    <message>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>Экспортированный объект содержит внешнюю ссылку. Пожалуйста, сохраните документ хотя бы один раз перед экспортом.</translation>
+    </message>
+    <message>
+      <source>Delete failed</source>
+      <translation>Удаление не удалось</translation>
+    </message>
+    <message>
+      <source>Dependency error</source>
+      <translation>Ошибка зависимости</translation>
+    </message>
+    <message>
+      <source>Copy selected</source>
+      <translation>Копировать выбранное</translation>
+    </message>
+    <message>
+      <source>Copy active document</source>
+      <translation>Копировать активный документ</translation>
+    </message>
+    <message>
+      <source>Copy all documents</source>
+      <translation>Копировать все документы</translation>
+    </message>
+    <message>
+      <source>Paste</source>
+      <translation>Вставить</translation>
+    </message>
+    <message>
+      <source>Expression error</source>
+      <translation>Ошибка выражения</translation>
+    </message>
+    <message>
+      <source>Failed to parse some of the expressions.
+Please check the Report View for more details.</source>
+      <translation>Не удалось проанализировать некоторые выражения.
+Дополнительные сведения смотрите в журнале.</translation>
+    </message>
+    <message>
+      <source>Failed to paste expressions</source>
+      <translation>Не удалось вставить выражения</translation>
+    </message>
+    <message>
       <source>Cannot load workbench</source>
       <translation>Не удаётся загрузить верстак</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>Общая ошибка при загрузке верстака</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>Неправильный выбор</translation>
+    </message>
+    <message>
+      <source>Only one object selected. Please select two objects.
+Be aware the point where you click matters.</source>
+      <translation>Только один объект выбран. Пожалуйста, выберите два объекта. Будьте внимательны, так как точка куда вы нажмете важна.</translation>
+    </message>
+    <message>
+      <source>Please select two objects.
+Be aware the point where you click matters.</source>
+      <translation>Пожалуйста, выберите два объекта. Будьте внимательны, так как точка куда вы нажмете важна.</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -6977,6 +7061,10 @@ Do you want to specify another directory?</source>
     <message>
       <source>Save frozen views</source>
       <translation>Сохранить запомненные виды</translation>
+    </message>
+    <message>
+      <source>Frozen views</source>
+      <translation>Запомненные виды</translation>
     </message>
     <message>
       <source>Restore views</source>
@@ -7045,6 +7133,10 @@ Do you want to continue?</source>
       <translation>Выберите элемент:</translation>
     </message>
     <message>
+      <source>New boolean item</source>
+      <translation>Новый логический параметр</translation>
+    </message>
+    <message>
       <source>Rename group</source>
       <translation>Переименовать группу</translation>
     </message>
@@ -7065,16 +7157,132 @@ Do you want to continue?</source>
       <translation>Изменить значение</translation>
     </message>
     <message>
-      <source>Save document under new filename...</source>
-      <translation>Сохранить документ под новым именем...</translation>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Обнаружен идентичный физический путь. Это может привести к нежелательной перезаписи существующего документа!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Вы уверены, что хотите продолжить?</translation>
+    </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>Путь:</translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Идентичная физическая траектория</translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation>Невозможно сохранить документ</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation>Произошла ошибка при попытке сохранить файл. Это может быть потому, что некоторые из родительских папок не существуют, или вы не имеете достаточных прав, или по другим причинам. Детали ошибки:
+
+"%1"
+
+Хотите сохранить файл под другим именем?</translation>
     </message>
     <message>
       <source>Saving aborted</source>
       <translation>Сохранение прервано</translation>
     </message>
     <message>
-      <source>Unsaved document</source>
-      <translation>Документ не сохранён</translation>
+      <source>Save dependent files</source>
+      <translation>Сохранить зависимые файлы</translation>
+    </message>
+    <message>
+      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
+      <translation>Файл содержит внешние зависимости. Хотите ли вы также сохранить зависимые файлы?</translation>
+    </message>
+    <message>
+      <source>Saving document failed</source>
+      <translation>Не удалось сохранить документ</translation>
+    </message>
+    <message>
+      <source>Save document under new filename...</source>
+      <translation>Сохранить документ под новым именем...</translation>
+    </message>
+    <message>
+      <source>Save %1 Document</source>
+      <translation>Сохранение документа %1</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Документ</translation>
+    </message>
+    <message>
+      <source>Failed to save document</source>
+      <translation>Не удалось сохранить документ</translation>
+    </message>
+    <message>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation>Документы содержат циклические зависимости. Вы уверены, что хотите сохранить их?</translation>
+    </message>
+    <message>
+      <source>Save a copy of the document under new filename...</source>
+      <translation>Сохранить копию документа под новым именем файла...</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>документ %1 (*.FCStd)</translation>
+    </message>
+    <message>
+      <source>Document not closable</source>
+      <translation>Документ не закрываем</translation>
+    </message>
+    <message>
+      <source>The document is not closable for the moment.</source>
+      <translation>Этот документ не закрываемый на данный момент.</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation>Документ не сохранен</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation>Документ %1 не может быть сохранен. Вы хотите отменить его закрытие?</translation>
+    </message>
+    <message>
+      <source>Undo</source>
+      <translation>Отменить</translation>
+    </message>
+    <message>
+      <source>Redo</source>
+      <translation>Повторить</translation>
+    </message>
+    <message>
+      <source>There are grouped transactions in the following documents with other preceding transactions</source>
+      <translation>В следующих документах имеются группируются транзакции с другими предыдущими транзакциями</translation>
+    </message>
+    <message>
+      <source>Choose 'Yes' to roll back all preceding transactions.
+Choose 'No' to roll back in the active document only.
+Choose 'Abort' to abort</source>
+      <translation>Выберите 'Да' для отката всех предыдущих транзакций.
+Выберите 'Нет' для отката только в активном документе.
+Выберите 'Отмена' для отмены</translation>
     </message>
     <message>
       <source>Save Macro</source>
@@ -7099,6 +7307,10 @@ Do you want to continue?</source>
     <message>
       <source>Outer</source>
       <translation>Внешний</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Разделить</translation>
     </message>
     <message>
       <source>No Browser</source>
@@ -7143,44 +7355,6 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Не удается найти файл %1, ни в %2 ни в %3</translation>
     </message>
     <message>
-      <source>Save %1 Document</source>
-      <translation>Сохранение документа %1</translation>
-    </message>
-    <message>
-      <source>%1 document (*.FCStd)</source>
-      <translation>документ %1 (*.FCStd)</translation>
-    </message>
-    <message>
-      <source>Document not closable</source>
-      <translation>Документ не закрываем</translation>
-    </message>
-    <message>
-      <source>The document is not closable for the moment.</source>
-      <translation>Этот документ не закрываемый на данный момент.</translation>
-    </message>
-    <message>
-      <source>Exporting PDF...</source>
-      <translation>Экспорт PDF...</translation>
-    </message>
-    <message>
-      <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
-    </message>
-    <message>
-      <source>Only one object selected. Please select two objects.
-Be aware the point where you click matters.</source>
-      <translation>Только один объект выбран. Пожалуйста, выберите два объекта. Будьте внимательны, так как точка куда вы нажмете важна.</translation>
-    </message>
-    <message>
-      <source>Please select two objects.
-Be aware the point where you click matters.</source>
-      <translation>Пожалуйста, выберите два объекта. Будьте внимательны, так как точка куда вы нажмете важна.</translation>
-    </message>
-    <message>
-      <source>New boolean item</source>
-      <translation>Новый логический параметр</translation>
-    </message>
-    <message>
       <source>Navigation styles</source>
       <translation>Стили навигации</translation>
     </message>
@@ -7201,24 +7375,24 @@ Be aware the point where you click matters.</source>
       <translation>Сохранить изменения перед закрытием документа '%1'?</translation>
     </message>
     <message>
+      <source>Do you want to save your changes to document before closing?</source>
+      <translation>Сохранить изменения перед закрытием документа ''?</translation>
+    </message>
+    <message>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Если вы не сохраните, ваши изменения будут потеряны.</translation>
     </message>
     <message>
-      <source>Save a copy of the document under new filename...</source>
-      <translation>Сохранить копию документа под новым именем файла...</translation>
+      <source>Apply answer to all</source>
+      <translation>Применить ответ ко всем</translation>
     </message>
     <message>
-      <source>Frozen views</source>
-      <translation>Запомненные виды</translation>
+      <source>%1 Document(s) not saved</source>
+      <translation>%1 Документ(ы) не сохранены</translation>
     </message>
     <message>
-      <source>Saving document failed</source>
-      <translation>Не удалось сохранить документ</translation>
-    </message>
-    <message>
-      <source>Document</source>
-      <translation>Документ</translation>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation>Некоторые документы не удалось сохранить. Вы хотите отменить закрытие?</translation>
     </message>
     <message>
       <source>Delete macro</source>
@@ -7241,14 +7415,6 @@ Be aware the point where you click matters.</source>
       <translation>%1 не пуст, удалить его содержимое тоже?</translation>
     </message>
     <message>
-      <source>Export failed</source>
-      <translation>Экспорт не удался</translation>
-    </message>
-    <message>
-      <source>Split</source>
-      <translation>Разделить</translation>
-    </message>
-    <message>
       <source>Translation:</source>
       <translation>Перемещение:</translation>
     </message>
@@ -7263,48 +7429,6 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Edit text</source>
       <translation>Редактировать текст</translation>
-    </message>
-    <message>
-      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation>Экспортированный объект содержит внешнюю ссылку. Пожалуйста, сохраните документ хотя бы один раз перед экспортом.</translation>
-    </message>
-    <message>
-      <source>Delete failed</source>
-      <translation>Удаление не удалось</translation>
-    </message>
-    <message>
-      <source>Dependency error</source>
-      <translation>Ошибка зависимости</translation>
-    </message>
-    <message>
-      <source>Copy selected</source>
-      <translation>Копировать выбранное</translation>
-    </message>
-    <message>
-      <source>Copy active document</source>
-      <translation>Копировать активный документ</translation>
-    </message>
-    <message>
-      <source>Copy all documents</source>
-      <translation>Копировать все документы</translation>
-    </message>
-    <message>
-      <source>Paste</source>
-      <translation>Вставить</translation>
-    </message>
-    <message>
-      <source>Expression error</source>
-      <translation>Ошибка выражения</translation>
-    </message>
-    <message>
-      <source>Failed to parse some of the expressions.
-Please check the Report View for more details.</source>
-      <translation>Не удалось проанализировать некоторые выражения.
-Дополнительные сведения смотрите в журнале.</translation>
-    </message>
-    <message>
-      <source>Failed to paste expressions</source>
-      <translation>Не удалось вставить выражения</translation>
     </message>
     <message>
       <source>Simple group</source>
@@ -7369,148 +7493,16 @@ underscore, and must not start with a digit.</source>
       <translation>Не удалось добавить свойство к '%1': %2</translation>
     </message>
     <message>
-      <source>Save dependent files</source>
-      <translation>Сохранить зависимые файлы</translation>
-    </message>
-    <message>
-      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation>Файл содержит внешние зависимости. Хотите ли вы также сохранить зависимые файлы?</translation>
-    </message>
-    <message>
-      <source>Failed to save document</source>
-      <translation>Не удалось сохранить документ</translation>
-    </message>
-    <message>
-      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation>Документы содержат циклические зависимости. Вы уверены, что хотите сохранить их?</translation>
-    </message>
-    <message>
-      <source>Undo</source>
-      <translation>Отменить</translation>
-    </message>
-    <message>
-      <source>Redo</source>
-      <translation>Повторить</translation>
-    </message>
-    <message>
-      <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation>В следующих документах имеются группируются транзакции с другими предыдущими транзакциями</translation>
-    </message>
-    <message>
-      <source>Choose 'Yes' to roll back all preceding transactions.
-Choose 'No' to roll back in the active document only.
-Choose 'Abort' to abort</source>
-      <translation>Выберите 'Да' для отката всех предыдущих транзакций.
-Выберите 'Нет' для отката только в активном документе.
-Выберите 'Отмена' для отмены</translation>
-    </message>
-    <message>
-      <source>Do you want to save your changes to document before closing?</source>
-      <translation>Сохранить изменения перед закрытием документа ''?</translation>
-    </message>
-    <message>
-      <source>Apply answer to all</source>
-      <translation>Применить ответ ко всем</translation>
-    </message>
-    <message>
       <source>Drag &amp; drop failed</source>
       <translation>Не удалось переместить</translation>
-    </message>
-    <message>
-      <source>Override colors...</source>
-      <translation>Переопределить цвета...</translation>
-    </message>
-    <message>
-      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
-
-</source>
-      <translation>Обнаружен идентичный физический путь. Это может привести к нежелательной перезаписи существующего документа!
-
-</translation>
-    </message>
-    <message>
-      <source>Are you sure you want to continue?</source>
-      <translation>Вы уверены, что хотите продолжить?</translation>
-    </message>
-    <message>
-      <source>Identical physical path</source>
-      <translation>Идентичная физическая траектория</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Ошибки</translation>
-    </message>
-    <message>
-      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Произошли ошибки при загрузке файла. Возможно, некоторые данные были изменены или не восстановлены. Посмотрите в окно отчета для более конкретной информации о затронутых объектах.</translation>
-    </message>
-    <message>
-      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation>При загрузке файла возникли серьезные ошибки. Некоторые данные могли быть изменены или не восстановлены вообще. Сохранение проекта скорее всего приведет к потере данных.</translation>
-    </message>
-    <message>
-      <source>Workbenches</source>
-      <translation>Рабочие окружения</translation>
-    </message>
-    <message>
-      <source>Could not save document</source>
-      <translation>Невозможно сохранить документ</translation>
-    </message>
-    <message>
-      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
-
-"%1"
-
-Would you like to save the file with a different name?</source>
-      <translation>Произошла ошибка при попытке сохранить файл. Это может быть потому, что некоторые из родительских папок не существуют, или вы не имеете достаточных прав, или по другим причинам. Детали ошибки:
-
-"%1"
-
-Хотите сохранить файл под другим именем?</translation>
-    </message>
-    <message>
-      <source>Document not saved</source>
-      <translation>Документ не сохранен</translation>
-    </message>
-    <message>
-      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation>Документ %1 не может быть сохранен. Вы хотите отменить его закрытие?</translation>
-    </message>
-    <message>
-      <source>%1 Document(s) not saved</source>
-      <translation>%1 Документ(ы) не сохранены</translation>
-    </message>
-    <message>
-      <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation>Некоторые документы не удалось сохранить. Вы хотите отменить закрытие?</translation>
-    </message>
-    <message>
-      <source>Please check report view for more...</source>
-      <translation type="unfinished">Please check report view for more...</translation>
-    </message>
-    <message>
-      <source>Physical path:</source>
-      <translation type="unfinished">Physical path:</translation>
-    </message>
-    <message>
-      <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
-    </message>
-    <message>
-      <source>Path:</source>
-      <translation>Путь:</translation>
-    </message>
-    <message>
-      <source>Edit %1</source>
-      <translation>Редактировать %1</translation>
     </message>
     <message>
       <source>Setup configurable object</source>
       <translation type="unfinished">Setup configurable object</translation>
     </message>
     <message>
-      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+      <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
     </message>
     <message>
       <source>Please select which objects to copy when the configuration is changed</source>
@@ -7579,6 +7571,14 @@ the current copy will be lost.
     <message>
       <source>Transform at the origin of the placement</source>
       <translation type="unfinished">Transform at the origin of the placement</translation>
+    </message>
+    <message>
+      <source>Override colors...</source>
+      <translation>Переопределить цвета...</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>Редактировать %1</translation>
     </message>
   </context>
   <context>
@@ -8266,12 +8266,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdMeasurementSimple</name>
     <message>
-      <source>Measures distance between two selected objects</source>
-      <translation>Измерить расстояние между двумя выбранными объектами</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>Измерить расстояние</translation>
+    </message>
+    <message>
+      <source>Measures distance between two selected objects</source>
+      <translation>Измерить расстояние между двумя выбранными объектами</translation>
     </message>
   </context>
   <context>
@@ -8285,12 +8285,12 @@ the current copy will be lost.
       <translation>Объединить проект</translation>
     </message>
     <message>
-      <source>Cannot merge project with itself.</source>
-      <translation>Нельзя объединить проект с самим собой.</translation>
-    </message>
-    <message>
       <source>%1 document (*.FCStd)</source>
       <translation>документ %1 (*.FCStd)</translation>
+    </message>
+    <message>
+      <source>Cannot merge project with itself.</source>
+      <translation>Нельзя объединить проект с самим собой.</translation>
     </message>
   </context>
   <context>
@@ -9320,12 +9320,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <source>Display all documents in the tree view</source>
-      <translation>Показать все документы в окне дерева документа</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>Многокомпонентный документ</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Показать все документы в окне дерева документа</translation>
     </message>
   </context>
   <context>
@@ -9364,12 +9364,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <source>Only display the active document in the tree view</source>
-      <translation>Показывать только активный документ в окне дерева документа</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>Одиночный документ</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Показывать только активный документ в окне дерева документа</translation>
     </message>
   </context>
   <context>
@@ -9494,12 +9494,12 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>Object dependencies</source>
-      <translation>Зависимости объектов</translation>
-    </message>
-    <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
       <translation>Эти элементы выбраны для удаления, но не находятся в активном документе.</translation>
+    </message>
+    <message>
+      <source>Object dependencies</source>
+      <translation>Зависимости объектов</translation>
     </message>
   </context>
   <context>
@@ -9520,36 +9520,20 @@ Are you sure you want to continue?
       <translation>Обычный режим</translation>
     </message>
     <message>
-      <source>Wireframe</source>
-      <translation>Каркас</translation>
-    </message>
-    <message>
-      <source>Wireframe mode</source>
-      <translation>Каркасный режим</translation>
-    </message>
-    <message>
-      <source>Flat lines</source>
-      <translation>Плоские линии</translation>
-    </message>
-    <message>
-      <source>Flat lines mode</source>
-      <translation>Режим плоских линий</translation>
-    </message>
-    <message>
-      <source>Shaded</source>
-      <translation>Только грани</translation>
-    </message>
-    <message>
-      <source>Shaded mode</source>
-      <translation>Только грани</translation>
-    </message>
-    <message>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
     <message>
       <source>Points mode</source>
       <translation>Точечный режим</translation>
+    </message>
+    <message>
+      <source>Wireframe</source>
+      <translation>Каркас</translation>
+    </message>
+    <message>
+      <source>Wireframe mode</source>
+      <translation>Каркасный режим</translation>
     </message>
     <message>
       <source>Hidden line</source>
@@ -9566,6 +9550,22 @@ Are you sure you want to continue?
     <message>
       <source>No shading mode</source>
       <translation>Режим без затенения</translation>
+    </message>
+    <message>
+      <source>Shaded</source>
+      <translation>Только грани</translation>
+    </message>
+    <message>
+      <source>Shaded mode</source>
+      <translation>Только грани</translation>
+    </message>
+    <message>
+      <source>Flat lines</source>
+      <translation>Плоские линии</translation>
+    </message>
+    <message>
+      <source>Flat lines mode</source>
+      <translation>Режим плоских линий</translation>
     </message>
   </context>
   <context>
@@ -9604,12 +9604,12 @@ Do you still want to proceed?</source>
   <context>
     <name>Std_Revert</name>
     <message>
-      <source>This will discard all the changes since last file save.</source>
-      <translation>Это отменит все изменения, внесенные с момента последнего сохранения фала.</translation>
-    </message>
-    <message>
       <source>Revert document</source>
       <translation>Возврат состояния документа</translation>
+    </message>
+    <message>
+      <source>This will discard all the changes since last file save.</source>
+      <translation>Это отменит все изменения, внесенные с момента последнего сохранения фала.</translation>
     </message>
     <message>
       <source>Do you want to continue?</source>
@@ -9675,6 +9675,10 @@ Do you still want to proceed?</source>
       <translation>Стандартные виды</translation>
     </message>
     <message>
+      <source>Axonometric</source>
+      <translation>Аксонометрия</translation>
+    </message>
+    <message>
       <source>&amp;Stereo</source>
       <translation>&amp;Стерео</translation>
     </message>
@@ -9725,10 +9729,6 @@ Do you still want to proceed?</source>
     <message>
       <source>Special Ops</source>
       <translation>Специальные операции</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Аксонометрия</translation>
     </message>
     <message>
       <source>Link actions</source>

@@ -88,9 +88,13 @@ void DlgSettingsColorGradientImp::setupConnections()
     group->setExclusive(true);
     group->addButton(ui->radioButtonFlow);
     group->addButton(ui->radioButtonZero);
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    connect(group, &QButtonGroup::idClicked,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+#else
     connect(group, qOverload<int>(&QButtonGroup::buttonClicked),
             this, &DlgSettingsColorGradientImp::colorModelChanged);
-
+#endif
     connect(ui->comboBoxModel, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 

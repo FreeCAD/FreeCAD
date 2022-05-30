@@ -129,7 +129,7 @@
     </message>
     <message>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Din componente</translation>
     </message>
     <message>
       <source>Create mesh segments from components</source>
@@ -240,6 +240,14 @@
       <translation>Factor de dimensiune</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Direcții u/v personalizate</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation type="unfinished">Create placement</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Netezire</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Variaţie de curbură</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Direcții u/v personalizate</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentarea plasei</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Netezirea plasei</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation type="unfinished">Create mesh from unused triangles</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Selectaţi</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Componente</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Regiune</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Selectati intregul component</translation>
+      <source>All</source>
+      <translation>Toate</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Alege triunghiul</translation>
+      <source>Components</source>
+      <translation>Componente</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; fațete decât</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Toate</translation>
+      <source>Pick triangle</source>
+      <translation>Alege triunghiul</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Selectati intregul component</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Plan</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation type="unfinished">Detect</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Toleranţă</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Numar maxim de fete</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <source>Cylinder</source>

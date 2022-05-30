@@ -240,6 +240,14 @@
       <translation>Factor de tamaño</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Direccións u/v definidas polo usuario</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Crear ubicación</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Suavizado</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Variación da curvatura</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Direccións u/v definidas polo usuario</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Crear ubicación</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentación da malla</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Crear composto</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Malla suave</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Crear malla a partir de triángulos non usados</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Crear composto</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Escolmar</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Compoñentes</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Rexión</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Escolmar compoñente enteiro</translation>
+      <source>All</source>
+      <translation>Todo</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Escolmar triángulo</translation>
+      <source>Components</source>
+      <translation>Compoñentes</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; faces que</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Todo</translation>
+      <source>Pick triangle</source>
+      <translation>Escolmar triángulo</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Escolmar compoñente enteiro</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Plano</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Detectar</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolerancia</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Número mínimo de faces</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Detectar</translation>
     </message>
     <message>
       <source>Cylinder</source>

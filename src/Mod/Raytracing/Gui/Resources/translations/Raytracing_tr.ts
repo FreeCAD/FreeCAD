@@ -268,22 +268,6 @@ Do you want to continue?</source>
       <translation>Işın izleme</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Kafes dışarı aktarma ayarları</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Maks Mesh sapması:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Köşe olağanlarını (normallerini) hesaplanmasın</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>u,v konumlarını yaz</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>İşle (Render)</translation>
     </message>
@@ -332,28 +316,44 @@ Do you want to continue?</source>
       <translation>Dizinler</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Parça dosya adı:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Kamera dosya adı:</translation>
+      <source>Default Project dir:</source>
+      <translation>Varsayılan proje dizini:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Yardımcı araçlarla kullanılır</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Varsayılan proje dizini:</translation>
+      <source>Camera file name:</source>
+      <translation>Kamera dosya adı:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Parça dosya adı:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Kafes dışarı aktarma ayarları</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Maks Mesh sapması:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Köşe olağanlarını (normallerini) hesaplanmasın</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>u,v konumlarını yaz</translation>
     </message>
   </context>
   <context>

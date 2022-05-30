@@ -270,22 +270,6 @@ Folytatni szeretné?</translation>
       <translation>Sugárkövetés</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Háló objektum beállítások</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Max háló eltérés:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Ne számítson aktuális végponti helyzetet</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>u,v-koordináták írása</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Renderelés - Fotó-realisztikus, háromdimenziós megjelenítés, árnyékkal és tükrözéssel</translation>
     </message>
@@ -334,28 +318,44 @@ Folytatni szeretné?</translation>
       <translation>Könyvtárak</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Alkatrész fájlnév:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Kamera fájl neve:</translation>
+      <source>Default Project dir:</source>
+      <translation>Alapértelmezett projekt könyvtár:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Segédprogram eszközök által használt</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Alapértelmezett projekt könyvtár:</translation>
+      <source>Camera file name:</source>
+      <translation>Kamera fájl neve:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Alkatrész fájlnév:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Háló objektum beállítások</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Max háló eltérés:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Ne számítson aktuális végponti helyzetet</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>u,v-koordináták írása</translation>
     </message>
   </context>
   <context>

@@ -270,22 +270,6 @@ Queres continuar?</translation>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Configuración da exportación de mallas</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Desvío Max. da malla:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Non calcular vértices normais</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Escribir as coordenadas u,v</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Renderizador</translation>
     </message>
@@ -334,28 +318,44 @@ Queres continuar?</translation>
       <translation>Cartafoles</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Nome do ficheiro Peza:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Nome do ficheiro da cámara:</translation>
+      <source>Default Project dir:</source>
+      <translation>Directorio por defecto do proxecto:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Usado polas ferramentas de utilidade</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Directorio por defecto do proxecto:</translation>
+      <source>Camera file name:</source>
+      <translation>Nome do ficheiro da cámara:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Nome do ficheiro Peza:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Configuración da exportación de mallas</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Desvío Max. da malla:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Non calcular vértices normais</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Escribir as coordenadas u,v</translation>
     </message>
   </context>
   <context>

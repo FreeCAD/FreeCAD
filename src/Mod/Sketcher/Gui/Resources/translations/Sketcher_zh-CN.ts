@@ -9,7 +9,7 @@
       <translation>新建默认配置方案</translation>
     </message>
     <message>
-      <location filename="../../../Profiles.py" line="56"/>
+      <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
       <translation>在草图中创建六边形轮廓</translation>
     </message>
@@ -1983,7 +1983,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandCreateGeo.cpp" line="1977"/>
       <location filename="../../CommandCreateGeo.cpp" line="2248"/>
       <source>Add sketch arc</source>
-      <translation type="unfinished">Add sketch arc</translation>
+      <translation>添加草绘圆弧</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2520"/>
@@ -2840,7 +2840,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3258"/>
       <source>Select a valid line.</source>
-      <translation type="unfinished">Select a valid line.</translation>
+      <translation>选择一条有效的直线</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3274"/>
@@ -3007,7 +3007,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="6324"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
-      <translation type="unfinished">Sketch axes cannot be used in equality constraints.</translation>
+      <translation>草图轴无法用于相等约束.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6343"/>
@@ -3167,7 +3167,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4739"/>
       <source>B-Spline Degree</source>
-      <translation type="unfinished">B-Spline Degree</translation>
+      <translation>B样条次数</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4740"/>

@@ -240,6 +240,14 @@
       <translation>Koon kerroin</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Käyttäjän määrittelemät u/v suunnat</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Luo sijoittelu</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Tasoitus</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Kaarevuuden vaihtelu</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Käyttäjän määrittelemät u/v suunnat</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Luo sijoittelu</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Verkkopinnan lohkominen</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Luo yhdiste</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Siloita verkkopinta</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Luo verkkopinta käyttämättömistä kolmioista</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Luo yhdiste</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Valitse</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Osat</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Alue</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Valitse koko osa</translation>
+      <source>All</source>
+      <translation>Kaikki</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Valitse kolmio</translation>
+      <source>Components</source>
+      <translation>Osat</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; pintoja vähemmän kuin</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Kaikki</translation>
+      <source>Pick triangle</source>
+      <translation>Valitse kolmio</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Valitse koko osa</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Taso</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Tunnista</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Toleranssi</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Pintojen vähimmäismäärä</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Tunnista</translation>
     </message>
     <message>
       <source>Cylinder</source>

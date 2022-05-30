@@ -268,22 +268,6 @@ Do you want to continue?</source>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Impostazioni di esportazione mesh</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Deviazione massima della maglia:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Non calcolare le normali ai vertici</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Salva le coordinate u,v</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Render</translation>
     </message>
@@ -332,28 +316,44 @@ Do you want to continue?</source>
       <translation>Cartelle</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Nome del file della parte:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Nome del file della telecamera:</translation>
+      <source>Default Project dir:</source>
+      <translation>Cartella di default del progetto:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Usata dagli strumenti di utilità</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Cartella di default del progetto:</translation>
+      <source>Camera file name:</source>
+      <translation>Nome del file della telecamera:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Nome del file della parte:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Impostazioni di esportazione mesh</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Deviazione massima della maglia:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Non calcolare le normali ai vertici</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Salva le coordinate u,v</translation>
     </message>
   </context>
   <context>

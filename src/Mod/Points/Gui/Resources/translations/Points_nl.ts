@@ -140,14 +140,6 @@
       <translation>Speciale lijnen</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Negeer regels die beginnen met:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Clusteren van regels die beginnen met:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Eerste regel:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Aantal punten</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Clusteren van regels die beginnen met:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Negeer regels die beginnen met:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Punt-formaat</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Getal-scheidingsteken:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Punten-formaat:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Volgend blok:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (Grijstint)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Getal-scheidingsteken:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Volgend blok:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Punten-formaat:</translation>
     </message>
     <message>
       <source>Preview</source>

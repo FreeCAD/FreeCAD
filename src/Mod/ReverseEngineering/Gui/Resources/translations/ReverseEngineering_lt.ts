@@ -240,6 +240,14 @@
       <translation>Dydžio koeficientas</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Vartotojo apibrėžtos u/v kryptys</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Kurti išdėstymą</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Glodinimas</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Kreivio kitimas</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Vartotojo apibrėžtos u/v kryptys</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Kurti išdėstymą</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Tinklo skaidymas</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Kurti junginius</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Glodinti tinklą</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Sukurti tinklą iš nepanaudotų trikampių</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Kurti junginius</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Pasirinkti</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Dalys</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Sritis</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Pažymėti visą dalį</translation>
+      <source>All</source>
+      <translation>Visi</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Pasirinkti trukampį</translation>
+      <source>Components</source>
+      <translation>Dalys</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; daugiakampių, nei</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Visi</translation>
+      <source>Pick triangle</source>
+      <translation>Pasirinkti trukampį</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Pažymėti visą dalį</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Plokštuma</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Aptikti</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Leidžiamoji nuokrypa</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Mažiausias daugiakampių kiekis</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Aptikti</translation>
     </message>
     <message>
       <source>Cylinder</source>

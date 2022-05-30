@@ -754,20 +754,20 @@
       <translation>Mesh informatie</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Aantal punten:</translation>
+      <source>Number of faces:</source>
+      <translation>Aantal vlakken:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Geen informatie</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Aantal vlakken:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Aantal randen:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Aantal punten:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Please run the command to repair folds first</source>
       <translation>Reguliere volumemodel</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Maken</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Sl&amp;uiten</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Volumemodel:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Please run the command to repair folds first</source>
       <translation>Torus</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Hoogte:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Lengte:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Please run the command to repair folds first</source>
       <translation>Breedte:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Hoogte:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Straal:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Gesloten</translation>
+      <source>Edge length:</source>
+      <translation>Randlengte:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Bemonstering:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Randlengte:</translation>
+      <source>Closed</source>
+      <translation>Gesloten</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Straal 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Maken</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Sl&amp;uiten</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Please run the command to repair folds first</source>
       <translation>Exporteren</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Maximale afwijking tussen mesh en object</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Afwijking van de tessellatie naar het werkelijke oppervlak</translation>
     </message>
@@ -1101,6 +1097,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Maximale meshafwijking</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Maximale afwijking tussen mesh en object</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1136,36 +1136,36 @@ wordt gebruikt bij het schrijven van een bestand in AMF-formaat</translation>
       <translation>Standaardweergave voor nieuwe rasters</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Standaardlijnkleur</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Raster-transparantie</translation>
+      <source>Default mesh color</source>
+      <translation>Standaard rasterkleur</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Standaardkleur voor nieuwe meshes</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Raster-transparantie</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Standaard rasterkleur</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Een begrenzingsdoos zal weergegeven worden</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Toon de begrenzingsdoos voor de gemarkeerde of geselecteerde meshes</translation>
+      <source>Default line color</source>
+      <translation>Standaardlijnkleur</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Standaardlijnkleur voor nieuwe meshes</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Lijn transparantie</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Achtervlak kleur</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1182,24 +1182,16 @@ gebruikt ofwel wordt deze zwart.</translation>
       <translation>Twee-zijdig rendering</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Lijn transparantie</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Een begrenzingsdoos zal weergegeven worden</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Achtervlak kleur</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Toon de begrenzingsdoos voor de gemarkeerde of geselecteerde meshes</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Vloeiend maken</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Dit is de kleinste hoek tussen twee vlakken waar de normalen worden berekend om vlakke schaduwen te doen.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Als de hoek tussen de normalen van twee aangrenzende zijden kleiner is dan de vouwhoek, worden de zijden glad geschaduwd rond hun gemeenschappelijke rand.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Vouwhoek</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1220,6 +1212,14 @@ tot een gladder uiterlijk leidt.
     <message>
       <source>Define normal per vertex</source>
       <translation>Definieer normaal per vertex</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Dit is de kleinste hoek tussen twee vlakken waar de normalen worden berekend om vlakke schaduwen te doen.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Als de hoek tussen de normalen van twee aangrenzende zijden kleiner is dan de vouwhoek, worden de zijden glad geschaduwd rond hun gemeenschappelijke rand.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Vouwhoek</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1386,6 +1386,10 @@ tot een gladder uiterlijk leidt.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Remeshparameter</translation>
     </message>
@@ -1425,10 +1429,6 @@ tot een gladder uiterlijk leidt.
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1441,40 +1441,40 @@ tot een gladder uiterlijk leidt.
       <translation>Selecteer</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Selecteer gehele component</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Kies driehoek</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; vlakken dan</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Sectie</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Onderdelen</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Alle</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Onderdelen</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; vlakken dan</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Kies driehoek</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Selecteer gehele component</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Deselecteer</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Deselecteer gehele component</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; vlakken dan</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Deselecteer gehele component</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1551,8 +1551,12 @@ tot een gladder uiterlijk leidt.
       <translation>Meshsegmentatie</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Bol</translation>
+      <source>Plane</source>
+      <translation>Vlak</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parameters...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1563,16 +1567,12 @@ tot een gladder uiterlijk leidt.
       <translation>Minimum aantal vlakken</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parameters...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Vlak</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Cilinder</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Bol</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1759,6 +1759,10 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <translation>Asymptoot formaat</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Gaas exporteren</translation>
     </message>
@@ -1815,6 +1819,10 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <translation>Segmenten weergeven</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Info modus verlaten</translation>
     </message>
@@ -1842,10 +1850,6 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <source>Annotation</source>
       <translation>Aantekening</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1862,12 +1866,32 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <translation>@Meshes</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Snijden</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Mesh gereedschap</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Snijden</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Meshsegmentatie</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

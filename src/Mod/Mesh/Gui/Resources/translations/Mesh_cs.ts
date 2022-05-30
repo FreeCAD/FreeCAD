@@ -754,20 +754,20 @@
       <translation>Informace o síťi</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Počet bodů:</translation>
+      <source>Number of faces:</source>
+      <translation>Počet ploch:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Žádné informace</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Počet ploch:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Počet hran:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Počet bodů:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
       <translation>Pravidelné těleso</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp; Vytvořit</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Zavřít</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Těleso:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
       <translation>Anuloid</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Výška:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Délka:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
       <translation>Šířka:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Výška:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Poloměr:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Uzavřeno</translation>
+      <source>Edge length:</source>
+      <translation>Délka hrany:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Vzorkování:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Délka hrany:</translation>
+      <source>Closed</source>
+      <translation>Uzavřeno</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     <message>
       <source>Radius 2:</source>
       <translation>Poloměr 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp; Vytvořit</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Zavřít</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
       <translation>Export</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
     </message>
@@ -1101,6 +1097,10 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Maximální odchylka sítě</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation type="unfinished">Maximal deviation between mesh and object</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</source>
       <translation>Výchozí vzhled pro nové sítě</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Výchozí barva čáry</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Průhlednost sítě</translation>
+      <source>Default mesh color</source>
+      <translation>Výchozí barva sítě</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation type="unfinished">Default color for new meshes</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Průhlednost sítě</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Výchozí barva sítě</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Bude zobrazen ohraničující kvádr</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Ukázat ohraničující box pro zvýrazněné nebo vybrané sítě</translation>
+      <source>Default line color</source>
+      <translation>Výchozí barva čáry</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Výchozí barva čáry pro nové sítě</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Průhlednost čáry</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Barva zadní stěny</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ nebo černá.</translation>
       <translation>Oboustranný render</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Průhlednost čáry</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Bude zobrazen ohraničující kvádr</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Barva zadní stěny</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Ukázat ohraničující box pro zvýrazněné nebo vybrané sítě</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Vyhlazování</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Toto je nejmenší úhel mezi dvěma plochami, jejichž normály jsou vypočtené pro rovinné stínování.&lt;/p&gt;&lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Je-li úhel mezi normálami dvou sousedních ploch menší než úhel vrásky, plochy budou vyhlazeny podle jejich běžných hran&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Úhel vrásky</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1219,6 +1211,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>Definovat normálu podle vrcholu</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Toto je nejmenší úhel mezi dvěma plochami, jejichž normály jsou vypočtené pro rovinné stínování.&lt;/p&gt;&lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Je-li úhel mezi normálami dvou sousedních ploch menší než úhel vrásky, plochy budou vyhlazeny podle jejich běžných hran&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Úhel vrásky</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1385,6 +1385,10 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
     </message>
@@ -1424,10 +1428,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>Vyčistit</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1440,40 +1440,40 @@ to a smoother appearance.
       <translation>Vybrat</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Vybrat celý díl</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Vybrat trojúhelník</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; než ploch</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Region</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Komponenty</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Vše</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Komponenty</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; než ploch</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Vybrat trojúhelník</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Vybrat celý díl</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Zrušit výběr</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Od vybrat celý komponent</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; než ploch</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Od vybrat celý komponent</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1550,8 +1550,12 @@ to a smoother appearance.
       <translation>Segmentace sítě</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Koule</translation>
+      <source>Plane</source>
+      <translation>Rovina</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametry...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1562,16 +1566,12 @@ to a smoother appearance.
       <translation>Minimální počet ploch</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parametry...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Rovina</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Válec</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Koule</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1758,6 +1758,10 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
       <translation>Asymptotický formát</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Exportovat síť</translation>
     </message>
@@ -1814,6 +1818,10 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
       <translation>Zobrazit segmenty</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Opustit info režim</translation>
     </message>
@@ -1841,10 +1849,6 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
       <source>Annotation</source>
       <translation>Vysvětlivka</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1861,12 +1865,32 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
       <translation>&amp;Tvary</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Řez</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Nástroje sítě</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Řez</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentace sítě</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

@@ -270,22 +270,6 @@ Vill du fortsätta?</translation>
       <translation>Rendering</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Nät exportinställningar</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Max nät-avvikelse:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Beräkna inte hörn normaler</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Skriv u,v koordinater</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Rendera</translation>
     </message>
@@ -334,28 +318,44 @@ Vill du fortsätta?</translation>
       <translation>Kataloger</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Del filnamn:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Kamera-filnamn:</translation>
+      <source>Default Project dir:</source>
+      <translation>Standard-projektkatalog:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Används av verktyg</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Standard-projektkatalog:</translation>
+      <source>Camera file name:</source>
+      <translation>Kamera-filnamn:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Del filnamn:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Nät exportinställningar</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Max nät-avvikelse:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Beräkna inte hörn normaler</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Skriv u,v koordinater</translation>
     </message>
   </context>
   <context>

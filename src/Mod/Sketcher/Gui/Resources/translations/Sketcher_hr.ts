@@ -9,7 +9,7 @@
       <translation>Stvara heksagonalni profil</translation>
     </message>
     <message>
-      <location filename="../../../Profiles.py" line="56"/>
+      <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
       <translation>Stvara heksagonalni profil u skici</translation>
     </message>

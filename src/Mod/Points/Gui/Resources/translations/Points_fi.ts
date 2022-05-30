@@ -140,14 +140,6 @@
       <translation>Erityisiä viivoja</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Ohita viivat, jotka alkavat:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Klusteroi viivat, jotka alkavat:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Ensimmäinen rivi:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Pisteiden määrä</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Klusteroi viivat, jotka alkavat:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Ohita viivat, jotka alkavat:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Piste-muodossa</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Numeron erotin:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\T</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>/w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Pisteiden muodossa:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Seuraava lohko:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (harmaa arvo)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Numeron erotin:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Seuraava lohko:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\T</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>/w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Pisteiden muodossa:</translation>
     </message>
     <message>
       <source>Preview</source>

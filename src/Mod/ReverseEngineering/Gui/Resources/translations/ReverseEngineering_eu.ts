@@ -240,6 +240,14 @@
       <translation>Tamaina-faktorea</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Erabiltzaileak definitutako u/v norabideak</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Sortu kokapena</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Leuntzea</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Kurbadura-bariazioa</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Erabiltzaileak definitutako u/v norabideak</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Sortu kokapena</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Amaraun-segmentazioa</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Sortu konposatua</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Leundu amarauna</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Sortu amarauna erabili gabeko triangeluetatik</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Sortu konposatua</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Hautatu</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Osagaiak</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Eskualdea</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Hautatu osagai osoa</translation>
+      <source>All</source>
+      <translation>Dena</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Aukeratu triangelua</translation>
+      <source>Components</source>
+      <translation>Osagaiak</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>baino aurpegi gutxiago</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Dena</translation>
+      <source>Pick triangle</source>
+      <translation>Aukeratu triangelua</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Hautatu osagai osoa</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Planoa</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Detektatu</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolerantzia</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Aurpegien kopuru minimoa</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Detektatu</translation>
     </message>
     <message>
       <source>Cylinder</source>

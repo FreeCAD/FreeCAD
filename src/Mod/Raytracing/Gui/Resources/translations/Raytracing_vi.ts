@@ -270,22 +270,6 @@ Bạn có muốn tiếp tục?</translation>
       <translation>Dò tia</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Cài đặt xuất lưới</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Độ lệch lưới tối đa:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Không tính các tiêu chuẩn tại đỉnh</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Viết tọa độ u, v</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Biểu diễn</translation>
     </message>
@@ -334,28 +318,44 @@ Bạn có muốn tiếp tục?</translation>
       <translation>Thư mục</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Tên tệp phần:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Tên tệp máy ảnh:</translation>
+      <source>Default Project dir:</source>
+      <translation>Dự án mặc định:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Được sử dụng bởi các công cụ tiện ích</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Dự án mặc định:</translation>
+      <source>Camera file name:</source>
+      <translation>Tên tệp máy ảnh:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Tên tệp phần:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Cài đặt xuất lưới</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Độ lệch lưới tối đa:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Không tính các tiêu chuẩn tại đỉnh</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Viết tọa độ u, v</translation>
     </message>
   </context>
   <context>

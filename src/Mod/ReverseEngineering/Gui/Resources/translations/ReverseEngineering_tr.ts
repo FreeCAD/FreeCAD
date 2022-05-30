@@ -240,6 +240,14 @@
       <translation>Boyut etkeni</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Kullanıcı tanımlı u / v yönleri</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Yerleşim oluşturun</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Düzgünleştirme</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Eğrilik değişimi</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Kullanıcı tanımlı u / v yönleri</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Yerleşim oluşturun</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Örgü bölütleme</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Bileşik oluştur</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Düz örgü</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Kullanılmayan üçgenlerden kafes oluşturma</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Bileşik oluştur</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Seç</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Bileşenler</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Bölge</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Bütün bileşeni seç</translation>
+      <source>All</source>
+      <translation>Hepsi</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Üçgeni seç</translation>
+      <source>Components</source>
+      <translation>Bileşenler</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>'den az yüzler</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Hepsi</translation>
+      <source>Pick triangle</source>
+      <translation>Üçgeni seç</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Bütün bileşeni seç</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Düzlem</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Algıla</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolerans</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Minimum yüz sayısı</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Algıla</translation>
     </message>
     <message>
       <source>Cylinder</source>

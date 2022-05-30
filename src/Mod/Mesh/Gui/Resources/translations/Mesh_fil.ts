@@ -754,20 +754,20 @@
       <translation>Impormasyon ng Mesh</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Bilang ng mga puntos:</translation>
+      <source>Number of faces:</source>
+      <translation>Bilang ng faces:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Walang impormasyon</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Bilang ng faces:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Bilang ng mga edge:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Bilang ng mga puntos:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -984,22 +984,6 @@ Please run the command to repair folds first</source>
       <translation>Regular na solid</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Create</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Cl&amp;ose</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation type="unfinished">Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Solid:</translation>
     </message>
@@ -1028,10 +1012,6 @@ Please run the command to repair folds first</source>
       <translation>Torus</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Taas:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation type="unfinished">Length:</translation>
     </message>
@@ -1040,20 +1020,24 @@ Please run the command to repair folds first</source>
       <translation>Lapad:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Taas:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Radius:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Sarado</translation>
+      <source>Edge length:</source>
+      <translation>Haba ng edge:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Halimbawa:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Haba ng edge:</translation>
+      <source>Closed</source>
+      <translation>Sarado</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1062,6 +1046,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Radius 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Create</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Cl&amp;ose</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation type="unfinished">Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1086,10 +1086,6 @@ Please run the command to repair folds first</source>
       <translation type="unfinished">Export</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
     </message>
@@ -1100,6 +1096,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Pinakamataas na mesh deviation</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation type="unfinished">Maximal deviation between mesh and object</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</translation>
       <translation>Default na anyo para sa bagong mga mesh</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Default na kulay ng linya</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Transparency ng mesh</translation>
+      <source>Default mesh color</source>
+      <translation>Default na kulay ng mesh</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation type="unfinished">Default color for new meshes</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Transparency ng mesh</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Default na kulay ng mesh</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Pinapakita ang bounding-box para sa naka-highlight o napiling mga mesh</translation>
+      <source>Default line color</source>
+      <translation>Default na kulay ng linya</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation type="unfinished">Default line color for new meshes</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Transparency ng Linya</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Kulay ng Backface</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ will be used or black.</translation>
       <translation>Dalawang-side na rendering</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Transparency ng Linya</translation>
+      <source>A bounding box will be displayed</source>
+      <translation type="unfinished">A bounding box will be displayed</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Kulay ng Backface</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Pinapakita ang bounding-box para sa naka-highlight o napiling mga mesh</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Smoothing</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Crease ng anggulo</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1219,6 +1211,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>Tukuyin ang normal kada vertex</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Crease ng anggulo</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1385,6 +1385,10 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
     </message>
@@ -1424,10 +1428,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>Malinaw</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1440,40 +1440,40 @@ to a smoother appearance.
       <translation>Piliin</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Piliin ang buong component</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Pumili ng tatsulok</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; faces than</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Rehiyon</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Mga component</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Lahat</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Mga component</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; faces than</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Pumili ng tatsulok</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Piliin ang buong component</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Tanggalin</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Tanggalin ang buong component</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; faces than</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Tanggalin ang buong component</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1550,8 +1550,12 @@ to a smoother appearance.
       <translation>Segmentation ng mesh</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Sphere</translation>
+      <source>Plane</source>
+      <translation>Plane</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1562,16 +1566,12 @@ to a smoother appearance.
       <translation>Pinakamababang bilang ng faces</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation type="unfinished">Parameters...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Plane</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Cylinder</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sphere</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1757,6 +1757,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Export ang mesh</translation>
     </message>
@@ -1813,6 +1817,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation type="unfinished">Display segments</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Lisanin ang info mode</translation>
     </message>
@@ -1840,10 +1848,6 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Annotation</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1860,12 +1864,32 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>&amp;Meshes</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Paghiwa</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Mga tool ng Mesh</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Paghiwa</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentation ng mesh</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

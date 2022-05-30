@@ -140,14 +140,6 @@
       <translation>特殊な行</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>～で始まる行を無視する：</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>以下の行で始まる行をまとめる:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>最初の行:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>点の数</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>以下の行で始まる行をまとめる:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>～で始まる行を無視する：</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>点群の形式</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>区切り文字：</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>点群の形式:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>次のブロック：</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I （グレーレベル）</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>区切り文字：</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>次のブロック：</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>点群の形式:</translation>
     </message>
     <message>
       <source>Preview</source>
