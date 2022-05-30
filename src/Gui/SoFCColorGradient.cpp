@@ -156,16 +156,20 @@ void SoFCColorGradient::setRange(float fMin, float fMax, int prec)
 {
     _cColGrad.setRange(fMin, fMax);
 
-    // format the label the following way:
-    // if fMin is smaller than 1e-<precision> or fMax greater than 1e+4, output in scientific notation
-    // otherwise output "normal" (fixed notation)
-
     SoMFString label;
     float eps = std::pow(10.0f, static_cast<float>(-prec));
     float value_min = std::min<float>(fabs(fMin), fabs(fMax));
     float value_max = std::max<float>(fabs(fMin), fabs(fMax));
 
-    bool scientific = (value_min < eps && value_min > 0.0f) || value_max > 1e4;
+    // format the label the following way:
+    // if Min is smaller than 1e-<precision>,
+    //  or Max greater than 1e+4,
+    //  or (Max - Min) < 1e-<precision> * number of labels - 1 (assures every label shows different number)
+    // -> output in scientific notation
+    // otherwise output "normal" (fixed notation)
+    bool scientific = (value_min < eps && value_min > 0.0f)
+        || (value_max - value_min) < eps * (_cColGrad.getCountColors() - 1)
+        || value_max > 1e4;
     std::ios::fmtflags flags = scientific ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
                                           : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
 
