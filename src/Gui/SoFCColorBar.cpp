@@ -106,6 +106,33 @@ float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
     return boxWidth;
 }
 
+float SoFCColorBarBase::getBounds(const SbVec2s& size, float& fMinX, float&fMinY, float& fMaxX, float& fMaxY)
+{
+    // ratio of window width / height
+    float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
+    float baseYValue = 4.0f;
+    float barWidth = 0.5f;
+
+    fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
+    fMaxX = fMinX + barWidth;
+    fMinY = -baseYValue;
+    fMaxY = baseYValue; // bar has the height of almost whole window height
+
+    if (fRatio < 1.0f) {
+        // must be adjusted to assure that the height of the bar doesn't shrink
+        fMinY = -baseYValue / fRatio;
+        fMaxY = baseYValue / fRatio;
+    }
+
+    // get the bounding box width of the color bar and labels
+    float boxWidth = getBoundingWidth(size);
+    if (fRatio < 1.0f) {
+        boxWidth *= fRatio;
+    }
+
+    return boxWidth;
+}
+
 // --------------------------------------------------------------------------
 
 namespace Gui {

@@ -112,6 +112,11 @@ public:
   virtual const char* getColorBarName() const = 0;
 
 protected:
+  /** Computes the dimensions of the color bar and labels in coordinates with
+   * respect to the defined height of the camera.
+   * Returns the width of the bounding box
+   */
+  float getBounds(const SbVec2s& size, float& fMinX, float&fMinY, float& fMaxX, float& fMaxY);
   /** Returns the width of the color bar and labels
    *
    * Computes the occupied width of the color bar and its labels.
