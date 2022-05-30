@@ -39,7 +39,7 @@ class _CommandExplodeCompound:
         return {'Pixmap': "Part_ExplodeCompound",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode compound"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound",
                                                     "Split up a compound of shapes into separate objects.\n"
                                                     "It will create a 'Compound Filter' for each shape.")}
 
