@@ -90,17 +90,17 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>Il punto centrale di partenza dell'elica; derivato dall'asse di riferimento.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>La direzione dell'elica; derivata dall'asse di riferimento.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>L'asse di riferimento dell'elica.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
@@ -112,17 +112,17 @@ Dependent properties are then calculated.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>La distanza assiale tra due giri.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>L'altezza del percorso elicoidale, che non tiene conto dell'estensione del profilo.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="86"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>Il numero di giri nell'elica.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="89"/>
@@ -1832,7 +1832,7 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="369"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Direzione personalizzata</translation>
     </message>
   </context>
   <context>
@@ -2102,7 +2102,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation type="unfinished">Radial growth:</translation>
+      <translation>Crescita radiale:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>
@@ -2137,7 +2137,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="333"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>Errore: modalità non supportata</translation>
     </message>
   </context>
   <context>
@@ -2539,8 +2539,8 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation type="unfinished">Set a direction or select an edge
-from the model as reference</translation>
+      <translation>Imposta una direzione o seleziona un bordo
+dal modello come riferimento</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="97"/>
@@ -2555,7 +2555,7 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Direzione personalizzata</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
@@ -2630,12 +2630,12 @@ misurata lungo la direzione specificata</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
       <location filename="../../TaskPadPocketParameters.ui" line="317"/>
       <source>Angle to taper the extrusion</source>
-      <translation type="unfinished">Angle to taper the extrusion</translation>
+      <translation>Angolo per rastremare l'estrusione</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
       <source>Taper angle</source>
-      <translation type="unfinished">Taper angle</translation>
+      <translation>Angolo rastrematura</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="296"/>
@@ -2645,7 +2645,7 @@ misurata lungo la direzione specificata</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="320"/>
       <source>2nd taper angle</source>
-      <translation type="unfinished">2nd taper angle</translation>
+      <translation>2° angolo rastrematura</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="341"/>
@@ -2889,7 +2889,7 @@ misurata lungo la direzione specificata</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Reverses pocket direction</source>
-      <translation type="unfinished">Reverses pocket direction</translation>
+      <translation>Inverte la direzione della tasca</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
@@ -3318,7 +3318,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../ViewProviderChamfer.h" line="41"/>
       <source>Chamfer parameters</source>
-      <translation type="unfinished">Chamfer parameters</translation>
+      <translation>Parametri di smussatura</translation>
     </message>
   </context>
   <context>
@@ -3326,22 +3326,22 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="111"/>
       <source>Datum Plane parameters</source>
-      <translation type="unfinished">Datum Plane parameters</translation>
+      <translation>Parametri del Piano di riferimento</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="116"/>
       <source>Datum Line parameters</source>
-      <translation type="unfinished">Datum Line parameters</translation>
+      <translation>Parametri Linea di riferimento</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
       <source>Datum Point parameters</source>
-      <translation type="unfinished">Datum Point parameters</translation>
+      <translation>Parametri del Punto di riferimento</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="126"/>
       <source>Local Coordinate System parameters</source>
-      <translation type="unfinished">Local Coordinate System parameters</translation>
+      <translation>Parametri del sistema di coordinate locali</translation>
     </message>
   </context>
   <context>
@@ -3357,7 +3357,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
       <source>Fillet parrameters</source>
-      <translation type="unfinished">Fillet parrameters</translation>
+      <translation>Parametri Smusso</translation>
     </message>
   </context>
   <context>
@@ -3373,7 +3373,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="38"/>
       <source>MultiTransform parameters</source>
-      <translation type="unfinished">MultiTransform parameters</translation>
+      <translation>Parametri MultiTrasformazione</translation>
     </message>
   </context>
   <context>
@@ -3389,7 +3389,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../ViewProviderScaled.h" line="38"/>
       <source>Scaled parameters</source>
-      <translation type="unfinished">Scaled parameters</translation>
+      <translation>Parametri scalati</translation>
     </message>
   </context>
   <context>
@@ -3405,7 +3405,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../ViewProviderMirrored.h" line="38"/>
       <source>Mirrored parameters</source>
-      <translation type="unfinished">Mirrored parameters</translation>
+      <translation>Parametri specchiati</translation>
     </message>
   </context>
   <context>

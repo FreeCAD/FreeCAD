@@ -4539,7 +4539,7 @@ für Ansichtengruppen verteilen</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="464"/>
       <source>Dashed</source>
-      <translation>Gestrichelt</translation>
+      <translation>Strichlinie</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="493"/>
@@ -7210,32 +7210,32 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
       <source>Line style:</source>
-      <translation>Linienstil:</translation>
+      <translation>Linienart:</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="41"/>
       <source>Set line style to solid</source>
-      <translation type="unfinished">Set line style to solid</translation>
+      <translation>Linienart auf Volllinie setzen</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="44"/>
       <source>Solid</source>
-      <translation>Vollkörper</translation>
+      <translation>Volllinie</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="57"/>
       <source>Dashed</source>
-      <translation>Gestrichelt</translation>
+      <translation>Strichlinie</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="70"/>
       <source>Dotted</source>
-      <translation>Gepunktet</translation>
+      <translation>Punktlinie</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="83"/>
       <source>Dashdot</source>
-      <translation>Strich-Punkt</translation>
+      <translation>Strich-Punkt-Linie</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="103"/>
@@ -7245,17 +7245,17 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="110"/>
       <source>Thin 0,18</source>
-      <translation>Dünn 0,18</translation>
+      <translation>Schmal 0,18</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="123"/>
       <source>Middle 0,35</source>
-      <translation type="unfinished">Middle 0,35</translation>
+      <translation>Grafisch 0,35</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="139"/>
       <source>Thick 0,70</source>
-      <translation>Dick 0,70</translation>
+      <translation>Breit 0,70</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="156"/>

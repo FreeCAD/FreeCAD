@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="68"/>
       <source>Angles less than filter angle will not receive corner actions</source>
-      <translation type="unfinished">Angles less than filter angle will not receive corner actions</translation>
+      <translation>Angoli inferiori all'angolo del filtro non riceveranno azioni d'angolo</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="76"/>
@@ -1280,7 +1280,7 @@
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="962"/>
       <source>Type of adaptive operation</source>
-      <translation type="unfinished">Type of adaptive operation</translation>
+      <translation>Tipo di operazione adattativa</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="976"/>
@@ -2551,17 +2551,17 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="242"/>
       <source>Length / Radius:</source>
-      <translation type="unfinished">Length / Radius:</translation>
+      <translation>Lunghezza / Raggio:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="269"/>
       <source>Radius / Center:</source>
-      <translation type="unfinished">Radius / Center:</translation>
+      <translation>Raggio / Centro:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="296"/>
       <source>Keep Tool Down</source>
-      <translation type="unfinished">Keep Tool Down</translation>
+      <translation>Mantieni Lo Strumento Giù</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="303"/>
@@ -3596,7 +3596,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="262"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Passaggio Singolo</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="263"/>
@@ -3872,7 +3872,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="479"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Passaggio Singolo</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="480"/>
@@ -4381,7 +4381,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="137"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Passaggio Singolo</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="138"/>
@@ -5685,7 +5685,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
       <source>Enable Extensions</source>
-      <translation type="unfinished">Enable Extensions</translation>
+      <translation>Abilita Estensioni</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="55"/>
@@ -6099,7 +6099,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="361"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Passaggio Singolo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="366"/>
@@ -6339,7 +6339,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="128"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>Sicuro</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="135"/>
@@ -6561,7 +6561,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="110"/>
       <source>Corner Radius</source>
-      <translation type="unfinished">Corner Radius</translation>
+      <translation>Raggio angolo</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="117"/>
@@ -8326,7 +8326,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1099"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>Sicuro</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1106"/>
@@ -8413,7 +8413,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1354"/>
       <source>Workplan</source>
-      <translation type="unfinished">Workplan</translation>
+      <translation>Piano di lavoro</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1366"/>

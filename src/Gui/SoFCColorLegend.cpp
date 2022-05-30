@@ -190,25 +190,8 @@ void SoFCColorLegend::setMarkerValue(const SoMFString& value)
 
 void SoFCColorLegend::setViewportSize(const SbVec2s& size)
 {
-    // ratio of window height / width
-    float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
-    float baseYValue = 4.0f;
-    float barWidth = 0.5f;
-    float fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
-    float fMaxX = fMinX + barWidth;
-    float fMinY = -baseYValue, fMaxY = baseYValue; // bar has the height of almost whole window height
-
-    if (fRatio < 1.0f) {
-        // height must be adjusted to assure bar stays smaller than window height
-        fMinY = -baseYValue / fRatio;
-        fMaxY = baseYValue / fRatio;
-    }
-
-    // get the bounding box width of the labels
-    float boxWidth = getBoundingWidth(size);
-    if (fRatio < 1.0f) {
-        boxWidth *= fRatio;
-    }
+    float fMinX, fMinY, fMaxX, fMaxY;
+    float boxWidth = getBounds(size, fMinX, fMinY, fMaxX, fMaxY);
 
     // legend bar is shifted to the left by width of the labels to assure that labels are fully visible
     _bbox.setBounds(fMinX - boxWidth, fMinY, fMaxX - boxWidth, fMaxY);

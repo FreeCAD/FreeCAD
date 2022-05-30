@@ -3469,7 +3469,7 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="22"/>
       <source>View to move</source>
-      <translation type="unfinished">View to move</translation>
+      <translation>Вид для переміщення</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="36"/>
@@ -3481,12 +3481,12 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="43"/>
       <source>From Page</source>
-      <translation type="unfinished">From Page</translation>
+      <translation>Зі сторінки</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To Page</source>
-      <translation type="unfinished">To Page</translation>
+      <translation>До сторінки</translation>
     </message>
   </context>
   <context>

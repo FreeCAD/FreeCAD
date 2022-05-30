@@ -250,8 +250,8 @@
       <location filename="../../draftobjects/label.py" line="65"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>სქოლიოს ბოლოს მდებარეობა.
+ეს წერტილი შეგიძლიათ ისრის ან სხვა სიმბოლოს მნიშვნელობით გამოხატოთ.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="79"/>
@@ -291,10 +291,10 @@ can be set as a list of arbitrary points.</source>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>სქოლიოს სწორი ნაწილის მიმართულება.
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+თუ არჩეულია 'ხელით მითითებული', სქოლიოს წერტილების სიის მითითება
+სათითაოდ შეგიძლიათ 'წერტილების' ატრიბუტის საშუალებით.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="142"/>
@@ -6827,8 +6827,8 @@ value by using the [ and ] keys while drawing</source>
       <location filename="../ui/preferences-draft.ui" line="169"/>
       <source>This is the value used by functions that use a tolerance.
 Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
-      <translation type="unfinished">This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</translation>
+      <translation>ეს მნიშვნელობა გამოიყენება ფუნქციების მიერ, რომლებიც დაშვებებს იყენებენ.
+ქვემოთ მითითებულ რიცხვზე მცირე მნიშვნელობები ტოლად იქნება აღქმული. ეს მნიშვნელობა მოხმარებიდან მალე იქნება ამოღებული. სამაგიეროდ მნიშვნელობა ზემოთ ორივეს სიზუსტეს გააკონტროლებს.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
@@ -7841,7 +7841,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;p&gt;თუ ჩართულია, ბადის ქვედა მარცხენა კუთხეში ადამიანის ლანდი იქნება გამოსახული. ეს პარამეტრი აქტიურია მხოლოდ მაშინ, თუ დაყენებულია BIM-ის სამუშაო მაგიდა და თუ &amp;quot;ბადის საზღვრის ჩვენება&amp;quot; ჩართულია.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>

@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="132"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Seleccionar caras/aristas/vértices</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="136"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Para añadir referencias: selecciónelas en la vista 3D y haga clic en "Añadir".</translation>
     </message>
   </context>
   <context>
@@ -113,7 +113,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Crea un permitividad de vacío constante FEM para sobrescribir el valor estándar</translation>
     </message>
   </context>
   <context>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="189"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>Crea una restricción FEM de cuerpo fuente de calor</translation>
     </message>
   </context>
   <context>
@@ -134,12 +134,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="202"/>
       <source>Constraint centrif</source>
-      <translation type="unfinished">Constraint centrif</translation>
+      <translation>Restricción de centrifugado</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="206"/>
       <source>Creates a FEM constraint centrif</source>
-      <translation type="unfinished">Creates a FEM constraint centrif</translation>
+      <translation>Crea una restricción FEM de centrif</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="223"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Crea una restricción FEM de potencial electroestático</translation>
     </message>
   </context>
   <context>
@@ -160,12 +160,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="236"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Restringir velocidad de flujo</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="240"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Crea una restricción FEM de velocidad de flujo</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="257"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Crea una restricción FEM de velocidad inicial de flujo</translation>
     </message>
   </context>
   <context>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="291"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Crea una restricción FEM de peso propio</translation>
     </message>
   </context>
   <context>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="308"/>
       <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
+      <translation>Crea una restricción FEM de unión</translation>
     </message>
   </context>
   <context>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="325"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>Crea una sección de fluido FEM para flujo 1D</translation>
     </message>
   </context>
   <context>
@@ -251,12 +251,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="355"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Espesor de placa de caparazón</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="359"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Crea un espesor de placa de caparazón FEM</translation>
     </message>
   </context>
   <context>
@@ -282,7 +282,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity</translation>
+      <translation>Crea una ecuación FEM para elasticidad</translation>
     </message>
   </context>
   <context>
@@ -295,7 +295,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Crea una ecuación FEM para fuerzas eléctricas</translation>
     </message>
   </context>
   <context>
@@ -308,7 +308,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="393"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Crea una ecuación FEM para electrostática</translation>
     </message>
   </context>
   <context>
@@ -364,7 +364,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="655"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Malla FEM a malla</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="659"/>
@@ -395,7 +395,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Crea un material FEM para fluido</translation>
     </message>
   </context>
   <context>
@@ -408,7 +408,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="554"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Crea un material mecánico no lineal</translation>
     </message>
   </context>
   <context>
@@ -460,7 +460,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="723"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Borrar la Malla de un objeto de malla FEM</translation>
     </message>
   </context>
   <context>
@@ -477,12 +477,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="773"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>Malla FEM desde forma por Gmsh</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="777"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Crear una malla FEM a partir de una malla de una forma de Gmsh mesher</translation>
     </message>
   </context>
   <context>
@@ -503,7 +503,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="835"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>Malla FEM a partir de forma de Netgen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="839"/>
@@ -594,12 +594,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1016"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1021"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>Crea un solucionador FEM Elmer</translation>
     </message>
   </context>
   <context>

@@ -2364,7 +2364,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="1792"/>
       <source>Offset:</source>
-      <translation>Зміщення:</translation>
+      <translation>Зсув:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1793"/>

@@ -397,7 +397,7 @@ Do you want to continue?</source>
     <name>Workbench</name>
     <message>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Lancer de rayon</translation>
+      <translation>&amp;Raytracing</translation>
     </message>
   </context>
 </TS>

@@ -48,7 +48,7 @@ SO_NODE_SOURCE(SoFCColorGradient)
 /*!
   Constructor.
 */
-SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _precision(3)
+SoFCColorGradient::SoFCColorGradient() : _bbox(5.0f, -4.0f, 5.5f, 4.0f), _precision(3)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorGradient);
     coords = new SoCoordinate3;
@@ -88,9 +88,11 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
 
     int num = label.getNum();
     if (num > 1) {
-        float fStep = 8.0f / ((float)num - 1);
+        SbVec2f maxPt = _bbox.getMax();
+        SbVec2f minPt = _bbox.getMin();
+        float fStep = (maxPt[1] - minPt[1]) / ((float)num - 1);
         SoTransform* trans = new SoTransform;
-        trans->translation.setValue(_bbox.getMax()[0] + 0.1f, _bbox.getMax()[1] - 0.05f + fStep, 0.0f);
+        trans->translation.setValue(maxPt[0] + 0.1f, maxPt[1] - 0.05f + fStep, 0.0f);
         labels->addChild(trans);
 
         for (int i = 0; i < num; i++) {
@@ -110,25 +112,8 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
 
 void SoFCColorGradient::setViewportSize(const SbVec2s& size)
 {
-    // ratio of window height / width
-    float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
-    float baseYValue = 4.0f;
-    float barWidth = 0.5f;
-    float fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
-    float fMaxX = fMinX + barWidth;
-    float fMinY = -baseYValue, fMaxY = baseYValue; // bar has the height of almost whole window height
-
-    if (fRatio < 1.0f) {
-        // height must be adjusted to assure bar stays smaller than window height
-        fMinY = -baseYValue / fRatio;
-        fMaxY = baseYValue / fRatio;
-    }
-
-    // get the bounding box width of the labels
-    float boxWidth = getBoundingWidth(size);
-    if (fRatio < 1.0f) {
-        boxWidth *= fRatio;
-    }
+    float fMinX, fMinY, fMaxX, fMaxY;
+    float boxWidth = getBounds(size, fMinX, fMinY, fMaxX, fMaxY);
 
     // search for the labels
     int num = 0;

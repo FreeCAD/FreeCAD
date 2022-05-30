@@ -96,7 +96,10 @@ class Draft_SelectPlane:
 
         # Fill values
         self.taskd.form.checkCenter.setChecked(self.param.GetBool("CenterPlaneOnView", False))
-        q = FreeCAD.Units.Quantity(self.param.GetFloat("gridSpacing", 1.0), FreeCAD.Units.Length)
+        try:
+            q = FreeCAD.Units.Quantity(self.param.GetString("gridSpacing", "1 mm"))
+        except ValueError:
+            q = FreeCAD.Units.Quantity("1 mm")
         self.taskd.form.fieldGridSpacing.setText(q.UserString)
         self.taskd.form.fieldGridMainLine.setValue(self.param.GetInt("gridEvery", 10))
         self.taskd.form.fieldGridExtension.setValue(self.param.GetInt("gridSize", 100))
@@ -477,7 +480,7 @@ class Draft_SelectPlane:
         except Exception:
             pass
         else:
-            self.param.SetFloat("gridSpacing", q.Value)
+            self.param.SetString("gridSpacing", q.UserString)
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
 

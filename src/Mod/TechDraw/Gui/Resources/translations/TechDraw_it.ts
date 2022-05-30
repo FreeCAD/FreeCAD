@@ -488,7 +488,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1745"/>
       <source>Calculate the area of selected faces</source>
-      <translation type="unfinished">Calculate the area of selected faces</translation>
+      <translation>Calcola l'area delle facce selezionate</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1746"/>
@@ -891,7 +891,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="422"/>
       <location filename="../../CommandExtensionDims.cpp" line="529"/>
       <source>Decrease Decimal Places</source>
-      <translation type="unfinished">Decrease Decimal Places</translation>
+      <translation>Diminuisci i Decimali</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="423"/>
@@ -1033,7 +1033,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="389"/>
       <location filename="../../CommandExtensionDims.cpp" line="522"/>
       <source>Increase Decimal Places</source>
-      <translation type="unfinished">Increase Decimal Places</translation>
+      <translation>Aumenta i Decimali</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="390"/>
@@ -1052,7 +1052,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="455"/>
       <source>Increase Decimal Places</source>
-      <translation type="unfinished">Increase Decimal Places</translation>
+      <translation>Aumenta i Decimali</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="456"/>
@@ -1167,7 +1167,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1254"/>
       <location filename="../../CommandExtensionPack.cpp" line="1364"/>
       <source>Add Cosmetic Perpendicular Line</source>
-      <translation type="unfinished">Add Cosmetic Perpendicular Line</translation>
+      <translation>Aggiungi Linea Perpendicolare Cosmetica</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1255"/>
@@ -2175,7 +2175,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2147"/>
       <source>Create Arc Length Dim</source>
-      <translation type="unfinished">Create Arc Length Dim</translation>
+      <translation>Crea Quota Lunghezza Arco</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="130"/>
@@ -2215,7 +2215,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="822"/>
       <source>Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">Cosmetic Intersection Vertex(es)</translation>
+      <translation>Vertici Di Intersezione Cosmetici</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="868"/>
@@ -2235,7 +2235,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1177"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
-      <translation type="unfinished">Cosmetic Line Parallel/Perpendicular</translation>
+      <translation>Linea Cosmetica Parallela/Perpendicolare</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1407"/>
@@ -3188,7 +3188,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="558"/>
       <location filename="../../CommandExtensionDims.cpp" line="861"/>
       <source>No horizontal dimensions selected</source>
-      <translation type="unfinished">No horizontal dimensions selected</translation>
+      <translation>Nessuna quota orizzontale selezionata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="616"/>
@@ -3199,7 +3199,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="617"/>
       <location filename="../../CommandExtensionDims.cpp" line="925"/>
       <source>No vertical dimensions selected</source>
-      <translation type="unfinished">No vertical dimensions selected</translation>
+      <translation>Nessuna quota verticale selezionata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="676"/>
@@ -3210,7 +3210,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="677"/>
       <location filename="../../CommandExtensionDims.cpp" line="990"/>
       <source>No oblique dimensions selected</source>
-      <translation type="unfinished">No oblique dimensions selected</translation>
+      <translation>Nessuna quota obliqua selezionata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="860"/>

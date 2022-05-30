@@ -4093,7 +4093,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="74"/>
       <source>Save Tool as...</source>
-      <translation>Zapisz narzędzie jako...</translation>
+      <translation>Zapisz narzędzie jako ...</translation>
     </message>
   </context>
   <context>

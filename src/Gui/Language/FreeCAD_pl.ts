@@ -5155,7 +5155,7 @@ wstępnie wybranymi przed otwarciem tego okna</translation>
     </message>
     <message>
       <source>Show output window on</source>
-      <translation>Pokaż okno wyjściowe na</translation>
+      <translation>Pokaż okno Widok raportu dla</translation>
     </message>
     <message>
       <source>Redirect Python output</source>
@@ -5167,7 +5167,7 @@ wstępnie wybranymi przed otwarciem tego okna</translation>
     </message>
     <message>
       <source>Go to end</source>
-      <translation>Przejdź do końca</translation>
+      <translation>Przejdź na koniec</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -5175,7 +5175,7 @@ wstępnie wybranymi przed otwarciem tego okna</translation>
     </message>
     <message>
       <source>Save As...</source>
-      <translation>Zapisz jako...</translation>
+      <translation>Zapisz jako ...</translation>
     </message>
     <message>
       <source>Save Report Output</source>
@@ -5971,7 +5971,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Save history as...</source>
-      <translation>Zapisz historię jako...</translation>
+      <translation>Zapisz historię jako ...</translation>
     </message>
     <message>
       <source>Save history</source>
@@ -9029,7 +9029,7 @@ bieżącej kopii zostaną utracone.
     <name>StdCmdViewHome</name>
     <message>
       <source>Home</source>
-      <translation>Strona główna</translation>
+      <translation>Widok domyślny</translation>
     </message>
     <message>
       <source>Set to default home view</source>
