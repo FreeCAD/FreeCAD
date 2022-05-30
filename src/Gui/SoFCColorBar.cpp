@@ -119,17 +119,15 @@ float SoFCColorBarBase::getBounds(const SbVec2s& size, float& fMinX, float&fMinY
     fMaxY = baseYValue; // bar has the height of almost whole window height
 
     if (fRatio < 1.0f) {
-        // must be adjusted to assure that the height of the bar doesn't shrink
+        // must be adjusted to assure that the size of the bar doesn't shrink
+        fMinX /= fRatio;
+        fMaxX /= fRatio;
         fMinY = -baseYValue / fRatio;
         fMaxY = baseYValue / fRatio;
     }
 
     // get the bounding box width of the color bar and labels
     float boxWidth = getBoundingWidth(size);
-    if (fRatio < 1.0f) {
-        boxWidth *= fRatio;
-    }
-
     return boxWidth;
 }
 
