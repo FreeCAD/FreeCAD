@@ -1210,7 +1210,10 @@ class gridTracker(Tracker):
 
     def reset(self):
         """Reset the grid according to preferences settings."""
-        self.space = Draft.getParam("gridSpacing", 1)
+        try:
+            self.space = FreeCAD.Units.Quantity(Draft.getParam("gridSpacing", "1 mm")).Value
+        except ValueError:
+            self.space = 1
         self.mainlines = Draft.getParam("gridEvery", 10)
         self.numlines = Draft.getParam("gridSize", 100)
         self.update()
