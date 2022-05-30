@@ -1944,9 +1944,14 @@ def getProfile(ifcfile,p):
         d = vec(p.Edges[0])
         d.normalize()
         pxvc = ifcbin.createIfcDirection(tuple(d)[:2])
-        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
         # profile must be located at (0,0) because placement gets added later
-        #povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
+        # povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        # the above statement appears wrong, so the line below has been uncommented for now
+        # TODO we must sort this out at some point... For now the line below seems to work
+        if getattr(p,"CenterOfMass",None):
+            povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
+        else:
+            povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
