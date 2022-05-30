@@ -84,8 +84,8 @@ float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
 {
     // These are the same camera settings for front nodes as defined in the 3d view
     SoOrthographicCamera* cam = new SoOrthographicCamera;
-    cam->position = SbVec3f(0, 0, 5);
-    cam->height = 10;
+    cam->position = SbVec3f(0, 0, 5); // the 5 is just a value > 0
+    cam->height = 10; // sets the coordinate range of the screen to [-5, +5]
     cam->nearDistance = 0;
     cam->farDistance = 10;
 
@@ -110,9 +110,16 @@ float SoFCColorBarBase::getBounds(const SbVec2s& size, float& fMinX, float&fMinY
 {
     // ratio of window width / height
     float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
+
+    // The cam height is set in SoFCColorBarBase::getBoundingWidth to 10.
+    // Therefore the normalized coordinates are in the range [-5, +5] x [-5ratio, +5ratio] if ratio > 1
+    //  and [-5ratio, +5ratio] x [-5, +5] if ratio < 1.
+    // We don't want the whole height covered by the color bar (to have e.g space to the axis cross)
+    // thus we take as base 4.
     float baseYValue = 4.0f;
     float barWidth = 0.5f;
 
+    // we want the color bar at the rightmost position, therefore we take 5 as base
     fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
     fMaxX = fMinX + barWidth;
     fMinY = -baseYValue;
