@@ -110,19 +110,21 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
 
 void SoFCColorGradient::setViewportSize(const SbVec2s& size)
 {
+    // ratio of window height / width
     float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
-    float fMinX =  4.0f, fMaxX = 4.5f;
-    float fMinY = -4.0f, fMaxY = 4.0f;
+    float baseYValue = 4.0f;
+    float barWidth = 0.5f;
+    float fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
+    float fMaxX = fMinX + barWidth;
+    float fMinY = -baseYValue, fMaxY = baseYValue; // bar has the height of almost whole window height
 
-    if (fRatio > 1.0f) {
-        fMinX = 5.0f * fRatio;
-        fMaxX = fMinX + 0.5f;
-    }
-    else if (fRatio < 1.0f) {
-        fMinY = -4.0f / fRatio;
-        fMaxY =  4.0f / fRatio;
+    if (fRatio < 1.0f) {
+        // height must be adjusted to assure bar stays smaller than window height
+        fMinY = -baseYValue / fRatio;
+        fMaxY = baseYValue / fRatio;
     }
 
+    // get the bounding box width of the labels
     float boxWidth = getBoundingWidth(size);
     if (fRatio < 1.0f) {
         boxWidth *= fRatio;
@@ -143,6 +145,7 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
             if (labels->getChild(j)->getTypeId() == SoTransform::getClassTypeId()) {
                 if (first) {
                     first = false;
+                    // set the labels with a small space of 0.1f besides the bar
                     static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(fMaxX + 0.1f - boxWidth, fMaxY - 0.05f + fStep, 0.0f);
                 }
                 else {
@@ -152,6 +155,7 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
         }
     }
 
+    // gradient bar is shifted to the left by width of the labels to assure that labels are fully visible
     _bbox.setBounds(fMinX - boxWidth, fMinY, fMaxX - boxWidth, fMaxY);
     modifyPoints(_bbox);
 }

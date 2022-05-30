@@ -103,7 +103,7 @@ float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
     group->unref();
 
     float boxWidth = maxPt[0] - minPt[0];
-    return boxWidth + 0.2f;
+    return boxWidth;
 }
 
 // --------------------------------------------------------------------------
