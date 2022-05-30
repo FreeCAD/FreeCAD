@@ -293,7 +293,7 @@ void TaskDetail::setUiFromFeat()
     double scale = detailFeat->Scale.getValue();
     QString ref = QString::fromUtf8(detailFeat->Reference.getValue());
 
-    ui->pbDragger->setText(QString::fromUtf8("Drag Highlight"));
+    ui->pbDragger->setText(tr("Drag Highlight"));
     ui->pbDragger->setEnabled(true);
     int decimals = Base::UnitsApi::getDecimals();
     ui->qsbX->setUnit(Base::Unit::Length);
