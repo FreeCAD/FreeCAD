@@ -30,7 +30,7 @@ import stat
 import tempfile
 import hashlib
 from datetime import date, timedelta
-from typing import Dict
+from typing import Dict, List
 
 from PySide2 import QtGui, QtCore, QtWidgets
 import FreeCADGui
@@ -76,6 +76,8 @@ installed.
 
 def QT_TRANSLATE_NOOP(ctx, txt):
     return txt
+
+ADDON_MANAGER_DEVELOPER_MODE = False
 
 
 class CommandAddonManager:
@@ -141,6 +143,9 @@ class CommandAddonManager:
         # display first use dialog if needed
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         readWarning = pref.GetBool("readWarning2022", False)
+
+        global ADDON_MANAGER_DEVELOPER_MODE
+        ADDON_MANAGER_DEVELOPER_MODE = pref.GetBool("developerMode", False)
 
         if not readWarning:
             warning_dialog = FreeCADGui.PySideUic.loadUi(
@@ -570,6 +575,8 @@ class CommandAddonManager:
         if selection:
             self.startup_sequence.insert(2, lambda: self.select_addon(selection))
             pref.SetString("SelectedAddon", "")
+        if ADDON_MANAGER_DEVELOPER_MODE:
+            self.startup_sequence.append(self.validate)
         self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
         self.do_next_startup_phase()
@@ -1666,5 +1673,125 @@ class CommandAddonManager:
                     + "\n"
                 )
 
+    def validate(self):
+        """Developer tool: check all repos for validity and print report"""
+
+        FreeCAD.Console.PrintLog(f"\n\nADDON MANAGER DEVELOPER MODE CHECKS\n")
+        FreeCAD.Console.PrintLog(f"-----------------------------------\n")
+
+        counter = 0
+        for addon in self.item_model.repos:
+            counter += 1
+            self.update_progress_bar(counter, len(self.item_model.repos))
+            if addon.metadata is not None:
+                self.validate_package_xml(addon)
+            elif addon.repo_type == Addon.Kind.MACRO:
+                if addon.macro.parsed:
+                    if len(addon.macro.icon) == 0 and len(addon.macro.xpm) == 0:
+                        FreeCAD.Console.PrintLog(f"Macro '{addon.name}' does not have an icon\n")
+            else:
+                FreeCAD.Console.PrintLog(f"Addon '{addon.name}' does not have a package.xml file\n")
+        
+        FreeCAD.Console.PrintLog(f"-----------------------------------\n\n")
+        self.do_next_startup_phase()
+
+    def validate_package_xml(self, addon:Addon):
+        if addon.metadata is None:
+            return
+
+        # The package.xml standard has some required elements that the basic XML reader is not actually checking
+        # for. In developer mode, actually make sure that all of the rules are being followed for each element.
+
+        errors = []
+
+        # Top-level required elements
+
+        if not addon.metadata.Name or len(addon.metadata.Name) == 0:
+            errors.append(f"No top-level <name> element found, or <name> element is empty")
+        if not addon.metadata.Version or addon.metadata.Version == "0.0.0":
+            errors.append(f"No top-level <version> element found, or <version> element is invalid")
+        #if not addon.metadata.Date or len(addon.metadata.Date) == 0:
+        #    errors.append(f"No top-level <date> element found, or <date> element is invalid")
+        if not addon.metadata.Description or len(addon.metadata.Description) == 0:
+            errors.append(f"No top-level <description> element found, or <description> element is invalid")
+
+        maintainers = addon.metadata.Maintainer
+        if len(maintainers) == 0:
+            errors.append(f"No top-level <maintainers> found, at least one is required")
+        for maintainer in maintainers:
+            if len(maintainer['email']) == 0:
+                errors.append(f"No email address specified for maintainer '{maintainer['name']}'")
+
+        licenses = addon.metadata.License
+        if len(licenses) == 0:
+            errors.append(f"No top-level <license> found, at least one is required")
+
+        urls = addon.metadata.Urls
+        if len(urls) == 0:
+            errors.append(f"No <url> elements found, at least a repo url must be provided")
+        else:
+            found_repo = False
+            found_readme = False
+            for url in urls:
+                if url["type"] == "repository":
+                    found_repo = True
+                    if len(url["branch"]) == 0:
+                        errors.append("<repository> element is missing the 'branch' attribute")
+                elif url["type"] == "readme":
+                    found_readme = True
+                    location = url["location"]
+                    p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(location)
+                    if not p:
+                        errors.append(f"Could not access specified readme at {location}")
+                    else:
+                        p = p.data().decode("utf8")
+                        if "<html" in p or "<!DOCTYPE html>" in p:
+                            pass
+                        else:
+                            errors.append(f"Readme data found at {location} does not appear to be rendered HTML")
+            if not found_repo:
+                errors.append("No repo url specified")
+            if not found_readme:
+                errors.append("No readme url specified (not required, but highly recommended)")
+
+        contents = addon.metadata.Content
+        if not contents or len(contents) == 0:
+            errors.append("No content items found")
+
+        missing_icon = True
+        if addon.metadata.Icon and len(addon.metadata.Icon) > 0:
+            missing_icon = False
+        else:
+            if "workbench" in contents:
+                wb = contents["workbench"][0]
+                if wb.Icon:
+                   missing_icon = False
+        if missing_icon:
+            errors.append(f"No <icon> element found, or <icon> element is invalid")
+
+        if "workbench" in contents:
+            for wb in contents["workbench"]:
+                errors.extend (self.validate_workbench_metadata(wb))
+
+        if "preferencepack" in contents:
+            for wb in contents["preferencepack"]:
+                errors.extend (self.validate_preference_pack_metadata(wb))
+
+        if len(errors) > 0:
+            FreeCAD.Console.PrintLog(f"Errors found in package.xml file for '{addon.name}'\n")
+            for error in errors:
+                FreeCAD.Console.PrintLog(f"   * {error}\n")
+
+    def validate_workbench_metadata(self, workbench) -> List[str]:
+        errors = []
+        if not workbench.Classname or len(workbench.Classname) == 0:
+            errors.append("No <classname> specified for workbench")
+        return errors
+
+    def validate_preference_pack_metadata(self, pack) -> List[str]:
+        errors = []
+        if not pack.Name or len(pack.Name) == 0:
+            errors.append("No <name> specified for preference pack")
+        return errors
 
 # @}
