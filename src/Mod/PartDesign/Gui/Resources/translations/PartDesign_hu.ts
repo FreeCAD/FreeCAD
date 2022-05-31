@@ -90,79 +90,79 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>A spirál kezdetének középpontja, amely a referenciatengelyből származik.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>A spirál iránya, amely a referenciatengelyéből származik.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>Spirál referenciatengely.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>A spirál bemeneti mód határozza meg, hogy a felhasználó mely tulajdonságokat állítja be.
+Ezt követi a függő tulajdonságok kiszámítása.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>A két fordulat közötti hosszanti távolság.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>A spirálprofil elérési útjának magassága, nem számítva a profil magasságát.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="86"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>A spirál fordulatainak száma.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="89"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>A kúp szöge, amely bevonatot képez a spirál körül.
+A nem nulla értékek a spirált kúpos spirállá alakítják.
+A pozitív értékek a sugár növekedését, a negatív értékek a csökkenését okozzák.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>A spirál sugarának növekedése forgásonként.
+A nem nulla értékek a spirált kúpos spirállá alakítják.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>A forgatás irányát balkezesre állítja,
+azaz az óramutató járásával ellentétes irányban, a tengely mentén mozogva.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>Itt adhatja meg, hogy a spirál a tengellyel ellentétes irányba mutasson-e.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation type="unfinished">If set, the result will be the intersection of the profile and the preexisting body.</translation>
+      <translation>Ha be jelölt, az eredmény a profil és a meglévő tartalom közös része lesz.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Ha hamis, az eszköz a profilt körülvevő keret alapján javasolja az emelkedés kezdeti értékét,
+az önmetszés elkerülése érdekében.</translation>
     </message>
   </context>
   <context>
@@ -1621,7 +1621,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="138"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Az összes él használata</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="165"/>
@@ -1775,12 +1775,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="276"/>
       <source>Add all edges</source>
-      <translation type="unfinished">Add all edges</translation>
+      <translation>Az összes él hozzáadása</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="284"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation type="unfinished">Adds all edges to the list box (active only when in add selection mode).</translation>
+      <translation>Hozzáadja az összes élt a listához (csak kijelölési módban aktív).</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="293"/>
@@ -1816,7 +1816,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>Aktuális felület</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
@@ -1963,7 +1963,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="81"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Az összes él használata</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="134"/>

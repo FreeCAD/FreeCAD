@@ -44,8 +44,8 @@ class CommandMoveView:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_MoveView.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("MoveView", "Move View"),
-                'ToolTip': QT_TRANSLATE_NOOP("MoveView", "Move a View to a new Page")}
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_MoveView", "Move View"),
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_MoveView", "Move a View to a new Page")}
 
     def Activated(self):
         """Run the following code when the command is activated (button press)."""

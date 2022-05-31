@@ -234,7 +234,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="87"/>
       <source>Create a new body and make it active</source>
-      <translation>新增可編輯物體</translation>
+      <translation>新增一個實體並使激活它</translation>
     </message>
   </context>
   <context>
@@ -337,12 +337,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="603"/>
       <source>Duplicate selected object</source>
-      <translation>刪減已選物件</translation>
+      <translation>複製選定物件</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="604"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>複製已選物件加至物體</translation>
+      <translation>複製已選物件加至已激活之實體</translation>
     </message>
   </context>
   <context>
@@ -940,7 +940,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2564"/>
       <source>Convert to MultiTransform feature</source>
-      <translation type="unfinished">Convert to MultiTransform feature</translation>
+      <translation>轉換至多重轉換特徵</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2656"/>
@@ -956,7 +956,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="426"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy part design features to Bodies</translation>
+      <translation>將舊版零件設計特徵遷移到實體</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="571"/>
@@ -986,7 +986,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
       <source>Make LinearPattern</source>
-      <translation>建立線形圖樣</translation>
+      <translation>建立線形樣式</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
@@ -1144,14 +1144,15 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../DlgActiveBody.ui" line="14"/>
       <source>Active Body Required</source>
-      <translation>需要活躍的實體</translation>
+      <translation>需要激活的實體</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="20"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation>要建立新的 PartDesign 物件，文件中必須有一個活躍的實體物件</translation>
+      <translation>要建立新的 PartDesign 物件，文件中必須有一個激活的實體物件。
+請由下選擇一個實體，或建立一個新的實體。</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
@@ -1726,8 +1727,8 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the drafts</translation>
+      <translation>- 選擇一個項目以突出顯示它
+- 雙擊一個項目以查看草稿</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
@@ -1778,7 +1779,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="284"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation type="unfinished">Adds all edges to the list box (active only when in add selection mode).</translation>
+      <translation>將所有邊添加到列表框（僅在添加選擇模式下有效）。</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="293"/>
@@ -1950,8 +1951,8 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the fillets</translation>
+      <translation>- 選擇一個項目以突出顯示它
+- 雙擊一個項目以查看其圓角</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
@@ -2687,7 +2688,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
       <source>Curvelinear equivalence</source>
-      <translation type="unfinished">Curvelinear equivalence</translation>
+      <translation>相同曲線</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
@@ -2712,7 +2713,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="166"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>設定用於計算輪廓方向的恆定副法向量</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="190"/>
@@ -2761,7 +2762,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
       <source>Corner Transition</source>
-      <translation type="unfinished">Corner Transition</translation>
+      <translation>轉角轉換</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
@@ -3157,8 +3158,8 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the features</translation>
+      <translation>- 選擇一個項目以突出顯示它
+- 雙擊一個項目以查看其特徵</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -3298,7 +3299,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderBody.cpp" line="133"/>
       <source>Toggle active body</source>
-      <translation>切換active的實體</translation>
+      <translation>切換激活的實體</translation>
     </message>
   </context>
   <context>
@@ -3337,7 +3338,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderDraft.h" line="42"/>
       <source>Draft parameters</source>
-      <translation type="unfinished">Draft parameters</translation>
+      <translation>拔模參數</translation>
     </message>
   </context>
   <context>
@@ -3353,7 +3354,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderLinearPattern.h" line="38"/>
       <source>LinearPattern parameters</source>
-      <translation>線性模式參數</translation>
+      <translation>線性樣式參數</translation>
     </message>
   </context>
   <context>
@@ -3361,7 +3362,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="38"/>
       <source>MultiTransform parameters</source>
-      <translation type="unfinished">MultiTransform parameters</translation>
+      <translation>多重轉換參數</translation>
     </message>
   </context>
   <context>
@@ -3369,7 +3370,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="38"/>
       <source>PolarPattern parameters</source>
-      <translation>環狀複製模式參數</translation>
+      <translation>環狀複製樣式參數</translation>
     </message>
   </context>
   <context>
@@ -3533,7 +3534,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="138"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>沒有適合選定物件的附件模式。選擇其它東西。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="144"/>
@@ -3590,7 +3591,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="798"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Please create a plane first or select a face to sketch on</translation>
+      <translation>請先創建一個平面或選擇要在其上繪製草圖的面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="811"/>
@@ -3621,7 +3622,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1106"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
+      <translation>無法使用此命令，因為沒有可減去之固體。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
@@ -3631,7 +3632,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1128"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
+      <translation>無法使用選定的物件。選定物件必須屬於活動實體</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1129"/>
@@ -3743,7 +3744,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="134"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+      <translation>基本特徵 (%1) 屬於其他部分。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="158"/>
@@ -3763,8 +3764,8 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="166"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>選定的形狀只由一個殼組成。
+這可能導致無法預測的結果。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="170"/>
@@ -3791,12 +3792,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body. Nothing to migrate.</translation>
+      <translation>未找到不屬於實體的 PartDesign 特徵。沒有什麼東西可以遷移。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="488"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation type="unfinished">Sketch plane cannot be migrated</translation>
+      <translation>草圖平面無法被遷移</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="489"/>
@@ -3847,7 +3848,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="717"/>
       <source>There are no other bodies to move to</source>
-      <translation type="unfinished">There are no other bodies to move to</translation>
+      <translation>沒有其它實體可以搬移過去</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="854"/>
@@ -3874,9 +3875,7 @@ This may lead to unexpected results.</source>
       <source>Early feature must not depend on later feature.
 
 </source>
-      <translation type="unfinished">Early feature must not depend on later feature.
-
-</translation>
+      <translation>較早的特徵不可以相依在較晚的特徵。</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="269"/>
@@ -3915,19 +3914,19 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
-
-If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
+      <translation>要使用 PartDesign 物件，文件中必須有一個激活的實體物件。請雙擊激活一個實體，或建立一個新的實體。
+如果您使用舊版文件其 PartDesign 物件沒有實體的話，使用 PartDesign 中之遷移功能將他們搬到一個實體中。</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="169"/>
       <source>Active Body Required</source>
-      <translation>需要活躍的實體</translation>
+      <translation>需要激活的實體</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="170"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>要建立新的 PartDesign 物件，文件中必須有一個激活的實體物件。
+請雙擊激活一個實體，或建立一個新的實體。</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="205"/>
@@ -3937,7 +3936,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="206"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a body object in the document.</translation>
+      <translation>為了使用此特徵，它需要屬於文件中的實體物件。</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="238"/>
@@ -3947,7 +3946,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="239"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
+      <translation>為了使用此特徵，它需要屬於文件中的一個零件物件。</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="65"/>
@@ -4091,26 +4090,26 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../WorkflowManager.cpp" line="144"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
+      <translation>文檔 "%1" 似乎正處於從舊 PartDesign 遷移過程的中間，或者具有輕微損壞的結構。</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="148"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation type="unfinished">Do you want to make the migration automatically?</translation>
+      <translation>您需要使遷移自動進行嗎?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
+      <translation>注意：如果您選擇遷移，您將無法使用舊版 FreeCAD 編輯文件。
+如果您拒絕遷移，您將無法使用新的 PartDesign 功能，例如實體和零件。因此，您也將無法在 assembly 工作台中使用您的零件。
+儘管您稍後可以使用“零件設計 -&gt; 遷移”進行遷移。</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="159"/>
       <source>Migrate manually</source>
-      <translation type="unfinished">Migrate manually</translation>
+      <translation>手動遷移</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="55"/>
@@ -4417,12 +4416,12 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
       <source>Counterbore/sink dia</source>
-      <translation type="unfinished">Counterbore/sink dia</translation>
+      <translation>沉頭孔/沉孔直徑</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="528"/>
       <source>Counterbore depth</source>
-      <translation type="unfinished">Counterbore depth</translation>
+      <translation>沉頭孔深度</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
@@ -4440,7 +4439,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="20"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>工作孔參數</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="26"/>
@@ -4602,12 +4601,12 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="409"/>
       <source>Tapped (DIN76)</source>
-      <translation type="unfinished">Tapped (DIN76)</translation>
+      <translation>攻牙(DIN76)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="433"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Hole cut&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;開孔&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="446"/>
@@ -4721,12 +4720,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>&amp;Sketch</source>
-      <translation type="unfinished">&amp;Sketch</translation>
+      <translation>&amp;草圖</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Part Design</source>
-      <translation type="unfinished">&amp;Part Design</translation>
+      <translation>&amp;零件設計</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -4736,7 +4735,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Create an additive feature</source>
-      <translation type="unfinished">Create an additive feature</translation>
+      <translation>建立可添加特徵</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -4746,12 +4745,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Apply a pattern</source>
-      <translation type="unfinished">Apply a pattern</translation>
+      <translation>套用一個樣式</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Apply a dress-up feature</source>
-      <translation type="unfinished">Apply a dress-up feature</translation>
+      <translation>應用 dress-up 功能</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -4766,7 +4765,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Shaft design wizard</source>
-      <translation type="unfinished">Shaft design wizard</translation>
+      <translation>軸設計精靈</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -4786,12 +4785,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Part Design Helper</source>
-      <translation type="unfinished">Part Design Helper</translation>
+      <translation>零件設計幫手</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
-      <translation type="unfinished">Part Design Modeling</translation>
+      <translation>零件設計建模</translation>
     </message>
   </context>
 </TS>

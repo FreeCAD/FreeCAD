@@ -403,7 +403,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="127"/>
       <source>Insert Dimension</source>
-      <translation>Insérer une cote</translation>
+      <translation>Insérer une cote angulaire</translation>
     </message>
   </context>
   <context>
@@ -5555,7 +5555,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="232"/>
       <source>Hull condition</source>
-      <translation type="unfinished">Hull condition</translation>
+      <translation>État de l'enveloppe</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="235"/>

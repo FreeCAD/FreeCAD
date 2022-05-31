@@ -255,7 +255,7 @@
     <name>Workbench</name>
     <message>
       <source>Points tools</source>
-      <translation>Narzędzia punktów</translation>
+      <translation>Narzędzia do punktów</translation>
     </message>
     <message>
       <source>&amp;Points</source>

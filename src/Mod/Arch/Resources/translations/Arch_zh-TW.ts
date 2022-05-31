@@ -5977,7 +5977,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="812"/>
       <source>Panels</source>
-      <translation type="unfinished">Panels</translation>
+      <translation>面板</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="827"/>

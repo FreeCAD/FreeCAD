@@ -3934,7 +3934,7 @@ The value is the diameter of the sphere to fit on the screen.</translation>
     </message>
     <message>
       <source> Zoom step</source>
-      <translation type="unfinished"> Zoom step</translation>
+      <translation>放大步驟</translation>
     </message>
     <message>
       <source>How much will be zoomed.
@@ -7834,7 +7834,7 @@ the current copy will be lost.
     <name>StdCmdDockViewMenu</name>
     <message>
       <source>Panels</source>
-      <translation type="unfinished">Panels</translation>
+      <translation>面板</translation>
     </message>
     <message>
       <source>List of available dock panels</source>
@@ -8320,7 +8320,7 @@ the current copy will be lost.
     <name>StdCmdOpen</name>
     <message>
       <source>&amp;Open...</source>
-      <translation>開啟(&amp;O)...</translation>
+      <translation>打開(&amp;O)...</translation>
     </message>
     <message>
       <source>Open a document or import files</source>

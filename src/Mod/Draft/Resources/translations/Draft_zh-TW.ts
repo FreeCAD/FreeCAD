@@ -5005,7 +5005,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
       <source>Task panel:</source>
-      <translation type="unfinished">Task panel:</translation>
+      <translation>工作面板：</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>

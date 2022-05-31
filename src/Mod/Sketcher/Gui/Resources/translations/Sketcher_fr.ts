@@ -2179,7 +2179,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Sketcher</source>
-      <translation>Esquisseur</translation>
+      <translation>Sketcher</translation>
     </message>
   </context>
   <context>
@@ -2298,7 +2298,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../AppSketcherGui.cpp" line="133"/>
       <location filename="../../AppSketcherGui.cpp" line="134"/>
       <source>Sketcher</source>
-      <translation>Esquisseur</translation>
+      <translation>Sketcher</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="112"/>
@@ -3953,7 +3953,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Sketcher</source>
-      <translation>Esquisseur</translation>
+      <translation>Sketcher</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="27"/>
@@ -4464,7 +4464,7 @@ Seuls les objets derrière le plan de l'esquisse sont visibles.</translation>
     <message>
       <location filename="../../SketcherSettings.cpp" line="235"/>
       <source>Sketcher</source>
-      <translation>Esquisseur</translation>
+      <translation>Sketcher</translation>
     </message>
   </context>
   <context>
@@ -6170,7 +6170,7 @@ L'algoritheme Eigen Sparse QR est optimisé pour les matrices légères; génér
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Sketcher</source>
-      <translation>Esquisseur</translation>
+      <translation>Sketcher</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>

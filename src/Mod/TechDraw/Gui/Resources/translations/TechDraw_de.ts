@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="1243"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation>Ansicht einer Schnittebene aus dem Arch-Arbeitsbereich einfügen</translation>
+      <translation>Ansicht einer Schnittebene aus dem Arbeitsbereich Arch einfügen</translation>
     </message>
   </context>
   <context>
@@ -2634,12 +2634,12 @@
     <message>
       <location filename="../../Command.cpp" line="1271"/>
       <source>Please select only 1 Arch Section.</source>
-      <translation>Bitte nur einen Schnitt aus dem Arch-Arbeitsbereich auswählen.</translation>
+      <translation>Bitte nur einen Schnitt aus dem Arbeitsbereich Arch auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1277"/>
       <source>No Arch Sections in selection.</source>
-      <translation>Es wurde kein Schnitt aus dem Arch-Arbeitsbereich ausgewählt.</translation>
+      <translation>Es wurde kein Schnitt aus dem Arbeitsbereich Arch ausgewählt.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1320"/>
@@ -3305,7 +3305,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="172"/>
       <location filename="../../ViewProviderViewPart.cpp" line="345"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
-      <translation>Diese Ansicht kann nicht gelöscht werden, da sie eine Schnittansicht hat, die dadurch kaputt werden würde.</translation>
+      <translation>Diese Ansicht kann nicht gelöscht werden, da sie eine Schnittansicht enthält, die dadurch unbrauchbar werden würde.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
@@ -5224,7 +5224,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="249"/>
       <source>Extend By</source>
-      <translation>Erweitern um</translation>
+      <translation>Verlängern um</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="262"/>
@@ -6242,64 +6242,64 @@ be used instead if the dimension value</source>
     <message>
       <location filename="../../TaskDimension.ui" line="319"/>
       <source>Use override angles if checked. Use default angles if unchecked.</source>
-      <translation type="unfinished">Use override angles if checked. Use default angles if unchecked.</translation>
+      <translation>Verwendet benutzerdefinierte Winkel wenn ausgewählt. Verwendet Standardwinkel, wenn nicht ausgewählt.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="322"/>
       <source>Override angles</source>
-      <translation type="unfinished">Override angles</translation>
+      <translation>Winkel überschreiben</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="329"/>
       <source>Dimension line angle</source>
-      <translation type="unfinished">Dimension line angle</translation>
+      <translation>Winkel der Maßlinie</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="336"/>
       <source>Angle of dimension line with drawing X axis (degrees)</source>
-      <translation type="unfinished">Angle of dimension line with drawing X axis (degrees)</translation>
+      <translation>Winkel der Maßlinie zur X-Achse der Zeichnung (Grad)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="352"/>
       <source>Set dimension line angle to default (ortho view).</source>
-      <translation type="unfinished">Set dimension line angle to default (ortho view).</translation>
+      <translation>Setzt den Winkel der Maßlinie auf die Standardeinstellung (ortho view).</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="355"/>
       <location filename="../../TaskDimension.ui" line="398"/>
       <source>Use default</source>
-      <translation type="unfinished">Use default</translation>
+      <translation>Standardeinstellung verwenden</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="362"/>
       <source>Set dimension line angle to match selected edge or vertices.</source>
-      <translation type="unfinished">Set dimension line angle to match selected edge or vertices.</translation>
+      <translation>Setzt den Winkel der Maßlinie entsprechend der ausgewählten Kante oder den ausgewählten Punkten.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="365"/>
       <location filename="../../TaskDimension.ui" line="408"/>
       <source>Use selection</source>
-      <translation type="unfinished">Use selection</translation>
+      <translation>Auswahl verwenden</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="372"/>
       <source>Extension line angle</source>
-      <translation type="unfinished">Extension line angle</translation>
+      <translation>Winkel der Maßhilfslinie</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="379"/>
       <source>Angle of extension lines with drawing X axis (degrees)</source>
-      <translation type="unfinished">Angle of extension lines with drawing X axis (degrees)</translation>
+      <translation>Winkel der Maßhilfslinie zur X-Achse der Zeichnung (Grad)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="395"/>
       <source>Set extension line angle to default (ortho).</source>
-      <translation type="unfinished">Set extension line angle to default (ortho).</translation>
+      <translation>Setzt den Winkel der Maßhilfslinie auf die Standardeinstellung (ortho).</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="405"/>
       <source>Set extension line angle to match selected edge or vertices.</source>
-      <translation type="unfinished">Set extension line angle to match selected edge or vertices.</translation>
+      <translation>Setzt den Winkel der Maßhilfslinie entsprechend der ausgewählten Kante oder den ausgewählten Punkten.</translation>
     </message>
   </context>
   <context>
@@ -6484,7 +6484,7 @@ Du kannst weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation
     <message>
       <location filename="../../TaskLeaderLine.ui" line="271"/>
       <source>Line style</source>
-      <translation>Stil-Eigenschaften der Linie</translation>
+      <translation>Linienart</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="278"/>
@@ -7044,7 +7044,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="198"/>
       <source>Line style</source>
-      <translation>Stil-Eigenschaften der Linie</translation>
+      <translation>Linienart</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="205"/>
@@ -7137,7 +7137,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="141"/>
       <source>Scale factor for the section view</source>
-      <translation>Skalierungsfaktor der Schnittansicht</translation>
+      <translation>Maßstab der Schnittansicht</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="172"/>

@@ -169,7 +169,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1745"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1746"/>
@@ -187,7 +187,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1644"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1645"/>
@@ -205,7 +205,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1542"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1543"/>
@@ -223,7 +223,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="85"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
@@ -241,7 +241,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2639"/>
@@ -259,7 +259,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
@@ -277,7 +277,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2038"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2039"/>
@@ -295,7 +295,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="427"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="428"/>
@@ -313,7 +313,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2067"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2068"/>
@@ -331,7 +331,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="602"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="603"/>
@@ -349,7 +349,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2010"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2011"/>
@@ -367,7 +367,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1475"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1476"/>
@@ -385,7 +385,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1369"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1370"/>
@@ -403,7 +403,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="189"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="190"/>
@@ -421,7 +421,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2336"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2337"/>
@@ -439,7 +439,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="308"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="309"/>
@@ -457,7 +457,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2274"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2275"/>
@@ -475,7 +475,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="658"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="659"/>
@@ -493,7 +493,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="825"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="826"/>
@@ -511,7 +511,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="523"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="524"/>
@@ -529,7 +529,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2514"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2515"/>
@@ -547,7 +547,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
@@ -565,7 +565,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
@@ -583,7 +583,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="161"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="162"/>
@@ -601,7 +601,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
@@ -619,7 +619,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="217"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="218"/>
@@ -637,7 +637,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2400"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2401"/>
@@ -655,7 +655,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1417"/>
@@ -673,7 +673,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2465"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2466"/>
@@ -691,7 +691,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
@@ -709,7 +709,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="344"/>
@@ -723,7 +723,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1823"/>
@@ -741,7 +741,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1695"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
@@ -759,7 +759,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1593"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1594"/>
@@ -777,7 +777,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2125"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2126"/>
@@ -795,7 +795,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -849,7 +849,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>ConceptionPièce</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>

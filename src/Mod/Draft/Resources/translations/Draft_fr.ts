@@ -2794,7 +2794,7 @@ Vous pouvez ensuite l'utiliser pour enregistrer une position différente de la c
     <message>
       <location filename="../../InitGui.py" line="118"/>
       <source>&amp;Drafting</source>
-      <translation>&amp;Esquisse</translation>
+      <translation>&amp;Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="121"/>
@@ -7836,7 +7836,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si coché, le contour d'une figure humaine est affiché en bas à gauche de la grille. Cette option n'est effective que si l'établi BIM est installé et si l'option &amp;quot;Afficher la bordure de la grille&amp;quot; est activée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si coché, le contour d'une silhouette humaine est affiché en bas à gauche de la grille. Cette option n'est effective que si l'établi BIM est installé et si l'option &amp;quot;Afficher la bordure de la grille&amp;quot; est activée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>

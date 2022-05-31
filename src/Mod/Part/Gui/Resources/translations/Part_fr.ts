@@ -404,7 +404,7 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
       <location filename="../../AppPartGui.cpp" line="212"/>
       <location filename="../../AppPartGui.cpp" line="213"/>
       <source>Part design</source>
-      <translation>Conception de pièces</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="214"/>
