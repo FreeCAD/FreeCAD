@@ -37,6 +37,12 @@ if FreeCAD.GuiUp:
 
     import FreeCADGui
 
+    try:
+        _fromUtf8 = QtCore.QString.fromUtf8
+    except (Exception):
+        def _fromUtf8(s):
+            return s
+
 # command class
 class _CommandImageScaling:
     "Command to Scale an Image to an Image Plane"
