@@ -48,9 +48,9 @@
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
+      <translation>Koncový úhel eliptického oblouku 
 
-                (for a full circle, give it same value as First Angle)</translation>
+                (pro celý kruh uveďte stejnou hodnotu jako první úhel)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="52"/>
@@ -164,8 +164,8 @@
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Koncový úhel oblouku (pro celý kruh 
+                uveďte stejnou hodnotu jako první úhel)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>

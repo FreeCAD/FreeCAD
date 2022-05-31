@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="132"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>選擇點/線/面</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="136"/>
@@ -24,13 +24,13 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>工作目錄</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>寫入</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="245"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>經過時間：</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
@@ -55,12 +55,12 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>重新寫入</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>重新運行</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
@@ -73,12 +73,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="57"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>分析容器</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>以標準求解器CalculiX建立一個分析容器</translation>
     </message>
   </context>
   <context>
@@ -356,7 +356,7 @@
       <location filename="../../../femcommands/commands.py" line="492"/>
       <location filename="../../../femcommands/commands.py" line="496"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>開啟 FEM範例</translation>
     </message>
   </context>
   <context>
@@ -455,12 +455,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="719"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>清除FEM網格</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="723"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>清除FEM網格物件之網格</translation>
     </message>
   </context>
   <context>

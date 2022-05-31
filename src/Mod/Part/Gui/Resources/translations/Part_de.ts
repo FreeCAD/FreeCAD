@@ -2506,7 +2506,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="284"/>
       <source>Part</source>
-      <translation>Formteil</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="285"/>
@@ -3066,12 +3066,12 @@ der Projektion.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="257"/>
       <source>Create transformed copy</source>
-      <translation>Erstellen Transformierte Kopie </translation>
+      <translation>Transformierte Kopie erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="258"/>
       <source>Create a non-parametric copy with transformed placement</source>
-      <translation>Erstellen Sie eine nicht-parametrische Kopie mit transformierter Platzierung</translation>
+      <translation>Erstellt eine nicht-parametrische Kopie mit versetzter Platzierung</translation>
     </message>
   </context>
   <context>

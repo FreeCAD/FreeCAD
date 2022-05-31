@@ -6,27 +6,27 @@
     <message>
       <location filename="../../../TechDrawTools/CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>移動視圖</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>移動視圖到新頁面</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>移動視圖到不同頁面</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>選擇視圖到移動清單</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>選擇視圖</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="93"/>
@@ -37,12 +37,12 @@
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>選擇頁面</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>選擇到頁面</translation>
     </message>
   </context>
   <context>
@@ -50,22 +50,22 @@
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>與其他頁面分享視圖</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>分享視圖</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>選擇視圖到分享清單</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>選擇視圖</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="93"/>
@@ -76,22 +76,22 @@
       <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>選擇頁面</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>選擇到頁面</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>分享視圖</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>在第二頁分享視圖</translation>
     </message>
   </context>
   <context>
@@ -3464,7 +3464,7 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="14"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>移動視圖</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="22"/>
