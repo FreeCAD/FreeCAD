@@ -103,7 +103,7 @@ class CommandAddonManager:
     def __init__(self):
         FreeCADGui.addPreferencePage(
             os.path.join(os.path.dirname(__file__), "AddonManagerOptions.ui"),
-            "Addon Manager",
+            translate("AddonsInstaller","Addon Manager"),
         )
 
         self.allowed_packages = set()
