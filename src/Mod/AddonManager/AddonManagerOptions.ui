@@ -99,10 +99,10 @@ installed addons will be checked for available updates
       <bool>true</bool>
      </property>
      <property name="prefEntry" stdset="0">
-      <string>HidePy2</string>
+      <cstring>HidePy2</cstring>
      </property>
      <property name="prefPath" stdset="0">
-      <string>Addons</string>
+      <cstring>Addons</cstring>
      </property>
     </widget>
    </item>
@@ -115,10 +115,10 @@ installed addons will be checked for available updates
       <bool>true</bool>
      </property>
      <property name="prefEntry" stdset="0">
-      <string>HideObsolete</string>
+      <cstring>HideObsolete</cstring>
      </property>
      <property name="prefPath" stdset="0">
-      <string>Addons</string>
+      <cstring>Addons</cstring>
      </property>
     </widget>
    </item>
@@ -131,10 +131,10 @@ installed addons will be checked for available updates
       <bool>true</bool>
      </property>
      <property name="prefPath" stdset="0">
-      <string>Addons</string>
+      <cstring>Addons</cstring>
      </property>
      <property name="prefEntry" stdset="0">
-      <string>HideNewerFreeCADRequired</string>
+      <cstring>HideNewerFreeCADRequired</cstring>
      </property>
     </widget>
    </item>
@@ -302,10 +302,10 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
          <string>Show option to change branches (Requires GitPython)</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ShowBranchSwitcher</string>
+         <cstring>ShowBranchSwitcher</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Addons</string>
+         <cstring>Addons</cstring>
         </property>
        </widget>
       </item>
