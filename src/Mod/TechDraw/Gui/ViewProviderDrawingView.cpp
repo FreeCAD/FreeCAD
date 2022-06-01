@@ -214,14 +214,6 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    //redrawn the whole view on Rotation change
-    if (prop == &(getViewObject()->Rotation)) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-    }
-
     //only move the view on X,Y change
     if (prop == &(getViewObject()->X)  ||
         prop == &(getViewObject()->Y) ){
