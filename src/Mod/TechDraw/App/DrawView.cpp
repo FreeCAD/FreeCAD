@@ -105,6 +105,7 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
     handleXYLock();
     //should not be necessary to purgeTouched here, but it prevents a superfluous feature recompute
     purgeTouched();                           //this should not be necessary!
+    requestPaint();
     return App::DocumentObject::execute();
 }
 

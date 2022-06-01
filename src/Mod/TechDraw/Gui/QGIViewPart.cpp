@@ -409,7 +409,7 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
 
 void QGIViewPart::updateView(bool update)
 {
-//    Base::Console().Message("QGIVP::updateView()\n");
+//    Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
