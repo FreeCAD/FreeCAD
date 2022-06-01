@@ -107,7 +107,7 @@ SectionCut::SectionCut(QWidget* parent)
             ObjectsListVisible.push_back(*it);
     }
 
-    // lambda function to set color and transpareny
+    // lambda function to set color and transparency
     auto setColorTransparency = [&](Part::Box* pcBox) {
         App::Color cutColor;
         long cutTransparency;

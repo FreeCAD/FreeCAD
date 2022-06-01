@@ -85,7 +85,7 @@ class ParameterManager;
  *  and exporting groups of parameters and enables streaming
  *  to a persistent medium via XML.
  *  \par
- *  Its main task is making user parameter persitent, saving
+ *  Its main task is making user parameter persistent, saving
  *  last used values in dialog boxes, setting and retrieving all
  *  kind of preferences and so on.
  *  @see ParameterManager

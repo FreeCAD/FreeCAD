@@ -1061,6 +1061,7 @@ void GroupCommand::activated(int iMsg)
 }
 
 void GroupCommand::languageChange() {
+    Command::languageChange();
     if (_pcAction)
         setup(_pcAction);
 }
@@ -1069,18 +1070,17 @@ void GroupCommand::setup(Action *pcAction) {
 
     pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
 
+    // The tooltip for the group is the tooltip of the active tool (that is, the tool that will
+    // be activated when the main portion of the button is clicked).
     int idx = pcAction->property("defaultAction").toInt();
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
         pcAction->setIcon(BitmapFactory().iconFromTheme(cmd->getPixmap()));
         pcAction->setChecked(cmd->getAction()->isChecked(),true);
         const char *context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
-        const char *tooltip = cmd->getToolTipText();
-        const char *statustip = cmd->getStatusTip();
-        if (!statustip || '\0' == *statustip)
-            statustip = tooltip;
-        recreateTooltip(context, pcAction);
-        pcAction->setStatusTip(QCoreApplication::translate(context,statustip));
+        cmd->recreateTooltip(context, cmd->getAction());
+        pcAction->setToolTip(cmd->getAction()->toolTip());
+        pcAction->setStatusTip(cmd->getAction()->statusTip());
     }
 }
 

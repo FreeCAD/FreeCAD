@@ -889,13 +889,26 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     std::string FieldName = ui->Field->currentText().toStdString();
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
     if ((FieldName == "Von Mises stress") || (FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Median Principal stress") || (FieldName == "Stress vectors")) {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("MPa");
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("Pa");
     }
     else if (FieldName == "Displacement") {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("mm");
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("m");
     }
     else if (FieldName == "Temperature") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
+    }
+    else if (FieldName == "electric field") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V/m");
+    }
+    else if (FieldName == "potential") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V");
+    }
+    else if (FieldName == "electric energy density") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("J/m^3");
+    }
+    // ToDo: set a proper unit once it is known
+    else if (FieldName == "potential loads") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
     }
 
     std::string PointData = " The value at that location is " + std::to_string(static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0]) + " " + static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
