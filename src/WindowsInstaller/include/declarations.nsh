@@ -42,7 +42,13 @@ Configuration and variables of FreeCAD installer
 !define APP_REGNAME_DOC "${APP_NAME}.Document"
 
 !define APP_EXT ".FCStd"
+!define APP_EXT1 ".FCStd1"
 !define APP_MIME_TYPE "application/x-zip-compressed"
+
+!define APP_EXT_BAK ".FCBak"
+!define APP_EXT_MACRO ".FCMacro"
+!define APP_EXT_MAT ".FCMat"
+!define APP_EXT_SCRIPT ".FCScript"
 
 !define APP_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SETUP_UNINSTALLER_KEY}"
 
