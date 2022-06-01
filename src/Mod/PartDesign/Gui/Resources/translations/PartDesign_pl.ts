@@ -3354,7 +3354,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
+      <source>Fillet parameters</source>
       <translation>Parametry zaokrąglania</translation>
     </message>
   </context>

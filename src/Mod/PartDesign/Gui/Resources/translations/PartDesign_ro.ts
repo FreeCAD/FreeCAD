@@ -3358,8 +3358,8 @@ click again to end selection</translation>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
-      <translation type="unfinished">Fillet parrameters</translation>
+      <source>Fillet parameters</source>
+      <translation type="unfinished">Fillet parameters</translation>
     </message>
   </context>
   <context>

@@ -3352,7 +3352,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
+      <source>Fillet parameters</source>
       <translation>Parameter der Rundung</translation>
     </message>
   </context>

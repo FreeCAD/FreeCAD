@@ -3356,7 +3356,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
+      <source>Fillet parameters</source>
       <translation>Biribiltze-parametroak</translation>
     </message>
   </context>

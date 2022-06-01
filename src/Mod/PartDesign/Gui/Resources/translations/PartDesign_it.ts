@@ -3356,7 +3356,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
+      <source>Fillet parameters</source>
       <translation>Parametri Smusso</translation>
     </message>
   </context>

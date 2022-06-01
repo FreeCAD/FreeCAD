@@ -3350,7 +3350,7 @@ click again to end selection</source>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
+      <source>Fillet parameters</source>
       <translation>Paramètres du congé</translation>
     </message>
   </context>

@@ -3355,7 +3355,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
+      <source>Fillet parameters</source>
       <translation>Parámetros de filete</translation>
     </message>
   </context>
