@@ -142,7 +142,7 @@ angle3 : float </UserDocu>
 			<Documentation>
 				<UserDocu>toEulerAngles(seq) -> list\n
 Get the Euler angles in a given sequence for this rotation.\n
-seq : str\n    Euler sequnce name. If not given, the function returns
+seq : str\n    Euler sequence name. If not given, the function returns
     all possible values of `seq`. Optional.</UserDocu>
 			</Documentation>
 		</Methode>

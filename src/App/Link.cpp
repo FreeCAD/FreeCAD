@@ -554,7 +554,7 @@ void LinkBaseExtension::syncCopyOnChange()
     // so the last object will be the copy of the original linked object
     auto newLinked = copiedObjs.back();
 
-    // We are coping from the original linked object and we've already mutated
+    // We are copying from the original linked object and we've already mutated
     // it, so we need to copy all CopyOnChange properties from the mutated
     // object to the new copy.
     std::vector<App::Property*> propList;
