@@ -299,7 +299,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>If checked, the color and transpareny
+         <string>If checked, the color and transparency
 will be taken from the cut objects.
 Works only if all objects have the same values.</string>
         </property>
