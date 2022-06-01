@@ -1551,6 +1551,7 @@ class DocumentExpressionCases(unittest.TestCase):
     # must not raise a topological error
     self.assertEqual(self.Doc.recompute(), 2)
 
+
   def testIssue4649(self):
       class Cls():
           def __init__(self, obj):
