@@ -1628,6 +1628,8 @@ class UpdateAllWorker(QtCore.QThread):
     success = QtCore.Signal(Addon)
     failure = QtCore.Signal(Addon)
 
+    # TODO: This should be re-written to be solidly single-threaded, some of the called code is not re-entrant
+
     def __init__(self, repos):
         super().__init__()
         self.repos = repos
@@ -1638,11 +1640,13 @@ class UpdateAllWorker(QtCore.QThread):
         current_thread = QtCore.QThread.currentThread()
         for repo in self.repos:
             self.repo_queue.put(repo)
+            FreeCAD.Console.PrintLog(f"  UPDATER: Adding '{repo.name}' to update queue\n")
 
         # The original design called for multiple update threads at the same time, but the updater
         # itself is not thread-safe, so for the time being only spawn one update thread.
         workers = []
         for _ in range(1):
+            FreeCAD.Console.PrintLog(f"  UPDATER: Starting worker\n")
             worker = UpdateSingleWorker(self.repo_queue)
             worker.success.connect(self.on_success)
             worker.failure.connect(self.on_failure)
@@ -1666,14 +1670,14 @@ class UpdateAllWorker(QtCore.QThread):
             worker.wait()
 
     def on_success(self, repo: Addon) -> None:
-        FreeCAD.Console.PrintLog(f"Successfully updated {repo.name}\n")
+        FreeCAD.Console.PrintLog(f"  UPDATER: Main thread received notice that worker successfully updated {repo.name}\n")
         self.progress_made.emit(
             len(self.repos) - self.repo_queue.qsize(), len(self.repos)
         )
         self.success.emit(repo)
 
     def on_failure(self, repo: Addon) -> None:
-        FreeCAD.Console.PrintLog(f"Failed to update {repo.name}\n")
+        FreeCAD.Console.PrintLog(f"  UPDATER:  Main thread received notice that worker failed to update {repo.name}\n")
         self.progress_made.emit(
             len(self.repos) - self.repo_queue.qsize(), len(self.repos)
         )
@@ -1692,18 +1696,23 @@ class UpdateSingleWorker(QtCore.QThread):
         current_thread = QtCore.QThread.currentThread()
         while True:
             if current_thread.isInterruptionRequested():
+                FreeCAD.Console.PrintLog(f"  UPDATER: Interruption requested, stopping all updates\n")
                 return
             try:
                 repo = self.repo_queue.get_nowait()
+                FreeCAD.Console.PrintLog(f"  UPDATER: Pulling {repo.name} from the update queue\n")
             except queue.Empty:
+                FreeCAD.Console.PrintLog(f"  UPDATER: Worker thread queue is empty, exiting thread\n")
                 return
             if repo.repo_type == Addon.Kind.MACRO:
-                FreeCAD.Console.PrintLog(f"Updating macro '{repo.name}'...\n")
+                FreeCAD.Console.PrintLog(f"  UPDATER: Updating macro '{repo.name}'\n")
                 self.update_macro(repo)
             else:
-                FreeCAD.Console.PrintLog(f"Updating addon '{repo.name}'...\n")
+                FreeCAD.Console.PrintLog(f"  UPDATER: Updating addon '{repo.name}'\n")
                 self.update_package(repo)
             self.repo_queue.task_done()
+            FreeCAD.Console.PrintLog(f"  UPDATER: Worker thread completed action for '{repo.name}' and reported result to main thread\n")
+
 
     def update_macro(self, repo: Addon):
         """Updating a macro happens in this function, in the current thread"""
@@ -1735,6 +1744,9 @@ class UpdateSingleWorker(QtCore.QThread):
             QtCore.QCoreApplication.processEvents()
             if not worker.isRunning():
                 break
+
+        time.sleep(0.1) # Give the signal a moment to propagate to the other threads
+        QtCore.QCoreApplication.processEvents()
 
 
 #  @}
