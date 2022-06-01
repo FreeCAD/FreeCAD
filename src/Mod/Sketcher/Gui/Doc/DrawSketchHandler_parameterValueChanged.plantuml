@@ -1,0 +1,199 @@
+@startuml
+
+title Message Sequence Chart - Change of a parameter value in the widget
+
+skinparam BoxPadding 500
+
+participant SketcherToolDefaultWidget #lightgreen
+box 'DSH Architecture'
+participant DrawSketchHandlerCircle #yellow
+participant "DrawSketchHandlerCircle::ToolWidgetManager" as DrawSketchHandlerCircleWidget #orangered
+participant DrawSketchDefaultWidgetHandler
+participant "DrawSketchHandlerCircleWidget::ToolWidgetManager" as DrawSketchDefaultWidgetHandlerWidget #skyblue
+participant DrawSketchHandler
+participant StateMachine
+end box
+
+SketcherToolDefaultWidget -[#green]> DrawSketchDefaultWidgetHandlerWidget : **parameterValueChanged** (parameterindex, value)
+activate DrawSketchDefaultWidgetHandlerWidget #lavender
+
+group#DarkSalmon #thistle Enforce widget parameters, update handler and draw updated handler
+
+DrawSketchDefaultWidgetHandlerWidget -> DrawSketchDefaultWidgetHandlerWidget : isParameterOfPreviousMode
+activate DrawSketchDefaultWidgetHandlerWidget #lightgreen
+
+alt#Gold #LightBlue Parameter is of a previous mode
+    DrawSketchDefaultWidgetHandlerWidget -[hidden]> DrawSketchDefaultWidgetHandlerWidget
+    note left
+      A machine **does** goes back to **a previous state** if a parameter of a previous state is modified. This ensures
+      that geometry is properly defined and that appropriate autoconstraints are picked.
+      It is possible that the current state is regained during this cycle, if all the parameters for that previous state
+      are set (see doChangeDrawSketchHandlerMode below).
+    end note
+    DrawSketchDefaultWidgetHandlerWidget --> StateMachine : setState
+    activate DrawSketchDefaultWidgetHandlerWidget #darkblue
+    activate StateMachine #DarkBlue
+    StateMachine --> DrawSketchDefaultWidgetHandler : onModeChanged
+    activate DrawSketchDefaultWidgetHandler #DarkBlue
+    DrawSketchDefaultWidgetHandler --[#red]> DrawSketchHandlerCircleWidget : onHandlerModeChanged
+    note left
+      Update the focus of the widget parameters upon change of mode in the state machine.
+      Nothing else should be done here, or special care should be taken not to interfere in the
+      whole functionality of the parameter change.
+    end note
+    activate DrawSketchHandlerCircleWidget #DarkBlue
+    DrawSketchHandlerCircleWidget --[#green]> SketcherToolDefaultWidget : setParameterFocus
+
+    deactivate StateMachine
+    deactivate DrawSketchHandlerCircleWidget
+    deactivate DrawSketchDefaultWidgetHandler
+    deactivate DrawSketchDefaultWidgetHandlerWidget
+else #Pink Parameter is of the current mode or a future mode
+    DrawSketchDefaultWidgetHandlerWidget -[hidden]> DrawSketchDefaultWidgetHandlerWidget
+    note left
+      A machine does **not** forward to a future state/mode as a consequence of changing a parameter of a future state (though it may forward to
+      a next state if all the parameters of a present state are fulfiled, see doChangeDrawSketchHandlerMode).
+      This ensures that previous steps of of the geometry have been defined (either by mouse clicking or by widget).
+      Autoconstraints on point should be picked when the state corresponding to the parameter is reached (upon machine state advancement).
+    end note
+end
+deactivate DrawSketchDefaultWidgetHandlerWidget
+
+DrawSketchDefaultWidgetHandlerWidget -> DrawSketchDefaultWidgetHandlerWidget : enforceWidgetParametersOnPreviousCursorPosition
+activate DrawSketchDefaultWidgetHandlerWidget #lightgreen
+note left
+   Use stored **prevCursorPosition** to generate **lastWidgetEnforcedPosition**
+   this ensures that even if the mouse is not being moved, the position to
+   be used (e.g. for drawing) takes into account the parameters constrained
+   in the widget.
+end note
+
+DrawSketchDefaultWidgetHandlerWidget -[#red]> DrawSketchHandlerCircleWidget : doEnforceWidgetParameters
+activate DrawSketchHandlerCircleWidget #lightgreen
+note left
+   For the **current** mode of the state machine, the widget parameters that are set
+   (i.e. enforced by the widget) are used to modify the provided cursor position accordingly.
+   **No modification** is performed on the handler data members.
+end note
+DrawSketchHandlerCircleWidget --[#green]> SketcherToolDefaultWidget : getParameter
+deactivate DrawSketchHandlerCircleWidget
+deactivate DrawSketchDefaultWidgetHandlerWidget
+
+
+DrawSketchDefaultWidgetHandlerWidget -[#red]> DrawSketchHandlerCircleWidget : adaptDrawingToParameterChange
+note left
+Update **handler data members** defining the geometry to be created, which are
+**associated with the parameter that changed**.
+end note
+
+activate DrawSketchHandlerCircleWidget #lightgreen
+DrawSketchHandlerCircleWidget -[#yellow]> DrawSketchHandlerCircle : [friend: direct data member update]
+deactivate DrawSketchHandlerCircleWidget
+
+DrawSketchDefaultWidgetHandlerWidget -> DrawSketchDefaultWidgetHandlerWidget : finishWidgetChanged
+activate DrawSketchDefaultWidgetHandlerWidget #lightgreen
+
+DrawSketchDefaultWidgetHandlerWidget -> DrawSketchHandler : preselectAtPoint
+note left
+Preselects point at **lastWidgetEnforcedPosition**.
+This enables detection of AutoConstraints in the
+subsequent call to updateDataAndDrawToPosition.
+end note
+
+DrawSketchDefaultWidgetHandlerWidget -[#yellow]> DrawSketchHandlerCircle : updateDataAndDrawToPosition
+note left
+Using **lastWidgetEnforcedPosition**, the handler is redrawn in the current mode
+(i.e. before any potential change to the state machine mandated by the parameter change).
+This ensures correct visualisation.
+end note
+
+end
+
+group#DarkSalmon #LightBlue Handle potential State Machine (Mode) Change
+DrawSketchDefaultWidgetHandlerWidget -[#red]> DrawSketchHandlerCircleWidget : doChangeDrawSketchHandlerMode
+note left
+Should the parameter change originate change in the state of the state machine?
+(For example, the next point must be sought).
+This function shall **not** call **handler->finish()** as this is directly called
+by DrawSketchDefaultWidgetHandler.
+end note
+activate DrawSketchDefaultWidgetHandlerWidget #DarkSalmon
+activate DrawSketchHandlerCircleWidget #DarkSalmon
+DrawSketchHandlerCircleWidget --> StateMachine : setState
+activate StateMachine #DarkBlue
+StateMachine --> DrawSketchDefaultWidgetHandler : onModeChanged
+activate DrawSketchDefaultWidgetHandler #DarkBlue
+DrawSketchDefaultWidgetHandler --[#red]> DrawSketchHandlerCircleWidget : onHandlerModeChanged
+note left
+Update the focus of the widget parameters upon change of mode in the state machine.
+Nothing else should be done here, or special care should be taken not to interfere in the
+whole functionality of the parameter change.
+end note
+activate DrawSketchHandlerCircleWidget #DarkBlue
+DrawSketchHandlerCircleWidget --[#green]> SketcherToolDefaultWidget : setParameterFocus
+
+deactivate DrawSketchHandlerCircleWidget
+DrawSketchDefaultWidgetHandler --[#yellow]> DrawSketchHandlerCircle : finish [if state is End]
+deactivate DrawSketchDefaultWidgetHandlerWidget
+deactivate DrawSketchDefaultWidgetHandler
+deactivate StateMachine
+deactivate DrawSketchHandlerCircleWidget
+end
+
+group#DarkSalmon #khaki Enforce widget parameters on potential new mode, update handler and draw handler in potential new mode
+
+alt#Gold #LightBlue Current state of StateMachine is End OR state did not change
+    deactivate DrawSketchDefaultWidgetHandlerWidget
+    deactivate DrawSketchDefaultWidgetHandlerWidget
+
+else #Pink Current state is not End AND state did change
+    DrawSketchDefaultWidgetHandlerWidget -[hidden]> DrawSketchHandlerCircle
+    activate DrawSketchDefaultWidgetHandlerWidget #lavender
+    DrawSketchDefaultWidgetHandlerWidget -[hidden]> DrawSketchHandlerCircle
+    activate DrawSketchDefaultWidgetHandlerWidget #lightgreen
+
+    DrawSketchDefaultWidgetHandlerWidget -> DrawSketchDefaultWidgetHandlerWidget : enforceWidgetParametersOnPreviousCursorPosition
+    activate DrawSketchDefaultWidgetHandlerWidget #darkblue
+    note left
+       For **the new mode**, use stored **prevCursorPosition** to generate **lastWidgetEnforcedPosition**
+       this ensures that even if the mouse is not being moved, the position to be used (e.g. for drawing)
+       takes into account the parameters constrained in the widget.
+    end note
+
+    DrawSketchDefaultWidgetHandlerWidget -[#red]> DrawSketchHandlerCircleWidget : doEnforceWidgetParameters
+    activate DrawSketchHandlerCircleWidget #darkblue
+    note left
+       For **the new mode** of the state machine, the widget parameters that are set
+       (i.e. enforced by the widget) are used to modify the provided cursor position accordingly.
+       **No modification** is performed on the handler data members.
+    end note
+    DrawSketchHandlerCircleWidget --[#green]> SketcherToolDefaultWidget : getParameter
+    deactivate DrawSketchHandlerCircleWidget
+    deactivate DrawSketchDefaultWidgetHandlerWidget
+
+    DrawSketchDefaultWidgetHandlerWidget -[#red]> DrawSketchHandlerCircleWidget : adaptWidgetParameters
+    note left
+       Update value of (unset) Widget parameters to adapt **to the new mode**
+       with the **lastWidgetEnforcedPosition**. Caution! The handler is **not** to be modified.
+       While previously calculated handler parameters can be used in the calculation, the calculation
+       **must** be based on the OnSketchPos. The widget ** must ** reflect the enforced cursor position.
+    end note
+
+    activate DrawSketchHandlerCircleWidget #DarkSalmon
+
+    DrawSketchHandlerCircleWidget --[#green]> SketcherToolDefaultWidget : updateVisualValue
+    deactivate DrawSketchHandlerCircleWidget
+
+    DrawSketchDefaultWidgetHandlerWidget -[#yellow]> DrawSketchHandlerCircle : updateDataAndDrawToPosition
+    note left
+    Using **lastWidgetEnforcedPosition**, the handler is redrawn **in the new mode**
+    (i.e. after any change to the state machine mandated by the parameter change).
+    This ensures correct visualisation.
+    end note
+
+    deactivate DrawSketchDefaultWidgetHandlerWidget
+    deactivate DrawSketchDefaultWidgetHandlerWidget
+    end
+end
+
+@enduml
