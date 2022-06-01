@@ -1704,7 +1704,9 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
         {
             // try to force reading until an entity type string is found (skip followup numeric values)
             while(!((*m_ifs).eof())) {
-              if (m_str[0]>='0' && m_str[0]<='9')
+              // list of codes, skip anything that starts with a number and is shorter than 6 bytes
+              // http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WSfacf1429558a55de185c428100849a0ab7-5df0.htm
+              if (strlen(m_str)<6 && m_str[0]>='0' && m_str[0]<='9')
                 get_line();
               else
                 break;
