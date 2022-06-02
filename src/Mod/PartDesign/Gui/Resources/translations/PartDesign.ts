@@ -2,90 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-        <location filename="../../../InvoluteGearFeature.py" line="57"/>
-        <source>Involute gear...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../InvoluteGearFeature.py" line="61"/>
-        <source>Creates or edit the involute gear definition.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-        <location filename="../../../SprocketFeature.py" line="62"/>
-        <source>Sprocket...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../SprocketFeature.py" line="66"/>
-        <source>Creates or edit the sprocket definition.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>WizardShaft</name>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-        <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-        <source>Shaft design wizard...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-        <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-        <source>Start the shaft design wizard</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>WizardShaftTable</name>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-        <source>Length [mm]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-        <source>Diameter [mm]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-        <source>Inner diameter [mm]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-        <source>Constraint type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-        <source>Start edge type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-        <source>Start edge size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-        <source>End edge type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-        <source>End edge size</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>App::Property</name>
     <message>
         <location filename="../../../App/FeatureHelix.cpp" line="72"/>
@@ -3327,7 +3243,7 @@ click again to end selection</source>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
         <location filename="../../ViewProviderFillet.h" line="41"/>
-        <source>Fillet parrameters</source>
+        <source>Fillet parameters</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

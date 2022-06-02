@@ -2,99 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>MoveView</name>
-    <message>
-        <location filename="../../../TechDrawTools/CommandMoveView.py" line="47"/>
-        <source>Move View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
-        <source>Move a View to a new Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskMoveView.py" line="47"/>
-        <source>Move View to a different Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskMoveView.py" line="74"/>
-        <source>Select View to move from list.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskMoveView.py" line="75"/>
-        <source>Select View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskMoveView.py" line="93"/>
-        <source>Select From Page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
-        <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
-        <source>Select Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskMoveView.py" line="112"/>
-        <source>Select To Page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ShareView</name>
-    <message>
-        <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
-        <source>Share View with another Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
-        <source>View to share</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskShareView.py" line="74"/>
-        <source>Select View to share from list.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskShareView.py" line="75"/>
-        <source>Select View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskShareView.py" line="93"/>
-        <source>Select From Page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
-        <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
-        <source>Select Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
-        <source>Select To Page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
-        <source>Share View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
-        <source>Share a View on a second Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Cmd2LineCenterLine</name>
     <message>
         <location filename="../../CommandAnnotate.cpp" line="665"/>
@@ -5266,6 +5173,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskCosVertex.ui" line="78"/>
+        <location filename="../../TaskCosVertex.cpp" line="136"/>
         <source>Point Picker</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5290,8 +5198,19 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../TaskCosVertex.cpp" line="180"/>
+        <location filename="../../TaskCosVertex.cpp" line="266"/>
+        <source>Pick Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../TaskCosVertex.cpp" line="194"/>
         <source>Pick a point for cosmetic vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskCosVertex.cpp" line="197"/>
+        <source>Escape picking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5366,18 +5285,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="44"/>
-        <source>⏤</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="51"/>
         <source>Flatness</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="54"/>
-        <source>⏥</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5386,18 +5295,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="64"/>
-        <source>○</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="71"/>
         <source>Cylindricity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="74"/>
-        <source>⌭</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5406,18 +5305,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="84"/>
-        <source>∥</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="91"/>
         <source>Perpendicularity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="94"/>
-        <source>⟂</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5426,18 +5315,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="104"/>
-        <source>∠</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="116"/>
         <source>Profile of a line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="119"/>
-        <source>⌒</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5446,18 +5325,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="129"/>
-        <source>⌓</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="136"/>
         <source>Circular runout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="139"/>
-        <source>↗</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5466,18 +5335,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="149"/>
-        <source>⌰</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="156"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="159"/>
-        <source>⌖</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5486,18 +5345,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="169"/>
-        <source>◎</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="176"/>
         <source>Symmetry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="179"/>
-        <source>⌯</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5511,18 +5360,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="205"/>
-        <source>Ⓐ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="217"/>
         <source>Minimax (Tschebyschew)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="220"/>
-        <source>Ⓒ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5531,18 +5370,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="235"/>
-        <source>Ⓔ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="247"/>
         <source>Free state</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="250"/>
-        <source>Ⓕ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5551,18 +5380,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="265"/>
-        <source>Ⓖ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="277"/>
         <source>Least material condition (LMC)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="280"/>
-        <source>Ⓛ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5571,18 +5390,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="295"/>
-        <source>Ⓜ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="307"/>
         <source>least inscribed geometry element</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="310"/>
-        <source>Ⓝ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5591,18 +5400,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="325"/>
-        <source>Ⓟ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="337"/>
         <source>Reciprocity condition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="340"/>
-        <source>Ⓡ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5611,18 +5410,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="355"/>
-        <source>Ⓢ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="367"/>
         <source>Tangent plane</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="370"/>
-        <source>Ⓣ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5631,18 +5420,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="385"/>
-        <source>Ⓤ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="397"/>
         <source>most inscribed geometry element</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="400"/>
-        <source>Ⓧ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5656,18 +5435,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="421"/>
-        <source>R</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="428"/>
         <source>Diameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="431"/>
-        <source>⌀</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5676,28 +5445,13 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="441"/>
-        <source>SR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="448"/>
         <source>Diameter of sphere</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="451"/>
-        <source>S⌀</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="458"/>
         <source>Square</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="461"/>
-        <source>□</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5711,18 +5465,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="482"/>
-        <source>°</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="489"/>
         <source>(Arc) Minute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="492"/>
-        <source>′</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5731,18 +5475,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="502"/>
-        <source>″</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="509"/>
         <source>(Arc) Tertie</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="512"/>
-        <source>‴</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5756,18 +5490,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="536"/>
-        <source>⌲</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="543"/>
         <source>Slope</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="546"/>
-        <source>⌳</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5776,18 +5500,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="556"/>
-        <source>⌴</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="563"/>
         <source>Countersink</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="566"/>
-        <source>⌵</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5796,18 +5510,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="576"/>
-        <source>±</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="583"/>
         <source>Centerline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="586"/>
-        <source>℄</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5816,28 +5520,13 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="596"/>
-        <source>↔</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="603"/>
         <source>Downward arrow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="606"/>
-        <source>↧</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="613"/>
         <source>Multiplication sign</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="616"/>
-        <source>×</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5851,18 +5540,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="637"/>
-        <source>Δ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="644"/>
         <source>Capital sigma</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="647"/>
-        <source>Σ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5871,18 +5550,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="657"/>
-        <source>Ω</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="664"/>
         <source>Small mu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="667"/>
-        <source>μ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5891,28 +5560,13 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="677"/>
-        <source>σ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="684"/>
         <source>Small phi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="687"/>
-        <source>φ</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskCustomizeFormat.ui" line="694"/>
         <source>Small omega</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCustomizeFormat.ui" line="697"/>
-        <source>⍵</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5955,6 +5609,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskDetail.ui" line="95"/>
+        <location filename="../../TaskDetail.cpp" line="296"/>
         <source>Drag Highlight</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6414,6 +6069,7 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
         <location filename="../../TaskLeaderLine.ui" line="118"/>
+        <location filename="../../TaskLeaderLine.cpp" line="518"/>
         <source>Pick Points</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6488,14 +6144,43 @@ You can pick further points to get line segments.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../TaskLeaderLine.cpp" line="273"/>
+        <source>Pick points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskLeaderLine.cpp" line="322"/>
+        <location filename="../../TaskLeaderLine.cpp" line="688"/>
+        <location filename="../../TaskLeaderLine.cpp" line="740"/>
+        <location filename="../../TaskLeaderLine.cpp" line="757"/>
+        <source>Edit points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskLeaderLine.cpp" line="530"/>
+        <source>Edit Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../TaskLeaderLine.cpp" line="547"/>
         <location filename="../../TaskLeaderLine.cpp" line="591"/>
         <source>Pick a starting point for leader line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../TaskLeaderLine.cpp" line="550"/>
+        <source>Save Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../TaskLeaderLine.cpp" line="574"/>
         <source>Click and drag markers to adjust leader line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskLeaderLine.cpp" line="577"/>
+        <location filename="../../TaskLeaderLine.cpp" line="594"/>
+        <source>Save changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
