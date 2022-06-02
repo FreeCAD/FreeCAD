@@ -69,7 +69,7 @@ directories = [
         {"tsname":"MeshPart", "workingdir":"./src/Mod/MeshPart/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"OpenSCAD", "workingdir":"./src/Mod/OpenSCAD/", "tsdir":"Resources/translations"},
         {"tsname":"PartDesign", "workingdir":"./src/Mod/PartDesign/", "tsdir":"Gui/Resources/translations"},
-        {"tsname":"Part", "workingdir":"./src/Mod/Part/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Part", "workingdir":"./src/Mod/Part/Gui", "tsdir":"Resources/translations"},
         {"tsname":"Path", "workingdir":"./src/Mod/Path/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"Points", "workingdir":"./src/Mod/Points/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"Raytracing", "workingdir":"./src/Mod/Raytracing/", "tsdir":"Gui/Resources/translations"},
@@ -201,12 +201,20 @@ def update_translation(entry):
         # used for all supported programming languages, so it's just a single function call
 
         # For Windows compatibility, do most of the work in Python:
+        extensions = ["java","jui","ui","c","c++","cc","cpp","cxx","ch","h","h++","hh","hpp","hxx","js","qs","qml","qrc","py"]
+        with open ("files_to_translate.txt","w") as file_list:
+            for root, dirs, files in os.walk("./"):
+                for f in files:
+                    if pathlib.Path(f).suffix[1:] in extensions:
+                        file_list.write(os.path.join(root,f) + "\n")
+
         try:
-            print (f"Extracting recursively for {entry['tsname']} starting at {entry['workingdir']} into {tsBasename}.ts",flush=True)
-            p = subprocess.run([LUPDATE, "./","-I","./","-extensions","'java,jui,ui,c,c++,cc,cpp,cxx,ch,h,h++,hh,hpp,hxx,js,qs,qml,qrc,py'", "-recursive", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
+            p = subprocess.run([LUPDATE, "@files_to_translate.txt","-I","./", "-recursive", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
         except Exception as e:
             print(str(e))
-                
+            os.chdir(cur)
+            return
+         
         with open (f"{cur}/tsupdate_stdout.log","a") as f:
             f.write(p.stdout.decode())
             print(p.stdout.decode())
