@@ -17,78 +17,99 @@ namespace Base {
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <DeveloperDocu>This is the Type class</DeveloperDocu>
-      <UserDocu>This is the Type class</UserDocu>
+      <UserDocu>Base.BaseType class.\n
+This class is not intended to create instances of itself, but to get information
+from the different types and create instances of them.
+Regarding instantiation, this is possible in cases that inherit from the
+Base::BaseClass class and are not abstract classes.</UserDocu>
     </Documentation>
     <Methode Name="fromName" Static="true">
       <Documentation>
-        <UserDocu>Returns a type object by name</UserDocu>
+        <UserDocu>fromName(name) -> Base.BaseType\n
+Returns a type object by name.\n
+name : str</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fromKey" Static="true">
       <Documentation>
-        <UserDocu>Returns a type object by key</UserDocu>
+        <UserDocu>fromKey(key) -> Base.BaseType\n
+Returns a type id object by key.\n
+key : int</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getNumTypes" Static="true">
       <Documentation>
-        <UserDocu>Returns the number of type ids</UserDocu>
+        <UserDocu>getNumTypes() -> int\n
+Returns the number of type ids created so far.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getBadType" Static="true">
       <Documentation>
-        <UserDocu>Returns an invalid type id</UserDocu>
+        <UserDocu>getBadType() -> Base.BaseType\n
+Returns an invalid type id.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getAllDerivedFrom" Static="true">
       <Documentation>
-        <UserDocu>Returns all descendants</UserDocu>
+        <UserDocu>getAllDerivedFrom(type) -> list\n
+Returns all descendants from the given type id.\n
+type : str, Base.BaseType</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getParent" Const="true">
       <Documentation>
-        <UserDocu>Returns the parent type id</UserDocu>
+        <UserDocu>getParent() -> Base.BaseType\n
+Returns the parent type id.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isBad" Const="true">
       <Documentation>
-        <UserDocu>Checks if the type id is invalid</UserDocu>
+        <UserDocu>isBad() -> bool\n
+Checks if the type id is invalid.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isDerivedFrom" Const="true">
       <Documentation>
-        <UserDocu>Returns true if given type is a father</UserDocu>
+        <UserDocu>isDerivedFrom(type) -> bool\n
+Returns true if given type id is a father of this type id.\n
+type : str, Base.BaseType</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getAllDerived" Const="true">
       <Documentation>
-        <UserDocu>Returns all descendants</UserDocu>
+        <UserDocu>getAllDerived() -> list\n
+Returns all descendants from this type id.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="createInstance">
       <Documentation>
-        <UserDocu>Creates an instance of this type</UserDocu>
+        <UserDocu>createInstance() -> object\n
+Creates an instance of this type id.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="createInstanceByName" Static="true">
       <Documentation>
-        <UserDocu>Creates an instance of the named type</UserDocu>
+        <UserDocu>createInstanceByName(name, load=False) -> object\n
+Creates an instance of the named type id.\n
+name : str
+load : bool\n    Load named type id module.</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="Name" ReadOnly="true">
       <Documentation>
-        <UserDocu>The name of the type id</UserDocu>
+        <UserDocu>The name of the type id.</UserDocu>
       </Documentation>
       <Parameter Name="Name" Type="String" />
     </Attribute>
     <Attribute Name="Key" ReadOnly="true">
       <Documentation>
-        <UserDocu>The key of the type id</UserDocu>
+        <UserDocu>The key of the type id.</UserDocu>
       </Documentation>
       <Parameter Name="Key" Type="Long" />
     </Attribute>
     <Attribute Name="Module" ReadOnly="true">
       <Documentation>
-        <UserDocu>Module in which this class is defined</UserDocu>
+        <UserDocu>Module in which this class is defined.</UserDocu>
       </Documentation>
       <Parameter Name="Module" Type="String"/>
     </Attribute>
