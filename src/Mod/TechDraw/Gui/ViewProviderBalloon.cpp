@@ -139,7 +139,18 @@ void ViewProviderBalloon::unsetEdit(int ModNum)
 
 void ViewProviderBalloon::updateData(const App::Property* p)
 {
-    ViewProviderDrawingView::updateData(p);
+    //Balloon handles X,Y updates differently that other QGIView
+    //call QGIViewBalloon::updateView
+    if (p == &(getViewObject()->X)  ||
+        p == &(getViewObject()->Y) ){
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
+
+    //Skip QGIView X,Y processing - do not call ViewProviderDrawingView
+    Gui::ViewProviderDocumentObject::updateData(p);
 }
 
 void ViewProviderBalloon::onChanged(const App::Property* p)

@@ -343,6 +343,8 @@ void QGIView::updateView(bool update)
 {
 //    Base::Console().Message("QGIV::updateView() - %s\n",getViewObject()->getNameInDocument());
     (void) update;
+
+    //allow/prevent dragging
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
