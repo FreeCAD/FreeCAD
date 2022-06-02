@@ -196,8 +196,8 @@ QString Preferences::defaultTemplate()
     QString templateFileName = QString::fromStdString(prefFileName);
     Base::FileInfo fi(prefFileName);
     if (!fi.isReadable()) {
-        templateFileName = QString::fromStdString(defaultFileName);
         Base::Console().Warning("Template File: %s is not readable\n", prefFileName.c_str());
+        templateFileName = QString::fromStdString(defaultFileName);
     }
     return templateFileName;
 }
@@ -212,8 +212,8 @@ QString Preferences::defaultTemplateDir()
     QString templateDir = QString::fromStdString(prefTemplateDir);
     Base::FileInfo fi(prefTemplateDir);
     if (!fi.isReadable()) {
-        templateDir = QString::fromStdString(defaultDir);
         Base::Console().Warning("Template Directory: %s is not readable\n", prefTemplateDir.c_str());
+        templateDir = QString::fromStdString(defaultDir);
    }
     return templateDir;
 }
@@ -228,8 +228,8 @@ std::string Preferences::lineGroupFile()
     std::string lgFileName = hGrp->GetASCII("LineGroupFile",defaultFileName.c_str());
     Base::FileInfo fi(lgFileName);
     if (!fi.isReadable()) {
-        lgFileName = defaultFileName;
         Base::Console().Warning("Line Group File: %s is not readable\n", lgFileName.c_str());
+        lgFileName = defaultFileName;
     }
     return lgFileName;
 }
