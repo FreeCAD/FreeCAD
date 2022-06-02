@@ -88,18 +88,25 @@ QMAKE = ""
 LUPDATE = ""
 PYLUPDATE = ""
 LCONVERT = ""
-QT_VERSION = ""
+QT_VERSION_MAJOR = ""
 
 def find_tools(noobsolete=True):
 
     print(Usage + "\nFirst, lets find all necessary tools on your system")
-    global QMAKE, LUPDATE, PYLUPDATE, LCONVERT, QT_VERSION
+    global QMAKE, LUPDATE, PYLUPDATE, LCONVERT, QT_VERSION_MAJOR
     
-    lupdate_version = subprocess.check_output(f"lupdate -version").decode()
-    QT_VERSION = int(re.search(r'.* ([456])\.', lupdate_version).group(1))
+    p = subprocess.run(["lupdate","-version"],check=True,stdout=subprocess.PIPE)
+    lupdate_version = p.stdout.decode()
+    result = re.search(r'.* ([456])\.([\d]+)\.([\d]+)', lupdate_version)
+    if not result:
+        print (f"Failed to parse version from {lupdate_version}")
+    QT_VERSION_MAJOR = int(result.group(1))
+    QT_VERSION_MINOR = int(result.group(2))
+    QT_VERSION_PATCH = int(result.group(3))
+    QT_VERSION = f"{QT_VERSION_MAJOR}.{QT_VERSION_MINOR}.{QT_VERSION_PATCH}"
+    print (f"Found Qt {QT_VERSION}")
 
-    if QT_VERSION < 6:
-
+    if QT_VERSION_MAJOR < 6:
         if (os.system("lupdate -version") == 0):
             LUPDATE = "lupdate"
             # TODO: we suppose lupdate is a symlink to lupdate-qt4 for now
@@ -114,10 +121,7 @@ def find_tools(noobsolete=True):
     else:
         LUPDATE = "lupdate"
     
-    lupdate_version = subprocess.check_output(f"{LUPDATE} -version").decode()
-    QT_VERSION = int(re.search(r'.* ([456])\.', lupdate_version).group(1))
-
-    if QT_VERSION < 6:
+    if QT_VERSION_MAJOR < 6:
         if (os.system("qmake -version") == 0):
             QMAKE = "qmake"
         elif (os.system("qmake-qt5 -version") == 0):
@@ -144,7 +148,7 @@ def find_tools(noobsolete=True):
         PYLUPDATE = "(pylupdate not needed for Qt 6 and later)"
     if (os.system("lconvert -h") == 0):
         LCONVERT = "lconvert"
-        if noobsolete and QT_VERSION < 6:
+        if noobsolete and QT_VERSION_MAJOR < 6:
             LCONVERT += " -no-obsolete"
     else:
         raise Exception("Cannot find lconvert")
@@ -157,7 +161,7 @@ def find_tools(noobsolete=True):
 
 def update_translation(entry):
 
-    global QMAKE, LUPDATE, LCONVERT, QT_VERSION
+    global QMAKE, LUPDATE, LCONVERT, QT_VERSION_MAJOR
     cur = os.getcwd()
     log_redirect = f" 2>> {cur}/tsupdate_stderr.log 1>> {cur}/tsupdate_stdout.log"
     os.chdir(entry["workingdir"])
@@ -165,7 +169,7 @@ def update_translation(entry):
     project_filename = entry["tsname"] + ".pro"
     tsBasename = os.path.join(entry["tsdir"],entry["tsname"])
 
-    if QT_VERSION < 6:
+    if QT_VERSION_MAJOR < 6:
         print ("\n\n=============================================")
         print (f"EXTRACTING STRINGS FOR {entry['tsname']}")
         print ("=============================================",flush=True)
@@ -192,14 +196,14 @@ def update_translation(entry):
             if not jsonfile in existingjsons:
                 os.remove(jsonfile)
 
-    elif QT_VERSION == 6:
+    elif QT_VERSION_MAJOR == 6:
         # In Qt6, QMake project files are deprecated, and lupdate directly scans for source files. The same executable is
         # used for all supported programming languages, so it's just a single function call
 
         # For Windows compatibility, do most of the work in Python:
         try:
             print (f"Extracting recursively for {entry['tsname']} starting at {entry['workingdir']} into {tsBasename}.ts",flush=True)
-            p = subprocess.run([LUPDATE, "./","-I","./", "-recursive", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
+            p = subprocess.run([LUPDATE, "./","-I","./","-extensions","'java,jui,ui,c,c++,cc,cpp,cxx,ch,h,h++,hh,hpp,hxx,js,qs,qml,qrc,py'", "-recursive", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
         except Exception as e:
             print(str(e))
                 
@@ -213,7 +217,7 @@ def update_translation(entry):
         subprocess.run([LCONVERT, "-drop-translations", "-i", f"{tsBasename}.ts", "-o", f"{tsBasename}.ts"])
 
     else:
-        print("ERROR: unrecognized version of lupdate -- found Qt {QT_VERSION}, we only support 4, 5 and 6")
+        print("ERROR: unrecognized version of lupdate -- found Qt {QT_VERSION_MAJOR}, we only support 4, 5 and 6")
         exit(1)
 
     os.chdir(cur)
