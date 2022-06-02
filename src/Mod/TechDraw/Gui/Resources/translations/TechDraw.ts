@@ -1857,8 +1857,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1454"/>
         <location filename="../../MDIViewPage.cpp" line="918"/>
+        <location filename="../../Command.cpp" line="1454"/>
         <source>Save page to dxf</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2403,6 +2403,16 @@
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../../CommandCreateDims.cpp" line="1341"/>
+        <location filename="../../CommandCreateDims.cpp" line="1349"/>
+        <location filename="../../CommandAnnotate.cpp" line="331"/>
+        <location filename="../../CommandAnnotate.cpp" line="434"/>
+        <location filename="../../CommandAnnotate.cpp" line="1168"/>
+        <location filename="../../CommandAnnotate.cpp" line="1182"/>
+        <location filename="../../CommandAnnotate.cpp" line="1232"/>
+        <location filename="../../CommandAnnotate.cpp" line="1376"/>
+        <location filename="../../CommandAnnotate.cpp" line="1381"/>
+        <location filename="../../CommandAnnotate.cpp" line="1445"/>
         <location filename="../../Command.cpp" line="381"/>
         <location filename="../../Command.cpp" line="496"/>
         <location filename="../../Command.cpp" line="547"/>
@@ -2418,16 +2428,6 @@
         <location filename="../../Command.cpp" line="1270"/>
         <location filename="../../Command.cpp" line="1276"/>
         <location filename="../../Command.cpp" line="1319"/>
-        <location filename="../../CommandAnnotate.cpp" line="331"/>
-        <location filename="../../CommandAnnotate.cpp" line="434"/>
-        <location filename="../../CommandAnnotate.cpp" line="1168"/>
-        <location filename="../../CommandAnnotate.cpp" line="1182"/>
-        <location filename="../../CommandAnnotate.cpp" line="1232"/>
-        <location filename="../../CommandAnnotate.cpp" line="1376"/>
-        <location filename="../../CommandAnnotate.cpp" line="1381"/>
-        <location filename="../../CommandAnnotate.cpp" line="1445"/>
-        <location filename="../../CommandCreateDims.cpp" line="1341"/>
-        <location filename="../../CommandCreateDims.cpp" line="1349"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2444,42 +2444,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="782"/>
-        <location filename="../../Command.cpp" line="789"/>
-        <location filename="../../Command.cpp" line="796"/>
-        <location filename="../../Command.cpp" line="808"/>
+        <location filename="../../CommandDecorate.cpp" line="387"/>
+        <location filename="../../CommandDecorate.cpp" line="394"/>
+        <location filename="../../CommandDecorate.cpp" line="401"/>
         <location filename="../../CommandCreateDims.cpp" line="1439"/>
         <location filename="../../CommandCreateDims.cpp" line="1446"/>
         <location filename="../../CommandCreateDims.cpp" line="1453"/>
         <location filename="../../CommandCreateDims.cpp" line="1465"/>
         <location filename="../../CommandCreateDims.cpp" line="1482"/>
-        <location filename="../../CommandDecorate.cpp" line="387"/>
-        <location filename="../../CommandDecorate.cpp" line="394"/>
-        <location filename="../../CommandDecorate.cpp" line="401"/>
+        <location filename="../../Command.cpp" line="782"/>
+        <location filename="../../Command.cpp" line="789"/>
+        <location filename="../../Command.cpp" line="796"/>
+        <location filename="../../Command.cpp" line="808"/>
         <source>Incorrect selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="783"/>
         <location filename="../../CommandCreateDims.cpp" line="1440"/>
+        <location filename="../../Command.cpp" line="783"/>
         <source>Select an object first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="790"/>
         <location filename="../../CommandCreateDims.cpp" line="1447"/>
+        <location filename="../../Command.cpp" line="790"/>
         <source>Too many objects selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="797"/>
         <location filename="../../CommandCreateDims.cpp" line="1454"/>
+        <location filename="../../Command.cpp" line="797"/>
         <source>Create a page first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="809"/>
         <location filename="../../CommandCreateDims.cpp" line="1466"/>
+        <location filename="../../Command.cpp" line="809"/>
         <source>No View of a Part in selection.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2599,6 +2599,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../CommandDecorate.cpp" line="408"/>
+        <location filename="../../CommandDecorate.cpp" line="414"/>
+        <location filename="../../TaskDimension.cpp" line="411"/>
         <location filename="../../CommandCreateDims.cpp" line="331"/>
         <location filename="../../CommandCreateDims.cpp" line="453"/>
         <location filename="../../CommandCreateDims.cpp" line="550"/>
@@ -2608,9 +2611,6 @@
         <location filename="../../CommandCreateDims.cpp" line="937"/>
         <location filename="../../CommandCreateDims.cpp" line="1021"/>
         <location filename="../../CommandCreateDims.cpp" line="1027"/>
-        <location filename="../../CommandDecorate.cpp" line="408"/>
-        <location filename="../../CommandDecorate.cpp" line="414"/>
-        <location filename="../../TaskDimension.cpp" line="411"/>
         <source>Incorrect Selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2675,6 +2675,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../CommandExtensionPack.cpp" line="286"/>
+        <location filename="../../CommandExtensionPack.cpp" line="593"/>
+        <location filename="../../CommandExtensionPack.cpp" line="1071"/>
+        <location filename="../../CommandExtensionPack.cpp" line="1302"/>
+        <location filename="../../CommandExtensionPack.cpp" line="1656"/>
+        <location filename="../../CommandCreateDims.cpp" line="1073"/>
+        <location filename="../../CommandCreateDims.cpp" line="1167"/>
+        <location filename="../../CommandCreateDims.cpp" line="1254"/>
         <location filename="../../CommandAnnotate.cpp" line="119"/>
         <location filename="../../CommandAnnotate.cpp" line="180"/>
         <location filename="../../CommandAnnotate.cpp" line="232"/>
@@ -2690,9 +2698,6 @@
         <location filename="../../CommandAnnotate.cpp" line="1283"/>
         <location filename="../../CommandAnnotate.cpp" line="1361"/>
         <location filename="../../CommandAnnotate.cpp" line="1427"/>
-        <location filename="../../CommandCreateDims.cpp" line="1073"/>
-        <location filename="../../CommandCreateDims.cpp" line="1167"/>
-        <location filename="../../CommandCreateDims.cpp" line="1254"/>
         <location filename="../../CommandExtensionDims.cpp" line="261"/>
         <location filename="../../CommandExtensionDims.cpp" line="468"/>
         <location filename="../../CommandExtensionDims.cpp" line="754"/>
@@ -2700,15 +2705,18 @@
         <location filename="../../CommandExtensionDims.cpp" line="1421"/>
         <location filename="../../CommandExtensionDims.cpp" line="1785"/>
         <location filename="../../CommandExtensionDims.cpp" line="2044"/>
-        <location filename="../../CommandExtensionPack.cpp" line="286"/>
-        <location filename="../../CommandExtensionPack.cpp" line="593"/>
-        <location filename="../../CommandExtensionPack.cpp" line="1071"/>
-        <location filename="../../CommandExtensionPack.cpp" line="1302"/>
-        <location filename="../../CommandExtensionPack.cpp" line="1656"/>
         <source>Task In Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../CommandExtensionPack.cpp" line="287"/>
+        <location filename="../../CommandExtensionPack.cpp" line="594"/>
+        <location filename="../../CommandExtensionPack.cpp" line="1072"/>
+        <location filename="../../CommandExtensionPack.cpp" line="1303"/>
+        <location filename="../../CommandExtensionPack.cpp" line="1657"/>
+        <location filename="../../CommandCreateDims.cpp" line="1074"/>
+        <location filename="../../CommandCreateDims.cpp" line="1168"/>
+        <location filename="../../CommandCreateDims.cpp" line="1255"/>
         <location filename="../../CommandAnnotate.cpp" line="120"/>
         <location filename="../../CommandAnnotate.cpp" line="181"/>
         <location filename="../../CommandAnnotate.cpp" line="233"/>
@@ -2724,9 +2732,6 @@
         <location filename="../../CommandAnnotate.cpp" line="1284"/>
         <location filename="../../CommandAnnotate.cpp" line="1362"/>
         <location filename="../../CommandAnnotate.cpp" line="1428"/>
-        <location filename="../../CommandCreateDims.cpp" line="1074"/>
-        <location filename="../../CommandCreateDims.cpp" line="1168"/>
-        <location filename="../../CommandCreateDims.cpp" line="1255"/>
         <location filename="../../CommandExtensionDims.cpp" line="262"/>
         <location filename="../../CommandExtensionDims.cpp" line="469"/>
         <location filename="../../CommandExtensionDims.cpp" line="755"/>
@@ -2734,11 +2739,6 @@
         <location filename="../../CommandExtensionDims.cpp" line="1422"/>
         <location filename="../../CommandExtensionDims.cpp" line="1786"/>
         <location filename="../../CommandExtensionDims.cpp" line="2045"/>
-        <location filename="../../CommandExtensionPack.cpp" line="287"/>
-        <location filename="../../CommandExtensionPack.cpp" line="594"/>
-        <location filename="../../CommandExtensionPack.cpp" line="1072"/>
-        <location filename="../../CommandExtensionPack.cpp" line="1303"/>
-        <location filename="../../CommandExtensionPack.cpp" line="1657"/>
         <source>Close active task dialog and try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2789,10 +2789,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandAnnotate.cpp" line="732"/>
-        <location filename="../../CommandAnnotate.cpp" line="921"/>
         <location filename="../../CommandCreateDims.cpp" line="1195"/>
         <location filename="../../CommandCreateDims.cpp" line="1282"/>
+        <location filename="../../CommandAnnotate.cpp" line="732"/>
+        <location filename="../../CommandAnnotate.cpp" line="921"/>
         <source>No base View in Selection.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2962,9 +2962,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="224"/>
         <location filename="../../ViewProviderProjGroup.cpp" line="201"/>
         <location filename="../../ViewProviderTemplate.cpp" line="195"/>
+        <location filename="../../ViewProviderPage.cpp" line="224"/>
         <source>Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2999,9 +2999,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../QGIRichAnno.cpp" line="376"/>
         <location filename="../../TaskRichAnno.cpp" line="134"/>
         <location filename="../../TaskRichAnno.cpp" line="291"/>
+        <location filename="../../QGIRichAnno.cpp" line="376"/>
         <source>Rich text editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3135,15 +3135,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandExtensionDims.cpp" line="2251"/>
         <location filename="../../CommandExtensionPack.cpp" line="1451"/>
         <location filename="../../CommandExtensionPack.cpp" line="1908"/>
+        <location filename="../../CommandExtensionDims.cpp" line="2251"/>
         <source>Selection is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandExtensionDims.cpp" line="2269"/>
         <location filename="../../CommandExtensionPack.cpp" line="1916"/>
+        <location filename="../../CommandExtensionDims.cpp" line="2269"/>
         <source>No object selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3187,19 +3187,19 @@ it has a weld symbol that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderLeader.cpp" line="243"/>
-        <location filename="../../ViewProviderPage.cpp" line="227"/>
         <location filename="../../ViewProviderProjGroup.cpp" line="188"/>
         <location filename="../../ViewProviderProjGroup.cpp" line="204"/>
+        <location filename="../../ViewProviderWeld.cpp" line="187"/>
+        <location filename="../../ViewProviderTemplate.cpp" line="199"/>
+        <location filename="../../ViewProviderPage.cpp" line="227"/>
+        <location filename="../../ViewProviderViewPart.cpp" line="348"/>
+        <location filename="../../ViewProviderViewPart.cpp" line="356"/>
+        <location filename="../../ViewProviderViewPart.cpp" line="364"/>
         <location filename="../../ViewProviderProjGroupItem.cpp" line="166"/>
         <location filename="../../ViewProviderProjGroupItem.cpp" line="175"/>
         <location filename="../../ViewProviderProjGroupItem.cpp" line="183"/>
         <location filename="../../ViewProviderProjGroupItem.cpp" line="191"/>
-        <location filename="../../ViewProviderTemplate.cpp" line="199"/>
-        <location filename="../../ViewProviderViewPart.cpp" line="348"/>
-        <location filename="../../ViewProviderViewPart.cpp" line="356"/>
-        <location filename="../../ViewProviderViewPart.cpp" line="364"/>
-        <location filename="../../ViewProviderWeld.cpp" line="187"/>
+        <location filename="../../ViewProviderLeader.cpp" line="243"/>
         <source>Object dependencies</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3209,20 +3209,20 @@ it has a weld symbol that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderProjGroupItem.cpp" line="172"/>
         <location filename="../../ViewProviderViewPart.cpp" line="345"/>
+        <location filename="../../ViewProviderProjGroupItem.cpp" line="172"/>
         <source>You cannot delete this view because it has a section view that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
         <location filename="../../ViewProviderViewPart.cpp" line="353"/>
+        <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
         <source>You cannot delete this view because it has a detail view that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderProjGroupItem.cpp" line="188"/>
         <location filename="../../ViewProviderViewPart.cpp" line="361"/>
+        <location filename="../../ViewProviderProjGroupItem.cpp" line="188"/>
         <source>You cannot delete this view because it has a leader line that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7083,10 +7083,103 @@ using the given X/Y Spacing</source>
     </message>
 </context>
 <context>
+    <name>TechDraw_MoveView</name>
+    <message>
+        <location filename="../../../TechDrawTools/CommandMoveView.py" line="47"/>
+        <source>Move View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
+        <source>Move a View to a new Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskMoveView.py" line="47"/>
+        <source>Move View to a different Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskMoveView.py" line="74"/>
+        <source>Select View to move from list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskMoveView.py" line="75"/>
+        <source>Select View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskMoveView.py" line="93"/>
+        <source>Select From Page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
+        <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
+        <source>Select Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskMoveView.py" line="112"/>
+        <source>Select To Page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TechDraw_Quadrants</name>
     <message>
         <location filename="../../CommandAnnotate.cpp" line="304"/>
         <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_ShareView</name>
+    <message>
+        <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
+        <source>Share View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
+        <source>Share a View on a second Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
+        <source>Share View with another Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
+        <source>View to share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskShareView.py" line="74"/>
+        <source>Select View to share from list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskShareView.py" line="75"/>
+        <source>Select View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskShareView.py" line="93"/>
+        <source>Select From Page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
+        <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
+        <source>Select Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
+        <source>Select To Page.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

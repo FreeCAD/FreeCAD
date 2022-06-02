@@ -2364,109 +2364,6 @@ of projection.</source>
     </message>
 </context>
 <context>
-    <name>PartDesignGui::TaskDatumParameters</name>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
-        <source>Selection accepted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
-        <source>Reference 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="52"/>
-        <source>Reference 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="69"/>
-        <source>Reference 3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="86"/>
-        <source>Reference 4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
-        <source>Attachment mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
-        <source>Attachment Offset (in local coordinates):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
-        <source>In x-direction:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="158"/>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="190"/>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="222"/>
-        <source>Note: The placement is expressed in local space of object being attached.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
-        <source>In y-direction:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
-        <source>In z-direction:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
-        <source>Around x-axis:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
-        <source>Rotation around the x-axis
-Note: The placement is expressed in local space of object being attached.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
-        <source>Around y-axis:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
-        <source>Rotation around the y-axis
-Note: The placement is expressed in local space of object being attached.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
-        <source>Around z-axis:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
-        <source>Rotation around the z-axis
-Note: The placement is expressed in local space of object being attached.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
-        <source>Flip sides</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PartGui::CrossSections</name>
     <message>
         <location filename="../../CrossSections.ui" line="14"/>
@@ -5378,34 +5275,6 @@ in the 3D view for the sweep path.</source>
     </message>
 </context>
 <context>
-    <name>PartGui::TaskTube</name>
-    <message>
-        <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
-        <source>Tube</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
-        <source>Parameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
-        <source>Outer radius</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BasicShapes/TaskTube.ui" line="69"/>
-        <source>Inner radius</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
-        <source>Height:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PartGui::ThicknessWidget</name>
     <message>
         <location filename="../../TaskThickness.cpp" line="100"/>
@@ -5431,53 +5300,10 @@ in the 3D view for the sweep path.</source>
     </message>
 </context>
 <context>
-    <name>Part_FaceMaker</name>
-    <message>
-        <location filename="../../../App/FaceMaker.cpp" line="171"/>
-        <source>Simple</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMaker.cpp" line="176"/>
-        <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMakerBullseye.cpp" line="59"/>
-        <source>Bull&apos;s-eye facemaker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMakerBullseye.cpp" line="64"/>
-        <source>Supports making planar faces with holes with islands.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-        <source>Cheese facemaker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-        <source>Supports making planar faces with holes, but no islands inside holes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FeatureExtrusion.cpp" line="339"/>
-        <source>Part Extrude facemaker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FeatureExtrusion.cpp" line="344"/>
-        <source>Supports making faces with holes, does not support nesting.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
-        <location filename="../../ViewProvider.cpp" line="50"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="66"/>
+        <location filename="../../ViewProvider.cpp" line="50"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5562,20 +5388,20 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="82"/>
         <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+        <location filename="../../TaskAttacher.cpp" line="82"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="85"/>
         <location filename="../../TaskCheckGeometry.cpp" line="88"/>
+        <location filename="../../TaskAttacher.cpp" line="85"/>
         <source>Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="88"/>
         <location filename="../../TaskCheckGeometry.cpp" line="89"/>
+        <location filename="../../TaskAttacher.cpp" line="88"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>

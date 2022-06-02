@@ -222,8 +222,8 @@
     </message>
     <message>
         <location filename="../Transform.cpp" line="104"/>
-        <location filename="../ViewProviderAnnotation.cpp" line="416"/>
         <location filename="../ViewProviderDragger.cpp" line="222"/>
+        <location filename="../ViewProviderAnnotation.cpp" line="416"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6881,9 +6881,9 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::MacroCommand</name>
     <message>
+        <location filename="../DlgToolbarsImp.cpp" line="92"/>
         <location filename="../DlgCommandsImp.cpp" line="92"/>
         <location filename="../DlgKeyboardImp.cpp" line="85"/>
-        <location filename="../DlgToolbarsImp.cpp" line="92"/>
         <source>Macros</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9139,8 +9139,8 @@ Please open a browser window and type in: http://localhost:%1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ViewProviderDragger.cpp" line="88"/>
         <location filename="../ViewProviderLink.cpp" line="2657"/>
+        <location filename="../ViewProviderDragger.cpp" line="88"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
