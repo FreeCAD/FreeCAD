@@ -127,7 +127,7 @@
            </size>
           </property>
           <property name="text">
-           <string notr="true">PEEQ</string>
+           <string>Equivalent Plastic Strain</string>
           </property>
          </widget>
         </item>

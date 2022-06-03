@@ -285,7 +285,7 @@ class _TaskPanel:
 
     def abs_displacement_selected(self, state):
         if len(self.result_obj.DisplacementLengths) > 0:
-            self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm")
+            self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm", "Displacement magnitude")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -295,7 +295,7 @@ class _TaskPanel:
             res_disp_u1 = self.get_scalar_disp_list(
                 self.result_obj.DisplacementVectors, 0
             )
-            self.result_selected("U1", res_disp_u1, "mm")
+            self.result_selected("U1", res_disp_u1, "mm", "Displacement X")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -305,7 +305,7 @@ class _TaskPanel:
             res_disp_u2 = self.get_scalar_disp_list(
                 self.result_obj.DisplacementVectors, 1
             )
-            self.result_selected("U2", res_disp_u2, "mm")
+            self.result_selected("U2", res_disp_u2, "mm", "Displacement Y")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -315,63 +315,63 @@ class _TaskPanel:
             res_disp_u3 = self.get_scalar_disp_list(
                 self.result_obj.DisplacementVectors, 2
             )
-            self.result_selected("U3", res_disp_u3, "mm")
+            self.result_selected("U3", res_disp_u3, "mm", "Displacement Z")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def vm_stress_selected(self, state):
         if len(self.result_obj.vonMises) > 0:
-            self.result_selected("Sabs", self.result_obj.vonMises, "MPa")
+            self.result_selected("Sabs", self.result_obj.vonMises, "MPa", "von Mises Stress")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def max_shear_selected(self, state):
         if len(self.result_obj.MaxShear) > 0:
-            self.result_selected("MaxShear", self.result_obj.MaxShear, "MPa")
+            self.result_selected("MaxShear", self.result_obj.MaxShear, "MPa", "Max Shear Stress")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def max_prin_selected(self, state):
         if len(self.result_obj.PrincipalMax) > 0:
-            self.result_selected("MaxPrin", self.result_obj.PrincipalMax, "MPa")
+            self.result_selected("MaxPrin", self.result_obj.PrincipalMax, "MPa", "Max Principal Stress")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def temperature_selected(self, state):
         if len(self.result_obj.Temperature) > 0:
-            self.result_selected("Temp", self.result_obj.Temperature, "K")
+            self.result_selected("Temp", self.result_obj.Temperature, "K", "Temperature")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def massflowrate_selected(self, state):
         if len(self.result_obj.MassFlowRate) > 0:
-            self.result_selected("MFlow", self.result_obj.MassFlowRate, "kg/s")
+            self.result_selected("MFlow", self.result_obj.MassFlowRate, "kg/s", "Mass Flow Rate")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def networkpressure_selected(self, state):
         if len(self.result_obj.NetworkPressure) > 0:
-            self.result_selected("NPress", self.result_obj.NetworkPressure, "MPa")
+            self.result_selected("NPress", self.result_obj.NetworkPressure, "MPa", "Network Pressure")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def min_prin_selected(self, state):
         if len(self.result_obj.PrincipalMin) > 0:
-            self.result_selected("MinPrin", self.result_obj.PrincipalMin, "MPa")
+            self.result_selected("MinPrin", self.result_obj.PrincipalMin, "MPa", "Min Principal Stress")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def peeq_selected(self, state):
         if len(self.result_obj.Peeq) > 0:
-            self.result_selected("Peeq", self.result_obj.Peeq, "")
+            self.result_selected("Peeq", self.result_obj.Peeq, "", "Equivalent plastic strain")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -485,7 +485,7 @@ class _TaskPanel:
         scalar_list = list(d[axis])
         return scalar_list
 
-    def result_selected(self, res_type, res_values, res_unit):
+    def result_selected(self, res_type, res_values, res_unit, res_title):
         FreeCAD.FEM_dialog["results_type"] = res_type
         (minm, maxm) = self.get_result_stats(res_type)
         self.update_colors_stats(res_values, res_unit, minm, maxm)
@@ -494,7 +494,7 @@ class _TaskPanel:
             plt.close()
         plt.hist(res_values, bins=50, alpha=0.5, facecolor="blue")
         plt.xlabel(res_unit)
-        plt.title("Histogram of {}".format(res_type))
+        plt.title("Histogram of {}".format(res_title))
         plt.ylabel("Nodes")
         plt.grid(True)
         fig_manager = plt.get_current_fig_manager()
