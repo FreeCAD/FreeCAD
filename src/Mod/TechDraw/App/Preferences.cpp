@@ -193,6 +193,9 @@ QString Preferences::defaultTemplate()
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
     std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
     std::string prefFileName = hGrp->GetASCII("TemplateFile",defaultFileName.c_str());
+    if (prefFileName.empty()) {
+        prefFileName = defaultFileName;
+    }
     QString templateFileName = QString::fromStdString(prefFileName);
     Base::FileInfo fi(prefFileName);
     if (!fi.isReadable()) {
@@ -209,6 +212,9 @@ QString Preferences::defaultTemplateDir()
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
     std::string prefTemplateDir = hGrp->GetASCII("TemplateDir", defaultDir.c_str());
+    if (prefTemplateDir.empty()) {
+        prefTemplateDir = defaultDir;
+    }
     QString templateDir = QString::fromStdString(prefTemplateDir);
     Base::FileInfo fi(prefTemplateDir);
     if (!fi.isReadable()) {
@@ -226,6 +232,9 @@ std::string Preferences::lineGroupFile()
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
     std::string defaultFileName = defaultDir + "LineGroup.csv";
     std::string lgFileName = hGrp->GetASCII("LineGroupFile",defaultFileName.c_str());
+    if (lgFileName.empty()) {
+        lgFileName = defaultFileName;
+    }
     Base::FileInfo fi(lgFileName);
     if (!fi.isReadable()) {
         Base::Console().Warning("Line Group File: %s is not readable\n", lgFileName.c_str());
@@ -255,4 +264,41 @@ int Preferences::mattingStyle()
                                          GetGroup("Mod/TechDraw/Decorations");
     int style = hGrp->GetInt("MattingStyle", 0);
     return style;
+}
+
+std::string Preferences::svgFile()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
+
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
+    std::string defaultFileName = defaultDir + "simple.svg";
+    std::string prefHatchFile = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    if (prefHatchFile.empty()) {
+        prefHatchFile = defaultFileName;
+    }
+    std::string result = prefHatchFile;
+    Base::FileInfo fi(result);
+    if (!fi.isReadable()) {
+        result = defaultFileName;
+        Base::Console().Warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
+    }
+    return result;
+}
+
+std::string Preferences::patFile()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
+    std::string defaultFileName = defaultDir + "FCPAT.pat";
+    std::string prefHatchFile = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
+    std::string result = prefHatchFile;
+    Base::FileInfo fi(result);
+    if (!fi.isReadable()) {
+        result = defaultFileName;
+        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
+    }
+    return result;
 }
