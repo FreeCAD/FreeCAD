@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="132"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Markera ytor/kanter/hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="136"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>För att lägga till referenser: välj dem i 3D-vyn och klicka på "Lägg till".</translation>
     </message>
   </context>
   <context>
@@ -24,13 +24,13 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Arbetskatalog</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Skriv</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="245"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Förfluten tid:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
@@ -55,12 +55,12 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Skriv om</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Kör om</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
@@ -238,7 +238,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="338"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Balkens tvärsnitt</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="342"/>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="406"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Elasticitetsekvation</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
@@ -303,7 +303,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="389"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Elektrostatisk ekvation</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="393"/>
@@ -316,7 +316,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="423"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Flödesekvation</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="427"/>
@@ -429,12 +429,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Material för solid</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Skapar ett FEM-material för solid</translation>
     </message>
   </context>
   <context>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="719"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Rensa FEM-nät</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="723"/>
@@ -542,7 +542,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="917"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Rensa resultaten</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="922"/>
@@ -666,7 +666,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Markeringsläge</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
@@ -679,7 +679,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="151"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Markera solider</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="155"/>

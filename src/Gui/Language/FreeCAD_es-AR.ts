@@ -7493,7 +7493,7 @@ underscore, and must not start with a digit.</source>
     </message>
     <message>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
+      <translation>Seleccione qué objeto copiar o excluir cuando la configuración cambia. Todos los objetos vinculados externos son excluidos por defecto.</translation>
     </message>
     <message>
       <source>Please select which objects to copy when the configuration is changed</source>

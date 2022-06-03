@@ -1382,7 +1382,7 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
     <name>MeshGui::RemeshGmsh</name>
     <message>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Remesh di Gmsh</translation>
     </message>
     <message>
       <source>Remeshing Parameter</source>
@@ -1754,7 +1754,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>Formato Di Produzione 3D</translation>
     </message>
     <message>
       <source>Export mesh</source>
@@ -1814,7 +1814,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Visualizza colori</translation>
     </message>
     <message>
       <source>Leave info mode</source>
@@ -1869,15 +1869,15 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Modifica della Mesh</translation>
     </message>
     <message>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Booleana su Mesh</translation>
     </message>
     <message>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Taglio della mesh</translation>
     </message>
     <message>
       <source>Mesh segmentation</source>
@@ -1885,7 +1885,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>Analisi della Mesh</translation>
     </message>
   </context>
 </TS>

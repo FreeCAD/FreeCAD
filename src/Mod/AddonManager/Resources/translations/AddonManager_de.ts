@@ -201,12 +201,12 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="../../addonmanager_workers.py" line="1200"/>
       <source>Error: Error while downloading ZIP file for {}</source>
-      <translation type="unfinished">Error: Error while downloading ZIP file for {}</translation>
+      <translation>Fehler: Fehler beim Herunterladen der ZIP-Datei für {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1225"/>
       <source>Successfully installed {} from ZIP file</source>
-      <translation type="unfinished">Successfully installed {} from ZIP file</translation>
+      <translation>{} erfolgreich aus der ZIP-Datei installiert</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1348"/>
@@ -435,7 +435,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="../../package_details.py" line="226"/>
       <source>An update is available</source>
-      <translation type="unfinished">An update is available</translation>
+      <translation>Ein Update ist verfügbar</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="244"/>

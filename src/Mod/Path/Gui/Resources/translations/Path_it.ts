@@ -850,7 +850,7 @@
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="92"/>
       <source>break segments into smaller segments of this length.</source>
-      <translation type="unfinished">break segments into smaller segments of this length.</translation>
+      <translation>spezza segmenti in segmenti più piccoli di questa lunghezza.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="71"/>
@@ -2581,7 +2581,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
       <source>Use Machine CRC</source>
-      <translation type="unfinished">Use Machine CRC</translation>
+      <translation>Usa Macchina CRC</translation>
     </message>
   </context>
   <context>
@@ -3698,7 +3698,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="992"/>
       <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation type="unfinished">Only a vertex selected. Add another feature to the Base Geometry.</translation>
+      <translation>Solo un vertice selezionato. Aggiungi un'altra funzionalità alla Geometria base.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1018"/>
@@ -3907,7 +3907,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="494"/>
       <source>Rotational</source>
-      <translation type="unfinished">Rotational</translation>
+      <translation>Rotazionale</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceGui.py" line="282"/>
@@ -6728,7 +6728,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="98"/>
       <source>Default Geometry Tolerance</source>
-      <translation type="unfinished">Default Geometry Tolerance</translation>
+      <translation>Tolleranza Geometrica Predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="105"/>
@@ -6774,12 +6774,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="236"/>
       <source>Open File Dialog</source>
-      <translation type="unfinished">Open File Dialog</translation>
+      <translation>Apri Finestra File</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="241"/>
       <source>Open File Dialog on conflict</source>
-      <translation type="unfinished">Open File Dialog on conflict</translation>
+      <translation>Apri la finestra di dialogo dei file sul conflitto</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="246"/>

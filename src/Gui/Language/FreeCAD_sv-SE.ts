@@ -3945,7 +3945,7 @@ Värdet är sfärens diameter som passar på skärmen.</translation>
     </message>
     <message>
       <source> Zoom step</source>
-      <translation type="unfinished"> Zoom step</translation>
+      <translation>Zoomsteg</translation>
     </message>
     <message>
       <source>How much will be zoomed.
@@ -7508,7 +7508,7 @@ understrykningstecken och får inte börja med en siffra.</translation>
     </message>
     <message>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
+      <translation>Välj vilket objekt som ska kopieras eller uteslutas när konfigurationen ändras. Alla externa länkade objekt utesluts som standard.</translation>
     </message>
     <message>
       <source>Please select which objects to copy when the configuration is changed</source>

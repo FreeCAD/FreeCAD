@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="77"/>
       <source>No object named {name}</source>
-      <translation type="unfinished">No object named {name}</translation>
+      <translation>Nessun oggetto denominato {name}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="81"/>
@@ -53,12 +53,12 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="495"/>
       <source>{mode} (add {morerefs})</source>
-      <translation type="unfinished">{mode} (add {morerefs})</translation>
+      <translation>{mode} (aggiungi {morerefs})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="498"/>
       <source>{mode} (add more references)</source>
-      <translation type="unfinished">{mode} (add more references)</translation>
+      <translation>{mode} (aggiungi altri riferimenti)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="528"/>
@@ -68,7 +68,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="544"/>
       <source>Reference{i}</source>
-      <translation type="unfinished">Reference{i}</translation>
+      <translation>Riferimento{i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="549"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="573"/>
       <source>Failed to resolve links. {err}</source>
-      <translation type="unfinished">Failed to resolve links. {err}</translation>
+      <translation>Impossibile risolvere i link. {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
@@ -88,12 +88,12 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="584"/>
       <source>Attached with mode {mode}</source>
-      <translation type="unfinished">Attached with mode {mode}</translation>
+      <translation>Associato con modalità {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
       <source>Error: {err}</source>
-      <translation type="unfinished">Error: {err}</translation>
+      <translation>Errore: {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
@@ -143,7 +143,7 @@ for collision or distance filtering.</translation>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="100"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Selezione errata</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="99"/>
@@ -164,7 +164,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="41"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>Esplodi composto</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="47"/>
@@ -176,12 +176,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="53"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>Prima selezionare una forma che è un composto.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="54"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Selezione errata</translation>
     </message>
   </context>
   <context>
@@ -189,7 +189,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="176"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Collega oggetti</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="181"/>
@@ -215,12 +215,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="272"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Incorpora oggetto</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="277"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Fonde un oggetto in un altro, avendo cura di preservare i vuoti.</translation>
     </message>
   </context>
   <context>
@@ -244,7 +244,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../BOPTools/JoinFeatures.py" line="286"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="382"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Selezione errata</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="72"/>
@@ -254,12 +254,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>Selezionare almeno due oggetti, o uno o più composti</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="285"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>Selezionare l'oggetto base, quindi l'oggetto da incorporare, quindi invocare questo strumento.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
@@ -301,12 +301,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="530"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Selezione errata</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="171"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Frammenti booleani</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
@@ -325,7 +325,7 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="529"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Selezionare almeno due oggetti, o uno o più composti. Se è selezionato un solo composto, le forme composte saranno intersecate tra di loro (altrimenti, i composti con auto-intersezioni non sono validi).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="330"/>
@@ -381,12 +381,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Crea tubo</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Crea un tubo</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Crea tubo</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="211"/>
@@ -791,7 +791,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1398"/>
       <source>Selection </source>
-      <translation type="unfinished">Selection </translation>
+      <translation>Selezione </translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1482"/>
@@ -3610,7 +3610,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="243"/>
       <source>Length to extrude against the direction (can be negative).</source>
-      <translation type="unfinished">Length to extrude against the direction (can be negative).</translation>
+      <translation>Lunghezza da estrudere lungo la direzione (può essere negativo).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
@@ -5398,12 +5398,12 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
       <source>Cut face</source>
-      <translation type="unfinished">Cut face</translation>
+      <translation>Taglia faccia</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
       <source>Color of cut face</source>
-      <translation type="unfinished">Color of cut face</translation>
+      <translation>Colore della faccia tagliata</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -5437,17 +5437,17 @@ Works only if all objects have the same values.</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="342"/>
       <source>0 %</source>
-      <translation type="unfinished">0 %</translation>
+      <translation>0 %</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="361"/>
       <source>Refreshes the list of visible objects</source>
-      <translation type="unfinished">Refreshes the list of visible objects</translation>
+      <translation>Aggiorna l'elenco degli oggetti visibili</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="364"/>
       <source>Refresh view</source>
-      <translation type="unfinished">Refresh view</translation>
+      <translation>Aggiorna vista</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="394"/>
@@ -5543,7 +5543,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="14"/>
       <source>Shape from mesh</source>
-      <translation type="unfinished">Shape from mesh</translation>
+      <translation>Forma da mesh</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
@@ -5586,7 +5586,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="338"/>
       <source>Select one or more edges from a single object.</source>
-      <translation type="unfinished">Select one or more edges from a single object.</translation>
+      <translation>Selezionare uno o più bordi di un singolo oggetto.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="345"/>

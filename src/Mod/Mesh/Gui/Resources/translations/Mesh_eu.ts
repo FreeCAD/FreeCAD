@@ -1875,15 +1875,15 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
     </message>
     <message>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Amaraunaren aldaketa</translation>
     </message>
     <message>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Amaraunaren eragiketa boolearra</translation>
     </message>
     <message>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Amaraunaren mozketa</translation>
     </message>
     <message>
       <source>Mesh segmentation</source>
@@ -1891,7 +1891,7 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
     </message>
     <message>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>Amaraunaren analisia</translation>
     </message>
   </context>
 </TS>

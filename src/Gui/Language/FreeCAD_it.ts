@@ -1462,7 +1462,7 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>La forma del cursore sarà un blocco</translation>
     </message>
     <message>
       <source>Enable block cursor</source>
@@ -1585,7 +1585,7 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <source>Substitute decimal separator (needs restart)</source>
-      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+      <translation>Sostituire il separatore decimale (richiede il riavvio)</translation>
     </message>
     <message>
       <source>Preference packs</source>
@@ -1639,11 +1639,11 @@ Guarda la Wiki di FreeCAD per maggiori dettagli sull'immagine.</translation>
     </message>
     <message>
       <source>The text cursor will be blinking</source>
-      <translation type="unfinished">The text cursor will be blinking</translation>
+      <translation>Il cursore di testo lampeggierà</translation>
     </message>
     <message>
       <source>Enable cursor blinking</source>
-      <translation type="unfinished">Enable cursor blinking</translation>
+      <translation>Abilita lampeggiamento cursore</translation>
     </message>
     <message>
       <source>Style sheet:</source>
@@ -1839,7 +1839,7 @@ la schermata di avvio</translation>
     </message>
     <message>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
-      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+      <translation>Apri Addon Manager dove possono essere scaricate le macro create dalla community e da altri addon.</translation>
     </message>
     <message>
       <source>Download</source>
@@ -2239,7 +2239,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Open Addon Manager...</source>
-      <translation type="unfinished">Open Addon Manager...</translation>
+      <translation>Apri Addon Manager...</translation>
     </message>
   </context>
   <context>
@@ -2627,7 +2627,7 @@ dalla console di Python al pannello vista Report</translation>
     </message>
     <message>
       <source>Available backup files:</source>
-      <translation type="unfinished">Available backup files:</translation>
+      <translation>File di backup disponibili:</translation>
     </message>
   </context>
   <context>
@@ -3073,7 +3073,7 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     </message>
     <message>
       <source>Color gradient starts from the zero value</source>
-      <translation type="unfinished">Color gradient starts from the zero value</translation>
+      <translation>Il gradiente del colore inizia dal valore zero</translation>
     </message>
     <message>
       <source>&amp;Zero</source>
@@ -3913,7 +3913,7 @@ Turntable: la parte verrà ruotata attorno all'asse z.</translation>
     </message>
     <message>
       <source>Camera zoom</source>
-      <translation type="unfinished">Camera zoom</translation>
+      <translation>Zoom fotocamera</translation>
     </message>
     <message>
       <source>Sets camera zoom for new documents.
@@ -3943,7 +3943,7 @@ Il valore è il diametro della sfera da adattare allo schermo.</translation>
     </message>
     <message>
       <source> Zoom step</source>
-      <translation type="unfinished"> Zoom step</translation>
+      <translation> Fattore di zoom</translation>
     </message>
     <message>
       <source>How much will be zoomed.
@@ -4034,7 +4034,7 @@ orizzontale nella console di Python</translation>
     </message>
     <message>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>La forma del cursore sarà un blocco</translation>
     </message>
     <message>
       <source>Enable block cursor</source>
@@ -5612,7 +5612,7 @@ Si desidera salvare le modifiche?</translation>
     </message>
     <message>
       <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
+      <translation>Apri Addon Manager</translation>
     </message>
     <message>
       <source>Close All</source>
@@ -5789,15 +5789,15 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Press right mouse button and move mouse</source>
-      <translation type="unfinished">Press right mouse button and move mouse</translation>
+      <translation>Premere il tasto destro del mouse e spostare il mouse</translation>
     </message>
     <message>
       <source>Press left mouse button and move mouse</source>
-      <translation type="unfinished">Press left mouse button and move mouse</translation>
+      <translation>Premere il tasto sinistro del mouse e spostare il mouse</translation>
     </message>
     <message>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
-      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
+      <translation>Premere il pulsante centrale del mouse o MAIUSC e il pulsante destro del mouse</translation>
     </message>
   </context>
   <context>
@@ -5891,7 +5891,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Rename property group</source>
-      <translation type="unfinished">Rename property group</translation>
+      <translation>Rinomina gruppo proprietà</translation>
     </message>
     <message>
       <source>Remove property</source>
@@ -5899,7 +5899,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Group name:</source>
-      <translation type="unfinished">Group name:</translation>
+      <translation>Nome gruppo:</translation>
     </message>
   </context>
   <context>
@@ -6622,11 +6622,11 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <source>Add dependent objects to selection</source>
-      <translation type="unfinished">Add dependent objects to selection</translation>
+      <translation>Aggiungi oggetti dipendenti alla selezione</translation>
     </message>
     <message>
       <source>Adds all dependent objects to the selection</source>
-      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+      <translation>Aggiunge tutti gli oggetti dipendenti alla selezione</translation>
     </message>
     <message>
       <source>Close document</source>
@@ -7173,15 +7173,15 @@ Vuoi continuare?</translation>
     </message>
     <message>
       <source>Please check report view for more...</source>
-      <translation type="unfinished">Please check report view for more...</translation>
+      <translation>Per favore controlla la visualizzazione dei report per saperne di più...</translation>
     </message>
     <message>
       <source>Physical path:</source>
-      <translation type="unfinished">Physical path:</translation>
+      <translation>Percorso fisico:</translation>
     </message>
     <message>
       <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
+      <translation>Documento:</translation>
     </message>
     <message>
       <source>Path:</source>
@@ -7575,7 +7575,7 @@ the current copy will be lost.
     </message>
     <message>
       <source>Transform at the origin of the placement</source>
-      <translation type="unfinished">Transform at the origin of the placement</translation>
+      <translation>Trasformazione all'origine del posizionamento</translation>
     </message>
     <message>
       <source>Override colors...</source>
@@ -8531,11 +8531,11 @@ the current copy will be lost.
     <name>StdCmdReportBug</name>
     <message>
       <source>Report a bug</source>
-      <translation type="unfinished">Report a bug</translation>
+      <translation>Segnala un bug</translation>
     </message>
     <message>
       <source>Report a bug or suggest a feature</source>
-      <translation type="unfinished">Report a bug or suggest a feature</translation>
+      <translation>Segnala un bug o suggerisci una funzionalità</translation>
     </message>
   </context>
   <context>

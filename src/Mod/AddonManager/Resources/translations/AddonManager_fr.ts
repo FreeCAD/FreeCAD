@@ -1046,7 +1046,7 @@
       <location filename="../../install_to_toolbar.py" line="239"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>exécuter</translation>
+      <translation>Lancer</translation>
     </message>
   </context>
   <context>

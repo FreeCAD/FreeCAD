@@ -149,7 +149,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="1009"/>
       <source>Workbench successfully updated.</source>
-      <translation type="unfinished">Workbench successfully updated.</translation>
+      <translation>Arbetsbänkens uppdatering lyckades.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1012"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="1084"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
-      <translation type="unfinished">Workbench successfully installed. Please restart FreeCAD to apply the changes.</translation>
+      <translation>Arbetsbänken har installerats. Starta om FreeCAD för att tillämpa ändringarna.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1090"/>
@@ -174,7 +174,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="1114"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
-      <translation type="unfinished">A macro has been installed and is available under Macro -&gt; Macros menu</translation>
+      <translation>Ett makro har installerats och är tillgängligt under menyn Makro -> Makron</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1133"/>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../../package_details.py" line="226"/>
       <source>An update is available</source>
-      <translation type="unfinished">An update is available</translation>
+      <translation>En uppdatering är tillgänglig</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="244"/>
@@ -773,7 +773,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1251"/>
       <source>Continue with installation of {} anyway?</source>
-      <translation type="unfinished">Continue with installation of {} anyway?</translation>
+      <translation>Fortsätt med installationen av {} ändå?</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="1263"/>
@@ -804,7 +804,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1399"/>
       <source>All packages were successfully updated</source>
-      <translation type="unfinished">All packages were successfully updated</translation>
+      <translation>Alla paket har uppdaterats</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="1402"/>
@@ -828,7 +828,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1417"/>
       <source>Some packages updates failed.</source>
-      <translation type="unfinished">Some packages updates failed.</translation>
+      <translation>Vissa paketuppdateringar misslyckades.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="1447"/>
@@ -848,7 +848,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1552"/>
       <source>Execution of macro failed. See console for failure details.</source>
-      <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
+      <translation>Exekvering av makro misslyckades. Se konsolen för detaljer om fel.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="1571"/>
@@ -885,7 +885,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1665"/>
       <source>Failed to uninstall {}. Please remove manually.</source>
-      <translation type="unfinished">Failed to uninstall {}. Please remove manually.</translation>
+      <translation>Det gick inte att avinstallera {}. Ta bort manuellt.</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="151"/>

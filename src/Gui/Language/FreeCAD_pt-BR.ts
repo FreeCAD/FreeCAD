@@ -180,7 +180,7 @@
     </message>
     <message>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Ativar/Desativar elementos do array</translation>
     </message>
     <message>
       <source>Link Transform</source>
@@ -7547,7 +7547,7 @@ the current copy will be lost.
     </message>
     <message>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Ativar/Desativar elementos do array</translation>
     </message>
     <message>
       <source>Change whether show each link array element as individual objects</source>

@@ -264,7 +264,7 @@ Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela 
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>Hautatu inausiko den objektua, ondoren inausitakoan doituko den objektua, eta ondoren aplikatu tresna hau.</translation>
     </message>
   </context>
   <context>
@@ -306,7 +306,7 @@ Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela 
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="171"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Zati boolearrak</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
@@ -315,37 +315,36 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Sortu 'zati boolearrak' objektua hautatutako bi objektu edo gehiagorekin,
+edo konposatu baten barruko formekin.
+Batuketa boolearra da, jatorrizko formen ebakiduretan xerratzen dena.
+'Konposatu-iragazki' bat erabili daiteke banakako xerrak erauzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="529"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Hautatu gutxienez bi objektu edo konposatu bat edo gehiago. Konposatu bakar bat hautatzen baduzu, konposatutako formak elkarrekin ebakiko dira (bestela, autoebakidurak dituzten konposatuak baliogabeak dira).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="330"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Xerraketa konposatura</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Xerratu objektu hautatu bat beste objektu batzuk mozte-tresna gisa erabilita.
+Sortuko diren piezak konposatu batean biltegiratuko dira.
+'Konposatu-iragazki' bat erabili daiteke banakako xerrak erauzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="346"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="377"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Hautatu bi objektu gutxienez. Lehena xerratuko den objektua da; gainerakoak xerratzeko erabiliko dira.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="362"/>

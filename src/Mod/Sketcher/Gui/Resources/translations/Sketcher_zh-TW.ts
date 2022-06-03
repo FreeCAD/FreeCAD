@@ -494,7 +494,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2700"/>
       <source>Constrain horizontal distance</source>
-      <translation type="unfinished">Constrain horizontal distance</translation>
+      <translation>水平距離拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2701"/>

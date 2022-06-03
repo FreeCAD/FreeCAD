@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="129"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
-      <translation type="unfinished">Unable to read data from GitHub: check your internet connection and proxy settings and try again.</translation>
+      <translation>No se han podido leer los datos de GitHub: comprueba tu conexión a Internet y la configuración del proxy e intente de nuevo.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="205"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="456"/>
       <source>Unable to fetch git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch git updates for workbench {}</translation>
+      <translation>No se pueden obtener actualizaciones de git para el entorno de trabajo {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="471"/>
@@ -31,12 +31,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="512"/>
       <source>Failed to read metadata from {name}</source>
-      <translation type="unfinished">Failed to read metadata from {name}</translation>
+      <translation>Error al leer los metadatos de {name}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="535"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
-      <translation type="unfinished">Failed to fetch code for macro &apos;{name}&apos;</translation>
+      <translation>Error al obtener el código para el macro &apos;{name}&apos;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="593"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="624"/>
       <source>Failed to execute Git Python command: check installation of GitPython and/or git</source>
-      <translation type="unfinished">Failed to execute Git Python command: check installation of GitPython and/or git</translation>
+      <translation>Error al ejecutar el comando de Git Python: compruebe la instalación de GitPython y/o git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="645"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="686"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
-      <translation type="unfinished">Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</translation>
+      <translation>Error al conectar a la Wiki, FreeCAD no puede recuperar la lista de macros de la Wiki en este momento</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="732"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="756"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
+      <translation>Administrador de complementos: un proceso de trabajo falló al detenerse ({name})</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="775"/>
@@ -86,23 +86,23 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="790"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
-      <translation type="unfinished">Out of {num_macros} macros, {num_failed} timed out while processing</translation>
+      <translation>De {num_macros} macros, a {num_failed} se les agotó el tiempo durante el procesamiento</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="821"/>
       <source>Getting metadata from macro {}</source>
-      <translation type="unfinished">Getting metadata from macro {}</translation>
+      <translation>Obteniendo metadatos de la macro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="834"/>
       <source>Timeout while fetching metadata for macro {}</source>
-      <translation type="unfinished">Timeout while fetching metadata for macro {}</translation>
+      <translation>Tiempo de espera agotado al buscar metadatos para la macro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="845"/>
       <source>Failed to kill process for macro {}!
 </source>
-      <translation type="unfinished">Failed to kill process for macro {}!
+      <translation>¡Error al matar el proceso para macro {}!
 </translation>
     </message>
     <message>
@@ -123,23 +123,23 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="926"/>
       <source>GitPython not found. Using ZIP file download instead.</source>
-      <translation type="unfinished">GitPython not found. Using ZIP file download instead.</translation>
+      <translation>GitPython no encontrado. Usando la descarga de archivos ZIP en su lugar.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="934"/>
       <source>Your version of Python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
-      <translation type="unfinished">Your version of Python doesn&apos;t appear to support ZIP files. Unable to proceed.</translation>
+      <translation>Tu versión de Python no parece soportar archivos ZIP. No se puede continuar.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="971"/>
       <source>No Git Python installed, skipping git operations</source>
-      <translation type="unfinished">No Git Python installed, skipping git operations</translation>
+      <translation>Git Python no está instalado, saltando las operaciones git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="990"/>
       <location filename="../../addonmanager_workers.py" line="1037"/>
       <source>You are installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">You are installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Estás instalando un entorno de trabajo de Python 2 en un sistema ejecutando Python 3 - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1004"/>

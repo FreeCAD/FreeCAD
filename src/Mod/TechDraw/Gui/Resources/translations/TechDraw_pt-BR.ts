@@ -6,43 +6,43 @@
     <message>
       <location filename="../../../TechDrawTools/CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Mover Visualização</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Mover uma Vista para uma nova Página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Mover a Vista para uma Página diferente</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Selecione a Vista para mover da lista.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Selecione Visualização</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Selecione Da Página.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecionar Página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Selecinar para Página.</translation>
     </message>
   </context>
   <context>
@@ -50,48 +50,48 @@
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Compartilhar Visualização com outra Página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Vista para compartilhar</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Selecione a Vista para mover da lista.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Selecione Visualização</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Selecione Da Página.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecionar Página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Selecinar para Página.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>Vista compartilhada</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Compartilhe uma vista numa segunda página</translation>
     </message>
   </context>
   <context>
@@ -439,12 +439,12 @@
     <message>
       <location filename="../../Command.cpp" line="1445"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Salvar arquivo DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
   </context>
   <context>
@@ -470,12 +470,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1642"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>Alongar linha</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1643"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Estenda uma linha ou linha central cosmética em ambas as pontas:&lt;br&gt;- Especifique a distância delta (opcional)&lt;br&gt;- Selecione uma única linha&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -488,12 +488,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1745"/>
       <source>Calculate the area of selected faces</source>
-      <translation type="unfinished">Calculate the area of selected faces</translation>
+      <translation>Calcular a área das faces selecionadas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1746"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
-      <translation type="unfinished">Select several faces&lt;br&gt;    - click this tool</translation>
+      <translation>Selecione vários faces&lt;br&gt;    - clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -506,12 +506,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1061"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation type="unfinished">Cascade Horizontal Dimensions</translation>
+      <translation>Inserir cota horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1062"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Dimensões horizontais do espaço uniformemente:&lt;br&gt;- Especifique o espaçamento em cascata (opcional)&lt;br&gt;- Selecione duas ou mais dimensões horizontais&lt;br&gt;- A primeira dimensão define a posição&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -525,13 +525,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="887"/>
       <location filename="../../CommandExtensionDims.cpp" line="1137"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation type="unfinished">Cascade Horizontal Dimensions</translation>
+      <translation>Inserir cota horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="888"/>
       <location filename="../../CommandExtensionDims.cpp" line="1138"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Dimensões horizontais do espaço uniformemente:&lt;br&gt;- Especifique o espaçamento em cascata (opcional)&lt;br&gt;- Selecione duas ou mais dimensões horizontais&lt;br&gt;- A primeira dimensão define a posição&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -545,13 +545,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1025"/>
       <location filename="../../CommandExtensionDims.cpp" line="1155"/>
       <source>Cascade Oblique Dimensions</source>
-      <translation type="unfinished">Cascade Oblique Dimensions</translation>
+      <translation>Dimensões Transformações em Cascata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1026"/>
       <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Dimensões horizontais do espaço uniformemente:&lt;br&gt;- Especifique o espaçamento em cascata (opcional)&lt;br&gt;- Selecione duas ou mais dimensões horizontais&lt;br&gt;- A primeira dimensão define a posição&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -565,13 +565,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="952"/>
       <location filename="../../CommandExtensionDims.cpp" line="1146"/>
       <source>Cascade Vertical Dimensions</source>
-      <translation type="unfinished">Cascade Vertical Dimensions</translation>
+      <translation>Inserir cota horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="953"/>
       <location filename="../../CommandExtensionDims.cpp" line="1147"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Dimensões verticais no espaço uniformemente:&lt;br&gt;- Especifique o espaçamento em cascata (opcional)&lt;br&gt;- Selecione duas ou mais dimensões verticais&lt;br&gt;- A primeira dimensão define a posição&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -584,12 +584,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2031"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Criar Dimensão do Chanfro Horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2032"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Criar um tamanho horizontal e dimensão de ângulo para um chanfro:&lt;br&gt;- Selecionar dois vértices&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -602,12 +602,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="746"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Alterar Atributos da Linha</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="747"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</translation>
+      <translation>Altere os atributos das linhas e das linhas de centro:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione uma ou mais linhas&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -621,13 +621,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="240"/>
       <location filename="../../CommandExtensionPack.cpp" line="340"/>
       <source>Add Circle Centerlines</source>
-      <translation type="unfinished">Add Circle Centerlines</translation>
+      <translation>Adicionar círculo linhas de centro</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="241"/>
       <location filename="../../CommandExtensionPack.cpp" line="341"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>Adicionar linhas de centro para círculos e arcos:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione um ou mais círculos ou arcos&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -640,12 +640,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="274"/>
       <source>Add Circle Centerlines</source>
-      <translation type="unfinished">Add Circle Centerlines</translation>
+      <translation>Adicionar círculo linhas de centro</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="275"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>Adicionar linhas de centro para círculos e arcos:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione um ou mais círculos ou arcos&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -658,12 +658,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1408"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Criar dimensão horizontal em sequência</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1409"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Criar uma sequência de dimensões horizontais alinhadas:&lt;br&gt;- Selecione três ou mais vértices&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -676,12 +676,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1770"/>
       <source>Create Horizontal Coordinate Dimensions</source>
-      <translation type="unfinished">Create Horizontal Coordinate Dimensions</translation>
+      <translation>Criar Dimensões de Coordenadas Horizontais</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1771"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>Criar multiplas Dimensões horizontais epaçadas uniformemente começando da mesma linha de base:&lt;br&gt;- Especifique o espaçamento em cascata (opcional)&lt;br&gt;- Selecione três ou mais vértices&lt;br&gt;- A ordem da seleção dos primeiros dois vértices determina a posição da linha base &lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -695,13 +695,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1215"/>
       <location filename="../../CommandExtensionDims.cpp" line="1482"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Criar dimensão horizontal em sequência</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1216"/>
       <location filename="../../CommandExtensionDims.cpp" line="1483"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Criar uma sequência de dimensões horizontais alinhadas:&lt;br&gt;- Selecione três ou mais vértices&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -715,13 +715,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1929"/>
       <location filename="../../CommandExtensionDims.cpp" line="2098"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Criar Dimensão do Chanfro Horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1930"/>
       <location filename="../../CommandExtensionDims.cpp" line="2099"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Criar um tamanho horizontal e dimensão de ângulo para um chanfro:&lt;br&gt;- Selecionar dois vértices&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -735,13 +735,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1561"/>
       <location filename="../../CommandExtensionDims.cpp" line="1846"/>
       <source>Create Horizontal Coordinate Dimensions</source>
-      <translation type="unfinished">Create Horizontal Coordinate Dimensions</translation>
+      <translation>Criar Dimensões de Coordenadas Horizontais</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1562"/>
       <location filename="../../CommandExtensionDims.cpp" line="1847"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>Criar multiplas Dimensões horizontais epaçadas uniformemente começando da mesma linha de base:&lt;br&gt;- Especifique o espaçamento em cascata (opcional)&lt;br&gt;- Selecione três ou mais vértices&lt;br&gt;- A ordem da seleção dos primeiros dois vértices determina a posição da linha base &lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -754,12 +754,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2131"/>
       <source>Create Arc Length Dimension</source>
-      <translation type="unfinished">Create Arc Length Dimension</translation>
+      <translation>Criar Dimensão de Comprimento de Arco</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <source>Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</translation>
+      <translation>Criar uma dimensão de comprimento de arco:&lt;br&gt;- Selecione um único arco&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -773,13 +773,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1374"/>
       <location filename="../../CommandExtensionDims.cpp" line="1496"/>
       <source>Create Oblique Chain Dimensions</source>
-      <translation type="unfinished">Create Oblique Chain Dimensions</translation>
+      <translation>Criar Cadeia de Dimensões Inclinadas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1375"/>
       <location filename="../../CommandExtensionDims.cpp" line="1497"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</translation>
+      <translation>Crie uma sequência de dimensões inclinadas e alinhadas:&lt;br&gt;- Selecione três ou mais vértices&lt;br&gt;- Os dois primeiros vértices definem a direção&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -793,13 +793,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1734"/>
       <location filename="../../CommandExtensionDims.cpp" line="1864"/>
       <source>Create Oblique Coordinate Dimensions</source>
-      <translation type="unfinished">Create Oblique Coordinate Dimensions</translation>
+      <translation>Criar Dimensões Coordenadas Inclinadas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1735"/>
       <location filename="../../CommandExtensionDims.cpp" line="1865"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</translation>
+      <translation>Criar multiplas dimensões inclinadas epaçadas uniformemente começando da mesma linha de base:&lt;br&gt;- Especifique o espaçamento em cascata (opcional) &lt;br&gt;- Selecione três ou mais vértices &lt;br&gt;- A ordem da seleção dos dois primeiros vértices determina a posição da linha base &lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -813,13 +813,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1282"/>
       <location filename="../../CommandExtensionDims.cpp" line="1489"/>
       <source>Create Vertical Chain Dimensions</source>
-      <translation type="unfinished">Create Vertical Chain Dimensions</translation>
+      <translation>Criar Dimensões Verticais em Sequência</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1283"/>
       <location filename="../../CommandExtensionDims.cpp" line="1490"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Criar uma sequência de dimensões verticais alinhadas:&lt;br&gt;- Selecione três ou mais vértices&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -833,13 +833,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1998"/>
       <location filename="../../CommandExtensionDims.cpp" line="2105"/>
       <source>Create Vertical Chamfer Dimension</source>
-      <translation type="unfinished">Create Vertical Chamfer Dimension</translation>
+      <translation>Criar Dimensão do Chanfro Vertical</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1999"/>
       <location filename="../../CommandExtensionDims.cpp" line="2106"/>
       <source>Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Criar um formato vertical e dimensão de ângulo para um chanfro:&lt;br&gt;- Selecionar dois vértices&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -853,13 +853,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1635"/>
       <location filename="../../CommandExtensionDims.cpp" line="1855"/>
       <source>Create Vertical Coordinate Dimensions</source>
-      <translation type="unfinished">Create Vertical Coordinate Dimensions</translation>
+      <translation>Criar Dimensões de Coordenadas Verticais</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1636"/>
       <location filename="../../CommandExtensionDims.cpp" line="1856"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>Criar multiplas Dimensões verticais epaçadas uniformemente começando da mesma linha base:&lt;br&gt;- Especifique o espaçamento em cascata (opcional)&lt;br&gt;- Selecione três ou mais vértices&lt;br&gt;- A ordem da seleção dos primeiros dois vértices determina a posição da linha base &lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -872,12 +872,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2209"/>
       <source>Customize Format Label</source>
-      <translation type="unfinished">Customize Format Label</translation>
+      <translation>Personalizar Formato do Rótulo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2210"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
-      <translation type="unfinished">Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</translation>
+      <translation>Selecione uma dimensão ou um balão&lt;br&gt;    — clique nesta ferramenta&lt;br&gt;    — editar o campo Formato, usando o teclado e/ou os botões especiais</translation>
     </message>
   </context>
   <context>
@@ -891,13 +891,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="422"/>
       <location filename="../../CommandExtensionDims.cpp" line="529"/>
       <source>Decrease Decimal Places</source>
-      <translation type="unfinished">Decrease Decimal Places</translation>
+      <translation>Diminuir Casas Decimais</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="423"/>
       <location filename="../../CommandExtensionDims.cpp" line="530"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Diminuir o número de casas decimais do texto da dimensão:&lt;br&gt;- Selecionar uma ou mais dimensões&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -910,12 +910,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1056"/>
       <source>Add Cosmetic Circle</source>
-      <translation type="unfinished">Add Cosmetic Circle</translation>
+      <translation>Adicionar Círculo Cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1057"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</translation>
+      <translation>Adicione um círculo cosmético baseado em dois vértices:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione um vértice 1 (ponto central)&lt;br&gt;- Selecione vértice 2 (raio)&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -929,13 +929,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="895"/>
       <location filename="../../CommandExtensionPack.cpp" line="1141"/>
       <source>Add Cosmetic Arc</source>
-      <translation type="unfinished">Add Cosmetic Arc</translation>
+      <translation>Adicionar Arco Cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="896"/>
       <location filename="../../CommandExtensionPack.cpp" line="1142"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</translation>
+      <translation>Adicione um arco anti-horário cosmético baseado em três vértices:&lt;br&gt;- Especifique os atributos da linha(opcional)&lt;br&gt;- Selecione 1 vértice(ponto central)&lt;br&gt;- Selecione 2 vértices(radial e inicie o ângulo)&lt;br&gt;- Selecione 3 vértices(final do ângulo)&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -949,13 +949,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="956"/>
       <location filename="../../CommandExtensionPack.cpp" line="1132"/>
       <source>Add Cosmetic Circle</source>
-      <translation type="unfinished">Add Cosmetic Circle</translation>
+      <translation>Adicionar Círculo Cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="957"/>
       <location filename="../../CommandExtensionPack.cpp" line="1133"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</translation>
+      <translation>Adicione um círculo cosmético baseado em dois vértices:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione um vértice 1 (ponto central)&lt;br&gt;- Selecione vértice 2 (raio)&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -969,17 +969,17 @@
       <location filename="../../CommandExtensionPack.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="1151"/>
       <source>Add Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">Add Cosmetic Circle 3 Points</translation>
+      <translation>Adicionar Círculo Cosmético de 3 Pontos</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1022"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Adicione um círculo cosmético baseado em 3 vértices:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione 3 vértices&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1152"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Adicione um círculo cosmético baseado em 3 vértices:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione três vértices&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -993,13 +993,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="1572"/>
       <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>Alongar linha</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1573"/>
       <location filename="../../CommandExtensionPack.cpp" line="1711"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Estenda uma linha ou linha central cosmética em ambas as pontas:&lt;br&gt;- Especifique a distância delta (opcional)&lt;br&gt;- Selecione uma única linha&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1013,13 +1013,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="166"/>
       <location filename="../../CommandExtensionPack.cpp" line="348"/>
       <source>Add Bolt Circle Centerlines</source>
-      <translation type="unfinished">Add Bolt Circle Centerlines</translation>
+      <translation>Adicionar Círculo Linhas de centro Circular</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="167"/>
       <location filename="../../CommandExtensionPack.cpp" line="349"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</translation>
+      <translation>Adicionar linhas de centro a um padrão circular de círculos:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione três ou mais círculos formando um padrão circular&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1033,13 +1033,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="389"/>
       <location filename="../../CommandExtensionDims.cpp" line="522"/>
       <source>Increase Decimal Places</source>
-      <translation type="unfinished">Increase Decimal Places</translation>
+      <translation>Aumenta Casas Decimais</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="390"/>
       <location filename="../../CommandExtensionDims.cpp" line="523"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Aumenta o número de casas decimais do texto da dimensão:&lt;br&gt;- Selecionar uma ou mais dimensões&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1052,12 +1052,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="455"/>
       <source>Increase Decimal Places</source>
-      <translation type="unfinished">Increase Decimal Places</translation>
+      <translation>Aumenta Casas Decimais</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="456"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Aumenta o número de casas decimais do texto da dimensão:&lt;br&gt;- Selecionar uma ou mais dimensões&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1071,13 +1071,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="126"/>
       <location filename="../../CommandExtensionDims.cpp" line="322"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
+      <translation>Inserir&apos;⌀&apos; Prefixo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="127"/>
       <location filename="../../CommandExtensionDims.cpp" line="323"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Insere um &apos;⌀&apos; símbolo no início do texto da dimensão:&lt;br&gt;- Selecione uma ou mais dimensões&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1090,12 +1090,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="248"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
+      <translation>Inserir&apos;⌀&apos; Prefixo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="249"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Insere um &apos;⌀&apos; símbolo no início do texto da dimensão:&lt;br&gt;- Selecione uma ou mais dimensões&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -2210,7 +2210,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="763"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Alterar Atributos da Linha</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="822"/>
@@ -3464,7 +3464,7 @@ as bordas superior e esquerda da vista</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="14"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Mover Visualização</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="22"/>
@@ -4940,12 +4940,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="902"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Salvar arquivo DXF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="904"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1389"/>

@@ -49,7 +49,7 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="309"/>
       <source>Run</source>
-      <translation>Відстань між стіною і коньковою обшивкою.</translation>
+      <translation>Запустити</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>

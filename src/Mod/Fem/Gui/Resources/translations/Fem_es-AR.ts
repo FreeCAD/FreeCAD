@@ -86,12 +86,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="85"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Plano de recorte en la cara</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="89"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Agregar un plano de recorte en una cara seleccionada</translation>
     </message>
   </context>
   <context>
@@ -508,7 +508,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="839"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Crear una malla FEM desde una forma sólida o cara mediante el creador de mallas interno de Netgen</translation>
     </message>
   </context>
   <context>
@@ -521,7 +521,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="884"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Crear una región de malla FEM</translation>
     </message>
   </context>
   <context>
@@ -534,7 +534,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="902"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Muestra y visualiza los datos de resultados seleccionados</translation>
     </message>
   </context>
   <context>
@@ -547,7 +547,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="922"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Purga todos los resultados de los análisis activos</translation>
     </message>
   </context>
   <context>
@@ -560,7 +560,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="985"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>Crea un nuevo framework para el solucionador de FEM CalculiX (menos manejo de errores de resultado)</translation>
     </message>
   </context>
   <context>
@@ -568,7 +568,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>Solucionador CalculiX estándar</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="944"/>
@@ -586,7 +586,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Cambia los atributos del solucionador y ejecuta los cálculos para el solucionador seleccionado</translation>
     </message>
   </context>
   <context>
@@ -646,7 +646,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="273"/>
       <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
+      <translation>Selector de referencia de geometría para un</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="276"/>
@@ -661,7 +661,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="286"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Si no se añade ninguna geometría a la lista, se utilizarán todas las restantes.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
@@ -3607,7 +3607,7 @@ de que "MAXKOI" necesita ser aumentado.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="159"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation type="unfinished">Counter of the body (or face) with a capacitance</translation>
+      <translation>Contador del cuerpo (o cara) con una capacitancia</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>

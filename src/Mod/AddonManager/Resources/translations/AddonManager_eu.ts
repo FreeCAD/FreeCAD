@@ -1077,7 +1077,7 @@
     <message>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Package Name&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Pakete-izena&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="73"/>
@@ -1385,7 +1385,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../AddonManagerOptions.ui" line="206"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Erabili sistemaren proxya</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="219"/>
@@ -1395,7 +1395,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../AddonManagerOptions.ui" line="256"/>
       <source>Python executable (optional):</source>
-      <translation type="unfinished">Python executable (optional):</translation>
+      <translation>Python exekutagarria (aukerakoa):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="275"/>
@@ -1433,7 +1433,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation type="unfinished">Uninstalls a selected macro or workbench</translation>
+      <translation>Hautatutako makroa edo lan-mahaia desinstalatzen du</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="52"/>
@@ -1471,7 +1471,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Gehitu tresna-barrako botoi bat makro honi?</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
@@ -1522,17 +1522,17 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../proxy_authentication.ui" line="42"/>
       <source>Placeholder for proxy address</source>
-      <translation type="unfinished">Placeholder for proxy address</translation>
+      <translation>Proxy-helbiderako leku-marka</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="49"/>
       <source>Realm:</source>
-      <translation type="unfinished">Realm:</translation>
+      <translation>Domeinua:</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="56"/>
       <source>Placeholder for proxy realm</source>
-      <translation type="unfinished">Placeholder for proxy realm</translation>
+      <translation>Proxy-domeinurako leku-marka</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="67"/>
@@ -1573,7 +1573,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Gehitu tresna-barrako botoi bat makro honi?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>

@@ -291,12 +291,12 @@
     <message>
       <location filename="../../ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Distância inicial do offset no caminho de extrusão (valor positivo: extensão, negativo: redução)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Distância final do offset no caminho de extrusão (valor positivo: extensão, negativo: redução)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="684"/>
@@ -1854,22 +1854,22 @@
     <message>
       <location filename="../../ArchBuildingPart.py" line="629"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>A caixa de captura para objetos novos, expressa como [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="631"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Ativa/desativa a caixa de agrupamento automático</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="633"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Ajusta o tamanho automaticamente a partir do conteúdo</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="635"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Uma margem usada quando o tamanho automático está ligado</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="273"/>
@@ -2315,17 +2315,17 @@
     <message>
       <location filename="../../ArchWindow.py" line="294"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Esta janela não é baseada em esboço. Ela não será alinhada ou redimensionada.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="304"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Nenhuma restrição de largura e/ou altura no esboço da janela. A janela não será redimensionada.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="307"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Nenhuma janela encontrada. Não é possível continuar.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="363"/>
@@ -3027,22 +3027,16 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
-
-Building object is not allowed to accept Site and Building objects.
-
-Site and Building objects will be removed from the selection.
-
-You can change that in the preferences.</translation>
+      <translation>Em um objeto do tipo Edificação, você pode colocar qualquer objeto, exceto Sítio ou Edificação. Objetos destes tipos serão removidos da seleção. Você pode mudar isso nas preferências.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="246"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Não há nenhum objeto válido na seleção.
 
-Building creation aborted.</translation>
+Criação de edifício abortada.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="253"/>
@@ -3252,22 +3246,14 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
-
-Floor object is not allowed to accept Site, Building, or Floor objects.
-
-Site, Building, and Floor objects will be removed from the selection.
-
-You can change that in the preferences.</translation>
+      <translation>Em um objeto do tipo Pavimento, você pode colocar qualquer objeto, exceto Sítio, Edificação e Pavimento. Objetos destes tipos serão removidos da seleção. Você pode mudar isso nas preferências.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="154"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
-
-Floor creation aborted.</translation>
+      <translation>Não há nenhum objeto válido na seleção. Criação de pavimento abortada.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="161"/>
@@ -4008,22 +3994,16 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
-
-Site is not allowed to accept any other object besides Building.
-
-Other objects will be removed from the selection.
-
-Note: You can change that in the preferences.</translation>
+      <translation>Por favor, selecione apenas edifícios ou nada! O sítio não aceita objetos que não sejam edifícios. Outros objetos serão removidos da seleção. Você pode alterar isto nas preferências.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="535"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Não há nenhum objeto válido na seleção.
 
-Site creation aborted.</translation>
+Criação de sítio abortada.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -4188,12 +4168,12 @@ Site creation aborted.</translation>
     <message>
       <location filename="../../ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Cortar com uma linha</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Cortar um objeto com uma linha</translation>
     </message>
   </context>
   <context>
@@ -4553,7 +4533,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Crie vários tipos de vergalhões, incluindo formas U, formas L, e estribos</translation>
     </message>
   </context>
   <context>

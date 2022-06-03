@@ -4524,7 +4524,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Transient deleted</source>
-      <translation type="unfinished">Transient deleted</translation>
+      <translation>Aldi baterakoa ezabatu da</translation>
     </message>
   </context>
   <context>

@@ -388,7 +388,7 @@
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="92"/>
       <source>Should the dressup ignore motion commands above DressupStartDepth</source>
-      <translation>Si la trajectoire d'habillage doit ignorer les commandes de mouvement par-dessus la profondeur du début de la trajectoire d'habillage (DressupStartDepth)</translation>
+      <translation>Si la trajectoire d'habillage doit ignorer les commandes de mouvement par-dessus la profondeur initiale de la trajectoire d'habillage (DressupStartDepth)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="101"/>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="128"/>
       <source>Holds the calculated value for the StartDepth</source>
-      <translation>Contient la valeur calculée pour la StartDepth</translation>
+      <translation>Contient la valeur calculée pour la profondeur initiale</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="138"/>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="238"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation>Profondeur Z de première coupe de l'outil</translation>
+      <translation>Profondeur initiale de l'outil - première profondeur de coupe en Z</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="246"/>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="260"/>
       <source>Starting Depth internal use only for derived values</source>
-      <translation>Utilisation interne de la profondeur de départ uniquement pour les valeurs dérivées</translation>
+      <translation>Utilisation interne de la profondeur initiale uniquement pour les valeurs dérivées</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="271"/>
@@ -1220,7 +1220,7 @@
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="116"/>
       <source>Enable pecking</source>
-      <translation>Activer le débourrage</translation>
+      <translation>Autoriser le perçage</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="122"/>
@@ -1245,7 +1245,7 @@
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="154"/>
       <source>The height where feed starts and height during retract tool when path is finished while in a peck operation</source>
-      <translation>La hauteur à laquelle commence l'alimentation et la hauteur pendant laquelle l'outil est rétracté lorsque la trajectoire est terminée lors d'une opération de rétraction</translation>
+      <translation>La hauteur à laquelle commence l'avance de l'outil et la hauteur pendant laquelle l'outil est rétracté lorsque la trajectoire est terminée lors d'une opération de perçage</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="160"/>
@@ -1611,7 +1611,7 @@ Par exemple :
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="570"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
-      <translation>Angle d'arrête tranchante (%.2f) cause une longueur négative de la pointe de l'outil</translation>
+      <translation>L'angle de l'arête de coupe (%.2f) entraîne une longueur négative de la pointe de l'outil</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathIconViewProvider.py" line="98"/>
@@ -5217,19 +5217,19 @@ Abandon de la création</translation>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
-      <translation>Profondeur de départ</translation>
+      <translation>Profondeur initiale</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profondeur de départ de l'opération. Le point le plus élevé de l'axe Z que l'opération doit traiter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profondeur initiale de l'opération. Le point le plus élevé de l'axe Z que l'opération doit traiter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utilisez la valeur Z de l'élément sélectionné comme profondeur de départ pour l'opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utilisez la valeur Z de l'élément sélectionné comme profondeur initiale pour l'opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="62"/>
@@ -5590,7 +5590,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="69"/>
       <source>Peck</source>
-      <translation>Rétraction</translation>
+      <translation>Perçage</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="79"/>
@@ -5605,7 +5605,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="110"/>
       <source>Dwell</source>
-      <translation>Temps d'arrêt</translation>
+      <translation>Temporisation</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="120"/>
@@ -6295,7 +6295,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="43"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression définie comme la profondeur de départ d'une opération nouvellement créée.&lt;/p&gt;&lt;p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Par défaut : OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression définie comme la profondeur initiale d'une opération nouvellement créée.&lt;/p&gt;&lt;p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Par défaut : OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="57"/>
@@ -7521,7 +7521,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start Depth</source>
-      <translation>Profondeur de départ</translation>
+      <translation>Profondeur initiale</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
@@ -8267,12 +8267,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1007"/>
       <source>Start Depth</source>
-      <translation>Profondeur de départ</translation>
+      <translation>Profondeur initiale</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1014"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression définie comme la profondeur de départ d'une opération nouvellement créée.&lt;/p&gt;&lt;p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Par défaut : OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression définie comme la profondeur initiale d'une opération nouvellement créée.&lt;/p&gt;&lt;p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Par défaut : OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1021"/>

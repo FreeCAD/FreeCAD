@@ -1819,7 +1819,7 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
     </message>
     <message>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Visa färger</translation>
     </message>
     <message>
       <source>Leave info mode</source>
@@ -1874,7 +1874,7 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
     </message>
     <message>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Ändra nät</translation>
     </message>
     <message>
       <source>Mesh boolean</source>
@@ -1882,7 +1882,7 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
     </message>
     <message>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Skärning av nät</translation>
     </message>
     <message>
       <source>Mesh segmentation</source>
@@ -1890,7 +1890,7 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
     </message>
     <message>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>Nätanalys</translation>
     </message>
   </context>
 </TS>
