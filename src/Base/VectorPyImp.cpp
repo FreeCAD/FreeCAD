@@ -32,8 +32,6 @@
 // inclusion of the generated files (generated out of VectorPy.xml)
 #include "GeometryPyCXX.h"
 #include "VectorPy.h"
-#include "MatrixPy.h"
-#include "RotationPy.h"
 #include "VectorPy.cpp"
 
 using namespace Base;
@@ -156,7 +154,7 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
             return new VectorPy(a * b);
         }
         else {
-            PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
             return nullptr;
         }
     }
