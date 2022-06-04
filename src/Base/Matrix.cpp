@@ -34,59 +34,49 @@
 using namespace Base;
 
 Matrix4D::Matrix4D ()
+    : dMtrx4D{{1.,0.,0.,0.},
+              {0.,1.,0.,0.},
+              {0.,0.,1.,0.},
+              {0.,0.,0.,1.}}
 {
-    setToUnity();
 }
 
 Matrix4D::Matrix4D (float a11, float a12, float a13, float a14,
                     float a21, float a22, float a23, float a24,
                     float a31, float a32, float a33, float a34,
-                    float a41, float a42, float a43, float a44 )
+                    float a41, float a42, float a43, float a44)
+    : dMtrx4D{{a11,a12,a13,a14},
+              {a21,a22,a23,a24},
+              {a31,a32,a33,a34},
+              {a41,a42,a43,a44}}
 {
-    dMtrx4D[0][0] = static_cast<double>(a11);
-    dMtrx4D[0][1] = static_cast<double>(a12);
-    dMtrx4D[0][2] = static_cast<double>(a13);
-    dMtrx4D[0][3] = static_cast<double>(a14);
-    dMtrx4D[1][0] = static_cast<double>(a21);
-    dMtrx4D[1][1] = static_cast<double>(a22);
-    dMtrx4D[1][2] = static_cast<double>(a23);
-    dMtrx4D[1][3] = static_cast<double>(a24);
-    dMtrx4D[2][0] = static_cast<double>(a31);
-    dMtrx4D[2][1] = static_cast<double>(a32);
-    dMtrx4D[2][2] = static_cast<double>(a33);
-    dMtrx4D[2][3] = static_cast<double>(a34);
-    dMtrx4D[3][0] = static_cast<double>(a41);
-    dMtrx4D[3][1] = static_cast<double>(a42);
-    dMtrx4D[3][2] = static_cast<double>(a43);
-    dMtrx4D[3][3] = static_cast<double>(a44);
 }
 
 Matrix4D::Matrix4D (double a11, double a12, double a13, double a14,
                     double a21, double a22, double a23, double a24,
                     double a31, double a32, double a33, double a34,
                     double a41, double a42, double a43, double a44 )
+    : dMtrx4D{{a11,a12,a13,a14},
+              {a21,a22,a23,a24},
+              {a31,a32,a33,a34},
+              {a41,a42,a43,a44}}
 {
-    dMtrx4D[0][0] = a11; dMtrx4D[0][1] = a12; dMtrx4D[0][2] = a13; dMtrx4D[0][3] = a14;
-    dMtrx4D[1][0] = a21; dMtrx4D[1][1] = a22; dMtrx4D[1][2] = a23; dMtrx4D[1][3] = a24;
-    dMtrx4D[2][0] = a31; dMtrx4D[2][1] = a32; dMtrx4D[2][2] = a33; dMtrx4D[2][3] = a34;
-    dMtrx4D[3][0] = a41; dMtrx4D[3][1] = a42; dMtrx4D[3][2] = a43; dMtrx4D[3][3] = a44;
 }
 
-
-Matrix4D::Matrix4D (const Matrix4D& rclMtrx)
+Matrix4D::Matrix4D (const Matrix4D& rclMtrx) : Matrix4D()
 {
     (*this) = rclMtrx;
 }
 
 Matrix4D::Matrix4D (const Vector3f& rclBase, const Vector3f& rclDir, float fAngle)
+ : Matrix4D()
 {
-    setToUnity();
     this->rotLine(rclBase,rclDir,fAngle);
 }
 
 Matrix4D::Matrix4D (const Vector3d& rclBase, const Vector3d& rclDir, double fAngle)
+ : Matrix4D()
 {
-    setToUnity();
     this->rotLine(rclBase,rclDir,fAngle);
 }
 
