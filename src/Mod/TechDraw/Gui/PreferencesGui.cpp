@@ -190,6 +190,9 @@ QString PreferencesGui::weldingDirectory()
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
                                     
     std::string symbolDir = hGrp->GetASCII("WeldingDir", defaultDir.c_str());
+    if (symbolDir.empty()) {
+        symbolDir = defaultDir;
+    }
     QString qSymbolDir = QString::fromUtf8(symbolDir.c_str());
     Base::FileInfo fi(symbolDir);
     if (!fi.isReadable()) {

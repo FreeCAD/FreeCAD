@@ -45,6 +45,7 @@
 
 #include "DrawViewPart.h"
 #include "DrawUtil.h"
+#include "Preferences.h"
 #include "DrawHatch.h"
 
 #include <Mod/TechDraw/App/DrawHatchPy.h>  // generated from DrawHatchPy.xml
@@ -261,19 +262,7 @@ void DrawHatch::unsetupObject(void)
 //standard preference getters
 std::string DrawHatch::prefSvgHatch(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
-    std::string defaultFileName = defaultDir + "simple.svg";
-    std::string prefHatchFile = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
-    std::string result = prefHatchFile;
-    Base::FileInfo fi(result);
-    if (!fi.isReadable()) {
-        result = defaultFileName;
-        Base::Console().Warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
-    }
-    return result;
+    return Preferences::svgFile();
 }
 
 App::Color DrawHatch::prefSvgHatchColor(void)

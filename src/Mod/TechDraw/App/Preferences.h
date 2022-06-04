@@ -71,6 +71,9 @@ static int          altDecimals();
 
 static int         mattingStyle();
 
+static std::string svgFile();
+static std::string patFile();
+
 };
 
 } //end namespace TechDraw

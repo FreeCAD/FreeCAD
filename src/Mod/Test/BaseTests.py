@@ -399,6 +399,11 @@ class MatrixTestCase(unittest.TestCase):
         self.assertEqual(vec.y, 1.0)
         self.assertEqual(vec.z, 1.0)
 
+    def testVectorMult(self):
+        vec = FreeCAD.Vector(1, 1, 1)
+        with self.assertRaises(TypeError):
+            vec * "string"
+
     def testRotation(self):
         rot = FreeCAD.Rotation()
         res = self.mat * rot

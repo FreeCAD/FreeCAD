@@ -287,7 +287,7 @@ class _TaskPanel:
 
     def abs_displacement_selected(self, state):
         if len(self.result_obj.DisplacementLengths) > 0:
-            self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm", translate("FEM","Displacement magnitude"))
+            self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm", translate("FEM","Displacement Magnitude"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -373,7 +373,7 @@ class _TaskPanel:
 
     def peeq_selected(self, state):
         if len(self.result_obj.Peeq) > 0:
-            self.result_selected("Peeq", self.result_obj.Peeq, "", translate("FEM","Equivalent plastic strain"))
+            self.result_selected("Peeq", self.result_obj.Peeq, "", translate("FEM","Equivalent Plastic Strain"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -500,7 +500,10 @@ class _TaskPanel:
         plt.ylabel(translate("FEM","Nodes"))
         plt.grid(True)
         fig_manager = plt.get_current_fig_manager()
-        fig_manager.window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)    # stay ontop
+        # we purposely don't bring the window to top to keep FreeCAD's main window accessible
+        # see https://github.com/FreeCAD/FreeCAD/issues/6959
+        fig_manager.window.setWindowState(fig_manager.window.windowState() | QtCore.Qt.WindowActive)
+        fig_manager.window.activateWindow()
 
     def update_colors_stats(self, res_values, res_unit, minm, maxm):
         QApplication.setOverrideCursor(Qt.WaitCursor)

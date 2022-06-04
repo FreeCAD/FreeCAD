@@ -426,7 +426,7 @@ IODeviceOStreambuf::seekpos(std::streambuf::pos_type pos,
 
 // ----------------------------------------------------------------------
 
-IODeviceIStreambuf::IODeviceIStreambuf(QIODevice* dev) : device(dev)
+IODeviceIStreambuf::IODeviceIStreambuf(QIODevice* dev) : device(dev), buffer{}
 {
     setg (buffer+pbSize,     // beginning of putback area
           buffer+pbSize,     // read position
