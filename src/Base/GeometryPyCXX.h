@@ -60,7 +60,7 @@ public:
     Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds);
     virtual ~Vector2dPy();
 
-    static void init_type(void);
+    static void init_type();
     Py::Object getattro(const Py::String &name_);
     int setattro(const Py::String &name_, const Py::Object &value);
     virtual Py::Object repr();

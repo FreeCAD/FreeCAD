@@ -287,7 +287,7 @@ class _TaskPanel:
 
     def abs_displacement_selected(self, state):
         if len(self.result_obj.DisplacementLengths) > 0:
-            self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm", translate("FEM","Displacement magnitude"))
+            self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm", translate("FEM","Displacement Magnitude"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -373,7 +373,7 @@ class _TaskPanel:
 
     def peeq_selected(self, state):
         if len(self.result_obj.Peeq) > 0:
-            self.result_selected("Peeq", self.result_obj.Peeq, "", translate("FEM","Equivalent plastic strain"))
+            self.result_selected("Peeq", self.result_obj.Peeq, "", translate("FEM","Equivalent Plastic Strain"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -399,6 +399,7 @@ class _TaskPanel:
         P1 = np.array(self.result_obj.PrincipalMax)
         P2 = np.array(self.result_obj.PrincipalMed)
         P3 = np.array(self.result_obj.PrincipalMin)
+        MS = np.array(self.result_obj.MaxShear)
         vM = np.array(self.result_obj.vonMises)
         Peeq = np.array(self.result_obj.Peeq)
         T = np.array(self.result_obj.Temperature)
@@ -459,7 +460,7 @@ class _TaskPanel:
             "x", "y", "z", "T", "vM", "Peeq", "P1", "P2", "P3",
             "sxx", "syy", "szz", "sxy", "sxz", "syz",
             "exx", "eyy", "ezz", "exy", "exz", "eyz",
-            "MF", "NP", "rx", "ry", "rz", "mc",
+            "MS", "MF", "NP", "rx", "ry", "rz", "mc",
             "s1x", "s1y", "s1z", "s2x", "s2y", "s2z", "s3x", "s3y", "s3z"
         ]
         tokrules.names = {}

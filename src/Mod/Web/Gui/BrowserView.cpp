@@ -511,6 +511,10 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onOpenLinkInExternalBrowser(const QUrl &)));
     connect(view, SIGNAL(openLinkInNewWindow(const QUrl &)),
             this, SLOT(onOpenLinkInNewWindow(const QUrl &)));
+    connect(view, SIGNAL(loadStarted()),
+            this, SLOT(onUpdateBrowserActions()));
+    connect(view, SIGNAL(loadFinished(bool)),
+            this, SLOT(onUpdateBrowserActions()));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -783,6 +787,18 @@ void BrowserView::onOpenLinkInNewWindow(const QUrl& url)
     view->load(url);
     Gui::getMainWindow()->addWindow(view);
     Gui::getMainWindow()->setActiveWindow(this);
+}
+
+void BrowserView::onUpdateBrowserActions()
+{
+    CommandManager& mgr = Application::Instance->commandManager();
+    std::vector<const char*> cmds = {"Web_BrowserBack", "Web_BrowserNext", "Web_BrowserRefresh", "Web_BrowserStop",
+                                     "Web_BrowserZoomIn", "Web_BrowserZoomOut", "Web_BrowserSetURL"};
+    for (const auto& it : cmds) {
+        Gui::Command* cmd = mgr.getCommandByName(it);
+        if (cmd)
+            cmd->testActive();
+    }
 }
 
 void BrowserView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)

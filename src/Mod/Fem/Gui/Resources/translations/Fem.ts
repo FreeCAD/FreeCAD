@@ -808,6 +808,116 @@
     </message>
 </context>
 <context>
+    <name>FEM</name>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="290"/>
+        <source>Displacement magnitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="300"/>
+        <source>Displacement X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="310"/>
+        <source>Displacement Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="320"/>
+        <source>Displacement Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="327"/>
+        <source>von Mises Stress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="334"/>
+        <source>Max Shear Stress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="341"/>
+        <source>Max Principal Stress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="348"/>
+        <source>Temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="355"/>
+        <source>Mass Flow Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="362"/>
+        <source>Network Pressure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="369"/>
+        <source>Min Principal Stress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="376"/>
+        <source>Equivalent plastic strain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="387"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="389"/>
+        <source>No histogram available.
+Please select a result type first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="499"/>
+        <source>Histogram of {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="500"/>
+        <source>Nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="616"/>
+        <source>FEM: there are no nodes in result mesh, there will be nothing to show.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="619"/>
+        <source>Empty result mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="626"/>
+        <source>FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="629"/>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="633"/>
+        <source>No result object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="631"/>
+        <source>FEM: Result node numbers are not equal to FEM Mesh NodeCount.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FEM_Analysis</name>
     <message>
         <location filename="../../../femcommands/commands.py" line="57"/>
@@ -2987,15 +3097,15 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
 <context>
     <name>FemMaterial</name>
     <message>
-        <location filename="../ui/Material.ui" line="14"/>
         <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+        <location filename="../ui/Material.ui" line="14"/>
         <source>FEM material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Material.ui" line="26"/>
         <location filename="../ui/MaterialReinforcement.ui" line="37"/>
         <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+        <location filename="../ui/Material.ui" line="26"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3020,9 +3130,9 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Material.ui" line="71"/>
         <location filename="../ui/MaterialReinforcement.ui" line="74"/>
         <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+        <location filename="../ui/Material.ui" line="71"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3392,18 +3502,18 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ConstraintTie.ui" line="52"/>
-        <location filename="../ui/ElementGeometry2D.ui" line="52"/>
         <location filename="../ui/MeshRegion.ui" line="56"/>
+        <location filename="../ui/ConstraintTie.ui" line="52"/>
+        <location filename="../ui/ElementFluid1D.ui" line="92"/>
+        <location filename="../ui/ElementFluid1D.ui" line="745"/>
+        <location filename="../ui/ElementFluid1D.ui" line="766"/>
+        <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
         <location filename="../ui/ElementGeometry1D.ui" line="90"/>
         <location filename="../ui/ElementGeometry1D.ui" line="134"/>
         <location filename="../ui/ElementGeometry1D.ui" line="200"/>
         <location filename="../ui/ElementGeometry1D.ui" line="262"/>
         <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-        <location filename="../ui/ElementFluid1D.ui" line="92"/>
-        <location filename="../ui/ElementFluid1D.ui" line="745"/>
-        <location filename="../ui/ElementFluid1D.ui" line="766"/>
-        <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
+        <location filename="../ui/ElementGeometry2D.ui" line="52"/>
         <source>0 mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3418,11 +3528,11 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ConstraintTie.ui" line="26"/>
-        <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-        <location filename="../ui/MeshRegion.ui" line="26"/>
         <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+        <location filename="../ui/MeshRegion.ui" line="26"/>
+        <location filename="../ui/ConstraintTie.ui" line="26"/>
         <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+        <location filename="../ui/ElementGeometry2D.ui" line="26"/>
         <source>Parameter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3452,8 +3562,8 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
         <location filename="../ui/FlowVelocity.ui" line="14"/>
+        <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
         <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
         <source>Constraint Properties</source>
         <translation type="unfinished"></translation>
@@ -3469,11 +3579,11 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
-        <location filename="../ui/ElectrostaticPotential.ui" line="143"/>
         <location filename="../ui/FlowVelocity.ui" line="56"/>
         <location filename="../ui/FlowVelocity.ui" line="83"/>
         <location filename="../ui/FlowVelocity.ui" line="110"/>
+        <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
+        <location filename="../ui/ElectrostaticPotential.ui" line="143"/>
         <location filename="../ui/InitialFlowVelocity.ui" line="45"/>
         <location filename="../ui/InitialFlowVelocity.ui" line="79"/>
         <location filename="../ui/InitialFlowVelocity.ui" line="113"/>
@@ -3527,8 +3637,8 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ElementGeometry1D.ui" line="20"/>
         <location filename="../ui/ElementRotation1D.ui" line="20"/>
+        <location filename="../ui/ElementGeometry1D.ui" line="20"/>
         <source>Cross section parameter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3795,26 +3905,26 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="75"/>
-        <location filename="../../ViewProviderFemConstraintFixed.cpp" line="77"/>
-        <location filename="../../ViewProviderFemConstraintGear.cpp" line="76"/>
-        <location filename="../../ViewProviderFemConstraintPulley.cpp" line="75"/>
-        <location filename="../../ViewProviderFemConstraintForce.cpp" line="76"/>
-        <location filename="../../ViewProviderFemPostFunction.cpp" line="340"/>
         <location filename="../../ViewProviderFemPostObject.cpp" line="604"/>
+        <location filename="../../ViewProviderFemConstraintForce.cpp" line="76"/>
+        <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="75"/>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="77"/>
+        <location filename="../../ViewProviderFemConstraintFixed.cpp" line="77"/>
+        <location filename="../../ViewProviderFemConstraintPulley.cpp" line="75"/>
+        <location filename="../../ViewProviderFemPostFunction.cpp" line="340"/>
+        <location filename="../../ViewProviderFemConstraintGear.cpp" line="76"/>
         <source>A dialog is already open in the task panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="76"/>
-        <location filename="../../ViewProviderFemConstraintFixed.cpp" line="78"/>
-        <location filename="../../ViewProviderFemConstraintGear.cpp" line="77"/>
-        <location filename="../../ViewProviderFemConstraintPulley.cpp" line="76"/>
-        <location filename="../../ViewProviderFemConstraintForce.cpp" line="77"/>
-        <location filename="../../ViewProviderFemPostFunction.cpp" line="341"/>
         <location filename="../../ViewProviderFemPostObject.cpp" line="605"/>
+        <location filename="../../ViewProviderFemConstraintForce.cpp" line="77"/>
+        <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="76"/>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="78"/>
+        <location filename="../../ViewProviderFemConstraintFixed.cpp" line="78"/>
+        <location filename="../../ViewProviderFemConstraintPulley.cpp" line="76"/>
+        <location filename="../../ViewProviderFemPostFunction.cpp" line="341"/>
+        <location filename="../../ViewProviderFemConstraintGear.cpp" line="77"/>
         <source>Do you want to close this dialog?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3946,10 +4056,10 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="681"/>
         <location filename="../../ViewProviderSolver.cpp" line="71"/>
         <location filename="../../ViewProviderFemPostFunction.cpp" line="150"/>
         <location filename="../../ViewProviderAnalysis.cpp" line="227"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="681"/>
         <source>Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4013,7 +4123,7 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
     </message>
     <message>
         <location filename="../ui/ResultShow.ui" line="130"/>
-        <source>Peeq</source>
+        <source>Equivalent Plastic Strain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4081,7 +4191,7 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:7.875pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:8pt;&quot;&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4274,10 +4384,10 @@ following referencing objects might be lost:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="684"/>
         <location filename="../../ViewProviderSolver.cpp" line="74"/>
         <location filename="../../ViewProviderFemPostFunction.cpp" line="153"/>
         <location filename="../../ViewProviderAnalysis.cpp" line="230"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="684"/>
         <source>Object dependencies</source>
         <translation type="unfinished"></translation>
     </message>
