@@ -327,6 +327,11 @@
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QPushButton" name="calculate">
+        <property name="toolTip">
+         <string>Runs the equation given in the field below,
+outputs the results to the Min and Max fields
+and colors the result mesh accordingly</string>
+        </property>
         <property name="text">
          <string>Calculate</string>
         </property>
