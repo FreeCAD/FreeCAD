@@ -1816,7 +1816,7 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     </message>
     <message>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Farben anzeigen</translation>
     </message>
     <message>
       <source>Leave info mode</source>
@@ -1871,11 +1871,11 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     </message>
     <message>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Mesh modifizieren</translation>
     </message>
     <message>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Mesh boolean</translation>
     </message>
     <message>
       <source>Mesh cutting</source>
@@ -1887,7 +1887,7 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     </message>
     <message>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>Mesh analysieren</translation>
     </message>
   </context>
 </TS>

@@ -3027,22 +3027,19 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
-
-Building object is not allowed to accept Site and Building objects.
-
-Site and Building objects will be removed from the selection.
-
-You can change that in the preferences.</translation>
+      <translation>您可以把除场所、建筑对象以外的对象放在建筑对象中。
+建筑对象不允许接受场所或建筑对象。
+场所、建筑对象将从所选项中删除。
+您可以在 "首选项" 中更改该选项。</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="246"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>所选内容中没有有效的对象。
 
-Building creation aborted.</translation>
+建筑创建中止。</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="253"/>
@@ -6095,7 +6092,7 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
       <source>Number of cores to use (experimental)</source>
-      <translation type="unfinished">Number of cores to use (experimental)</translation>
+      <translation>使用核心数 (实验性)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="157"/>

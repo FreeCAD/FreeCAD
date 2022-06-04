@@ -49,7 +49,7 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="309"/>
       <source>Run</source>
-      <translation>зазор</translation>
+      <translation>Запустить</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>

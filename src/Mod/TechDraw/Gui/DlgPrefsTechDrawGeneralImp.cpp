@@ -25,6 +25,11 @@
 
 #include "PreCompiled.h"
 
+#include <App/Application.h>
+#include <Base/Console.h>
+#include <Base/Parameter.h>
+#include <Base/Tools.h>
+
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 
@@ -96,13 +101,6 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 
     ui->cbProjAngle->onRestore();
     ui->cbHiddenLineStyle->onRestore(); 
-    
-    ui->pfc_DefTemp->setFileName(Preferences::defaultTemplate());
-    ui->pfc_DefDir->setFileName(Preferences::defaultTemplateDir());
-    ui->pfc_HatchFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
-    ui->pfc_LineGroup->setFileName(QString::fromUtf8(Preferences::lineGroupFile().c_str()));
-    ui->pfc_Welding->setFileName(PreferencesGui::weldingDirectory());
-    ui->pfc_FilePattern->setFileName(QString::fromStdString(DrawGeomHatch::prefGeomHatchFile()));
     
     ui->pfc_DefTemp->onRestore();
     ui->pfc_DefDir->onRestore();

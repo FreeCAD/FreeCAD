@@ -1385,7 +1385,7 @@ to a smoother appearance.
     <name>MeshGui::RemeshGmsh</name>
     <message>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>通过 Gmsh 进行网格划分</translation>
     </message>
     <message>
       <source>Remeshing Parameter</source>
@@ -1758,7 +1758,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>3D制造格式</translation>
     </message>
     <message>
       <source>Export mesh</source>
@@ -1818,7 +1818,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>显示颜色</translation>
     </message>
     <message>
       <source>Leave info mode</source>
@@ -1873,15 +1873,15 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>网格修改</translation>
     </message>
     <message>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>网格布尔运算</translation>
     </message>
     <message>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>网格切割</translation>
     </message>
     <message>
       <source>Mesh segmentation</source>
@@ -1889,7 +1889,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>网格分析</translation>
     </message>
   </context>
 </TS>

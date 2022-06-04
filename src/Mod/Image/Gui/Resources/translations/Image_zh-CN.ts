@@ -21,12 +21,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="155"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;输入距离&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="158"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;选择图像面&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="183"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="192"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>选择图像平面并输入距离</translation>
     </message>
   </context>
   <context>

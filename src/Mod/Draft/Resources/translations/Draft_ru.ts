@@ -2690,7 +2690,7 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="309"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Создает линию с несколькими точками (ломаную линию). CTRL для привязки, SHIFT для ограничения.</translation>
     </message>
   </context>
   <context>

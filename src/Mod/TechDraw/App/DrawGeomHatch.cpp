@@ -70,6 +70,7 @@
 
 #include "HatchLine.h"
 #include "DrawUtil.h"
+#include "Preferences.h"
 #include "Geometry.h"
 #include "DrawPage.h"
 #include "DrawViewPart.h"
@@ -615,19 +616,7 @@ void DrawGeomHatch::unsetupObject(void)
 
 std::string DrawGeomHatch::prefGeomHatchFile(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
-
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
-    std::string defaultFileName = defaultDir + "FCPAT.pat";
-    std::string prefHatchFile = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
-    std::string result = prefHatchFile;
-    Base::FileInfo fi(result);
-    if (!fi.isReadable()) {
-        result = defaultFileName;
-        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
-    }
-    return result;
+    return Preferences::patFile();
 }
 
 std::string DrawGeomHatch::prefGeomHatchName()

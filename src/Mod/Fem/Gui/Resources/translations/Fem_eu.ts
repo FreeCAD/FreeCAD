@@ -395,7 +395,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>FEM material bat sortzen du jariakinerako</translation>
     </message>
   </context>
   <context>
@@ -403,12 +403,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="550"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Material mekaniko ez-lineala</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="554"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Material mekaniko ez-lineal bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -416,12 +416,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="620"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Indartutako materiala (hormigoia)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="624"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Material bat sortzen du matrize indartuko materialetarako, esaterako hormigoirako</translation>
     </message>
   </context>
   <context>
@@ -429,12 +429,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Materiala solidorako</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>FEM material bat sortzen du solido baterako</translation>
     </message>
   </context>
   <context>
@@ -442,12 +442,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="702"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>FEM amaraunaren muga-geruza</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="706"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>FEM amaraunaren muga-geruza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -455,12 +455,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="719"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Garbitu FEM amarauna</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="723"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Garbitu FEM amaraun-objektu baten sarea</translation>
     </message>
   </context>
   <context>
@@ -469,7 +469,7 @@
       <location filename="../../../femcommands/commands.py" line="744"/>
       <location filename="../../../femcommands/commands.py" line="748"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Bistaratu FEM amaraunaren informazioa</translation>
     </message>
   </context>
   <context>
@@ -477,12 +477,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="773"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>FEM amarauna formatik, Gmsh bidez</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="777"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Sortu FEM amaraun bat forma batetik abiatuz, Gmsh sare-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -490,12 +490,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="818"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>FEM amaraun-taldea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="822"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>FEM amaraun-talde bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -503,12 +503,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="835"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>FEM amarauna formatik, Netgen bidez</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="839"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Sortu FEM amaraun bat solido batetik edo aurpegi-forma batetik, Netgen barneko amaraun-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -516,12 +516,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="880"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>FEM amaraun-eskualdea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="884"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>FEM amaraun-eskualde bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -534,7 +534,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="902"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Hautatutako emaitza-datuak erakusten eta bistaratzen ditu</translation>
     </message>
   </context>
   <context>
@@ -542,12 +542,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="917"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Araztu emaitzak</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="922"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Analisi aktiboetako emaitza guztiak arazten ditu</translation>
     </message>
   </context>
   <context>
@@ -555,12 +555,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="980"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>CalculiX ebazlea (lan-marko berria)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="985"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>FEM CalculiX ebazlearen lan-marko berria sortzen du (emaitzen errore-maneiatze gutxiago)</translation>
     </message>
   </context>
   <context>
@@ -568,12 +568,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>CalculiX ebazle estandarra</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="944"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>FEM CalculiX ebazle estandarra sortzen du ccx tresnekin</translation>
     </message>
   </context>
   <context>
@@ -581,12 +581,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="999"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Ebazle-lanaren kontrola</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Ebazlearen atributuak aldatzen ditu eta hautatutako ebazlerako kalkuluak exekutatzen ditu</translation>
     </message>
   </context>
   <context>
@@ -594,12 +594,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1016"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Elmer ebazlea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1021"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>FEM Elmer ebazle bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -607,12 +607,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1032"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Mystran ebazlea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1034"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>FEM Mystran ebazle bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -620,12 +620,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1044"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Exekutatu ebazlearen kalkuluak</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1049"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Hautatutako ebazlearen kalkuluak exekutatzen ditu</translation>
     </message>
   </context>
   <context>
@@ -646,7 +646,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="273"/>
       <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
+      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="276"/>
@@ -656,12 +656,12 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="283"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+      <translation>Sakatu 'Gehitu' eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko.{} Honako geometria-elementuak hautatu daitezke: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="286"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Zerrendari geometriarik gehitzen ez bazaio, geratzen direnak erabiliko dira.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
@@ -1987,7 +1987,7 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available.</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available.</translation>
+      <translation>FreeCADen integratutako txartelak erabilgarri gisa zerrendatuko dira.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="34"/>
@@ -2002,14 +2002,14 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="53"/>
       <source>Use materials from Materials directory in user's FreeCAD preference directory</source>
-      <translation type="unfinished">Use materials from Materials directory in user's FreeCAD preference directory</translation>
+      <translation>Erabili erabiltzailearen FreeCAD hobespenen 'Materialak' direktorioko materialak</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="69"/>
       <source>Also material cards also from the specified directory
 will be listed as available.</source>
-      <translation type="unfinished">Also material cards also from the specified directory
-will be listed as available.</translation>
+      <translation>Zehaztutako direktorioko material-txartelak ere
+erabilgarri gisa zerrendatuko dra.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="73"/>
@@ -2029,7 +2029,7 @@ will be listed as available.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="154"/>
       <source>Duplicate cards will be deleted from the displayed material card list.</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list.</translation>
+      <translation>Bikoiztutako txartelak ezabatu egingo dira bistaratutako material-txartelen zerrendatik.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="157"/>
@@ -2040,8 +2040,8 @@ will be listed as available.</translation>
       <location filename="../../DlgSettingsFemMaterial.ui" line="173"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation type="unfinished">Material cards appear sorted by their resources (locations).
-If unchecked, they will be sorted by their name.</translation>
+      <translation>Material-txartelak beren baliabideen (kokapenen) arabera ordenatuta agertuko dra.
+Hau ez badago markatuta, izenaren arabera ordenatuko dira.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="177"/>

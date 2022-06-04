@@ -23,7 +23,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation>Si « false », les éléments non pleins seront également coupés, avec de possibles mauvais résultats.</translation>
+      <translation>Si « faux », les éléments non pleins seront également coupés, avec de possibles mauvais résultats.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="924"/>
@@ -38,7 +38,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="929"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation>La géométrie supérieure à cette valeur sera coupée. Laisser zéro pour illimité.</translation>
+      <translation>La géométrie située au-delà de cette valeur sera coupée. Laisser zéro pour illimité.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="993"/>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="1021"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
-      <translation>La distance entre le plan de coupe et de la vue réelle coupé (cela garde une valeur très faible mais pas nulle)</translation>
+      <translation>La distance entre le plan de coupe et de la vue réelle coupé (gardez une valeur très faible mais pas nulle)</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1024"/>
@@ -225,17 +225,17 @@
     <message>
       <location filename="../../ArchWindow.py" line="606"/>
       <source>The preset number this window is based on</source>
-      <translation>Cette fenêtre est basée sur le numéro de préréglage</translation>
+      <translation>Le numéro de préréglage sur lequel cette fenêtre est basée</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="609"/>
       <source>The frame size of this window</source>
-      <translation>La taille de la trame de cette fenêtre</translation>
+      <translation>La taille du cadre de cette fenêtre</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="611"/>
       <source>The offset size of this window</source>
-      <translation>La décalage taille de cette fenêtre</translation>
+      <translation>La taille du décalage de cette fenêtre</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="613"/>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../ArchWindow.py" line="615"/>
       <source>The width of louvre elements</source>
-      <translation>La largeur des éléments du louvre</translation>
+      <translation>La largeur des persiennes (volets)</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="617"/>
       <source>The space between louvre elements</source>
-      <translation>L’espace entre les éléments du louvre</translation>
+      <translation>L’espace entre les lames des persiennes (volets)</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="619"/>
@@ -260,22 +260,22 @@
     <message>
       <location filename="../../ArchWindow.py" line="621"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
-      <translation>Le numéro du fil qui définit le trou. Si 0, la valeur sera calculée automatiquement</translation>
+      <translation>Le numéro du tracé qui définit le trou. Si 0, la valeur sera calculée automatiquement</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="623"/>
       <source>Shows plan opening symbols if available</source>
-      <translation>Affiche les symboles de début du plan si disponible</translation>
+      <translation>Affiche les symboles des ouverture en plan si disponible</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="625"/>
       <source>Show elevation opening symbols if available</source>
-      <translation>Affiche les symboles d'élévation du début du plan s’ils sont disponibles</translation>
+      <translation>Affiche les symboles des ouvertures en élévation s’ils sont disponibles</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1479"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
-      <translation>Le numéro du fil qui définit le trou. Une valeur de 0 signifie automatique</translation>
+      <translation>Le numéro du tracé qui définit le trou. Une valeur de 0 signifie automatique</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="676"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation>Décalage du départ le long du chemin d'extrusion (positif : étendre ; négatif : rogner)</translation>
+      <translation>Décalage de départ le long du chemin d'extrusion (positif : étendre ; négatif : rogner)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="682"/>
@@ -301,17 +301,17 @@
     <message>
       <location filename="../../ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation>Alignez automatiquement la base de la structure perpendiculaire à l'axe outil</translation>
+      <translation>Aligne automatiquement la base de la structure perpendiculairement à l'axe outil</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Décalage X entre l'origine de la base et l'axe outil (utilisé uniquement si BasePerpendicularToTool est True)</translation>
+      <translation>Décalage en abscisse entre l'origine de la base et l'axe outil (utilisé uniquement si "BasePerpendicularToTool" est vrai)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Décalage Y entre l'origine de la base et l'axe outil (utilisé uniquement si BasePerpendicularToTool est True)</translation>
+      <translation>Décalage en ordonnée entre l'origine de la base et l'axe outil (utilisé uniquement si BasePerpendicularToTool est vrai)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="690"/>
@@ -321,7 +321,7 @@
     <message>
       <location filename="../../ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Rotation de la base autour de l'axe outil (utilisé uniquement si BasePerpendicularToTool est True)</translation>
+      <translation>Rotation de la base autour de l'axe outil (utilisé uniquement si BasePerpendicularToTool est vrai)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="694"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../ArchStructure.py" line="1022"/>
       <source>The type of structural node</source>
-      <translation>Le type du nœud</translation>
+      <translation>Le type de nœud structurel</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1356"/>
@@ -407,7 +407,7 @@
     <message>
       <location filename="../../ArchStructure.py" line="1358"/>
       <source>If true the element are aligned with axes</source>
-      <translation>Si VRAI, l'élément est aligné avec les axes</translation>
+      <translation>Si "vrai", l'élément est aligné avec les axes</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="408"/>
@@ -514,7 +514,7 @@
       <location filename="../../ArchPanel.py" line="956"/>
       <location filename="../../ArchPanel.py" line="1240"/>
       <source>If True, the object is rendered as a face, if possible.</source>
-      <translation>Si Vrai, l’objet est restitué comme une face, si possible.</translation>
+      <translation>Si "vrai", l’objet est restitué comme une face, si possible.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="958"/>
@@ -571,7 +571,7 @@
     <message>
       <location filename="../../ArchPanel.py" line="1242"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
-      <translation>Définit l’angle pour le grain du bois (dans le sens horaire, 0 est le nord)</translation>
+      <translation>Définit l’angle pour les fibres du bois (dans le sens horaire, 0 est le nord)</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1244"/>
@@ -586,7 +586,7 @@
     <message>
       <location filename="../../ArchPanel.py" line="1396"/>
       <source>Turns the display of the wood grain texture on/off</source>
-      <translation>Active ou désactive l’affichage de la texture de grain de bois</translation>
+      <translation>Active ou désactive l’affichage de la texture des fibres du bois</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="62"/>
@@ -946,7 +946,7 @@
     <message>
       <location filename="../../ArchSpace.py" line="272"/>
       <source>The computed floor area of this space</source>
-      <translation>La surface calculée du sol de cet espace</translation>
+      <translation>La surface de plancher calculée de cet espace</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="274"/>
@@ -956,12 +956,12 @@
     <message>
       <location filename="../../ArchSpace.py" line="276"/>
       <source>The finishing of the walls of this space</source>
-      <translation>La finition des murs de cet espace</translation>
+      <translation>Le revêtement des murs de cet espace</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="278"/>
       <source>The finishing of the ceiling of this space</source>
-      <translation>La finition du plafond de cet espace</translation>
+      <translation>Le revêtement du plafond de cet espace</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="280"/>
@@ -996,7 +996,7 @@
     <message>
       <location filename="../../ArchSpace.py" line="293"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation>Si Vrai, la puissance des équipements sera automatiquement remplie par cette des équipements dans cet espace</translation>
+      <translation>Si "vrai", la puissance des équipements sera automatiquement remplie par celle des équipements dans cet espace</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="295"/>
@@ -1143,7 +1143,7 @@
     <message>
       <location filename="../../ArchAxis.py" line="234"/>
       <source>The type of line to draw this axis</source>
-      <translation>Le type de ligne dessiner cet axe</translation>
+      <translation>Le type de ligne pour dessiner cet axe</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="238"/>
@@ -1674,7 +1674,7 @@
     <message>
       <location filename="../../ArchComponent.py" line="1162"/>
       <source>Use the material color as this object's shape color, if available</source>
-      <translation>Utilisez le couleur matériel comme le couleur de la forme de cet objet, si disponsible</translation>
+      <translation>Utilisez la couleur du matériau comme couleur pour la forme de cet objet, si disponsible</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="94"/>

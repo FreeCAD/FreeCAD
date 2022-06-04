@@ -2,25 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-        <location filename="../../MeshFlatteningCommand.py" line="47"/>
-        <source>Unwrap Mesh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../MeshFlatteningCommand.py" line="50"/>
-        <location filename="../../MeshFlatteningCommand.py" line="82"/>
-        <source>Find a flat representation of a mesh.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../MeshFlatteningCommand.py" line="79"/>
-        <source>Unwrap Face</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CmdMeshPartCrossSections</name>
     <message>
         <location filename="../../Command.cpp" line="276"/>
@@ -521,6 +502,25 @@ Select a different shape, please.</source>
     <message>
         <location filename="../../Tessellation.cpp" line="256"/>
         <source>Select a shape for meshing, first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+        <location filename="../../MeshFlatteningCommand.py" line="47"/>
+        <source>Unwrap Mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../MeshFlatteningCommand.py" line="50"/>
+        <location filename="../../MeshFlatteningCommand.py" line="82"/>
+        <source>Find a flat representation of a mesh.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../MeshFlatteningCommand.py" line="79"/>
+        <source>Unwrap Face</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

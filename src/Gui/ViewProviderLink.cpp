@@ -2596,7 +2596,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     }
 
     if (ext->isLinkMutated()) {
-        QAction* act = menu->addAction(QObject::tr("Rerefresh configurable object"));
+        QAction* act = menu->addAction(QObject::tr("Refresh configurable object"));
         act->setToolTip(QObject::tr(
                     "Synchronize the original configurable source object by\n"
                     "creating a new deep copy. Note that any changes made to\n"

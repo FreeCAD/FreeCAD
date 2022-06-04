@@ -113,7 +113,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>创建有限元真空电导率常数以覆盖标准值</translation>
     </message>
   </context>
   <context>
@@ -134,12 +134,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="202"/>
       <source>Constraint centrif</source>
-      <translation type="unfinished">Constraint centrif</translation>
+      <translation>离心约束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="206"/>
       <source>Creates a FEM constraint centrif</source>
-      <translation type="unfinished">Creates a FEM constraint centrif</translation>
+      <translation>创建有限元离心约束</translation>
     </message>
   </context>
   <context>
@@ -356,7 +356,7 @@
       <location filename="../../../femcommands/commands.py" line="492"/>
       <location filename="../../../femcommands/commands.py" line="496"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>打开有限元样例</translation>
     </message>
   </context>
   <context>
@@ -364,12 +364,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="655"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>有限元网格转换为网格</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>将有限元网格的面转换为网格</translation>
     </message>
   </context>
   <context>
@@ -377,12 +377,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="513"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>材料编辑器</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="517"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>打开 FreeCAD 材料编辑器</translation>
     </message>
   </context>
   <context>
@@ -390,12 +390,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="533"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>流体材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>创建流体有限元材料</translation>
     </message>
   </context>
   <context>
@@ -403,12 +403,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="550"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>非线性机械材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="554"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>创建一种非线性机械材料</translation>
     </message>
   </context>
   <context>
@@ -416,12 +416,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="620"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>强化材料 (混凝土)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="624"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>为增强基体材质(如混凝土)创建材质</translation>
     </message>
   </context>
   <context>
@@ -429,12 +429,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>固体材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>创建固体有限元材料</translation>
     </message>
   </context>
   <context>
@@ -469,7 +469,7 @@
       <location filename="../../../femcommands/commands.py" line="744"/>
       <location filename="../../../femcommands/commands.py" line="748"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>显示有限元网格信息</translation>
     </message>
   </context>
   <context>
@@ -477,12 +477,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="773"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>Gmsh 型有限元网格</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="777"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>通过Gmsh网格生成器创建一个形状的有限元网格</translation>
     </message>
   </context>
   <context>
@@ -490,12 +490,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="818"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>有限元网格组</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="822"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>创建有限元网格组</translation>
     </message>
   </context>
   <context>
@@ -503,12 +503,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="835"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>Netgen 型有限元网格</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="839"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>通过 Netgen 内部网格生成器从实心或面形创建有限元网格</translation>
     </message>
   </context>
   <context>
@@ -516,12 +516,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="880"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>有限元网格区域</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="884"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>创建有限元网格区域</translation>
     </message>
   </context>
   <context>
@@ -555,7 +555,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="980"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>CalculiX求解器(新框架)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="985"/>
@@ -568,7 +568,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>标准CalculiX求解器</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="944"/>
@@ -1193,12 +1193,12 @@
     <message>
       <location filename="../../Command.cpp" line="1777"/>
       <source>Post pipeline from result</source>
-      <translation type="unfinished">Post pipeline from result</translation>
+      <translation>从结果创建后处理管线</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1778"/>
       <source>Creates a post processing pipeline from a result object</source>
-      <translation type="unfinished">Creates a post processing pipeline from a result object</translation>
+      <translation>从结果对象创建后处理管线</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1841"/>
@@ -1445,12 +1445,12 @@
     <message>
       <location filename="../../Command.cpp" line="1711"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation type="unfinished">Create a plane function, defined by its origin and normal</translation>
+      <translation>创建一个平面函数，由其原点和法线定义</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1716"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation type="unfinished">Create a sphere function, defined by its center and radius</translation>
+      <translation>创建一个球形函数，由其球心和半径定义</translation>
     </message>
   </context>
   <context>
@@ -1464,17 +1464,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="40"/>
       <source>CalculiX binary</source>
-      <translation type="unfinished">CalculiX binary</translation>
+      <translation>CalculiX 二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="47"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>在已知二进制文件目录中搜索</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
       <source>ccx binary path</source>
-      <translation type="unfinished">ccx binary path</translation>
+      <translation>ccx 二进制文件路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
@@ -1484,12 +1484,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
       <source>Input file Editor</source>
-      <translation type="unfinished">Input file Editor</translation>
+      <translation>输入文件编辑器</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="126"/>
       <source>Use internal editor for *.inp files</source>
-      <translation type="unfinished">Use internal editor for *.inp files</translation>
+      <translation>以内部编辑器打开*.inp文档</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="151"/>
@@ -1549,17 +1549,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="286"/>
       <source>Solver defaults</source>
-      <translation type="unfinished">Solver defaults</translation>
+      <translation>求解器默认设定</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use (Spooles only)</source>
-      <translation type="unfinished">Number of CPU's to use (Spooles only)</translation>
+      <translation>要使用的 CPU 数量(仅Spooles库)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="329"/>
       <source>Matrix solver</source>
-      <translation type="unfinished">Matrix solver</translation>
+      <translation>矩阵求解器</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="349"/>
@@ -1569,27 +1569,27 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="354"/>
       <source>Spooles</source>
-      <translation type="unfinished">Spooles</translation>
+      <translation>Spooles库</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="359"/>
       <source>Iterative Scaling</source>
-      <translation type="unfinished">Iterative Scaling</translation>
+      <translation>迭代尺度法</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="364"/>
       <source>Iterative Cholesky</source>
-      <translation type="unfinished">Iterative Cholesky</translation>
+      <translation>迭代 Cholesky 法</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="372"/>
       <source>Non-linear geometry</source>
-      <translation type="unfinished">Non-linear geometry</translation>
+      <translation>非线性几何</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="379"/>
       <source>Use non-linear geometry</source>
-      <translation type="unfinished">Use non-linear geometry</translation>
+      <translation>使用非线性几何</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="395"/>
@@ -1599,7 +1599,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="402"/>
       <source>Use non ccx defaults</source>
-      <translation type="unfinished">Use non ccx defaults</translation>
+      <translation>不使用 ccx 默认值</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="418"/>
@@ -1610,7 +1610,7 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="463"/>
       <location filename="../../DlgSettingsFemCcx.ui" line="502"/>
       <source>s</source>
-      <translation type="unfinished">s</translation>
+      <translation>秒</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="470"/>
@@ -1630,17 +1630,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="537"/>
       <source>Thermo mechanical defaults</source>
-      <translation type="unfinished">Thermo mechanical defaults</translation>
+      <translation>热力学默认值</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="545"/>
       <source>Analysis type (transient or steady state)</source>
-      <translation type="unfinished">Analysis type (transient or steady state)</translation>
+      <translation>分析类型(瞬态或稳态)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="552"/>
       <source>Use steady state</source>
-      <translation type="unfinished">Use steady state</translation>
+      <translation>稳态</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="568"/>
@@ -1650,7 +1650,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="602"/>
       <source>Frequency defaults</source>
-      <translation type="unfinished">Frequency defaults</translation>
+      <translation>频率默认值</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="610"/>
@@ -1684,7 +1684,7 @@
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="34"/>
       <source>Elmer binaries</source>
-      <translation type="unfinished">Elmer binaries</translation>
+      <translation>Elmer 二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="48"/>
@@ -1695,32 +1695,32 @@
       <location filename="../../DlgSettingsFemElmer.ui" line="55"/>
       <location filename="../../DlgSettingsFemElmer.ui" line="134"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>在已知二进制文件目录中搜索</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="80"/>
       <source>ElmerGrid binary path</source>
-      <translation type="unfinished">ElmerGrid binary path</translation>
+      <translation>ElmerGrid 二进制文件路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="114"/>
       <source>Leave blank to use default ElmerGrid binary file</source>
-      <translation type="unfinished">Leave blank to use default ElmerGrid binary file</translation>
+      <translation>当为空白时使用默认的 ElmerGrid 二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="127"/>
       <source>ElmerSolver:</source>
-      <translation type="unfinished">ElmerSolver:</translation>
+      <translation>ElmerSolver:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
       <source>ElmerSolver binary path</source>
-      <translation type="unfinished">ElmerSolver binary path</translation>
+      <translation>ElmerSolver 二进制文件路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="193"/>
       <source>Leave blank to use default Elmer elmer binary file</source>
-      <translation type="unfinished">Leave blank to use default Elmer elmer binary file</translation>
+      <translation>当为空白时使用默认的 Elmer elmer 二进制文件</translation>
     </message>
   </context>
   <context>
@@ -1728,7 +1728,7 @@
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="14"/>
       <source>INP</source>
-      <translation type="unfinished">INP</translation>
+      <translation>INP</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="20"/>
@@ -1814,32 +1814,32 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="51"/>
       <source>Temporary directories</source>
-      <translation type="unfinished">Temporary directories</translation>
+      <translation>临时目录</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
       <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</translation>
+      <translation>让应用程序自行管理(创建或删除)求解器的工作目录。使用临时目录。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
       <source>Beside .FCStd file</source>
-      <translation type="unfinished">Beside .FCStd file</translation>
+      <translation>在.FCStd文件旁</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="116"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>在FCStd文件所在文件夹下新建目录。为每个求解器使用不同的子目录(如：文件为“./mydoc.FCStd”，则求解器Elmer002使用“./mydoc/Elmer002”)。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="142"/>
       <source>Use custom directory</source>
-      <translation type="unfinished">Use custom directory</translation>
+      <translation>使用自定义目录</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="160"/>
       <source>Use directory set below. Create own subdirectory for every solver. Name directory after the solver label prefixed with the document name.</source>
-      <translation type="unfinished">Use directory set below. Create own subdirectory for every solver. Name directory after the solver label prefixed with the document name.</translation>
+      <translation>使用下方设定的目录。为每个求解器创建自己的子目录。该子目录以带文档名前缀的求解器标签命名。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
@@ -1849,7 +1849,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="247"/>
       <source>Overwrite solver working directory with the directory chosen above</source>
-      <translation type="unfinished">Overwrite solver working directory with the directory chosen above</translation>
+      <translation>用上面选择的目录覆盖求解器工作目录</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="268"/>
@@ -1892,22 +1892,22 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
       <source>Gmsh binary</source>
-      <translation type="unfinished">Gmsh binary</translation>
+      <translation>Gmsh 二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="40"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>在已知二进制文件目录中搜索</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="65"/>
       <source>Gmsh binary path</source>
-      <translation type="unfinished">Gmsh binary path</translation>
+      <translation>Gmsh 二进制文件路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
       <source>Leave blank to use default gmsh binary file</source>
-      <translation type="unfinished">Leave blank to use default gmsh binary file</translation>
+      <translation>当为空白时使用默认的 Gmsh 二进制文件</translation>
     </message>
   </context>
   <context>
@@ -2063,7 +2063,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="40"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>在已知二进制文件目录中搜索</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="65"/>
@@ -2101,7 +2101,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="46"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>在已知二进制文件目录中搜索</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="77"/>
@@ -2126,22 +2126,22 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="165"/>
       <source>Solver method to be used</source>
-      <translation type="unfinished">Solver method to be used</translation>
+      <translation>欲使用的求解方法</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="178"/>
       <source>Iteration solver with SOR preconditioning (-sorcg)</source>
-      <translation type="unfinished">Iteration solver with SOR preconditioning (-sorcg)</translation>
+      <translation>带有逐次超松弛法预处理的迭代求解器(-sorcg)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="183"/>
       <source>Iteration solver with SIC preconditioning (-siccg)</source>
-      <translation type="unfinished">Iteration solver with SIC preconditioning (-siccg)</translation>
+      <translation>带有标准不完全Cholesky预处理的迭代求解器(-siccg)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="188"/>
       <source>Simple Cholesky solver (-choly)</source>
-      <translation type="unfinished">Simple Cholesky solver (-choly)</translation>
+      <translation>简单Cholesky求解器(-choly)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="196"/>
@@ -3025,7 +3025,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="390"/>
       <source>Implicit function</source>
-      <translation type="unfinished">Implicit function</translation>
+      <translation>隐函数</translation>
     </message>
   </context>
   <context>
@@ -3802,7 +3802,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="207"/>
       <source>Gmsh version</source>
-      <translation type="unfinished">Gmsh version</translation>
+      <translation>Gmsh 版本</translation>
     </message>
   </context>
   <context>
@@ -4168,7 +4168,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="90"/>
       <source>stress: sxx, syy, szz, sxy, sxz, syz</source>
-      <translation type="unfinished">stress: sxx, syy, szz, sxy, sxz, syz</translation>
+      <translation>应力: sxx, syy, szz, sxy, sxz, syz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="118"/>
@@ -4178,7 +4178,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="128"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation type="unfinished">strain: exx, eyy, ezz, exy, exz, eyz</translation>
+      <translation>应变: exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="138"/>
@@ -4188,7 +4188,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
       <source>von Mises stress: vM</source>
-      <translation type="unfinished">von Mises stress: vM</translation>
+      <translation>范式等效应力: vM</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="158"/>
@@ -4208,7 +4208,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
       <source>equivalent plastic strain: Peeq</source>
-      <translation type="unfinished">equivalent plastic strain: Peeq</translation>
+      <translation>等效塑性应变: Peeq</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
@@ -4908,17 +4908,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="102"/>
       <source>1 W/m^2/K</source>
-      <translation type="unfinished">1 W/m^2/K</translation>
+      <translation>1 W/m^2/K</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="119"/>
       <source>Ambient Temperature</source>
-      <translation type="unfinished">Ambient Temperature</translation>
+      <translation>环境温度</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="126"/>
       <source>300 K</source>
-      <translation type="unfinished">300 K</translation>
+      <translation>300 K</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
@@ -4941,7 +4941,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="30"/>
       <source>300 K</source>
-      <translation type="unfinished">300 K</translation>
+      <translation>300 K</translation>
     </message>
   </context>
   <context>
@@ -5079,7 +5079,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="87"/>
       <source>300 K</source>
-      <translation type="unfinished">300 K</translation>
+      <translation>300 K</translation>
     </message>
   </context>
   <context>

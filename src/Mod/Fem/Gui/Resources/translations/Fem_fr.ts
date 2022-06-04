@@ -49,7 +49,7 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="309"/>
       <source>Run</source>
-      <translation>exécuter</translation>
+      <translation>Lancer</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="313"/>
       <source>Re-run</source>
-      <translation>Ré-exécuter</translation>
+      <translation>Relancer</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
@@ -4277,7 +4277,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="130"/>
       <source>Run CalculiX</source>
-      <translation>Exécuter CalculiX</translation>
+      <translation>Lancer CalculiX</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="151"/>

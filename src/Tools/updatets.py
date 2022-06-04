@@ -26,6 +26,7 @@
 #***************************************************************************
 
 # Changelog:
+# 0.5 Add support for Qt 6 lupdate (which fixes MANY bugs and should be preferred)
 # 0.4 Refactor to always try both C++ and Python translations
 # 0.3 User-friendly output
 #     Corrections
@@ -47,10 +48,13 @@ Authors:
   Licence: LGPL
 
 Version:
-  0.4
+  0.5
 """
 
 import os, sys
+import subprocess
+import re
+import pathlib
 
 directories = [
         {"tsname":"FreeCAD", "workingdir":"./src/Gui", "tsdir":"Language"},
@@ -65,7 +69,7 @@ directories = [
         {"tsname":"MeshPart", "workingdir":"./src/Mod/MeshPart/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"OpenSCAD", "workingdir":"./src/Mod/OpenSCAD/", "tsdir":"Resources/translations"},
         {"tsname":"PartDesign", "workingdir":"./src/Mod/PartDesign/", "tsdir":"Gui/Resources/translations"},
-        {"tsname":"Part", "workingdir":"./src/Mod/Part/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Part", "workingdir":"./src/Mod/Part/Gui", "tsdir":"Resources/translations"},
         {"tsname":"Path", "workingdir":"./src/Mod/Path/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"Points", "workingdir":"./src/Mod/Points/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"Raytracing", "workingdir":"./src/Mod/Raytracing/", "tsdir":"Gui/Resources/translations"},
@@ -84,46 +88,67 @@ QMAKE = ""
 LUPDATE = ""
 PYLUPDATE = ""
 LCONVERT = ""
+QT_VERSION_MAJOR = ""
 
 def find_tools(noobsolete=True):
 
     print(Usage + "\nFirst, lets find all necessary tools on your system")
-    global QMAKE, LUPDATE, PYLUPDATE, LCONVERT
-    if (os.system("qmake -version") == 0):
-        QMAKE = "qmake"
-    elif (os.system("qmake-qt5 -version") == 0):
-        QMAKE = "qmake-qt5"
+    global QMAKE, LUPDATE, PYLUPDATE, LCONVERT, QT_VERSION_MAJOR
+    
+    p = subprocess.run(["lupdate","-version"],check=True,stdout=subprocess.PIPE)
+    lupdate_version = p.stdout.decode()
+    result = re.search(r'.* ([456])\.([\d]+)\.([\d]+)', lupdate_version)
+    if not result:
+        print (f"Failed to parse version from {lupdate_version}")
+    QT_VERSION_MAJOR = int(result.group(1))
+    QT_VERSION_MINOR = int(result.group(2))
+    QT_VERSION_PATCH = int(result.group(3))
+    QT_VERSION = f"{QT_VERSION_MAJOR}.{QT_VERSION_MINOR}.{QT_VERSION_PATCH}"
+    print (f"Found Qt {QT_VERSION}")
+
+    if QT_VERSION_MAJOR < 6:
+        if (os.system("lupdate -version") == 0):
+            LUPDATE = "lupdate"
+            # TODO: we suppose lupdate is a symlink to lupdate-qt4 for now
+            if noobsolete:
+                LUPDATE += " -no-obsolete"
+        elif (os.system("lupdate-qt5 -version") == 0):
+            LUPDATE = "lupdate-qt5"
+            if noobsolete:
+                LUPDATE += " -no-obsolete"
+        else:
+            raise Exception("Cannot find lupdate")
     else:
-        raise Exception("Cannot find qmake")
-    if (os.system("lupdate -version") == 0):
         LUPDATE = "lupdate"
-        # TODO: we suppose lupdate is a symlink to lupdate-qt4 for now
-        if noobsolete:
-            LUPDATE += " -no-obsolete"
-    elif (os.system("lupdate-qt5 -version") == 0):
-        LUPDATE = "lupdate-qt5"
-        if noobsolete:
-            LUPDATE += " -no-obsolete"
+    
+    if QT_VERSION_MAJOR < 6:
+        if (os.system("qmake -version") == 0):
+            QMAKE = "qmake"
+        elif (os.system("qmake-qt5 -version") == 0):
+            QMAKE = "qmake-qt5"
+        else:
+            raise Exception("Cannot find qmake")
+        if (os.system("pylupdate -version") == 0):
+            PYLUPDATE = "pylupdate"
+        elif (os.system("pylupdate5 -version") == 0):
+            PYLUPDATE = "pylupdate5"
+            if noobsolete:
+                PYLUPDATE += " -noobsolete"
+        elif (os.system("pylupdate4 -version") == 0):
+            PYLUPDATE = "pylupdate4"
+            if noobsolete:
+                PYLUPDATE += " -noobsolete"
+        elif (os.system("pyside2-lupdate -version") == 0):
+            PYLUPDATE = "pyside2-lupdate"
+            raise Exception("Please do not use pyside2-lupdate at the moment, as it shows encoding problems. Please use pylupdate5 instead.")
+        else:
+            raise Exception("Cannot find pylupdate")
     else:
-        raise Exception("Cannot find lupdate")
-    if (os.system("pylupdate -version") == 0):
-        PYLUPDATE = "pylupdate"
-    elif (os.system("pylupdate5 -version") == 0):
-        PYLUPDATE = "pylupdate5"
-        if noobsolete:
-            PYLUPDATE += " -noobsolete"
-    elif (os.system("pylupdate4 -version") == 0):
-        PYLUPDATE = "pylupdate4"
-        if noobsolete:
-            PYLUPDATE += " -noobsolete"
-    elif (os.system("pyside2-lupdate -version") == 0):
-        PYLUPDATE = "pyside2-lupdate"
-        raise Exception("Please do not use pyside2-lupdate at the moment, as it shows encoding problems. Please use pylupdate5 instead.")
-    else:
-        raise Exception("Cannot find pylupdate")
+        QMAKE = "(qmake not needed for Qt 6 and later)"
+        PYLUPDATE = "(pylupdate not needed for Qt 6 and later)"
     if (os.system("lconvert -h") == 0):
         LCONVERT = "lconvert"
-        if noobsolete:
+        if noobsolete and QT_VERSION_MAJOR < 6:
             LCONVERT += " -no-obsolete"
     else:
         raise Exception("Cannot find lconvert")
@@ -136,10 +161,7 @@ def find_tools(noobsolete=True):
 
 def update_translation(entry):
 
-    global QMAKE, LUPDATE
-    print ("\n\n=============================================")
-    print (f"EXTRACTING STRINGS FOR {entry['tsname']}")
-    print ("=============================================")
+    global QMAKE, LUPDATE, LCONVERT, QT_VERSION_MAJOR
     cur = os.getcwd()
     log_redirect = f" 2>> {cur}/tsupdate_stderr.log 1>> {cur}/tsupdate_stdout.log"
     os.chdir(entry["workingdir"])
@@ -147,28 +169,65 @@ def update_translation(entry):
     project_filename = entry["tsname"] + ".pro"
     tsBasename = os.path.join(entry["tsdir"],entry["tsname"])
 
-    execline = []
-    execline.append (f"touch dummy_cpp_file_for_lupdate.cpp") #lupdate requires at least one source file to process the UI files
-    execline.append (f"{QMAKE} -project -o {project_filename} -r")
-    execline.append (f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
-    execline.append (f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp")
-    execline.append (f"mv {tsBasename}.ts.temp {tsBasename}.ts")
-    execline.append (f"{PYLUPDATE} `find ./ -name \"*.py\"` -ts {tsBasename}py.ts {log_redirect}")
-    execline.append (f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}")
-    execline.append (f"rm {tsBasename}py.ts")
-    execline.append (f"rm dummy_cpp_file_for_lupdate.cpp")
-    print(f"Executing commands in {entry['workingdir']}:")
-    for line in execline:
-        print (line)
-        os.system(line)
-    print()
+    if QT_VERSION_MAJOR < 6:
+        print ("\n\n=============================================")
+        print (f"EXTRACTING STRINGS FOR {entry['tsname']}")
+        print ("=============================================",flush=True)
+        execline = []
+        execline.append (f"touch dummy_cpp_file_for_lupdate.cpp") #lupdate 5.x requires at least one source file to process the UI files
+        execline.append (f"{QMAKE} -project -o {project_filename} -r")
+        execline.append (f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
+        execline.append (f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp")
+        execline.append (f"mv {tsBasename}.ts.temp {tsBasename}.ts")
+        execline.append (f"{PYLUPDATE} `find ./ -name \"*.py\"` -ts {tsBasename}py.ts {log_redirect}")
+        execline.append (f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}")
+        execline.append (f"rm {tsBasename}py.ts")
+        execline.append (f"rm dummy_cpp_file_for_lupdate.cpp")
 
-    os.remove(project_filename)
-    # lupdate creates json files since Qt5.something. Remove them here too
-    for jsonfile in [f for f in os.listdir(".") if f.endswith(".json")]:
-        if not jsonfile in existingjsons:
-            os.remove(jsonfile)
-    
+        print(f"Executing commands in {entry['workingdir']}:")
+        for line in execline:
+            print (line)
+            os.system(line)
+        print()
+
+        os.remove(project_filename)
+        # lupdate creates json files since Qt5.something. Remove them here too
+        for jsonfile in [f for f in os.listdir(".") if f.endswith(".json")]:
+            if not jsonfile in existingjsons:
+                os.remove(jsonfile)
+
+    elif QT_VERSION_MAJOR == 6:
+        # In Qt6, QMake project files are deprecated, and lupdate directly scans for source files. The same executable is
+        # used for all supported programming languages, so it's just a single function call
+
+        # For Windows compatibility, do most of the work in Python:
+        extensions = ["java","jui","ui","c","c++","cc","cpp","cxx","ch","h","h++","hh","hpp","hxx","js","qs","qml","qrc","py"]
+        with open ("files_to_translate.txt","w") as file_list:
+            for root, dirs, files in os.walk("./"):
+                for f in files:
+                    if pathlib.Path(f).suffix[1:] in extensions:
+                        file_list.write(os.path.join(root,f) + "\n")
+
+        try:
+            p = subprocess.run([LUPDATE, "@files_to_translate.txt","-I","./", "-recursive", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
+        except Exception as e:
+            print(str(e))
+            os.chdir(cur)
+            return
+         
+        with open (f"{cur}/tsupdate_stdout.log","a") as f:
+            f.write(p.stdout.decode())
+            print(p.stdout.decode())
+        with open (f"{cur}/tsupdate_stderr.log","a") as f:
+            f.write(p.stderr.decode())
+
+        # Strip out obsolete strings, and make sure there are no translations in the main *.ts file
+        subprocess.run([LCONVERT, "-drop-translations", "-i", f"{tsBasename}.ts", "-o", f"{tsBasename}.ts"])
+
+    else:
+        print("ERROR: unrecognized version of lupdate -- found Qt {QT_VERSION_MAJOR}, we only support 4, 5 and 6")
+        exit(1)
+
     os.chdir(cur)
 
 def main(mod=None):

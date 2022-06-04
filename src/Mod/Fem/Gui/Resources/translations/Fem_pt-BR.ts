@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="136"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Para adicionar referências: selecione-as na vista 3D e clique "Adicionar".</translation>
     </message>
   </context>
   <context>
@@ -19,18 +19,18 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Controle do Solucionador</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Diretório de Trabalho</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Gravar</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="245"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Tempo Decorrido:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
@@ -55,12 +55,12 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Regravar</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Reexecutar</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
@@ -73,12 +73,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="57"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Recipiente de análise</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Cria um recipiente de análise com o solucionador padrão CalculiX</translation>
     </message>
   </context>
   <context>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="85"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Recortar plano na face</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="89"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Adicionar um plano de corte em uma face selecionada</translation>
     </message>
   </context>
   <context>
@@ -100,7 +100,7 @@
       <location filename="../../../femcommands/commands.py" line="140"/>
       <location filename="../../../femcommands/commands.py" line="144"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Remover todos os planos de recorte</translation>
     </message>
   </context>
   <context>
@@ -113,7 +113,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Cria uma permissão de vácuo constante FEM para sobrescrever o valor padrão</translation>
     </message>
   </context>
   <context>

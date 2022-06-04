@@ -22,7 +22,7 @@
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
       <source>Apply the changes to the current cell</source>
-      <translation type="unfinished">Apply the changes to the current cell</translation>
+      <translation>将更改应用到当前单元格</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
@@ -32,7 +32,7 @@
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
       <source>Deletes the contents of the current cell</source>
-      <translation type="unfinished">Deletes the contents of the current cell</translation>
+      <translation>删除当前单元格的内容</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
@@ -982,22 +982,22 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Import/Export Settings</source>
-      <translation type="unfinished">Import/Export Settings</translation>
+      <translation>导入/导出设置</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="38"/>
       <source>Delimiter Character: </source>
-      <translation type="unfinished">Delimiter Character: </translation>
+      <translation>分隔符字符： </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用作字段分隔符的字符。 默认是制表符，但通常使用逗号 (,) 和分号 (;)。从列表中选择或输入您自己的字段。 必须是单个字符或单词 &lt;span style=" font-style:italic;"&gt;制表符&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;逗号&lt;/span&gt;, 或 &lt;span style=" font-style:italic;"&gt;分号&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="74"/>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>制表符</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="79"/>
@@ -1017,7 +1017,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用于划分字符串的字符，通常是单引号 (') 或双引号 (&amp;quot;)。 必须是单个字符。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="111"/>
@@ -1032,12 +1032,12 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;转义字符，通常是反斜线 (\)，用来表示特殊的不可打印字符，如 \t = 制表符。必须是单个字符。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="140"/>
       <source>\</source>
-      <translation type="unfinished">\</translation>
+      <translation>\</translation>
     </message>
   </context>
   <context>
@@ -1127,7 +1127,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="182"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>重新计算</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="186"/>
@@ -1147,7 +1147,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="200"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>拆分单元格</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>
@@ -1193,7 +1193,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>电子表格(&amp;S)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

@@ -48,9 +48,7 @@
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</translation>
+      <translation>Slutvinkel för den elliptiska bågen (för en hel cirkel, ange samma värde som i startvinkeln)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="52"/>
@@ -164,8 +162,7 @@
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Slutvinkel för bågen (för en hel cirkel, ange samma värde som i startvinklen)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>

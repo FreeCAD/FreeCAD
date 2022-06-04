@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="77"/>
       <source>No object named {name}</source>
-      <translation type="unfinished">No object named {name}</translation>
+      <translation>Inget objekt som heter {name}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="81"/>
@@ -143,7 +143,7 @@ for collision or distance filtering.</translation>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="100"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Felaktig markering</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="99"/>
@@ -181,7 +181,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="54"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Felaktig markering</translation>
     </message>
   </context>
   <context>
@@ -244,7 +244,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../BOPTools/JoinFeatures.py" line="286"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="382"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Felaktig markering</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="72"/>
@@ -301,7 +301,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="530"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Felaktig markering</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="171"/>
@@ -381,12 +381,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Skapa rör</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Skapar ett rör</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Skapa rör</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="211"/>
@@ -792,7 +792,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1398"/>
       <source>Selection </source>
-      <translation type="unfinished">Selection </translation>
+      <translation>Markering </translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1482"/>

@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="132"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Seleziona Facce/Bordi/Vertici</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="136"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Per aggiungere riferimenti: selezionarli nella vista 3D e fare clic su "Aggiungi".</translation>
     </message>
   </context>
   <context>
@@ -19,18 +19,18 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Controllo Risolutore</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Directory di lavoro</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Scrivi</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="245"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Tempo Trascorso:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
@@ -55,12 +55,12 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Riscrivi</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Riesegui</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
@@ -100,7 +100,7 @@
       <location filename="../../../femcommands/commands.py" line="140"/>
       <location filename="../../../femcommands/commands.py" line="144"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Rimuovi tutti i piani di ritaglio</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="253"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Vincolo velocità di flusso iniziale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="257"/>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="372"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Rotazione trave</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="376"/>
@@ -356,7 +356,7 @@
       <location filename="../../../femcommands/commands.py" line="492"/>
       <location filename="../../../femcommands/commands.py" line="496"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>Apri esempi FEM</translation>
     </message>
   </context>
   <context>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="513"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Editor dei materiali</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="517"/>
@@ -390,7 +390,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="533"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Materiale per fluido</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
@@ -429,7 +429,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Materiale per il solido</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="642"/>
@@ -469,7 +469,7 @@
       <location filename="../../../femcommands/commands.py" line="744"/>
       <location filename="../../../femcommands/commands.py" line="748"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Mostra informazioni FEM mesh</translation>
     </message>
   </context>
   <context>
@@ -508,7 +508,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="839"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Crea una mesh FEM da una forma solida o facciale tramite mesher interno Netgen</translation>
     </message>
   </context>
   <context>
@@ -534,7 +534,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="902"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Mostra e visualizza i dati dei risultati selezionati</translation>
     </message>
   </context>
   <context>
@@ -586,7 +586,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Cambia gli attributi del risolutore ed esegue i calcoli per il risolutore selezionato</translation>
     </message>
   </context>
   <context>
@@ -599,7 +599,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1021"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>Crea un risolutore FEM Elmer</translation>
     </message>
   </context>
   <context>
@@ -607,7 +607,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1032"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Risolutore Mystran</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1034"/>
@@ -620,12 +620,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1044"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Esegue calcoli del risolutore</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1049"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Esegue i calcoli per il risolutore selezionato</translation>
     </message>
   </context>
   <context>
@@ -638,7 +638,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1066"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Crea un risolutore FEM Z88</translation>
     </message>
   </context>
   <context>
@@ -656,17 +656,17 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="283"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli alla lista.{}I seguenti elementi geometrici possono essere selezionati: {}{}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="286"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Se non viene aggiunta alcuna geometria all'elenco, vengono usate tutte quelle rimanenti.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Modalità selezione</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
@@ -684,7 +684,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="155"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Selezionare parti del solido da aggiungere all'elenco. Per aggiungere il solido fare clic su "Aggiungi".</translation>
     </message>
   </context>
   <context>
@@ -2045,7 +2045,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="177"/>
       <source>Sort by resources</source>
-      <translation type="unfinished">Sort by resources</translation>
+      <translation>Ordina per risorse</translation>
     </message>
   </context>
   <context>
@@ -2083,7 +2083,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="119"/>
       <source>Write comments to input file</source>
-      <translation type="unfinished">Write comments to input file</translation>
+      <translation>Scrivere commenti sul file di input</translation>
     </message>
   </context>
   <context>
@@ -2126,7 +2126,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="165"/>
       <source>Solver method to be used</source>
-      <translation type="unfinished">Solver method to be used</translation>
+      <translation>Metodo del risolutore da usare</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="178"/>
@@ -5693,7 +5693,7 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../Command.cpp" line="1160"/>
       <location filename="../../Command.cpp" line="1187"/>
       <source>Error: no post processing object selected.</source>
-      <translation type="unfinished">Error: no post processing object selected.</translation>
+      <translation>Errore: nessun oggetto di post elaborazione selezionato.</translation>
     </message>
   </context>
 </TS>

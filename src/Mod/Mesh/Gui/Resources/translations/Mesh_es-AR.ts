@@ -1816,7 +1816,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Colores de pantalla</translation>
     </message>
     <message>
       <source>Leave info mode</source>

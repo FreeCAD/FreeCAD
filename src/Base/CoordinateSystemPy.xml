@@ -14,68 +14,76 @@
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <DeveloperDocu>This is the CoordinateSystem export class</DeveloperDocu>
-      <UserDocu></UserDocu>
+      <UserDocu>Base.CoordinateSystem class.\n
+An orthonormal right-handed coordinate system in 3D space.\n
+CoordinateSystem()
+Empty constructor.</UserDocu>
     </Documentation>
     <Methode Name="setAxes">
       <Documentation>
-        <UserDocu>setAxes(Axis or Vector z, Vector x)
-Set axis or z direction and x direction</UserDocu>
+        <UserDocu>setAxes(axis, xDir) -> None\n
+Set axis or Z-direction, and X-direction.
+The X-direction is determined from the orthonormal compononent of `xDir`
+with respect to `axis` direction.\n
+axis : Base.Axis, Base.Vector
+xDir : Base.Vector</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="displacement" Const="true">
       <Documentation>
-        <UserDocu>displacement(CoordinateSystem)
-Computes the placement from this to the passed coordinate system</UserDocu>
+        <UserDocu>displacement(coordSystem2) -> Base.Placement\n
+Computes the placement from this to the passed coordinate system `coordSystem2`.\n
+coordSystem2 : Base.CoordinateSystem</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="transformTo">
       <Documentation>
-        <UserDocu>transformTo(Vector)
-Computes the coordinates of the point in coordinates of this system
-        </UserDocu>
+        <UserDocu>transformTo(vector) -> Base.Vector\n
+Computes the coordinates of the point in coordinates of this coordinate system.\n
+vector : Base.Vector</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="transform">
       <Documentation>
-        <UserDocu>transform(Rotation or Placement)
-Applies the rotation or placement on this coordinate system
-        </UserDocu>
+        <UserDocu>transform(trans) -> None\n
+Applies a transformation on this coordinate system.\n
+trans : Base.Rotation, Base.Placement</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setPlacement">
       <Documentation>
-        <UserDocu>setPlacment(Placement)
-Set placement to the coordinate system.
-        </UserDocu>
+        <UserDocu>setPlacment(placement) -> None\n
+Set placement to the coordinate system.\n
+placement : Base.Placement</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="Axis" ReadOnly="false">
       <Documentation>
-        <UserDocu>Set or get axis</UserDocu>
+        <UserDocu>Set or get axis.</UserDocu>
       </Documentation>
       <Parameter Name="Axis" Type="Object" />
     </Attribute>
     <Attribute Name="XDirection" ReadOnly="false">
       <Documentation>
-        <UserDocu>Set or get x direction</UserDocu>
+        <UserDocu>Set or get X-direction.</UserDocu>
       </Documentation>
       <Parameter Name="XDirection" Type="Object" />
     </Attribute>
     <Attribute Name="YDirection" ReadOnly="false">
       <Documentation>
-        <UserDocu>Set or get y direction</UserDocu>
+        <UserDocu>Set or get Y-direction.</UserDocu>
       </Documentation>
       <Parameter Name="YDirection" Type="Object" />
     </Attribute>
     <Attribute Name="ZDirection" ReadOnly="false">
       <Documentation>
-        <UserDocu>Set or get z direction</UserDocu>
+        <UserDocu>Set or get Z-direction.</UserDocu>
         </Documentation>
         <Parameter Name="ZDirection" Type="Object" />
     </Attribute>
     <Attribute Name="Position" ReadOnly="false">
       <Documentation>
-        <UserDocu>Set or get position</UserDocu>
+        <UserDocu>Set or get position.</UserDocu>
       </Documentation>
       <Parameter Name="Position" Type="Object" />
     </Attribute>

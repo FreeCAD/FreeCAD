@@ -48,9 +48,9 @@
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
+      <translation>Ángulo final del arco elíptico
 
-                (for a full circle, give it same value as First Angle)</translation>
+                 (para un círculo completo, darle el mismo valor de Primer Ángulo)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="52"/>
@@ -164,8 +164,8 @@
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Ángulo final del arco (para un círculo completo, 
+                darle el mismo valor de Primer ángulo)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>
@@ -796,15 +796,15 @@ Es un listado; donde cada elemento de la lista se mostrará en su propia línea.
       <location filename="../../draftobjects/shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Para los modos Líneas de corte y Caras de corte, 
+                    esto deja las caras en la ubicación del corte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Longitud de los segmentos de línea si se teselan elipses o B-splines 
+                     en segmentos de línea</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="111"/>

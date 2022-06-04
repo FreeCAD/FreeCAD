@@ -417,7 +417,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="509"/>
       <source>Background text color</source>
-      <translation>Kolor tła dla tekstu</translation>
+      <translation>Kolor tekstu w tle</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="516"/>
@@ -452,7 +452,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="572"/>
       <source>Use gradient for New File icon</source>
-      <translation>Użyj gradientu dla ikonki Utwórz nowy ...</translation>
+      <translation>Użyj gradientu dla okienka Utwórz nowy ...</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>

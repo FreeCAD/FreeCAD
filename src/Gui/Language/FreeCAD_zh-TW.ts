@@ -597,19 +597,19 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::ApplicationCache</name>
     <message>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>快取目錄</translation>
     </message>
     <message>
       <source>The cache directory %1 exceeds the size of %2.</source>
-      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+      <translation>快取目錄 %1 超過 %2 的大小。</translation>
     </message>
     <message>
       <source>Do you want to clear it now?</source>
-      <translation type="unfinished">Do you want to clear it now?</translation>
+      <translation>請問您要清除掉嗎？</translation>
     </message>
     <message>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>警告：請確保這是唯一正在運行的 %1 實例，並且沒有打開任何文件，因為這可能會導致資料遺失！</translation>
     </message>
   </context>
   <context>
@@ -889,7 +889,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
     <message>
       <source>Create New Preference Pack</source>
-      <translation type="unfinished">Create New Preference Pack</translation>
+      <translation>建立新的參考包</translation>
     </message>
     <message>
       <source>Name</source>
@@ -904,7 +904,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
     <message>
       <source>Pack already exists</source>
-      <translation type="unfinished">Pack already exists</translation>
+      <translation>包已經存在。</translation>
     </message>
     <message>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
@@ -1565,7 +1565,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Number format:</source>
-      <translation type="unfinished">Number format:</translation>
+      <translation>數字格式：</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -1573,11 +1573,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Selected language</source>
-      <translation type="unfinished">Selected language</translation>
+      <translation>選擇語言</translation>
     </message>
     <message>
       <source>C/POSIX</source>
-      <translation type="unfinished">C/POSIX</translation>
+      <translation>C/POSIX</translation>
     </message>
     <message>
       <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
@@ -1605,15 +1605,15 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Save new...</source>
-      <translation type="unfinished">Save new...</translation>
+      <translation>另存新檔...</translation>
     </message>
     <message>
       <source>Manage...</source>
-      <translation type="unfinished">Manage...</translation>
+      <translation>管理...</translation>
     </message>
     <message>
       <source>Revert...</source>
-      <translation type="unfinished">Revert...</translation>
+      <translation>還原...</translation>
     </message>
     <message>
       <source>Main window</source>
@@ -1639,11 +1639,11 @@ See the FreeCAD Wiki for details about the image.</translation>
     </message>
     <message>
       <source>The text cursor will be blinking</source>
-      <translation type="unfinished">The text cursor will be blinking</translation>
+      <translation>文字遊標將會閃爍</translation>
     </message>
     <message>
       <source>Enable cursor blinking</source>
-      <translation type="unfinished">Enable cursor blinking</translation>
+      <translation>啟動遊標閃爍</translation>
     </message>
     <message>
       <source>Style sheet:</source>
@@ -2231,7 +2231,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Open Addon Manager...</source>
-      <translation type="unfinished">Open Addon Manager...</translation>
+      <translation>開啟附加元件管理員...</translation>
     </message>
   </context>
   <context>
@@ -2784,13 +2784,13 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>“算繪快取”是“算繪加速”的另一種說法。
+有 3 個選項可用於實現此目的：
+1）'自動'（預設），讓 Coin3D 決定快取的位置。
+2）“分散式'，手動打開所有視圖提供者根節點的快取。
+3）'集中式'，手動關閉所有視圖提供者的所有節點中的快取，並
+只快取在場景圖根節點。這提供了最快的算繪速度
+但對任何場景變化的反應較慢。</translation>
     </message>
     <message>
       <source>Auto</source>
@@ -2960,23 +2960,23 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
     <message>
       <source>Cache</source>
-      <translation type="unfinished">Cache</translation>
+      <translation>快取</translation>
     </message>
     <message>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>快取目錄</translation>
     </message>
     <message>
       <source>Location:</source>
-      <translation type="unfinished">Location:</translation>
+      <translation>位置：</translation>
     </message>
     <message>
       <source>Check periodically at program start:</source>
-      <translation type="unfinished">Check periodically at program start:</translation>
+      <translation>在程式開始時固定檢查：</translation>
     </message>
     <message>
       <source>Always</source>
-      <translation type="unfinished">Always</translation>
+      <translation>總是</translation>
     </message>
     <message>
       <source>Daily</source>
@@ -2988,11 +2988,11 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Monthly</source>
-      <translation type="unfinished">Monthly</translation>
+      <translation>每月</translation>
     </message>
     <message>
       <source>Yearly</source>
-      <translation type="unfinished">Yearly</translation>
+      <translation>每年</translation>
     </message>
     <message>
       <source>Never</source>
@@ -3000,15 +3000,15 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Cache size limit:</source>
-      <translation type="unfinished">Cache size limit:</translation>
+      <translation>快取大小限制：</translation>
     </message>
     <message>
       <source>Check now...</source>
-      <translation type="unfinished">Check now...</translation>
+      <translation>立即檢查</translation>
     </message>
     <message>
       <source>Notify the user if the cache size exceeds the specified limit</source>
-      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+      <translation>提醒使用者如果快取大小超過指定的限制</translation>
     </message>
     <message>
       <source>Unknown</source>
@@ -3016,7 +3016,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Current cache size: %1</source>
-      <translation type="unfinished">Current cache size: %1</translation>
+      <translation>目前快取大小：%1</translation>
     </message>
   </context>
   <context>
@@ -6290,7 +6290,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TextDocumentEditorView</name>
     <message>
       <source>Text updated</source>
-      <translation type="unfinished">Text updated</translation>
+      <translation>文字上傳</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
@@ -6298,7 +6298,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Yes, reload.</source>
-      <translation type="unfinished">Yes, reload.</translation>
+      <translation>是，重新載入</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -6314,7 +6314,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Edit text</source>
-      <translation type="unfinished">Edit text</translation>
+      <translation>編輯文字</translation>
     </message>
   </context>
   <context>
@@ -7414,7 +7414,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <source>Edit text</source>
-      <translation type="unfinished">Edit text</translation>
+      <translation>編輯文字</translation>
     </message>
     <message>
       <source>Simple group</source>
@@ -8699,11 +8699,11 @@ the current copy will be lost.
     <name>StdCmdTextDocument</name>
     <message>
       <source>Add text document</source>
-      <translation type="unfinished">Add text document</translation>
+      <translation>添加文字文件</translation>
     </message>
     <message>
       <source>Add text document to active document</source>
-      <translation type="unfinished">Add text document to active document</translation>
+      <translation>添加文字文件至激活文件</translation>
     </message>
   </context>
   <context>

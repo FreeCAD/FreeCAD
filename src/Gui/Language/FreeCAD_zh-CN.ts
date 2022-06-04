@@ -373,7 +373,7 @@
     </message>
     <message>
       <source>Press a keyboard shortcut</source>
-      <translation type="unfinished">Press a keyboard shortcut</translation>
+      <translation>按下键盘快捷键</translation>
     </message>
   </context>
   <context>
@@ -605,7 +605,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Do you want to clear it now?</source>
-      <translation type="unfinished">Do you want to clear it now?</translation>
+      <translation>您现在要清除吗？</translation>
     </message>
     <message>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
@@ -897,14 +897,14 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Property group templates</source>
-      <translation type="unfinished">Property group templates</translation>
+      <translation>属性组模板</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
     <message>
       <source>Pack already exists</source>
-      <translation type="unfinished">Pack already exists</translation>
+      <translation>包已存在</translation>
     </message>
     <message>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
@@ -1609,11 +1609,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Manage...</source>
-      <translation type="unfinished">Manage...</translation>
+      <translation>管理...</translation>
     </message>
     <message>
       <source>Revert...</source>
-      <translation type="unfinished">Revert...</translation>
+      <translation>还原...</translation>
     </message>
     <message>
       <source>Main window</source>
@@ -1639,7 +1639,7 @@ See the FreeCAD Wiki for details about the image.</source>
     </message>
     <message>
       <source>The text cursor will be blinking</source>
-      <translation type="unfinished">The text cursor will be blinking</translation>
+      <translation>文本光标将会闪烁</translation>
     </message>
     <message>
       <source>Enable cursor blinking</source>
@@ -3736,7 +3736,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation type="unfinished">Commands executed by macro scripts are shown in Python console</translation>
+      <translation>宏脚本执行的命令会显示在Python控制台中</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
@@ -3768,7 +3768,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>需要给多少个最近使用的宏设置快捷键</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
@@ -6040,7 +6040,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>运行 macro %1 (使用Shift+单击来进行编辑) 快捷键: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6665,7 +6665,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (但是必须执行)</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>

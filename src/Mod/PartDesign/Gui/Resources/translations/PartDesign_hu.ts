@@ -2096,7 +2096,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation type="unfinished">Radial growth:</translation>
+      <translation>Sugárirányú növekedés:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>

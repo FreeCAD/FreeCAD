@@ -343,6 +343,8 @@ void QGIView::updateView(bool update)
 {
 //    Base::Console().Message("QGIV::updateView() - %s\n",getViewObject()->getNameInDocument());
     (void) update;
+
+    //allow/prevent dragging
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
@@ -418,12 +420,12 @@ void QGIView::toggleCache(bool state)
 void QGIView::draw()
 {
 //    Base::Console().Message("QGIV::draw()\n");
-    double x, y;
+    double xFeat, yFeat;
     if (getViewObject() != nullptr) {
-        x = Rez::guiX(getViewObject()->X.getValue());
-        y = Rez::guiX(getViewObject()->Y.getValue());
+        xFeat = Rez::guiX(getViewObject()->X.getValue());
+        yFeat = Rez::guiX(getViewObject()->Y.getValue());
         if (!getViewObject()->LockPosition.getValue()) {
-            setPosition(x, y);
+            setPosition(xFeat, yFeat);
         }
     }
     if (isVisible()) {

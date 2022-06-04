@@ -214,12 +214,12 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    if (prop == &(getViewObject()->Rotation) ||
-        prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y) ) {
+    //only move the view on X,Y change
+    if (prop == &(getViewObject()->X)  ||
+        prop == &(getViewObject()->Y) ){
         QGIView* qgiv = getQView();
         if (qgiv) {
-            qgiv->updateView(true);
+            qgiv->QGIView::updateView(true);
         }
     }
 
@@ -257,7 +257,7 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
-//   Base::Console().Message("VPDV::onGuiRepaint(%s)\n", dv->getNameInDocument());
+//    Base::Console().Message("VPDV::onGuiRepaint(%s)\n", dv->getNameInDocument());
     if (dv == getViewObject()) {
         if (!dv->isRemoving() &&
             !dv->isRestoring()) {
