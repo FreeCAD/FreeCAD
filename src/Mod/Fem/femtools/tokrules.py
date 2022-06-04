@@ -36,7 +36,6 @@ tokens = (
     'EQUALS',
     'LPAREN',
     'RPAREN',
-    'COMMENT',
     'POWER'
 )
 
