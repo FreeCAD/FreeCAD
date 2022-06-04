@@ -422,7 +422,8 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 	Q_UNUSED(gl);
 	QOpenGLTexture* texture = new QOpenGLTexture(image.mirrored());
 	m_glTextures.push_back(texture);
-	texture->setMinificationFilter(QOpenGLTexture::Nearest);
+	texture->generateMipMaps();
+	texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
 	texture->setMagnificationFilter(QOpenGLTexture::Linear);
 	return texture->textureId();
 }
@@ -527,7 +528,8 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 	Q_UNUSED(gl);
 	QOpenGLTexture* texture = new QOpenGLTexture(image.mirrored());
 	m_glTextures.push_back(texture);
-	texture->setMinificationFilter(QOpenGLTexture::Nearest);
+	texture->generateMipMaps();
+	texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
 	texture->setMagnificationFilter(QOpenGLTexture::Linear);
 	return texture->textureId();
 }
@@ -599,7 +601,8 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
 	Q_UNUSED(gl);
 	QOpenGLTexture* texture = new QOpenGLTexture(image.mirrored());
 	m_glTextures.push_back(texture);
-	texture->setMinificationFilter(QOpenGLTexture::Linear);
+	texture->generateMipMaps();
+	texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
 	texture->setMagnificationFilter(QOpenGLTexture::Linear);
 	return texture->textureId();
 }
