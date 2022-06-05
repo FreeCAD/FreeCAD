@@ -52,6 +52,7 @@ public:
             const Part::Geometry *geom = Sketch->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
                 || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
+                || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
                 || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
                 || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 return true;
@@ -89,6 +90,7 @@ public:
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
                 || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
+                || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
                 || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
                 || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 try {
