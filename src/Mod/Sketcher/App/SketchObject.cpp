@@ -3053,6 +3053,28 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             ok = true;
         }
     }
+    else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        const Part::GeomEllipse *curve = static_cast<const Part::GeomEllipse *>(geo);
+
+        // find split point
+        curve->closestParameter(point, splitParam);
+        double period = curve->getLastParameter() - curve->getFirstParameter();
+        startParam = splitParam;
+        endParam = splitParam + period;
+
+        // create new arc
+        auto newArc = new Part::GeomArcOfEllipse(Handle(Geom_Ellipse)::DownCast(curve->handle()->Copy()));
+        newArc->setRange(startParam, endParam, false);
+        int newId = addGeometry(newArc);
+        if (newId >= 0) {
+            newIds.push_back(newId);
+            setConstruction(newId, GeometryFacade::getConstruction(geo));
+            exposeInternalGeometry(newId);
+
+            transferConstraints(GeoId, PointPos::mid, newId, PointPos::mid);
+            ok = true;
+        }
+    }
     else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
 
