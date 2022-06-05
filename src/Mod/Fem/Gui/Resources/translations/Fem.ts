@@ -811,7 +811,7 @@
     <name>FEM</name>
     <message>
         <location filename="../../../femtaskpanels/task_result_mechanical.py" line="290"/>
-        <source>Displacement magnitude</source>
+        <source>Displacement Magnitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -866,7 +866,7 @@
     </message>
     <message>
         <location filename="../../../femtaskpanels/task_result_mechanical.py" line="376"/>
-        <source>Equivalent plastic strain</source>
+        <source>Equivalent Plastic Strain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -881,38 +881,38 @@ Please select a result type first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="499"/>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="500"/>
         <source>Histogram of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="500"/>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="501"/>
         <source>Nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="616"/>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="620"/>
         <source>FEM: there are no nodes in result mesh, there will be nothing to show.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="619"/>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="623"/>
         <source>Empty result mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="626"/>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="630"/>
         <source>FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="629"/>
         <location filename="../../../femtaskpanels/task_result_mechanical.py" line="633"/>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="637"/>
         <source>No result object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="631"/>
+        <location filename="../../../femtaskpanels/task_result_mechanical.py" line="635"/>
         <source>FEM: Result node numbers are not equal to FEM Mesh NodeCount.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4182,17 +4182,26 @@ that &quot;MAXKOI&quot; needs to be increased.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ResultShow.ui" line="333"/>
-        <source>Calculate and plot</source>
+        <location filename="../ui/ResultShow.ui" line="331"/>
+        <source>Runs the equation given in the field below,
+outputs the results to the Min and Max fields
+and colors the result mesh accordingly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ResultShow.ui" line="340"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:7.875pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:8pt;&quot;&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location filename="../ui/ResultShow.ui" line="336"/>
+        <source>Calculate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ResultShow.ui" line="355"/>
+        <source>Enter here an equation to be calculated.
+For possible variables, see the description box below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ResultShow.ui" line="359"/>
+        <source>P1 - P3 # Max - Min Principal Stress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4236,43 +4245,58 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ResultHints.ui" line="148"/>
+        <location filename="../ui/ResultHints.ui" line="158"/>
         <source>von Mises stress: vM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/ResultHints.ui" line="158"/>
-        <source>reinforcement ratio: rx, ry, rz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/ResultHints.ui" line="168"/>
-        <source>principal stresses: P1, P2, P3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/ResultHints.ui" line="178"/>
-        <source>Mohr Coulomb: mc</source>
+        <source>max shear stress: MS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ResultHints.ui" line="188"/>
-        <source>equivalent plastic strain: Peeq</source>
+        <source>max princ. stress vector: s3x, s3y, s3z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ResultHints.ui" line="198"/>
-        <source>min. principal stress vector: s1x, s1y, s1z</source>
+        <source>max principal stress: P1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ResultHints.ui" line="208"/>
-        <source>med. principal stress vector: s2x, s2y, s2z</source>
+        <source>med princ. stress vector: s2x, s2y, s2z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ResultHints.ui" line="218"/>
-        <source>max. principal stress vector: s3x, s3y, s3z</source>
+        <source>med principal stress: P2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ResultHints.ui" line="228"/>
+        <source>min princ. stress vector: s1x, s1y, s1z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ResultHints.ui" line="238"/>
+        <source>min principal stress: P3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ResultHints.ui" line="148"/>
+        <source>reinforcement ratio: rx, ry, rz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ResultHints.ui" line="248"/>
+        <source>Mohr Coulomb: mc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ResultHints.ui" line="168"/>
+        <source>equivalent plastic strain: Peeq</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
