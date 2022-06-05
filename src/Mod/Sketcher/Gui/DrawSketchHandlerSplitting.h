@@ -53,6 +53,7 @@ public:
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
                 || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
                 || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
+                || geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
                 || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 return true;
             }
@@ -90,6 +91,7 @@ public:
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
                 || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
                 || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
+                || geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
                 || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
