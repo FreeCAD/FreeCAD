@@ -3117,8 +3117,8 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             }
         }
     }
-    else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-        const Part::GeomArcOfEllipse *arc = static_cast<const Part::GeomArcOfEllipse *>(geo);
+    else if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
+        const Part::GeomArcOfConic *arc = static_cast<const Part::GeomArcOfConic *>(geo);
 
         startPoint = arc->getStartPoint();
         endPoint = arc->getEndPoint();
@@ -3128,13 +3128,13 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
         startParam = arc->getFirstParameter();
         endParam = arc->getLastParameter();
         // TODO: Using parameter difference as a poor substitute of length.
-        // Computing length of an arc of an ellipse would be expensive.
+        // Computing length of an arc of a generic conic would be expensive.
         if (endParam - splitParam > splitParam - startParam) {
             longestPart = 1;
         }
 
         // create new arcs
-        auto newArc = static_cast<Part::GeomArcOfEllipse *>(arc->clone());
+        auto newArc = static_cast<Part::GeomArcOfConic *>(arc->clone());
         int newId(GeoEnum::GeoUndef);
         newGeometries.push_back(newArc);
         newArc->setRange(startParam, splitParam, /*emulateCCW=*/true);
@@ -3145,7 +3145,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             exposeInternalGeometry(newId);
 
             // the "second" half
-            auto newArc2 = static_cast<Part::GeomArcOfEllipse *>(arc->clone());
+            auto newArc2 = static_cast<Part::GeomArcOfConic *>(arc->clone());
             int newId2(GeoEnum::GeoUndef);
             newArc2->setRange(splitParam, endParam, /*emulateCCW=*/true);
             newId2 = addGeometry(newArc2);
