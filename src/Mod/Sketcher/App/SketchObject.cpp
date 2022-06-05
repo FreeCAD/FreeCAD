@@ -2976,6 +2976,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
 
     Base::Vector3d startPoint, endPoint, splitPoint;
     double radius, startAngle, endAngle, splitAngle=0.0;
+    double startParam, endParam, splitParam=0.0;
     unsigned int longestPart = 0;
 
 
@@ -3116,11 +3117,65 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             }
         }
     }
+    else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        const Part::GeomArcOfEllipse *arc = static_cast<const Part::GeomArcOfEllipse *>(geo);
+
+        startPoint = arc->getStartPoint();
+        endPoint = arc->getEndPoint();
+
+        // find split point
+        arc->closestParameter(point, splitParam);
+        startParam = arc->getFirstParameter();
+        endParam = arc->getLastParameter();
+        // TODO: Using parameter difference as a poor substitute of length.
+        // Computing length of an arc of an ellipse would be expensive.
+        if (endParam - splitParam > splitParam - startParam) {
+            longestPart = 1;
+        }
+
+        // create new arcs
+        auto newArc = static_cast<Part::GeomArcOfEllipse *>(arc->clone());
+        int newId(GeoEnum::GeoUndef);
+        newGeometries.push_back(newArc);
+        newArc->setRange(startParam, splitParam, /*emulateCCW=*/true);
+        newId = addGeometry(newArc);
+        if (newId >= 0) {
+            newIds.push_back(newId);
+            setConstruction(newId, GeometryFacade::getConstruction(geo));
+            exposeInternalGeometry(newId);
+
+            // the "second" half
+            auto newArc2 = static_cast<Part::GeomArcOfEllipse *>(arc->clone());
+            int newId2(GeoEnum::GeoUndef);
+            newArc2->setRange(splitParam, endParam, /*emulateCCW=*/true);
+            newId2 = addGeometry(newArc2);
+            if (newId2 >= 0) {
+                newIds.push_back(newId2);
+                setConstruction(newId2, GeometryFacade::getConstruction(geo));
+                exposeInternalGeometry(newId2);
+
+                // apply appropriate constraints on the new points at split point
+                Constraint* joint = new Constraint();
+                joint->Type = Coincident;
+                joint->First = newIds[0];
+                joint->FirstPos = PointPos::end;
+                joint->Second = newIds[1];
+                joint->SecondPos = PointPos::start;
+                newConstraints.push_back(joint);
+
+                // TODO: Do we apply constraints on center etc of the conics?
+
+                // transfer constraints from start and end of original spline
+                transferConstraints(GeoId, PointPos::start, newIds[0], PointPos::start, true);
+                transferConstraints(GeoId, PointPos::end, newIds[1], PointPos::end, true);
+                ok = true;
+            }
+        }
+    }
     else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
         const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
 
         // find split point
-        double splitParam;
         bsp->closestParameter(point, splitParam);
 
         // what to do for periodic b-splines?
@@ -3218,7 +3273,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
                     unsigned int initial = 0;
                     unsigned int limit = newIds.size();
 
-                    if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                    if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
                         const Part::Geometry *conGeo = getGeometry(conId);
                         if (conGeo && conGeo->isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
                             std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
@@ -3281,6 +3336,12 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
                             if (conAngle > splitAngle) {
                                 targetId = newIds[1];
                             }
+                        }
+                        else if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
+                            double conParam;
+                            static_cast<const Part::GeomArcOfConic*>(geo)->closestParameter(conPoint, conParam);
+                            if (conParam > splitParam)
+                                targetId = newIds[1];
                         }
                         trans->Second = targetId;
 
