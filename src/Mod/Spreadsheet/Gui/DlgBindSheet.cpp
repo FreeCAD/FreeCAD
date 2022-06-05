@@ -40,6 +40,8 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
     : QDialog(parent), sheet(sheet), range(ranges.front()), ui(new Ui::DlgBindSheet)
 {
     ui->setupUi(this);
+    // remove the automatic help button in dialog title since we don't use it
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     std::string toStart,toEnd;
     ExpressionPtr pStart, pEnd;
