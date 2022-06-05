@@ -37,7 +37,7 @@ tokens = (
     'LPAREN',
     'RPAREN',
     'COMMENT',
-    'POWER',
+    'POWER'
 )
 
 # Tokens
@@ -93,8 +93,8 @@ lex.lex()
 precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-    ('right', 'UMINUS'),
     ('left', 'POWER'),
+    ('right', 'UMINUS')
 )
 
 # dictionary of names (for storing variables)
