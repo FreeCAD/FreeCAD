@@ -315,16 +315,9 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
             return;
         }
     } else if (edgeType == isBSpline) {
-        QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
-                             QObject::tr("Selected edge is a BSpline.  Radius will be approximate. Continue?"),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result == QMessageBox::Ok) {
-            objs.push_back(objFeat);
-            subs.push_back(SubNames[0]);
-        } else {
-            return;
-        }
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("BSpline Curve Error"),
+                             QObject::tr("Selected edge is a BSpline and a radius can not be calculated."));
+        return;
     } else {
         std::stringstream edgeMsg;
         edgeMsg << "Selection for Radius does not contain a circular edge (edge type: " << _edgeTypeToText(edgeType) << ")";
@@ -437,16 +430,9 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
             return;
         }
     } else if (edgeType == isBSpline) {
-        QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
-                             QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result == QMessageBox::Ok) {
-            objs.push_back(objFeat);
-            subs.push_back(SubNames[0]);
-        } else {
-            return;
-        }
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("BSpline Curve Error"),
+                             QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
+        return;
     } else {
         std::stringstream edgeMsg;
         edgeMsg << "Selection for Diameter does not contain a circular edge (edge type: " << _edgeTypeToText(edgeType) << ")";
