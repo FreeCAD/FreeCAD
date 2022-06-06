@@ -628,6 +628,7 @@ class FillMacroListWorker(QtCore.QThread):
         try:
             if os.path.exists(self.repo_dir):
                 if not os.path.exists(os.path.join(self.repo_dir, ".git")):
+                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller","Attempting to change non-git Macro setup to use git\n"))
                     utils.repair_git_repo(
                         "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
                     )
@@ -644,6 +645,8 @@ class FillMacroListWorker(QtCore.QThread):
                 )
                 + f":\n{e}\n"
             )
+            FreeCAD.Console.PrintWarning(f"{self.repo_dir}\n")
+            return
         n_files = 0
         for _, _, filenames in os.walk(self.repo_dir):
             n_files += len(filenames)
