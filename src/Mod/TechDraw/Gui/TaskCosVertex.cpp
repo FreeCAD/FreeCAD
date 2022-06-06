@@ -361,7 +361,7 @@ TaskDlgCosVertex::TaskDlgCosVertex(TechDraw::DrawViewPart* baseFeat,
     : TaskDialog()
 {
     widget  = new TaskCosVertex(baseFeat, page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-LeaderLine"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-CosmeticVertex"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
