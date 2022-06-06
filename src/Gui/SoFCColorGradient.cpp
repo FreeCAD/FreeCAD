@@ -108,6 +108,8 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
             labels->addChild(text2);
         }
     }
+
+    setModified();
 }
 
 void SoFCColorGradient::setViewportSize(const SbVec2s& size)

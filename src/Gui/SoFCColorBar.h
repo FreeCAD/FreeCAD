@@ -129,11 +129,16 @@ protected:
    * This method must be implemented in subclasses.
    */
   virtual void setViewportSize( const SbVec2s& size ) = 0;
+  /**
+   * Mark the object as modified.
+   */
+  void setModified();
 
   SoFCColorBarBase ();
   virtual ~SoFCColorBarBase ();
 
 private:
+  float _boxWidth;
   SbVec2s _windowSize;
 };
 
