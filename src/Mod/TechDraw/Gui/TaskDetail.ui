@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>304</width>
-    <height>264</height>
+    <height>321</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -215,7 +215,7 @@
        </property>
       </widget>
      </item>
-    <item row="3" column="2">
+     <item row="3" column="2">
       <widget class="QComboBox" name="cbScaleType">
        <property name="toolTip">
         <string>Page: scale factor of page is used
@@ -289,7 +289,20 @@ Custom: custom scale factor is used</string>
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
