@@ -492,6 +492,9 @@ class ObjectJob:
         obj.setEditorMode("Operations", 2)  # hide
         obj.setEditorMode("Placement", 2)
 
+        if hasattr(obj, "Path"):
+            obj.Path = Path.Path()
+
         if not hasattr(obj, "CycleTime"):
             obj.addProperty(
                 "App::PropertyString",
