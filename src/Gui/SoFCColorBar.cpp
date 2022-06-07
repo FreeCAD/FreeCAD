@@ -87,7 +87,8 @@ void SoFCColorBarBase::setModified()
 
 float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
 {
-    if (_boxWidth >= 0.0f) {
+    float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
+    if (fRatio >= 1.0f && _boxWidth >= 0.0f) {
         return _boxWidth;
     }
 
