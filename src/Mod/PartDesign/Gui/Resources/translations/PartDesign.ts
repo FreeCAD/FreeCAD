@@ -3520,26 +3520,26 @@ click again to end selection</source>
     <message>
         <location filename="../../ViewProviderDatum.cpp" line="246"/>
         <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-        <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-        <location filename="../../ViewProviderHole.cpp" line="79"/>
-        <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
-        <location filename="../../ViewProvider.cpp" line="98"/>
         <location filename="../../Command.cpp" line="811"/>
         <location filename="../../Command.cpp" line="1226"/>
         <location filename="../../Command.cpp" line="2225"/>
+        <location filename="../../ViewProviderHole.cpp" line="79"/>
+        <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+        <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+        <location filename="../../ViewProvider.cpp" line="98"/>
         <source>A dialog is already open in the task panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../ViewProviderDatum.cpp" line="247"/>
         <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-        <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-        <location filename="../../ViewProviderHole.cpp" line="80"/>
-        <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
-        <location filename="../../ViewProvider.cpp" line="99"/>
         <location filename="../../Command.cpp" line="812"/>
         <location filename="../../Command.cpp" line="1227"/>
         <location filename="../../Command.cpp" line="2226"/>
+        <location filename="../../ViewProviderHole.cpp" line="80"/>
+        <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+        <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+        <location filename="../../ViewProvider.cpp" line="99"/>
         <source>Do you want to close this dialog?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3867,11 +3867,11 @@ If you have a legacy document with PartDesign objects without Body, use the migr
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
-        <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-        <location filename="../../ViewProvider.cpp" line="65"/>
-        <location filename="../../ViewProviderTransformed.cpp" line="65"/>
         <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
+        <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+        <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+        <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
+        <location filename="../../ViewProvider.cpp" line="65"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
