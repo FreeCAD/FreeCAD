@@ -124,6 +124,7 @@ void Gui::SoFCDB::init()
     SoVRMLAction                    ::initClass();
     SoSkipBoundingGroup             ::initClass();
     SoTextLabel                     ::initClass();
+    SoColorBarLabel                 ::initClass();
     SoStringLabel                   ::initClass();
     SoFrameLabel                    ::initClass();
     TranslateManip                  ::initClass();
