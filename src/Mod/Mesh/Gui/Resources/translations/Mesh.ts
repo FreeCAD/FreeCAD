@@ -773,8 +773,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSmoothing.cpp" line="174"/>
         <location filename="../../Command.cpp" line="1418"/>
+        <location filename="../../DlgSmoothing.cpp" line="174"/>
         <source>Mesh Smoothing</source>
         <translation type="unfinished"></translation>
     </message>
