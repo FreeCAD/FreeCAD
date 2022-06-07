@@ -5752,10 +5752,6 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
-    #if OCC_VERSION_HEX < 0x060900
-        THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher."))
-    #endif
-
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."))
 
@@ -5928,10 +5924,6 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 {
     Base::StateLocker lock(managedoperation, true); // TODO: Check if this is still valid: no need to check input data validity as this is an sketchobject managed operation.
-
-    #if OCC_VERSION_HEX < 0x060900
-        THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher."))
-    #endif
 
     // handling unacceptable cases
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
@@ -6637,9 +6629,6 @@ void SketchObject::rebuildExternalGeometry(void)
     mov.SetValues(invMat[0][0],invMat[0][1],invMat[0][2],invMat[0][3],
                   invMat[1][0],invMat[1][1],invMat[1][2],invMat[1][3],
                   invMat[2][0],invMat[2][1],invMat[2][2],invMat[2][3]
-#if OCC_VERSION_HEX < 0x060800
-                  , 0.00001, 0.00001
-#endif
                   ); //precision was removed in OCCT CR0025194
 
     gp_Ax3 sketchAx3(gp_Pnt(Pos.x,Pos.y,Pos.z),

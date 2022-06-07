@@ -112,34 +112,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
     if (s.size() >= 2) {
         try {
             std::vector<ShapeHistory> history;
-#if OCC_VERSION_HEX <= 0x060800
-            TopoDS_Shape resShape = s.front();
-            if (resShape.IsNull())
-                throw NullShapeException("Input shape is null");
-            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
-                if (it->IsNull())
-                    throw NullShapeException("Input shape is null");
 
-                // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(resShape, *it);
-                // Let's check if the fusion has been successful
-                if (!mkFuse.IsDone()) 
-                    throw BooleanException("Fusion failed");
-                resShape = mkFuse.Shape();
-
-                ShapeHistory hist1 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape1());
-                ShapeHistory hist2 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape2());
-                if (history.empty()) {
-                    history.push_back(hist1);
-                    history.push_back(hist2);
-                }
-                else {
-                    for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
-                        *jt = joinHistory(*jt, hist1);
-                    history.push_back(hist2);
-                }
-            }
-#else
             BRepAlgoAPI_Fuse mkFuse;
             TopTools_ListOfShape shapeArguments,shapeTools;
             const TopoDS_Shape& shape = s.front();
@@ -163,7 +136,6 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
             for (std::vector<TopoDS_Shape>::iterator it = s.begin(); it != s.end(); ++it) {
                 history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, *it));
             }
-#endif
             if (resShape.IsNull())
                 throw Base::RuntimeError("Resulting shape is null");
 
