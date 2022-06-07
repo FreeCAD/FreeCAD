@@ -146,9 +146,6 @@ PyObject* Geometry2dPy::transform(PyObject *args)
     mat.SetValues(a11, a12, 0, a13,
                   a21, a22, 0, a23,
                   0  ,   0, 1,   0
-#if OCC_VERSION_HEX < 0x060800
-                  , 0.00001,0.00001
-#endif
                 ); //precision was removed in OCCT CR0025194
     gp_Trsf2d trf(mat);
 
