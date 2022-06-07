@@ -39,7 +39,6 @@
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
 #include <HLRTopoBRep_OutLiner.hxx>
-//#include <BRepAPI_MakeOutLine.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_ShapeBounds.hxx>
 #include <HLRBRep_HLRToShape.hxx>
@@ -73,7 +72,9 @@
 #include <BRepLProp_CLProps.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
-
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HCurve.hxx>
+#endif
 #include "DrawingExport.h"
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
