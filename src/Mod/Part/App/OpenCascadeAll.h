@@ -204,12 +204,7 @@
 #include <BRepAlgoAPI_Cut.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepAlgoAPI_Section.hxx>
-#if OCC_VERSION_HEX < 0x070300
-#include <BRepAlgo_Fuse.hxx>
-#endif
-#if OCC_VERSION_HEX >= 0x070300
 #include <BRepAlgoAPI_Defeaturing.hxx>
-#endif
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
@@ -231,15 +226,11 @@
 #include <BRepLProp_SurfaceTool.hxx>
 #include <BRepGProp_Face.hxx>
 #include <BRepClass_FaceClassifier.hxx>
-#if OCC_VERSION_HEX >= 0x060600
 #include <BRepClass3d.hxx>
-#endif
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepExtrema_MapOfIntegerPackedMapOfInteger.hxx>
-#if OCC_VERSION_HEX >= 0x060801
 #include <BRepExtrema_ShapeProximity.hxx>
-#endif
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
