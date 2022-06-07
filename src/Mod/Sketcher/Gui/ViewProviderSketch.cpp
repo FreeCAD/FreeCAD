@@ -2910,8 +2910,8 @@ void ViewProviderSketch::UpdateSolverInformation()
     } else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
             tr("Under constrained:"),
-            QString::fromUtf8("#dofs"),
-            QString::fromUtf8("%1 %2").arg(dofs).arg(tr("DoF")));
+            QObject::tr("Number of DoFs"),
+            QObject::tr("%n DoF(s)", "", dofs));
     }
     else {
         signalSetUp(QString::fromUtf8("fully_constrained"), tr("Fully constrained"), QString(), QString());
