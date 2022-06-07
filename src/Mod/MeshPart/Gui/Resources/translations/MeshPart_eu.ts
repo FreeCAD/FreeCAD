@@ -335,8 +335,8 @@ Komando honek 'amarauna' objektuetan soilik funtzionatzen du, ez aurpegi edo gai
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>Amaraun-segmentu baten desbideratze lineal maximoa izango da zehaztutako
-gainazal-desbideratzea bidez uneko amaraun-segmentuaren (ertzaren) luzera.
+      <translation>Amaraun segmentu baten desbideratze lineal maximoa izango da zehaztutako
+gainazal-desbideratzea bidez uneko amaraun segmentuaren (ertzaren) luzera.
 </translation>
     </message>
     <message>
@@ -359,7 +359,7 @@ gainazal-desbideratzea bidez uneko amaraun-segmentuaren (ertzaren) luzera.
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Amaraun-segmentuak objektu-aurpegien kolorearen arabera taldekatuko dira.
+      <translation>Amaraun segmentuak objektu-aurpegien kolorearen arabera taldekatuko dira.
 Talde horiek ezaugarri hau onartzen duten irteera-formatuetara esportatuko dira
 (adibidez, OBJ formatua).</translation>
     </message>

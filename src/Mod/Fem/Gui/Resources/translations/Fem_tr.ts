@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="132"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Geometrik Yüzleri/Kenarları/Köşeleri Seçin</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="136"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Referans eklemek için: 3B görünümde bunları seçin ve "Ekle"ye tıklayın.</translation>
     </message>
   </context>
   <context>
@@ -19,18 +19,18 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Çözücü Kontrolü</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Çalışma Dizini</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Yaz</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="245"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Geçen Süre:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
@@ -55,7 +55,7 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Yeniden yaz</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="313"/>

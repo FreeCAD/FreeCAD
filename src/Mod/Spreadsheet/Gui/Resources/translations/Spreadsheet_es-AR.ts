@@ -518,15 +518,15 @@
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Starting cell address to bind to. Type '=' if you want to use expression.
 The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
+      <translation>Dirección de celda inicial a enlazar. Escriba '=' si desea utilizar una expresión.
+La expresión debe evaluar a una cadena de alguna dirección de celda.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="57"/>
       <source>Ending cell address to bind to. Type '=' if you want to use expression.
 The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
+      <translation>Dirección de celda final a enlazar. Escriba '=' si desea utilizar una expresión.
+La expresión debe evaluar a una cadena de alguna dirección de celda.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="65"/>
@@ -541,7 +541,7 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="79"/>
       <source>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</source>
-      <translation type="unfinished">Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</translation>
+      <translation>Usar referencia oculta no evita crear un dependencia con el objeto referenciado. ¡Usar con precaución!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
@@ -587,14 +587,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Dirección de celda inicial.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Se asume que la primera columna del rango contiene una lista de nombres de configuración,
+que se utilizará para generar una lista de cadenas y enlazar a la propiedad
+dada para que el usuario cambie dinámicamente la configuración.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+La primera fila del rango estará vinculada a cualquier fila seleccionada (indirectamente)
+por esa propiedad.
 </translation>
     </message>
     <message>
@@ -608,14 +608,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Dirección de celda final.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Se asume que la primera columna del rango contiene una lista de nombres de configuración,
+que se utilizará para generar una lista de cadenas y enlazar a la propiedad
+dada para que el usuario cambie dinámicamente la configuración.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+La primera fila del rango estará vinculada a cualquier fila seleccionada (indirectamente)
+por esa propiedad.
 </translation>
     </message>
     <message>
@@ -643,7 +643,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Desconfigurar</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -1047,12 +1047,12 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
     <message>
       <location filename="../../DlgSheetConf.cpp" line="245"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Configurar tabla de configuración</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="292"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Desconfigurar tabla de configuración</translation>
     </message>
   </context>
   <context>
@@ -1203,7 +1203,7 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

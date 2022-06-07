@@ -11,17 +11,17 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="81"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>Analisi del collegamento non riuscita (più di due-punti incontrati)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="194"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {name} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>L'oggetto {name} non è né mobile, né allegabile, non può modificare l'allegato</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{obj} non è allegabile. Puoi ancora usare la finestra di modifica degli allegati per allineare l'oggetto, ma l'allegato non sarà parametrico.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="205"/>
@@ -38,17 +38,17 @@
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="307"/>
       <source>Edit attachment of {feat}</source>
-      <translation type="unfinished">Edit attachment of {feat}</translation>
+      <translation>Modifica allegato di {feat}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>Ignorato. Impossibile allegare un oggetto a se stesso!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="355"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{obj1} depends on object being attached, can't use it for attachment</translation>
+      <translation>{obj1} dipende dall'oggetto in allegato, impossibile usarlo per l'allegato</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="495"/>
@@ -108,12 +108,12 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Allegato...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>Modifica l'allegato dell'oggetto selezionato.</translation>
     </message>
   </context>
   <context>
@@ -129,15 +129,15 @@
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Filtra gli oggetti da un composto selezionato per caratteristiche come volume,
+area o lunghezza, o scegliendo elementi specifici.
+Se è selezionato un secondo oggetto, verrà usato come riferimento, ad esempio,
+per il filtraggio di collisione o distanza.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Seleziona prima una forma che è un composto. Se viene selezionato un secondo oggetto (opzionale) sarà trattato come una forma.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
@@ -152,11 +152,11 @@ for collision or distance filtering.</translation>
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Il calcolo del risultato è fallito con un errore: 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Fare clic su 'Continua' per creare comunque la caratteristica, oppure su 'Annullare' per annullare.</translation>
     </message>
   </context>
   <context>
@@ -194,7 +194,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="181"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>Fonde gli oggetti, avendo cura di preservare i vuoti.</translation>
     </message>
   </context>
   <context>
@@ -202,12 +202,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="367"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>Ritaglia per l'oggetto</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>Crea un ritaglio in un oggetto per adattarsi ad un altro oggetto.</translation>
     </message>
   </context>
   <context>
@@ -232,11 +232,11 @@ It will create a 'Compound Filter' for each shape.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation>Il calcolo del risultato è fallito con un errore:
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Fare clic su 'Continua' per creare comunque la caratteristica, oppure su 'Annullare' per annullare.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="70"/>
@@ -264,7 +264,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>Selezionare l'oggetto in cui effettuare un ritaglio, quindi l'oggetto che dovrebbe adattarsi al ritaglio, quindi invocare questo strumento.</translation>
     </message>
   </context>
   <context>
@@ -286,11 +286,11 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation>Il calcolo del risultato è fallito con un errore:
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Fare clic su 'Continua' per creare comunque la caratteristica, oppure su 'Annullare' per annullare.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="148"/>
@@ -315,11 +315,11 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Crea un oggetto 'Frammenti Booleani' da due o più oggetti selezionati,
+o dalle forme all'interno di un composto.
+Si tratta di un'unione booleana che viene poi affettata alle intersezioni
+delle forme originali.
+Un 'Composto Filtro' può essere usato per estrarre le singole fette.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
@@ -330,39 +330,39 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="330"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Affetta in un composto</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Affetta un oggetto selezionato usando altri oggetti come strumenti di taglio.
+I pezzi risultanti saranno memorizzati in un composto.
+Un 'Composto Filtro' può essere usato per estrarre le singole fette.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="346"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="377"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Seleziona almeno due oggetti. Il primo è l'oggetto da affettare; il resto sono oggetti con cui tagliare.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="362"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>Affetta</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="368"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Affetta l'oggetto selezionato con gli altri oggetti, e lo dividerà in parti.
+Creerà un 'Composto Filtro' per ogni ritaglio.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="512"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>XOR Booleano</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="520"/>
@@ -370,10 +370,10 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Esegue un'operazione booleana 'esclusiva OR' con due o più oggetti selezionati,
+o con le forme all'interno di un composto.
+Questo significa che i volumi sovrapposti delle forme saranno rimossi.
+Un 'Composto Filtro' può essere usato per estrarre i pezzi rimanenti.</translation>
     </message>
   </context>
   <context>
@@ -3599,8 +3599,8 @@ Nota: il posizionamento è espresso nello spazio locale dell'oggetto da allegare
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative).
 If both lengths are zero, magnitude of direction is used.</source>
-      <translation type="unfinished">Length to extrude along direction (can be negative).
-If both lengths are zero, magnitude of direction is used.</translation>
+      <translation>Lunghezza da estrudere lungo la direzione (può essere negativa).
+Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
@@ -3625,22 +3625,22 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="277"/>
       <source>Taper angle along</source>
-      <translation type="unfinished">Taper angle along</translation>
+      <translation>Rastrematura angolo lungo</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="290"/>
       <source>Taper (draft) angle along extrusion direction</source>
-      <translation type="unfinished">Taper (draft) angle along extrusion direction</translation>
+      <translation>Rastrematura angolo lungo la direzione di estrusione</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="306"/>
       <source>Taper angle against</source>
-      <translation type="unfinished">Taper angle against</translation>
+      <translation>Rastrematura angolo contro</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="319"/>
       <source>Taper (draft) angle against extrusion direction</source>
-      <translation type="unfinished">Taper (draft) angle against extrusion direction</translation>
+      <translation>Rastrematura angolo contro la direzione di estrusione</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
@@ -5369,7 +5369,7 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
       <source>Cutting X</source>
-      <translation type="unfinished">Cutting X</translation>
+      <translation>Taglio X</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="44"/>
@@ -5388,12 +5388,12 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="106"/>
       <source>Cutting Y</source>
-      <translation type="unfinished">Cutting Y</translation>
+      <translation>Taglio Y</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="174"/>
       <source>Cutting Z</source>
-      <translation type="unfinished">Cutting Z</translation>
+      <translation>Taglio Z</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>

@@ -1462,11 +1462,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>光标形状将是一个方块</translation>
     </message>
     <message>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>启用方块光标</translation>
     </message>
     <message>
       <source>Enable folding</source>
@@ -1581,11 +1581,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+      <translation>如果启用，数字键盘小数点分隔符将会替换为本地化分隔符</translation>
     </message>
     <message>
       <source>Substitute decimal separator (needs restart)</source>
-      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+      <translation>替代小数分隔符 (需要重启)</translation>
     </message>
     <message>
       <source>Preference packs</source>
@@ -1643,7 +1643,7 @@ See the FreeCAD Wiki for details about the image.</source>
     </message>
     <message>
       <source>Enable cursor blinking</source>
-      <translation type="unfinished">Enable cursor blinking</translation>
+      <translation>启用光标闪烁</translation>
     </message>
     <message>
       <source>Style sheet:</source>
@@ -2618,7 +2618,7 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Available backup files:</source>
-      <translation type="unfinished">Available backup files:</translation>
+      <translation>可用的备份文件:</translation>
     </message>
   </context>
   <context>
@@ -3642,11 +3642,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>自动加载？</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>立即加载</translation>
     </message>
   </context>
   <context>
@@ -3657,7 +3657,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>自动加载</translation>
     </message>
     <message>
       <source>If checked</source>
@@ -3677,7 +3677,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>立即加载</translation>
     </message>
   </context>
   <context>
@@ -3905,7 +3905,7 @@ Turntable: the part will be rotated around the z-axis.</translation>
     </message>
     <message>
       <source>Camera zoom</source>
-      <translation type="unfinished">Camera zoom</translation>
+      <translation>镜头缩放</translation>
     </message>
     <message>
       <source>Sets camera zoom for new documents.
@@ -4025,11 +4025,11 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>光标形状将是一个方块</translation>
     </message>
     <message>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>启用方块光标</translation>
     </message>
     <message>
       <source>Saves Python history across sessions</source>

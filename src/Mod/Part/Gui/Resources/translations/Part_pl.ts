@@ -3623,7 +3623,7 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
     <message>
       <location filename="../../DlgExtrusion.ui" line="277"/>
       <source>Taper angle along</source>
-      <translation>Kąt nacięcia wzdłuż</translation>
+      <translation>Kąt ścięcia wzdłuż</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="290"/>

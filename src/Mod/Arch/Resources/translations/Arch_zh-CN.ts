@@ -2462,7 +2462,7 @@
     <message>
       <location filename="../../ArchWindow.py" line="1745"/>
       <source>Opening mode</source>
-      <translation>打开模式</translation>
+      <translation>开放模式</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1746"/>
@@ -2518,7 +2518,7 @@
     <message>
       <location filename="../../importSHP.py" line="139"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation>您的系统中找不到shapefile python 库。您想现在从 &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github下载它。 om/GeospatialPython/pyshp&lt;/a&gt;? 它将被放置在您的宏文件夹中。</translation>
+      <translation>您的系统中找不到shapefile python 库，您想现在从 &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;下载它？ 它将被放置在您的宏文件夹中。</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="145"/>
@@ -2646,7 +2646,7 @@
     <message>
       <location filename="../../ArchStructure.py" line="487"/>
       <source>Switch L/H</source>
-      <translation>切换 长/宽</translation>
+      <translation>切换 长/高</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="489"/>
@@ -2804,12 +2804,12 @@
     <message>
       <location filename="../../ArchPanel.py" line="346"/>
       <source>Create Panel Cut</source>
-      <translation>创建面板切口</translation>
+      <translation>创建剪切面板</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="372"/>
       <source>Create Panel Sheet</source>
-      <translation>创建面板表</translation>
+      <translation>创建表格面板</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="742"/>
@@ -3249,22 +3249,22 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>您可以放置以下对象以外的任何东西：站点、建筑和地板——在一个地板物体。
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+地板对象不允许接受站点、建筑或地板物体。
 
-Site, Building, and Floor objects will be removed from the selection.
+站点、 建筑和地板对象将从选择中删除。
 
-You can change that in the preferences.</translation>
+您可以在”首选项“中更改。</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="154"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>选择中没有有效的对象。
 
-Floor creation aborted.</translation>
+floor函数创建中止。</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="161"/>
@@ -4005,22 +4005,18 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
-
-Site is not allowed to accept any other object besides Building.
-
-Other objects will be removed from the selection.
-
-Note: You can change that in the preferences.</translation>
+      <translation>请仅选择创建对象，或完全不选择！
+站点不接受除创建以外的对象。
+其他对象将从选项中移除。
+注意：您可以在“首选项”中更改。</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="535"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
-
-Site creation aborted.</translation>
+      <translation>选项中没有有效的对象。
+网站创建中止。</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -6061,8 +6057,8 @@ IFC 文件时，在报表视图面板中显示详细的调试消息</translation
       <location filename="../ui/preferences-ifc.ui" line="71"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
-      <translation type="unfinished">Clones are used when objects have shared geometry
-One object is the base object, the others are clones.</translation>
+      <translation>当对象共享图元时，克隆功能将启用。
+一个是基本对象，其他的是克隆对象。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="75"/>
@@ -6080,14 +6076,13 @@ for example, 3 if you have a 4-core CPU.
 
 Set it to 1 to use multicore mode in single-core mode; this is safer
 if you start getting crashes when you set multiple cores.</source>
-      <translation type="unfinished">EXPERIMENTAL
-The number of cores to use in multicore mode.
-Keep 0 to disable multicore mode.
-The maximum value should be your number of cores minus 1,
-for example, 3 if you have a 4-core CPU.
-
-Set it to 1 to use multicore mode in single-core mode; this is safer
-if you start getting crashes when you set multiple cores.</translation>
+      <translation>实验
+计算机在多核模式下使用的核数。
+设置为“0”则禁用多核模式。
+最大值应为计算机实际核数减“1”，
+例如，如果您有一个4核CPU，则设置为“3”。
+如果您在设置多核时开始崩溃，
+将其设置为 “1 ”则可在单核模式下使用多核模式， 这是安全的。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
@@ -6161,15 +6156,14 @@ if you start getting crashes when you set multiple cores.</translation>
       <location filename="../ui/preferences-ifc.ui" line="265"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
-      <translation type="unfinished">Only subtypes of the specified element will be imported.
-Keep the element IfcProduct to import all building elements.</translation>
+      <translation>仅导入指定元素子类型。
+设置元素为“IfcProduct”以导入所有创建的元素。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="284"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
-      <translation type="unfinished">Openings will be imported as subtractions, otherwise wall shapes
-will already have their openings subtracted</translation>
+      <translation>孔将作为减法导入，否则墙壁上的图元将已经减去了他们的空缺。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="288"/>
@@ -6180,8 +6174,8 @@ will already have their openings subtracted</translation>
       <location filename="../ui/preferences-ifc.ui" line="301"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
-      <translation type="unfinished">The importer will try to detect extrusions.
-Note that this might slow things down.</translation>
+      <translation>导入功能会尝试侦测异常。
+请注意：这可能会减慢运行速度。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="305"/>
@@ -6201,7 +6195,7 @@ Note that this might slow things down.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="334"/>
       <source>Object names will be prefixed with the IFC ID number</source>
-      <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
+      <translation>对象名称将以IFC ID编号作前缀。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="337"/>
@@ -6212,18 +6206,18 @@ Note that this might slow things down.</translation>
       <location filename="../ui/preferences-ifc.ui" line="350"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
-      <translation type="unfinished">If several materials with the same name and color are found in the IFC file,
-they will be treated as one.</translation>
+      <translation>如果在 IFC 文件中找到几个具有相同名称和颜色的材料，
+它们将被当作一个处理。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="354"/>
       <source>Merge materials with same name and same color</source>
-      <translation type="unfinished">Merge materials with same name and same color</translation>
+      <translation>合并具有相同名称和相同颜色的材料。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="367"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
-      <translation type="unfinished">Each object will have their IFC properties stored in a spreadsheet object</translation>
+      <translation>每个对象都将他们的 IFC 属性存储在电子表格对象中。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="370"/>

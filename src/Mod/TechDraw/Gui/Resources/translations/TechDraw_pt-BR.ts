@@ -1109,13 +1109,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
       <source>Insert &apos;□&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
+      <translation>Inserir&apos;□&apos; Prefixo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="160"/>
       <location filename="../../CommandExtensionDims.cpp" line="330"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Insere um &apos;□&apos; símbolo no início do texto da dimensão:&lt;br&gt;- Selecione uma ou mais dimensões&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1128,12 +1128,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1288"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation type="unfinished">Add Cosmetic Parallel Line</translation>
+      <translation>Adicionar Linha Paralela Cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1289"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>Adicione uma linha cosmética paralela a outra linha através de um vértice:&lt;br&gt;- Selecione uma linha&lt;br&gt;- Selecione um vértice&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1147,13 +1147,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="1220"/>
       <location filename="../../CommandExtensionPack.cpp" line="1356"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation type="unfinished">Add Cosmetic Parallel Line</translation>
+      <translation>Adicionar Linha Paralela Cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1221"/>
       <location filename="../../CommandExtensionPack.cpp" line="1357"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>Adicione uma linha cosmética paralela a outra linha através de um vértice:&lt;br&gt;- Selecione uma linha&lt;br&gt;- Selecione um vértice&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1167,13 +1167,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="1254"/>
       <location filename="../../CommandExtensionPack.cpp" line="1364"/>
       <source>Add Cosmetic Perpendicular Line</source>
-      <translation type="unfinished">Add Cosmetic Perpendicular Line</translation>
+      <translation>Adiciona Linha Perpendicular Cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1255"/>
       <location filename="../../CommandExtensionPack.cpp" line="1365"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>Adicione uma linha paralela cosmética a outra linha através de um vértice:&lt;br&gt;- Selecione uma linha&lt;br&gt;- Selecione um vértice&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1186,12 +1186,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1391"/>
       <source>Lock/Unlock View</source>
-      <translation type="unfinished">Lock/Unlock View</translation>
+      <translation>Travar/Destravar Vista</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1392"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</translation>
+      <translation>Travar ou desbloquear a posição de uma vista:&lt;br&gt;- Selecione uma única vista&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1204,12 +1204,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="740"/>
       <source>Position Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Position Horizontal Chain Dimensions</translation>
+      <translation>Criar Dimensão Horizontal em Sequência</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="741"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Alinha dimensões horizontais para criar uma sequência uniforme:&lt;br&gt;- Selecione duas ou mais dimensões horizontais&lt;br&gt;- A primeira dimensão define a posição&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1223,13 +1223,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="580"/>
       <location filename="../../CommandExtensionDims.cpp" line="815"/>
       <source>Position Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Position Horizontal Chain Dimensions</translation>
+      <translation>Criar Dimensão Horizontal em Sequência</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="581"/>
       <location filename="../../CommandExtensionDims.cpp" line="816"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Alinha dimensões horizontais para criar uma sequência uniforme:&lt;br&gt;- Selecione duas ou mais dimensões horizontais&lt;br&gt;- A primeira dimensão define a posição&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1243,13 +1243,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="705"/>
       <location filename="../../CommandExtensionDims.cpp" line="831"/>
       <source>Position Oblique Chain Dimensions</source>
-      <translation type="unfinished">Position Oblique Chain Dimensions</translation>
+      <translation>Criar Dimensões Inclinadas em sequência</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="706"/>
       <location filename="../../CommandExtensionDims.cpp" line="832"/>
       <source>Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Alinha dimensões inclinadas para criar uma sequência uniforme:&lt;br&gt;- Selecione duas ou mais dimensões inclinadas e paralelas&lt;br&gt;- A primeira dimensão define a posição&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1263,13 +1263,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="640"/>
       <location filename="../../CommandExtensionDims.cpp" line="823"/>
       <source>Position Vertical Chain Dimensions</source>
-      <translation type="unfinished">Position Vertical Chain Dimensions</translation>
+      <translation>Criar Dimensão Vertical em Sequência</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="641"/>
       <location filename="../../CommandExtensionDims.cpp" line="824"/>
       <source>Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Alinha dimensões verticais para criar uma sequência uniforme:&lt;br&gt;- Selecione duas ou mais dimensões verticais&lt;br&gt;- A primeira dimensão define a posição&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -2240,7 +2240,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1407"/>
       <source>Lock/Unlock View</source>
-      <translation type="unfinished">Lock/Unlock View</translation>
+      <translation>Travar/Destravar Vista</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1500"/>

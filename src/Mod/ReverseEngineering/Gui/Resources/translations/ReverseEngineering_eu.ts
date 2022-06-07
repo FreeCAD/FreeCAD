@@ -118,7 +118,7 @@
     </message>
     <message>
       <source>Create mesh segments</source>
-      <translation>Sortu amaraun-segmentuak</translation>
+      <translation>Sortu amaraun segmentuak</translation>
     </message>
   </context>
   <context>
@@ -133,7 +133,7 @@
     </message>
     <message>
       <source>Create mesh segments from components</source>
-      <translation>Sortu amaraun-segmentuak osagaietatik</translation>
+      <translation>Sortu amaraun segmentuak osagaietatik</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Create mesh segments manually</source>
-      <translation>Sortu amaraun-segmentuak eskuz</translation>
+      <translation>Sortu amaraun segmentuak eskuz</translation>
     </message>
   </context>
   <context>

@@ -7581,7 +7581,7 @@ the current copy will be lost.
     </message>
     <message>
       <source>Transform at the origin of the placement</source>
-      <translation type="unfinished">Transform at the origin of the placement</translation>
+      <translation>Transformazioa kokapenaren jatorrian</translation>
     </message>
     <message>
       <source>Override colors...</source>

@@ -324,7 +324,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="2069"/>
       <source>Make a draft on a face</source>
-      <translation>Formschräge auf Fläche</translation>
+      <translation>Versieht eine Fläche mit einer Formschräge</translation>
     </message>
   </context>
   <context>
@@ -576,7 +576,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Pad a selected sketch</source>
-      <translation>Selektierte Skizze aufpolstern</translation>
+      <translation>Ausgewählte Skizze extrudieren</translation>
     </message>
   </context>
   <context>
@@ -3728,7 +3728,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="68"/>
       <source>Failed to create a part object.</source>
-      <translation>Konnte kein Teilobjekt erstellen.</translation>
+      <translation>Konnte kein Part-Objekt erstellen.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="115"/>

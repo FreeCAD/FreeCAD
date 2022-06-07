@@ -2709,7 +2709,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1940"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
-      <translation>Zamiast tego zastosowano styczność od punktu końcowego do punktu końcowego.</translation>
+      <translation>Zamiast tego zastosowano styczne między punktami końcowymi.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1969"/>
@@ -4511,7 +4511,7 @@ Widoczne będą obiekty tylko za płaszczyzną szkicu.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="199"/>
       <source>Invalid constraints</source>
-      <translation>Wadliwe wiązania</translation>
+      <translation>Wiązania nieprawidłowe</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="200"/>

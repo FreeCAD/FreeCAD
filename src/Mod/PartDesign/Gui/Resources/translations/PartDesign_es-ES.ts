@@ -3317,7 +3317,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../ViewProviderChamfer.h" line="41"/>
       <source>Chamfer parameters</source>
-      <translation type="unfinished">Chamfer parameters</translation>
+      <translation>Parámetros de chaflán</translation>
     </message>
   </context>
   <context>
@@ -3325,22 +3325,22 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="111"/>
       <source>Datum Plane parameters</source>
-      <translation type="unfinished">Datum Plane parameters</translation>
+      <translation>Parámetros del plano de referencia</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="116"/>
       <source>Datum Line parameters</source>
-      <translation type="unfinished">Datum Line parameters</translation>
+      <translation>Parámetros de la línea de referencia</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
       <source>Datum Point parameters</source>
-      <translation type="unfinished">Datum Point parameters</translation>
+      <translation>Parámetros del punto de referencia</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="126"/>
       <source>Local Coordinate System parameters</source>
-      <translation type="unfinished">Local Coordinate System parameters</translation>
+      <translation>Parámetros del sistema de coordenadas locales</translation>
     </message>
   </context>
   <context>
@@ -3372,7 +3372,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="38"/>
       <source>MultiTransform parameters</source>
-      <translation type="unfinished">MultiTransform parameters</translation>
+      <translation>Parámetros de MultiTransformación</translation>
     </message>
   </context>
   <context>

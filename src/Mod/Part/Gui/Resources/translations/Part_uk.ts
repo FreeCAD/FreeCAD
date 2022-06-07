@@ -286,11 +286,11 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation>Помилка при обчисленні результату:
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Натисніть «Продовжити», щоб все одно створити цю функцію або «Скасувати» для скасування.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="148"/>

@@ -3629,8 +3629,8 @@ al nodo della linea guida</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="301"/>
       <source>Directory path for welding symbols.
 This directory will be used for the symbol selection.</source>
-      <translation type="unfinished">Directory path for welding symbols.
-This directory will be used for the symbol selection.</translation>
+      <translation>Percorso directory per i simboli di saldatura.
+Questa directory sarà usata per la selezione dei simboli.</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="308"/>
@@ -4345,7 +4345,7 @@ quando si tratteggia una faccia con un modello PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank for automatic dimension format.  Use %f, %g or %w specifiers to override.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank for automatic dimension format.  Use %f, %g or %w specifiers to override.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lascia vuoto per il formato di dimensione automatica. Usa %f, %g o %w per sovrascrivere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="247"/>
@@ -4638,7 +4638,7 @@ I cambiamenti non hanno effetto sulle quote esistenti.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="805"/>
       <source>Set ShowGrid property to true on new Pages.</source>
-      <translation type="unfinished">Set ShowGrid property to true on new Pages.</translation>
+      <translation>Impostare la proprietà ShowGrid a true sulle nuove pagine.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="808"/>
@@ -5547,12 +5547,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="205"/>
       <source>Ⓐ</source>
-      <translation type="unfinished">Ⓐ</translation>
+      <translation>Ⓐ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="217"/>
       <source>Minimax (Tschebyschew)</source>
-      <translation type="unfinished">Minimax (Tschebyschew)</translation>
+      <translation>Minimax (Tschebyschew)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="220"/>
@@ -6270,12 +6270,12 @@ al posto del valore di quotatura</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="336"/>
       <source>Angle of dimension line with drawing X axis (degrees)</source>
-      <translation type="unfinished">Angle of dimension line with drawing X axis (degrees)</translation>
+      <translation>Angolo della linea di quota con disegno asse X (gradi)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="352"/>
       <source>Set dimension line angle to default (ortho view).</source>
-      <translation type="unfinished">Set dimension line angle to default (ortho view).</translation>
+      <translation>Imposta l'angolo della linea di dimensione a quello predefinito (vista orto).</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="355"/>
@@ -6286,7 +6286,7 @@ al posto del valore di quotatura</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="362"/>
       <source>Set dimension line angle to match selected edge or vertices.</source>
-      <translation type="unfinished">Set dimension line angle to match selected edge or vertices.</translation>
+      <translation>Imposta l'angolo della linea di quota per abbinarsi al bordo o ai vertici selezionati.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="365"/>
@@ -6297,22 +6297,22 @@ al posto del valore di quotatura</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="372"/>
       <source>Extension line angle</source>
-      <translation type="unfinished">Extension line angle</translation>
+      <translation>Angolo della linea di estensione</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="379"/>
       <source>Angle of extension lines with drawing X axis (degrees)</source>
-      <translation type="unfinished">Angle of extension lines with drawing X axis (degrees)</translation>
+      <translation>Angolo delle linee di estensione con disegno asse X (gradi)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="395"/>
       <source>Set extension line angle to default (ortho).</source>
-      <translation type="unfinished">Set extension line angle to default (ortho).</translation>
+      <translation>Imposta l'angolo della linea di estensione a quello predefinito (orto).</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="405"/>
       <source>Set extension line angle to match selected edge or vertices.</source>
-      <translation type="unfinished">Set extension line angle to match selected edge or vertices.</translation>
+      <translation>Imposta l'angolo della linea di dimensione per abbinarsi al bordo o ai vertici selezionati.</translation>
     </message>
   </context>
   <context>

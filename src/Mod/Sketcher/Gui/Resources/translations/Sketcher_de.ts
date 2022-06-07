@@ -481,7 +481,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2103"/>
       <source>Constrain distance</source>
-      <translation>Distanz festlegen</translation>
+      <translation>Abstand festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2104"/>
@@ -4424,13 +4424,13 @@ Standardmäßig: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Bei Aktivierung des Bearbeitungsmodus, wird die orthographische Ansicht der Kamera erzwungen. 
+      <translation>Bei Aktivierung des Bearbeitungsmodus, wird die orthogonale Ansicht der Kamera festgelegt. 
 Funktioniert nur, wenn "Kameraposition nach dem Bearbeiten wiederherstellen" aktiviert ist.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation>Erzwinge orthographische Kamera bei Aktivierung des Bearbeitungsmodus</translation>
+      <translation>Orthogonale Kamera bei Aktivierung des Bearbeitungsmodus festlegen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>

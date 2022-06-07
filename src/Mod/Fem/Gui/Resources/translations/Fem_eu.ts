@@ -684,7 +684,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="155"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Hautatu zerrendari gehi dakizkiokeen elementu-zatiak solidoan. Solidoa gehitzeko, sakatu 'Gehitu'.</translation>
+      <translation>Hautatu zerrendari gehi dakizkiokeen elementu zatiak solidoan. Solidoa gehitzeko, sakatu 'Gehitu'.</translation>
     </message>
   </context>
   <context>
@@ -1997,7 +1997,7 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="50"/>
       <source>Also cards from FreeCAD's preferences directory will be listed as available.</source>
-      <translation type="unfinished">Also cards from FreeCAD's preferences directory will be listed as available.</translation>
+      <translation>FreeCADen hobespen-direktorioko txartelak ere erabilgarri gisa zerrendatuko dira.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="53"/>

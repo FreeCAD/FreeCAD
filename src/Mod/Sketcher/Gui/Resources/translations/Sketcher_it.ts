@@ -4749,7 +4749,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="182"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>Filtro Di Selezione</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="187"/>
@@ -6168,7 +6168,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2863"/>
       <source>and %1 more</source>
-      <translation type="unfinished">and %1 more</translation>
+      <translation>e %1 in più</translation>
     </message>
   </context>
   <context>

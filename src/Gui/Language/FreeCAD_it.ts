@@ -609,7 +609,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>Attenzione: Assicurati che questa sia l'unica istanza %1 in esecuzione e che nessun documento sia aperto in quanto ciò potrebbe comportare una perdita di dati!</translation>
     </message>
   </context>
   <context>
@@ -889,7 +889,7 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
     <message>
       <source>Create New Preference Pack</source>
-      <translation type="unfinished">Create New Preference Pack</translation>
+      <translation>Crea Un Nuovo Pacchetto Preferenze</translation>
     </message>
     <message>
       <source>Name</source>
@@ -897,18 +897,18 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <source>Property group templates</source>
-      <translation type="unfinished">Property group templates</translation>
+      <translation>Modelli gruppo di proprietà</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
     <message>
       <source>Pack already exists</source>
-      <translation type="unfinished">Pack already exists</translation>
+      <translation>Il pacchetto esiste già</translation>
     </message>
     <message>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+      <translation>Esiste già un pacchetto di preferenze con quel nome. Vuoi sovrascriverlo?</translation>
     </message>
   </context>
   <context>
@@ -1581,7 +1581,7 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+      <translation>Se abilitata, il separatore decimale della tastiera numerica sarà sostituito con il separatore di localizzazione</translation>
     </message>
     <message>
       <source>Substitute decimal separator (needs restart)</source>
@@ -1710,7 +1710,7 @@ la schermata di avvio</translation>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>Manage preference packs</source>
-      <translation type="unfinished">Manage preference packs</translation>
+      <translation>Gestisci pacchetti di preferenze</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
@@ -1750,7 +1750,7 @@ la schermata di avvio</translation>
     </message>
     <message>
       <source>Preference Pack Name</source>
-      <translation type="unfinished">Preference Pack Name</translation>
+      <translation>Nome Pacchetto Preferenze</translation>
     </message>
     <message>
       <source>Tags</source>
@@ -1762,7 +1762,7 @@ la schermata di avvio</translation>
     </message>
     <message>
       <source>Apply the %1 preference pack</source>
-      <translation type="unfinished">Apply the %1 preference pack</translation>
+      <translation>Applica il pacchetto preferenze %1</translation>
     </message>
   </context>
   <context>
@@ -1831,7 +1831,7 @@ la schermata di avvio</translation>
     </message>
     <message>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
-      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+      <translation>Avvia una guida su come configurare una macro in una barra degli strumenti globale personalizzata.</translation>
     </message>
     <message>
       <source>Toolbar</source>
@@ -2235,7 +2235,7 @@ Specificare un'altra cartella.</translation>
     <name>Gui::Dialog::DlgPreferencePackManagement</name>
     <message>
       <source>Manage Preference Packs</source>
-      <translation type="unfinished">Manage Preference Packs</translation>
+      <translation>Gestisci Pacchetti Preferenze</translation>
     </message>
     <message>
       <source>Open Addon Manager...</source>
@@ -2246,31 +2246,31 @@ Specificare un'altra cartella.</translation>
     <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
     <message>
       <source>User-Saved Preference Packs</source>
-      <translation type="unfinished">User-Saved Preference Packs</translation>
+      <translation>Pacchetti Preferenze Salvati Dall'Utente</translation>
     </message>
     <message>
       <source>Built-In Preference Packs</source>
-      <translation type="unfinished">Built-In Preference Packs</translation>
+      <translation>Pacchetti Preferenze Integrate</translation>
     </message>
     <message>
       <source>Toggle visibility of built-in preference pack '%1'</source>
-      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+      <translation>Attiva/disattiva la visibilità del pacchetto di preferenze incorporato '%1'</translation>
     </message>
     <message>
       <source>Delete user-saved preference pack '%1'</source>
-      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+      <translation>Elimina pacchetto preferenze salvato dall'utente '%1'</translation>
     </message>
     <message>
       <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
-      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+      <translation>Attiva/disattiva la visibilità del pacchetto preferenze Addon '%1'(usa Addon Manager per rimuovere permanentemente)</translation>
     </message>
     <message>
       <source>Delete saved preference pack?</source>
-      <translation type="unfinished">Delete saved preference pack?</translation>
+      <translation>Eliminare il pacchetto di preferenze salvato?</translation>
     </message>
     <message>
       <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
-      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+      <translation>Sei sicuro di voler eliminare il pacchetto di preferenze denominato '%1'? Questo non può essere annullato.</translation>
     </message>
   </context>
   <context>
@@ -2619,11 +2619,11 @@ dalla console di Python al pannello vista Report</translation>
     <name>Gui::Dialog::DlgRevertToBackupConfig</name>
     <message>
       <source>Revert to Backup Config</source>
-      <translation type="unfinished">Revert to Backup Config</translation>
+      <translation>Ripristina la Configurazione di Backup</translation>
     </message>
     <message>
       <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
-      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+      <translation>ATTENZIONE: questo processo annullerà qualsiasi modifica delle preferenze fatta a partire dalla data specificata, e resetterà anche i File Recenti e le Macro al loro stato in quella data.</translation>
     </message>
     <message>
       <source>Available backup files:</source>
@@ -2634,7 +2634,7 @@ dalla console di Python al pannello vista Report</translation>
     <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
     <message>
       <source>No selection in dialog, cannot load backup file</source>
-      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
+      <translation>Nessuna selezione nella finestra di dialogo, impossibile caricare il file di backup</translation>
     </message>
   </context>
   <context>
@@ -2702,8 +2702,8 @@ lower right corner within opened files</source>
     <message>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</translation>
+      <translation>Dimensione della rappresentazione del sistema di coordinate principali
+nell'angolo -- in % di altezza/larghezza della vista</translation>
     </message>
     <message>
       <source>%</source>
@@ -3061,7 +3061,7 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     </message>
     <message>
       <source>Color gradient is used with its full color range</source>
-      <translation type="unfinished">Color gradient is used with its full color range</translation>
+      <translation>Il gradiente di colore è usato con la sua gamma di colori completa</translation>
     </message>
     <message>
       <source>&amp;Flow</source>
@@ -3090,8 +3090,8 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     <message>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
-      <translation type="unfinished">Data outside the specified min-max range
-will be displayed in gray</translation>
+      <translation>I dati al di fuori dell'intervallo min-max specificato
+saranno visualizzati in grigio</translation>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
@@ -3104,12 +3104,12 @@ will be displayed in gray</translation>
     <message>
       <source>Data outside the specified min-max range
 will be displayed with transparency</source>
-      <translation type="unfinished">Data outside the specified min-max range
-will be displayed with transparency</translation>
+      <translation>I dati al di fuori dell'intervallo min-max specificato
+verranno visualizzati con trasparenza</translation>
     </message>
     <message>
       <source>Out &amp;transparent</source>
-      <translation type="unfinished">Out &amp;transparent</translation>
+      <translation>Fuori &amp;trasparente</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -3129,7 +3129,7 @@ will be displayed with transparency</translation>
     </message>
     <message>
       <source>Number of labels besides the color bar</source>
-      <translation type="unfinished">Number of labels besides the color bar</translation>
+      <translation>Numero di etichette oltre alla barra dei colori</translation>
     </message>
     <message>
       <source>Mi&amp;nimum:</source>
@@ -3142,8 +3142,8 @@ will be displayed with transparency</translation>
     <message>
       <source>Number of decimals for labels
 besides the color bar</source>
-      <translation type="unfinished">Number of decimals for labels
-besides the color bar</translation>
+      <translation>Numero di decimali per le etichette
+oltre alla barra dei colori</translation>
     </message>
     <message>
       <source/>
@@ -4042,7 +4042,7 @@ orizzontale nella console di Python</translation>
     </message>
     <message>
       <source>Saves Python history across sessions</source>
-      <translation type="unfinished">Saves Python history across sessions</translation>
+      <translation>Salva la cronologia Python tra le sessioni</translation>
     </message>
     <message>
       <source>Save history</source>
@@ -4306,8 +4306,8 @@ orizzontale nella console di Python</translation>
     <message>
       <source>List of last used calculations.
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations.
-To add a calculation press Return in the value input field</translation>
+      <translation>Elenco degli ultimi calcoli usati.
+Per aggiungere un calcolo premere Invio nel campo di input del valore</translation>
     </message>
     <message>
       <source>Quantity</source>
@@ -4519,7 +4519,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Transient deleted</source>
-      <translation type="unfinished">Transient deleted</translation>
+      <translation>Transitorio cancellato</translation>
     </message>
   </context>
   <context>
@@ -5051,11 +5051,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Auto select depending objects</source>
-      <translation type="unfinished">Auto select depending objects</translation>
+      <translation>Seleziona automaticamente oggetti dipendenti</translation>
     </message>
     <message>
       <source>Depending on</source>
-      <translation type="unfinished">Depending on</translation>
+      <translation>Dipende da</translation>
     </message>
     <message>
       <source>Document</source>
@@ -5067,7 +5067,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Depended by</source>
-      <translation type="unfinished">Depended by</translation>
+      <translation>Dipendente da</translation>
     </message>
     <message>
       <source>Selections</source>
@@ -5153,7 +5153,7 @@ originariamente selezionati prima di aprire questa finestra</translation>
     </message>
     <message>
       <source>Show output window on</source>
-      <translation type="unfinished">Show output window on</translation>
+      <translation>Mostra la finestra di output su</translation>
     </message>
     <message>
       <source>Redirect Python output</source>
@@ -5604,11 +5604,11 @@ Si desidera salvare le modifiche?</translation>
     </message>
     <message>
       <source>Help addon needed!</source>
-      <translation type="unfinished">Help addon needed!</translation>
+      <translation>Aiuto aggiuntivo necessario!</translation>
     </message>
     <message>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
-      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+      <translation>Il sistema di aiuto di %1 è ora gestito dall'addon "Help". Può essere facilmente installato tramite Addons Manager</translation>
     </message>
     <message>
       <source>Open Addon Manager</source>
@@ -5752,7 +5752,7 @@ How do you want to proceed?</source>
     <name>Gui::ModifierLineEdit</name>
     <message>
       <source>Press modifier keys</source>
-      <translation type="unfinished">Press modifier keys</translation>
+      <translation>Premere i tasti modificatori</translation>
     </message>
   </context>
   <context>
@@ -7503,15 +7503,15 @@ e sottolineato e non deve iniziare con un numero.</translation>
     </message>
     <message>
       <source>Setup configurable object</source>
-      <translation type="unfinished">Setup configurable object</translation>
+      <translation>Imposta oggetto configurabile</translation>
     </message>
     <message>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
+      <translation>Seleziona quale oggetto copiare o escludere quando la configurazione cambia. Tutti gli oggetti collegati esterni sono esclusi per impostazione predefinita.</translation>
     </message>
     <message>
       <source>Please select which objects to copy when the configuration is changed</source>
-      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+      <translation>Seleziona quali oggetti copiare quando la configurazione è cambiata</translation>
     </message>
     <message>
       <source>Apply to all</source>
@@ -7520,12 +7520,12 @@ e sottolineato e non deve iniziare con un numero.</translation>
     <message>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
-option to apply only to this link.</translation>
+      <translation>Applica l'impostazione a tutti i collegamenti. Oppure, deseleziona questa opzione
+per applicare solo a questo collegamento.</translation>
     </message>
     <message>
       <source>Copy on change</source>
-      <translation type="unfinished">Copy on change</translation>
+      <translation>Copia al cambiamento</translation>
     </message>
     <message>
       <source>Enable</source>
@@ -7533,7 +7533,7 @@ option to apply only to this link.</translation>
     </message>
     <message>
       <source>Enable auto copy of linked object when its configuration is changed</source>
-      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+      <translation>Abilita la copia automatica dell'oggetto collegato quando la sua configurazione viene cambiata</translation>
     </message>
     <message>
       <source>Tracking</source>
@@ -7543,26 +7543,26 @@ option to apply only to this link.</translation>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
-      <translation type="unfinished">Copy the linked object when its configuration is changed.
-Also auto redo the copy if the original linked object is changed.
+      <translation>Copia l'oggetto collegato quando la sua configurazione viene modificata.
+Viene anche rifatta automaticamente la copia se l'oggetto collegato originale viene modificato.
 </translation>
     </message>
     <message>
       <source>Disable copy on change</source>
-      <translation type="unfinished">Disable copy on change</translation>
+      <translation>Disabilita la copia al cambiamento</translation>
     </message>
     <message>
       <source>Rerefresh configurable object</source>
-      <translation type="unfinished">Rerefresh configurable object</translation>
+      <translation>Ri-ricarica oggetto configurabile</translation>
     </message>
     <message>
       <source>Synchronize the original configurable source object by
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
-      <translation type="unfinished">Synchronize the original configurable source object by
-creating a new deep copy. Note that any changes made to
-the current copy will be lost.
+      <translation>Sincronizza l'oggetto sorgente configurabile originale
+creando una nuova copia profonda. Nota che le modifiche apportate a
+la copia corrente andranno perse.
 </translation>
     </message>
     <message>
@@ -7571,7 +7571,7 @@ the current copy will be lost.
     </message>
     <message>
       <source>Change whether show each link array element as individual objects</source>
-      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+      <translation>Cambia se mostra ogni elemento dell'array di collegamento come singoli oggetti</translation>
     </message>
     <message>
       <source>Transform at the origin of the placement</source>

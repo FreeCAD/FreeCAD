@@ -144,8 +144,8 @@ Non-zero values turn the helix into a conical spiral.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Imposta la direzione di rotazione a sinistra,
+cioè in senso antiorario quando si muove lungo il suo asse.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>
@@ -155,7 +155,7 @@ i.e. counter-clockwise when moving along its axis.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation type="unfinished">If set, the result will be the intersection of the profile and the preexisting body.</translation>
+      <translation>Se impostato, il risultato sarà l'intersezione del profilo e il corpo preesistente.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
@@ -1785,7 +1785,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="284"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation type="unfinished">Adds all edges to the list box (active only when in add selection mode).</translation>
+      <translation>Aggiunge tutti i bordi alla casella di elenco (attivo solo quando in modalità aggiungi selezione).</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="293"/>
@@ -1821,7 +1821,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>Faccia normale</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
@@ -2465,7 +2465,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset from face at which pad will end</source>
-      <translation type="unfinished">Offset from face at which pad will end</translation>
+      <translation>Scostamento dalla faccia in cui terminerà l'estrusione</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
@@ -2884,7 +2884,7 @@ misurata lungo la direzione specificata</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation type="unfinished">Offset from face at which pocket will end</translation>
+      <translation>Scostamento dalla faccia a cui finirà la tasca</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
@@ -3349,7 +3349,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../ViewProviderDraft.h" line="42"/>
       <source>Draft parameters</source>
-      <translation type="unfinished">Draft parameters</translation>
+      <translation>Parametri di sformo</translation>
     </message>
   </context>
   <context>
@@ -3397,7 +3397,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../ViewProviderThickness.h" line="41"/>
       <source>Thickness parameters</source>
-      <translation type="unfinished">Thickness parameters</translation>
+      <translation>Parametri di spessore</translation>
     </message>
   </context>
   <context>
@@ -4495,7 +4495,7 @@ Nota che il calcolo può richiedere un po' di tempo</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="111"/>
       <source>Custom Thread</source>
-      <translation type="unfinished">Custom Thread</translation>
+      <translation>Filettatura Personalizzata</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="124"/>

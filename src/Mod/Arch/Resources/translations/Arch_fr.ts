@@ -80,7 +80,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="1021"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
-      <translation>La distance entre le plan de coupe et de la vue réelle coupé (gardez une valeur très faible mais pas nulle)</translation>
+      <translation>La distance entre le plan de coupe et la vue réelle coupée (gardez une valeur très faible mais pas nulle)</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1024"/>
@@ -3864,7 +3864,7 @@ La création du niveau est abandonnée.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1013"/>
       <source>Survey</source>
-      <translation>Prise de cotes</translation>
+      <translation>Prendre des côtes</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1014"/>
@@ -4751,12 +4751,12 @@ La création du site est abandonnée.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1560"/>
       <source>Survey</source>
-      <translation>Prise de cotes</translation>
+      <translation>Prendre des côtes</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1563"/>
       <source>Starts survey</source>
-      <translation>Prise de côtes</translation>
+      <translation>Prendre des côtes</translation>
     </message>
   </context>
   <context>
@@ -5806,7 +5806,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="731"/>
       <source>Survey</source>
-      <translation>Prise de cotes</translation>
+      <translation>Prendre des côtes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="739"/>

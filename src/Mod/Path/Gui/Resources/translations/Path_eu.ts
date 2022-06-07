@@ -311,7 +311,7 @@
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="110"/>
       <source>The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</translation>
+      <translation>Mozte zirkularren norabidea, erlojuaren orratzen noranzkoan (CW) edo aurkakoan (CCW)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="119"/>
@@ -336,7 +336,7 @@
       <location filename="../../../PathScripts/PathHelix.py" line="168"/>
       <location filename="../../../PathScripts/PathProfile.py" line="144"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation type="unfinished">Extra value to stay away from final profile- good for roughing toolpath</translation>
+      <translation>Amaierako profiletik aldentzeko balio gehigarria - ona arbastatzeko tresna-bidearentzako</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPlane.py" line="38"/>
@@ -353,12 +353,12 @@
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="65"/>
       <source>Solid object to be used to limit the generated Path.</source>
-      <translation type="unfinished">Solid object to be used to limit the generated Path.</translation>
+      <translation>Sortutako bidea mugatzeko erabiliko den objektu solidoa.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="75"/>
       <source>Determines if Boundary describes an inclusion or exclusion mask.</source>
-      <translation type="unfinished">Determines if Boundary describes an inclusion or exclusion mask.</translation>
+      <translation>Mugak inklusio- ala esklusio-maskara bat deskribatzen duen zehazten du.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathComment.py" line="41"/>
@@ -567,7 +567,7 @@
     <message>
       <location filename="../../../PathScripts/PathDeburr.py" line="138"/>
       <source>How to join chamfer segments</source>
-      <translation>Nola elkartu alaka-segmentuak</translation>
+      <translation>Nola elkartu alaka segmentuak</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDeburr.py" line="146"/>
@@ -908,7 +908,7 @@
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="153"/>
       <source>The parametrized body representing the tool bit</source>
-      <translation>Tresna-atala ordezkatzen duen gorputz parametrizatua</translation>
+      <translation>Tresna atala ordezkatzen duen gorputz parametrizatua</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="159"/>
@@ -2120,7 +2120,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2655"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation>Diametro-kota falta da tresna-atalaren forman.</translation>
+      <translation>Diametro-kota falta da tresna atalaren forman.</translation>
     </message>
   </context>
   <context>
@@ -2128,7 +2128,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathToolBitGui.py" line="119"/>
       <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation>Tresna-atala ezin da editatu: shapefile-a ez da aurkitu</translation>
+      <translation>Tresna atala ezin da editatu: shapefile-a ez da aurkitu</translation>
     </message>
   </context>
   <context>
@@ -2341,7 +2341,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathCustomGui.py" line="73"/>
       <source>Create custom gcode snippet</source>
-      <translation>Sortu gcode kode-zati pertsonalizatua</translation>
+      <translation>Sortu gcode kode zati pertsonalizatua</translation>
     </message>
   </context>
   <context>
@@ -4003,7 +4003,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="83"/>
       <source>Choose a writable location for your toolbits</source>
-      <translation>Hautatu kokaleku idazgarri bat zure tresna-ataletarako</translation>
+      <translation>Hautatu kokaleku idazgarri bat zure tresna ataletarako</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="663"/>
@@ -4015,7 +4015,7 @@ Aukeren sorrera abortatzen</translation>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="665"/>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="794"/>
       <source>Save toolbit library</source>
-      <translation>Gorde tresna-atalaren liburutegia</translation>
+      <translation>Gorde tresna atalaren liburutegia</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="792"/>
@@ -4033,7 +4033,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="52"/>
       <source>Creates a new ToolBit object</source>
-      <translation>Tresna-atal objektu berria sortzen du</translation>
+      <translation>Tresna atal objektu berria sortzen du</translation>
     </message>
   </context>
   <context>
@@ -4041,12 +4041,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="48"/>
       <source>ToolBit Dock</source>
-      <translation>Tresna-atalen panela</translation>
+      <translation>Tresna atalen panela</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="49"/>
       <source>Toggle the Toolbit Dock</source>
-      <translation>Txandakatu tresna-atalen panela</translation>
+      <translation>Txandakatu tresna atalen panela</translation>
     </message>
   </context>
   <context>
@@ -4054,12 +4054,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="77"/>
       <source>ToolBit Library editor</source>
-      <translation>Tresna-atalen liburutegiaren editorea</translation>
+      <translation>Tresna atalen liburutegiaren editorea</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="80"/>
       <source>Open an editor to manage ToolBit libraries</source>
-      <translation>Ireki editore bat tresna-atalen liburutegiak kudeatzeko</translation>
+      <translation>Ireki editore bat tresna atalen liburutegiak kudeatzeko</translation>
     </message>
   </context>
   <context>
@@ -4072,7 +4072,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="143"/>
       <source>Load an existing ToolBit object from a file</source>
-      <translation>Kargatu lehendik dagoen tresna-atal objektu bat fitxategi batetik</translation>
+      <translation>Kargatu lehendik dagoen tresna atal objektu bat fitxategi batetik</translation>
     </message>
   </context>
   <context>
@@ -4085,7 +4085,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="81"/>
       <source>Save an existing ToolBit object to a file</source>
-      <translation>Gorde lehendik dagoen tresna-atal objektu bat fitxategi batean</translation>
+      <translation>Gorde lehendik dagoen tresna atal objektu bat fitxategi batean</translation>
     </message>
   </context>
   <context>
@@ -4809,12 +4809,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
       <source>Create Toolbit</source>
-      <translation>Sortu tresna-atala</translation>
+      <translation>Sortu tresna atala</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gehitu lehendik dagoen tresna-atal bat liburutegi honi.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gehitu lehendik dagoen tresna atal bat liburutegi honi.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
@@ -4824,7 +4824,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ezabatu hautatutako tresna-atalak liburutegitik&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ezabatu hautatutako tresna atalak liburutegitik&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
@@ -4849,7 +4849,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="190"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Liburutegiko tresna-atalen taula.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Liburutegiko tresna atalen taula.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
@@ -5296,7 +5296,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna-atala mugimendu azkarrekin zein altueratik gora den segurua erabiltzea. Altuera horretatik behera, saiheskako eta beheranzko mugimenduak elikatze-tasen abiaduretan gauzatuko dira.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna atala mugimendu azkarrekin zein altueratik gora den segurua erabiltzea. Altuera horretatik behera, saiheskako eta beheranzko mugimenduak elikatze-tasen abiaduretan gauzatuko dira.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
@@ -5306,7 +5306,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pieza gordinaren materialaren oztoporik gabe tresna-atalak saiheskako mugimendua egin ahal izango duen altuera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pieza gordinaren materialaren oztoporik gabe tresna atalak saiheskako mugimendua egin ahal izango duen altuera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
@@ -5765,7 +5765,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="93"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mozte-moduak onartzen du tresna-atalaren alde baten mozketak emaitza gisa lortutako pieza ordezkatzen duela, eta beste aldea jadanik fresatuta dagoela edo geroago kenduko dela.&lt;/p&gt;&lt;p&gt;Hori kontuan hartuta, biraketa bakoitzean tresna-atala mozketara eramaten denean igotze-moduari deitzen zaio, eta modu konbentzionalean tresna-atalen biraketa eta tresnen saiheskako mugimendua norabide berean dira.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mozte-moduak onartzen du tresna atalaren alde baten mozketak emaitza gisa lortutako pieza ordezkatzen duela, eta beste aldea jadanik fresatuta dagoela edo geroago kenduko dela.&lt;/p&gt;&lt;p&gt;Hori kontuan hartuta, biraketa bakoitzean tresna atala mozketara eramaten denean igotze-moduari deitzen zaio, eta modu konbentzionalean tresna atalen biraketa eta tresnen saiheskako mugimendua norabide berean dira.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="97"/>
@@ -5785,7 +5785,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="117"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna-atalak materiala garbitzeko erabiliko duen eredua.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna atalak materiala garbitzeko erabiliko duen eredua.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="124"/>
@@ -6930,7 +6930,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="649"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna-atalen eta haien formen erreferentziak bide-izen absolutuekin edo (bilaketa-bidearekiko) erlatiboak direnekin gorde daitezke.&lt;/p&gt;&lt;p&gt;Oro har, bide-izen erlatiboak erabiltzea gomendatzen da, zaluagoak eta sendoagoak baitira diseinuan aldaketak daudenerako.&lt;/p&gt;&lt;p&gt;Izen bera duten tresna edo tresna-forma anitz badaude direktorio desberdinetan, bide-izen absolutuak erabili behar dira. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna atalen eta haien formen erreferentziak bide-izen absolutuekin edo (bilaketa-bidearekiko) erlatiboak direnekin gorde daitezke.&lt;/p&gt;&lt;p&gt;Oro har, bide-izen erlatiboak erabiltzea gomendatzen da, zaluagoak eta sendoagoak baitira diseinuan aldaketak daudenerako.&lt;/p&gt;&lt;p&gt;Izen bera duten tresna edo tresna-forma anitz badaude direktorio desberdinetan, bide-izen absolutuak erabili behar dira. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="652"/>
@@ -7706,7 +7706,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="14"/>
       <source>Tool Bit Attributes</source>
-      <translation>Tresna-atalaren atributuak</translation>
+      <translation>Tresna atalaren atributuak</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="30"/>
@@ -7716,7 +7716,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="42"/>
       <source>Tool Bit</source>
-      <translation>Tresna-atala</translation>
+      <translation>Tresna atala</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="48"/>
@@ -7726,7 +7726,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="55"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display name of the Tool Bit (initial value taken from the shape file).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bistaratu tresna-atalaren izena (hasierako izena formen fitxategitik hartuko da).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bistaratu tresna atalaren izena (hasierako izena formen fitxategitik hartuko da).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="61"/>
@@ -7741,7 +7741,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="96"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The file which defines the type and shape of the Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna-atalaren mota eta forma definitzen duen fitxategia.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna atalaren mota eta forma definitzen duen fitxategia.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
@@ -7751,7 +7751,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="106"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change file defining type and shape of Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aldatu tresna-atalaren mota eta forma definitzen duen fitxategia.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aldatu tresna atalaren mota eta forma definitzen duen fitxategia.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="109"/>
@@ -7882,12 +7882,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="78"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available Tool Bits to choose from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna-atal erabilgarriak, hautatu daitezkeenak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna atal erabilgarriak, hautatu daitezkeenak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create ToolControllers for the selected toolbits and add them to the Job&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sortu tresna-kontrolagailuak hautatutako tresna-ataletatik, eta gehitu lanari&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sortu tresna-kontrolagailuak hautatutako tresna ataletatik, eta gehitu lanari&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>

@@ -534,7 +534,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2515"/>
       <source>Create MultiTransform</source>
-      <translation>Créer une transformation multiple</translation>
+      <translation>Transformation multiple</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2516"/>
@@ -4744,7 +4744,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Apply a pattern</source>
-      <translation>Appliquer un modèle</translation>
+      <translation>Appliquer une transformation</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>

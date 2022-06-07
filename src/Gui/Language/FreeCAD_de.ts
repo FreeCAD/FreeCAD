@@ -1735,7 +1735,7 @@ display the splash screen</source>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation>Baumansicht und Eigenschaftsansicht</translation>
+      <translation>Baumansicht und Eigenschafteneditor</translation>
     </message>
     <message>
       <source>Both</source>
@@ -2901,7 +2901,7 @@ Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des ger
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation>Objekte werden in orthographischer Projektion projiziert</translation>
+      <translation>Objekte werden in orthogonal projiziert</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
@@ -9265,11 +9265,11 @@ the current copy will be lost.
     <name>StdOrthographicCamera</name>
     <message>
       <source>Orthographic view</source>
-      <translation>Orthographische Ansicht</translation>
+      <translation>Orthogonale Ansicht</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>In orthographische Ansicht wechseln</translation>
+      <translation>In orthogonale Ansicht wechseln</translation>
     </message>
   </context>
   <context>

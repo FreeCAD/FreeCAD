@@ -3827,7 +3827,7 @@ PathInspect.py:264
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="463"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>環形</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="464"/>
@@ -4328,7 +4328,7 @@ PathInspect.py:264
       <location filename="../../../PathScripts/PathWaterline.py" line="112"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="125"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>環形</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="113"/>

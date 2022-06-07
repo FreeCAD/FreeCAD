@@ -2573,7 +2573,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="447"/>
       <source>Length Scale[m]</source>
-      <translation>Längenmaßstab[m]</translation>
+      <translation>Längenmaßstab [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="450"/>

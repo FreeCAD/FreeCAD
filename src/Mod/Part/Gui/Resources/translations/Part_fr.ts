@@ -2157,7 +2157,7 @@ y compris angulaire.</translation>
     <message>
       <location filename="../../Command.cpp" line="2376"/>
       <source>Toggle All</source>
-      <translation>Basculer tous</translation>
+      <translation>Basculer tout</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2377"/>
@@ -2511,12 +2511,12 @@ en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="285"/>
       <source>Create shape element copy</source>
-      <translation>Créer une copie d’élément forme</translation>
+      <translation>Copie de l'élément de forme</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="286"/>
       <source>Create a non-parametric copy of the selected shape element</source>
-      <translation>Créer une copie non paramétrique de l'élément forme sélectionné</translation>
+      <translation>Copie non-paramétrique de l'élément de forme sélectionné</translation>
     </message>
   </context>
   <context>
@@ -2944,7 +2944,7 @@ de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="182"/>
       <source>Create simple copy</source>
-      <translation>Créer une copie simple</translation>
+      <translation>Copie simple</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="183"/>
@@ -3066,12 +3066,12 @@ de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="257"/>
       <source>Create transformed copy</source>
-      <translation>Créer une copie transformée</translation>
+      <translation>Copie transformée</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="258"/>
       <source>Create a non-parametric copy with transformed placement</source>
-      <translation>Créer une copie non paramétrique avec placement transformé</translation>
+      <translation>Créer une copie non-paramétrique avec un placement transformé</translation>
     </message>
   </context>
   <context>

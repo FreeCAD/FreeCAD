@@ -269,7 +269,7 @@
     <message>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation>Drukarka używa innej orientacji strony niż rysunek.
+      <translation>Drukarka używa innej orientacji strony niż zastosowano w rysunku.
 Czy chcesz kontynuować?</translation>
     </message>
     <message>
@@ -563,7 +563,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Make axonometric...</source>
-      <translation>Stwórz aksonometrię...</translation>
+      <translation>Utwórz aksonometrię ...</translation>
     </message>
     <message>
       <source>Edit axonometric settings...</source>

@@ -3526,7 +3526,7 @@ Combinaciones aceptadas: dos curvas; un extremo y una curva; dos extremos; dos c
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="23"/>
       <source>Constraint widget settings</source>
-      <translation type="unfinished">Constraint widget settings</translation>
+      <translation>Configuraciones del widget de restricciones</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="35"/>
@@ -5092,14 +5092,14 @@ Los puntos deben estar más cerca de una quinta parte del tamaño de la cuadríc
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and non-manifold vertexes</source>
-      <translation type="unfinished">Open and non-manifold vertexes</translation>
+      <translation>Vértices abiertos y no desplegables</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
 This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
-      <translation type="unfinished">Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
-This is purely based on topological shape of the sketch and not on its geometry/constrain set.</translation>
+      <translation>Descata los vértices abiertos y no desplegables que podrían llevar a un error si el croquis se utiliza para generar sólidos
+Esto se basa únicamente en la forma topológica del croquis y no en su conjunto geometría/restricción.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="42"/>

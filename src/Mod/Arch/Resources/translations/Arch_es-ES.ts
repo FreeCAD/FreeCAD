@@ -23,7 +23,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation>Si es false, los objetos no sólidos se cortarán, con posibles resultados equivocados.</translation>
+      <translation>Se es falso, los objetos no sólidos tambien se cortarán, con posibles resultados equivocados.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="924"/>
