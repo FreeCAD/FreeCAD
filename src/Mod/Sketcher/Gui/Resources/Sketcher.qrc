@@ -203,6 +203,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_BSpline.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Circle.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Ellipse.svg</file>
+	<file>icons/pointers/Sketcher_Pointer_Create_3PointEllipse.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Fillet.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Line.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Line_Polar.svg</file>
