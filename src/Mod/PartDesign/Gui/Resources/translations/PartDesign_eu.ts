@@ -3389,7 +3389,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../ViewProviderScaled.h" line="38"/>
       <source>Scaled parameters</source>
-      <translation type="unfinished">Scaled parameters</translation>
+      <translation>Eskalatutako parametroak</translation>
     </message>
   </context>
   <context>

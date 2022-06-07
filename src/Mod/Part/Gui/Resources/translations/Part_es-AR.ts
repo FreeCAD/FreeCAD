@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{obj} no es adjuntable. Todavía puede utilizar el diálogo del editor adjunto para alinear el objeto, pero el adjunto no será paramétrico.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="205"/>
@@ -48,7 +48,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="355"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{obj1} depends on object being attached, can't use it for attachment</translation>
+      <translation>{obj1} depende del objeto que se adjunte, no se puede usar para adjuntar</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="495"/>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="584"/>
       <source>Attached with mode {mode}</source>
-      <translation type="unfinished">Attached with mode {mode}</translation>
+      <translation>Adjunto con el modo {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
@@ -113,7 +113,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>Editar el adjunto del objeto seleccionado.</translation>
     </message>
   </context>
   <context>
@@ -129,15 +129,15 @@
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Filtrar objetos de un compuesto seleccionado por características como volumen,
+área o longitud, o eligiendo elementos específicos.
+Si se selecciona un segundo objeto, se utilizará como referencia, por ejemplo,
+para el filtrado de colisión o distancia.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Primero seleccione una forma que sea un compuesto. Si un segundo objeto es seleccionado (opcional) se tratará como una plantilla.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
@@ -152,11 +152,11 @@ for collision or distance filtering.</translation>
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>El cálculo del resultado falló con un error:
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Haga clic en 'Continuar' para crear la operación de todos modos, o 'Abortar' para cancelar.</translation>
     </message>
   </context>
   <context>

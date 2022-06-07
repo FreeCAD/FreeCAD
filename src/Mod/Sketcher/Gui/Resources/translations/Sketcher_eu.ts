@@ -2603,7 +2603,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <location filename="../../CommandConstraints.cpp" line="1176"/>
       <location filename="../../CommandConstraints.cpp" line="1269"/>
       <source>The selected edge is not a line segment.</source>
-      <translation type="unfinished">The selected edge is not a line segment.</translation>
+      <translation>Hautatutako ertza ez da lerro segmentu bat.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="946"/>
@@ -2818,7 +2818,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <location filename="../../CommandConstraints.cpp" line="2881"/>
       <location filename="../../CommandConstraints.cpp" line="3130"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
-      <translation>Murriztapen honek lerro-segmentuetan edo puntu-bikoteetan soilik du zentzua.</translation>
+      <translation>Murriztapen honek lerro segmentuetan edo puntu-bikoteetan soilik du zentzua.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3021"/>
@@ -6175,7 +6175,7 @@ Eigen Sparse QR algoritmoa matrize sakabanatuetarako optimizatuta dago; normalea
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2863"/>
       <source>and %1 more</source>
-      <translation type="unfinished">and %1 more</translation>
+      <translation>eta %1 gehiago</translation>
     </message>
   </context>
   <context>

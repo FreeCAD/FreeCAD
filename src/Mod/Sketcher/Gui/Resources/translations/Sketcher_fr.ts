@@ -481,7 +481,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2103"/>
       <source>Constrain distance</source>
-      <translation>Contrainte dimensionnelle</translation>
+      <translation>Contrainte de dimension</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2104"/>
@@ -494,7 +494,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2700"/>
       <source>Constrain horizontal distance</source>
-      <translation>Contrainte distance horizontale</translation>
+      <translation>Contrainte de distance horizontale</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2701"/>
@@ -638,7 +638,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6778"/>
       <source>Constrain refraction (Snell's law')</source>
-      <translation>Contraint la réfraction (loi de Snell)</translation>
+      <translation>Contrainte de réfraction (loi de Snell)</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6779"/>
@@ -1422,7 +1422,7 @@ Cela effacera la propriété 'Support', le cas échéant.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="860"/>
       <source>Select unconstrained DoF</source>
-      <translation>Sélectionne les degrés de liberté non contraints</translation>
+      <translation>Sélectionner les degrés de liberté non contraints</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="861"/>
@@ -1566,7 +1566,7 @@ Cela effacera la propriété 'Support', le cas échéant.</translation>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="75"/>
       <source>Toggle construction geometry</source>
-      <translation>Basculer mode géométrie de construction</translation>
+      <translation>Basculer le mode de la géométrie de construction</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="76"/>
@@ -1632,7 +1632,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="954"/>
       <source>View section</source>
-      <translation>Vue section</translation>
+      <translation>Vue de la section</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="955"/>
@@ -3230,7 +3230,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1203"/>
       <source>Nothing is selected. Please select a b-spline.</source>
-      <translation>Rien n'est sélectionné. Veuillez sélectionner une courbe b-spline.</translation>
+      <translation>Rien n'est sélectionné. Veuillez sélectionner une courbe B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1217"/>

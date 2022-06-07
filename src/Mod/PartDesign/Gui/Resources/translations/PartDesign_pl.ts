@@ -319,7 +319,7 @@ aby uniknąć samoprzecięcia.</translation>
     <message>
       <location filename="../../Command.cpp" line="2068"/>
       <source>Draft</source>
-      <translation>Rysunek roboczy</translation>
+      <translation>Pochylenie ścian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2069"/>
@@ -3347,7 +3347,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../ViewProviderDraft.h" line="42"/>
       <source>Draft parameters</source>
-      <translation>Parametry szkicu</translation>
+      <translation>Parametry funkcji pochylenie ścian</translation>
     </message>
   </context>
   <context>

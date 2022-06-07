@@ -787,7 +787,7 @@ Kateen zerrenda bat da; zerrendako elementu bakoitza bere lerroan bistaratuko da
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation>Teselatu elipseak eta B-spline elementuak lerro-segmentuetara</translation>
+      <translation>Teselatu elipseak eta B-spline elementuak lerro segmentuetara</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="98"/>
@@ -800,8 +800,8 @@ Kateen zerrenda bat da; zerrendako elementu bakoitza bere lerroan bistaratuko da
       <location filename="../../draftobjects/shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation>Lerro-segmentuen luzera, elipseak edo B-spline kurbak 
-                lerro-segmentuetara teselatzen badira</translation>
+      <translation>Lerro segmentuen luzera, elipseak edo B-spline kurbak 
+                lerro segmentuetara teselatzen badira</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="111"/>
@@ -974,7 +974,7 @@ This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
       <translation>Kota-lerroaren erdiko puntua, arku zirkularra dena.
 
-Hau normalean bi lerro-segmentu edo haien hedadurak ebakitzen diren
+Hau normalean bi lerro segmentu edo haien hedadurak ebakitzen diren
 puntua da, emaitza gisa haien artean neurtutako 'Angelua' delarik.</translation>
     </message>
     <message>
@@ -7398,7 +7398,7 @@ SVG fitxategiko unitate bat milimetro bat izango da. </translation>
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length. </source>
       <translation>Open CASCADE 6.8 baino zaharragoak diren bertsioek ez dute arkuen proiekzioa onartzen.
-Kasu horretan, arkuak lerro-segmentu txikien bidez marraztuko dira.
+Kasu horretan, arkuak lerro segmentu txikien bidez marraztuko dira.
 Balio hau segmentu-luzera maximoa da. </translation>
     </message>
     <message>
@@ -7672,13 +7672,13 @@ alanbre itxi modura errendatuko dira</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
-      <translation>Spline-segmentu maximoa:</translation>
+      <translation>Spline segmentu maximoa:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation>Polilerro-segmentu bakoitzaren luzera maximoa.
+      <translation>Polilerro segmentu bakoitzaren luzera maximoa.
 Hemen '0' ezarri bada, spline osoa segmentu zuzen gisa tratatuko da.</translation>
     </message>
     <message>

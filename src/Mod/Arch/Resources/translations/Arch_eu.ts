@@ -1188,32 +1188,32 @@
     <message>
       <location filename="../../ArchRoof.py" line="263"/>
       <source>The list of angles of the roof segments</source>
-      <translation>Teilatu-segmentuen angeluen zerrenda</translation>
+      <translation>Teilatu segmentuen angeluen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="268"/>
       <source>The list of horizontal length projections of the roof segments</source>
-      <translation>Teilatu-segmentuen luzera-proiekzio horizontalen zerrenda</translation>
+      <translation>Teilatu segmentuen luzera-proiekzio horizontalen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="273"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
-      <translation>Teilatu-segmentuen profil erlatiboen IDen zerrenda</translation>
+      <translation>Teilatu segmentuen profil erlatiboen IDen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="278"/>
       <source>The list of thicknesses of the roof segments</source>
-      <translation>Teilatu-segmentuen lodieren zerrenda</translation>
+      <translation>Teilatu segmentuen lodieren zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="283"/>
       <source>The list of overhangs of the roof segments</source>
-      <translation>Teilatu-segmentuen hegalen zerrenda</translation>
+      <translation>Teilatu segmentuen hegalen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="288"/>
       <source>The list of calculated heights of the roof segments</source>
-      <translation>Teilatu-segmentuen altuera kalkulatuen zerrenda</translation>
+      <translation>Teilatu segmentuen altuera kalkulatuen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="293"/>
@@ -3027,22 +3027,22 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
+      <translation>Edozer jar dezakezu eraikin-objektu batean, guneak eta eraikinak salbu.
 
-Building object is not allowed to accept Site and Building objects.
+Eraikin-objektuek ez dute onartzen gunerik edo eraikinik.
 
-Site and Building objects will be removed from the selection.
+Guneak eta eraikinak hautapenetik kenduko dira.
 
-You can change that in the preferences.</translation>
+Portaera hori hobespenetan aldatu daiteke.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="246"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Ez dago baliozko objekturik hautapenean.
 
-Building creation aborted.</translation>
+Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="253"/>
@@ -3976,12 +3976,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="208"/>
       <source>BuildingPart</source>
-      <translation>Eraikin-zatia</translation>
+      <translation>Eraikin zatia</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="307"/>
       <source>Create BuildingPart</source>
-      <translation>Sortu eraikin-zatia</translation>
+      <translation>Sortu eraikin zatia</translation>
     </message>
     <message>
       <location filename="../../importGBXML.py" line="45"/>
@@ -4110,12 +4110,12 @@ Gunearen sorrera utzi egin da.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="292"/>
       <source>BuildingPart</source>
-      <translation>Eraikin-zatia</translation>
+      <translation>Eraikin zatia</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="296"/>
       <source>Creates a BuildingPart object including selected objects</source>
-      <translation>Eraikin-zatia den objektu bat sortzen du hautatutako objektuak barne hartuz</translation>
+      <translation>Eraikin zatia den objektu bat sortzen du hautatutako objektuak barne hartuz</translation>
     </message>
   </context>
   <context>
@@ -4316,12 +4316,12 @@ Gunearen sorrera utzi egin da.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="115"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
-      <translation>Zutabe-zatiketa automatikoak sortzen ditu (ezarri 0 desgaitzeko)</translation>
+      <translation>Zutabe zatiketa automatikoak sortzen ditu (ezarri 0 desgaitzeko)</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="117"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
-      <translation>Errenkada-zatiketa automatikoak sortzen ditu (ezarri 0 desgaitzeko)</translation>
+      <translation>Errenkada zatiketa automatikoak sortzen ditu (ezarri 0 desgaitzeko)</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="119"/>
@@ -5514,7 +5514,7 @@ Utzi hutsik dokumentuko objektu guztiak erabili daitezen.</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="102"/>
       <source>Arcs subdivisions</source>
-      <translation>Arku-zatiketak</translation>
+      <translation>Arku zatiketak</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="109"/>

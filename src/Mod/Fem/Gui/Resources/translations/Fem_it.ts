@@ -73,7 +73,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="57"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Contenitore analisi</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="85"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Piano di ritaglio sulla faccia</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="89"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Aggiunge un piano di ritaglio su una faccia selezionata</translation>
     </message>
   </context>
   <context>
@@ -238,12 +238,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="338"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Sezione trasversale trave</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="342"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Crea una sezione trasversale di una trave FEM</translation>
     </message>
   </context>
   <context>
@@ -269,7 +269,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="376"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Crea una rotazione di una trave FEM</translation>
     </message>
   </context>
   <context>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="406"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Equazione di elasticità</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
@@ -329,12 +329,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="440"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Equazione del flusso</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="444"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>Crea un'equazione FEM per il flusso</translation>
     </message>
   </context>
   <context>
@@ -347,7 +347,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="478"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>Crea un'equazione FEM per il calore</translation>
     </message>
   </context>
   <context>
@@ -369,7 +369,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Converte la superficie di una mesh FEM in una mesh</translation>
     </message>
   </context>
   <context>
@@ -382,7 +382,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="517"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Apre l'editor dei materiali FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -395,7 +395,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Crea un materiale FEM per il fluido</translation>
     </message>
   </context>
   <context>
@@ -403,12 +403,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="550"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Materiale meccanico non lineare</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="554"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Crea un materiale meccanico non lineare</translation>
     </message>
   </context>
   <context>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="620"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Materiale rinforzato (calcestruzzo)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="624"/>
@@ -460,7 +460,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="723"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Pulisce la Mesh di un oggetto mesh FEM</translation>
     </message>
   </context>
   <context>
@@ -477,12 +477,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="773"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>Mesh FEM da forma con Gmsh</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="777"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Crea una mesh FEM da una forma con il mesher Gmsh</translation>
     </message>
   </context>
   <context>
@@ -490,12 +490,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="818"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>Gruppo di mesh FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="822"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>Crea un gruppo di mesh FEM</translation>
     </message>
   </context>
   <context>
@@ -503,7 +503,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="835"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>Mesh FEM da forma con Netgen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="839"/>
@@ -516,12 +516,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="880"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Regione di mesh FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="884"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Crea una regione di mesh FEM</translation>
     </message>
   </context>
   <context>
@@ -542,12 +542,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="917"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Azzera risultati</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="922"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Elimina tutti i risultati dall'analisi attiva</translation>
     </message>
   </context>
   <context>
@@ -555,12 +555,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="980"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>Solutore CalculiX (nuovo framework)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="985"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>Crea un solutore FEM CalculiX nuovo framework (meno gestione degli errori di risultato)</translation>
     </message>
   </context>
   <context>
@@ -568,12 +568,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>Risolutore CalculiX Standard</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="944"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>Crea un risolutore FEM standard CalculiX con strumenti ccx</translation>
     </message>
   </context>
   <context>
@@ -612,7 +612,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="1034"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>Crea un risolutore FEM Mystran</translation>
     </message>
   </context>
   <context>
@@ -1252,7 +1252,7 @@
     <message>
       <location filename="../../Command.cpp" line="305"/>
       <source>Make FEM constraint for bearing</source>
-      <translation type="unfinished">Make FEM constraint for bearing</translation>
+      <translation>Crea il vincolo FEM per cuscinetto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
@@ -1720,7 +1720,7 @@
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="193"/>
       <source>Leave blank to use default Elmer elmer binary file</source>
-      <translation type="unfinished">Leave blank to use default Elmer elmer binary file</translation>
+      <translation>Lascia vuoto per usare il file binario Elmer predefinito</translation>
     </message>
   </context>
   <context>
@@ -1780,7 +1780,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="75"/>
       <source>Export group data</source>
-      <translation type="unfinished">Export group data</translation>
+      <translation>Esporta gruppo dati</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="82"/>
@@ -1902,7 +1902,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="65"/>
       <source>Gmsh binary path</source>
-      <translation type="unfinished">Gmsh binary path</translation>
+      <translation>Percorso del binario Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
@@ -2484,7 +2484,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="272"/>
       <source>Only one master face for a contact constraint!</source>
-      <translation type="unfinished">Only one master face for a contact constraint!</translation>
+      <translation>Solo una faccia principale per un vincolo di contatto!</translation>
     </message>
   </context>
   <context>
@@ -3577,7 +3577,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="91"/>
       <source>Potential Constant</source>
-      <translation type="unfinished">Potential Constant</translation>
+      <translation>Costante Potenziale</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="101"/>
@@ -3592,7 +3592,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="111"/>
       <source>Whether the constraint is for the electric force</source>
-      <translation type="unfinished">Whether the constraint is for the electric force</translation>
+      <translation>Se il vincolo è per la forza elettrica</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="114"/>
@@ -3756,12 +3756,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation type="unfinished">FEM Mesh by Gmsh</translation>
+      <translation>FEM Mesh di Gmsh</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
       <source>FEM Mesh Parameter</source>
-      <translation type="unfinished">FEM Mesh Parameter</translation>
+      <translation>Parametro Mesh FEM</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -4419,7 +4419,7 @@ following referencing objects might be lost:</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjacent nodes</source>
-      <translation type="unfinished">Collect adjacent nodes</translation>
+      <translation>Raccogli nodi adiacenti</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
@@ -4571,7 +4571,7 @@ following referencing objects might be lost:</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master face, click Add or Remove</source>
-      <translation type="unfinished">Select master face, click Add or Remove</translation>
+      <translation>Seleziona la faccia principale, fai clic su Aggiungi o Rimuovi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="35"/>
@@ -4588,7 +4588,7 @@ following referencing objects might be lost:</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave face, click Add or Remove</source>
-      <translation type="unfinished">Select slave face, click Add or Remove</translation>
+      <translation>Seleziona la faccia secondaria, fai clic su Aggiungi o Rimuovi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="143"/>
@@ -5159,12 +5159,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
       <source>Inside Out</source>
-      <translation type="unfinished">Inside Out</translation>
+      <translation>Alla rovescia</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
       <source>Cut Cells</source>
-      <translation type="unfinished">Cut Cells</translation>
+      <translation>Taglia Celle</translation>
     </message>
   </context>
   <context>
@@ -5368,7 +5368,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
       <source>Min scalar</source>
-      <translation type="unfinished">Min scalar</translation>
+      <translation>Min scalare</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
@@ -5378,7 +5378,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Max scalar</source>
-      <translation type="unfinished">Max scalar</translation>
+      <translation>Max scalare</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="144"/>
@@ -5680,14 +5680,14 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../Command.cpp" line="1145"/>
       <source>Error: A filter can only be applied to a single object.</source>
-      <translation type="unfinished">Error: A filter can only be applied to a single object.</translation>
+      <translation>Errore: Un filtro può essere applicato solo a un singolo oggetto.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1146"/>
       <location filename="../../Command.cpp" line="1161"/>
       <location filename="../../Command.cpp" line="1188"/>
       <source>The filter could not be set up.</source>
-      <translation type="unfinished">The filter could not be set up.</translation>
+      <translation>Il filtro non può essere impostato.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1160"/>

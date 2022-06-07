@@ -5417,7 +5417,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="112"/>
       <source>Accuracy vs Performance</source>
-      <translation type="unfinished">Accuracy vs Performance</translation>
+      <translation>Precisione vs Prestazioni</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="119"/>
@@ -5919,7 +5919,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="148"/>
       <source>ProbePoints.txt</source>
-      <translation type="unfinished">ProbePoints.txt</translation>
+      <translation>ProbePoints.txt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
@@ -6284,7 +6284,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="14"/>
       <source>Setup Global</source>
-      <translation type="unfinished">Setup Global</translation>
+      <translation>Impostazione Globale</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="30"/>
@@ -6556,7 +6556,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
       <source>Flat Radius</source>
-      <translation type="unfinished">Flat Radius</translation>
+      <translation>Raggio piatto</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="110"/>
@@ -7123,7 +7123,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/Advanced.ui" line="67"/>
       <source>Suppress Velocity warning</source>
-      <translation type="unfinished">Suppress Velocity warning</translation>
+      <translation>Sopprimi avviso Velocità</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="86"/>
@@ -7153,12 +7153,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../preferences/Advanced.ui" line="147"/>
       <source>Enable OCL dependent features</source>
-      <translation type="unfinished">Enable OCL dependent features</translation>
+      <translation>Abilita le funzioni dipendenti dall'OCL</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="160"/>
       <source>Suppress warning if openCAMlib cannot be found</source>
-      <translation type="unfinished">Suppress warning if openCAMlib cannot be found</translation>
+      <translation>Sopprimere l'avviso se openCAMlib non può essere trovato</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="163"/>

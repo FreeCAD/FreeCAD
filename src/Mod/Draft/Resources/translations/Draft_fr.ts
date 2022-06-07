@@ -1498,7 +1498,7 @@ CTRL to snap, SHIFT to constrain.</source>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="606"/>
       <source>Arc tools</source>
-      <translation>Outils Arc</translation>
+      <translation>Outils pour les arcs</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="609"/>
@@ -1598,7 +1598,7 @@ CTRL pour aimanter, MAJ pour contraindre.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="475"/>
       <source>Bézier tools</source>
-      <translation>Outils Bézier</translation>
+      <translation>Outils de Bézier</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="478"/>
@@ -1806,7 +1806,7 @@ sur les nœuds pris en charge et sur les objets pris en charge.</translation>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="60"/>
       <source>Facebinder</source>
-      <translation>Surfaces liées</translation>
+      <translation>Surface liée</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="62"/>
@@ -2226,7 +2226,7 @@ CTRL pour aimanter, MAJ pour contraindre, ALT pour copier.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="164"/>
       <source>Select group</source>
-      <translation>Sélection d'un groupe</translation>
+      <translation>Sélectionner un groupe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="167"/>
@@ -2239,7 +2239,7 @@ CTRL pour aimanter, MAJ pour contraindre, ALT pour copier.</translation>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="65"/>
       <source>SelectPlane</source>
-      <translation>Sélectionnez un plan</translation>
+      <translation>Sélectionner un plan</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="67"/>
@@ -2759,12 +2759,12 @@ Vous pouvez ensuite l'utiliser pour enregistrer une position différente de la c
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
       <source>Arc tools</source>
-      <translation>Outils Arc</translation>
+      <translation>Outils pour les arcs</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="58"/>
       <source>Bézier tools</source>
-      <translation>Outils Bézier</translation>
+      <translation>Outils de Bézier</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="89"/>
@@ -2875,7 +2875,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="159"/>
       <source>Select group</source>
-      <translation>Sélection d'un groupe</translation>
+      <translation>Sélectionner un groupe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="193"/>

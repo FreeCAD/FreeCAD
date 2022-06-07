@@ -3212,7 +3212,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../draftguitools/gui_dimensions.py" line="261"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="294"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>建立標註</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="309"/>
@@ -6540,7 +6540,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="120"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>虛線點</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="128"/>

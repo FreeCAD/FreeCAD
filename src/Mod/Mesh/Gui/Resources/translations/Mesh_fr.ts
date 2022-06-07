@@ -372,7 +372,7 @@
     </message>
     <message>
       <source>Refinement...</source>
-      <translation>Affinage...</translation>
+      <translation>Affiner...</translation>
     </message>
     <message>
       <source>Refine existing mesh</source>

@@ -316,7 +316,7 @@
     </message>
     <message>
       <source>Creates a mesh segment</source>
-      <translation>Amaraun-segmentu bat sortzen du</translation>
+      <translation>Amaraun segmentu bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -447,11 +447,11 @@
     </message>
     <message>
       <source>Create mesh segments...</source>
-      <translation>Sortu amaraun-segmentuak...</translation>
+      <translation>Sortu amaraun segmentuak...</translation>
     </message>
     <message>
       <source>Create mesh segments</source>
-      <translation>Sortu amaraun-segmentuak</translation>
+      <translation>Sortu amaraun segmentuak</translation>
     </message>
   </context>
   <context>
@@ -462,11 +462,11 @@
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces...</source>
-      <translation>Sortu amaraun-segmentuak ondoen doitzen diren azaleretatik...</translation>
+      <translation>Sortu amaraun segmentuak ondoen doitzen diren azaleretatik...</translation>
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Sortu amaraun-segmentuak ondoen doitzen diren azaleretatik</translation>
+      <translation>Sortu amaraun segmentuak ondoen doitzen diren azaleretatik</translation>
     </message>
   </context>
   <context>

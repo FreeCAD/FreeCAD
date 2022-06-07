@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>從頁面中選擇。</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>從頁面中選擇。</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
@@ -123,7 +123,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="303"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>增加象限頂點</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="800"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="801"/>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="877"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="878"/>
@@ -157,7 +157,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="990"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="991"/>
@@ -170,12 +170,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="891"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="892"/>
       <source>Insert 3-Point Angle Dimension</source>
-      <translation type="unfinished">Insert 3-Point Angle Dimension</translation>
+      <translation>插入三點角度標註</translation>
     </message>
   </context>
   <context>
@@ -183,12 +183,12 @@
     <message>
       <location filename="../../Command.cpp" line="444"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="445"/>
       <source>Insert Active View (3D View)</source>
-      <translation type="unfinished">Insert Active View (3D View)</translation>
+      <translation>插入活動視圖(3D 視圖)</translation>
     </message>
   </context>
   <context>
@@ -196,12 +196,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="803"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="804"/>
       <source>Insert Angle Dimension</source>
-      <translation type="unfinished">Insert Angle Dimension</translation>
+      <translation>插入角度標註</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="547"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="548"/>
@@ -222,17 +222,17 @@
     <message>
       <location filename="../../Command.cpp" line="1241"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1242"/>
       <source>Insert Arch Workbench Object</source>
-      <translation type="unfinished">Insert Arch Workbench Object</translation>
+      <translation>插入 Arch 工作台物件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1243"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from Arch Workbench</translation>
+      <translation>從 Arch 工作台插入剖面視圖</translation>
     </message>
   </context>
   <context>
@@ -240,12 +240,12 @@
     <message>
       <location filename="../../Command.cpp" line="857"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="858"/>
       <source>Insert Balloon Annotation</source>
-      <translation type="unfinished">Insert Balloon Annotation</translation>
+      <translation>插入氣球註解</translation>
     </message>
   </context>
   <context>
@@ -253,17 +253,17 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="587"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="588"/>
       <source>Insert Center Line</source>
-      <translation type="unfinished">Insert Center Line</translation>
+      <translation>插入中央線</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="661"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>添加中心線至面</translation>
     </message>
   </context>
   <context>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../../Command.cpp" line="922"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="923"/>
@@ -284,7 +284,7 @@
     <message>
       <location filename="../../Command.cpp" line="961"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="962"/>
@@ -297,7 +297,7 @@
     <message>
       <location filename="../../Command.cpp" line="1045"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1142"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1143"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="408"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="409"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="219"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1269"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1270"/>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../Command.cpp" line="528"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="529"/>
@@ -385,12 +385,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="375"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="376"/>
       <source>Insert Diameter Dimension</source>
-      <translation type="unfinished">Insert Diameter Dimension</translation>
+      <translation>插入直徑尺寸</translation>
     </message>
   </context>
   <context>
@@ -398,7 +398,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="126"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="127"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1176"/>
@@ -439,12 +439,12 @@
     <message>
       <location filename="../../Command.cpp" line="1445"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>儲存DXF檔</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
   </context>
   <context>
@@ -465,12 +465,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1641"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1642"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>延伸線段</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1643"/>
@@ -483,17 +483,17 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1744"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1745"/>
       <source>Calculate the area of selected faces</source>
-      <translation type="unfinished">Calculate the area of selected faces</translation>
+      <translation>計算選擇面之面積</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1746"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
-      <translation type="unfinished">Select several faces&lt;br&gt;    - click this tool</translation>
+      <translation>選擇數個面&lt;br&gt;    -  點選此工具</translation>
     </message>
   </context>
   <context>
@@ -501,7 +501,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1060"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1061"/>
@@ -519,7 +519,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="886"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="887"/>
@@ -539,7 +539,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1024"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1025"/>
@@ -559,7 +559,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="951"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="952"/>
@@ -579,7 +579,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2030"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2031"/>
@@ -597,12 +597,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="745"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="746"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>變更線屬性</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="747"/>
@@ -615,13 +615,13 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="239"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="240"/>
       <location filename="../../CommandExtensionPack.cpp" line="340"/>
       <source>Add Circle Centerlines</source>
-      <translation type="unfinished">Add Circle Centerlines</translation>
+      <translation>添加圓中心線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="241"/>
@@ -635,12 +635,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="273"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="274"/>
       <source>Add Circle Centerlines</source>
-      <translation type="unfinished">Add Circle Centerlines</translation>
+      <translation>添加圓中心線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="275"/>
@@ -653,7 +653,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1407"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1408"/>
@@ -671,7 +671,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1769"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1770"/>
@@ -689,7 +689,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1214"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1215"/>
@@ -709,7 +709,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1928"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1929"/>
@@ -729,7 +729,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1560"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1561"/>
@@ -749,12 +749,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2130"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2131"/>
       <source>Create Arc Length Dimension</source>
-      <translation type="unfinished">Create Arc Length Dimension</translation>
+      <translation>建立弧長標註</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2132"/>
@@ -767,7 +767,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1373"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1374"/>
@@ -787,7 +787,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1733"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1734"/>
@@ -807,7 +807,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1281"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1282"/>
@@ -827,13 +827,13 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1997"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1998"/>
       <location filename="../../CommandExtensionDims.cpp" line="2105"/>
       <source>Create Vertical Chamfer Dimension</source>
-      <translation type="unfinished">Create Vertical Chamfer Dimension</translation>
+      <translation>建立垂直倒角標註</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1999"/>
@@ -847,13 +847,13 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1634"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1635"/>
       <location filename="../../CommandExtensionDims.cpp" line="1855"/>
       <source>Create Vertical Coordinate Dimensions</source>
-      <translation type="unfinished">Create Vertical Coordinate Dimensions</translation>
+      <translation>建立垂直座標標註</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1636"/>
@@ -867,17 +867,17 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2208"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2209"/>
       <source>Customize Format Label</source>
-      <translation type="unfinished">Customize Format Label</translation>
+      <translation>自訂格式標籤</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2210"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
-      <translation type="unfinished">Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</translation>
+      <translation>選擇一個標註或一個氣球&lt;br&gt; -  點選此工具&lt;br&gt;   - 編輯格式欄位，使用鍵盤與/或特別按鍵</translation>
     </message>
   </context>
   <context>
@@ -885,7 +885,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="421"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="422"/>
@@ -905,7 +905,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1055"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1056"/>
@@ -923,7 +923,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="894"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="895"/>
@@ -943,7 +943,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="955"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="956"/>
@@ -963,7 +963,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1020"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1021"/>
@@ -987,13 +987,13 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1571"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1572"/>
       <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>延伸線段</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1573"/>
@@ -1007,13 +1007,13 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="165"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="166"/>
       <location filename="../../CommandExtensionPack.cpp" line="348"/>
       <source>Add Bolt Circle Centerlines</source>
-      <translation type="unfinished">Add Bolt Circle Centerlines</translation>
+      <translation>添加螺栓圓中心線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="167"/>
@@ -1027,13 +1027,13 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="388"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="389"/>
       <location filename="../../CommandExtensionDims.cpp" line="522"/>
       <source>Increase Decimal Places</source>
-      <translation type="unfinished">Increase Decimal Places</translation>
+      <translation>增加小數位數</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="390"/>
@@ -1047,12 +1047,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="454"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="455"/>
       <source>Increase Decimal Places</source>
-      <translation type="unfinished">Increase Decimal Places</translation>
+      <translation>增加小數位數</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="456"/>
@@ -1065,13 +1065,13 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="125"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="126"/>
       <location filename="../../CommandExtensionDims.cpp" line="322"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
+      <translation>插入 &apos;⌀&apos; 前置</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="127"/>
@@ -1085,12 +1085,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="247"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="248"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
+      <translation>插入 &apos;⌀&apos; 前置</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="249"/>
@@ -1103,7 +1103,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="158"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
@@ -1123,7 +1123,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1287"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1288"/>
@@ -1141,7 +1141,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1219"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1220"/>
@@ -1161,7 +1161,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1253"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1254"/>
@@ -1181,17 +1181,17 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1390"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1391"/>
       <source>Lock/Unlock View</source>
-      <translation type="unfinished">Lock/Unlock View</translation>
+      <translation>鎖定/解鎖視圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1392"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</translation>
+      <translation>鎖定或解鎖一個視圖的位置：&lt;br&gt;-選擇單一視圖&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -1199,7 +1199,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="739"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="740"/>
@@ -1217,7 +1217,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="579"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="580"/>
@@ -1237,7 +1237,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="704"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="705"/>
@@ -1257,7 +1257,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="639"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="640"/>
@@ -1277,17 +1277,17 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1433"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1434"/>
       <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <translation>放置剖面視圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1435"/>
       <source>Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</translation>
+      <translation>將剖面視圖與其來源視圖正交對齊：&lt;br&gt;-選擇單一視圖&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -1295,7 +1295,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="214"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="215"/>
@@ -1313,7 +1313,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="711"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="712"/>
@@ -1331,7 +1331,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1606"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1607"/>
@@ -1351,7 +1351,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="544"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="545"/>
@@ -1371,7 +1371,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="442"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="443"/>
@@ -1391,7 +1391,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="493"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="494"/>
@@ -1411,7 +1411,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="391"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="392"/>
@@ -1431,7 +1431,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="578"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="579"/>
@@ -1449,7 +1449,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="804"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="805"/>
@@ -1467,7 +1467,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1060"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1061"/>
@@ -1490,12 +1490,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="690"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="691"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>添加中心線至面</translation>
     </message>
   </context>
   <context>
@@ -1503,7 +1503,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="210"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="211"/>
@@ -1516,7 +1516,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="89"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="90"/>
@@ -1529,7 +1529,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="598"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="599"/>
@@ -1542,7 +1542,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1153"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1154"/>
@@ -1555,7 +1555,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="279"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="280"/>
@@ -1584,7 +1584,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1323"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1324"/>
@@ -1597,12 +1597,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="105"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="106"/>
       <source>Add Leaderline to View</source>
-      <translation>加入導線來檢視</translation>
+      <translation>加入指線至視圖</translation>
     </message>
   </context>
   <context>
@@ -1610,7 +1610,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="496"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="497"/>
@@ -1623,7 +1623,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="983"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="984"/>
@@ -1636,7 +1636,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="469"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="470"/>
@@ -1649,7 +1649,7 @@
     <message>
       <location filename="../../Command.cpp" line="119"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="120"/>
@@ -1662,7 +1662,7 @@
     <message>
       <location filename="../../Command.cpp" line="183"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
@@ -1685,7 +1685,7 @@
     <message>
       <location filename="../../Command.cpp" line="1477"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1478"/>
@@ -1698,7 +1698,7 @@
     <message>
       <location filename="../../Command.cpp" line="577"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="578"/>
@@ -1716,12 +1716,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="508"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="509"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>增加象限頂點</translation>
     </message>
   </context>
   <context>
@@ -1729,7 +1729,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="253"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="254"/>
@@ -1742,7 +1742,7 @@
     <message>
       <location filename="../../Command.cpp" line="263"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="264"/>
@@ -1755,12 +1755,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="167"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <source>Insert Rich Text Annotation</source>
-      <translation type="unfinished">Insert Rich Text Annotation</translation>
+      <translation>插入富文字註解</translation>
     </message>
   </context>
   <context>
@@ -1768,7 +1768,7 @@
     <message>
       <location filename="../../Command.cpp" line="478"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="479"/>
@@ -1781,7 +1781,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1348"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1349"/>
@@ -1794,17 +1794,17 @@
     <message>
       <location filename="../../Command.cpp" line="1306"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Insert Spreadsheet View</source>
-      <translation type="unfinished">Insert Spreadsheet View</translation>
+      <translation>插入試算表視圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1308"/>
       <source>Insert View to a spreadsheet</source>
-      <translation type="unfinished">Insert View to a spreadsheet</translation>
+      <translation>插入視圖至試算表</translation>
     </message>
   </context>
   <context>
@@ -1812,7 +1812,7 @@
     <message>
       <location filename="../../Command.cpp" line="1120"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1121"/>
@@ -1830,7 +1830,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="330"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="331"/>
@@ -1844,12 +1844,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="701"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="702"/>
       <source>Insert Vertical Dimension</source>
-      <translation type="unfinished">Insert Vertical Dimension</translation>
+      <translation>插入垂直標註</translation>
     </message>
   </context>
   <context>
@@ -1857,12 +1857,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1240"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1241"/>
       <source>Insert Vertical Extent Dimension</source>
-      <translation type="unfinished">Insert Vertical Extent Dimension</translation>
+      <translation>插入垂直範圍標註</translation>
     </message>
   </context>
   <context>
@@ -1870,7 +1870,7 @@
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="301"/>
@@ -1888,12 +1888,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1413"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1414"/>
       <source>Add Welding Information to Leaderline</source>
-      <translation type="unfinished">Add Welding Information to Leaderline</translation>
+      <translation>加入焊接資訊到指線</translation>
     </message>
   </context>
   <context>
@@ -1963,12 +1963,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="383"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>增加象限頂點</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="565"/>
       <source>Create Annotation</source>
-      <translation type="unfinished">Create Annotation</translation>
+      <translation>建立註解</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="336"/>
@@ -1980,7 +1980,7 @@
       <location filename="../../CommandCreateDims.cpp" line="942"/>
       <location filename="../../CommandCreateDims.cpp" line="1368"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>建立標註</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="135"/>
@@ -2000,22 +2000,22 @@
     <message>
       <location filename="../../QGIViewBalloon.cpp" line="518"/>
       <source>Drag Balloon</source>
-      <translation type="unfinished">Drag Balloon</translation>
+      <translation>拖曳氣球</translation>
     </message>
     <message>
       <location filename="../../QGIViewDimension.cpp" line="682"/>
       <source>Drag Dimension</source>
-      <translation type="unfinished">Drag Dimension</translation>
+      <translation>拖曳標註</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="495"/>
       <source>Create Balloon</source>
-      <translation type="unfinished">Create Balloon</translation>
+      <translation>建立氣球</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="186"/>
       <source>Create ActiveView</source>
-      <translation type="unfinished">Create ActiveView</translation>
+      <translation>建立活動視圖</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="316"/>
@@ -2045,12 +2045,12 @@
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="392"/>
       <source>Create Leader</source>
-      <translation type="unfinished">Create Leader</translation>
+      <translation>建立指線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="448"/>
       <source>Edit Leader</source>
-      <translation type="unfinished">Edit Leader</translation>
+      <translation>編輯指線</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="343"/>
@@ -2065,12 +2065,12 @@
     <message>
       <location filename="../../TaskSectionView.cpp" line="417"/>
       <source>Create SectionView</source>
-      <translation type="unfinished">Create SectionView</translation>
+      <translation>建立剖面視圖</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="463"/>
       <source>Edit SectionView</source>
-      <translation type="unfinished">Edit SectionView</translation>
+      <translation>編輯剖面視圖</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="644"/>
@@ -2210,7 +2210,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="763"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>變更線屬性</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="822"/>
@@ -2240,7 +2240,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1407"/>
       <source>Lock/Unlock View</source>
-      <translation type="unfinished">Lock/Unlock View</translation>
+      <translation>鎖定/解鎖視圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1500"/>
@@ -2721,12 +2721,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="849"/>
       <source>Need two straight edges to make an Angle Dimension</source>
-      <translation type="unfinished">Need two straight edges to make an Angle Dimension</translation>
+      <translation>需要兩個直邊來製作角度標註</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="938"/>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
+      <translation>需要三個點來製作一個 3 點角度標註</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1022"/>
@@ -2975,7 +2975,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1446"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
-      <translation type="unfinished">Select exactly one Leader line or one Weld symbol.</translation>
+      <translation>選擇正好一個指線或一個焊接符號。</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="124"/>
@@ -2990,12 +2990,12 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="354"/>
       <source>No TechDraw Page</source>
-      <translation type="unfinished">No TechDraw Page</translation>
+      <translation>沒有 TechDraw 頁面</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="355"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation type="unfinished">Need a TechDraw Page for this command</translation>
+      <translation>本命令需要一個 TechDraw 頁面</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="388"/>
@@ -3005,7 +3005,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="395"/>
       <source>No TechDraw object in selection</source>
-      <translation type="unfinished">No TechDraw object in selection</translation>
+      <translation>沒有 TechDraw 物件在選擇中</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="402"/>
@@ -3079,12 +3079,12 @@
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="266"/>
       <source>New Leader Line</source>
-      <translation type="unfinished">New Leader Line</translation>
+      <translation>新的指線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="309"/>
       <source>Edit Leader Line</source>
-      <translation type="unfinished">Edit Leader Line</translation>
+      <translation>編輯指線</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="184"/>
@@ -3111,7 +3111,7 @@
     <message>
       <location filename="../../TaskActiveView.cpp" line="106"/>
       <source>ActiveView to TD View</source>
-      <translation type="unfinished">ActiveView to TD View</translation>
+      <translation>活動視圖至 TD 視圖</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="185"/>
@@ -3126,7 +3126,7 @@
     <message>
       <location filename="../../TaskSectionView.cpp" line="148"/>
       <source>Create Section View</source>
-      <translation type="unfinished">Create Section View</translation>
+      <translation>建立剖面視圖</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="166"/>
@@ -3136,7 +3136,7 @@
     <message>
       <location filename="../../TaskSectionView.cpp" line="184"/>
       <source>Edit Section View</source>
-      <translation type="unfinished">Edit Section View</translation>
+      <translation>編輯剖面視圖</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="500"/>
@@ -3188,7 +3188,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="558"/>
       <location filename="../../CommandExtensionDims.cpp" line="861"/>
       <source>No horizontal dimensions selected</source>
-      <translation type="unfinished">No horizontal dimensions selected</translation>
+      <translation>未選擇水平標註</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="616"/>
@@ -3199,18 +3199,18 @@
       <location filename="../../CommandExtensionDims.cpp" line="617"/>
       <location filename="../../CommandExtensionDims.cpp" line="925"/>
       <source>No vertical dimensions selected</source>
-      <translation type="unfinished">No vertical dimensions selected</translation>
+      <translation>未選擇垂直標註</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="676"/>
       <source>TechDraw PosObliqueChainDimension</source>
-      <translation type="unfinished">TechDraw PosObliqueChainDimension</translation>
+      <translation>TechDraw PosObliqueChainDimension</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="677"/>
       <location filename="../../CommandExtensionDims.cpp" line="990"/>
       <source>No oblique dimensions selected</source>
-      <translation type="unfinished">No oblique dimensions selected</translation>
+      <translation>未選擇傾斜標註</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="860"/>
@@ -3243,7 +3243,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="126"/>
       <source>TechDraw Hole Circle</source>
-      <translation type="unfinished">TechDraw Hole Circle</translation>
+      <translation>TechDraw 孔圓</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="127"/>
@@ -3277,8 +3277,8 @@
       <location filename="../../ViewProviderLeader.cpp" line="240"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
-      <translation type="unfinished">You cannot delete this leader line because
-it has a weld symbol that would become broken.</translation>
+      <translation>您不能刪除此指線因為
+它有焊接符號會損壞。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLeader.cpp" line="243"/>
@@ -3300,25 +3300,25 @@ it has a weld symbol that would become broken.</translation>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <source>You cannot delete the anchor view of a projection group.</source>
-      <translation type="unfinished">You cannot delete the anchor view of a projection group.</translation>
+      <translation>您不能刪除投影群組的錨點視圖。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="172"/>
       <location filename="../../ViewProviderViewPart.cpp" line="345"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a section view that would become broken.</translation>
+      <translation>您不能刪除此視圖因為它有剖面視圖會損壞。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
       <location filename="../../ViewProviderViewPart.cpp" line="353"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a detail view that would become broken.</translation>
+      <translation>您不能刪除此視圖因為它有詳細視圖會損壞。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="188"/>
       <location filename="../../ViewProviderViewPart.cpp" line="361"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a leader line that would become broken.</translation>
+      <translation>您不能刪除此視圖因為它有指線會損壞。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="219"/>
@@ -3331,8 +3331,8 @@ following referencing objects might be lost:</translation>
       <location filename="../../ViewProviderProjGroup.cpp" line="182"/>
       <source>The group cannot be deleted because its items have the following
 section or detail views, or leader lines that would get broken:</source>
-      <translation type="unfinished">The group cannot be deleted because its items have the following
-section or detail views, or leader lines that would get broken:</translation>
+      <translation>本群組無法被刪除因為其中的項目有
+剖面或詳細視圖或指線會損壞：</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="196"/>
@@ -3359,7 +3359,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="26"/>
       <source>ActiveView to TD View</source>
-      <translation type="unfinished">ActiveView to TD View</translation>
+      <translation>活動視圖至 TD 視圖</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="38"/>
@@ -3369,7 +3369,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="51"/>
       <source>Width of generated view</source>
-      <translation type="unfinished">Width of generated view</translation>
+      <translation>產生視圖之寬度</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="70"/>
@@ -3379,7 +3379,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="83"/>
       <source>Height of generated view</source>
-      <translation type="unfinished">Height of generated view</translation>
+      <translation>產生視圖之高度</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="102"/>
@@ -3426,7 +3426,7 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="213"/>
       <source>Drawing style - see SoRenderManager</source>
-      <translation type="unfinished">Drawing style - see SoRenderManager</translation>
+      <translation>繪製式樣 - 請看 SoRenderManager</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="217"/>
@@ -3469,7 +3469,7 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="22"/>
       <source>View to move</source>
-      <translation type="unfinished">View to move</translation>
+      <translation>要移動的視圖</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="36"/>
@@ -3741,7 +3741,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Edge Fuzz</source>
-      <translation type="unfinished">Edge Fuzz</translation>
+      <translation>邊緣模糊尺寸</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="285"/>
@@ -3753,14 +3753,14 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="314"/>
       <source>Mark Fuzz</source>
-      <translation type="unfinished">Mark Fuzz</translation>
+      <translation>標誌模糊尺寸</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="339"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Selection area around center marks
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>中心標誌周圍的選擇區域
+每個單位大約是 0.1 mm 寬</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="367"/>
@@ -3818,7 +3818,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="516"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3832,39 +3832,39 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="45"/>
       <source>Section Line Standard</source>
-      <translation type="unfinished">Section Line Standard</translation>
+      <translation>剖面線標準</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="64"/>
       <source>Standard to be used to draw section lines</source>
-      <translation type="unfinished">Standard to be used to draw section lines</translation>
+      <translation>用來畫剖面線的標準</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="77"/>
       <source>ANSI</source>
-      <translation type="unfinished">ANSI</translation>
+      <translation>ANSI</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="82"/>
       <source>ISO</source>
-      <translation type="unfinished">ISO</translation>
+      <translation>ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="95"/>
       <source>Section Line Style</source>
-      <translation type="unfinished">Section Line Style</translation>
+      <translation>剖面線式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="114"/>
       <source>Style for section lines</source>
-      <translation type="unfinished">Style for section lines</translation>
+      <translation>剖面線的式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="127"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="364"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="471"/>
       <source>NeverShow</source>
-      <translation type="unfinished">NeverShow</translation>
+      <translation>從不顯示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="136"/>
@@ -3878,7 +3878,7 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="382"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="489"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>虛線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="154"/>
@@ -3892,24 +3892,24 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="400"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="507"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>虛線點</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="172"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="409"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="516"/>
       <source>DashDotDot</source>
-      <translation type="unfinished">DashDotDot</translation>
+      <translation>虛線點點</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="189"/>
       <source>Section Cut Surface</source>
-      <translation type="unfinished">Section Cut Surface</translation>
+      <translation>剖切面</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="202"/>
       <source>Default appearance of cut surface in section view</source>
-      <translation type="unfinished">Default appearance of cut surface in section view</translation>
+      <translation>剖面視圖中切割面的預設外觀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="215"/>
@@ -3919,7 +3919,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="220"/>
       <source>Solid Color</source>
-      <translation type="unfinished">Solid Color</translation>
+      <translation>實心顏色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="225"/>
@@ -3934,22 +3934,22 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="243"/>
       <source>Line group used to set line widths</source>
-      <translation type="unfinished">Line group used to set line widths</translation>
+      <translation>用來設定線寬度的線群組</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="246"/>
       <source>Line Width Group</source>
-      <translation type="unfinished">Line Width Group</translation>
+      <translation>線寬度群組</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="283"/>
       <source>Detail View Outline Shape</source>
-      <translation type="unfinished">Detail View Outline Shape</translation>
+      <translation>詳細視圖輪廓形狀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="302"/>
       <source>Outline shape for detail views</source>
-      <translation type="unfinished">Outline shape for detail views</translation>
+      <translation>詳細視圖輪廓形狀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="312"/>
@@ -3965,37 +3965,37 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="338"/>
       <source>Line style of detail highlight on base view</source>
-      <translation type="unfinished">Line style of detail highlight on base view</translation>
+      <translation>基礎視圖上詳細突顯的線條式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="341"/>
       <source>Detail Highlight Style</source>
-      <translation type="unfinished">Detail Highlight Style</translation>
+      <translation>詳細突顯式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="426"/>
       <source>Center Line Style</source>
-      <translation type="unfinished">Center Line Style</translation>
+      <translation>中心線式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="458"/>
       <source>Type for centerlines</source>
-      <translation type="unfinished">Type for centerlines</translation>
+      <translation>中心線類型</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="533"/>
       <source>Balloon Shape</source>
-      <translation type="unfinished">Balloon Shape</translation>
+      <translation>氣球形狀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="552"/>
       <source>Shape of balloon annotations</source>
-      <translation type="unfinished">Shape of balloon annotations</translation>
+      <translation>氣球註解的形狀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="562"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>環形</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="571"/>
@@ -4010,7 +4010,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="589"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>檢查</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="598"/>
@@ -4035,7 +4035,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="661"/>
       <source>Style for balloon leader line ends</source>
-      <translation type="unfinished">Style for balloon leader line ends</translation>
+      <translation>氣球指線終點的式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="679"/>
@@ -4060,7 +4060,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="735"/>
       <source>Balloon Orthogonal Triangle</source>
-      <translation type="unfinished">Balloon Orthogonal Triangle</translation>
+      <translation>氣球正交三角形</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="763"/>
@@ -4070,32 +4070,32 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="766"/>
       <source>Leader Line Auto Horizontal</source>
-      <translation type="unfinished">Leader Line Auto Horizontal</translation>
+      <translation>指線自動水平</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="799"/>
       <source>Show arc center marks in views</source>
-      <translation type="unfinished">Show arc center marks in views</translation>
+      <translation>在視圖中顯示弧中心標誌</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="802"/>
       <source>Show Center Marks</source>
-      <translation type="unfinished">Show Center Marks</translation>
+      <translation>顯示中心標誌</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="830"/>
       <source>Show arc centers in printed output</source>
-      <translation type="unfinished">Show arc centers in printed output</translation>
+      <translation>在列印輸出中顯示弧中心</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="833"/>
       <source>Print Center Marks</source>
-      <translation type="unfinished">Print Center Marks</translation>
+      <translation>列印中心標誌</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="857"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4159,12 +4159,12 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="228"/>
       <source>Section Line</source>
-      <translation type="unfinished">Section Line</translation>
+      <translation>剖面線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="235"/>
       <source>Section line color</source>
-      <translation type="unfinished">Section line color</translation>
+      <translation>剖面線顏色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
@@ -4234,12 +4234,12 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="466"/>
       <source>Leaderline</source>
-      <translation type="unfinished">Leaderline</translation>
+      <translation>指線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="473"/>
       <source>Default color for leader lines</source>
-      <translation type="unfinished">Default color for leader lines</translation>
+      <translation>指線預設顏色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="493"/>
@@ -4264,7 +4264,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="575"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4278,17 +4278,17 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="63"/>
       <source>Standard and Style</source>
-      <translation type="unfinished">Standard and Style</translation>
+      <translation>標準與式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="82"/>
       <source>Standard to be used for dimensional values</source>
-      <translation type="unfinished">Standard to be used for dimensional values</translation>
+      <translation>用於標註值的標準</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="92"/>
       <source>ISO Oriented</source>
-      <translation type="unfinished">ISO Oriented</translation>
+      <translation>ISO 導向</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="97"/>
@@ -4318,7 +4318,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="157"/>
       <source>Append unit to dimension values</source>
-      <translation type="unfinished">Append unit to dimension values</translation>
+      <translation>將單位附加到標註值上</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="160"/>
@@ -4338,7 +4338,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="219"/>
       <source>Dimension Format</source>
-      <translation type="unfinished">Dimension Format</translation>
+      <translation>標註格式</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
@@ -4348,34 +4348,34 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="247"/>
       <source>Font Size</source>
-      <translation type="unfinished">Font Size</translation>
+      <translation>字體大小</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="279"/>
       <source>Dimension text font size</source>
-      <translation type="unfinished">Dimension text font size</translation>
+      <translation>標註文字字體大小</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="315"/>
       <source>Tolerance Text Scale</source>
-      <translation type="unfinished">Tolerance Text Scale</translation>
+      <translation>公差文字縮放</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="340"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
-      <translation type="unfinished">Tolerance text scale
-Multiplier of &apos;Font Size&apos;</translation>
+      <translation>公差文字縮放
+&apos;字體大小&apos;的乘數</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="366"/>
       <source>Diameter Symbol</source>
-      <translation type="unfinished">Diameter Symbol</translation>
+      <translation>直徑符號</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="390"/>
       <source>Character used to indicate diameter dimensions</source>
-      <translation type="unfinished">Character used to indicate diameter dimensions</translation>
+      <translation>用來指示直徑標註之字元</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="393"/>
@@ -4385,27 +4385,27 @@ Multiplier of &apos;Font Size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="414"/>
       <source>Arrow Style</source>
-      <translation type="unfinished">Arrow Style</translation>
+      <translation>箭頭式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
       <source>Arrowhead style</source>
-      <translation type="unfinished">Arrowhead style</translation>
+      <translation>箭頭樣式</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="454"/>
       <source>Arrow Size</source>
-      <translation type="unfinished">Arrow Size</translation>
+      <translation>箭頭尺寸</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="473"/>
       <source>Arrowhead size</source>
-      <translation type="unfinished">Arrowhead size</translation>
+      <translation>箭頭尺寸</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="503"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4475,18 +4475,18 @@ for ProjectionGroups</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="217"/>
       <source>* this font is also used for dimensions
    Changes have no effect on existing dimensions.</source>
-      <translation type="unfinished">* this font is also used for dimensions
-   Changes have no effect on existing dimensions.</translation>
+      <translation>* 此字體也用在標註上
+   修改對現存標註不會造成影響。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="221"/>
       <source>Label Font*</source>
-      <translation type="unfinished">Label Font*</translation>
+      <translation>標籤字體*</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="268"/>
       <source>Font for labels</source>
-      <translation type="unfinished">Font for labels</translation>
+      <translation>標籤字體</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="284"/>
@@ -4531,12 +4531,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="426"/>
       <source>Hidden Line Style</source>
-      <translation type="unfinished">Hidden Line Style</translation>
+      <translation>隱藏線式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="445"/>
       <source>Style for hidden lines</source>
-      <translation type="unfinished">Style for hidden lines</translation>
+      <translation>隱藏線式樣</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="455"/>
@@ -4656,7 +4656,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="879"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4770,7 +4770,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="414"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4784,22 +4784,22 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
       <source>Page Scale</source>
-      <translation type="unfinished">Page Scale</translation>
+      <translation>頁面縮放</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
       <source>Default scale for new pages</source>
-      <translation type="unfinished">Default scale for new pages</translation>
+      <translation>新頁面預設縮放值</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="106"/>
       <source>View Scale Type</source>
-      <translation type="unfinished">View Scale Type</translation>
+      <translation>視圖縮放類別</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="128"/>
       <source>Default scale for new views</source>
-      <translation type="unfinished">Default scale for new views</translation>
+      <translation>新視圖預設縮放值</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="138"/>
@@ -4819,12 +4819,12 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="161"/>
       <source>View Custom Scale</source>
-      <translation type="unfinished">View Custom Scale</translation>
+      <translation>視圖自訂縮放</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="196"/>
       <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
-      <translation type="unfinished">Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</translation>
+      <translation>視圖預設縮放如果視圖縮放類別是自訂</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="238"/>
@@ -4834,7 +4834,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="246"/>
       <source>Vertex Scale</source>
-      <translation type="unfinished">Vertex Scale</translation>
+      <translation>頂點縮放</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="265"/>
@@ -4844,17 +4844,17 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="292"/>
       <source>Center Mark Scale</source>
-      <translation type="unfinished">Center Mark Scale</translation>
+      <translation>中心標誌縮放</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="324"/>
       <source>Size of center marks. Multiplier of vertex size.</source>
-      <translation type="unfinished">Size of center marks. Multiplier of vertex size.</translation>
+      <translation>中心標誌大小。頂點大小的乘數。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="349"/>
       <source>Template Edit Mark</source>
-      <translation type="unfinished">Template Edit Mark</translation>
+      <translation>編輯標誌模板</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="368"/>
@@ -4874,7 +4874,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="427"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4939,12 +4939,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="902"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>儲存DXF檔</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="904"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1389"/>
@@ -4988,52 +4988,52 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="14"/>
       <source>Balloon</source>
-      <translation type="unfinished">Balloon</translation>
+      <translation>氣球</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="22"/>
       <source>Text:</source>
-      <translation type="unfinished">Text:</translation>
+      <translation>文字:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="29"/>
       <source>Text to be displayed</source>
-      <translation type="unfinished">Text to be displayed</translation>
+      <translation>顯示的文字：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="36"/>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>文字顏色：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Color for &apos;Text&apos;</source>
-      <translation type="unfinished">Color for &apos;Text&apos;</translation>
+      <translation>文字顏色</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>字體大小:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="76"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation> &apos;文字&apos;字體大小</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble Shape:</source>
-      <translation type="unfinished">Bubble Shape:</translation>
+      <translation>氣泡形狀：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Shape of the balloon bubble</source>
-      <translation type="unfinished">Shape of the balloon bubble</translation>
+      <translation>氣球氣泡的形狀</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="106"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>環形</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="115"/>
@@ -5048,7 +5048,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="133"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>檢查</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="142"/>
@@ -5073,42 +5073,42 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="181"/>
       <source>Shape Scale:</source>
-      <translation type="unfinished">Shape Scale:</translation>
+      <translation>形狀比例：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="194"/>
       <source>Bubble shape scale factor</source>
-      <translation type="unfinished">Bubble shape scale factor</translation>
+      <translation>氣泡形狀縮放係數</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="213"/>
       <source>End Symbol:</source>
-      <translation type="unfinished">End Symbol:</translation>
+      <translation>結束符號：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="220"/>
       <source>End symbol for the balloon line</source>
-      <translation type="unfinished">End symbol for the balloon line</translation>
+      <translation>氣球線的結束符號</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="227"/>
       <source>End Symbol Scale:</source>
-      <translation type="unfinished">End Symbol Scale:</translation>
+      <translation>結束符號比例：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="240"/>
       <source>End symbol scale factor</source>
-      <translation type="unfinished">End symbol scale factor</translation>
+      <translation>結束符號縮放係數</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="259"/>
       <source>Line Visible:</source>
-      <translation type="unfinished">Line Visible:</translation>
+      <translation>線可視性：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="266"/>
       <source>Whether the leader line is visible or not</source>
-      <translation type="unfinished">Whether the leader line is visible or not</translation>
+      <translation>指線為可視或不可視</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="273"/>
@@ -5123,17 +5123,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="286"/>
       <source>Line Width:</source>
-      <translation type="unfinished">Line Width:</translation>
+      <translation>線寬：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="305"/>
       <source>Leader line width</source>
-      <translation type="unfinished">Leader line width</translation>
+      <translation>指線寬度</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="324"/>
       <source>Leader Kink Length:</source>
-      <translation type="unfinished">Leader Kink Length:</translation>
+      <translation>指線紐結長度：</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="343"/>
@@ -5151,7 +5151,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="41"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>基礎視圖</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="64"/>
@@ -5189,10 +5189,9 @@ Do you want to continue?</source>
 - lines: in equal distance to the lines and with
   half of the angle the lines have to each other
 - points: in equal distance to the points</source>
-      <translation type="unfinished">centerline between
-- lines: in equal distance to the lines and with
-  half of the angle the lines have to each other
-- points: in equal distance to the points</translation>
+      <translation>中心線介於
+- 線段：與線的距離相等，並且在線之間的夾角的一半
+- 點：與點的距確相等</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="142"/>
@@ -5267,7 +5266,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="336"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>虛線</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="345"/>
@@ -5277,12 +5276,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="354"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>虛線點</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="363"/>
       <source>DashDotDot</source>
-      <translation type="unfinished">DashDotDot</translation>
+      <translation>虛線點點</translation>
     </message>
   </context>
   <context>
@@ -5295,7 +5294,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.ui" line="38"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>基礎視圖</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="78"/>
@@ -5330,12 +5329,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="222"/>
       <source>Left click to set a point</source>
-      <translation type="unfinished">Left click to set a point</translation>
+      <translation>點擊滑鼠左鍵來設定一個點</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="295"/>
       <source>In progress edit abandoned. Start over.</source>
-      <translation type="unfinished">In progress edit abandoned. Start over.</translation>
+      <translation>放棄進行的編輯。重新來過。</translation>
     </message>
   </context>
   <context>
@@ -5621,7 +5620,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="322"/>
       <source>Projected tolerance zone</source>
-      <translation type="unfinished">Projected tolerance zone</translation>
+      <translation>投影公差地帶</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="325"/>
@@ -5974,7 +5973,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="38"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>基礎視圖</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="61"/>
@@ -6024,7 +6023,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="214"/>
       <source>Scale Type</source>
-      <translation type="unfinished">Scale Type</translation>
+      <translation>縮放類別</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="221"/>
@@ -6032,10 +6031,10 @@ Do you want to continue?</source>
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
 Custom: custom scale factor is used</source>
-      <translation type="unfinished">Page: scale factor of page is used
-Automatic: if the detail view is larger than the page,
-                   it will be scaled down to fit into the page
-Custom: custom scale factor is used</translation>
+      <translation>頁面：頁面縮放係數以下列方式使用
+自動：如果詳細視圖比頁面還大的話，
+            它將會縮小以適合頁面
+自訂：使用者自訂縮放係數</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="228"/>
@@ -6055,12 +6054,12 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="246"/>
       <source>Scale Factor</source>
-      <translation type="unfinished">Scale Factor</translation>
+      <translation>縮放係數</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="256"/>
       <source>scale factor for detail view</source>
-      <translation type="unfinished">scale factor for detail view</translation>
+      <translation>詳細視圖之縮放係數</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="278"/>
@@ -6083,17 +6082,17 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="20"/>
       <source>Tolerancing</source>
-      <translation type="unfinished">Tolerancing</translation>
+      <translation>公差</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
       <source>If theoretical exact (basic) dimension</source>
-      <translation type="unfinished">If theoretical exact (basic) dimension</translation>
+      <translation>如果理論上的精確(基本)標註</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="31"/>
       <source>Theoretically Exact</source>
-      <translation type="unfinished">Theoretically Exact</translation>
+      <translation>理論上準確</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="38"/>
@@ -6104,35 +6103,35 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="41"/>
       <source>Equal Tolerance</source>
-      <translation type="unfinished">Equal Tolerance</translation>
+      <translation>同等公差</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="48"/>
       <source>Overtolerance:</source>
-      <translation type="unfinished">Overtolerance:</translation>
+      <translation>超過公差：</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="61"/>
       <source>Overtolerance value
 If &apos;Equal Tolerance&apos; is checked this is also
 the negated value for &apos;Under Tolerance&apos;.</source>
-      <translation type="unfinished">Overtolerance value
-If &apos;Equal Tolerance&apos; is checked this is also
-the negated value for &apos;Under Tolerance&apos;.</translation>
+      <translation>超過公差值
+如果 &apos;同等公差&apos; 被勾選這也同樣
+是 &apos;低於公差&apos; 的負值。</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="79"/>
       <source>Undertolerance:</source>
-      <translation type="unfinished">Undertolerance:</translation>
+      <translation>低於公差：</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="92"/>
       <source>Undertolerance value
 If &apos;Equal Tolerance&apos; is checked it will be replaced
 by negative value of &apos;Over Tolerance&apos;.</source>
-      <translation type="unfinished">Undertolerance value
-If &apos;Equal Tolerance&apos; is checked it will be replaced
-by negative value of &apos;Over Tolerance&apos;.</translation>
+      <translation>低於公差值
+如果 &apos;同等公差&apos; 被勾選這將會由
+負值取代 &apos;超過公差&apos; 。</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="115"/>
@@ -6147,7 +6146,7 @@ by negative value of &apos;Over Tolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="130"/>
       <source>Text to be displayed</source>
-      <translation type="unfinished">Text to be displayed</translation>
+      <translation>顯示的文字：</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="137"/>
@@ -6165,32 +6164,32 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="148"/>
       <source>OverTolerance Format Specifier:</source>
-      <translation type="unfinished">OverTolerance Format Specifier:</translation>
+      <translation>超過公差格式說明符：</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="155"/>
       <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
-      <translation type="unfinished">Specifies the overtolerance format in printf() style, or arbitrary text</translation>
+      <translation>以 printf() 式樣或任意文字指定超過公差格式</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="162"/>
       <source>UnderTolerance Format Specifier:</source>
-      <translation type="unfinished">UnderTolerance Format Specifier:</translation>
+      <translation>低於公差格式說明符：</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="169"/>
       <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
-      <translation type="unfinished">Specifies the undertolerance format in printf() style, or arbitrary text</translation>
+      <translation>以 printf() 式樣或任意文字指定低於公差格式</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="180"/>
       <source>Arbitrary Tolerance Text</source>
-      <translation type="unfinished">Arbitrary Tolerance Text</translation>
+      <translation>任意公差文字</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="192"/>
       <source>Display Style</source>
-      <translation type="unfinished">Display Style</translation>
+      <translation>顯示式樣</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="203"/>
@@ -6205,32 +6204,32 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="217"/>
       <source>Color of the dimension</source>
-      <translation type="unfinished">Color of the dimension</translation>
+      <translation>尺寸之顏色</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="231"/>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>字體大小:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="250"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation> &apos;文字&apos;字體大小</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="272"/>
       <source>Drawing Style:</source>
-      <translation type="unfinished">Drawing Style:</translation>
+      <translation>繪製式樣：</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="279"/>
       <source>Standard and style according to which dimension is drawn</source>
-      <translation type="unfinished">Standard and style according to which dimension is drawn</translation>
+      <translation>繪製尺寸所根據的標準和式樣</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="283"/>
       <source>ISO Oriented</source>
-      <translation type="unfinished">ISO Oriented</translation>
+      <translation>ISO 導向</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="288"/>
@@ -6265,12 +6264,12 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="329"/>
       <source>Dimension line angle</source>
-      <translation type="unfinished">Dimension line angle</translation>
+      <translation>標註線角度</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="336"/>
       <source>Angle of dimension line with drawing X axis (degrees)</source>
-      <translation type="unfinished">Angle of dimension line with drawing X axis (degrees)</translation>
+      <translation>標註線與圖紙 X 軸的夾角(度)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="352"/>
@@ -6302,7 +6301,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="379"/>
       <source>Angle of extension lines with drawing X axis (degrees)</source>
-      <translation type="unfinished">Angle of extension lines with drawing X axis (degrees)</translation>
+      <translation>延伸線與圖紙 X 軸的角度(度)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="395"/>
@@ -6358,7 +6357,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="103"/>
       <source>Pattern Scale</source>
-      <translation type="unfinished">Pattern Scale</translation>
+      <translation>樣式縮放</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="116"/>
@@ -6411,7 +6410,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="70"/>
       <source>Pattern Scale</source>
-      <translation type="unfinished">Pattern Scale</translation>
+      <translation>樣式縮放</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="96"/>
@@ -6434,41 +6433,41 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="26"/>
       <source>Leader Line</source>
-      <translation type="unfinished">Leader Line</translation>
+      <translation>指線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="38"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>基礎視圖</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="93"/>
       <source>Discard Changes</source>
-      <translation type="unfinished">Discard Changes</translation>
+      <translation>放棄更改</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="113"/>
       <source>First pick the start point of the line,
 then at least a second point.
 You can pick further points to get line segments.</source>
-      <translation type="unfinished">First pick the start point of the line,
-then at least a second point.
-You can pick further points to get line segments.</translation>
+      <translation>首先選擇線的起點，
+然後至少一個第二點。
+您可以選擇更多點以得到更多線段。</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
       <source>Pick Points</source>
-      <translation type="unfinished">Pick Points</translation>
+      <translation>選擇點</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="149"/>
       <source>Start Symbol</source>
-      <translation type="unfinished">Start Symbol</translation>
+      <translation>開始符號</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="169"/>
       <source>End Symbol</source>
-      <translation type="unfinished">End Symbol</translation>
+      <translation>結束符號</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="199"/>
@@ -6503,7 +6502,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="278"/>
       <source>NoLine</source>
-      <translation type="unfinished">NoLine</translation>
+      <translation>沒有線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="287"/>
@@ -6513,7 +6512,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="296"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>虛線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="305"/>
@@ -6523,38 +6522,38 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="314"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>虛線點</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="323"/>
       <source>DashDotDot</source>
-      <translation type="unfinished">DashDotDot</translation>
+      <translation>虛線點點</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="547"/>
       <location filename="../../TaskLeaderLine.cpp" line="591"/>
       <source>Pick a starting point for leader line</source>
-      <translation type="unfinished">Pick a starting point for leader line</translation>
+      <translation>挑選指線的起始點</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="574"/>
       <source>Click and drag markers to adjust leader line</source>
-      <translation type="unfinished">Click and drag markers to adjust leader line</translation>
+      <translation>點擊並拖曳標記以調整指線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="624"/>
       <source>Left click to set a point</source>
-      <translation type="unfinished">Left click to set a point</translation>
+      <translation>點擊滑鼠左鍵來設定一個點</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="650"/>
       <source>Press OK or Cancel to continue</source>
-      <translation type="unfinished">Press OK or Cancel to continue</translation>
+      <translation>按下 OK 或取消來繼續</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="752"/>
       <source>In progress edit abandoned. Start over.</source>
-      <translation type="unfinished">In progress edit abandoned. Start over.</translation>
+      <translation>放棄進行的編輯。重新來過。</translation>
     </message>
   </context>
   <context>
@@ -6587,7 +6586,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="110"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>虛線</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
@@ -6597,12 +6596,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="120"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>虛線點</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="125"/>
       <source>DashDotDot</source>
-      <translation type="unfinished">DashDotDot</translation>
+      <translation>虛線點點</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="133"/>
@@ -7003,7 +7002,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="26"/>
       <source>Rich Text Annotation Block</source>
-      <translation type="unfinished">Rich Text Annotation Block</translation>
+      <translation>富文字註解區塊</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="53"/>
@@ -7063,7 +7062,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="205"/>
       <source>NoLine</source>
-      <translation type="unfinished">NoLine</translation>
+      <translation>沒有線</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="210"/>
@@ -7073,7 +7072,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="215"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>虛線</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="220"/>
@@ -7083,17 +7082,17 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="225"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>虛線點</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="230"/>
       <source>DashDotDot</source>
-      <translation type="unfinished">DashDotDot</translation>
+      <translation>虛線點點</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="229"/>
       <source>Input the annotation text directly or start the rich text editor</source>
-      <translation type="unfinished">Input the annotation text directly or start the rich text editor</translation>
+      <translation>直接輸入註解文字或啟動富文字編輯器</translation>
     </message>
   </context>
   <context>
@@ -7106,7 +7105,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="28"/>
       <source>BaseView</source>
-      <translation type="unfinished">BaseView</translation>
+      <translation>基礎視圖</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="61"/>
@@ -7121,7 +7120,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="81"/>
       <source>Scale Type</source>
-      <translation type="unfinished">Scale Type</translation>
+      <translation>縮放類別</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="94"/>
@@ -7151,7 +7150,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="141"/>
       <source>Scale factor for the section view</source>
-      <translation type="unfinished">Scale factor for the section view</translation>
+      <translation>剖面圖之縮放係數</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="172"/>
@@ -7219,7 +7218,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="26"/>
       <source>Line attributes</source>
-      <translation type="unfinished">Line attributes</translation>
+      <translation>線條屬性</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
@@ -7229,7 +7228,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="41"/>
       <source>Set line style to solid</source>
-      <translation type="unfinished">Set line style to solid</translation>
+      <translation>設定線條樣式為實心線</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="44"/>
@@ -7259,17 +7258,17 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="110"/>
       <source>Thin 0,18</source>
-      <translation type="unfinished">Thin 0,18</translation>
+      <translation>細線 0.18</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="123"/>
       <source>Middle 0,35</source>
-      <translation type="unfinished">Middle 0,35</translation>
+      <translation>中線 0.35</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="139"/>
       <source>Thick 0,70</source>
-      <translation type="unfinished">Thick 0,70</translation>
+      <translation>粗線 0.70</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="156"/>
@@ -7289,7 +7288,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="192"/>
       <source>Grey</source>
-      <translation type="unfinished">Grey</translation>
+      <translation>灰色</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="205"/>
@@ -7329,7 +7328,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.cpp" line="229"/>
       <source>Select line attributes</source>
-      <translation type="unfinished">Select line attributes</translation>
+      <translation>選擇線條屬性</translation>
     </message>
   </context>
   <context>
@@ -7454,7 +7453,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1132"/>
       <source>Insert Vertical Extent Dimension</source>
-      <translation type="unfinished">Insert Vertical Extent Dimension</translation>
+      <translation>插入垂直範圍標註</translation>
     </message>
   </context>
   <context>
@@ -7467,7 +7466,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Extensions: Attributes/Modifications</source>
-      <translation type="unfinished">Extensions: Attributes/Modifications</translation>
+      <translation>擴展：屬性/修改</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -7498,17 +7497,17 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>TechDraw Pages</source>
-      <translation type="unfinished">TechDraw Pages</translation>
+      <translation>TechDraw 頁面</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>TechDraw Views</source>
-      <translation type="unfinished">TechDraw Views</translation>
+      <translation>TechDraw 視圖</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -7523,7 +7522,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Tool Attributes</source>
-      <translation type="unfinished">TechDraw Tool Attributes</translation>
+      <translation>TechDraw 工具屬性</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -7538,7 +7537,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Annotation</source>
-      <translation type="unfinished">TechDraw Annotation</translation>
+      <translation>TechDraw 註解</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>

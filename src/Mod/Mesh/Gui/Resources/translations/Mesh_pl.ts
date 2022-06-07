@@ -1859,7 +1859,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     </message>
     <message>
       <source>Boolean</source>
-      <translation>Logiczne</translation>
+      <translation>Funkcje logiczne</translation>
     </message>
     <message>
       <source>&amp;Meshes</source>

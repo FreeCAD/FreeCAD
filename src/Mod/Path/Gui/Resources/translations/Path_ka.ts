@@ -2238,7 +2238,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="796"/>
       <source>Canceling Waterline operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling Waterline operation. Error creating OCL cutter.</translation>
+      <translation>წყალხაზის ოპერაციის გაუქმება. შეცდომა OCL მჭრელის შექმნისას.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="1041"/>

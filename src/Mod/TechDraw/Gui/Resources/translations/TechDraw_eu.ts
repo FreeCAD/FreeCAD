@@ -3669,7 +3669,7 @@ line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
 can be a performance penalty in complex models.</source>
       <translation>Markatuta badago, TechDraw saiatuko da lerroak kentzeko algoritmoak
-itzuli dituen lerro-segmentuak erabiltzen aurpegiak eraikitzeko.
+itzuli dituen lerro segmentuak erabiltzen aurpegiak eraikitzeko.
 Aurpegiak detektatu behar dira itzaleztatzea erabiltzeko, baina
 errendimendua jaitsi egin daiteke eredu konplexuetan.</translation>
     </message>
@@ -3806,7 +3806,7 @@ Orduan, lauzen muga handitu beharko da.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
       <source>Max PAT Hatch Segments</source>
-      <translation>PAT itzaleztadura-segmentuen kopuru maximoa</translation>
+      <translation>PAT itzaleztadura segmentuen kopuru maximoa</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="476"/>
@@ -6455,7 +6455,7 @@ then at least a second point.
 You can pick further points to get line segments.</source>
       <translation>Lehenengo aukeratu lerroaren hasierako puntua,
 ondoren gutxienez bigarren puntu bat.
-Puntu gehiago ere aukeratu daitezke lerro-segmentuak sortzeko.</translation>
+Puntu gehiago ere aukeratu daitezke lerro segmentuak sortzeko.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>

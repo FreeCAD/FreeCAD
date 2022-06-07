@@ -490,7 +490,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Associa Celle Foglio di Calcolo</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="20"/>
@@ -500,13 +500,13 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="27"/>
       <source>Binding cell range start</source>
-      <translation type="unfinished">Binding cell range start</translation>
+      <translation>Inizio intervallo di collegamento celle</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="34"/>
       <source>Binding cell range end
 </source>
-      <translation type="unfinished">Binding cell range end
+      <translation>Fine dell'intervallo di associazione celle
 </translation>
     </message>
     <message>
@@ -518,15 +518,15 @@
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Starting cell address to bind to. Type '=' if you want to use expression.
 The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
+      <translation>Indirizzo cella di partenza a cui collegare. Digitare '=' se si desidera utilizzare l'espressione.
+L'espressione deve essere valutata in una stringa di qualche indirizzo di cella.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="57"/>
       <source>Ending cell address to bind to. Type '=' if you want to use expression.
 The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
+      <translation>Indirizzo della cella finale a cui collegare. Digita '=' se vuoi usare l'espressione.
+L'espressione deve essere valutata in una stringa di qualche indirizzo di cella.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="65"/>
@@ -536,12 +536,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="72"/>
       <source>Select which spread sheet to bind to.</source>
-      <translation type="unfinished">Select which spread sheet to bind to.</translation>
+      <translation>Seleziona a quale foglio di calcolo collegare.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="79"/>
       <source>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</source>
-      <translation type="unfinished">Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</translation>
+      <translation>L'utilizzo del riferimento nascosto non evita di creare una dipendenza con l'oggetto di riferimento. Usare con cautela!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
@@ -569,12 +569,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Imposta Tabella di Configurazione</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Intervallo di celle:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -587,14 +587,13 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Indirizzo cella di partenza.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Si presume che la prima colonna dell'intervallo contenga un elenco di nomi di configurazione, che sarà utilizzato per generare una lista di stringhe e collegarsi alla proprietà
+data per l'utente di cambiare dinamicamente la configurazione.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+La prima riga dell'intervallo sarà associata a qualsiasi riga (indirettamente) selezionata
+da quella proprietà.
 </translation>
     </message>
     <message>
@@ -608,14 +607,13 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Indirizzo della cella finale.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Si presume che la prima colonna dell'intervallo contenga un elenco di nomi di configurazione, che sarà utilizzato per generare una lista di stringhe e collegarsi alla proprietà
+data per l'utente di cambiare dinamicamente la configurazione.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+La prima riga dell'intervallo sarà associata a qualsiasi riga (indirettamente) selezionata
+da quella proprietà.
 </translation>
     </message>
     <message>
@@ -638,7 +636,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Nome del gruppo di proprietà opzionale.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -1201,7 +1199,7 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Foglio di calcolo</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

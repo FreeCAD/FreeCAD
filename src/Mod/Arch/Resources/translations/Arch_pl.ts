@@ -225,7 +225,7 @@
     <message>
       <location filename="../../ArchWindow.py" line="606"/>
       <source>The preset number this window is based on</source>
-      <translation>Numer ustawienia wstępnego, na którym oparte jest to okno</translation>
+      <translation>Ustalona wartość, na podstawie której tworzone jest to okno</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="609"/>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../ArchWindow.py" line="625"/>
       <source>Show elevation opening symbols if available</source>
-      <translation>Wyświetl symbole otwierające elewację, jeśli są dostępne</translation>
+      <translation>Wyświetl symbole pokazujące rzędne, jeśli są dostępne</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1479"/>
@@ -1889,12 +1889,12 @@
     <message>
       <location filename="../../ArchStairs.py" line="279"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
-      <translation>Wyrównanie tych schodów na linii bazowej, jeśli dotyczy</translation>
+      <translation>Wyrównanie tych schodów do linii bazowej, jeśli dotyczy</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="284"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
-      <translation>Szerokość Spocznika (Druga krawędź i dalej - Pierwsza krawędź jest zgodna z ustawieniem Szerokości)</translation>
+      <translation>Szerokość spocznika (druga krawędź i następne - pierwsza krawędź podąża za właściwością Szerokość)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="289"/>

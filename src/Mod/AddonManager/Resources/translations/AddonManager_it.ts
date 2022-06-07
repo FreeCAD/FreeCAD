@@ -86,7 +86,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="790"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
-      <translation type="unfinished">Out of {num_macros} macros, {num_failed} timed out while processing</translation>
+      <translation>Su {num_macros} macro, {num_failed} sono scadute durante l'elaborazione</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="821"/>
@@ -370,17 +370,17 @@
     <message>
       <location filename="../../NetworkManager.py" line="92"/>
       <source>Could not import QtNetwork -- it does not appear to be installed on your system. Please install the package &apos;python3-pyside2.qtnetwork&apos; on your system and if possible contact your FreeCAD package maintainer to alert them to the missing dependency. The Addon Manager will not be available.</source>
-      <translation type="unfinished">Could not import QtNetwork -- it does not appear to be installed on your system. Please install the package &apos;python3-pyside2.qtnetwork&apos; on your system and if possible contact your FreeCAD package maintainer to alert them to the missing dependency. The Addon Manager will not be available.</translation>
+      <translation>Impossibile importare QtNetwork -- non sembra essere installato sul sistema. Installare il pacchetto &apos;python3-pyside2. tnetwork&apos; sul tuo sistema e, se possibile, contatta il manutentore del pacchetto FreeCAD per avvisarlo della dipendenza mancante. L'Addon Manager non sarà disponibile.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="189"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: mutually exclusive proxy options set. Resetting to default.</translation>
+      <translation>Errore di parametro: impostazione delle opzioni proxy reciprocamente escluse. Ripristino a predefinito.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="204"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</translation>
+      <translation>Errore di parametro: proxy utente indicato, ma nessun proxy fornito. Ripristino a default.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="360"/>
@@ -395,7 +395,7 @@
     <message>
       <location filename="../../package_details.py" line="66"/>
       <source>Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system&apos;s package manager to install the python3-pyside2.qtwebengine* and python3-pyside2.qtwebchannel packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until this dependency is resolved.</source>
-      <translation type="unfinished">Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system&apos;s package manager to install the python3-pyside2.qtwebengine* and python3-pyside2.qtwebchannel packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until this dependency is resolved.</translation>
+      <translation>Addon Manager Attenzione: Impossibile importare QtWebEngineWidgets, sembra mancare dal sistema. Utilizzare il gestore dei pacchetti di sistema&apos;s per installare i pacchetti python3-pyside2. twebengine* e python3-pyside2.qtwebchannel, e se possibile avvisare il creatore di pacchetti per la dipendenza mancante. La visualizzazione del pacchetto README sarà limitata fino a quando questa dipendenza non sarà risolta.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="183"/>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../../package_details.py" line="244"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
-      <translation type="unfinished">Git tag &apos;{}&apos; checked out, no updates possible</translation>
+      <translation>Git tag &apos;{}&apos; check out, nessun aggiornamento possibile</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="252"/>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../package_details.py" line="906"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
-      <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</translation>
+      <translation>QtWebEngine Python bindings non installato -- si utilizza il display README di riserva. Vedere Report View per dettagli ed istruzioni di installazione.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="914"/>
@@ -609,7 +609,7 @@
     <message>
       <location filename="../../AddonManager.py" line="252"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>Impossibile importare QtNetwork -- vedere Report View per i dettagli. Addon Manager non disponibile.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="321"/>
@@ -1106,9 +1106,9 @@
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation type="unfinished">This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
+      <translation>Questo Addon ha le seguenti dipendenze richieste e opzionali. Devi installarle prima che questo Addon possa essere usato.
 
-Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</translation>
+Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; per installare Addon senza installare le dipendenze.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
@@ -1201,7 +1201,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="60"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>Scarica Macro metadati (circa 10MB)</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="70"/>
@@ -1216,7 +1216,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="80"/>
       <source>User-defined proxy:</source>
-      <translation type="unfinished">User-defined proxy:</translation>
+      <translation>Proxy definito dall'utente:</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="93"/>
@@ -1272,7 +1272,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation type="unfinished">Addon manager options</translation>
+      <translation>Opzioni di Addon manager</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
@@ -1291,12 +1291,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>Scarica Macro metadati (circa 10MB)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="44"/>
       <source>DownloadMacros</source>
-      <translation type="unfinished">DownloadMacros</translation>
+      <translation>DownloadMacros</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="47"/>
@@ -1340,7 +1340,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
       <source>Hide Addons marked Obsolete</source>
-      <translation type="unfinished">Hide Addons marked Obsolete</translation>
+      <translation>Nascondi gli Addons contrassegnati obsoleti</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="118"/>
@@ -1360,7 +1360,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../AddonManagerOptions.ui" line="144"/>
       <source>Custom repositories (one per line):</source>
-      <translation type="unfinished">Custom repositories (one per line):</translation>
+      <translation>Repository personalizzati (uno per riga):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="169"/>
@@ -1389,7 +1389,7 @@ della riga dopo uno spazio (es. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../AddonManagerOptions.ui" line="219"/>
       <source>User-defined proxy:</source>
-      <translation type="unfinished">User-defined proxy:</translation>
+      <translation>Proxy definito dall'utente:</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="256"/>

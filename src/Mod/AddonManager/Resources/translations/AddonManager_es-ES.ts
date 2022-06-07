@@ -699,7 +699,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1039"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</translation>
+      <translation>Este complemento requiere paquetes de Python que no están instalados y no se pueden instalar automáticamente. Para utilizar este banco de trabajo debes instalar manualmente los siguientes paquetes de Python:</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="1048"/>

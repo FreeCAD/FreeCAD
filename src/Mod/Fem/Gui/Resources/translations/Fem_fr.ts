@@ -277,7 +277,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="406"/>
       <source>Elasticity equation</source>
-      <translation>Équation de l’élasticité</translation>
+      <translation>Équation d’élasticité</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="620"/>
       <source>Reinforced material (concrete)</source>
-      <translation>Matériau renforcé (béton)</translation>
+      <translation>Matériau renforcé (type béton)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="624"/>
@@ -5609,12 +5609,12 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Overwrite Constants</source>
-      <translation>Écraser les constantes</translation>
+      <translation>Remplacer les constantes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Overwrite Constants</source>
-      <translation>Écraser les c&amp;onstantes</translation>
+      <translation>Remplacer les c&amp;onstantes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
