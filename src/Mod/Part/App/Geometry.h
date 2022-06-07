@@ -538,6 +538,7 @@ public:
     void setMinorRadius(double Radius);
     Base::Vector3d getMajorAxisDir() const;
     void setMajorAxisDir(Base::Vector3d newdir);
+    Base::Vector3d getMinorAxisDir() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;

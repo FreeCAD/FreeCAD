@@ -2730,6 +2730,17 @@ Base::Vector3d GeomEllipse::getMajorAxisDir() const
 }
 
 /*!
+ * \brief GeomEllipse::getMinorAxisDir
+ * \return the direction vector (unit-length) of minor axis of the ellipse.
+ */
+Base::Vector3d GeomEllipse::getMinorAxisDir() const
+{
+    gp_Dir ydir = myCurve->YAxis().Direction();
+    return Base::Vector3d(ydir.X(), ydir.Y(), ydir.Z());
+}
+
+
+/*!
  * \brief GeomEllipse::setMajorAxisDir Rotates the ellipse in its plane, so
  * that its major axis is as close as possible to the provided direction.
  * \param newdir [in] is the new direction. If the vector is small, the
