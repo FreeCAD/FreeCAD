@@ -73,9 +73,6 @@
 #include <BRepLProp_CLProps.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
 
 #include "DrawingExport.h"
 #include <Base/Tools.h>

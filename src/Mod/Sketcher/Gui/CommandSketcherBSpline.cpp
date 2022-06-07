@@ -653,15 +653,6 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-#if OCC_VERSION_HEX < 0x060900
-    QMessageBox::warning(Gui::getMainWindow(),
-                         QObject::tr("Wrong OCE/OCC version"),
-                         QObject::tr("This version of OCE/OCC "
-                                     "does not support knot operation. "
-                                     "You need 6.9.0 or higher"));
-    return;
-#endif
-
     // get the selection
     std::vector<Gui::SelectionObject> selection;
     selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
@@ -799,15 +790,6 @@ CmdSketcherDecreaseKnotMultiplicity::CmdSketcherDecreaseKnotMultiplicity()
 void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-#if OCC_VERSION_HEX < 0x060900
-    QMessageBox::warning(Gui::getMainWindow(),
-                         QObject::tr("Wrong OCE/OCC version"),
-                         QObject::tr("This version of OCE/OCC "
-                                     "does not support knot operation. "
-                                     "You need 6.9.0 or higher"));
-    return;
-#endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
@@ -1174,15 +1156,6 @@ CmdSketcherInsertKnot::CmdSketcherInsertKnot()
 void CmdSketcherInsertKnot::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-#if OCC_VERSION_HEX < 0x060900
-    QMessageBox::warning(Gui::getMainWindow(),
-                         QObject::tr("Wrong OCE/OCC version"),
-                         QObject::tr("This version of OCE/OCC "
-                                     "does not support knot operation. "
-                                     "You need 6.9.0 or higher"));
-    return;
-#endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;

@@ -243,26 +243,6 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     return 0;
 }
 
-#if OCC_VERSION_HEX < 0x070000
-static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
-                          Handle(StepShape_ShapeRepresentation)& aSR)
-{
-    // search Shape Representation for component styled item
-    for (Standard_Integer j=1; j <= style->NbStyles(); j++) {
-        Handle(StepVisual_PresentationStyleByContext) PSA =
-            Handle(StepVisual_PresentationStyleByContext)::DownCast(style->StylesValue ( j ));
-        if (PSA.IsNull())
-            continue;
-        StepVisual_StyleContextSelect aStyleCntxSlct = PSA->StyleContext();
-        Handle(StepShape_ShapeRepresentation) aCurrentSR =
-            Handle(StepShape_ShapeRepresentation)::DownCast(aStyleCntxSlct.Representation());
-        if (aCurrentSR.IsNull())
-            continue;
-        aSR = aCurrentSR;
-            break;
-    }
-}
-#endif
 
 bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col)
 {
@@ -350,10 +330,7 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
                 TopoDS_Shape aSh;
                 // PTV 10.02.2003 to find component of assembly CORRECTLY
                 STEPConstruct_Tool Tool( WS );
-//              Handle(Transfer_Binder) binder = TP->Find(NAUO);
-//              if (binder.IsNull() || ! binder->HasResult())
-//                  continue;
-//              aSh = TransferBRep::ShapeResult ( TP, binder );
+
                 if (!aSh.IsNull()) {
                     S = aSh;
                     break;
@@ -454,11 +431,7 @@ bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
             TCollection_ExtendedString str ( name->String() );
             Base::Console().Message("Name: %s\n",name->String().ToCString());
         }
-        // set a name to the document
-        //TCollection_ExtendedString str ( name->String() );
-        //TDataStd_Name::Set ( L, str );
     }
-
     return Standard_True;
 #endif
 }
