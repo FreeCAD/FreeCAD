@@ -155,6 +155,8 @@
         <file>icons/geometry/Sketcher_CreatePolyline_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateFins.svg</file>
+        <file>icons/geometry/Sketcher_CreateFins_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Center.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Center_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateFrame.svg</file>

@@ -69,6 +69,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerLine.h
     DrawSketchHandlerRectangle.h
     DrawSketchHandlerPolygon.h
+    DrawSketchHandlerFins.h
     DrawSketchHandlerLineSet.h
     DrawSketchHandlerCircle.h
     DrawSketchHandlerEllipse.h

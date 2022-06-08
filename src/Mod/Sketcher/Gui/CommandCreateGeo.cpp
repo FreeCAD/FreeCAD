@@ -71,6 +71,7 @@
 #include "DrawSketchHandlerLine.h"
 #include "DrawSketchHandlerRectangle.h"
 #include "DrawSketchHandlerPolygon.h"
+#include "DrawSketchHandlerFins.h"
 #include "DrawSketchHandlerLineSet.h"
 #include "DrawSketchHandlerCircle.h"
 #include "DrawSketchHandlerEllipse.h"
@@ -462,6 +463,51 @@ bool CmdSketcherCreateOctagon::isActive(void)
     return isCommandActive(getActiveGuiDocument());
 }
 
+
+/* Create fins block =======================================================*/
+
+DEF_STD_CMD_AU(CmdSketcherCreateFins)
+
+CmdSketcherCreateFins::CmdSketcherCreateFins()
+    : Command("Sketcher_CreateFins")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create fins block");
+    sToolTipText = QT_TR_NOOP("Create a fins block in the sketch");
+    sWhatsThis = "Sketcher_CreateFins";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateFins";
+    sAccel = "G, B";
+    eType = ForEdit;
+}
+
+void CmdSketcherCreateFins::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFins());
+}
+
+void CmdSketcherCreateFins::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFins"));
+        break;
+    case Construction:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFins_Constr"));
+        break;
+    }
+}
+
+bool CmdSketcherCreateFins::isActive(void)
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+
 /* Rectangles Comp command ==============================================================*/
 
 DEF_STD_CMD_ACLU(CmdSketcherCompCreateRectangles)
@@ -484,6 +530,8 @@ void CmdSketcherCompCreateRectangles::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRectangle(ConstructionMethods::RectangleConstructionMethod::Diagonal));
     else if (iMsg == 1)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon());
+    else if (iMsg == 2)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFins());
     else
         return;
 
@@ -506,6 +554,8 @@ Gui::Action* CmdSketcherCompCreateRectangles::createAction(void)
     arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
     QAction* arc2 = pcAction->addAction(QString());
     arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolygon"));
+    QAction* arc3 = pcAction->addAction(QString());
+    arc3->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFins"));
 
     _pcAction = pcAction;
     languageChange();
@@ -529,11 +579,13 @@ void CmdSketcherCompCreateRectangles::updateAction(int mode)
     case Normal:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolygon"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFins"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolygon_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFins_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -556,6 +608,10 @@ void CmdSketcherCompCreateRectangles::languageChange()
     rectangle2->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Polygon"));
     rectangle2->setToolTip(QApplication::translate("Sketcher_CreatePolygon", "Create a regular polygon"));
     rectangle2->setStatusTip(rectangle2->toolTip());
+    QAction* rectangle3 = a[2];
+    rectangle3->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Fins"));
+    rectangle3->setToolTip(QApplication::translate("Sketcher_CreateFins", "Create a fins block"));
+    rectangle3->setStatusTip(rectangle3->toolTip());
 }
 
 bool CmdSketcherCompCreateRectangles::isActive(void)
@@ -1864,6 +1920,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolygon());
+    rcCmdMgr.addCommand(new CmdSketcherCreateFins());
     rcCmdMgr.addCommand(new CmdSketcherCreateTriangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateSquare());
     rcCmdMgr.addCommand(new CmdSketcherCreatePentagon());

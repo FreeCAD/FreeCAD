@@ -229,7 +229,8 @@ inline void SketcherAddWorkspaceRectangles<Gui::MenuItem>(Gui::MenuItem& geom)
             << "Sketcher_CreatePentagon"
             << "Sketcher_CreateHexagon"
             << "Sketcher_CreateHeptagon"
-            << "Sketcher_CreateOctagon";
+            << "Sketcher_CreateOctagon"
+            << "Sketcher_CreateFins";
 }
 
 template <>
