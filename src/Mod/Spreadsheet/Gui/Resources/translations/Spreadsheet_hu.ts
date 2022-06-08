@@ -2,105 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu" sourcelanguage="en">
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>Számolótábla</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>Sejt</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>Alkalmaz</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation>A módosítások alkalmazása az aktuális cellára</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>Törlés</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation>Törli az aktuális cella tartalmát</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>Kiszámítás</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation>A vezérlők által kezelt értékek frissítése</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>Táblázat létrehozása</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation>Vezérlő hozzáadása</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation>Tulajdonságvezérlő hozzáadása</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation>Vezérlő hozzáadása</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>Cellavezérlő hozzáadása a kijelölt táblázathoz</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>Számolótábla</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation>Táblázat tárgyának hozzáadása az aktív dokumentumhoz</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation>Tulajdonságvezérlő hozzáadása</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>Tulajdonságvezérlő hozzáadása a kijelölt táblázathoz</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <location filename="../../Command.cpp" line="892"/>
@@ -446,7 +347,7 @@
       <translation>Cellatulajdonságok beállítása</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="487"/>
+      <location filename="../../SheetModel.cpp" line="471"/>
       <source>Edit cell</source>
       <translation>Cella szerkesztése</translation>
     </message>
@@ -469,8 +370,8 @@
       <translation>Oszlopok beszúrása</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="576"/>
       <location filename="../../SpreadsheetView.cpp" line="167"/>
+      <location filename="../../SheetTableView.cpp" line="576"/>
       <source>Clear cell(s)</source>
       <translation>Cella(k) törlése</translation>
     </message>
@@ -493,73 +394,87 @@
       <translation type="unfinished">Bind Spreadsheet Cells</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="20"/>
-      <source>From cells:</source>
-      <translation type="unfinished">From cells:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="27"/>
-      <source>Binding cell range start</source>
-      <translation type="unfinished">Binding cell range start</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="34"/>
-      <source>Binding cell range end
-</source>
-      <translation type="unfinished">Binding cell range end
-</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="42"/>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
       <translation type="unfinished">To cells:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="49"/>
-      <source>Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="57"/>
-      <source>Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="65"/>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
       <translation type="unfinished">Sheet:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="72"/>
-      <source>Select which spread sheet to bind to.</source>
-      <translation type="unfinished">Select which spread sheet to bind to.</translation>
+      <location filename="../../DlgBindSheet.ui" line="22"/>
+      <source>First cell in range</source>
+      <translation type="unfinished">First cell in range</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="79"/>
-      <source>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</source>
-      <translation type="unfinished">Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</translation>
+      <location filename="../../DlgBindSheet.ui" line="29"/>
+      <source>Last cell in range</source>
+      <translation type="unfinished">Last cell in range</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells:</source>
+      <translation type="unfinished">Bind cells:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="49"/>
+      <source>Start cell address</source>
+      <translation type="unfinished">Start cell address</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="62"/>
+      <source>End cell address</source>
+      <translation type="unfinished">End cell address</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
+      <source>Start cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation type="unfinished">Start cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="97"/>
+      <source>End cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation type="unfinished">End cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="110"/>
+      <source>Which spread sheet to bind to</source>
+      <translation type="unfinished">Which spread sheet to bind to</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="126"/>
+      <source>Use hidden reference to avoid creating a dependency
+with the referenced object. Use with caution!</source>
+      <translation type="unfinished">Use hidden reference to avoid creating a dependency
+with the referenced object. Use with caution!</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="130"/>
       <source>Use hidden reference</source>
       <translation type="unfinished">Use hidden reference</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="91"/>
+      <location filename="../../DlgBindSheet.ui" line="139"/>
       <source>Unbind</source>
       <translation type="unfinished">Unbind</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="98"/>
+      <location filename="../../DlgBindSheet.ui" line="146"/>
       <source>Cancel</source>
       <translation>Mégse</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="105"/>
+      <location filename="../../DlgBindSheet.ui" line="153"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
@@ -960,14 +875,74 @@ Spreadsheet.my_alias_name helyett Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Számolótábla</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Sejt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Alkalmaz</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>A módosítások alkalmazása az aktuális cellára</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Törlés</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Törli az aktuális cella tartalmát</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Kiszámítás</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>A vezérlők által kezelt értékek frissítése</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Táblázat létrehozása</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Vezérlő hozzáadása</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Tulajdonságvezérlő hozzáadása</translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="180"/>
+      <location filename="../../DlgBindSheet.cpp" line="182"/>
       <source>Bind cells</source>
       <translation type="unfinished">Bind cells</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="197"/>
+      <location filename="../../DlgBindSheet.cpp" line="199"/>
       <source>Unbind cells</source>
       <translation type="unfinished">Unbind cells</translation>
     </message>
@@ -1189,6 +1164,45 @@ Spreadsheet.my_alias_name helyett Spreadsheet.B1</translation>
       <location filename="../../SpreadsheetView.cpp" line="263"/>
       <source>PDF file</source>
       <translation>PDF-fájl</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Vezérlő hozzáadása</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Cellavezérlő hozzáadása a kijelölt táblázathoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Számolótábla</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Táblázat tárgyának hozzáadása az aktív dokumentumhoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Tulajdonságvezérlő hozzáadása</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Tulajdonságvezérlő hozzáadása a kijelölt táblázathoz</translation>
     </message>
   </context>
   <context>

@@ -773,8 +773,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSmoothing.cpp" line="174"/>
         <location filename="../../Command.cpp" line="1418"/>
+        <location filename="../../DlgSmoothing.cpp" line="174"/>
         <source>Mesh Smoothing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2383,8 +2383,8 @@ Please visit http://www.openscad.org/index.html to install it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1574"/>
         <location filename="../../ViewProviderCurvature.cpp" line="514"/>
+        <location filename="../../ViewProvider.cpp" line="1574"/>
         <source>Leave info mode</source>
         <translation type="unfinished"></translation>
     </message>

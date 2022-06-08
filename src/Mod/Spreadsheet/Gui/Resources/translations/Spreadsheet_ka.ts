@@ -2,105 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ka" sourcelanguage="en">
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>უჯრედი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>დადება</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation>ცვლილებების მიმდინარე უჯრედზე გადატარება</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>წაშლა</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation>მიმდინარე უჯრედის შემველობის წაშლა</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>გამოთვლა</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation>კონტროლერების მიერ მართული მნიშვნელობების განახლება</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>ცხრილის შექმნა</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation>კონტროლერის დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation>თვისების კონტროლერის დამატება</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation>კონტროლერის დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>მონიშნულ ცხრილზე უჯრედის კონტროლერის დამატება</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation>აქტიურ დოკუმენტზე ცხრილის დამატება</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation>თვისების კონტროლერის დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>მონიშნულ ცხრილზე უჯრედის თვისების კონტროლერის დამატება</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <location filename="../../Command.cpp" line="892"/>
@@ -446,7 +347,7 @@
       <translation>უჯრედის თვისებების დაყენება</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="487"/>
+      <location filename="../../SheetModel.cpp" line="471"/>
       <source>Edit cell</source>
       <translation>უჯრედის ჩასწორება</translation>
     </message>
@@ -469,8 +370,8 @@
       <translation>სვეტების ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="576"/>
       <location filename="../../SpreadsheetView.cpp" line="167"/>
+      <location filename="../../SheetTableView.cpp" line="576"/>
       <source>Clear cell(s)</source>
       <translation>უჯრედ(ებ)ის გასუფთავება</translation>
     </message>
@@ -493,73 +394,85 @@
       <translation>ელცხრილის უჯრედების გადაბმა</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="20"/>
-      <source>From cells:</source>
-      <translation>უკრედებიდან:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="27"/>
-      <source>Binding cell range start</source>
-      <translation>მისაბმელი უჯრედების დიაპაზონის დასაწყისი</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="34"/>
-      <source>Binding cell range end
-</source>
-      <translation>მისაბმელი უჯრედების დიაპაზონის დასასრული
-</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="42"/>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
       <translation>უჯრედებამდე:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="49"/>
-      <source>Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation>საწყისი მისამაგრებელი წერტილის მისამართი. აკრიფეთ '=' თუ გამოსახულების გამოყენებას აპირებთ.
-გამოსახულება რომელიმე უჯრედის მისამართის სტრიქონს უნდა აბრუნებდეს.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="57"/>
-      <source>Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation>საბოლოო მისამაგრებელი წერტილის მისამართი. აკრიფეთ '=' თუ გამოსახულების გამოყენებას აპირებთ.
-გამოსახულება რომელიმე უჯრედის მისამართის სტრიქონს უნდა აბრუნებდეს.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="65"/>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
       <translation>ფურცელი:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="72"/>
-      <source>Select which spread sheet to bind to.</source>
-      <translation>მონიშნეთ მისაბმელი ელცხრილი.</translation>
+      <location filename="../../DlgBindSheet.ui" line="22"/>
+      <source>First cell in range</source>
+      <translation>დიაპაზონის პირველი უჯრედი</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="79"/>
-      <source>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</source>
-      <translation>გამოიყენეთ უხილავი მიბმა, არ აარიდოთ თავი მიბმულ ობიექტზე დამოკიდებულებას. ფრთხილად გამოიყენეთ!</translation>
+      <location filename="../../DlgBindSheet.ui" line="29"/>
+      <source>Last cell in range</source>
+      <translation>დიაპაზონის ბოლო უჯრედი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells:</source>
+      <translation>უჯრედების მიმაგრება:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="49"/>
+      <source>Start cell address</source>
+      <translation>საწყისი უჯრედის მისამართი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="62"/>
+      <source>End cell address</source>
+      <translation>საბოლოო უჯრედის მისამართი</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
+      <source>Start cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation>საწყისი მისამაგრებელი წერტილის მისამართი. აკრიფეთ '=' თუ გამოსახულების გამოყენებას აპირებთ.
+გამოსახულება რომელიმე უჯრედის მისამართის სტრიქონს უნდა აბრუნებდეს.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="97"/>
+      <source>End cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation>საბოლოო მისამაგრებელი წერტილის მისამართი. აკრიფეთ '=' თუ გამოსახულების გამოყენებას აპირებთ.
+გამოსახულება რომელიმე უჯრედის მისამართის სტრიქონს უნდა აბრუნებდეს.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="110"/>
+      <source>Which spread sheet to bind to</source>
+      <translation>მონიშნეთ მისაბმელი ელცხრილი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="126"/>
+      <source>Use hidden reference to avoid creating a dependency
+with the referenced object. Use with caution!</source>
+      <translation>გამოიყენეთ უხილავი მიბმამიბმულ ობიექტზე დამოკიდებულებისთვის 
+თავიდან ასაცილებლად. ფრთხილად გამოიყენეთ!</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="130"/>
       <source>Use hidden reference</source>
       <translation>დამალული ბმულის გამოყენება</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="91"/>
+      <location filename="../../DlgBindSheet.ui" line="139"/>
       <source>Unbind</source>
       <translation>მოხსნა</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="98"/>
+      <location filename="../../DlgBindSheet.ui" line="146"/>
       <source>Cancel</source>
       <translation>გაუქმება</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="105"/>
+      <location filename="../../DlgBindSheet.ui" line="153"/>
       <source>OK</source>
       <translation>&amp;დიახ</translation>
     </message>
@@ -953,14 +866,74 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>ცხრილი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>უჯრედი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>დადება</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>ცვლილებების მიმდინარე უჯრედზე გადატარება</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>წაშლა</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>მიმდინარე უჯრედის შემველობის წაშლა</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>გამოთვლა</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>კონტროლერების მიერ მართული მნიშვნელობების განახლება</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>ცხრილის შექმნა</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>კონტროლერის დამატება</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>თვისების კონტროლერის დამატება</translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="180"/>
+      <location filename="../../DlgBindSheet.cpp" line="182"/>
       <source>Bind cells</source>
       <translation>უჯრედების მიმაგრება</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="197"/>
+      <location filename="../../DlgBindSheet.cpp" line="199"/>
       <source>Unbind cells</source>
       <translation>უჯრედების მიმაგრების მოხსნა</translation>
     </message>
@@ -1182,6 +1155,45 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
       <location filename="../../SpreadsheetView.cpp" line="263"/>
       <source>PDF file</source>
       <translation>PDF ფაილი</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>კონტროლერის დამატება</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>მონიშნულ ცხრილზე უჯრედის კონტროლერის დამატება</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>ცხრილი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>აქტიურ დოკუმენტზე ცხრილის დამატება</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>თვისების კონტროლერის დამატება</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>მონიშნულ ცხრილზე უჯრედის თვისების კონტროლერის დამატება</translation>
     </message>
   </context>
   <context>

@@ -51,7 +51,7 @@
     <message>
       <location filename="TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation>Центр пользователя</translation>
+      <translation>Пользовательский центр</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="52"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation>Руководство пользователя</translation>
+      <translation>Руководство</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="58"/>
@@ -265,7 +265,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Show forum</source>
-      <translation>Показать Форум</translation>
+      <translation>Показать форум</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
@@ -297,7 +297,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
       <source>Show notepad</source>
-      <translation>Показать Блокнот</translation>
+      <translation>Показать блокнот</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>

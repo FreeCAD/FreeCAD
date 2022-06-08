@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="en">
   <context>
-    <name>Sketcher_ProfilesHexagon1</name>
-    <message>
-      <location filename="../../../Profiles.py" line="53"/>
-      <source>Creates a hexagonal profile</source>
-      <translation>Erstellt ein sechseckiges Profil</translation>
-    </message>
-    <message>
-      <location filename="../../../Profiles.py" line="58"/>
-      <source>Creates a hexagonal profile in the sketch</source>
-      <translation>Erstellt eine sechseckige Kontur in der Skizze</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="203"/>
@@ -481,7 +468,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2103"/>
       <source>Constrain distance</source>
-      <translation>Distanz festlegen</translation>
+      <translation>Abstand festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2104"/>
@@ -2345,8 +2332,6 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Nicht anhängen</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
       <location filename="../../CommandConstraints.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="911"/>
@@ -2478,14 +2463,6 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandConstraints.cpp" line="7485"/>
       <location filename="../../CommandConstraints.cpp" line="7558"/>
       <location filename="../../CommandConstraints.cpp" line="7569"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <location filename="../../CommandSketcherTools.cpp" line="130"/>
       <location filename="../../CommandSketcherTools.cpp" line="138"/>
       <location filename="../../CommandSketcherTools.cpp" line="180"/>
@@ -2509,6 +2486,16 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
@@ -4424,13 +4411,13 @@ Standardmäßig: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Bei Aktivierung des Bearbeitungsmodus, wird die orthographische Ansicht der Kamera erzwungen. 
+      <translation>Bei Aktivierung des Bearbeitungsmodus, wird die orthogonale Ansicht der Kamera festgelegt. 
 Funktioniert nur, wenn "Kameraposition nach dem Bearbeiten wiederherstellen" aktiviert ist.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation>Erzwinge orthographische Kamera bei Aktivierung des Bearbeitungsmodus</translation>
+      <translation>Orthogonale Kamera bei Aktivierung des Bearbeitungsmodus festlegen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
@@ -5135,10 +5122,10 @@ This is purely based on topological shape of the sketch and not on its geometry/
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
-      <source>Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</source>
-      <translation>Findet und zeigt fehlende Deckungsgleichheiten an, die in der Skizze entdeckt wurden
-Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen</translation>
+      <source>Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</source>
+      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -5789,6 +5776,19 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../Command.cpp" line="182"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Wählen Sie die Methode aus, um diese Skizze an das ausgewählte Objekt anzuhängen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ProfilesHexagon1</name>
+    <message>
+      <location filename="../../../Profiles.py" line="53"/>
+      <source>Creates a hexagonal profile</source>
+      <translation>Erstellt ein sechseckiges Profil</translation>
+    </message>
+    <message>
+      <location filename="../../../Profiles.py" line="58"/>
+      <source>Creates a hexagonal profile in the sketch</source>
+      <translation>Erstellt eine sechseckige Kontur in der Skizze</translation>
     </message>
   </context>
   <context>

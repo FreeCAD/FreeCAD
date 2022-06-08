@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr" sourcelanguage="en">
   <context>
-    <name>Sketcher_ProfilesHexagon1</name>
-    <message>
-      <location filename="../../../Profiles.py" line="53"/>
-      <source>Creates a hexagonal profile</source>
-      <translation>Créer un profil hexagonal</translation>
-    </message>
-    <message>
-      <location filename="../../../Profiles.py" line="58"/>
-      <source>Creates a hexagonal profile in the sketch</source>
-      <translation>Créer un profil hexagonal dans l'esquisse</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="203"/>
@@ -481,7 +468,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2103"/>
       <source>Constrain distance</source>
-      <translation>Contrainte dimensionnelle</translation>
+      <translation>Contrainte de dimension</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2104"/>
@@ -494,7 +481,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2700"/>
       <source>Constrain horizontal distance</source>
-      <translation>Contrainte distance horizontale</translation>
+      <translation>Contrainte de distance horizontale</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2701"/>
@@ -638,7 +625,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6778"/>
       <source>Constrain refraction (Snell's law')</source>
-      <translation>Contraint la réfraction (loi de Snell)</translation>
+      <translation>Contrainte de réfraction (loi de Snell)</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6779"/>
@@ -1422,7 +1409,7 @@ Cela effacera la propriété 'Support', le cas échéant.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="860"/>
       <source>Select unconstrained DoF</source>
-      <translation>Sélectionne les degrés de liberté non contraints</translation>
+      <translation>Sélectionner les degrés de liberté non contraints</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="861"/>
@@ -1566,7 +1553,7 @@ Cela effacera la propriété 'Support', le cas échéant.</translation>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="75"/>
       <source>Toggle construction geometry</source>
-      <translation>Basculer mode géométrie de construction</translation>
+      <translation>Basculer le mode de la géométrie de construction</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="76"/>
@@ -1632,7 +1619,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="954"/>
       <source>View section</source>
-      <translation>Vue section</translation>
+      <translation>Vue de la section</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="955"/>
@@ -2343,8 +2330,6 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>Ne pas attacher</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
       <location filename="../../CommandConstraints.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="911"/>
@@ -2476,14 +2461,6 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="7485"/>
       <location filename="../../CommandConstraints.cpp" line="7558"/>
       <location filename="../../CommandConstraints.cpp" line="7569"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <location filename="../../CommandSketcherTools.cpp" line="130"/>
       <location filename="../../CommandSketcherTools.cpp" line="138"/>
       <location filename="../../CommandSketcherTools.cpp" line="180"/>
@@ -2507,6 +2484,16 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
@@ -3230,7 +3217,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1203"/>
       <source>Nothing is selected. Please select a b-spline.</source>
-      <translation>Rien n'est sélectionné. Veuillez sélectionner une courbe b-spline.</translation>
+      <translation>Rien n'est sélectionné. Veuillez sélectionner une courbe B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1217"/>
@@ -5133,10 +5120,10 @@ Cette erreur est purement basée sur la forme topologique de l'esquisse et non s
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
-      <source>Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</source>
-      <translation>Trouve et affiche les coïncidences manquantes dans l'esquisse.
-Cela se fait en analysant les géométries et contraintes de l'esquisse.</translation>
+      <source>Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</source>
+      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -5787,6 +5774,19 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../Command.cpp" line="182"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Sélectionnez la méthode pour attacher cette esquisse aux objets sélectionnés</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ProfilesHexagon1</name>
+    <message>
+      <location filename="../../../Profiles.py" line="53"/>
+      <source>Creates a hexagonal profile</source>
+      <translation>Créer un profil hexagonal</translation>
+    </message>
+    <message>
+      <location filename="../../../Profiles.py" line="58"/>
+      <source>Creates a hexagonal profile in the sketch</source>
+      <translation>Créer un profil hexagonal dans l'esquisse</translation>
     </message>
   </context>
   <context>

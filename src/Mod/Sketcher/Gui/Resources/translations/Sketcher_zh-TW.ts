@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh-TW" sourcelanguage="en">
   <context>
-    <name>Sketcher_ProfilesHexagon1</name>
-    <message>
-      <location filename="../../../Profiles.py" line="53"/>
-      <source>Creates a hexagonal profile</source>
-      <translation>建立一個六角形的輪廊</translation>
-    </message>
-    <message>
-      <location filename="../../../Profiles.py" line="58"/>
-      <source>Creates a hexagonal profile in the sketch</source>
-      <translation>於草圖中建立六角形</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="203"/>
@@ -2342,8 +2329,6 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>不要附加上去</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
       <location filename="../../CommandConstraints.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="911"/>
@@ -2475,14 +2460,6 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="7485"/>
       <location filename="../../CommandConstraints.cpp" line="7558"/>
       <location filename="../../CommandConstraints.cpp" line="7569"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <location filename="../../CommandSketcherTools.cpp" line="130"/>
       <location filename="../../CommandSketcherTools.cpp" line="138"/>
       <location filename="../../CommandSketcherTools.cpp" line="180"/>
@@ -2506,6 +2483,16 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
@@ -3222,7 +3209,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1202"/>
       <source>Selection is empty</source>
-      <translation type="unfinished">Selection is empty</translation>
+      <translation>選擇為空。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1203"/>
@@ -3472,7 +3459,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="147"/>
       <source>Weight</source>
-      <translation type="unfinished">Weight</translation>
+      <translation>權重</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="152"/>
@@ -4705,7 +4692,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="152"/>
       <source>Weight</source>
-      <translation type="unfinished">Weight</translation>
+      <translation>權重</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="157"/>
@@ -5126,10 +5113,10 @@ This is purely based on topological shape of the sketch and not on its geometry/
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
-      <source>Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</source>
-      <translation>尋找並顯示在草圖中發現的缺失重合
-這是通過分析草圖幾何形狀和拘束所完成</translation>
+      <source>Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</source>
+      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -5779,6 +5766,19 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../Command.cpp" line="182"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>選擇要如何將此草圖附加到所選物件</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ProfilesHexagon1</name>
+    <message>
+      <location filename="../../../Profiles.py" line="53"/>
+      <source>Creates a hexagonal profile</source>
+      <translation>建立一個六角形的輪廊</translation>
+    </message>
+    <message>
+      <location filename="../../../Profiles.py" line="58"/>
+      <source>Creates a hexagonal profile in the sketch</source>
+      <translation>於草圖中建立六角形</translation>
     </message>
   </context>
   <context>

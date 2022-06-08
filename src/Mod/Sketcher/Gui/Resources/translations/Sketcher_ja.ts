@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ja" sourcelanguage="en">
   <context>
-    <name>Sketcher_ProfilesHexagon1</name>
-    <message>
-      <location filename="../../../Profiles.py" line="53"/>
-      <source>Creates a hexagonal profile</source>
-      <translation>六角形のプロファイルを作成</translation>
-    </message>
-    <message>
-      <location filename="../../../Profiles.py" line="58"/>
-      <source>Creates a hexagonal profile in the sketch</source>
-      <translation>スケッチに六角形のプロファイルを作成</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="203"/>
@@ -176,7 +163,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5704"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>半径/直径を自動拘束</translation>
     </message>
   </context>
   <context>
@@ -317,12 +304,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1051"/>
       <source>Create rectangles</source>
-      <translation type="unfinished">Create rectangles</translation>
+      <translation>長方形を作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1052"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+      <translation>スケッチ上に長方形を作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1135"/>
@@ -332,12 +319,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Centered rectangle</source>
-      <translation type="unfinished">Centered rectangle</translation>
+      <translation>中心配置長方形</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1143"/>
       <source>Rounded rectangle</source>
-      <translation type="unfinished">Rounded rectangle</translation>
+      <translation>角丸長方形</translation>
     </message>
   </context>
   <context>
@@ -546,7 +533,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6946"/>
       <source>Constrain internal alignment</source>
-      <translation>内部整列拘束</translation>
+      <translation>内部配置拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6947"/>
@@ -612,12 +599,12 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5288"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>半径/直径を自動拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5289"/>
       <source>Fix automatically diameter on circle and radius on arc/pole</source>
-      <translation type="unfinished">Fix automatically diameter on circle and radius on arc/pole</translation>
+      <translation>円の直径、円弧/極配置の半径を自動固定</translation>
     </message>
   </context>
   <context>
@@ -913,12 +900,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1008"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>角丸長方形を作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1009"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+      <translation>スケッチ上に角丸長方形を作成</translation>
     </message>
   </context>
   <context>
@@ -1017,12 +1004,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="680"/>
       <source>Create centered rectangle</source>
-      <translation type="unfinished">Create centered rectangle</translation>
+      <translation>中心配置長方形を作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation type="unfinished">Create a centered rectangle in the sketch</translation>
+      <translation>スケッチ上に中心配置長方形を作成</translation>
     </message>
   </context>
   <context>
@@ -1212,12 +1199,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1165"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>ノットを挿入</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
       <source>Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</source>
-      <translation type="unfinished">Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</translation>
+      <translation>指定したパラメーターのノットを挿入。そのパラメーターにすでにノットが存在する場合、多重度が1増加します。</translation>
     </message>
   </context>
   <context>
@@ -1347,12 +1334,12 @@ as mirroring reference.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2271"/>
       <source>Remove axes alignment</source>
-      <translation type="unfinished">Remove axes alignment</translation>
+      <translation>軸配置を削除</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2272"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
+      <translation>選択したものの拘束関係を維持したまま軸配置を削除するように拘束を変更</translation>
     </message>
   </context>
   <context>
@@ -1858,7 +1845,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="5459"/>
       <location filename="../../CommandConstraints.cpp" line="5533"/>
       <source>Add radiam constraint</source>
-      <translation type="unfinished">Add radiam constraint</translation>
+      <translation>径拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5825"/>
@@ -1959,12 +1946,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="518"/>
       <source>Add centered sketch box</source>
-      <translation type="unfinished">Add centered sketch box</translation>
+      <translation>中心配置長方形を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="847"/>
       <source>Add rounded rectangle</source>
-      <translation type="unfinished">Add rounded rectangle</translation>
+      <translation>角丸四角形を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1512"/>
@@ -2087,7 +2074,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1059"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>ノットを挿入</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1027"/>
@@ -2122,7 +2109,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2357"/>
       <source>Remove Axes Alignment</source>
-      <translation type="unfinished">Remove Axes Alignment</translation>
+      <translation>軸配置を削除</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="156"/>
@@ -2269,7 +2256,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5941"/>
       <source>Knot cannot have zero multiplicity.</source>
-      <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
+      <translation>ノットがゼロ多重性を持つことはでいません。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5955"/>
@@ -2342,8 +2329,6 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>アタッチしない</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
       <location filename="../../CommandConstraints.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="911"/>
@@ -2475,14 +2460,6 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="7485"/>
       <location filename="../../CommandConstraints.cpp" line="7558"/>
       <location filename="../../CommandConstraints.cpp" line="7569"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <location filename="../../CommandSketcherTools.cpp" line="130"/>
       <location filename="../../CommandSketcherTools.cpp" line="138"/>
       <location filename="../../CommandSketcherTools.cpp" line="180"/>
@@ -2506,6 +2483,16 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
@@ -2837,13 +2824,13 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3258"/>
       <source>Select a valid line.</source>
-      <translation type="unfinished">Select a valid line.</translation>
+      <translation>有効な直線を選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3274"/>
       <location filename="../../CommandConstraints.cpp" line="3312"/>
       <source>The selected edge is not a valid line.</source>
-      <translation type="unfinished">The selected edge is not a valid line.</translation>
+      <translation>選択されたエッジは有効な直線ではありません。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3376"/>
@@ -2999,7 +2986,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="6319"/>
       <location filename="../../CommandConstraints.cpp" line="7022"/>
       <source>Select two or more compatible edges.</source>
-      <translation type="unfinished">Select two or more compatible edges.</translation>
+      <translation>複数の互換性のあるエッジを選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6324"/>
@@ -3016,7 +3003,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="6388"/>
       <location filename="../../CommandConstraints.cpp" line="6440"/>
       <source>Select two or more edges of similar type.</source>
-      <translation type="unfinished">Select two or more edges of similar type.</translation>
+      <translation>複数の同じタイプのエッジを選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6522"/>
@@ -3079,7 +3066,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="6999"/>
       <source>Sketch axes cannot be used in internal alignment constraint.</source>
-      <translation type="unfinished">Sketch axes cannot be used in internal alignment constraint.</translation>
+      <translation>スケッチ軸を内部配置拘束で使用することはできません。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7044"/>
@@ -3384,7 +3371,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="57"/>
       <source>Geometric</source>
-      <translation type="unfinished">Geometric</translation>
+      <translation>ジオメトリック</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="62"/>
@@ -3454,12 +3441,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="127"/>
       <source>Horizontal Distance</source>
-      <translation type="unfinished">Horizontal Distance</translation>
+      <translation>水平距離</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="132"/>
       <source>Vertical Distance</source>
-      <translation type="unfinished">Vertical Distance</translation>
+      <translation>垂直距離</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="137"/>
@@ -3489,12 +3476,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="162"/>
       <source>Snell's Law</source>
-      <translation type="unfinished">Snell's Law</translation>
+      <translation>スネルの法則</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="167"/>
       <source>Internal Alignment</source>
-      <translation type="unfinished">Internal Alignment</translation>
+      <translation>内部配置</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="186"/>
@@ -3504,17 +3491,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="189"/>
       <source>Check All</source>
-      <translation type="unfinished">Check All</translation>
+      <translation>すべてチェック</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="202"/>
       <source>Hides all the constraints in the list</source>
-      <translation type="unfinished">Hides all the constraints in the list</translation>
+      <translation>リスト内のすべての拘束を非表示</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="205"/>
       <source>Uncheck All</source>
-      <translation type="unfinished">Uncheck All</translation>
+      <translation>すべてのチェックを外す</translation>
     </message>
   </context>
   <context>
@@ -3542,12 +3529,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="72"/>
       <source>Internal alignments will be hidden</source>
-      <translation>内部アライメントは非表示になります</translation>
+      <translation>内部配置は非表示になります</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="75"/>
       <source>Hide internal alignment</source>
-      <translation>内部アライメントを非表示</translation>
+      <translation>内部配置を非表示</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="100"/>
@@ -4621,7 +4608,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="62"/>
       <source>Geometric</source>
-      <translation type="unfinished">Geometric</translation>
+      <translation>ジオメトリック</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="67"/>
@@ -4691,12 +4678,12 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="132"/>
       <source>Horizontal Distance</source>
-      <translation type="unfinished">Horizontal Distance</translation>
+      <translation>水平距離</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="137"/>
       <source>Vertical Distance</source>
-      <translation type="unfinished">Vertical Distance</translation>
+      <translation>垂直距離</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="142"/>
@@ -4726,22 +4713,22 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="167"/>
       <source>Snell's Law</source>
-      <translation type="unfinished">Snell's Law</translation>
+      <translation>スネルの法則</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="172"/>
       <source>Internal Alignment</source>
-      <translation type="unfinished">Internal Alignment</translation>
+      <translation>内部配置</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="177"/>
       <source>Multiple Filters</source>
-      <translation type="unfinished">Multiple Filters</translation>
+      <translation>複数フィルター</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="182"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>選択フィルター</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="187"/>
@@ -4756,7 +4743,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="210"/>
       <source>Select Multiple</source>
-      <translation type="unfinished">Select Multiple</translation>
+      <translation>複数選択</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="223"/>
@@ -4776,7 +4763,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="263"/>
       <source>Hides all the constraints in the list</source>
-      <translation type="unfinished">Hides all the constraints in the list</translation>
+      <translation>リスト内のすべての拘束を非表示</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="266"/>
@@ -5132,10 +5119,10 @@ This is purely based on topological shape of the sketch and not on its geometry/
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
-      <source>Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</source>
-      <translation type="unfinished">Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</translation>
+      <source>Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</source>
+      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -5160,7 +5147,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="115"/>
       <source>Finds invalid/malformed constrains in the sketch</source>
-      <translation type="unfinished">Finds invalid/malformed constrains in the sketch</translation>
+      <translation>スケッチ内に無効/不正な拘束があります。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="125"/>
@@ -5318,32 +5305,32 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2883"/>
       <source>Over-constrained: </source>
-      <translation type="unfinished">Over-constrained: </translation>
+      <translation>過剰拘束: </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2889"/>
       <source>Malformed constraints: </source>
-      <translation type="unfinished">Malformed constraints: </translation>
+      <translation>不正な拘束: </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2895"/>
       <source>Redundant constraints:</source>
-      <translation type="unfinished">Redundant constraints:</translation>
+      <translation>冗長な拘束:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2901"/>
       <source>Partially redundant:</source>
-      <translation type="unfinished">Partially redundant:</translation>
+      <translation>部分的に冗長:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2907"/>
       <source>Solver failed to converge</source>
-      <translation type="unfinished">Solver failed to converge</translation>
+      <translation>ソルバーの収束に失敗</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2912"/>
       <source>Under constrained:</source>
-      <translation type="unfinished">Under constrained:</translation>
+      <translation>拘束中:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
@@ -5353,7 +5340,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2917"/>
       <source>Fully constrained</source>
-      <translation type="unfinished">Fully constrained</translation>
+      <translation>完全拘束</translation>
     </message>
   </context>
   <context>
@@ -5460,7 +5447,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5706"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+      <translation>円または円弧の半径/直径を固定</translation>
     </message>
   </context>
   <context>
@@ -5477,7 +5464,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5705"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+      <translation>円または円弧の半径/直径を固定</translation>
     </message>
   </context>
   <context>
@@ -5616,7 +5603,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1144"/>
       <source>Create a rounded rectangle</source>
-      <translation type="unfinished">Create a rounded rectangle</translation>
+      <translation>角丸長方形を作成</translation>
     </message>
   </context>
   <context>
@@ -5657,7 +5644,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1136"/>
       <source>Create a rectangle</source>
-      <translation type="unfinished">Create a rectangle</translation>
+      <translation>長方形を作成</translation>
     </message>
   </context>
   <context>
@@ -5665,7 +5652,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1140"/>
       <source>Create a centered rectangle</source>
-      <translation type="unfinished">Create a centered rectangle</translation>
+      <translation>中心配置長方形を作成</translation>
     </message>
   </context>
   <context>
@@ -5789,6 +5776,19 @@ Select the method to attach this sketch to selected objects.</source>
     </message>
   </context>
   <context>
+    <name>Sketcher_ProfilesHexagon1</name>
+    <message>
+      <location filename="../../../Profiles.py" line="53"/>
+      <source>Creates a hexagonal profile</source>
+      <translation>六角形のプロファイルを作成</translation>
+    </message>
+    <message>
+      <location filename="../../../Profiles.py" line="58"/>
+      <source>Creates a hexagonal profile in the sketch</source>
+      <translation>スケッチに六角形のプロファイルを作成</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
       <location filename="../../Command.cpp" line="397"/>
@@ -5812,7 +5812,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="22"/>
       <source>DOF</source>
-      <translation type="unfinished">DOF</translation>
+      <translation>DOF</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="29"/>

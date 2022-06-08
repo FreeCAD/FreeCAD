@@ -461,7 +461,7 @@
           <property name="maximum">
            <double>9999.989999999999782</double>
           </property>
-          <property name="value">
+          <property name="rawValue">
            <double>1.000000000000000</double>
           </property>
           <property name="unit">

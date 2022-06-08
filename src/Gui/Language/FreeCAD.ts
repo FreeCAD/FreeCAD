@@ -221,9 +221,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Transform.cpp" line="104"/>
-        <location filename="../ViewProviderDragger.cpp" line="222"/>
         <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+        <location filename="../ViewProviderDragger.cpp" line="222"/>
+        <location filename="../Transform.cpp" line="104"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6881,9 +6881,9 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::MacroCommand</name>
     <message>
-        <location filename="../DlgToolbarsImp.cpp" line="92"/>
         <location filename="../DlgCommandsImp.cpp" line="92"/>
         <location filename="../DlgKeyboardImp.cpp" line="85"/>
+        <location filename="../DlgToolbarsImp.cpp" line="92"/>
         <source>Macros</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8620,8 +8620,8 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1207"/>
         <location filename="../MainWindow.cpp" line="547"/>
+        <location filename="../CommandDoc.cpp" line="1207"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9103,7 +9103,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SoFCColorBar.cpp" line="317"/>
+        <location filename="../SoFCColorBar.cpp" line="328"/>
         <source>Options...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10324,9 +10324,9 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="607"/>
         <location filename="../DocumentRecovery.cpp" line="389"/>
         <location filename="../MainWindow.cpp" line="1863"/>
+        <location filename="../CommandDoc.cpp" line="607"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11978,12 +11978,12 @@ Do you still want to proceed?</source>
 <context>
     <name>ViewIsometricCmd</name>
     <message>
-        <location filename="../NaviCube.cpp" line="1696"/>
+        <location filename="../NaviCube.cpp" line="1699"/>
         <source>Isometric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NaviCube.cpp" line="1697"/>
+        <location filename="../NaviCube.cpp" line="1700"/>
         <source>Set NaviCube to Isometric mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11991,12 +11991,12 @@ Do you still want to proceed?</source>
 <context>
     <name>ViewOrthographicCmd</name>
     <message>
-        <location filename="../NaviCube.cpp" line="1716"/>
+        <location filename="../NaviCube.cpp" line="1719"/>
         <source>Orthographic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NaviCube.cpp" line="1717"/>
+        <location filename="../NaviCube.cpp" line="1720"/>
         <source>Set View to Orthographic mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12004,12 +12004,12 @@ Do you still want to proceed?</source>
 <context>
     <name>ViewPerspectiveCmd</name>
     <message>
-        <location filename="../NaviCube.cpp" line="1737"/>
+        <location filename="../NaviCube.cpp" line="1740"/>
         <source>Perspective</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NaviCube.cpp" line="1738"/>
+        <location filename="../NaviCube.cpp" line="1741"/>
         <source>Set View to Perspective mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12017,12 +12017,12 @@ Do you still want to proceed?</source>
 <context>
     <name>ViewZoomToFitCmd</name>
     <message>
-        <location filename="../NaviCube.cpp" line="1758"/>
+        <location filename="../NaviCube.cpp" line="1761"/>
         <source>Zoom to fit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NaviCube.cpp" line="1759"/>
+        <location filename="../NaviCube.cpp" line="1762"/>
         <source>Zoom so that model fills the view</source>
         <translation type="unfinished"></translation>
     </message>

@@ -112,8 +112,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchStructure.py" line="700"/>
         <location filename="../../ArchWall.py" line="737"/>
+        <location filename="../../ArchStructure.py" line="700"/>
         <location filename="../../ArchPanel.py" line="433"/>
         <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
         <translation type="unfinished"></translation>
@@ -425,20 +425,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchFloor.py" line="204"/>
         <location filename="../../ArchBuildingPart.py" line="335"/>
+        <location filename="../../ArchFloor.py" line="204"/>
         <source>The height of this object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchFloor.py" line="206"/>
         <location filename="../../ArchBuildingPart.py" line="342"/>
+        <location filename="../../ArchFloor.py" line="206"/>
         <source>The computed floor area of this floor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchFloor.py" line="209"/>
         <location filename="../../ArchSectionPlane.py" line="915"/>
+        <location filename="../../ArchFloor.py" line="209"/>
         <source>The placement of this object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -850,9 +850,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchBuilding.py" line="276"/>
         <location filename="../../ArchBuildingPart.py" line="237"/>
         <location filename="../../ArchBuildingPart.py" line="261"/>
+        <location filename="../../ArchBuilding.py" line="276"/>
         <source>The type of this building</source>
         <translation type="unfinished"></translation>
     </message>
@@ -908,20 +908,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchSite.py" line="614"/>
         <location filename="../../ArchComponent.py" line="196"/>
+        <location filename="../../ArchSite.py" line="614"/>
         <source>Other shapes that are appended to this object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchSite.py" line="616"/>
         <location filename="../../ArchComponent.py" line="198"/>
+        <location filename="../../ArchSite.py" line="616"/>
         <source>Other shapes that are subtracted from this object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchSite.py" line="618"/>
         <location filename="../../ArchComponent.py" line="221"/>
+        <location filename="../../ArchSite.py" line="618"/>
         <source>The area of the projection of this object onto the XY plane</source>
         <translation type="unfinished"></translation>
     </message>
@@ -956,8 +956,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchSite.py" line="635"/>
         <location filename="../../ArchIFC.py" line="69"/>
+        <location filename="../../ArchSite.py" line="635"/>
         <source>The type of this object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1761,15 +1761,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ArchSectionPlane.py" line="1264"/>
         <location filename="../../ArchPanel.py" line="839"/>
         <location filename="../../ArchPanel.py" line="941"/>
-        <location filename="../../ArchSectionPlane.py" line="1264"/>
         <source>The linked object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchPanel.py" line="841"/>
         <location filename="../../ArchSectionPlane.py" line="1274"/>
+        <location filename="../../ArchPanel.py" line="841"/>
         <source>The line width of the rendered objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2308,8 +2308,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchStructure.py" line="341"/>
         <location filename="../../ArchWall.py" line="374"/>
+        <location filename="../../ArchStructure.py" line="341"/>
         <source>Next point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2324,38 +2324,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchStructure.py" line="444"/>
         <location filename="../../ArchCommands.py" line="1645"/>
         <location filename="../../ArchProfile.py" line="146"/>
+        <location filename="../../ArchStructure.py" line="444"/>
         <source>Category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchStructure.py" line="451"/>
         <location filename="../../ArchWindow.py" line="404"/>
         <location filename="../../ArchProfile.py" line="153"/>
+        <location filename="../../ArchStructure.py" line="451"/>
         <source>Preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ArchCommands.py" line="1020"/>
+        <location filename="../../ArchWall.py" line="491"/>
         <location filename="../../ArchStructure.py" line="460"/>
         <location filename="../../ArchPrecast.py" line="1394"/>
-        <location filename="../../ArchWall.py" line="491"/>
-        <location filename="../../ArchCommands.py" line="1020"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ArchWall.py" line="497"/>
         <location filename="../../ArchStructure.py" line="470"/>
         <location filename="../../ArchPrecast.py" line="1395"/>
-        <location filename="../../ArchWall.py" line="497"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ArchWall.py" line="503"/>
         <location filename="../../ArchStructure.py" line="477"/>
         <location filename="../../ArchPrecast.py" line="1396"/>
-        <location filename="../../ArchWall.py" line="503"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2370,8 +2370,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchStructure.py" line="493"/>
         <location filename="../../ArchWall.py" line="517"/>
+        <location filename="../../ArchStructure.py" line="493"/>
         <source>Con&amp;tinue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2381,8 +2381,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchStructure.py" line="790"/>
         <location filename="../../ArchWall.py" line="942"/>
+        <location filename="../../ArchStructure.py" line="790"/>
         <source>This mesh is an invalid solid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2636,8 +2636,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchPrecast.py" line="1400"/>
         <location filename="../../ArchWindow.py" line="1743"/>
+        <location filename="../../ArchPrecast.py" line="1400"/>
         <source>Offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2768,21 +2768,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchWindow.py" line="1731"/>
-        <location filename="../../ArchAxisSystem.py" line="356"/>
-        <location filename="../../ArchAxis.py" line="779"/>
-        <location filename="../../ArchSpace.py" line="790"/>
         <location filename="../../ArchComponent.py" line="1941"/>
+        <location filename="../../ArchAxisSystem.py" line="356"/>
+        <location filename="../../ArchSpace.py" line="790"/>
         <location filename="../../ArchSectionPlane.py" line="1502"/>
+        <location filename="../../ArchWindow.py" line="1731"/>
+        <location filename="../../ArchAxis.py" line="779"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchWindow.py" line="1732"/>
-        <location filename="../../ArchAxisSystem.py" line="357"/>
-        <location filename="../../ArchAxis.py" line="780"/>
-        <location filename="../../ArchSpace.py" line="784"/>
         <location filename="../../ArchComponent.py" line="1942"/>
+        <location filename="../../ArchAxisSystem.py" line="357"/>
+        <location filename="../../ArchSpace.py" line="784"/>
+        <location filename="../../ArchWindow.py" line="1732"/>
+        <location filename="../../ArchAxis.py" line="780"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2808,8 +2808,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchWindow.py" line="1737"/>
         <location filename="../../ArchComponent.py" line="1949"/>
+        <location filename="../../ArchWindow.py" line="1737"/>
         <source>Components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2819,23 +2819,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchWindow.py" line="1739"/>
         <location filename="../../ArchMaterial.py" line="826"/>
         <location filename="../../ArchMaterial.py" line="845"/>
+        <location filename="../../ArchWindow.py" line="1739"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchWindow.py" line="1740"/>
-        <location filename="../../ArchCommands.py" line="1647"/>
         <location filename="../../ArchComponent.py" line="2001"/>
+        <location filename="../../ArchCommands.py" line="1647"/>
+        <location filename="../../ArchWindow.py" line="1740"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchWindow.py" line="1742"/>
         <location filename="../../ArchMaterial.py" line="826"/>
         <location filename="../../ArchMaterial.py" line="845"/>
+        <location filename="../../ArchWindow.py" line="1742"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2881,10 +2881,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../importJSON.py" line="61"/>
+        <location filename="../../importWebGL.py" line="873"/>
         <location filename="../../importOBJ.py" line="249"/>
         <location filename="../../importOBJ.py" line="272"/>
-        <location filename="../../importWebGL.py" line="873"/>
+        <location filename="../../importJSON.py" line="61"/>
         <source>Successfully written</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2927,9 +2927,9 @@ Floor creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ArchComponent.py" line="1948"/>
         <location filename="../../ArchAxisSystem.py" line="355"/>
         <location filename="../../ArchAxis.py" line="778"/>
-        <location filename="../../ArchComponent.py" line="1948"/>
         <source>Axes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2998,9 +2998,9 @@ Floor creation aborted.</source>
     </message>
     <message>
         <location filename="../../import3DS.py" line="83"/>
+        <location filename="../../importSH3D.py" line="70"/>
         <location filename="../../importIFClegacy.py" line="821"/>
         <location filename="../../importDAE.py" line="126"/>
-        <location filename="../../importSH3D.py" line="70"/>
         <source>Error: Couldn&apos;t determine character encoding</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3017,9 +3017,9 @@ Floor creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="243"/>
-        <location filename="../../ArchSpace.py" line="250"/>
         <location filename="../../ArchComponent.py" line="1656"/>
+        <location filename="../../ArchSpace.py" line="250"/>
+        <location filename="../../ArchRoof.py" line="243"/>
         <source>Please select a base object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3390,8 +3390,8 @@ Site creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchWall.py" line="511"/>
         <location filename="../../ArchSectionPlane.py" line="1516"/>
+        <location filename="../../ArchWall.py" line="511"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3503,9 +3503,9 @@ Site creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ArchSectionPlane.py" line="104"/>
         <location filename="../../ArchPanel.py" line="109"/>
         <location filename="../../ArchPanel.py" line="121"/>
-        <location filename="../../ArchSectionPlane.py" line="104"/>
         <source>View of</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3606,9 +3606,9 @@ Site creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1019"/>
         <location filename="../../ArchSchedule.py" line="584"/>
         <location filename="../../ArchSchedule.py" line="602"/>
+        <location filename="../../ArchCommands.py" line="1019"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3623,8 +3623,8 @@ Site creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1110"/>
         <location filename="../../ArchSchedule.py" line="539"/>
+        <location filename="../../ArchCommands.py" line="1110"/>
         <source>Export CSV File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3691,17 +3691,17 @@ Site creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1648"/>
         <location filename="../../ArchComponent.py" line="2002"/>
         <location filename="../../ArchSchedule.py" line="584"/>
         <location filename="../../ArchSchedule.py" line="602"/>
+        <location filename="../../ArchCommands.py" line="1648"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1649"/>
         <location filename="../../ArchSchedule.py" line="584"/>
         <location filename="../../ArchSchedule.py" line="602"/>
+        <location filename="../../ArchCommands.py" line="1649"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6280,8 +6280,8 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-ifc.ui" line="35"/>
         <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+        <location filename="../ui/preferences-ifc.ui" line="35"/>
         <source>General options</source>
         <translation type="unfinished"></translation>
     </message>

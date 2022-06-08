@@ -732,16 +732,19 @@ void TaskPostDataAlongLine::on_VectorMode_activated(int i) {
 }
 
 std::string TaskPostDataAlongLine::Plot() {
-    return "import FreeCAD\n\
+    auto xlabel = tr("Length", "X-Axis plot label");
+    std::ostringstream oss;
+    oss << "import FreeCAD\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
 plt.figure(1)\n\
 plt.plot(x, y)\n\
-plt.xlabel(\"Length\")\n\
+plt.xlabel(\"" << xlabel.toStdString() << "\")\n\
 plt.ylabel(title)\n\
 plt.title(title)\n\
 plt.grid()\n\
 plt.show()\n";
+    return oss.str();
 }
 
 // ***************************************************************************

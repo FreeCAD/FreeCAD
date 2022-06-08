@@ -2,25 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="en">
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation>Netz ausbreiten</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Eine ebene Darstellung eines Netzes finden.</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation>Fläche ausbreiten</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -531,6 +512,25 @@ Wähle bitte eine andere Form aus.</translation>
       <location filename="../../Tessellation.cpp" line="256"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Wählen Sie zuerst eine Form für die Vernetzung.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>Netz ausbreiten</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Eine ebene Darstellung eines Netzes finden.</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>Fläche ausbreiten</translation>
     </message>
   </context>
   <context>

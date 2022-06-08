@@ -5735,10 +5735,10 @@ It will create a &apos;Compound Filter&apos; for each shape.</source>
 <context>
     <name>Part_SplitFeatures</name>
     <message>
-        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
         <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
         <location filename="../../../BOPTools/SplitFeatures.py" line="302"/>
         <location filename="../../../BOPTools/SplitFeatures.py" line="496"/>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5848,8 +5848,8 @@ A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</sour
     <message>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-        <location filename="../../ViewProvider.cpp" line="50"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="66"/>
+        <location filename="../../ViewProvider.cpp" line="50"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5934,20 +5934,20 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="82"/>
         <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+        <location filename="../../TaskAttacher.cpp" line="82"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="85"/>
         <location filename="../../TaskCheckGeometry.cpp" line="88"/>
+        <location filename="../../TaskAttacher.cpp" line="85"/>
         <source>Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="88"/>
         <location filename="../../TaskCheckGeometry.cpp" line="89"/>
+        <location filename="../../TaskAttacher.cpp" line="88"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>

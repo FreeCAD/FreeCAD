@@ -4,175 +4,6 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../draftobjects/block.py" line="43"/>
-      <source>The components of this block</source>
-      <translation>Los componentes de este bloque</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/facebinder.py" line="43"/>
-      <source>Linked faces</source>
-      <translation>Caras vinculadas</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/facebinder.py" line="46"/>
-      <source>Specifies if splitter lines must be removed</source>
-      <translation>Especifica si las líneas del separador deben ser eliminadas</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/facebinder.py" line="49"/>
-      <source>An optional extrusion value to be applied to all faces</source>
-      <translation>Un valor de extrusión opcional que se aplicará a todas las caras</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/facebinder.py" line="52"/>
-      <source>An optional offset value to be applied to all faces</source>
-      <translation>Un valor opcional de desplazamiento a aplicar a todas las caras</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/facebinder.py" line="55"/>
-      <source>This specifies if the shapes sew</source>
-      <translation>Especifica si las formas se cosen</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/facebinder.py" line="58"/>
-      <source>The area of the faces of this Facebinder</source>
-      <translation>El área de las caras de este Facebinder</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="45"/>
-      <source>Start angle of the elliptical arc</source>
-      <translation>Ángulo inicial del arco elíptico</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="49"/>
-      <source>End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</source>
-      <translation>Ángulo final del arco elíptico
-
-                 (para un círculo completo, darle el mismo valor de Primer Ángulo)</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="52"/>
-      <source>Minor radius of the ellipse</source>
-      <translation>Radio menor de la elipse</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="55"/>
-      <source>Major radius of the ellipse</source>
-      <translation>Radio mayor de la elipse</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="58"/>
-      <location filename="../../draftobjects/circle.py" line="58"/>
-      <location filename="../../draftobjects/polygon.py" line="68"/>
-      <location filename="../../draftobjects/rectangle.py" line="58"/>
-      <source>Create a face</source>
-      <translation>Crear una cara</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="61"/>
-      <source>Area of this object</source>
-      <translation>Área de este objeto</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/wpproxy.py" line="42"/>
-      <source>The placement of this object</source>
-      <translation>La posición de este objeto</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="66"/>
-      <source>The linked object</source>
-      <translation>El objeto vinculado</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="73"/>
-      <source>Projection direction</source>
-      <translation>Dirección de proyección</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="80"/>
-      <source>The width of the lines inside this object</source>
-      <translation>El ancho de las líneas dentro de este objeto</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="88"/>
-      <source>The size of the texts inside this object</source>
-      <translation>El tamaño de los textos dentro de este objeto</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="96"/>
-      <source>The spacing between lines of text</source>
-      <translation>El espaciado entre líneas de texto</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="103"/>
-      <source>The color of the projected objects</source>
-      <translation>El color de los objetos proyectados</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="110"/>
-      <source>Shape Fill Style</source>
-      <translation>Estilo de relleno de forma</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="118"/>
-      <source>Line Style</source>
-      <translation>Estilo de línea</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/drawingview.py" line="127"/>
-      <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation>Si está marcada, se muestran los objetos de origen sin importar si son visibles en el modelo 3D</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bspline.py" line="46"/>
-      <source>The points of the B-spline</source>
-      <translation>Los puntos de la spolilínea-B</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bspline.py" line="50"/>
-      <source>If the B-spline is closed or not</source>
-      <translation>Si la spolilínea-B es cerrada o no</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bspline.py" line="54"/>
-      <source>Create a face if this spline is closed</source>
-      <translation>Crear una cara si esta spolilínea está cerrada</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bspline.py" line="57"/>
-      <location filename="../../draftobjects/circle.py" line="62"/>
-      <location filename="../../draftobjects/wire.py" line="93"/>
-      <location filename="../../draftobjects/polygon.py" line="72"/>
-      <location filename="../../draftobjects/bezcurve.py" line="70"/>
-      <location filename="../../draftobjects/rectangle.py" line="67"/>
-      <source>The area of this object</source>
-      <translation>El área de éste objeto</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bspline.py" line="67"/>
-      <source>Parameterization factor</source>
-      <translation>Factor de parametrización</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/circle.py" line="45"/>
-      <source>Start angle of the arc</source>
-      <translation>Ángulo inicial del arco</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/circle.py" line="50"/>
-      <source>End angle of the arc (for a full circle, 
-                give it same value as First Angle)</source>
-      <translation>Ángulo final del arco (para un círculo completo, 
-                darle el mismo valor de Primer ángulo)</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/circle.py" line="54"/>
-      <source>Radius of the circle</source>
-      <translation>Radio del círculo</translation>
-    </message>
-    <message>
       <location filename="../../draftobjects/wire.py" line="49"/>
       <source>The vertices of the wire</source>
       <translation>Los vértices del alambre</translation>
@@ -209,15 +40,15 @@
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="77"/>
-      <location filename="../../draftobjects/polygon.py" line="60"/>
       <location filename="../../draftobjects/rectangle.py" line="52"/>
+      <location filename="../../draftobjects/polygon.py" line="60"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Radio usado para el redondeo de las esquinas</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="81"/>
-      <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
+      <location filename="../../draftobjects/polygon.py" line="64"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Tamaño del biselado para dar a las esquinas</translation>
     </message>
@@ -232,19 +63,14 @@
       <translation>El número de subdivisiones de cada arista</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="48"/>
-      <source>Number of faces</source>
-      <translation>Número de caras</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/polygon.py" line="52"/>
-      <source>Radius of the control circle</source>
-      <translation>Radio del círculo de control</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/polygon.py" line="56"/>
-      <source>How the polygon must be drawn from the control circle</source>
-      <translation>Cómo se trazará el polígono desde el círculo de control</translation>
+      <location filename="../../draftobjects/bezcurve.py" line="70"/>
+      <location filename="../../draftobjects/circle.py" line="62"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
+      <location filename="../../draftobjects/wire.py" line="93"/>
+      <location filename="../../draftobjects/rectangle.py" line="67"/>
+      <location filename="../../draftobjects/polygon.py" line="72"/>
+      <source>The area of this object</source>
+      <translation>El área de éste objeto</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="65"/>
@@ -352,23 +178,6 @@ Para 'Posición', 'Longitud' y 'Área' estas propiedades se extraerán de lo pri
 o desde el subelemento 'VerticeN', 'AristaN', o 'CaraN', respectivamente, si es indicado.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="46"/>
-      <source>The objects included in this clone</source>
-      <translation>Los objetos incluidos en este clon</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/clone.py" line="51"/>
-      <source>The scale factor of this clone</source>
-      <translation>El factor de escala de este clon</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/clone.py" line="57"/>
-      <source>If Clones includes several objects,
-set True for fusion or False for compound</source>
-      <translation>Si los clones incluyen varios objetos,
-establezca True para la fusión o False para el compuesto</translation>
-    </message>
-    <message>
       <location filename="../../draftobjects/hatch.py" line="46"/>
       <source>The base object used by this object</source>
       <translation>El objeto base usado por este objeto</translation>
@@ -399,137 +208,74 @@ establezca True para la fusión o False para el compuesto</translation>
       <translation>Si se establece en False, el rayado se aplica como es a las caras, sin traslación (esto podría dar resultados incorrectos para caras que no sean ortogonales)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draftlink.py" line="99"/>
-      <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation>Forzar sincronización de patrones incluso cuando se expanden elementos de matriz</translation>
+      <location filename="../../draftobjects/drawingview.py" line="66"/>
+      <source>The linked object</source>
+      <translation>El objeto vinculado</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draftlink.py" line="112"/>
-      <source>Show the individual array elements</source>
-      <translation>Mostrar los elementos individuales de la matriz</translation>
+      <location filename="../../draftobjects/drawingview.py" line="73"/>
+      <source>Projection direction</source>
+      <translation>Dirección de proyección</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="82"/>
-      <location filename="../../draftobjects/patharray.py" line="169"/>
-      <source>The base object that will be duplicated</source>
-      <translation>El objeto base que debe ser duplicado</translation>
+      <location filename="../../draftobjects/drawingview.py" line="80"/>
+      <source>The width of the lines inside this object</source>
+      <translation>El ancho de las líneas dentro de este objeto</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="98"/>
-      <source>The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation>El tipo de matriz a crear.
-- Orto: coloca las copias en la dirección de los ejes X, Y, Z globales.
-- Polar: coloca las copias a lo largo de un arco circular, hasta un ángulo especificado, y con cierta orientación definida por un centro y un eje.
-- Circular: coloca las copias en capas circulares concéntricas alrededor del objeto base.</translation>
+      <location filename="../../draftobjects/drawingview.py" line="88"/>
+      <source>The size of the texts inside this object</source>
+      <translation>El tamaño de los textos dentro de este objeto</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="109"/>
-      <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation>Especifica si las copias deben ser fusionadas si se tocan entre sí (más lento)</translation>
+      <location filename="../../draftobjects/drawingview.py" line="96"/>
+      <source>The spacing between lines of text</source>
+      <translation>El espaciado entre líneas de texto</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="122"/>
-      <source>Number of copies in X direction</source>
-      <translation>Número de copias en dirección X</translation>
+      <location filename="../../draftobjects/drawingview.py" line="103"/>
+      <source>The color of the projected objects</source>
+      <translation>El color de los objetos proyectados</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="131"/>
-      <source>Number of copies in Y direction</source>
-      <translation>Número de copias en dirección Y</translation>
+      <location filename="../../draftobjects/drawingview.py" line="110"/>
+      <source>Shape Fill Style</source>
+      <translation>Estilo de relleno de forma</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="140"/>
-      <source>Number of copies in Z direction</source>
-      <translation>Número de copias en dirección Z</translation>
+      <location filename="../../draftobjects/drawingview.py" line="118"/>
+      <source>Line Style</source>
+      <translation>Estilo de línea</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="150"/>
-      <source>Distance and orientation of intervals in X direction</source>
-      <translation>Distancia y orientación de los intervalos en dirección X</translation>
+      <location filename="../../draftobjects/drawingview.py" line="127"/>
+      <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
+      <translation>Si está marcada, se muestran los objetos de origen sin importar si son visibles en el modelo 3D</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="160"/>
-      <source>Distance and orientation of intervals in Y direction</source>
-      <translation>Distancia y orientación de los intervalos en dirección Y</translation>
+      <location filename="../../draftobjects/circle.py" line="45"/>
+      <source>Start angle of the arc</source>
+      <translation>Ángulo inicial del arco</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="170"/>
-      <source>Distance and orientation of intervals in Z direction</source>
-      <translation>Distancia y orientación de los intervalos en dirección Z</translation>
+      <location filename="../../draftobjects/circle.py" line="50"/>
+      <source>End angle of the arc (for a full circle, 
+                give it same value as First Angle)</source>
+      <translation>Ángulo final del arco (para un círculo completo, 
+                darle el mismo valor de Primer ángulo)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="185"/>
-      <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation>La dirección de el eje alrededor del cual se crearán los elementos en una matriz polar o circular</translation>
+      <location filename="../../draftobjects/circle.py" line="54"/>
+      <source>Radius of the circle</source>
+      <translation>Radio del círculo</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="196"/>
-      <source>Center point for polar and circular arrays.
-The 'Axis' passes through this point.</source>
-      <translation>Punto del centro para matrices polares y circulares.
-El 'Eje' pasa por este punto.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="215"/>
-      <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation>El objeto eje que anula el valor de 'Eje' y 'Centro', por ejemplo, una línea de referencia.
-Su ubicación, posición y rotación se utilizarán para crear matrices polares y circulares.
-Deja esta propiedad vacía para poder configurar manualmente 'Eje' y 'Centro'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="228"/>
-      <source>Number of copies in the polar direction</source>
-      <translation>Número de copias en la dirección polar</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="238"/>
-      <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation>Distancia y orientación de los intervalos en dirección 'Eje'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="247"/>
-      <source>Angle to cover with copies</source>
-      <translation>Ángulo para cubrir con las copias</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="260"/>
-      <source>Distance between circular layers</source>
-      <translation>Distancia entre capas circulares</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="270"/>
-      <source>Distance between copies in the same circular layer</source>
-      <translation>Distancia entre copias en la misma capa circular</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="280"/>
-      <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation>Número de capas circulares. El objeto 'Base' cuenta como una capa.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="291"/>
-      <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation>Un parámetro que determina cuántos planos de simetría tendrá la matriz circular.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="309"/>
-      <source>Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation>Número total de elementos en la matriz.
-Esta propiedad es solo de lectura, ya que el número depende de los parámetros de la matriz.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="320"/>
-      <location filename="../../draftobjects/pointarray.py" line="112"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
-      <location filename="../../draftobjects/patharray.py" line="208"/>
-      <source>Show the individual array elements (only for Link arrays)</source>
-      <translation>Muestra los elementos individuales de la matriz (sólo para matrices de Enlace)</translation>
+      <location filename="../../draftobjects/ellipse.py" line="58"/>
+      <location filename="../../draftobjects/circle.py" line="58"/>
+      <location filename="../../draftobjects/rectangle.py" line="58"/>
+      <location filename="../../draftobjects/polygon.py" line="68"/>
+      <source>Create a face</source>
+      <translation>Crear una cara</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="46"/>
@@ -557,49 +303,33 @@ Esta propiedad es solo de lectura, ya que el número depende de los parámetros 
       <translation>Rellena letras con caras</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="47"/>
-      <source>The start point of this line.</source>
-      <translation>El punto inicial de esta línea.</translation>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="86"/>
+      <source>The base object that will be duplicated.</source>
+      <translation>El objeto base que será duplicado.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="55"/>
-      <source>The end point of this line.</source>
-      <translation>El punto final de esta línea.</translation>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
+      <location filename="../../draftobjects/patharray.py" line="177"/>
+      <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
+      <translation>El objeto a lo largo del cual se distribuirán las copias. Debe contener 'Aristas'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="63"/>
-      <source>The length of this line.</source>
-      <translation>La longitud de esta línea.</translation>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="100"/>
+      <source>Number of copies to create.</source>
+      <translation>Número de copias a crear.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="71"/>
-      <source>Radius to use to fillet the corner.</source>
-      <translation>Radio para redondeo las esquinas.</translation>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="107"/>
+      <source>Rotation factor of the twisted array.</source>
+      <translation>Factor de rotación de la matriz retorcida.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="79"/>
-      <source>Base object that will be duplicated</source>
-      <translation>Objeto ha ser duplicado</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/pointarray.py" line="87"/>
-      <source>Object containing points used to distribute the base object, for example, a sketch or a Part compound.
-The sketch or compound must contain at least one explicit point or vertex object.</source>
-      <translation>Objeto conteniendo puntos utilizados para distribuir el objeto, por ejemplo, un boceto o una parte compuesta.
-El boceto o componente debe contener al menos un punto explícito o un vértice.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/pointarray.py" line="95"/>
-      <source>Total number of elements in the array.
-This property is read-only, as the number depends on the points contained within 'Point Object'.</source>
-      <translation>Número total de elementos en la matriz.
-Esta propiedad es de solo lectura, así que el número depende de los puntos contenidos en el 'Objeto Punto'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/pointarray.py" line="104"/>
-      <location filename="../../draftobjects/pointarray.py" line="140"/>
-      <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation>Posición, cambio y rotación adicionales, que se aplicará a cada copia</translation>
+      <location filename="../../draftobjects/array.py" line="320"/>
+      <location filename="../../draftobjects/pointarray.py" line="112"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
+      <location filename="../../draftobjects/patharray.py" line="208"/>
+      <source>Show the individual array elements (only for Link arrays)</source>
+      <translation>Muestra los elementos individuales de la matriz (sólo para matrices de Enlace)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="83"/>
@@ -622,140 +352,51 @@ Al usar un estilo guardado, algunas de las propiedades de la vista se convertir�
 sólo serán editables cambiando el estilo a través de la herramienta 'Editor de estilo de anotación'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="86"/>
-      <source>The base object that will be duplicated.</source>
-      <translation>El objeto base que será duplicado.</translation>
+      <location filename="../../draftobjects/draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation>Forzar sincronización de patrones incluso cuando se expanden elementos de matriz</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
-      <location filename="../../draftobjects/patharray.py" line="177"/>
-      <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation>El objeto a lo largo del cual se distribuirán las copias. Debe contener 'Aristas'.</translation>
+      <location filename="../../draftobjects/draftlink.py" line="112"/>
+      <source>Show the individual array elements</source>
+      <translation>Mostrar los elementos individuales de la matriz</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="100"/>
-      <source>Number of copies to create.</source>
-      <translation>Número de copias a crear.</translation>
+      <location filename="../../draftobjects/clone.py" line="46"/>
+      <source>The objects included in this clone</source>
+      <translation>Los objetos incluidos en este clon</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="107"/>
-      <source>Rotation factor of the twisted array.</source>
-      <translation>Factor de rotación de la matriz retorcida.</translation>
+      <location filename="../../draftobjects/clone.py" line="51"/>
+      <source>The scale factor of this clone</source>
+      <translation>El factor de escala de este clon</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="192"/>
-      <source>List of connected edges in the 'Path Object'.
-If these are present, the copies will be created along these subelements only.
-Leave this property empty to create copies along the entire 'Path Object'.</source>
-      <translation>Lista de aristas conectadas en el 'Objeto de Trayectoria'.
-Si están presentes, las copias serán creadas únicamente a lo largo de estos subelementos.
-Deja esta propiedad vacía para crear copias a lo largo del 'Objeto Ruta'.</translation>
+      <location filename="../../draftobjects/clone.py" line="57"/>
+      <source>If Clones includes several objects,
+set True for fusion or False for compound</source>
+      <translation>Si los clones incluyen varios objetos,
+establezca True para la fusión o False para el compuesto</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="200"/>
-      <source>Number of copies to create</source>
-      <translation>Número de copias a crear</translation>
+      <location filename="../../draftobjects/bspline.py" line="46"/>
+      <source>The points of the B-spline</source>
+      <translation>Los puntos de la spolilínea-B</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="219"/>
-      <source>Additional translation that will be applied to each copy.
-This is useful to adjust for the difference between shape centre and shape reference point.</source>
-      <translation>Traslación adicional que será aplicada a cada copia.
-Esto es útil para ajustar la diferencia entre el centro de la forma y el punto de referencia de la forma.</translation>
+      <location filename="../../draftobjects/bspline.py" line="50"/>
+      <source>If the B-spline is closed or not</source>
+      <translation>Si la spolilínea-B es cerrada o no</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="227"/>
-      <source>Alignment vector for 'Tangent' mode</source>
-      <translation>Vector de alineación para modo 'tangente'</translation>
+      <location filename="../../draftobjects/bspline.py" line="54"/>
+      <source>Create a face if this spline is closed</source>
+      <translation>Crear una cara si esta spolilínea está cerrada</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="235"/>
-      <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation>Forzar el uso de 'Vector vertical' como dirección Z local al usar el modo de alineación 'Original' o 'Tangente'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="243"/>
-      <source>Direction of the local Z axis when 'Force Vertical' is true</source>
-      <translation>Dirección del eje Z local cuando 'Forzar Vertical' es verdadero</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="251"/>
-      <source>Method to orient the copies along the path.
-- Original: X is curve tangent, Y is normal, and Z is the cross product.
-- Frenet: aligns the object following the local coordinate system along the path.
-- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
-
-To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
-      <translation>Método para orientar las copias a lo largo de la trayectoria.
-- Original: X es tangente de curva, Y es normal, y Z es el producto cruzado.
-- Frenet: alinea el objeto siguiendo el sistema de coordenadas local a lo largo de la trayectoria.
-- Tangente: similar a 'Original' pero el eje X local está pre-alineado a 'Vector Tangente'.
-
-Para obtener mejores resultados con 'Original' o 'Tangente' es posible que tengas que ajustar 'Forzar Vertical' a 'verdadero'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="262"/>
-      <source>Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation>Orientar las copias a lo largo de la trayectoria dependiendo del 'Modo Alinear'.
-De lo contrario, las copias tendrán la misma orientación que el objeto base original.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/point.py" line="45"/>
-      <source>X Location</source>
-      <translation>Posición X</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/point.py" line="48"/>
-      <source>Y Location</source>
-      <translation>Posición Y</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/point.py" line="51"/>
-      <source>Z Location</source>
-      <translation>Posición Z</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/text.py" line="54"/>
-      <source>The placement of the base point of the first line</source>
-      <translation>Ubicación del punto base de la primera línea</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/text.py" line="66"/>
-      <source>The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation>El texto mostrado por este objeto.
-Es un listado; donde cada elemento de la lista se mostrará en su propia línea.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="46"/>
-      <source>The points of the Bezier curve</source>
-      <translation>Puntos de la curva de Bézier</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="50"/>
-      <source>The degree of the Bezier function</source>
-      <translation>Grado de la función de Bézier</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="54"/>
-      <source>Continuity</source>
-      <translation>Continuidad</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="58"/>
-      <source>If the Bezier curve should be closed or not</source>
-      <translation>Si la curva de Bézier será cerrada o no</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="62"/>
-      <source>Create a face if this curve is closed</source>
-      <translation>Crear una cara si esta curva es cerrada</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="66"/>
-      <source>The length of this object</source>
-      <translation>La longitud de este objeto</translation>
+      <location filename="../../draftobjects/bspline.py" line="67"/>
+      <source>Parameterization factor</source>
+      <translation>Factor de parametrización</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="57"/>
@@ -832,9 +473,19 @@ Es un listado; donde cada elemento de la lista se mostrará en su propia línea.
       <translation>Este objeto será recalculado sólo si es Verdadero.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="59"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Los objetos que son parte de esta capa</translation>
+      <location filename="../../draftobjects/point.py" line="45"/>
+      <source>X Location</source>
+      <translation>Posición X</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/point.py" line="48"/>
+      <source>Y Location</source>
+      <translation>Posición Y</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/point.py" line="51"/>
+      <source>Z Location</source>
+      <translation>Posición Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="46"/>
@@ -855,6 +506,86 @@ Es un listado; donde cada elemento de la lista se mostrará en su propia línea.
       <location filename="../../draftobjects/rectangle.py" line="64"/>
       <source>Vertical subdivisions of this rectangle</source>
       <translation>Subdivisiones verticales de éste rectángulo</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="43"/>
+      <source>Linked faces</source>
+      <translation>Caras vinculadas</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="46"/>
+      <source>Specifies if splitter lines must be removed</source>
+      <translation>Especifica si las líneas del separador deben ser eliminadas</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="49"/>
+      <source>An optional extrusion value to be applied to all faces</source>
+      <translation>Un valor de extrusión opcional que se aplicará a todas las caras</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="52"/>
+      <source>An optional offset value to be applied to all faces</source>
+      <translation>Un valor opcional de desplazamiento a aplicar a todas las caras</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="55"/>
+      <source>This specifies if the shapes sew</source>
+      <translation>Especifica si las formas se cosen</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/facebinder.py" line="58"/>
+      <source>The area of the faces of this Facebinder</source>
+      <translation>El área de las caras de este Facebinder</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/polygon.py" line="48"/>
+      <source>Number of faces</source>
+      <translation>Número de caras</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/polygon.py" line="52"/>
+      <source>Radius of the control circle</source>
+      <translation>Radio del círculo de control</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/polygon.py" line="56"/>
+      <source>How the polygon must be drawn from the control circle</source>
+      <translation>Cómo se trazará el polígono desde el círculo de control</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/block.py" line="43"/>
+      <source>The components of this block</source>
+      <translation>Los componentes de este bloque</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/fillet.py" line="47"/>
+      <source>The start point of this line.</source>
+      <translation>El punto inicial de esta línea.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/fillet.py" line="55"/>
+      <source>The end point of this line.</source>
+      <translation>El punto final de esta línea.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/fillet.py" line="63"/>
+      <source>The length of this line.</source>
+      <translation>La longitud de esta línea.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/fillet.py" line="71"/>
+      <source>Radius to use to fillet the corner.</source>
+      <translation>Radio para redondeo las esquinas.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wpproxy.py" line="42"/>
+      <source>The placement of this object</source>
+      <translation>La posición de este objeto</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/layer.py" line="59"/>
+      <source>The objects that are part of this layer</source>
+      <translation>Los objetos que son parte de esta capa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="137"/>
@@ -992,90 +723,302 @@ Esta propiedad es de solo lectura porque el valor se calcula desde
 las propiedades de 'Primer ángulo' y 'Último ángulo'.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="115"/>
-      <location filename="../../draftviewproviders/view_label.py" line="177"/>
-      <source>Line width</source>
-      <translation>Espesor de Línea</translation>
+      <location filename="../../draftobjects/ellipse.py" line="45"/>
+      <source>Start angle of the elliptical arc</source>
+      <translation>Ángulo inicial del arco elíptico</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="122"/>
-      <location filename="../../draftviewproviders/view_label.py" line="186"/>
-      <source>Line color</source>
-      <translation>Color de línea</translation>
+      <location filename="../../draftobjects/ellipse.py" line="49"/>
+      <source>End angle of the elliptical arc 
+
+                (for a full circle, give it same value as First Angle)</source>
+      <translation>Ángulo final del arco elíptico
+
+                 (para un círculo completo, darle el mismo valor de Primer Ángulo)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="67"/>
-      <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation>Si es verdadero, los objetos contenidos en esta capa adoptarán el color de línea de la capa</translation>
+      <location filename="../../draftobjects/ellipse.py" line="52"/>
+      <source>Minor radius of the ellipse</source>
+      <translation>Radio menor de la elipse</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="78"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation>Si es verdadero, los objetos contenidos en esta capa adoptarán el color de la forma de la capa</translation>
+      <location filename="../../draftobjects/ellipse.py" line="55"/>
+      <source>Major radius of the ellipse</source>
+      <translation>Radio mayor de la elipse</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="89"/>
-      <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation>Si es verdadero, el color de impresión se utilizará cuando los objetos de esta capa se coloquen en una página de TechDraw</translation>
+      <location filename="../../draftobjects/ellipse.py" line="61"/>
+      <source>Area of this object</source>
+      <translation>Área de este objeto</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="103"/>
-      <source>The line color of the objects contained within this layer</source>
-      <translation>El color de línea de los objetos contenidos en esta capa</translation>
+      <location filename="../../draftobjects/text.py" line="54"/>
+      <source>The placement of the base point of the first line</source>
+      <translation>Ubicación del punto base de la primera línea</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="117"/>
-      <source>The shape color of the objects contained within this layer</source>
-      <translation>El color de la forma de los objetos contenidos en esta capa</translation>
+      <location filename="../../draftobjects/text.py" line="66"/>
+      <source>The text displayed by this object.
+It is a list of strings; each element in the list will be displayed in its own line.</source>
+      <translation>El texto mostrado por este objeto.
+Es un listado; donde cada elemento de la lista se mostrará en su propia línea.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="131"/>
-      <source>The line width of the objects contained within this layer</source>
-      <translation>El ancho de línea de los objetos contenidos en esta capa</translation>
+      <location filename="../../draftobjects/array.py" line="82"/>
+      <location filename="../../draftobjects/patharray.py" line="169"/>
+      <source>The base object that will be duplicated</source>
+      <translation>El objeto base que debe ser duplicado</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
-      <source>The draw style of the objects contained within this layer</source>
-      <translation>El estilo de dibujo de los objetos contenidos en esta capa</translation>
+      <location filename="../../draftobjects/patharray.py" line="192"/>
+      <source>List of connected edges in the 'Path Object'.
+If these are present, the copies will be created along these subelements only.
+Leave this property empty to create copies along the entire 'Path Object'.</source>
+      <translation>Lista de aristas conectadas en el 'Objeto de Trayectoria'.
+Si están presentes, las copias serán creadas únicamente a lo largo de estos subelementos.
+Deja esta propiedad vacía para crear copias a lo largo del 'Objeto Ruta'.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
-      <source>The transparency of the objects contained within this layer</source>
-      <translation>La transparencia de los objetos contenidos en esta capa</translation>
+      <location filename="../../draftobjects/patharray.py" line="200"/>
+      <source>Number of copies to create</source>
+      <translation>Número de copias a crear</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
-      <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation>El color de línea de los objetos contenidos en esta capa, cuando se usa en una página de TechDraw</translation>
+      <location filename="../../draftobjects/patharray.py" line="219"/>
+      <source>Additional translation that will be applied to each copy.
+This is useful to adjust for the difference between shape centre and shape reference point.</source>
+      <translation>Traslación adicional que será aplicada a cada copia.
+Esto es útil para ajustar la diferencia entre el centro de la forma y el punto de referencia de la forma.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="60"/>
+      <location filename="../../draftobjects/patharray.py" line="227"/>
+      <source>Alignment vector for 'Tangent' mode</source>
+      <translation>Vector de alineación para modo 'tangente'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="235"/>
+      <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
+      <translation>Forzar el uso de 'Vector vertical' como dirección Z local al usar el modo de alineación 'Original' o 'Tangente'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="243"/>
+      <source>Direction of the local Z axis when 'Force Vertical' is true</source>
+      <translation>Dirección del eje Z local cuando 'Forzar Vertical' es verdadero</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="251"/>
+      <source>Method to orient the copies along the path.
+- Original: X is curve tangent, Y is normal, and Z is the cross product.
+- Frenet: aligns the object following the local coordinate system along the path.
+- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
+
+To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
+      <translation>Método para orientar las copias a lo largo de la trayectoria.
+- Original: X es tangente de curva, Y es normal, y Z es el producto cruzado.
+- Frenet: alinea el objeto siguiendo el sistema de coordenadas local a lo largo de la trayectoria.
+- Tangente: similar a 'Original' pero el eje X local está pre-alineado a 'Vector Tangente'.
+
+Para obtener mejores resultados con 'Original' o 'Tangente' es posible que tengas que ajustar 'Forzar Vertical' a 'verdadero'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="262"/>
+      <source>Orient the copies along the path depending on the 'Align Mode'.
+Otherwise the copies will have the same orientation as the original Base object.</source>
+      <translation>Orientar las copias a lo largo de la trayectoria dependiendo del 'Modo Alinear'.
+De lo contrario, las copias tendrán la misma orientación que el objeto base original.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bezcurve.py" line="46"/>
+      <source>The points of the Bezier curve</source>
+      <translation>Puntos de la curva de Bézier</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bezcurve.py" line="50"/>
+      <source>The degree of the Bezier function</source>
+      <translation>Grado de la función de Bézier</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bezcurve.py" line="54"/>
+      <source>Continuity</source>
+      <translation>Continuidad</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bezcurve.py" line="58"/>
+      <source>If the Bezier curve should be closed or not</source>
+      <translation>Si la curva de Bézier será cerrada o no</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bezcurve.py" line="62"/>
+      <source>Create a face if this curve is closed</source>
+      <translation>Crear una cara si esta curva es cerrada</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bezcurve.py" line="66"/>
+      <source>The length of this object</source>
+      <translation>La longitud de este objeto</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="98"/>
+      <source>The type of array to create.
+- Ortho: places the copies in the direction of the global X, Y, Z axes.
+- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
+- Circular: places the copies in concentric circular layers around the base object.</source>
+      <translation>El tipo de matriz a crear.
+- Orto: coloca las copias en la dirección de los ejes X, Y, Z globales.
+- Polar: coloca las copias a lo largo de un arco circular, hasta un ángulo especificado, y con cierta orientación definida por un centro y un eje.
+- Circular: coloca las copias en capas circulares concéntricas alrededor del objeto base.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="109"/>
+      <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
+      <translation>Especifica si las copias deben ser fusionadas si se tocan entre sí (más lento)</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="122"/>
+      <source>Number of copies in X direction</source>
+      <translation>Número de copias en dirección X</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="131"/>
+      <source>Number of copies in Y direction</source>
+      <translation>Número de copias en dirección Y</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="140"/>
+      <source>Number of copies in Z direction</source>
+      <translation>Número de copias en dirección Z</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="150"/>
+      <source>Distance and orientation of intervals in X direction</source>
+      <translation>Distancia y orientación de los intervalos en dirección X</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="160"/>
+      <source>Distance and orientation of intervals in Y direction</source>
+      <translation>Distancia y orientación de los intervalos en dirección Y</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="170"/>
+      <source>Distance and orientation of intervals in Z direction</source>
+      <translation>Distancia y orientación de los intervalos en dirección Z</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="185"/>
+      <source>The axis direction around which the elements in a polar or a circular array will be created</source>
+      <translation>La dirección de el eje alrededor del cual se crearán los elementos en una matriz polar o circular</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="196"/>
+      <source>Center point for polar and circular arrays.
+The 'Axis' passes through this point.</source>
+      <translation>Punto del centro para matrices polares y circulares.
+El 'Eje' pasa por este punto.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="215"/>
+      <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
+Its placement, position and rotation, will be used when creating polar and circular arrays.
+Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
+      <translation>El objeto eje que anula el valor de 'Eje' y 'Centro', por ejemplo, una línea de referencia.
+Su ubicación, posición y rotación se utilizarán para crear matrices polares y circulares.
+Deja esta propiedad vacía para poder configurar manualmente 'Eje' y 'Centro'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="228"/>
+      <source>Number of copies in the polar direction</source>
+      <translation>Número de copias en la dirección polar</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="238"/>
+      <source>Distance and orientation of intervals in 'Axis' direction</source>
+      <translation>Distancia y orientación de los intervalos en dirección 'Eje'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="247"/>
+      <source>Angle to cover with copies</source>
+      <translation>Ángulo para cubrir con las copias</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="260"/>
+      <source>Distance between circular layers</source>
+      <translation>Distancia entre capas circulares</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="270"/>
+      <source>Distance between copies in the same circular layer</source>
+      <translation>Distancia entre copias en la misma capa circular</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="280"/>
+      <source>Number of circular layers. The 'Base' object counts as one layer.</source>
+      <translation>Número de capas circulares. El objeto 'Base' cuenta como una capa.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="291"/>
+      <source>A parameter that determines how many symmetry planes the circular array will have.</source>
+      <translation>Un parámetro que determina cuántos planos de simetría tendrá la matriz circular.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="309"/>
+      <source>Total number of elements in the array.
+This property is read-only, as the number depends on the parameters of the array.</source>
+      <translation>Número total de elementos en la matriz.
+Esta propiedad es solo de lectura, ya que el número depende de los parámetros de la matriz.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/pointarray.py" line="79"/>
+      <source>Base object that will be duplicated</source>
+      <translation>Objeto ha ser duplicado</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/pointarray.py" line="87"/>
+      <source>Object containing points used to distribute the base object, for example, a sketch or a Part compound.
+The sketch or compound must contain at least one explicit point or vertex object.</source>
+      <translation>Objeto conteniendo puntos utilizados para distribuir el objeto, por ejemplo, un boceto o una parte compuesta.
+El boceto o componente debe contener al menos un punto explícito o un vértice.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/pointarray.py" line="95"/>
+      <source>Total number of elements in the array.
+This property is read-only, as the number depends on the points contained within 'Point Object'.</source>
+      <translation>Número total de elementos en la matriz.
+Esta propiedad es de solo lectura, así que el número depende de los puntos contenidos en el 'Objeto Punto'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/pointarray.py" line="104"/>
+      <location filename="../../draftobjects/pointarray.py" line="140"/>
+      <source>Additional placement, shift and rotation, that will be applied to each copy</source>
+      <translation>Posición, cambio y rotación adicionales, que se aplicará a cada copia</translation>
+    </message>
+    <message>
       <location filename="../../draftviewproviders/view_label.py" line="74"/>
+      <location filename="../../draftviewproviders/view_text.py" line="60"/>
       <source>The size of the text</source>
       <translation>El tamaño del texto</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="69"/>
       <location filename="../../draftviewproviders/view_label.py" line="83"/>
+      <location filename="../../draftviewproviders/view_text.py" line="69"/>
       <source>The font of the text</source>
       <translation>El tipo de letra del texto</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="78"/>
       <location filename="../../draftviewproviders/view_label.py" line="92"/>
       <location filename="../../draftviewproviders/view_label.py" line="119"/>
+      <location filename="../../draftviewproviders/view_text.py" line="78"/>
       <source>The vertical alignment of the text</source>
       <translation>La alineación vertical del texto</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="87"/>
       <location filename="../../draftviewproviders/view_label.py" line="102"/>
+      <location filename="../../draftviewproviders/view_text.py" line="87"/>
       <source>Text color</source>
       <translation>Color del texto</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="95"/>
       <location filename="../../draftviewproviders/view_label.py" line="128"/>
+      <location filename="../../draftviewproviders/view_text.py" line="95"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Interlineado (en relación con el tamaño de fuente)</translation>
     </message>
@@ -1103,6 +1046,18 @@ las propiedades de 'Primer ángulo' y 'Último ángulo'.</translation>
       <location filename="../../draftviewproviders/view_label.py" line="168"/>
       <source>Display a leader line or not</source>
       <translation>Mostrar una línea directriz o no</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="115"/>
+      <location filename="../../draftviewproviders/view_label.py" line="177"/>
+      <source>Line width</source>
+      <translation>Espesor de Línea</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="122"/>
+      <location filename="../../draftviewproviders/view_label.py" line="186"/>
+      <source>Line color</source>
+      <translation>Color de línea</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="137"/>
@@ -1197,6 +1152,51 @@ más allá de la línea de dimensión</translation>
       <translation>Muestra las flechas y la línea de cota</translation>
     </message>
     <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="67"/>
+      <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
+      <translation>Si es verdadero, los objetos contenidos en esta capa adoptarán el color de línea de la capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="78"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation>Si es verdadero, los objetos contenidos en esta capa adoptarán el color de la forma de la capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="89"/>
+      <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
+      <translation>Si es verdadero, el color de impresión se utilizará cuando los objetos de esta capa se coloquen en una página de TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="103"/>
+      <source>The line color of the objects contained within this layer</source>
+      <translation>El color de línea de los objetos contenidos en esta capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="117"/>
+      <source>The shape color of the objects contained within this layer</source>
+      <translation>El color de la forma de los objetos contenidos en esta capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="131"/>
+      <source>The line width of the objects contained within this layer</source>
+      <translation>El ancho de línea de los objetos contenidos en esta capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
+      <source>The draw style of the objects contained within this layer</source>
+      <translation>El estilo de dibujo de los objetos contenidos en esta capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
+      <source>The transparency of the objects contained within this layer</source>
+      <translation>La transparencia de los objetos contenidos en esta capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
+      <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
+      <translation>El color de línea de los objetos contenidos en esta capa, cuando se usa en una página de TechDraw</translation>
+    </message>
+    <message>
       <location filename="../../draftviewproviders/view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
       <translation>Define un patrón SVG.</translation>
@@ -1205,6 +1205,268 @@ más allá de la línea de dimensión</translation>
       <location filename="../../draftviewproviders/view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
       <translation>Define el tamaño del patrón SVG.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
+      <source>Annotation Styles Editor</source>
+      <translation>Editor de Estilos de Anotación</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
+      <source>Style name</source>
+      <translation>Nombre de estilo</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
+      <source>The name of your style. Existing style names can be edited.</source>
+      <translation>El nombre de tu estilo. Los nombres de estilo existentes se pueden editar.</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
+      <source>Add new...</source>
+      <translation>Agregar nuevo...</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
+      <source>Renames the selected style</source>
+      <translation>Renombra el estilo seleccionado</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
+      <source>Rename</source>
+      <translation>Renombrar</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
+      <source>Deletes the selected style</source>
+      <translation>Elimina el estilo seleccionado</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
+      <source>Delete</source>
+      <translation>Eliminar</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
+      <source>Import styles from json file</source>
+      <translation>Importar estilos de archivo json</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
+      <source>Export styles to json file</source>
+      <translation>Exportar estilos a archivo json</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
+      <source>Text</source>
+      <translation>Texto</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
+      <source>The font to use for texts and dimensions</source>
+      <translation>La fuente a usar para textos y cotas</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
+      <source>Font name</source>
+      <translation>Nombre de fuente</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
+      <source>Font size in the system units</source>
+      <translation>Tamaño de fuente en las unidades del sistema</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
+      <source>Font size</source>
+      <translation>Tamaño de fuente</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
+      <source>Line spacing in system units</source>
+      <translation>Espaciado de línea en unidades del sistema</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
+      <source>Line spacing</source>
+      <translation>Espaciado de línea</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
+      <source>Units</source>
+      <translation>Unidades</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="245"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="255"/>
+      <source>A multiplier factor that affects the size of texts and markers</source>
+      <translation>Un factor de multiplicador que afecta al tamaño de los textos y marcadores</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
+      <source>Scale multiplier</source>
+      <translation>Multiplicador de escala</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
+      <source>If it is checked it will show the unit next to the dimension value</source>
+      <translation>Si está marcado, mostrará la unidad al lado del valor de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="271"/>
+      <source>Show unit</source>
+      <translation>Mostrar unidad</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
+      <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
+      <translation>Especifique una unidad de longitud válida como mm, m, plg, pie, para forzar la visualización del valor de dimensión en esta unidad</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
+      <source>Unit override</source>
+      <translation>Anulación de unidad</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="308"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="318"/>
+      <source>The number of decimals to show for dimension values</source>
+      <translation>El número de decimales a mostrar para los valores de cotas</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
+      <source>Decimals</source>
+      <translation>Decimales</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
+      <source>Line and arrows</source>
+      <translation>Línea y flechas</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="337"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="347"/>
+      <source>If it is checked it will display the dimension line</source>
+      <translation>Si está marcado, mostrará la línea de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
+      <source>Show lines</source>
+      <translation>Mostrar líneas</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="363"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="373"/>
+      <source>The width of the dimension lines</source>
+      <translation>El ancho de las líneas de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="366"/>
+      <source>Line width</source>
+      <translation>Espesor de Línea</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="376"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="386"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="396"/>
+      <source>The color of dimension lines, arrows and texts</source>
+      <translation>El color de las líneas de cota, flechas y textos</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="389"/>
+      <source>Line / text color</source>
+      <translation>Color de línea / texto</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="432"/>
+      <source>The type of arrows or markers to use at the end of dimension lines</source>
+      <translation>El tipo de flechas o marcadores a usar al final de las líneas de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <source>Arrow type</source>
+      <translation>Tipo de flecha</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
+      <source>Dot</source>
+      <translation>Punto</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
+      <source>Circle</source>
+      <translation>Círculo</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
+      <source>Arrow</source>
+      <translation>Flecha</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
+      <source>Tick</source>
+      <translation>Marca</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
+      <source>Tick-2</source>
+      <translation>Marca-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
+      <source>The size of the dimension arrows or markers in system units</source>
+      <translation>El tamaño de las flechas o marcadores de cota en unidades del sistema</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="467"/>
+      <source>Arrow size</source>
+      <translation>Tamaño de flecha</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
+      <source>The distance that the dimension line is additionally extended</source>
+      <translation>La distancia que la línea de cota se extiende adicionalmente</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="487"/>
+      <source>Dimension overshoot</source>
+      <translation>Cota excesiva</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <source>The length of the extension lines</source>
+      <translation>Longitud de las líneas de extensión</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
+      <source>Extension lines</source>
+      <translation>Líneas de extensión</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
+      <translation>La distancia que las líneas de extensión se extienden adicionalmente más allá de la línea de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
+      <source>Extension overshoot</source>
+      <translation>Extensión excesiva</translation>
     </message>
   </context>
   <context>
@@ -1219,14 +1481,57 @@ Instale el complemento Biblioteca dxf manualmente
 desde el menú Herramientas -&gt; Administrador de Complementos</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_hatch.py" line="49"/>
-      <source>You must choose a base object before using this command</source>
-      <translation>Debe seleccionar un objeto base antes de usar este comando</translation>
+      <location filename="../../InitGui.py" line="133"/>
+      <location filename="../../InitGui.py" line="134"/>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <source>Draft</source>
+      <translation>Calado</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="91"/>
-      <source>Clone</source>
-      <translation>Clonar</translation>
+      <location filename="../../InitGui.py" line="179"/>
+      <location filename="../../InitGui.py" line="180"/>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <source>Import-Export</source>
+      <translation>Importar-Exportar</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="248"/>
+      <source>Toggles Grid On/Off</source>
+      <translation>Alternar Rejilla Encendido/Apagado</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="265"/>
+      <source>Object snapping</source>
+      <translation>Ajuste de objetos</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="297"/>
+      <source>Toggles Visual Aid Dimensions On/Off</source>
+      <translation>Activa o desactiva las dimensiones de ayuda visual</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="316"/>
+      <source>Toggles Ortho On/Off</source>
+      <translation>Alterna Ortho Encender/Apagar</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="334"/>
+      <source>Toggles Constrain to Working Plane On/Off</source>
+      <translation>Activa / desactiva restringir al plano de trabajo</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bspline.py" line="106"/>
+      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
+      <translation>_BSpline.createGeometry: cerrado con el mismo punto de la primera/última. Geometría no actualizada.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/pointarray.py" line="244"/>
+      <location filename="../../draftobjects/pointarray.py" line="306"/>
+      <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
+      <translation>El objeto de punto no tiene un punto discreto, no se puede usar para una matriz.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="88"/>
@@ -1235,9 +1540,14 @@ desde el menú Herramientas -&gt; Administrador de Complementos</translation>
       <translation>Pendiente</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="329"/>
-      <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation>La dirección del desplazamiento no está definida. Por favor, mueva el ratón a cada lado del objeto primero para indicar una dirección</translation>
+      <location filename="../../draftguitools/gui_clone.py" line="91"/>
+      <source>Clone</source>
+      <translation>Clonar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_hatch.py" line="49"/>
+      <source>You must choose a base object before using this command</source>
+      <translation>Debe seleccionar un objeto base antes de usar este comando</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="89"/>
@@ -1275,78 +1585,20 @@ desde el menú Herramientas -&gt; Administrador de Complementos</translation>
       <translation>Error: módulo json no encontrado. Incapaz de guardar el estilo</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="106"/>
-      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation>_BSpline.createGeometry: cerrado con el mismo punto de la primera/última. Geometría no actualizada.</translation>
+      <location filename="../../draftguitools/gui_offset.py" line="329"/>
+      <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
+      <translation>La dirección del desplazamiento no está definida. Por favor, mueva el ratón a cada lado del objeto primero para indicar una dirección</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="244"/>
-      <location filename="../../draftobjects/pointarray.py" line="306"/>
-      <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation>El objeto de punto no tiene un punto discreto, no se puede usar para una matriz.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="248"/>
-      <source>Toggles Grid On/Off</source>
-      <translation>Alternar Rejilla Encendido/Apagado</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="265"/>
-      <source>Object snapping</source>
-      <translation>Ajuste de objetos</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="297"/>
-      <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation>Activa o desactiva las dimensiones de ayuda visual</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="316"/>
-      <source>Toggles Ortho On/Off</source>
-      <translation>Alterna Ortho Encender/Apagar</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="334"/>
-      <source>Toggles Constrain to Working Plane On/Off</source>
-      <translation>Activa / desactiva restringir al plano de trabajo</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="133"/>
-      <location filename="../../InitGui.py" line="134"/>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="136"/>
-      <location filename="../../InitGui.py" line="137"/>
-      <source>Draft</source>
-      <translation>Calado</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="179"/>
-      <location filename="../../InitGui.py" line="180"/>
-      <location filename="../../InitGui.py" line="181"/>
-      <location filename="../../InitGui.py" line="182"/>
-      <source>Import-Export</source>
-      <translation>Importar-Exportar</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="102"/>
-      <source>Writing camera position</source>
-      <translation>Escribir posición de la cámara</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
-      <source>Writing objects shown/hidden state</source>
-      <translation>Escribir objetos estado mostrar/ocultar</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="144"/>
       <source>True</source>
       <translation>Verdadero</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="160"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="160"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="148"/>
       <source>False</source>
       <translation>Falso</translation>
@@ -1400,6 +1652,441 @@ desde el menú Herramientas -&gt; Administrador de Complementos</translation>
       <location filename="../../drafttaskpanels/task_scale.py" line="160"/>
       <source>Create a clone</source>
       <translation>Crear un clon</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="102"/>
+      <source>Writing camera position</source>
+      <translation>Escribir posición de la cámara</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
+      <source>Writing objects shown/hidden state</source>
+      <translation>Escribir objetos estado mostrar/ocultar</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftCircularArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
+      <source>Circular array</source>
+      <translation>Matriz circular</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Marcador de posición para el icono)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
+      <source>Distance from one layer of objects to the next layer of objects.</source>
+      <translation>Distancia de una capa de objetos a la siguiente capa de objetos.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="56"/>
+      <source>Radial distance</source>
+      <translation>Distancia Radial</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="76"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="87"/>
+      <source>Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</source>
+      <translation>Distancia de un elemento en un anillo de la matriz al siguiente elemento en el mismo anillo.
+No puede ser cero.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="80"/>
+      <source>Tangential distance</source>
+      <translation>Distancia tangencial</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="101"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="112"/>
+      <source>Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</source>
+      <translation>Número de capas circulares o anillos para crear, incluida una copia del objeto original.
+Debe ser al menos 2.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="105"/>
+      <source>Number of circular layers</source>
+      <translation>Número de capas circulares</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="126"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="136"/>
+      <source>The number of symmetry lines in the circular array.</source>
+      <translation>Número de líneas de simetría en la matriz circular.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="129"/>
+      <source>Symmetry</source>
+      <translation>Simetría</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="151"/>
+      <source>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</source>
+      <translation>Las coordenadas del punto a través del cual pasa el eje de rotación.
+Cambie la dirección del propio eje en el editor de propiedades.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="155"/>
+      <source>Center of rotation</source>
+      <translation>Centro de rotación</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="163"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="183"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="203"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="225"/>
+      <source>Reset the coordinates of the center of rotation.</source>
+      <translation>Restablece las coordenadas del centro de rotación.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
+      <source>Reset point</source>
+      <translation>Restablecer punto</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="240"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Si está marcada, los objetos resultantes en la matriz se fusionarán si se tocan entre sí.
+Esto solo funciona si "Matriz de enlaces" está desactivado.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="244"/>
+      <source>Fuse</source>
+      <translation>Fusionar</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="251"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Si se marca, el objeto resultante será una "Matriz de enlaces" en lugar de una matriz regular.
+Una matriz de enlaces es más eficiente al crear varias copias, pero no se puede fusionar.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="255"/>
+      <source>Link array</source>
+      <translation>Matriz de Enlaces</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftOrthoArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
+      <source>Orthogonal array</source>
+      <translation>Matriz ortogonal</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Marcador de posición para el icono)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
+      <source>Number of elements in the array in the specified direction, including a copy of the original object.
+The number must be at least 1 in each direction.</source>
+      <translation>Número de elementos en la matriz en la dirección especificada, incluida una copia del objeto original.
+El número debe ser al menos 1 en cada dirección.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="55"/>
+      <source>Number of elements</source>
+      <translation>Número de elementos</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="63"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="132"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="223"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="314"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="80"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="155"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="243"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="334"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="97"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="175"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="266"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="354"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="119"/>
+      <source>Distance between the elements in the X direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Distancia entre los elementos en la dirección X.
+Normalmente, solo el valor X es necesario; los otros dos valores pueden dar un cambio adicional en sus respectivas direcciones.
+Los valores negativos darán como resultado copias producidas en la dirección negativa.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="124"/>
+      <source>X intervals</source>
+      <translation>Intervalos X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="197"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="288"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="379"/>
+      <source>Reset the distances.</source>
+      <translation>Restablecer las distancias.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="200"/>
+      <source>Reset X</source>
+      <translation>Restablecer X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="210"/>
+      <source>Distance between the elements in the Y direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Distancia entre los elementos en la dirección Y.
+Normalmente, solo el valor Y es necesario; los otros dos valores pueden dar un cambio adicional en sus respectivas direcciones.
+Los valores negativos darán como resultado copias producidas en la dirección negativa.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="215"/>
+      <source>Y intervals</source>
+      <translation>Intervalos Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="291"/>
+      <source>Reset Y</source>
+      <translation>Restablecer Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="301"/>
+      <source>Distance between the elements in the Z direction.
+Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Distancia entre los elementos en la dirección Z.
+Normalmente, solo el valor Z es necesario; los otros dos valores pueden dar un cambio adicional en sus respectivas direcciones.
+Los valores negativos darán como resultado copias producidas en la dirección negativa.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="306"/>
+      <source>Z intervals</source>
+      <translation>Intervalos Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="382"/>
+      <source>Reset Z</source>
+      <translation>Restablecer Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="394"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Si está marcada, los objetos resultantes en la matriz se fusionarán si se tocan entre sí.
+Esto solo funciona si "Matriz de enlaces" está desactivado.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="398"/>
+      <source>Fuse</source>
+      <translation>Fusionar</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="405"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Si se marca, el objeto resultante será una "Matriz de enlaces" en lugar de una matriz regular.
+Una matriz de enlaces es más eficiente al crear varias copias, pero no se puede fusionar.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="409"/>
+      <source>Link array</source>
+      <translation>Matriz de Enlaces</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftPolarArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
+      <source>Polar array</source>
+      <translation>Matriz polar</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Marcador de posición para el icono)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="65"/>
+      <source>Sweeping angle of the polar distribution.
+A negative angle produces a polar pattern in the opposite direction.
+The maximum absolute value is 360 degrees.</source>
+      <translation>Ángulo de barrido de la distribución polar.
+Un ángulo negativo produce un patrón polar en la dirección opuesta.
+El valor absoluto máximo es 360 grados.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="58"/>
+      <source>Polar angle</source>
+      <translation>Ángulo polar</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="86"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="97"/>
+      <source>Number of elements in the array, including a copy of the original object.
+It must be at least 2.</source>
+      <translation>Número de elementos en la matriz, incluyendo una copia del objeto original. Debe ser al menos 2.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="90"/>
+      <source>Number of elements</source>
+      <translation>Número de elementos</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="113"/>
+      <source>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</source>
+      <translation>Las coordenadas del punto a través del cual pasa el eje de rotación.
+Cambie la dirección del propio eje en el editor de propiedades.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="117"/>
+      <source>Center of rotation</source>
+      <translation>Centro de rotación</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="125"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="145"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="165"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
+      <source>Reset the coordinates of the center of rotation.</source>
+      <translation>Restablece las coordenadas del centro de rotación.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
+      <source>Reset point</source>
+      <translation>Restablecer punto</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="202"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Si está marcada, los objetos resultantes en la matriz se fusionarán si se tocan entre sí.
+Esto solo funciona si "Matriz de enlaces" está desactivado.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="206"/>
+      <source>Fuse</source>
+      <translation>Fusionar</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="213"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Si se marca, el objeto resultante será una "Matriz de enlaces" en lugar de una matriz regular.
+Una matriz de enlaces es más eficiente al crear varias copias, pero no se puede fusionar.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="217"/>
+      <source>Link array</source>
+      <translation>Matriz de Enlaces</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftShapeStringGui</name>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="26"/>
+      <source>ShapeString</source>
+      <translation>FormaTexto</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="46"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="53"/>
+      <location filename="../ui/TaskShapeString.ui" line="70"/>
+      <location filename="../ui/TaskShapeString.ui" line="87"/>
+      <source>Enter coordinates or select point with mouse.</source>
+      <translation>Ingrese las coordenadas o seleccione el punto con el mouse.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="63"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="80"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="114"/>
+      <source>Reset 3d point selection</source>
+      <translation>Restablecer selección de punto 3d</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="120"/>
+      <source>Reset Point</source>
+      <translation>Restablecer Punto</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="131"/>
+      <source>String</source>
+      <translation>Cadena de texto</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="138"/>
+      <source>Text to be made into ShapeString</source>
+      <translation>Texto a convertir en FormaTexto</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="149"/>
+      <source>Height</source>
+      <translation>Altura</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="156"/>
+      <source>Height of the result</source>
+      <translation>Altura del resultado</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="176"/>
+      <source>Font file</source>
+      <translation>Archivo de fuente</translation>
     </message>
   </context>
   <context>
@@ -2247,7 +2934,7 @@ CTRL para ajustar, MAYÚS para restringir, ALT para copiar.</translation>
     <name>Draft_SelectPlane</name>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="65"/>
-      <source>SelectPlane</source>
+      <source>Select Plane</source>
       <translation>Seleccionar plano</translation>
     </message>
     <message>
@@ -2735,3564 +3422,6 @@ Then you can use it to save a different camera position and objects' states any 
       <translation>Crea un objeto proxy desde el plano de trabajo actual.
 Una vez creado el objeto haga doble clic en él en la vista de árbol para restaurar la posición de la cámara y las visibilidades de los objetos.
 Entonces puedes usarlo para guardar una posición diferente de la cámara y estados de los objetos cuando lo necesites.</translation>
-    </message>
-  </context>
-  <context>
-    <name>ImportAirfoilDAT</name>
-    <message>
-      <location filename="../../importAirfoilDAT.py" line="193"/>
-      <source>Did not find enough coordinates</source>
-      <translation>No se encontraron coordenadas suficientes</translation>
-    </message>
-  </context>
-  <context>
-    <name>ImportSVG</name>
-    <message>
-      <location filename="../../importSVG.py" line="1796"/>
-      <source>Unknown SVG export style, switching to Translated</source>
-      <translation>Estilo de exportación SVG desconocido, cambiando a Traducido</translation>
-    </message>
-    <message>
-      <location filename="../../importSVG.py" line="1816"/>
-      <source>The export list contains no object with a valid bounding box</source>
-      <translation>La lista de exportación no contiene ningún objeto con un cuadro delimitador válido</translation>
-    </message>
-  </context>
-  <context>
-    <name>Workbench</name>
-    <message>
-      <location filename="../../draftguitools/gui_snapper.py" line="1477"/>
-      <source>Draft Snap</source>
-      <translation>Ajuste del Borrador</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="50"/>
-      <source>Arc tools</source>
-      <translation>Herramientas de arco</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="58"/>
-      <source>Bézier tools</source>
-      <translation>Herramientas Bézier</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="89"/>
-      <source>Array tools</source>
-      <translation>Herramientas de matriz</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="104"/>
-      <source>Draft creation tools</source>
-      <translation>Herramientas de creación de borradores</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="107"/>
-      <source>Draft annotation tools</source>
-      <translation>Herramientas de anotación de borrador</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="110"/>
-      <source>Draft modification tools</source>
-      <translation>Herramientas de modificación de borrador</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="113"/>
-      <source>Draft utility tools</source>
-      <translation>Herramientas útiles de borrador</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="118"/>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Borrador</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="121"/>
-      <source>&amp;Annotation</source>
-      <translation>&amp;Anotación</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="124"/>
-      <source>&amp;Modification</source>
-      <translation>&amp;Modificación</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="127"/>
-      <source>&amp;Utilities</source>
-      <translation>&amp;Utilidades</translation>
-    </message>
-  </context>
-  <context>
-    <name>draft</name>
-    <message>
-      <location filename="../../importDXF.py" line="146"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>Las bibliotecas de importación/exportación DXF que FreeCAD necesita para manejarel formato DXF no se encontró en este sistema.
-Por favor, habilite FreeCAD para descargar estas bibliotecas:
-   1 - Cargar Entorno de trabajo Borrador
-   2 - Menú Editar&gt; Preferencias&gt; Importar-Exportar&gt; DXF&gt; Habilitar descargas
-O descargue estas bibliotecas manualmente, como se explica en
-https://github.com/yorikvanhavre/Draft-dxf-importer
-Para habilitar FreeCAD para descargar estas bibliotecas, responda Sí.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
-      <location filename="../../draftguitools/gui_drawing.py" line="81"/>
-      <source>Select an object to project</source>
-      <translation>Seleccione un objeto para proyecto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
-      <source>Create 2D view</source>
-      <translation>Crear vista 2D</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_styles.py" line="75"/>
-      <source>Change Style</source>
-      <translation>Cambiar Estilo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_join.py" line="76"/>
-      <source>Select an object to join</source>
-      <translation>Seleccione un objeto para unir</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_join.py" line="99"/>
-      <source>Join lines</source>
-      <translation>Unir líneas</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_join.py" line="110"/>
-      <source>Selection:</source>
-      <translation>Selección:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="65"/>
-      <source>Add to group</source>
-      <translation>Añadir al grupo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="68"/>
-      <source>Ungroup</source>
-      <translation>Desagrupar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="70"/>
-      <source>Add new group</source>
-      <translation>Añadir nuevo grupo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="159"/>
-      <source>Select group</source>
-      <translation>Seleccionar grupo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="193"/>
-      <source>No new selection. You must select non-empty groups or objects inside groups.</source>
-      <translation>No hay nueva selección. Debe seleccionar grupos u objetos no vacíos dentro de los grupos.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="203"/>
-      <source>Autogroup</source>
-      <translation>Autogrupo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="239"/>
-      <location filename="../../draftguitools/gui_groups.py" line="244"/>
-      <location filename="../../DraftGui.py" line="694"/>
-      <location filename="../../DraftGui.py" line="729"/>
-      <location filename="../../DraftGui.py" line="1058"/>
-      <location filename="../../DraftGui.py" line="2047"/>
-      <location filename="../../DraftGui.py" line="2062"/>
-      <source>None</source>
-      <translation>Ninguno</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="250"/>
-      <source>Add new Layer</source>
-      <translation>Añadir nueva Capa</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="304"/>
-      <source>Add to construction group</source>
-      <translation>Añadir al grupo de construcción</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="355"/>
-      <source>Add a new group with a given name</source>
-      <translation>Añade un nuevo grupo con un nombre dado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="383"/>
-      <source>Add group</source>
-      <translation>Añadir grupo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="385"/>
-      <source>Group name</source>
-      <translation>Nombre del grupo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="392"/>
-      <source>Group</source>
-      <translation>Grupo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
-      <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
-      <source>Select an object to upgrade</source>
-      <translation>Seleccione un objeto para actualizar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
-      <source>Upgrade</source>
-      <translation>Actualización</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>Seleccione un objeto matriz</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Matriz</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="87"/>
-      <source>Select an object to scale</source>
-      <translation>Seleccione un objeto para escalar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="108"/>
-      <source>Pick base point</source>
-      <translation>Elegir punto base</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="135"/>
-      <source>Pick reference distance from base point</source>
-      <translation>Elegir distancia de referencia desde el punto base</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="203"/>
-      <location filename="../../draftguitools/gui_scale.py" line="227"/>
-      <location filename="../../draftguitools/gui_scale.py" line="356"/>
-      <location filename="../../draftguitools/gui_move.py" line="207"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="283"/>
-      <location filename="../../DraftGui.py" line="76"/>
-      <location filename="../../DraftGui.py" line="801"/>
-      <source>Copy</source>
-      <translation>Copiar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="206"/>
-      <location filename="../../draftguitools/gui_scale.py" line="236"/>
-      <location filename="../../draftguitools/gui_scale.py" line="359"/>
-      <source>Scale</source>
-      <translation>Escala</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="209"/>
-      <source>Some subelements could not be scaled.</source>
-      <translation>Algunos subelementos no se pudieron escalar.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="339"/>
-      <source>Unable to scale object:</source>
-      <translation>No se puede escalar el objeto:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="343"/>
-      <source>Unable to scale objects:</source>
-      <translation>No se puede escalar objetos:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="346"/>
-      <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation>Este tipo de objeto no puede escalarse directamente. Por favor, utilice el método de clonación.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="407"/>
-      <source>Pick new distance from base point</source>
-      <translation>Elegir una nueva distancia desde el punto base</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_pointarray.py" line="104"/>
-      <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
-      <translation>Por favor, seleccione exactamente dos objetos, el objeto base y el objeto punto, antes de llamar a este comando.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_pointarray.py" line="122"/>
-      <source>Point array</source>
-      <translation>Matriz de puntos</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_labels.py" line="80"/>
-      <source>Pick target point</source>
-      <translation>Elegir punto objetivo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_labels.py" line="157"/>
-      <source>Create Label</source>
-      <translation>Crear Etiqueta</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_labels.py" line="191"/>
-      <location filename="../../draftguitools/gui_labels.py" line="218"/>
-      <source>Pick endpoint of leader line</source>
-      <translation>Elegir punto final de la línea directriz</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_labels.py" line="201"/>
-      <location filename="../../draftguitools/gui_labels.py" line="228"/>
-      <source>Pick text position</source>
-      <translation>Elegir posición de texto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="81"/>
-      <source>Select an object to move</source>
-      <translation>Seleccione un objeto para mover</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="103"/>
-      <source>Pick start point</source>
-      <translation>Elegir punto de inicio</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="162"/>
-      <location filename="../../draftguitools/gui_move.py" line="308"/>
-      <source>Pick end point</source>
-      <translation>Elegir punto final</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="210"/>
-      <source>Move</source>
-      <translation>Mover</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="213"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
-      <source>Some subelements could not be moved.</source>
-      <translation>Algunos subelementos no se pudieron mover.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="66"/>
-      <source>Select an object to convert.</source>
-      <translation>Seleccione un objeto para convertir.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="99"/>
-      <source>Convert to Sketch</source>
-      <translation>Convertir a Croquis</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="114"/>
-      <source>Convert to Draft</source>
-      <translation>Convertir a Boceto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="143"/>
-      <source>Convert Draft/Sketch</source>
-      <translation>Convertir Borrador/Croquis</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_layers.py" line="47"/>
-      <location filename="../../draftmake/make_layer.py" line="145"/>
-      <location filename="../../draftmake/make_layer.py" line="162"/>
-      <source>Layer</source>
-      <translation>Capa</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>El croquis es demasiado complejo para editar: se sugiere usar el editor predeterminado de croquis</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_shapestrings.py" line="85"/>
-      <location filename="../../draftguitools/gui_shapestrings.py" line="98"/>
-      <source>Pick ShapeString location point</source>
-      <translation>Elija el punto de ubicación de la Cadena de Forma</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_shapestrings.py" line="133"/>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="176"/>
-      <source>Create ShapeString</source>
-      <translation>Crear Cadena de Forma</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="132"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="332"/>
-      <source>Bézier curve has been closed</source>
-      <translation>La curva de Bézier ha sido cerrada</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="140"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="368"/>
-      <location filename="../../draftguitools/gui_splines.py" line="131"/>
-      <source>Last point has been removed</source>
-      <translation>El último punto ha sido eliminado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="148"/>
-      <location filename="../../draftguitools/gui_lines.py" line="218"/>
-      <location filename="../../draftguitools/gui_lines.py" line="226"/>
-      <location filename="../../draftguitools/gui_lines.py" line="233"/>
-      <location filename="../../draftguitools/gui_lines.py" line="241"/>
-      <location filename="../../draftguitools/gui_lines.py" line="251"/>
-      <location filename="../../draftguitools/gui_splines.py" line="140"/>
-      <source>Pick next point</source>
-      <translation>Elegir el siguiente punto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="153"/>
-      <location filename="../../draftguitools/gui_splines.py" line="147"/>
-      <source>Pick next point, or finish (A) or close (O)</source>
-      <translation>Elegir el siguiente punto, o finalizar (A) o cerrar (R)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="211"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="451"/>
-      <source>Create BezCurve</source>
-      <translation>Crear Curva Bezier</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="376"/>
-      <source>Click and drag to define next knot</source>
-      <translation>Haga clic y arrastre para definir el siguiente nudo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="382"/>
-      <source>Click and drag to define next knot, or finish (A) or close (O)</source>
-      <translation>Haga clic y arrastre para definir el nudo siguiente, o finalizar (A) o cerrar (R)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
-      <source>Flip dimension</source>
-      <translation>Voltear cota</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="108"/>
-      <source>Select an object to edit</source>
-      <translation>Seleccione un objeto a editar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="78"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="88"/>
-      <source>Pick center point</source>
-      <translation>Elegir punto central</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="189"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="200"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="260"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="254"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="270"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="410"/>
-      <source>Pick radius</source>
-      <translation>Elegir radio</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="224"/>
-      <source>Create Polygon (Part)</source>
-      <translation>Crear Polígono (Part)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="243"/>
-      <source>Create Polygon</source>
-      <translation>Crear Polígono</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_points.py" line="134"/>
-      <location filename="../../draftguitools/gui_points.py" line="147"/>
-      <source>Create Point</source>
-      <translation>Crear Punto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
-      <location filename="../../draftguitools/gui_lines.py" line="83"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
-      <source>Pick first point</source>
-      <translation>Elegir primer punto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="212"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="247"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="261"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="294"/>
-      <source>Create Dimension</source>
-      <translation>Crear Cota</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="309"/>
-      <source>Create Dimension (radial)</source>
-      <translation>Crear Dimensión (radial)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="508"/>
-      <source>Edge too short!</source>
-      <translation>¡Arista demasiado corta!</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="518"/>
-      <source>Edges don't intersect!</source>
-      <translation>¡No se cruzan las aristas!</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_facebinders.py" line="71"/>
-      <source>Select faces from existing objects</source>
-      <translation>Seleccionar caras de objetos existentes</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_patharray.py" line="102"/>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
-      <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
-      <translation>Por favor, seleccione exactamente dos objetos, el objeto base y el objeto de trayectoria, antes de llamar a este comando.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_patharray.py" line="143"/>
-      <source>Path array</source>
-      <translation>Matriz de trayectoria</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_texts.py" line="77"/>
-      <source>Pick location point</source>
-      <translation>Elegir punto de ubicación</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_texts.py" line="121"/>
-      <source>Create Text</source>
-      <translation>Crear Texto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="121"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="138"/>
-      <source>Create Ellipse</source>
-      <translation>Crear Elipse</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="196"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="202"/>
-      <source>Pick opposite point</source>
-      <translation>Elegir punto opuesto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="94"/>
-      <source>Select objects to trim or extend</source>
-      <translation>Seleccionar objetos para recortar o extender</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
-      <location filename="../../draftguitools/gui_offset.py" line="143"/>
-      <source>Pick distance</source>
-      <translation>Elegir distancia</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="215"/>
-      <location filename="../../DraftGui.py" line="1042"/>
-      <location filename="../../DraftGui.py" line="1100"/>
-      <source>Distance</source>
-      <translation>Distancia</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="217"/>
-      <location filename="../../DraftGui.py" line="1043"/>
-      <location filename="../../DraftGui.py" line="1101"/>
-      <source>Offset distance</source>
-      <translation>Distancia de desface</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="220"/>
-      <location filename="../../DraftGui.py" line="741"/>
-      <source>Angle</source>
-      <translation>Ángulo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="222"/>
-      <source>Offset angle</source>
-      <translation>Ángulo de desfase</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="483"/>
-      <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation>Incapaz de recortar estos objetos, sólo alambres y arcos de Borrador son compatibles.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
-      <source>Unable to trim these objects, too many wires</source>
-      <translation>Incapaz de recortar estos objetos, demasiados alambres</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
-      <source>These objects don't intersect.</source>
-      <translation>Estos objetos no intersectan.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
-      <source>Too many intersection points.</source>
-      <translation>Demasiados puntos de intersección.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="75"/>
-      <source>Select an object to stretch</source>
-      <translation>Seleccione un objeto para estirar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="127"/>
-      <source>Pick first point of selection rectangle</source>
-      <translation>Elegir el primer punto del rectángulo de selección</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="164"/>
-      <source>Pick opposite point of selection rectangle</source>
-      <translation>Elegir el punto opuesto del rectángulo de selección</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="173"/>
-      <source>Pick start point of displacement</source>
-      <translation>Elegir punto de inicio del desplazamiento</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="236"/>
-      <source>Pick end point of displacement</source>
-      <translation>Elegir punto final del desplazamiento</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="448"/>
-      <source>Turning one Rectangle into a Wire</source>
-      <translation>Convertir un Rectángulo en Alambre</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="477"/>
-      <source>Stretch</source>
-      <translation>Estirar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_clone.py" line="79"/>
-      <source>Select an object to clone</source>
-      <translation>Selecciona un objeto para clonar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
-      <source>Change slope</source>
-      <translation>Cambiar pendiente</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_heal.py" line="51"/>
-      <source>Heal</source>
-      <translation>Reparar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="163"/>
-      <source>Create Line</source>
-      <translation>Crear Línea</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="185"/>
-      <source>Create Wire</source>
-      <translation>Crear Alambre</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="330"/>
-      <source>Unable to create a Wire from selected objects</source>
-      <translation>No se puede crear un alambre de los objetos seleccionados</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="352"/>
-      <source>Convert to Wire</source>
-      <translation>Convertir en Alambre</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
-      <source>No active Draft Toolbar.</source>
-      <translation>No hay una barra de borradores activa.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
-      <source>Construction mode</source>
-      <translation>Modo de construcción</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="125"/>
-      <source>Continue mode</source>
-      <translation>Modo Continuar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="159"/>
-      <source>Toggle display mode</source>
-      <translation>Cambiar el modo de visualización</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="305"/>
-      <source>Select a Draft object to edit</source>
-      <translation>Seleccione un objeto Borrador para editar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="558"/>
-      <source>No edit point found for selected object</source>
-      <translation>No se encontró ningún punto de edición para el objeto seleccionado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="811"/>
-      <source>Too many objects selected, max number set to:</source>
-      <translation>Demasiados objetos seleccionados, número máximo establecido en:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="819"/>
-      <source>: this object is not editable</source>
-      <translation>: este objeto no es editable</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="125"/>
-      <source>Create Plane</source>
-      <translation>Crear Plano</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="142"/>
-      <source>Create Rectangle</source>
-      <translation>Crear Rectángulo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="73"/>
-      <source>Select an object to mirror</source>
-      <translation>Seleccione un objeto a reflejar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="92"/>
-      <source>Pick start point of mirror line</source>
-      <translation>Escoja el punto de inicio de la línea de reflejo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="122"/>
-      <source>Mirror</source>
-      <translation>Reflejar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="177"/>
-      <location filename="../../draftguitools/gui_mirror.py" line="203"/>
-      <source>Pick end point of mirror line</source>
-      <translation>Escoja el punto final de la línea de reflejo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="85"/>
-      <source>Downgrade</source>
-      <translation>Degradar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_drawing.py" line="77"/>
-      <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
-      <translation>El Banco de Trabajo de Dibujo está obsoleto desde 0.17, considere en su lugar usar el banco de trabajo TechDraw.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="277"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="278"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="446"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
-      <source>Start angle</source>
-      <translation>Ángulo de inicio</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="452"/>
-      <source>Pick start angle</source>
-      <translation>Elegir ángulo de inicio</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="285"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="454"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="455"/>
-      <source>Aperture angle</source>
-      <translation>Ángulo de apertura</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="291"/>
-      <source>Pick aperture</source>
-      <translation>Elegir apertura</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="317"/>
-      <source>Create Circle (Part)</source>
-      <translation>Crear círculo (Parte)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="335"/>
-      <source>Create Circle</source>
-      <translation>Crear Círculo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="369"/>
-      <source>Create Arc (Part)</source>
-      <translation>Crear Arco (Parte)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="389"/>
-      <source>Create Arc</source>
-      <translation>Crear Arco</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="466"/>
-      <source>Pick aperture angle</source>
-      <translation>Elegir ángulo de apertura</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="509"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="551"/>
-      <source>Arc by 3 points</source>
-      <translation>Arco por 3 puntos</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snapper.py" line="1543"/>
-      <source>(ON)</source>
-      <translation>(ENCENDIDO)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snapper.py" line="1546"/>
-      <source>(OFF)</source>
-      <translation>(APAGADO)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="68"/>
-      <source>Annotation style editor</source>
-      <translation>Editor de estilo de anotación</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="290"/>
-      <source>Open styles file</source>
-      <translation>Abrir archivo de estilos</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="292"/>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
-      <source>JSON file (*.json)</source>
-      <translation>Archivo JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="312"/>
-      <source>Save styles file</source>
-      <translation>Guardar archivo de estilos</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="79"/>
-      <source>Select an object to rotate</source>
-      <translation>Seleccione un objeto para rotar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="99"/>
-      <source>Pick rotation center</source>
-      <translation>Elegir centro de rotación</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="193"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="396"/>
-      <source>Base angle</source>
-      <translation>Ángulo base</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="194"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="397"/>
-      <source>The base angle you wish to start the rotation from</source>
-      <translation>El ángulo base desde el que se desea iniciar la rotación</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="199"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="400"/>
-      <source>Pick base angle</source>
-      <translation>Elegir ángulo base</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="205"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="409"/>
-      <source>Rotation</source>
-      <translation>Rotación</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="206"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="410"/>
-      <source>The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</source>
-      <translation>La cantidad de rotación que desea realizar.
-El ángulo final será el ángulo base más esta cantidad.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="213"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="418"/>
-      <source>Pick rotation angle</source>
-      <translation>Elegir ángulo de rotación</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="286"/>
-      <location filename="../../DraftGui.py" line="986"/>
-      <source>Rotate</source>
-      <translation>Rotar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="126"/>
-      <source>Main toggle snap</source>
-      <translation>Alternar ajuste principal</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="157"/>
-      <source>Midpoint snap</source>
-      <translation>Ajuste de punto medio</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="187"/>
-      <source>Perpendicular snap</source>
-      <translation>Ajuste perpendicular</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="217"/>
-      <source>Grid snap</source>
-      <translation>Ajuste de cuadrícula</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="247"/>
-      <source>Intersection snap</source>
-      <translation>Ajuste de intersección</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="277"/>
-      <source>Parallel snap</source>
-      <translation>Ajuste paralelo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="307"/>
-      <source>Endpoint snap</source>
-      <translation>Ajuste de punto final</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="338"/>
-      <source>Angle snap (30 and 45 degrees)</source>
-      <translation>Ajuste de ángulos (30 y 45 grados)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="368"/>
-      <source>Arc center snap</source>
-      <translation>Ajuste de centro de arco</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="398"/>
-      <source>Edge extension snap</source>
-      <translation>Ajuste de extensión de arista</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="428"/>
-      <source>Near snap</source>
-      <translation>Próximo ajuste</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="459"/>
-      <source>Orthogonal snap</source>
-      <translation>Ajuste ortogonal</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="489"/>
-      <source>Special point snap</source>
-      <translation>Ajuste de punto especial</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="520"/>
-      <source>Dimension display</source>
-      <translation>Pantalla de dimensión</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="553"/>
-      <source>Working plane snap</source>
-      <translation>Ajuste de plano de trabajo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="583"/>
-      <source>Show snap toolbar</source>
-      <translation>Mostrar barra de herramientas de ajuste</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="147"/>
-      <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
-      <translation>Elige una cara, 3 vértices o un proxy WP para definir el plano de dibujo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="269"/>
-      <location filename="../../draftguitools/gui_selectplane.py" line="324"/>
-      <location filename="../../draftguitools/gui_selectplane.py" line="527"/>
-      <location filename="../../draftguitools/gui_selectplane.py" line="538"/>
-      <location filename="../../DraftGui.py" line="836"/>
-      <source>Current working plane</source>
-      <translation>Plano de trabajo actual</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="271"/>
-      <source>Working plane aligned to global placement of</source>
-      <translation>Plano de trabajo alineado a la colocación global de</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="371"/>
-      <location filename="../../DraftGui.py" line="659"/>
-      <location filename="../../WorkingPlane.py" line="821"/>
-      <source>Top</source>
-      <translation>Superior</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="383"/>
-      <location filename="../../DraftGui.py" line="661"/>
-      <location filename="../../WorkingPlane.py" line="832"/>
-      <source>Front</source>
-      <translation>Anterior</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="395"/>
-      <location filename="../../DraftGui.py" line="663"/>
-      <location filename="../../WorkingPlane.py" line="843"/>
-      <source>Side</source>
-      <translation>Lado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="520"/>
-      <source>Dir</source>
-      <translation>Dir</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="524"/>
-      <location filename="../../draftguitools/gui_offset.py" line="243"/>
-      <location filename="../../draftguitools/gui_offset.py" line="260"/>
-      <location filename="../../draftguitools/gui_offset.py" line="324"/>
-      <location filename="../../DraftGui.py" line="1036"/>
-      <source>Offset</source>
-      <translation>Desfase</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="536"/>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="76"/>
-      <source>Select an object to offset</source>
-      <translation>Seleccione un objeto para desplazar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="82"/>
-      <source>Offset only works on one object at a time.</source>
-      <translation>El desplazamiento sólo funciona con un objeto a la vez.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="92"/>
-      <source>Cannot offset this object type</source>
-      <translation>No se puede hacer desplazamiento a este tipo de objeto</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="123"/>
-      <source>Offset of Bezier curves is currently not supported</source>
-      <translation>El desplazamiento de las curvas Bezier no está soportado actualmente</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_splines.py" line="120"/>
-      <source>Spline has been closed</source>
-      <translation>Spline se ha cerrado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_splines.py" line="183"/>
-      <source>Create B-spline</source>
-      <translation>Crear B-spline</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="92"/>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="569"/>
-      <source>This object does not support possible coincident points, please try again.</source>
-      <translation>Este objeto no soporta posibles puntos coincidentes, por favor inténtalo de nuevo.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="164"/>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="608"/>
-      <source>Active object must have more than two points/nodes</source>
-      <translation>Objeto activo debe tener más de dos puntos/nodos</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="722"/>
-      <source>Selection is not a Knot</source>
-      <translation>La selección no es un nudo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="749"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation>Extremo de BezCurve no puede ser suavizado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_grid.py" line="51"/>
-      <source>Toggle grid</source>
-      <translation>Alternar cuadrícula</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="76"/>
-      <source>Fillet radius</source>
-      <translation>Radio de redondeado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="79"/>
-      <source>Radius of fillet</source>
-      <translation>Radio del redondeado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="107"/>
-      <source>Enter radius.</source>
-      <translation>Introducir radio.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="126"/>
-      <source>Delete original objects:</source>
-      <translation>Eliminar objetos originales:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="131"/>
-      <source>Chamfer mode:</source>
-      <translation>Modo Chaflán:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="148"/>
-      <source>Two elements needed.</source>
-      <translation>Se necesitan dos elementos.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="155"/>
-      <source>Test object</source>
-      <translation>Objeto de prueba</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="156"/>
-      <source>Test object removed</source>
-      <translation>Objeto de prueba eliminado</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="158"/>
-      <source>Fillet cannot be created</source>
-      <translation>No se puede crear el redondeo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="188"/>
-      <source>Create fillet</source>
-      <translation>Crear redondeo</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
-      <source>Path twisted array</source>
-      <translation>Matriz de Trayectoria retorcida</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_split.py" line="64"/>
-      <source>Click anywhere on a line to split it.</source>
-      <translation>Haga clic en cualquier lugar de una línea para dividirla.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_split.py" line="106"/>
-      <source>Split line</source>
-      <translation>Dividir línea</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shapestring.py" line="69"/>
-      <source>ShapeString: string has no wires</source>
-      <translation>ShapeString: la cadena no tiene alambres</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/pointarray.py" line="145"/>
-      <location filename="../../draftobjects/pointarray.py" line="161"/>
-      <source>added property 'ExtraPlacement'</source>
-      <translation>añadida propiedad 'ExtraPlacement'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="89"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="105"/>
-      <source>added view property 'ScaleMultiplier'</source>
-      <translation>añadida propiedad de vista 'ScaleMultiplier'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="125"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="130"/>
-      <source>migrated 'DraftText' type to 'Text'</source>
-      <translation>se migró el tipo 'DraftText' a 'Text'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="284"/>
-      <source>, path object doesn't have 'Edges'.</source>
-      <translation>, el objeto de trayectoria no tiene 'Aristas'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="395"/>
-      <location filename="../../draftobjects/patharray.py" line="401"/>
-      <location filename="../../draftobjects/patharray.py" line="407"/>
-      <source>'PathObj' property will be migrated to 'PathObject'</source>
-      <translation>La propiedad 'PathObj' se migrará a 'PathObject'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="525"/>
-      <source>Cannot calculate path tangent. Copy not aligned.</source>
-      <translation>No se puede calcular la tangente de la trayectoria. Copia no alineada.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="541"/>
-      <source>Tangent and normal are parallel. Copy not aligned.</source>
-      <translation>Tangente y normal son paralelos. Copia no alineada.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="558"/>
-      <source>Cannot calculate path normal, using default.</source>
-      <translation>No se puede calcular la ruta normal, usando el valor predeterminado.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="565"/>
-      <source>Cannot calculate path binormal. Copy not aligned.</source>
-      <translation>No se puede calcular la trayectoria binormal. Copia no alineada.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="571"/>
-      <source>AlignMode {} is not implemented</source>
-      <translation>AlignMode {} no está implementado</translation>
-    </message>
-    <message>
-      <location filename="../../importDWG.py" line="209"/>
-      <location filename="../../importDWG.py" line="281"/>
-      <source>LibreDWG error</source>
-      <translation>Error de LibreDWG</translation>
-    </message>
-    <message>
-      <location filename="../../importDWG.py" line="218"/>
-      <location filename="../../importDWG.py" line="290"/>
-      <source>Converting:</source>
-      <translation>Convirtiendo:</translation>
-    </message>
-    <message>
-      <location filename="../../importDWG.py" line="223"/>
-      <source>Conversion successful</source>
-      <translation>Conversión exitosa</translation>
-    </message>
-    <message>
-      <location filename="../../importDWG.py" line="226"/>
-      <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation>Error durante la conversión DWG. Trate de mover el archivo DWG a una ruta de directorio sin espacios y caracteres no ingleses, o trate de guardar en una versión inferior de DWG.</translation>
-    </message>
-    <message>
-      <location filename="../../importDWG.py" line="229"/>
-      <location filename="../../importDWG.py" line="296"/>
-      <source>ODA File Converter not found</source>
-      <translation>Convertidor de archivos ODA no encontrado</translation>
-    </message>
-    <message>
-      <location filename="../../importDWG.py" line="242"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <source>QCAD error</source>
-      <translation>Error QCAD</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="57"/>
-      <location filename="../../DraftGui.py" line="751"/>
-      <source>Relative</source>
-      <translation>Relativo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="61"/>
-      <location filename="../../DraftGui.py" line="756"/>
-      <source>Global</source>
-      <translation>Global</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="66"/>
-      <location filename="../../DraftGui.py" line="774"/>
-      <location filename="../../DraftGui.py" line="1126"/>
-      <source>Continue</source>
-      <translation>Continuo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="71"/>
-      <location filename="../../DraftGui.py" line="790"/>
-      <source>Close</source>
-      <translation>Cerrar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="81"/>
-      <source>Subelement mode</source>
-      <translation>Modo subelemento</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="86"/>
-      <source>Fill</source>
-      <translation>Relleno</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="91"/>
-      <source>Exit</source>
-      <translation>Salir</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="96"/>
-      <source>Snap On/Off</source>
-      <translation>Referencias Encendido/Apagado</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="101"/>
-      <source>Increase snap radius</source>
-      <translation>Incremento referencia de radio</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="106"/>
-      <source>Decrease snap radius</source>
-      <translation>Disminuir referencia de radio</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="111"/>
-      <source>Restrict X</source>
-      <translation>Restringir X</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="116"/>
-      <source>Restrict Y</source>
-      <translation>Restringir Y</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="121"/>
-      <source>Restrict Z</source>
-      <translation>Restringir Z</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="126"/>
-      <location filename="../../DraftGui.py" line="796"/>
-      <source>Select edge</source>
-      <translation>Seleccionar arista</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="131"/>
-      <source>Add custom snap point</source>
-      <translation>Agregar punto de referencia personalizado</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="136"/>
-      <source>Length mode</source>
-      <translation>Modo longitud</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="141"/>
-      <location filename="../../DraftGui.py" line="792"/>
-      <source>Wipe</source>
-      <translation>Limpiar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="146"/>
-      <source>Set Working Plane</source>
-      <translation>Configurar Plano de Trabajo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="151"/>
-      <source>Cycle snap object</source>
-      <translation>Objeto de referencia de ciclo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="156"/>
-      <source>Toggle near snap on/off</source>
-      <translation>Alternar referencia cercana activar/desactivar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="330"/>
-      <source>Draft Command Bar</source>
-      <translation>Barra de Comando de Borrador</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="665"/>
-      <source>Auto</source>
-      <translation>Automático</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="728"/>
-      <source>active command:</source>
-      <translation>comando activo:</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="730"/>
-      <source>Active Draft command</source>
-      <translation>Activar comando de Borrador</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="731"/>
-      <source>X coordinate of next point</source>
-      <translation>Coordenada X del siguiente punto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="732"/>
-      <location filename="../../DraftGui.py" line="1059"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="733"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="734"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="735"/>
-      <source>Y coordinate of next point</source>
-      <translation>Coordenada Y del siguiente punto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="736"/>
-      <source>Z coordinate of next point</source>
-      <translation>Coordenada Z del siguiente punto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="737"/>
-      <source>Enter point</source>
-      <translation>Ingresar punto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="739"/>
-      <source>Enter a new point with the given coordinates</source>
-      <translation>Ingresar un nuevo punto con las coordenadas dadas</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="740"/>
-      <source>Length</source>
-      <translation>Longitud</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="742"/>
-      <source>Length of current segment</source>
-      <translation>Longitud del segmento actual</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="743"/>
-      <source>Angle of current segment</source>
-      <translation>Ángulo del segmento actual</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="747"/>
-      <source>Check this to lock the current angle</source>
-      <translation>Marque esto para bloquear el ángulo actual</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="748"/>
-      <location filename="../../DraftGui.py" line="1108"/>
-      <source>Radius</source>
-      <translation>Radio</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="749"/>
-      <location filename="../../DraftGui.py" line="1109"/>
-      <source>Radius of Circle</source>
-      <translation>Radio del Círculo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="754"/>
-      <source>Coordinates relative to last point or to coordinate system origin
-if is the first point to set</source>
-      <translation>Coordenadas relativas al último punto o para coordenar el origen del sistema
-si es el primer punto a establecer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="759"/>
-      <source>Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</source>
-      <translation>Coordenadas relativas al sistema global de coordenadas.
-Desmarque para usar el sistema de coordenadas del plano de trabajo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="761"/>
-      <source>Filled</source>
-      <translation>Rellenado</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="765"/>
-      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation>Marque esto si el objeto debe aparecer como relleno, de lo contrario aparecerá como una estructura alámbrica. No está disponible si la opción de preferencia de Draft 'Usar primitivos de pieza' está habilitada</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="767"/>
-      <source>Finish</source>
-      <translation>Finalizar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="769"/>
-      <source>Finishes the current drawing or editing operation</source>
-      <translation>Termina la operación de dibujo o edición actual</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="772"/>
-      <source>If checked, command will not finish until you press the command button again</source>
-      <translation>Si está marcado, el comando no finalizará hasta que presione el botón de comando nuevamente</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="777"/>
-      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
-      <translation>Si está marcado, se realizará un estilo OCC de desplazamiento en lugar del desplazamiento clásico</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="778"/>
-      <source>&amp;OCC-style offset</source>
-      <translation>&amp;OCC-desfase de estilo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="788"/>
-      <source>&amp;Undo (CTRL+Z)</source>
-      <translation>&amp;Deshacer (CTRL+Z)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="789"/>
-      <source>Undo the last segment</source>
-      <translation>Deshacer el último segmento</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="791"/>
-      <source>Finishes and closes the current line</source>
-      <translation>Finalizar y cerrar la línea actual</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="793"/>
-      <source>Wipes the existing segments of this line and starts again from the last point</source>
-      <translation>Limpia los segmentos existentes de esta línea y comienza de nuevo desde el último punto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="794"/>
-      <source>Set WP</source>
-      <translation>Configurar WP</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="795"/>
-      <source>Reorients the working plane on the last segment</source>
-      <translation>Reorienta el plano de trabajo en el último segmento</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="797"/>
-      <source>Selects an existing edge to be measured by this dimension</source>
-      <translation>Selecciona una arista existente para ser medido por esta cota</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="798"/>
-      <source>Sides</source>
-      <translation>Lados</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="799"/>
-      <source>Number of sides</source>
-      <translation>Número de lados</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="802"/>
-      <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation>Si está marcado, los objetos se copiarán en lugar de moverlos. Preferencias -&gt; Borrador-&gt; Modo de copia global para mantener este modo en los siguientes comandos</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="803"/>
-      <source>Modify subelements</source>
-      <translation>Modificar subelementos</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="804"/>
-      <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation>Si está marcado, los subelementos serán modificados en lugar de objetos enteros</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="805"/>
-      <source>Text string to draw</source>
-      <translation>Cadena de texto para dibujar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="806"/>
-      <source>String</source>
-      <translation>Cadena de texto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="807"/>
-      <source>Height of text</source>
-      <translation>Altura de texto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="808"/>
-      <source>Height</source>
-      <translation>Altura</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="809"/>
-      <source>Intercharacter spacing</source>
-      <translation>Espacio entre caracteres</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="810"/>
-      <source>Tracking</source>
-      <translation>Seguimiento</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="811"/>
-      <source>Full path to font file:</source>
-      <translation>Ruta completa al archivo de fuente:</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="812"/>
-      <source>Open a FileChooser for font file</source>
-      <translation>Abra un SelectorArchivo para el archivo de fuente</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="813"/>
-      <source>Create text</source>
-      <translation>Crear texto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="814"/>
-      <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation>Presione este botón para crear el objeto de texto o termine el texto con dos líneas en blanco</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="837"/>
-      <source>Change default style for new objects</source>
-      <translation>Cambiar el estilo predeterminado para nuevos objetos</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="838"/>
-      <source>Toggle construction mode</source>
-      <translation>Conmutar el modo de construcción</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="839"/>
-      <location filename="../../DraftGui.py" line="2050"/>
-      <location filename="../../DraftGui.py" line="2065"/>
-      <source>Autogroup off</source>
-      <translation>Autoagrupar apagado</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="950"/>
-      <source>Line</source>
-      <translation>Línea</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="958"/>
-      <source>DWire</source>
-      <translation>AlambreB</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="976"/>
-      <source>Circle</source>
-      <translation>Círculo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="981"/>
-      <source>Arc</source>
-      <translation>Arco</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="990"/>
-      <source>Point</source>
-      <translation>Punto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1018"/>
-      <source>Label</source>
-      <translation>Etiqueta</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1097"/>
-      <source>Trimex</source>
-      <translation>Recortar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1197"/>
-      <source>Pick Object</source>
-      <translation>Seleccionar Objeto</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1203"/>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1253"/>
-      <source>Local u0394X</source>
-      <translation>Local u0394X</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1254"/>
-      <source>Local u0394Y</source>
-      <translation>Local u0394Y</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1255"/>
-      <source>Local u0394Z</source>
-      <translation>Local u0394Z</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1257"/>
-      <source>Local X</source>
-      <translation>X local</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1258"/>
-      <source>Local Y</source>
-      <translation>Y local</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1259"/>
-      <source>Local Z</source>
-      <translation>Z local</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1261"/>
-      <source>Global u0394X</source>
-      <translation>Global u0394X</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1262"/>
-      <source>Global u0394Y</source>
-      <translation>Global u0394Y</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1263"/>
-      <source>Global u0394Z</source>
-      <translation>Global u0394Z</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1265"/>
-      <source>Global X</source>
-      <translation>X global</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1266"/>
-      <source>Global Y</source>
-      <translation>Y global</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1267"/>
-      <source>Global Z</source>
-      <translation>Z global</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1503"/>
-      <source>Invalid Size value. Using 200.0.</source>
-      <translation>Valor de Tamaño no válido. Usando 200.0.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1511"/>
-      <source>Invalid Tracking value. Using 0.</source>
-      <translation>Valor de seguimiento no válido. Usando 0.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1525"/>
-      <source>Please enter a text string.</source>
-      <translation>Por favor, introduzca una cadena de texto.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1534"/>
-      <source>Select a Font file</source>
-      <translation>Seleccionar un archivo de Fuente</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1567"/>
-      <source>Please enter a font file.</source>
-      <translation>Por favor, introduzca un archivo de fuente.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2058"/>
-      <source>Autogroup:</source>
-      <translation>Autogrupo:</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2394"/>
-      <source>Faces</source>
-      <translation>Caras</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2395"/>
-      <source>Remove</source>
-      <translation>Eliminar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2396"/>
-      <source>Add</source>
-      <translation>Agregar</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2397"/>
-      <source>Facebinder elements</source>
-      <translation>Elementos Carapegada</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="650"/>
-      <source>Solids:</source>
-      <translation>Sólidos:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="651"/>
-      <source>Faces:</source>
-      <translation>Caras:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="652"/>
-      <source>Wires:</source>
-      <translation>Alambres:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="653"/>
-      <source>Edges:</source>
-      <translation>Aristas:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="654"/>
-      <source>Vertices:</source>
-      <translation>Vértices:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="658"/>
-      <source>Face</source>
-      <translation>Cara</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="663"/>
-      <source>Wire</source>
-      <translation>Alambre</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="695"/>
-      <location filename="../../draftutils/utils.py" line="699"/>
-      <source>different types</source>
-      <translation>tipos diferentes</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="709"/>
-      <source>Objects have different placements. Distance between the two base points: </source>
-      <translation>Los objetos tienen diferentes ubicaciones. Distancia entre los dos puntos base: </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="712"/>
-      <source>has a different value</source>
-      <translation>tiene un valor diferente</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="715"/>
-      <source>doesn't exist in one of the objects</source>
-      <translation>no existe en uno de los objetos</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="827"/>
-      <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation>%s comparte una base con %d otros objetos. Por favor, verifique si desea modificar esto.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="833"/>
-      <source>%s cannot be modified because its placement is readonly.</source>
-      <translation>%s no puede ser modificado porque su ubicación es de solo lectura.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="977"/>
-      <source>Wrong input: unknown document.</source>
-      <translation>Entrada incorrecta: documento desconocido.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="1014"/>
-      <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="720"/>
-      <location filename="../../draftfunctions/cut.py" line="57"/>
-      <location filename="../../draftmake/make_array.py" line="85"/>
-      <location filename="../../draftmake/make_pointarray.py" line="108"/>
-      <location filename="../../draftmake/make_label.py" line="195"/>
-      <location filename="../../draftmake/make_patharray.py" line="161"/>
-      <location filename="../../draftmake/make_patharray.py" line="330"/>
-      <location filename="../../draftmake/make_text.py" line="84"/>
-      <location filename="../../draftmake/make_text.py" line="172"/>
-      <location filename="../../draftmake/make_dimension.py" line="215"/>
-      <location filename="../../draftmake/make_dimension.py" line="308"/>
-      <location filename="../../draftmake/make_dimension.py" line="438"/>
-      <location filename="../../draftmake/make_dimension.py" line="564"/>
-      <location filename="../../draftmake/make_layer.py" line="58"/>
-      <location filename="../../draftmake/make_layer.py" line="149"/>
-      <source>No active document. Aborting.</source>
-      <translation>No hay documento activo. Abortando.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="1055"/>
-      <source>This function will be deprecated in </source>
-      <translation>Esta función será obsoleta en </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="1056"/>
-      <location filename="../../draftutils/utils.py" line="1059"/>
-      <source>Please use </source>
-      <translation>Por favor use </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="1059"/>
-      <source>This function will be deprecated. </source>
-      <translation>Esta función será obsoleta. </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="51"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="58"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="65"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="154"/>
-      <source>custom</source>
-      <translation>personalizado</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="140"/>
-      <source>Unable to convert input into a  scale factor</source>
-      <translation>No se puede convertir la entrada en un factor de escala</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="155"/>
-      <source>Set custom scale</source>
-      <translation>Establecer escala personalizada</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="157"/>
-      <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation>Establecer escala de anotación personalizada en formato x:x, x=x</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="214"/>
-      <source>Set the scale used by draft annotation tools</source>
-      <translation>Establecer la escala utilizada por las herramientas de anotación de borrador</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="169"/>
-      <source>Snap Lock</source>
-      <translation>Adherir bloqueo</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="170"/>
-      <source>Snap Endpoint</source>
-      <translation>Adherir punto final</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="171"/>
-      <source>Snap Midpoint</source>
-      <translation>Adherir en punto medio</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="172"/>
-      <source>Snap Center</source>
-      <translation>Ajustar Centro</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="173"/>
-      <source>Snap Angle</source>
-      <translation>Ajustar Ángulo</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="174"/>
-      <source>Snap Intersection</source>
-      <translation>Ajustar Intersección</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="175"/>
-      <source>Snap Perpendicular</source>
-      <translation>Ajustar Perpendicular</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="176"/>
-      <source>Snap Extension</source>
-      <translation>Ajustar Extensión</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="177"/>
-      <source>Snap Parallel</source>
-      <translation>Ajustar Paralelo</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="178"/>
-      <source>Snap Special</source>
-      <translation>Ajustar Especial</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="179"/>
-      <source>Snap Near</source>
-      <translation>Ajustar Cercano</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="180"/>
-      <source>Snap Ortho</source>
-      <translation>Ajustar Ortogonal</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="181"/>
-      <source>Snap Grid</source>
-      <translation>Ajustar Cuadrícula</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="182"/>
-      <source>Snap WorkingPlane</source>
-      <translation>Ajustar Plano de Trabajo</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="183"/>
-      <source>Snap Dimensions</source>
-      <translation>Ajustar Dimensiones</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="187"/>
-      <source>Toggle Draft Grid</source>
-      <translation>Cambiar cuadrícula de Borrador</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="729"/>
-      <location filename="../../draftmake/make_pointarray.py" line="117"/>
-      <location filename="../../draftmake/make_pointarray.py" line="128"/>
-      <location filename="../../draftmake/make_label.py" line="236"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="167"/>
-      <location filename="../../draftmake/make_patharray.py" line="170"/>
-      <location filename="../../draftmake/make_patharray.py" line="181"/>
-      <location filename="../../draftmake/make_patharray.py" line="339"/>
-      <location filename="../../draftmake/make_patharray.py" line="350"/>
-      <location filename="../../draftmake/make_circulararray.py" line="131"/>
-      <location filename="../../draftmake/make_polararray.py" line="103"/>
-      <location filename="../../draftmake/make_dimension.py" line="322"/>
-      <location filename="../../draftmake/make_dimension.py" line="447"/>
-      <source>Wrong input: object not in document.</source>
-      <translation>Entrada incorrecta: objeto no está en el documento.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="81"/>
-      <source>No graphical interface</source>
-      <translation>Sin interfaz gráfica</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="161"/>
-      <source>Unable to insert new object into a scaled part</source>
-      <translation>No se puede insertar un nuevo objeto en una parte escalada</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
-      <source>Symbol not implemented. Using a default symbol.</source>
-      <translation>Símbolo no implementado. Usando un símbolo predeterminado.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
-      <source>Visibility off; removed from list: </source>
-      <translation>Visibilidad desactivada; eliminada de la lista: </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="603"/>
-      <source>image is Null</source>
-      <translation>imagen es nula</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="609"/>
-      <source>filename does not exist on the system or in the resource file</source>
-      <translation>el nombre de archivo no existe en el sistema o en el archivo de recursos</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="668"/>
-      <source>unable to load texture</source>
-      <translation>no se puede cargar la textura</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="738"/>
-      <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation>No tiene 'ViewObject.RootNode'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="151"/>
-      <source>Object must be a closed shape</source>
-      <translation>El objeto debe ser una forma cerrada</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="153"/>
-      <source>No solid object created</source>
-      <translation>Ningún objeto sólido creado</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="276"/>
-      <source>Faces must be coplanar to be refined</source>
-      <translation>Las caras deben ser coplanares para ser refinadas</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="435"/>
-      <location filename="../../draftfunctions/downgrade.py" line="230"/>
-      <source>Upgrade: Unknown force method:</source>
-      <translation>Actualizar: Método de fuerza desconocido:</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="453"/>
-      <source>Found groups: closing each open object inside</source>
-      <translation>Grupos encontrados: cerrando cada objeto abierto dentro</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="459"/>
-      <source>Found meshes: turning into Part shapes</source>
-      <translation>Mallas encontradas: convirtiéndose en formas de Piezas</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="467"/>
-      <source>Found 1 solidifiable object: solidifying it</source>
-      <translation>Encontrado 1 objeto solidificable: solidificándolo</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="472"/>
-      <source>Found 2 objects: fusing them</source>
-      <translation>Encontrados 2 objetos: fusionando</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="483"/>
-      <source>Found object with several coplanar faces: refine them</source>
-      <translation>Objeto encontrado con varias caras coplanares: refinarlos</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="489"/>
-      <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation>Encontrado 1 objeto no paramétrico: diseñándolo</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="500"/>
-      <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation>Encontrado 1 boceto de objeto cerrado: crear una cara de él</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="505"/>
-      <source>Found closed wires: creating faces</source>
-      <translation>Se encontraron alambres cerrados: creando caras</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="511"/>
-      <source>Found several wires or edges: wiring them</source>
-      <translation>Encontradas varios alambres o aristas: uniéndolas</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="513"/>
-      <location filename="../../draftfunctions/upgrade.py" line="547"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Encontraron varios objetos no tratables: crear composición</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="518"/>
-      <source>trying: closing it</source>
-      <translation>intentando: cerrarlo</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="520"/>
-      <source>Found 1 open wire: closing it</source>
-      <translation>Encontrado 1 alambre abierto: cerrándolo</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="537"/>
-      <source>Found 1 object: draftifying it</source>
-      <translation>Se encontró 1 objeto: borrador</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="542"/>
-      <source>Found points: creating compound</source>
-      <translation>Puntos encontrados: creando composición</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/upgrade.py" line="550"/>
-      <source>Unable to upgrade these objects.</source>
-      <translation>No se puede actualizar estos objetos.</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/mirror.py" line="90"/>
-      <source>No object given</source>
-      <translation>Ningún objeto dado</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/mirror.py" line="94"/>
-      <source>The two points are coincident</source>
-      <translation>Los dos puntos son coincidentes</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/mirror.py" line="113"/>
-      <source>mirrored</source>
-      <translation>simétrico</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="238"/>
-      <source>Found 1 block: exploding it</source>
-      <translation>Se encontró un bloque: explotándolo</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="246"/>
-      <source>Found 1 multi-solids compound: exploding it</source>
-      <translation>Se encontró un compuesto de multi-sólidos: explotándolo</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="253"/>
-      <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation>Encontrado 1 objeto paramétrico: rompiendo sus dependencias</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="261"/>
-      <source>Found 2 objects: subtracting them</source>
-      <translation>Encontrados 2 objetos: restarlos</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="268"/>
-      <source>Found several faces: splitting them</source>
-      <translation>Encontradas varias caras: partirlas</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="273"/>
-      <source>Found several objects: subtracting them from the first one</source>
-      <translation>Encontrados varios objetos: restándolos del primero</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="278"/>
-      <source>Found 1 face: extracting its wires</source>
-      <translation>Encontrada 1 cara: extrayendo sus alambres</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="284"/>
-      <source>Found only wires: extracting their edges</source>
-      <translation>Encontrados solamente alambres: extrayendo sus aristas</translation>
-    </message>
-    <message>
-      <location filename="../../draftfunctions/downgrade.py" line="288"/>
-      <source>No more downgrade possible</source>
-      <translation>No es posible descomponer más</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="46"/>
-      <source>Draft</source>
-      <translation>Calado</translation>
-    </message>
-    <message>
-      <location filename="../../WorkingPlane.py" line="713"/>
-      <location filename="../../draftmake/make_sketch.py" line="127"/>
-      <location filename="../../draftmake/make_sketch.py" line="139"/>
-      <source>All Shapes must be coplanar</source>
-      <translation>Todas las formas deben ser coplanares</translation>
-    </message>
-    <message>
-      <location filename="../../WorkingPlane.py" line="721"/>
-      <source>Selected Shapes must define a plane</source>
-      <translation>Las formas seleccionadas deben definir un plano</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="361"/>
-      <source>Activate this layer</source>
-      <translation>Activar esta capa</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="367"/>
-      <source>Select layer contents</source>
-      <translation>Seleccionar contenido de la capa</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="405"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="421"/>
-      <source>Merge layer duplicates</source>
-      <translation>Combinar duplicados de capa</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="410"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="469"/>
-      <source>Add new layer</source>
-      <translation>Añadir nueva capa</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="454"/>
-      <source>Relabeling layer:</source>
-      <translation>Capa de Reetiquetado:</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="458"/>
-      <source>Merging layer:</source>
-      <translation>Combinando capa:</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="402"/>
-      <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation>Por favor cargue el Banco de Trabajo del Borrador para permitir la edición de este objeto</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="56"/>
-      <source>ShapeString</source>
-      <translation>FormaTexto</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="70"/>
-      <source>Default</source>
-      <translation>Predeterminado</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
-      <source>Task panel:</source>
-      <translation>Panel de tarea:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="95"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="290"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
-      <location filename="../../draftmake/make_circulararray.py" line="122"/>
-      <source>Circular array</source>
-      <translation>Matriz circular</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
-      <source>At least one element must be selected.</source>
-      <translation>Se debe seleccionar al menos un elemento.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
-      <source>Number of layers must be at least 2.</source>
-      <translation>Número de capas debe ser al menos 2.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
-      <source>Selection is not suitable for array.</source>
-      <translation>La selección no es adecuada para la matriz.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="372"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
-      <source>Object:</source>
-      <translation>Objeto:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="224"/>
-      <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation>La distancia Radial es cero. La matriz resultante puede no verse correcta.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="226"/>
-      <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation>La distancia Radial es negativa. Se hace positiva para continuar.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="230"/>
-      <source>Tangential distance cannot be zero.</source>
-      <translation>La distancia tangencial no puede ser cero.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="233"/>
-      <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation>La distancia tangencial es negativa. Se hace positiva para continuar.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
-      <source>Center reset:</source>
-      <translation>Reiniciar centro:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="296"/>
-      <source>Fuse:</source>
-      <translation>Fusión:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
-      <source>Create Link array:</source>
-      <translation>Crear Matriz de enlaces:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="373"/>
-      <source>Radial distance:</source>
-      <translation>Distancia Radial:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="374"/>
-      <source>Tangential distance:</source>
-      <translation>Distancia tangencial:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="375"/>
-      <source>Number of circular layers:</source>
-      <translation>Número de capas circulares:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="376"/>
-      <source>Symmetry parameter:</source>
-      <translation>Parámetro de simetría:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
-      <source>Center of rotation:</source>
-      <translation>Centro de rotación:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
-      <source>Aborted:</source>
-      <translation>Abortado:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="95"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="269"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="275"/>
-      <source>Orthogonal array</source>
-      <translation>Matriz ortogonal</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
-      <source>Number of elements must be at least 1.</source>
-      <translation>Número de elementos debe ser al menos 1.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
-      <source>Interval X reset:</source>
-      <translation>Intervalo X reiniciado:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="325"/>
-      <source>Interval Y reset:</source>
-      <translation>Intervalo Y reiniciado:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="334"/>
-      <source>Interval Z reset:</source>
-      <translation>Intervalo Z reiniciado:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
-      <source>Number of X elements:</source>
-      <translation>Número de elementos X:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="378"/>
-      <source>Interval X:</source>
-      <translation>Intervalo X:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="381"/>
-      <source>Number of Y elements:</source>
-      <translation>Número de elementos Y:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="383"/>
-      <source>Interval Y:</source>
-      <translation>Intervalo Y:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="386"/>
-      <source>Number of Z elements:</source>
-      <translation>Número de elementos Z:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="388"/>
-      <source>Interval Z:</source>
-      <translation>Intervalo Z:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="95"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="258"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
-      <location filename="../../draftmake/make_polararray.py" line="94"/>
-      <source>Polar array</source>
-      <translation>Matriz polar</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="199"/>
-      <source>Number of elements must be at least 2.</source>
-      <translation>Número de elementos debe ser al menos 2.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="203"/>
-      <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
-      <translation>El ángulo está por encima de 360 grados. Se ajusta a este valor para continuar.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="206"/>
-      <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
-      <translation>El ángulo está por debajo de -360 grados. Se ajusta a este valor para continuar.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
-      <source>Number of elements:</source>
-      <translation>Número de elementos:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="329"/>
-      <source>Polar angle:</source>
-      <translation>Ángulo polar:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_pointarray.py" line="135"/>
-      <source>Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</source>
-      <translation>Entrada incorrecta: el objeto punto no tiene 'Geometría', 'Enlaces', o 'Componentes'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_pointarray.py" line="147"/>
-      <location filename="../../draftmake/make_label.py" line="215"/>
-      <location filename="../../draftmake/make_text.py" line="107"/>
-      <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation>Entrada incorrecta: debe ser una ubicación, un vector o una rotación.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="125"/>
-      <location filename="../../draftmake/make_arc_3points.py" line="130"/>
-      <source>Points:</source>
-      <translation>Puntos:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="126"/>
-      <location filename="../../draftmake/make_arc_3points.py" line="131"/>
-      <source>Wrong input: must be list or tuple of three points exactly.</source>
-      <translation>Entrada incorrecta: debe ser la lista o tupla de tres puntos exactamente.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="138"/>
-      <source>Placement:</source>
-      <translation>Ubicación:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="139"/>
-      <source>Wrong input: incorrect type of placement.</source>
-      <translation>Entrada incorrecta: tipo de ubicación incorrecta.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="153"/>
-      <source>Wrong input: incorrect type of points.</source>
-      <translation>Entrada incorrecta: tipo de puntos incorrecto.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape:</source>
-      <translation>No se puede generar la forma:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="166"/>
-      <source>Radius:</source>
-      <translation>Radio:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="167"/>
-      <source>Center:</source>
-      <translation>Centro:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="170"/>
-      <source>Create primitive object</source>
-      <translation>Crear objeto primitivo</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="193"/>
-      <location filename="../../draftmake/make_arc_3points.py" line="204"/>
-      <source>Final placement:</source>
-      <translation>Ubicación final:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="195"/>
-      <source>Face: True</source>
-      <translation>Cara: verdadero</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="197"/>
-      <source>Support:</source>
-      <translation>Soporte:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="198"/>
-      <source>Map mode:</source>
-      <translation>Modo mapa:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_sketch.py" line="104"/>
-      <source>No shape found</source>
-      <translation>Forma no encontrada</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_sketch.py" line="111"/>
-      <source>All Shapes must be planar</source>
-      <translation>Todas las formas deben ser planas</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="204"/>
-      <location filename="../../draftmake/make_patharray.py" line="200"/>
-      <location filename="../../draftmake/make_patharray.py" line="254"/>
-      <location filename="../../draftmake/make_patharray.py" line="265"/>
-      <location filename="../../draftmake/make_circulararray.py" line="164"/>
-      <location filename="../../draftmake/make_polararray.py" line="126"/>
-      <location filename="../../draftmake/make_dimension.py" line="222"/>
-      <location filename="../../draftmake/make_dimension.py" line="229"/>
-      <location filename="../../draftmake/make_dimension.py" line="237"/>
-      <location filename="../../draftmake/make_dimension.py" line="354"/>
-      <location filename="../../draftmake/make_dimension.py" line="371"/>
-      <location filename="../../draftmake/make_dimension.py" line="495"/>
-      <location filename="../../draftmake/make_dimension.py" line="571"/>
-      <location filename="../../draftmake/make_dimension.py" line="599"/>
-      <location filename="../../draftmake/make_dimension.py" line="607"/>
-      <source>Wrong input: must be a vector.</source>
-      <translation>Entrada incorrecta: debe ser un vector.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="230"/>
-      <location filename="../../draftmake/make_dimension.py" line="316"/>
-      <source>Wrong input: object must not be a list.</source>
-      <translation>Entrada incorrecta: el objeto no debe ser una lista.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="251"/>
-      <location filename="../../draftmake/make_patharray.py" line="213"/>
-      <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation>Entrada incorrecta: debe ser una lista o tupla de cadenas, o una sola cadena.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="263"/>
-      <source>Wrong input: subelement not in object.</source>
-      <translation>Entrada incorrecta: subelemento no está en el objeto.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="272"/>
-      <source>Wrong input: label_type must be a string.</source>
-      <translation>Entrada incorrecta: label_type debe ser una cadena.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="277"/>
-      <source>Wrong input: label_type must be one of the following: </source>
-      <translation>Entrada incorrecta: label_type debe ser una de las siguientes: </translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="286"/>
-      <location filename="../../draftmake/make_label.py" line="291"/>
-      <location filename="../../draftmake/make_text.py" line="91"/>
-      <location filename="../../draftmake/make_text.py" line="96"/>
-      <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation>Entrada incorrecta: debe ser una lista de cadenas o una sola cadena.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="300"/>
-      <location filename="../../draftmake/make_label.py" line="304"/>
-      <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation>Entrada incorrecta: debe ser una cadena, 'Horizontal', 'Vertical' o 'Personalizado'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="313"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="151"/>
-      <location filename="../../draftmake/make_patharray.py" line="191"/>
-      <location filename="../../draftmake/make_patharray.py" line="360"/>
-      <location filename="../../draftmake/make_polararray.py" line="119"/>
-      <location filename="../../draftmake/make_layer.py" line="201"/>
-      <source>Wrong input: must be a number.</source>
-      <translation>Entrada incorrecta: debe ser un número.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="320"/>
-      <source>Wrong input: must be a list of at least two vectors.</source>
-      <translation>Entrada incorrecta: debe ser una lista de al menos dos vectores.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="353"/>
-      <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation>La dirección no es 'Personalizada'; los puntos no se utilizarán.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="380"/>
-      <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation>Entrada incorrecta: debe ser una lista de dos elementos. Por ejemplo, [objeto, 'Arista1'].</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="60"/>
-      <source>Internal orthogonal array</source>
-      <translation>Matriz ortogonal interna</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="87"/>
-      <source>Wrong input: must be a number or vector.</source>
-      <translation>Entrada incorrecta: debe ser un número o vector.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="92"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="95"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="98"/>
-      <source>Input: single value expanded to vector.</source>
-      <translation>Entrada: valor único expandido al vector.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="119"/>
-      <location filename="../../draftmake/make_circulararray.py" line="154"/>
-      <location filename="../../draftmake/make_polararray.py" line="112"/>
-      <source>Wrong input: must be an integer number.</source>
-      <translation>Entrada incorrecta: debe ser un número entero.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="123"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="126"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="129"/>
-      <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation>Entrada: el número de elementos debe ser al menos 1. Está establecido en 1.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="350"/>
-      <source>Orthogonal array 2D</source>
-      <translation>Matriz ortogonal 2D</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="424"/>
-      <source>Rectangular array</source>
-      <translation>Matriz rectangular</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="501"/>
-      <source>Rectangular array 2D</source>
-      <translation>Matriz rectangular 2D</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_patharray.py" line="246"/>
-      <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation>Entrada incorrecta: debe ser 'Original', 'Frenet' o 'Tangent'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_circulararray.py" line="144"/>
-      <source>Wrong input: must be a number or quantity.</source>
-      <translation>Entrada incorrecta: debe ser un número o una cantidad.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_fillet.py" line="58"/>
-      <location filename="../../draftmake/make_fillet.py" line="143"/>
-      <location filename="../../draftmake/make_fillet.py" line="144"/>
-      <location filename="../../draftmake/make_fillet.py" line="145"/>
-      <source>length:</source>
-      <translation>longitud:</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_fillet.py" line="132"/>
-      <source>Two elements are needed.</source>
-      <translation>Se necesitan dos elementos.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_fillet.py" line="139"/>
-      <source>Radius is too large</source>
-      <translation>El radio es demasiado grande</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_fillet.py" line="143"/>
-      <location filename="../../draftmake/make_fillet.py" line="144"/>
-      <location filename="../../draftmake/make_fillet.py" line="145"/>
-      <source>Segment</source>
-      <translation>Segmento</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_fillet.py" line="165"/>
-      <source>Removed original objects.</source>
-      <translation>Objetos originales eliminados.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="173"/>
-      <source>This function is deprecated. Do not use this function directly.</source>
-      <translation>Esta función está obsoleta. No use esta función directamente.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="174"/>
-      <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation>Utilice una de 'make_linear_dimension' o 'make_linear_dimension_obj'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="327"/>
-      <location filename="../../draftmake/make_dimension.py" line="452"/>
-      <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation>Entrada incorrecta: el objeto no tiene una 'forma' para medir.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="331"/>
-      <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation>Entrada incorrecta: el objeto no ningún elemento en 'Vértices' que usar para la medición.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="338"/>
-      <location filename="../../draftmake/make_dimension.py" line="463"/>
-      <source>Wrong input: must be an integer.</source>
-      <translation>Entrada incorrecta: debe ser un entero.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="343"/>
-      <source>i1: values below 1 are not allowed; will be set to 1.</source>
-      <translation>i1: los valores por debajo de 1 no están permitidos; se establecerán en 1.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="347"/>
-      <location filename="../../draftmake/make_dimension.py" line="363"/>
-      <source>Wrong input: vertex not in object.</source>
-      <translation>Entrada incorrecta: vértice que no está en el objeto.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="359"/>
-      <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation>i2: los valores inferiores a 1 no están permitidos; se establecerán en el último vértice del objeto.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="456"/>
-      <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation>Entrada incorrecta: el objeto no tiene ningún elemento en 'Aristas' que usar para la medición.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="468"/>
-      <source>index: values below 1 are not allowed; will be set to 1.</source>
-      <translation>indice: los valores por debajo de 1 no están permitidos; se establecerán en 1.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="472"/>
-      <source>Wrong input: index doesn't correspond to an edge in the object.</source>
-      <translation>Entrada incorrecta: el índice no corresponde a una arista del objeto.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="476"/>
-      <source>Wrong input: index doesn't correspond to a circular edge.</source>
-      <translation>Entrada incorrecta: el índice no corresponde a un arista circular.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="483"/>
-      <location filename="../../draftmake/make_dimension.py" line="487"/>
-      <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
-      <translation>Entrada incorrecta: debe ser una cadena, un "radio" o un "diámetro".</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_dimension.py" line="579"/>
-      <location filename="../../draftmake/make_dimension.py" line="586"/>
-      <source>Wrong input: must be a list with two angles.</source>
-      <translation>Entrada incorrecta: debe ser una lista con dos ángulos.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_layer.py" line="69"/>
-      <source>Layers</source>
-      <translation>Capas</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_layer.py" line="157"/>
-      <source>Wrong input: it must be a string.</source>
-      <translation>Entrada incorrecta: debe ser una cadena.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_layer.py" line="167"/>
-      <location filename="../../draftmake/make_layer.py" line="171"/>
-      <location filename="../../draftmake/make_layer.py" line="184"/>
-      <location filename="../../draftmake/make_layer.py" line="188"/>
-      <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
-      <translation>Entrada incorrecta: debe ser una tupla de tres flotantes 0.0 a 1.0.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_layer.py" line="208"/>
-      <location filename="../../draftmake/make_layer.py" line="212"/>
-      <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation>Entrada incorrecta: debe ser 'Solid' (sólido), 'Dashed' (línea discontinua), 'Dotted' (puntos) o 'Dashdot' (línea-punto).</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_layer.py" line="220"/>
-      <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation>Entrada incorrecta: debe ser un número entre 0 y 100.</translation>
-    </message>
-  </context>
-  <context>
-    <name>importOCA</name>
-    <message>
-      <location filename="../../importOCA.py" line="360"/>
-      <source>OCA error: couldn't determine character encoding</source>
-      <translation>Error OCA: no se pudo determinar la codificación de caracteres</translation>
-    </message>
-    <message>
-      <location filename="../../importOCA.py" line="445"/>
-      <source>OCA: found no data to export</source>
-      <translation>OCA: no se encontraron datos para exportar</translation>
-    </message>
-    <message>
-      <location filename="../../importOCA.py" line="490"/>
-      <source>successfully exported</source>
-      <translation>exportado con éxito</translation>
-    </message>
-  </context>
-  <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
-      <source>Annotation Styles Editor</source>
-      <translation>Editor de Estilos de Anotación</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
-      <source>Style name</source>
-      <translation>Nombre de estilo</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
-      <source>The name of your style. Existing style names can be edited.</source>
-      <translation>El nombre de tu estilo. Los nombres de estilo existentes se pueden editar.</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
-      <source>Add new...</source>
-      <translation>Agregar nuevo...</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
-      <source>Renames the selected style</source>
-      <translation>Renombra el estilo seleccionado</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
-      <source>Rename</source>
-      <translation>Renombrar</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
-      <source>Deletes the selected style</source>
-      <translation>Elimina el estilo seleccionado</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
-      <source>Delete</source>
-      <translation>Eliminar</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
-      <source>Import styles from json file</source>
-      <translation>Importar estilos de archivo json</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
-      <source>Export styles to json file</source>
-      <translation>Exportar estilos a archivo json</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
-      <source>Text</source>
-      <translation>Texto</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
-      <source>The font to use for texts and dimensions</source>
-      <translation>La fuente a usar para textos y cotas</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
-      <source>Font name</source>
-      <translation>Nombre de fuente</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
-      <source>Font size in the system units</source>
-      <translation>Tamaño de fuente en las unidades del sistema</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
-      <source>Font size</source>
-      <translation>Tamaño de fuente</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
-      <source>Line spacing in system units</source>
-      <translation>Espaciado de línea en unidades del sistema</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
-      <source>Line spacing</source>
-      <translation>Espaciado de línea</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
-      <source>Units</source>
-      <translation>Unidades</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="245"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="255"/>
-      <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation>Un factor de multiplicador que afecta al tamaño de los textos y marcadores</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
-      <source>Scale multiplier</source>
-      <translation>Multiplicador de escala</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
-      <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Si está marcado, mostrará la unidad al lado del valor de cota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="271"/>
-      <source>Show unit</source>
-      <translation>Mostrar unidad</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
-      <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation>Especifique una unidad de longitud válida como mm, m, plg, pie, para forzar la visualización del valor de dimensión en esta unidad</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
-      <source>Unit override</source>
-      <translation>Anulación de unidad</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="308"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="318"/>
-      <source>The number of decimals to show for dimension values</source>
-      <translation>El número de decimales a mostrar para los valores de cotas</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
-      <source>Decimals</source>
-      <translation>Decimales</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
-      <source>Line and arrows</source>
-      <translation>Línea y flechas</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="337"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="347"/>
-      <source>If it is checked it will display the dimension line</source>
-      <translation>Si está marcado, mostrará la línea de cota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
-      <source>Show lines</source>
-      <translation>Mostrar líneas</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="363"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="373"/>
-      <source>The width of the dimension lines</source>
-      <translation>El ancho de las líneas de cota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="366"/>
-      <source>Line width</source>
-      <translation>Espesor de Línea</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="376"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="386"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="396"/>
-      <source>The color of dimension lines, arrows and texts</source>
-      <translation>El color de las líneas de cota, flechas y textos</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="389"/>
-      <source>Line / text color</source>
-      <translation>Color de línea / texto</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="432"/>
-      <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation>El tipo de flechas o marcadores a usar al final de las líneas de cota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
-      <source>Arrow type</source>
-      <translation>Tipo de flecha</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
-      <source>Dot</source>
-      <translation>Punto</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
-      <source>Circle</source>
-      <translation>Círculo</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
-      <source>Arrow</source>
-      <translation>Flecha</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
-      <source>Tick</source>
-      <translation>Marca</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
-      <source>Tick-2</source>
-      <translation>Marca-2</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
-      <source>The size of the dimension arrows or markers in system units</source>
-      <translation>El tamaño de las flechas o marcadores de cota en unidades del sistema</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="467"/>
-      <source>Arrow size</source>
-      <translation>Tamaño de flecha</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
-      <source>The distance that the dimension line is additionally extended</source>
-      <translation>La distancia que la línea de cota se extiende adicionalmente</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="487"/>
-      <source>Dimension overshoot</source>
-      <translation>Cota excesiva</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
-      <source>The length of the extension lines</source>
-      <translation>Longitud de las líneas de extensión</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
-      <source>Extension lines</source>
-      <translation>Líneas de extensión</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
-      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation>La distancia que las líneas de extensión se extienden adicionalmente más allá de la línea de cota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
-      <source>Extension overshoot</source>
-      <translation>Extensión excesiva</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftCircularArrayTaskPanel</name>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
-      <source>Circular array</source>
-      <translation>Matriz circular</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Marcador de posición para el icono)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
-      <source>Distance from one layer of objects to the next layer of objects.</source>
-      <translation>Distancia de una capa de objetos a la siguiente capa de objetos.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="56"/>
-      <source>Radial distance</source>
-      <translation>Distancia Radial</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="76"/>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="87"/>
-      <source>Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</source>
-      <translation>Distancia de un elemento en un anillo de la matriz al siguiente elemento en el mismo anillo.
-No puede ser cero.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="80"/>
-      <source>Tangential distance</source>
-      <translation>Distancia tangencial</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="101"/>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="112"/>
-      <source>Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</source>
-      <translation>Número de capas circulares o anillos para crear, incluida una copia del objeto original.
-Debe ser al menos 2.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="105"/>
-      <source>Number of circular layers</source>
-      <translation>Número de capas circulares</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="126"/>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="136"/>
-      <source>The number of symmetry lines in the circular array.</source>
-      <translation>Número de líneas de simetría en la matriz circular.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="129"/>
-      <source>Symmetry</source>
-      <translation>Simetría</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="151"/>
-      <source>The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</source>
-      <translation>Las coordenadas del punto a través del cual pasa el eje de rotación.
-Cambie la dirección del propio eje en el editor de propiedades.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="155"/>
-      <source>Center of rotation</source>
-      <translation>Centro de rotación</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="163"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="183"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="203"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="225"/>
-      <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Restablece las coordenadas del centro de rotación.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
-      <source>Reset point</source>
-      <translation>Restablecer punto</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="240"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Si está marcada, los objetos resultantes en la matriz se fusionarán si se tocan entre sí.
-Esto solo funciona si "Matriz de enlaces" está desactivado.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="244"/>
-      <source>Fuse</source>
-      <translation>Fusionar</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="251"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si se marca, el objeto resultante será una "Matriz de enlaces" en lugar de una matriz regular.
-Una matriz de enlaces es más eficiente al crear varias copias, pero no se puede fusionar.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="255"/>
-      <source>Link array</source>
-      <translation>Matriz de Enlaces</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftOrthoArrayTaskPanel</name>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
-      <source>Orthogonal array</source>
-      <translation>Matriz ortogonal</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Marcador de posición para el icono)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
-      <source>Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</source>
-      <translation>Número de elementos en la matriz en la dirección especificada, incluida una copia del objeto original.
-El número debe ser al menos 1 en cada dirección.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="55"/>
-      <source>Number of elements</source>
-      <translation>Número de elementos</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="63"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="132"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="223"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="314"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="80"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="155"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="243"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="334"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="97"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="175"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="266"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="354"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="119"/>
-      <source>Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distancia entre los elementos en la dirección X.
-Normalmente, solo el valor X es necesario; los otros dos valores pueden dar un cambio adicional en sus respectivas direcciones.
-Los valores negativos darán como resultado copias producidas en la dirección negativa.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="124"/>
-      <source>X intervals</source>
-      <translation>Intervalos X</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="197"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="288"/>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="379"/>
-      <source>Reset the distances.</source>
-      <translation>Restablecer las distancias.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="200"/>
-      <source>Reset X</source>
-      <translation>Restablecer X</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="210"/>
-      <source>Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distancia entre los elementos en la dirección Y.
-Normalmente, solo el valor Y es necesario; los otros dos valores pueden dar un cambio adicional en sus respectivas direcciones.
-Los valores negativos darán como resultado copias producidas en la dirección negativa.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="215"/>
-      <source>Y intervals</source>
-      <translation>Intervalos Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="291"/>
-      <source>Reset Y</source>
-      <translation>Restablecer Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="301"/>
-      <source>Distance between the elements in the Z direction.
-Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distancia entre los elementos en la dirección Z.
-Normalmente, solo el valor Z es necesario; los otros dos valores pueden dar un cambio adicional en sus respectivas direcciones.
-Los valores negativos darán como resultado copias producidas en la dirección negativa.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="306"/>
-      <source>Z intervals</source>
-      <translation>Intervalos Z</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="382"/>
-      <source>Reset Z</source>
-      <translation>Restablecer Z</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="394"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Si está marcada, los objetos resultantes en la matriz se fusionarán si se tocan entre sí.
-Esto solo funciona si "Matriz de enlaces" está desactivado.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="398"/>
-      <source>Fuse</source>
-      <translation>Fusionar</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="405"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si se marca, el objeto resultante será una "Matriz de enlaces" en lugar de una matriz regular.
-Una matriz de enlaces es más eficiente al crear varias copias, pero no se puede fusionar.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="409"/>
-      <source>Link array</source>
-      <translation>Matriz de Enlaces</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftPolarArrayTaskPanel</name>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
-      <source>Polar array</source>
-      <translation>Matriz polar</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Marcador de posición para el icono)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="65"/>
-      <source>Sweeping angle of the polar distribution.
-A negative angle produces a polar pattern in the opposite direction.
-The maximum absolute value is 360 degrees.</source>
-      <translation>Ángulo de barrido de la distribución polar.
-Un ángulo negativo produce un patrón polar en la dirección opuesta.
-El valor absoluto máximo es 360 grados.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="58"/>
-      <source>Polar angle</source>
-      <translation>Ángulo polar</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="86"/>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="97"/>
-      <source>Number of elements in the array, including a copy of the original object.
-It must be at least 2.</source>
-      <translation>Número de elementos en la matriz, incluyendo una copia del objeto original. Debe ser al menos 2.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="90"/>
-      <source>Number of elements</source>
-      <translation>Número de elementos</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="113"/>
-      <source>The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</source>
-      <translation>Las coordenadas del punto a través del cual pasa el eje de rotación.
-Cambie la dirección del propio eje en el editor de propiedades.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="117"/>
-      <source>Center of rotation</source>
-      <translation>Centro de rotación</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="125"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="145"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="165"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
-      <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Restablece las coordenadas del centro de rotación.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
-      <source>Reset point</source>
-      <translation>Restablecer punto</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="202"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Si está marcada, los objetos resultantes en la matriz se fusionarán si se tocan entre sí.
-Esto solo funciona si "Matriz de enlaces" está desactivado.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="206"/>
-      <source>Fuse</source>
-      <translation>Fusionar</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="213"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si se marca, el objeto resultante será una "Matriz de enlaces" en lugar de una matriz regular.
-Una matriz de enlaces es más eficiente al crear varias copias, pero no se puede fusionar.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="217"/>
-      <source>Link array</source>
-      <translation>Matriz de Enlaces</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftShapeStringGui</name>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="26"/>
-      <source>ShapeString</source>
-      <translation>FormaTexto</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="46"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="53"/>
-      <location filename="../ui/TaskShapeString.ui" line="70"/>
-      <location filename="../ui/TaskShapeString.ui" line="87"/>
-      <source>Enter coordinates or select point with mouse.</source>
-      <translation>Ingrese las coordenadas o seleccione el punto con el mouse.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="63"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="80"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="114"/>
-      <source>Reset 3d point selection</source>
-      <translation>Restablecer selección de punto 3d</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="120"/>
-      <source>Reset Point</source>
-      <translation>Restablecer Punto</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="131"/>
-      <source>String</source>
-      <translation>Cadena de texto</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="138"/>
-      <source>Text to be made into ShapeString</source>
-      <translation>Texto a convertir en FormaTexto</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="149"/>
-      <source>Height</source>
-      <translation>Altura</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="156"/>
-      <source>Height of the result</source>
-      <translation>Altura del resultado</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskShapeString.ui" line="176"/>
-      <source>Font file</source>
-      <translation>Archivo de fuente</translation>
     </message>
   </context>
   <context>
@@ -7155,14 +4284,14 @@ como "Arial: Negrita"</translation>
       <translation>Altura predeterminada para textos y cotas</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="535"/>
+      <location filename="../ui/preferences-svg.ui" line="209"/>
       <location filename="../ui/preferences-drafttexts.ui" line="92"/>
       <location filename="../ui/preferences-drafttexts.ui" line="211"/>
       <location filename="../ui/preferences-drafttexts.ui" line="247"/>
       <location filename="../ui/preferences-drafttexts.ui" line="283"/>
       <location filename="../ui/preferences-drafttexts.ui" line="365"/>
       <location filename="../ui/preferences-drafttexts.ui" line="432"/>
-      <location filename="../ui/preferences-dxf.ui" line="535"/>
-      <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -7482,8 +4611,8 @@ desde el Administrador de Complementos.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="119"/>
-      <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
       <source>Import options</source>
       <translation>Opciones de importación</translation>
     </message>
@@ -8241,6 +5370,2877 @@ Esto podría fallar para las plantillas posteriores a DXF R12.</translation>
       <location filename="../ui/preferences-draftinterface.ui" line="973"/>
       <source>Annotation scale widget</source>
       <translation>Widget de escala de anotación</translation>
+    </message>
+  </context>
+  <context>
+    <name>ImportAirfoilDAT</name>
+    <message>
+      <location filename="../../importAirfoilDAT.py" line="193"/>
+      <source>Did not find enough coordinates</source>
+      <translation>No se encontraron coordenadas suficientes</translation>
+    </message>
+  </context>
+  <context>
+    <name>ImportSVG</name>
+    <message>
+      <location filename="../../importSVG.py" line="1796"/>
+      <source>Unknown SVG export style, switching to Translated</source>
+      <translation>Estilo de exportación SVG desconocido, cambiando a Traducido</translation>
+    </message>
+    <message>
+      <location filename="../../importSVG.py" line="1816"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation>La lista de exportación no contiene ningún objeto con un cuadro delimitador válido</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../InitGui.py" line="104"/>
+      <source>Draft creation tools</source>
+      <translation>Herramientas de creación de borradores</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="107"/>
+      <source>Draft annotation tools</source>
+      <translation>Herramientas de anotación de borrador</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="110"/>
+      <source>Draft modification tools</source>
+      <translation>Herramientas de modificación de borrador</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="113"/>
+      <source>Draft utility tools</source>
+      <translation>Herramientas útiles de borrador</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="118"/>
+      <source>&amp;Drafting</source>
+      <translation>&amp;Borrador</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="121"/>
+      <source>&amp;Annotation</source>
+      <translation>&amp;Anotación</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="124"/>
+      <source>&amp;Modification</source>
+      <translation>&amp;Modificación</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="127"/>
+      <source>&amp;Utilities</source>
+      <translation>&amp;Utilidades</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="50"/>
+      <source>Arc tools</source>
+      <translation>Herramientas de arco</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="58"/>
+      <source>Bézier tools</source>
+      <translation>Herramientas Bézier</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="89"/>
+      <source>Array tools</source>
+      <translation>Herramientas de matriz</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snapper.py" line="1477"/>
+      <source>Draft Snap</source>
+      <translation>Ajuste del Borrador</translation>
+    </message>
+  </context>
+  <context>
+    <name>draft</name>
+    <message>
+      <location filename="../../importDXF.py" line="146"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation>Las bibliotecas de importación/exportación DXF que FreeCAD necesita para manejarel formato DXF no se encontró en este sistema.
+Por favor, habilite FreeCAD para descargar estas bibliotecas:
+   1 - Cargar Entorno de trabajo Borrador
+   2 - Menú Editar&gt; Preferencias&gt; Importar-Exportar&gt; DXF&gt; Habilitar descargas
+O descargue estas bibliotecas manualmente, como se explica en
+https://github.com/yorikvanhavre/Draft-dxf-importer
+Para habilitar FreeCAD para descargar estas bibliotecas, responda Sí.</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="57"/>
+      <location filename="../../DraftGui.py" line="751"/>
+      <source>Relative</source>
+      <translation>Relativo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="61"/>
+      <location filename="../../DraftGui.py" line="756"/>
+      <source>Global</source>
+      <translation>Global</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="66"/>
+      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="1126"/>
+      <source>Continue</source>
+      <translation>Continuo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="71"/>
+      <location filename="../../DraftGui.py" line="790"/>
+      <source>Close</source>
+      <translation>Cerrar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="76"/>
+      <location filename="../../DraftGui.py" line="801"/>
+      <location filename="../../draftguitools/gui_scale.py" line="203"/>
+      <location filename="../../draftguitools/gui_scale.py" line="227"/>
+      <location filename="../../draftguitools/gui_scale.py" line="356"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="283"/>
+      <location filename="../../draftguitools/gui_move.py" line="207"/>
+      <source>Copy</source>
+      <translation>Copiar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="81"/>
+      <source>Subelement mode</source>
+      <translation>Modo subelemento</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="86"/>
+      <source>Fill</source>
+      <translation>Relleno</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="91"/>
+      <source>Exit</source>
+      <translation>Salir</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="96"/>
+      <source>Snap On/Off</source>
+      <translation>Referencias Encendido/Apagado</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="101"/>
+      <source>Increase snap radius</source>
+      <translation>Incremento referencia de radio</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="106"/>
+      <source>Decrease snap radius</source>
+      <translation>Disminuir referencia de radio</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="111"/>
+      <source>Restrict X</source>
+      <translation>Restringir X</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="116"/>
+      <source>Restrict Y</source>
+      <translation>Restringir Y</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="121"/>
+      <source>Restrict Z</source>
+      <translation>Restringir Z</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="126"/>
+      <location filename="../../DraftGui.py" line="796"/>
+      <source>Select edge</source>
+      <translation>Seleccionar arista</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="131"/>
+      <source>Add custom snap point</source>
+      <translation>Agregar punto de referencia personalizado</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="136"/>
+      <source>Length mode</source>
+      <translation>Modo longitud</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="141"/>
+      <location filename="../../DraftGui.py" line="792"/>
+      <source>Wipe</source>
+      <translation>Limpiar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="146"/>
+      <source>Set Working Plane</source>
+      <translation>Configurar Plano de Trabajo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="151"/>
+      <source>Cycle snap object</source>
+      <translation>Objeto de referencia de ciclo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="156"/>
+      <source>Toggle near snap on/off</source>
+      <translation>Alternar referencia cercana activar/desactivar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="330"/>
+      <source>Draft Command Bar</source>
+      <translation>Barra de Comando de Borrador</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="659"/>
+      <location filename="../../WorkingPlane.py" line="821"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="374"/>
+      <source>Top</source>
+      <translation>Superior</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="661"/>
+      <location filename="../../WorkingPlane.py" line="832"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="386"/>
+      <source>Front</source>
+      <translation>Anterior</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="663"/>
+      <location filename="../../WorkingPlane.py" line="843"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="398"/>
+      <source>Side</source>
+      <translation>Lado</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="665"/>
+      <source>Auto</source>
+      <translation>Automático</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="694"/>
+      <location filename="../../DraftGui.py" line="729"/>
+      <location filename="../../DraftGui.py" line="1058"/>
+      <location filename="../../DraftGui.py" line="2047"/>
+      <location filename="../../DraftGui.py" line="2062"/>
+      <location filename="../../draftguitools/gui_groups.py" line="239"/>
+      <location filename="../../draftguitools/gui_groups.py" line="244"/>
+      <source>None</source>
+      <translation>Ninguno</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="728"/>
+      <source>active command:</source>
+      <translation>comando activo:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="730"/>
+      <source>Active Draft command</source>
+      <translation>Activar comando de Borrador</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="731"/>
+      <source>X coordinate of next point</source>
+      <translation>Coordenada X del siguiente punto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="732"/>
+      <location filename="../../DraftGui.py" line="1059"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="733"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="734"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="735"/>
+      <source>Y coordinate of next point</source>
+      <translation>Coordenada Y del siguiente punto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="736"/>
+      <source>Z coordinate of next point</source>
+      <translation>Coordenada Z del siguiente punto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="737"/>
+      <source>Enter point</source>
+      <translation>Ingresar punto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="739"/>
+      <source>Enter a new point with the given coordinates</source>
+      <translation>Ingresar un nuevo punto con las coordenadas dadas</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="740"/>
+      <source>Length</source>
+      <translation>Longitud</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="741"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="220"/>
+      <source>Angle</source>
+      <translation>Ángulo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="742"/>
+      <source>Length of current segment</source>
+      <translation>Longitud del segmento actual</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="743"/>
+      <source>Angle of current segment</source>
+      <translation>Ángulo del segmento actual</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="747"/>
+      <source>Check this to lock the current angle</source>
+      <translation>Marque esto para bloquear el ángulo actual</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="748"/>
+      <location filename="../../DraftGui.py" line="1108"/>
+      <source>Radius</source>
+      <translation>Radio</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="749"/>
+      <location filename="../../DraftGui.py" line="1109"/>
+      <source>Radius of Circle</source>
+      <translation>Radio del Círculo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="754"/>
+      <source>Coordinates relative to last point or to coordinate system origin
+if is the first point to set</source>
+      <translation>Coordenadas relativas al último punto o para coordenar el origen del sistema
+si es el primer punto a establecer</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="759"/>
+      <source>Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</source>
+      <translation>Coordenadas relativas al sistema global de coordenadas.
+Desmarque para usar el sistema de coordenadas del plano de trabajo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="761"/>
+      <source>Filled</source>
+      <translation>Rellenado</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="765"/>
+      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</source>
+      <translation>Marque esto si el objeto debe aparecer como relleno, de lo contrario aparecerá como una estructura alámbrica. No está disponible si la opción de preferencia de Draft 'Usar primitivos de pieza' está habilitada</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="767"/>
+      <source>Finish</source>
+      <translation>Finalizar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="769"/>
+      <source>Finishes the current drawing or editing operation</source>
+      <translation>Termina la operación de dibujo o edición actual</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="772"/>
+      <source>If checked, command will not finish until you press the command button again</source>
+      <translation>Si está marcado, el comando no finalizará hasta que presione el botón de comando nuevamente</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="777"/>
+      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
+      <translation>Si está marcado, se realizará un estilo OCC de desplazamiento en lugar del desplazamiento clásico</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="778"/>
+      <source>&amp;OCC-style offset</source>
+      <translation>&amp;OCC-desfase de estilo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="788"/>
+      <source>&amp;Undo (CTRL+Z)</source>
+      <translation>&amp;Deshacer (CTRL+Z)</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="789"/>
+      <source>Undo the last segment</source>
+      <translation>Deshacer el último segmento</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="791"/>
+      <source>Finishes and closes the current line</source>
+      <translation>Finalizar y cerrar la línea actual</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="793"/>
+      <source>Wipes the existing segments of this line and starts again from the last point</source>
+      <translation>Limpia los segmentos existentes de esta línea y comienza de nuevo desde el último punto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="794"/>
+      <source>Set WP</source>
+      <translation>Configurar WP</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="795"/>
+      <source>Reorients the working plane on the last segment</source>
+      <translation>Reorienta el plano de trabajo en el último segmento</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="797"/>
+      <source>Selects an existing edge to be measured by this dimension</source>
+      <translation>Selecciona una arista existente para ser medido por esta cota</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="798"/>
+      <source>Sides</source>
+      <translation>Lados</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="799"/>
+      <source>Number of sides</source>
+      <translation>Número de lados</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="802"/>
+      <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
+      <translation>Si está marcado, los objetos se copiarán en lugar de moverlos. Preferencias -&gt; Borrador-&gt; Modo de copia global para mantener este modo en los siguientes comandos</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="803"/>
+      <source>Modify subelements</source>
+      <translation>Modificar subelementos</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="804"/>
+      <source>If checked, subelements will be modified instead of entire objects</source>
+      <translation>Si está marcado, los subelementos serán modificados en lugar de objetos enteros</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="805"/>
+      <source>Text string to draw</source>
+      <translation>Cadena de texto para dibujar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="806"/>
+      <source>String</source>
+      <translation>Cadena de texto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="807"/>
+      <source>Height of text</source>
+      <translation>Altura de texto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="808"/>
+      <source>Height</source>
+      <translation>Altura</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="809"/>
+      <source>Intercharacter spacing</source>
+      <translation>Espacio entre caracteres</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="810"/>
+      <source>Tracking</source>
+      <translation>Seguimiento</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="811"/>
+      <source>Full path to font file:</source>
+      <translation>Ruta completa al archivo de fuente:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="812"/>
+      <source>Open a FileChooser for font file</source>
+      <translation>Abra un SelectorArchivo para el archivo de fuente</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="813"/>
+      <source>Create text</source>
+      <translation>Crear texto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="814"/>
+      <source>Press this button to create the text object, or finish your text with two blank lines</source>
+      <translation>Presione este botón para crear el objeto de texto o termine el texto con dos líneas en blanco</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="836"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="272"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="327"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="530"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="541"/>
+      <source>Current working plane</source>
+      <translation>Plano de trabajo actual</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="837"/>
+      <source>Change default style for new objects</source>
+      <translation>Cambiar el estilo predeterminado para nuevos objetos</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="838"/>
+      <source>Toggle construction mode</source>
+      <translation>Conmutar el modo de construcción</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="839"/>
+      <location filename="../../DraftGui.py" line="2050"/>
+      <location filename="../../DraftGui.py" line="2065"/>
+      <source>Autogroup off</source>
+      <translation>Autoagrupar apagado</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="950"/>
+      <source>Line</source>
+      <translation>Línea</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="958"/>
+      <source>DWire</source>
+      <translation>AlambreB</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="976"/>
+      <source>Circle</source>
+      <translation>Círculo</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="981"/>
+      <source>Arc</source>
+      <translation>Arco</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="986"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="286"/>
+      <source>Rotate</source>
+      <translation>Rotar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="990"/>
+      <source>Point</source>
+      <translation>Punto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1018"/>
+      <source>Label</source>
+      <translation>Etiqueta</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1036"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="527"/>
+      <location filename="../../draftguitools/gui_offset.py" line="243"/>
+      <location filename="../../draftguitools/gui_offset.py" line="260"/>
+      <location filename="../../draftguitools/gui_offset.py" line="324"/>
+      <source>Offset</source>
+      <translation>Desfase</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1042"/>
+      <location filename="../../DraftGui.py" line="1100"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="215"/>
+      <source>Distance</source>
+      <translation>Distancia</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1043"/>
+      <location filename="../../DraftGui.py" line="1101"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="217"/>
+      <source>Offset distance</source>
+      <translation>Distancia de desface</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1097"/>
+      <source>Trimex</source>
+      <translation>Recortar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1197"/>
+      <source>Pick Object</source>
+      <translation>Seleccionar Objeto</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1203"/>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1253"/>
+      <source>Local u0394X</source>
+      <translation>Local u0394X</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1254"/>
+      <source>Local u0394Y</source>
+      <translation>Local u0394Y</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1255"/>
+      <source>Local u0394Z</source>
+      <translation>Local u0394Z</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1257"/>
+      <source>Local X</source>
+      <translation>X local</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1258"/>
+      <source>Local Y</source>
+      <translation>Y local</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1259"/>
+      <source>Local Z</source>
+      <translation>Z local</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1261"/>
+      <source>Global u0394X</source>
+      <translation>Global u0394X</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1262"/>
+      <source>Global u0394Y</source>
+      <translation>Global u0394Y</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1263"/>
+      <source>Global u0394Z</source>
+      <translation>Global u0394Z</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1265"/>
+      <source>Global X</source>
+      <translation>X global</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1266"/>
+      <source>Global Y</source>
+      <translation>Y global</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1267"/>
+      <source>Global Z</source>
+      <translation>Z global</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1503"/>
+      <source>Invalid Size value. Using 200.0.</source>
+      <translation>Valor de Tamaño no válido. Usando 200.0.</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1511"/>
+      <source>Invalid Tracking value. Using 0.</source>
+      <translation>Valor de seguimiento no válido. Usando 0.</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1525"/>
+      <source>Please enter a text string.</source>
+      <translation>Por favor, introduzca una cadena de texto.</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1534"/>
+      <source>Select a Font file</source>
+      <translation>Seleccionar un archivo de Fuente</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1567"/>
+      <source>Please enter a font file.</source>
+      <translation>Por favor, introduzca un archivo de fuente.</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="2058"/>
+      <source>Autogroup:</source>
+      <translation>Autogrupo:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="2394"/>
+      <source>Faces</source>
+      <translation>Caras</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="2395"/>
+      <source>Remove</source>
+      <translation>Eliminar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="2396"/>
+      <source>Add</source>
+      <translation>Agregar</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="2397"/>
+      <source>Facebinder elements</source>
+      <translation>Elementos Carapegada</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="46"/>
+      <source>Draft</source>
+      <translation>Calado</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="209"/>
+      <location filename="../../importDWG.py" line="281"/>
+      <source>LibreDWG error</source>
+      <translation>Error de LibreDWG</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="218"/>
+      <location filename="../../importDWG.py" line="290"/>
+      <source>Converting:</source>
+      <translation>Convirtiendo:</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="223"/>
+      <source>Conversion successful</source>
+      <translation>Conversión exitosa</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="226"/>
+      <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
+      <translation>Error durante la conversión DWG. Trate de mover el archivo DWG a una ruta de directorio sin espacios y caracteres no ingleses, o trate de guardar en una versión inferior de DWG.</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="229"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <source>ODA File Converter not found</source>
+      <translation>Convertidor de archivos ODA no encontrado</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="242"/>
+      <location filename="../../importDWG.py" line="306"/>
+      <source>QCAD error</source>
+      <translation>Error QCAD</translation>
+    </message>
+    <message>
+      <location filename="../../WorkingPlane.py" line="713"/>
+      <location filename="../../draftmake/make_sketch.py" line="127"/>
+      <location filename="../../draftmake/make_sketch.py" line="139"/>
+      <source>All Shapes must be coplanar</source>
+      <translation>Todas las formas deben ser coplanares</translation>
+    </message>
+    <message>
+      <location filename="../../WorkingPlane.py" line="721"/>
+      <source>Selected Shapes must define a plane</source>
+      <translation>Las formas seleccionadas deben definir un plano</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="81"/>
+      <source>No graphical interface</source>
+      <translation>Sin interfaz gráfica</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <source>Unable to insert new object into a scaled part</source>
+      <translation>No se puede insertar un nuevo objeto en una parte escalada</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <source>Symbol not implemented. Using a default symbol.</source>
+      <translation>Símbolo no implementado. Usando un símbolo predeterminado.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <source>Visibility off; removed from list: </source>
+      <translation>Visibilidad desactivada; eliminada de la lista: </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="603"/>
+      <source>image is Null</source>
+      <translation>imagen es nula</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="609"/>
+      <source>filename does not exist on the system or in the resource file</source>
+      <translation>el nombre de archivo no existe en el sistema o en el archivo de recursos</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="668"/>
+      <source>unable to load texture</source>
+      <translation>no se puede cargar la textura</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="720"/>
+      <location filename="../../draftutils/groups.py" line="95"/>
+      <location filename="../../draftutils/utils.py" line="1014"/>
+      <location filename="../../draftmake/make_pointarray.py" line="108"/>
+      <location filename="../../draftmake/make_dimension.py" line="215"/>
+      <location filename="../../draftmake/make_dimension.py" line="308"/>
+      <location filename="../../draftmake/make_dimension.py" line="438"/>
+      <location filename="../../draftmake/make_dimension.py" line="564"/>
+      <location filename="../../draftmake/make_layer.py" line="58"/>
+      <location filename="../../draftmake/make_layer.py" line="149"/>
+      <location filename="../../draftmake/make_patharray.py" line="161"/>
+      <location filename="../../draftmake/make_patharray.py" line="330"/>
+      <location filename="../../draftmake/make_label.py" line="195"/>
+      <location filename="../../draftmake/make_text.py" line="84"/>
+      <location filename="../../draftmake/make_text.py" line="172"/>
+      <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <source>No active document. Aborting.</source>
+      <translation>No hay documento activo. Abortando.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="729"/>
+      <location filename="../../draftutils/groups.py" line="132"/>
+      <location filename="../../draftmake/make_pointarray.py" line="117"/>
+      <location filename="../../draftmake/make_pointarray.py" line="128"/>
+      <location filename="../../draftmake/make_circulararray.py" line="131"/>
+      <location filename="../../draftmake/make_dimension.py" line="322"/>
+      <location filename="../../draftmake/make_dimension.py" line="447"/>
+      <location filename="../../draftmake/make_patharray.py" line="170"/>
+      <location filename="../../draftmake/make_patharray.py" line="181"/>
+      <location filename="../../draftmake/make_patharray.py" line="339"/>
+      <location filename="../../draftmake/make_patharray.py" line="350"/>
+      <location filename="../../draftmake/make_polararray.py" line="103"/>
+      <location filename="../../draftmake/make_label.py" line="236"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="167"/>
+      <source>Wrong input: object not in document.</source>
+      <translation>Entrada incorrecta: objeto no está en el documento.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="738"/>
+      <source>Does not have 'ViewObject.RootNode'.</source>
+      <translation>No tiene 'ViewObject.RootNode'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="51"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="58"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="65"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="154"/>
+      <source>custom</source>
+      <translation>personalizado</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="140"/>
+      <source>Unable to convert input into a  scale factor</source>
+      <translation>No se puede convertir la entrada en un factor de escala</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="155"/>
+      <source>Set custom scale</source>
+      <translation>Establecer escala personalizada</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="157"/>
+      <source>Set custom annotation scale in format x:x, x=x</source>
+      <translation>Establecer escala de anotación personalizada en formato x:x, x=x</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="214"/>
+      <source>Set the scale used by draft annotation tools</source>
+      <translation>Establecer la escala utilizada por las herramientas de anotación de borrador</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="650"/>
+      <source>Solids:</source>
+      <translation>Sólidos:</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="651"/>
+      <source>Faces:</source>
+      <translation>Caras:</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="652"/>
+      <source>Wires:</source>
+      <translation>Alambres:</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="653"/>
+      <source>Edges:</source>
+      <translation>Aristas:</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="654"/>
+      <source>Vertices:</source>
+      <translation>Vértices:</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="658"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="663"/>
+      <source>Wire</source>
+      <translation>Alambre</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="695"/>
+      <location filename="../../draftutils/utils.py" line="699"/>
+      <source>different types</source>
+      <translation>tipos diferentes</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="709"/>
+      <source>Objects have different placements. Distance between the two base points: </source>
+      <translation>Los objetos tienen diferentes ubicaciones. Distancia entre los dos puntos base: </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="712"/>
+      <source>has a different value</source>
+      <translation>tiene un valor diferente</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="715"/>
+      <source>doesn't exist in one of the objects</source>
+      <translation>no existe en uno de los objetos</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="827"/>
+      <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
+      <translation>%s comparte una base con %d otros objetos. Por favor, verifique si desea modificar esto.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="833"/>
+      <source>%s cannot be modified because its placement is readonly.</source>
+      <translation>%s no puede ser modificado porque su ubicación es de solo lectura.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="977"/>
+      <source>Wrong input: unknown document.</source>
+      <translation>Entrada incorrecta: documento desconocido.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="1055"/>
+      <source>This function will be deprecated in </source>
+      <translation>Esta función será obsoleta en </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="1056"/>
+      <location filename="../../draftutils/utils.py" line="1059"/>
+      <source>Please use </source>
+      <translation>Por favor use </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="1059"/>
+      <source>This function will be deprecated. </source>
+      <translation>Esta función será obsoleta. </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="169"/>
+      <source>Snap Lock</source>
+      <translation>Adherir bloqueo</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="170"/>
+      <source>Snap Endpoint</source>
+      <translation>Adherir punto final</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="171"/>
+      <source>Snap Midpoint</source>
+      <translation>Adherir en punto medio</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="172"/>
+      <source>Snap Center</source>
+      <translation>Ajustar Centro</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="173"/>
+      <source>Snap Angle</source>
+      <translation>Ajustar Ángulo</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="174"/>
+      <source>Snap Intersection</source>
+      <translation>Ajustar Intersección</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="175"/>
+      <source>Snap Perpendicular</source>
+      <translation>Ajustar Perpendicular</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="176"/>
+      <source>Snap Extension</source>
+      <translation>Ajustar Extensión</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="177"/>
+      <source>Snap Parallel</source>
+      <translation>Ajustar Paralelo</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="178"/>
+      <source>Snap Special</source>
+      <translation>Ajustar Especial</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="179"/>
+      <source>Snap Near</source>
+      <translation>Ajustar Cercano</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="180"/>
+      <source>Snap Ortho</source>
+      <translation>Ajustar Ortogonal</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="181"/>
+      <source>Snap Grid</source>
+      <translation>Ajustar Cuadrícula</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="182"/>
+      <source>Snap WorkingPlane</source>
+      <translation>Ajustar Plano de Trabajo</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="183"/>
+      <source>Snap Dimensions</source>
+      <translation>Ajustar Dimensiones</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="187"/>
+      <source>Toggle Draft Grid</source>
+      <translation>Cambiar cuadrícula de Borrador</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="69"/>
+      <source>ShapeString: string has no wires</source>
+      <translation>ShapeString: la cadena no tiene alambres</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="89"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="105"/>
+      <source>added view property 'ScaleMultiplier'</source>
+      <translation>añadida propiedad de vista 'ScaleMultiplier'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="125"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="130"/>
+      <source>migrated 'DraftText' type to 'Text'</source>
+      <translation>se migró el tipo 'DraftText' a 'Text'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="284"/>
+      <source>, path object doesn't have 'Edges'.</source>
+      <translation>, el objeto de trayectoria no tiene 'Aristas'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="395"/>
+      <location filename="../../draftobjects/patharray.py" line="401"/>
+      <location filename="../../draftobjects/patharray.py" line="407"/>
+      <source>'PathObj' property will be migrated to 'PathObject'</source>
+      <translation>La propiedad 'PathObj' se migrará a 'PathObject'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="525"/>
+      <source>Cannot calculate path tangent. Copy not aligned.</source>
+      <translation>No se puede calcular la tangente de la trayectoria. Copia no alineada.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="541"/>
+      <source>Tangent and normal are parallel. Copy not aligned.</source>
+      <translation>Tangente y normal son paralelos. Copia no alineada.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="558"/>
+      <source>Cannot calculate path normal, using default.</source>
+      <translation>No se puede calcular la ruta normal, usando el valor predeterminado.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="565"/>
+      <source>Cannot calculate path binormal. Copy not aligned.</source>
+      <translation>No se puede calcular la trayectoria binormal. Copia no alineada.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="571"/>
+      <source>AlignMode {} is not implemented</source>
+      <translation>AlignMode {} no está implementado</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/pointarray.py" line="145"/>
+      <location filename="../../draftobjects/pointarray.py" line="161"/>
+      <source>added property 'ExtraPlacement'</source>
+      <translation>añadida propiedad 'ExtraPlacement'</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="151"/>
+      <source>Object must be a closed shape</source>
+      <translation>El objeto debe ser una forma cerrada</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="153"/>
+      <source>No solid object created</source>
+      <translation>Ningún objeto sólido creado</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="276"/>
+      <source>Faces must be coplanar to be refined</source>
+      <translation>Las caras deben ser coplanares para ser refinadas</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="435"/>
+      <location filename="../../draftfunctions/downgrade.py" line="230"/>
+      <source>Upgrade: Unknown force method:</source>
+      <translation>Actualizar: Método de fuerza desconocido:</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="453"/>
+      <source>Found groups: closing each open object inside</source>
+      <translation>Grupos encontrados: cerrando cada objeto abierto dentro</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="459"/>
+      <source>Found meshes: turning into Part shapes</source>
+      <translation>Mallas encontradas: convirtiéndose en formas de Piezas</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="467"/>
+      <source>Found 1 solidifiable object: solidifying it</source>
+      <translation>Encontrado 1 objeto solidificable: solidificándolo</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="472"/>
+      <source>Found 2 objects: fusing them</source>
+      <translation>Encontrados 2 objetos: fusionando</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="483"/>
+      <source>Found object with several coplanar faces: refine them</source>
+      <translation>Objeto encontrado con varias caras coplanares: refinarlos</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="489"/>
+      <source>Found 1 non-parametric objects: draftifying it</source>
+      <translation>Encontrado 1 objeto no paramétrico: diseñándolo</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="500"/>
+      <source>Found 1 closed sketch object: creating a face from it</source>
+      <translation>Encontrado 1 boceto de objeto cerrado: crear una cara de él</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="505"/>
+      <source>Found closed wires: creating faces</source>
+      <translation>Se encontraron alambres cerrados: creando caras</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="511"/>
+      <source>Found several wires or edges: wiring them</source>
+      <translation>Encontradas varios alambres o aristas: uniéndolas</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="513"/>
+      <location filename="../../draftfunctions/upgrade.py" line="547"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Encontraron varios objetos no tratables: crear composición</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="518"/>
+      <source>trying: closing it</source>
+      <translation>intentando: cerrarlo</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="520"/>
+      <source>Found 1 open wire: closing it</source>
+      <translation>Encontrado 1 alambre abierto: cerrándolo</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="537"/>
+      <source>Found 1 object: draftifying it</source>
+      <translation>Se encontró 1 objeto: borrador</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="542"/>
+      <source>Found points: creating compound</source>
+      <translation>Puntos encontrados: creando composición</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/upgrade.py" line="550"/>
+      <source>Unable to upgrade these objects.</source>
+      <translation>No se puede actualizar estos objetos.</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/mirror.py" line="90"/>
+      <source>No object given</source>
+      <translation>Ningún objeto dado</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/mirror.py" line="94"/>
+      <source>The two points are coincident</source>
+      <translation>Los dos puntos son coincidentes</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation>simétrico</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="238"/>
+      <source>Found 1 block: exploding it</source>
+      <translation>Se encontró un bloque: explotándolo</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="246"/>
+      <source>Found 1 multi-solids compound: exploding it</source>
+      <translation>Se encontró un compuesto de multi-sólidos: explotándolo</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="253"/>
+      <source>Found 1 parametric object: breaking its dependencies</source>
+      <translation>Encontrado 1 objeto paramétrico: rompiendo sus dependencias</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="261"/>
+      <source>Found 2 objects: subtracting them</source>
+      <translation>Encontrados 2 objetos: restarlos</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="268"/>
+      <source>Found several faces: splitting them</source>
+      <translation>Encontradas varias caras: partirlas</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="273"/>
+      <source>Found several objects: subtracting them from the first one</source>
+      <translation>Encontrados varios objetos: restándolos del primero</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="278"/>
+      <source>Found 1 face: extracting its wires</source>
+      <translation>Encontrada 1 cara: extrayendo sus alambres</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="284"/>
+      <source>Found only wires: extracting their edges</source>
+      <translation>Encontrados solamente alambres: extrayendo sus aristas</translation>
+    </message>
+    <message>
+      <location filename="../../draftfunctions/downgrade.py" line="288"/>
+      <source>No more downgrade possible</source>
+      <translation>No es posible descomponer más</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_circulararray.py" line="164"/>
+      <location filename="../../draftmake/make_dimension.py" line="222"/>
+      <location filename="../../draftmake/make_dimension.py" line="229"/>
+      <location filename="../../draftmake/make_dimension.py" line="237"/>
+      <location filename="../../draftmake/make_dimension.py" line="354"/>
+      <location filename="../../draftmake/make_dimension.py" line="371"/>
+      <location filename="../../draftmake/make_dimension.py" line="495"/>
+      <location filename="../../draftmake/make_dimension.py" line="571"/>
+      <location filename="../../draftmake/make_dimension.py" line="599"/>
+      <location filename="../../draftmake/make_dimension.py" line="607"/>
+      <location filename="../../draftmake/make_patharray.py" line="200"/>
+      <location filename="../../draftmake/make_patharray.py" line="254"/>
+      <location filename="../../draftmake/make_patharray.py" line="265"/>
+      <location filename="../../draftmake/make_polararray.py" line="126"/>
+      <location filename="../../draftmake/make_label.py" line="204"/>
+      <source>Wrong input: must be a vector.</source>
+      <translation>Entrada incorrecta: debe ser un vector.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_pointarray.py" line="147"/>
+      <location filename="../../draftmake/make_label.py" line="215"/>
+      <location filename="../../draftmake/make_text.py" line="107"/>
+      <source>Wrong input: must be a placement, a vector, or a rotation.</source>
+      <translation>Entrada incorrecta: debe ser una ubicación, un vector o una rotación.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="316"/>
+      <location filename="../../draftmake/make_label.py" line="230"/>
+      <source>Wrong input: object must not be a list.</source>
+      <translation>Entrada incorrecta: el objeto no debe ser una lista.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_patharray.py" line="213"/>
+      <location filename="../../draftmake/make_label.py" line="251"/>
+      <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
+      <translation>Entrada incorrecta: debe ser una lista o tupla de cadenas, o una sola cadena.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="263"/>
+      <source>Wrong input: subelement not in object.</source>
+      <translation>Entrada incorrecta: subelemento no está en el objeto.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation>Entrada incorrecta: label_type debe ser una cadena.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation>Entrada incorrecta: label_type debe ser una de las siguientes: </translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="286"/>
+      <location filename="../../draftmake/make_label.py" line="291"/>
+      <location filename="../../draftmake/make_text.py" line="91"/>
+      <location filename="../../draftmake/make_text.py" line="96"/>
+      <source>Wrong input: must be a list of strings or a single string.</source>
+      <translation>Entrada incorrecta: debe ser una lista de cadenas o una sola cadena.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="300"/>
+      <location filename="../../draftmake/make_label.py" line="304"/>
+      <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
+      <translation>Entrada incorrecta: debe ser una cadena, 'Horizontal', 'Vertical' o 'Personalizado'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_layer.py" line="201"/>
+      <location filename="../../draftmake/make_patharray.py" line="191"/>
+      <location filename="../../draftmake/make_patharray.py" line="360"/>
+      <location filename="../../draftmake/make_polararray.py" line="119"/>
+      <location filename="../../draftmake/make_label.py" line="313"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="151"/>
+      <source>Wrong input: must be a number.</source>
+      <translation>Entrada incorrecta: debe ser un número.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="320"/>
+      <source>Wrong input: must be a list of at least two vectors.</source>
+      <translation>Entrada incorrecta: debe ser una lista de al menos dos vectores.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="353"/>
+      <source>Direction is not 'Custom'; points won't be used.</source>
+      <translation>La dirección no es 'Personalizada'; los puntos no se utilizarán.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="380"/>
+      <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
+      <translation>Entrada incorrecta: debe ser una lista de dos elementos. Por ejemplo, [objeto, 'Arista1'].</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_pointarray.py" line="135"/>
+      <source>Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</source>
+      <translation>Entrada incorrecta: el objeto punto no tiene 'Geometría', 'Enlaces', o 'Componentes'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_layer.py" line="69"/>
+      <source>Layers</source>
+      <translation>Capas</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_layer.py" line="145"/>
+      <location filename="../../draftmake/make_layer.py" line="162"/>
+      <location filename="../../draftguitools/gui_layers.py" line="47"/>
+      <source>Layer</source>
+      <translation>Capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_layer.py" line="157"/>
+      <source>Wrong input: it must be a string.</source>
+      <translation>Entrada incorrecta: debe ser una cadena.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_layer.py" line="167"/>
+      <location filename="../../draftmake/make_layer.py" line="171"/>
+      <location filename="../../draftmake/make_layer.py" line="184"/>
+      <location filename="../../draftmake/make_layer.py" line="188"/>
+      <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
+      <translation>Entrada incorrecta: debe ser una tupla de tres flotantes 0.0 a 1.0.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_layer.py" line="208"/>
+      <location filename="../../draftmake/make_layer.py" line="212"/>
+      <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
+      <translation>Entrada incorrecta: debe ser 'Solid' (sólido), 'Dashed' (línea discontinua), 'Dotted' (puntos) o 'Dashdot' (línea-punto).</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_layer.py" line="220"/>
+      <source>Wrong input: must be a number between 0 and 100.</source>
+      <translation>Entrada incorrecta: debe ser un número entre 0 y 100.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="173"/>
+      <source>This function is deprecated. Do not use this function directly.</source>
+      <translation>Esta función está obsoleta. No use esta función directamente.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="174"/>
+      <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
+      <translation>Utilice una de 'make_linear_dimension' o 'make_linear_dimension_obj'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="327"/>
+      <location filename="../../draftmake/make_dimension.py" line="452"/>
+      <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
+      <translation>Entrada incorrecta: el objeto no tiene una 'forma' para medir.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="331"/>
+      <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
+      <translation>Entrada incorrecta: el objeto no ningún elemento en 'Vértices' que usar para la medición.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="338"/>
+      <location filename="../../draftmake/make_dimension.py" line="463"/>
+      <source>Wrong input: must be an integer.</source>
+      <translation>Entrada incorrecta: debe ser un entero.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="343"/>
+      <source>i1: values below 1 are not allowed; will be set to 1.</source>
+      <translation>i1: los valores por debajo de 1 no están permitidos; se establecerán en 1.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="347"/>
+      <location filename="../../draftmake/make_dimension.py" line="363"/>
+      <source>Wrong input: vertex not in object.</source>
+      <translation>Entrada incorrecta: vértice que no está en el objeto.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="359"/>
+      <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
+      <translation>i2: los valores inferiores a 1 no están permitidos; se establecerán en el último vértice del objeto.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="456"/>
+      <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
+      <translation>Entrada incorrecta: el objeto no tiene ningún elemento en 'Aristas' que usar para la medición.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="468"/>
+      <source>index: values below 1 are not allowed; will be set to 1.</source>
+      <translation>indice: los valores por debajo de 1 no están permitidos; se establecerán en 1.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="472"/>
+      <source>Wrong input: index doesn't correspond to an edge in the object.</source>
+      <translation>Entrada incorrecta: el índice no corresponde a una arista del objeto.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="476"/>
+      <source>Wrong input: index doesn't correspond to a circular edge.</source>
+      <translation>Entrada incorrecta: el índice no corresponde a un arista circular.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="483"/>
+      <location filename="../../draftmake/make_dimension.py" line="487"/>
+      <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
+      <translation>Entrada incorrecta: debe ser una cadena, un "radio" o un "diámetro".</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_dimension.py" line="579"/>
+      <location filename="../../draftmake/make_dimension.py" line="586"/>
+      <source>Wrong input: must be a list with two angles.</source>
+      <translation>Entrada incorrecta: debe ser una lista con dos ángulos.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="60"/>
+      <source>Internal orthogonal array</source>
+      <translation>Matriz ortogonal interna</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="87"/>
+      <source>Wrong input: must be a number or vector.</source>
+      <translation>Entrada incorrecta: debe ser un número o vector.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="92"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="95"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="98"/>
+      <source>Input: single value expanded to vector.</source>
+      <translation>Entrada: valor único expandido al vector.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_circulararray.py" line="154"/>
+      <location filename="../../draftmake/make_polararray.py" line="112"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="119"/>
+      <source>Wrong input: must be an integer number.</source>
+      <translation>Entrada incorrecta: debe ser un número entero.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="123"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="126"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="129"/>
+      <source>Input: number of elements must be at least 1. It is set to 1.</source>
+      <translation>Entrada: el número de elementos debe ser al menos 1. Está establecido en 1.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="275"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="95"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="269"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
+      <source>Orthogonal array</source>
+      <translation>Matriz ortogonal</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="350"/>
+      <source>Orthogonal array 2D</source>
+      <translation>Matriz ortogonal 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="424"/>
+      <source>Rectangular array</source>
+      <translation>Matriz rectangular</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="501"/>
+      <source>Rectangular array 2D</source>
+      <translation>Matriz rectangular 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_polararray.py" line="94"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="95"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="258"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
+      <source>Polar array</source>
+      <translation>Matriz polar</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_patharray.py" line="246"/>
+      <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
+      <translation>Entrada incorrecta: debe ser 'Original', 'Frenet' o 'Tangent'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="125"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="130"/>
+      <source>Points:</source>
+      <translation>Puntos:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="126"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="131"/>
+      <source>Wrong input: must be list or tuple of three points exactly.</source>
+      <translation>Entrada incorrecta: debe ser la lista o tupla de tres puntos exactamente.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="138"/>
+      <source>Placement:</source>
+      <translation>Ubicación:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="139"/>
+      <source>Wrong input: incorrect type of placement.</source>
+      <translation>Entrada incorrecta: tipo de ubicación incorrecta.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="153"/>
+      <source>Wrong input: incorrect type of points.</source>
+      <translation>Entrada incorrecta: tipo de puntos incorrecto.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation>No se puede generar la forma:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="166"/>
+      <source>Radius:</source>
+      <translation>Radio:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="167"/>
+      <source>Center:</source>
+      <translation>Centro:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="170"/>
+      <source>Create primitive object</source>
+      <translation>Crear objeto primitivo</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="193"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="204"/>
+      <source>Final placement:</source>
+      <translation>Ubicación final:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="195"/>
+      <source>Face: True</source>
+      <translation>Cara: verdadero</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="197"/>
+      <source>Support:</source>
+      <translation>Soporte:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="198"/>
+      <source>Map mode:</source>
+      <translation>Modo mapa:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_sketch.py" line="104"/>
+      <source>No shape found</source>
+      <translation>Forma no encontrada</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_sketch.py" line="111"/>
+      <source>All Shapes must be planar</source>
+      <translation>Todas las formas deben ser planas</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_circulararray.py" line="122"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="95"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="290"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
+      <source>Circular array</source>
+      <translation>Matriz circular</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_circulararray.py" line="144"/>
+      <source>Wrong input: must be a number or quantity.</source>
+      <translation>Entrada incorrecta: debe ser un número o una cantidad.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_fillet.py" line="58"/>
+      <location filename="../../draftmake/make_fillet.py" line="143"/>
+      <location filename="../../draftmake/make_fillet.py" line="144"/>
+      <location filename="../../draftmake/make_fillet.py" line="145"/>
+      <source>length:</source>
+      <translation>longitud:</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_fillet.py" line="132"/>
+      <source>Two elements are needed.</source>
+      <translation>Se necesitan dos elementos.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_fillet.py" line="139"/>
+      <source>Radius is too large</source>
+      <translation>El radio es demasiado grande</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_fillet.py" line="143"/>
+      <location filename="../../draftmake/make_fillet.py" line="144"/>
+      <location filename="../../draftmake/make_fillet.py" line="145"/>
+      <source>Segment</source>
+      <translation>Segmento</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_fillet.py" line="165"/>
+      <source>Removed original objects.</source>
+      <translation>Objetos originales eliminados.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="87"/>
+      <source>Select an object to scale</source>
+      <translation>Seleccione un objeto para escalar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="108"/>
+      <source>Pick base point</source>
+      <translation>Elegir punto base</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="135"/>
+      <source>Pick reference distance from base point</source>
+      <translation>Elegir distancia de referencia desde el punto base</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="206"/>
+      <location filename="../../draftguitools/gui_scale.py" line="236"/>
+      <location filename="../../draftguitools/gui_scale.py" line="359"/>
+      <source>Scale</source>
+      <translation>Escala</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="209"/>
+      <source>Some subelements could not be scaled.</source>
+      <translation>Algunos subelementos no se pudieron escalar.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="339"/>
+      <source>Unable to scale object:</source>
+      <translation>No se puede escalar el objeto:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="343"/>
+      <source>Unable to scale objects:</source>
+      <translation>No se puede escalar objetos:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="346"/>
+      <source>This object type cannot be scaled directly. Please use the clone method.</source>
+      <translation>Este tipo de objeto no puede escalarse directamente. Por favor, utilice el método de clonación.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="407"/>
+      <source>Pick new distance from base point</source>
+      <translation>Elegir una nueva distancia desde el punto base</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
+      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
+      <translation>El croquis es demasiado complejo para editar: se sugiere usar el editor predeterminado de croquis</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="80"/>
+      <source>Pick target point</source>
+      <translation>Elegir punto objetivo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="157"/>
+      <source>Create Label</source>
+      <translation>Crear Etiqueta</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="191"/>
+      <location filename="../../draftguitools/gui_labels.py" line="218"/>
+      <source>Pick endpoint of leader line</source>
+      <translation>Elegir punto final de la línea directriz</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="201"/>
+      <location filename="../../draftguitools/gui_labels.py" line="228"/>
+      <source>Pick text position</source>
+      <translation>Elegir posición de texto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_styles.py" line="75"/>
+      <source>Change Style</source>
+      <translation>Cambiar Estilo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_texts.py" line="77"/>
+      <source>Pick location point</source>
+      <translation>Elegir punto de ubicación</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_texts.py" line="121"/>
+      <source>Create Text</source>
+      <translation>Crear Texto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_grid.py" line="51"/>
+      <source>Toggle grid</source>
+      <translation>Alternar cuadrícula</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="150"/>
+      <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
+      <translation>Elige una cara, 3 vértices o un proxy WP para definir el plano de dibujo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="274"/>
+      <source>Working plane aligned to global placement of</source>
+      <translation>Plano de trabajo alineado a la colocación global de</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="523"/>
+      <source>Dir</source>
+      <translation>Dir</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="539"/>
+      <source>Custom</source>
+      <translation>Personalizado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_facebinders.py" line="71"/>
+      <source>Select faces from existing objects</source>
+      <translation>Seleccionar caras de objetos existentes</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_mirror.py" line="73"/>
+      <source>Select an object to mirror</source>
+      <translation>Seleccione un objeto a reflejar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_mirror.py" line="92"/>
+      <source>Pick start point of mirror line</source>
+      <translation>Escoja el punto de inicio de la línea de reflejo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_mirror.py" line="122"/>
+      <source>Mirror</source>
+      <translation>Reflejar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_mirror.py" line="177"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="203"/>
+      <source>Pick end point of mirror line</source>
+      <translation>Escoja el punto final de la línea de reflejo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_polygons.py" line="78"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="88"/>
+      <source>Pick center point</source>
+      <translation>Elegir punto central</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_polygons.py" line="189"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="200"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="260"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="254"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="270"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="410"/>
+      <source>Pick radius</source>
+      <translation>Elegir radio</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="277"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="278"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="446"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
+      <source>Start angle</source>
+      <translation>Ángulo de inicio</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="452"/>
+      <source>Pick start angle</source>
+      <translation>Elegir ángulo de inicio</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="285"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="454"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="455"/>
+      <source>Aperture angle</source>
+      <translation>Ángulo de apertura</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="291"/>
+      <source>Pick aperture</source>
+      <translation>Elegir apertura</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="317"/>
+      <source>Create Circle (Part)</source>
+      <translation>Crear círculo (Parte)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="335"/>
+      <source>Create Circle</source>
+      <translation>Crear Círculo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="369"/>
+      <source>Create Arc (Part)</source>
+      <translation>Crear Arco (Parte)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="389"/>
+      <source>Create Arc</source>
+      <translation>Crear Arco</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="466"/>
+      <source>Pick aperture angle</source>
+      <translation>Elegir ángulo de apertura</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="509"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="551"/>
+      <source>Arc by 3 points</source>
+      <translation>Arco por 3 puntos</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="83"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
+      <source>Pick first point</source>
+      <translation>Elegir primer punto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="163"/>
+      <source>Create Line</source>
+      <translation>Crear Línea</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="185"/>
+      <source>Create Wire</source>
+      <translation>Crear Alambre</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="218"/>
+      <location filename="../../draftguitools/gui_lines.py" line="226"/>
+      <location filename="../../draftguitools/gui_lines.py" line="233"/>
+      <location filename="../../draftguitools/gui_lines.py" line="241"/>
+      <location filename="../../draftguitools/gui_lines.py" line="251"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="148"/>
+      <location filename="../../draftguitools/gui_splines.py" line="140"/>
+      <source>Pick next point</source>
+      <translation>Elegir el siguiente punto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="330"/>
+      <source>Unable to create a Wire from selected objects</source>
+      <translation>No se puede crear un alambre de los objetos seleccionados</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="352"/>
+      <source>Convert to Wire</source>
+      <translation>Convertir en Alambre</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shapestrings.py" line="85"/>
+      <location filename="../../draftguitools/gui_shapestrings.py" line="98"/>
+      <source>Pick ShapeString location point</source>
+      <translation>Elija el punto de ubicación de la Cadena de Forma</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="176"/>
+      <location filename="../../draftguitools/gui_shapestrings.py" line="133"/>
+      <source>Create ShapeString</source>
+      <translation>Crear Cadena de Forma</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="305"/>
+      <source>Select a Draft object to edit</source>
+      <translation>Seleccione un objeto Borrador para editar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="558"/>
+      <source>No edit point found for selected object</source>
+      <translation>No se encontró ningún punto de edición para el objeto seleccionado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="811"/>
+      <source>Too many objects selected, max number set to:</source>
+      <translation>Demasiados objetos seleccionados, número máximo establecido en:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="819"/>
+      <source>: this object is not editable</source>
+      <translation>: este objeto no es editable</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_join.py" line="76"/>
+      <source>Select an object to join</source>
+      <translation>Seleccione un objeto para unir</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_join.py" line="99"/>
+      <source>Join lines</source>
+      <translation>Unir líneas</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_join.py" line="110"/>
+      <source>Selection:</source>
+      <translation>Selección:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
+      <source>Change slope</source>
+      <translation>Cambiar pendiente</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="94"/>
+      <source>Select objects to trim or extend</source>
+      <translation>Seleccionar objetos para recortar o extender</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="143"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <source>Pick distance</source>
+      <translation>Elegir distancia</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="222"/>
+      <source>Offset angle</source>
+      <translation>Ángulo de desfase</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="483"/>
+      <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
+      <translation>Incapaz de recortar estos objetos, sólo alambres y arcos de Borrador son compatibles.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
+      <source>Unable to trim these objects, too many wires</source>
+      <translation>Incapaz de recortar estos objetos, demasiados alambres</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
+      <source>These objects don't intersect.</source>
+      <translation>Estos objetos no intersectan.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
+      <source>Too many intersection points.</source>
+      <translation>Demasiados puntos de intersección.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="66"/>
+      <source>Select an object to convert.</source>
+      <translation>Seleccione un objeto para convertir.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="99"/>
+      <source>Convert to Sketch</source>
+      <translation>Convertir a Croquis</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="114"/>
+      <source>Convert to Draft</source>
+      <translation>Convertir a Boceto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="143"/>
+      <source>Convert Draft/Sketch</source>
+      <translation>Convertir Borrador/Croquis</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_pointarray.py" line="104"/>
+      <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
+      <translation>Por favor, seleccione exactamente dos objetos, el objeto base y el objeto punto, antes de llamar a este comando.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_pointarray.py" line="122"/>
+      <source>Point array</source>
+      <translation>Matriz de puntos</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="108"/>
+      <source>Select an object to edit</source>
+      <translation>Seleccione un objeto a editar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_clone.py" line="79"/>
+      <source>Select an object to clone</source>
+      <translation>Selecciona un objeto para clonar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="212"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="247"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="261"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="294"/>
+      <source>Create Dimension</source>
+      <translation>Crear Cota</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="309"/>
+      <source>Create Dimension (radial)</source>
+      <translation>Crear Dimensión (radial)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="508"/>
+      <source>Edge too short!</source>
+      <translation>¡Arista demasiado corta!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="518"/>
+      <source>Edges don't intersect!</source>
+      <translation>¡No se cruzan las aristas!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="75"/>
+      <source>Select an object to stretch</source>
+      <translation>Seleccione un objeto para estirar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="127"/>
+      <source>Pick first point of selection rectangle</source>
+      <translation>Elegir el primer punto del rectángulo de selección</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="164"/>
+      <source>Pick opposite point of selection rectangle</source>
+      <translation>Elegir el punto opuesto del rectángulo de selección</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="173"/>
+      <source>Pick start point of displacement</source>
+      <translation>Elegir punto de inicio del desplazamiento</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="236"/>
+      <source>Pick end point of displacement</source>
+      <translation>Elegir punto final del desplazamiento</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="448"/>
+      <source>Turning one Rectangle into a Wire</source>
+      <translation>Convertir un Rectángulo en Alambre</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="477"/>
+      <source>Stretch</source>
+      <translation>Estirar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
+      <location filename="../../draftguitools/gui_patharray.py" line="102"/>
+      <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
+      <translation>Por favor, seleccione exactamente dos objetos, el objeto base y el objeto de trayectoria, antes de llamar a este comando.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
+      <source>Path twisted array</source>
+      <translation>Matriz de Trayectoria retorcida</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="132"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="332"/>
+      <source>Bézier curve has been closed</source>
+      <translation>La curva de Bézier ha sido cerrada</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="140"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="368"/>
+      <location filename="../../draftguitools/gui_splines.py" line="131"/>
+      <source>Last point has been removed</source>
+      <translation>El último punto ha sido eliminado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="153"/>
+      <location filename="../../draftguitools/gui_splines.py" line="147"/>
+      <source>Pick next point, or finish (A) or close (O)</source>
+      <translation>Elegir el siguiente punto, o finalizar (A) o cerrar (R)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="211"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="451"/>
+      <source>Create BezCurve</source>
+      <translation>Crear Curva Bezier</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="376"/>
+      <source>Click and drag to define next knot</source>
+      <translation>Haga clic y arrastre para definir el siguiente nudo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="382"/>
+      <source>Click and drag to define next knot, or finish (A) or close (O)</source>
+      <translation>Haga clic y arrastre para definir el nudo siguiente, o finalizar (A) o cerrar (R)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snapper.py" line="1543"/>
+      <source>(ON)</source>
+      <translation>(ENCENDIDO)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snapper.py" line="1546"/>
+      <source>(OFF)</source>
+      <translation>(APAGADO)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
+      <source>Select an object to upgrade</source>
+      <translation>Seleccione un objeto para actualizar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_downgrade.py" line="85"/>
+      <source>Downgrade</source>
+      <translation>Degradar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_patharray.py" line="143"/>
+      <source>Path array</source>
+      <translation>Matriz de trayectoria</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_splines.py" line="120"/>
+      <source>Spline has been closed</source>
+      <translation>Spline se ha cerrado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_splines.py" line="183"/>
+      <source>Create B-spline</source>
+      <translation>Crear B-spline</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rectangles.py" line="125"/>
+      <source>Create Plane</source>
+      <translation>Crear Plano</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rectangles.py" line="142"/>
+      <source>Create Rectangle</source>
+      <translation>Crear Rectángulo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rectangles.py" line="202"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="196"/>
+      <source>Pick opposite point</source>
+      <translation>Elegir punto opuesto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="76"/>
+      <source>Fillet radius</source>
+      <translation>Radio de redondeado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="79"/>
+      <source>Radius of fillet</source>
+      <translation>Radio del redondeado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="107"/>
+      <source>Enter radius.</source>
+      <translation>Introducir radio.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="126"/>
+      <source>Delete original objects:</source>
+      <translation>Eliminar objetos originales:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="131"/>
+      <source>Chamfer mode:</source>
+      <translation>Modo Chaflán:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="148"/>
+      <source>Two elements needed.</source>
+      <translation>Se necesitan dos elementos.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="155"/>
+      <source>Test object</source>
+      <translation>Objeto de prueba</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="156"/>
+      <source>Test object removed</source>
+      <translation>Objeto de prueba eliminado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="158"/>
+      <source>Fillet cannot be created</source>
+      <translation>No se puede crear el redondeo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="188"/>
+      <source>Create fillet</source>
+      <translation>Crear redondeo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="65"/>
+      <source>Add to group</source>
+      <translation>Añadir al grupo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="68"/>
+      <source>Ungroup</source>
+      <translation>Desagrupar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="70"/>
+      <source>Add new group</source>
+      <translation>Añadir nuevo grupo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="159"/>
+      <source>Select group</source>
+      <translation>Seleccionar grupo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="193"/>
+      <source>No new selection. You must select non-empty groups or objects inside groups.</source>
+      <translation>No hay nueva selección. Debe seleccionar grupos u objetos no vacíos dentro de los grupos.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="203"/>
+      <source>Autogroup</source>
+      <translation>Autogrupo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="250"/>
+      <source>Add new Layer</source>
+      <translation>Añadir nueva Capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="304"/>
+      <source>Add to construction group</source>
+      <translation>Añadir al grupo de construcción</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="355"/>
+      <source>Add a new group with a given name</source>
+      <translation>Añade un nuevo grupo con un nombre dado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="383"/>
+      <source>Add group</source>
+      <translation>Añadir grupo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="385"/>
+      <source>Group name</source>
+      <translation>Nombre del grupo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="392"/>
+      <source>Group</source>
+      <translation>Grupo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="92"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="569"/>
+      <source>This object does not support possible coincident points, please try again.</source>
+      <translation>Este objeto no soporta posibles puntos coincidentes, por favor inténtalo de nuevo.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="164"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="608"/>
+      <source>Active object must have more than two points/nodes</source>
+      <translation>Objeto activo debe tener más de dos puntos/nodos</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="722"/>
+      <source>Selection is not a Knot</source>
+      <translation>La selección no es un nudo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="749"/>
+      <source>Endpoint of BezCurve can't be smoothed</source>
+      <translation>Extremo de BezCurve no puede ser suavizado</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_drawing.py" line="77"/>
+      <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
+      <translation>El Banco de Trabajo de Dibujo está obsoleto desde 0.17, considere en su lugar usar el banco de trabajo TechDraw.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_drawing.py" line="81"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
+      <source>Select an object to project</source>
+      <translation>Seleccione un objeto para proyecto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
+      <source>Upgrade</source>
+      <translation>Actualización</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="126"/>
+      <source>Main toggle snap</source>
+      <translation>Alternar ajuste principal</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="157"/>
+      <source>Midpoint snap</source>
+      <translation>Ajuste de punto medio</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="187"/>
+      <source>Perpendicular snap</source>
+      <translation>Ajuste perpendicular</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="217"/>
+      <source>Grid snap</source>
+      <translation>Ajuste de cuadrícula</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="247"/>
+      <source>Intersection snap</source>
+      <translation>Ajuste de intersección</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="277"/>
+      <source>Parallel snap</source>
+      <translation>Ajuste paralelo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="307"/>
+      <source>Endpoint snap</source>
+      <translation>Ajuste de punto final</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="338"/>
+      <source>Angle snap (30 and 45 degrees)</source>
+      <translation>Ajuste de ángulos (30 y 45 grados)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="368"/>
+      <source>Arc center snap</source>
+      <translation>Ajuste de centro de arco</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="398"/>
+      <source>Edge extension snap</source>
+      <translation>Ajuste de extensión de arista</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="428"/>
+      <source>Near snap</source>
+      <translation>Próximo ajuste</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="459"/>
+      <source>Orthogonal snap</source>
+      <translation>Ajuste ortogonal</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="489"/>
+      <source>Special point snap</source>
+      <translation>Ajuste de punto especial</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="520"/>
+      <source>Dimension display</source>
+      <translation>Pantalla de dimensión</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="553"/>
+      <source>Working plane snap</source>
+      <translation>Ajuste de plano de trabajo</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="583"/>
+      <source>Show snap toolbar</source>
+      <translation>Mostrar barra de herramientas de ajuste</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="81"/>
+      <source>Select an object to move</source>
+      <translation>Seleccione un objeto para mover</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="103"/>
+      <source>Pick start point</source>
+      <translation>Elegir punto de inicio</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="162"/>
+      <location filename="../../draftguitools/gui_move.py" line="308"/>
+      <source>Pick end point</source>
+      <translation>Elegir punto final</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="210"/>
+      <source>Move</source>
+      <translation>Mover</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
+      <location filename="../../draftguitools/gui_move.py" line="213"/>
+      <source>Some subelements could not be moved.</source>
+      <translation>Algunos subelementos no se pudieron mover.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_ellipses.py" line="121"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="138"/>
+      <source>Create Ellipse</source>
+      <translation>Crear Elipse</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
+      <source>Flip dimension</source>
+      <translation>Voltear cota</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
+      <source>No active Draft Toolbar.</source>
+      <translation>No hay una barra de borradores activa.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
+      <source>Construction mode</source>
+      <translation>Modo de construcción</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="125"/>
+      <source>Continue mode</source>
+      <translation>Modo Continuar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="159"/>
+      <source>Toggle display mode</source>
+      <translation>Cambiar el modo de visualización</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="68"/>
+      <source>Annotation style editor</source>
+      <translation>Editor de estilo de anotación</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="290"/>
+      <source>Open styles file</source>
+      <translation>Abrir archivo de estilos</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="292"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
+      <source>JSON file (*.json)</source>
+      <translation>Archivo JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="312"/>
+      <source>Save styles file</source>
+      <translation>Guardar archivo de estilos</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_heal.py" line="51"/>
+      <source>Heal</source>
+      <translation>Reparar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_points.py" line="134"/>
+      <location filename="../../draftguitools/gui_points.py" line="147"/>
+      <source>Create Point</source>
+      <translation>Crear Punto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_polygons.py" line="224"/>
+      <source>Create Polygon (Part)</source>
+      <translation>Crear Polígono (Part)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_polygons.py" line="243"/>
+      <source>Create Polygon</source>
+      <translation>Crear Polígono</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="76"/>
+      <source>Select an object to offset</source>
+      <translation>Seleccione un objeto para desplazar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="82"/>
+      <source>Offset only works on one object at a time.</source>
+      <translation>El desplazamiento sólo funciona con un objeto a la vez.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="92"/>
+      <source>Cannot offset this object type</source>
+      <translation>No se puede hacer desplazamiento a este tipo de objeto</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="123"/>
+      <source>Offset of Bezier curves is currently not supported</source>
+      <translation>El desplazamiento de las curvas Bezier no está soportado actualmente</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="79"/>
+      <source>Select an object to rotate</source>
+      <translation>Seleccione un objeto para rotar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="99"/>
+      <source>Pick rotation center</source>
+      <translation>Elegir centro de rotación</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="193"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="396"/>
+      <source>Base angle</source>
+      <translation>Ángulo base</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="194"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="397"/>
+      <source>The base angle you wish to start the rotation from</source>
+      <translation>El ángulo base desde el que se desea iniciar la rotación</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="199"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="400"/>
+      <source>Pick base angle</source>
+      <translation>Elegir ángulo base</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="205"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="409"/>
+      <source>Rotation</source>
+      <translation>Rotación</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="206"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="410"/>
+      <source>The amount of rotation you wish to perform.
+The final angle will be the base angle plus this amount.</source>
+      <translation>La cantidad de rotación que desea realizar.
+El ángulo final será el ángulo base más esta cantidad.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="213"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="418"/>
+      <source>Pick rotation angle</source>
+      <translation>Elegir ángulo de rotación</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
+      <source>Create 2D view</source>
+      <translation>Crear vista 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
+      <source>Select an object to array</source>
+      <translation>Seleccione un objeto matriz</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
+      <source>Array</source>
+      <translation>Matriz</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_split.py" line="64"/>
+      <source>Click anywhere on a line to split it.</source>
+      <translation>Haga clic en cualquier lugar de una línea para dividirla.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_split.py" line="106"/>
+      <source>Split line</source>
+      <translation>Dividir línea</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
+      <source>Task panel:</source>
+      <translation>Panel de tarea:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
+      <source>At least one element must be selected.</source>
+      <translation>Se debe seleccionar al menos un elemento.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
+      <source>Number of elements must be at least 1.</source>
+      <translation>Número de elementos debe ser al menos 1.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
+      <source>Selection is not suitable for array.</source>
+      <translation>La selección no es adecuada para la matriz.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="372"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
+      <source>Object:</source>
+      <translation>Objeto:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
+      <source>Interval X reset:</source>
+      <translation>Intervalo X reiniciado:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="325"/>
+      <source>Interval Y reset:</source>
+      <translation>Intervalo Y reiniciado:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="334"/>
+      <source>Interval Z reset:</source>
+      <translation>Intervalo Z reiniciado:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="296"/>
+      <source>Fuse:</source>
+      <translation>Fusión:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
+      <source>Create Link array:</source>
+      <translation>Crear Matriz de enlaces:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
+      <source>Number of X elements:</source>
+      <translation>Número de elementos X:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="378"/>
+      <source>Interval X:</source>
+      <translation>Intervalo X:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="381"/>
+      <source>Number of Y elements:</source>
+      <translation>Número de elementos Y:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="383"/>
+      <source>Interval Y:</source>
+      <translation>Intervalo Y:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="386"/>
+      <source>Number of Z elements:</source>
+      <translation>Número de elementos Z:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="388"/>
+      <source>Interval Z:</source>
+      <translation>Intervalo Z:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
+      <source>Aborted:</source>
+      <translation>Abortado:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
+      <source>Number of layers must be at least 2.</source>
+      <translation>Número de capas debe ser al menos 2.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="224"/>
+      <source>Radial distance is zero. Resulting array may not look correct.</source>
+      <translation>La distancia Radial es cero. La matriz resultante puede no verse correcta.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="226"/>
+      <source>Radial distance is negative. It is made positive to proceed.</source>
+      <translation>La distancia Radial es negativa. Se hace positiva para continuar.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="230"/>
+      <source>Tangential distance cannot be zero.</source>
+      <translation>La distancia tangencial no puede ser cero.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="233"/>
+      <source>Tangential distance is negative. It is made positive to proceed.</source>
+      <translation>La distancia tangencial es negativa. Se hace positiva para continuar.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
+      <source>Center reset:</source>
+      <translation>Reiniciar centro:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="373"/>
+      <source>Radial distance:</source>
+      <translation>Distancia Radial:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="374"/>
+      <source>Tangential distance:</source>
+      <translation>Distancia tangencial:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="375"/>
+      <source>Number of circular layers:</source>
+      <translation>Número de capas circulares:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="376"/>
+      <source>Symmetry parameter:</source>
+      <translation>Parámetro de simetría:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
+      <source>Center of rotation:</source>
+      <translation>Centro de rotación:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="199"/>
+      <source>Number of elements must be at least 2.</source>
+      <translation>Número de elementos debe ser al menos 2.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="203"/>
+      <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
+      <translation>El ángulo está por encima de 360 grados. Se ajusta a este valor para continuar.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="206"/>
+      <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
+      <translation>El ángulo está por debajo de -360 grados. Se ajusta a este valor para continuar.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
+      <source>Number of elements:</source>
+      <translation>Número de elementos:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="329"/>
+      <source>Polar angle:</source>
+      <translation>Ángulo polar:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="56"/>
+      <source>ShapeString</source>
+      <translation>FormaTexto</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="70"/>
+      <source>Default</source>
+      <translation>Predeterminado</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="361"/>
+      <source>Activate this layer</source>
+      <translation>Activar esta capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="367"/>
+      <source>Select layer contents</source>
+      <translation>Seleccionar contenido de la capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="405"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Combinar duplicados de capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="410"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Añadir nueva capa</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation>Capa de Reetiquetado:</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation>Combinando capa:</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_base.py" line="402"/>
+      <source>Please load the Draft Workbench to enable editing this object</source>
+      <translation>Por favor cargue el Banco de Trabajo del Borrador para permitir la edición de este objeto</translation>
+    </message>
+  </context>
+  <context>
+    <name>importOCA</name>
+    <message>
+      <location filename="../../importOCA.py" line="360"/>
+      <source>OCA error: couldn't determine character encoding</source>
+      <translation>Error OCA: no se pudo determinar la codificación de caracteres</translation>
+    </message>
+    <message>
+      <location filename="../../importOCA.py" line="445"/>
+      <source>OCA: found no data to export</source>
+      <translation>OCA: no se encontraron datos para exportar</translation>
+    </message>
+    <message>
+      <location filename="../../importOCA.py" line="490"/>
+      <source>successfully exported</source>
+      <translation>exportado con éxito</translation>
     </message>
   </context>
 </TS>
