@@ -1766,8 +1766,11 @@ bool PropertySheet::isBindingPath(const ObjectIdentifier &path,
     return true;
 }
 
-PropertySheet::BindingType PropertySheet::getBinding(
-        const Range &range, ExpressionPtr *pStart, ExpressionPtr *pEnd) const
+PropertySheet::BindingType
+PropertySheet::getBinding(const Range &range,
+                          ExpressionPtr *pStart,
+                          ExpressionPtr *pEnd,
+                          App::ObjectIdentifier *pTarget) const
 {
     if(!owner)
         return BindingNone;
@@ -1791,6 +1794,10 @@ PropertySheet::BindingType PropertySheet::getBinding(
             }
 
             if(expr->getFunction() == FunctionExpression::TUPLE && expr->getArgs().size()==3) {
+                if (pTarget) {
+                    if (auto e = Base::freecad_dynamic_cast<VariableExpression>(expr->getArgs()[0]))
+                        *pTarget = e->getPath();
+                }
                 if(pStart)
                     pStart->reset(expr->getArgs()[1]->copy());
                 if(pEnd)
@@ -1837,71 +1844,123 @@ void PropertySheet::setPathValue(const ObjectIdentifier &path, const boost::any 
             App::CellAddress targetTo = other->getCellAddress(
                 Py::Object(seq[2].ptr()).as_string().c_str(), false);
 
-            App::Range range(from,to);
-            App::Range rangeTarget(targetFrom,targetTo);
-
             std::string expr(href?"href(":"");
             if(other != this) {
                 if(otherOwner->getDocument() == owner->getDocument())
-                    expr = otherOwner->getNameInDocument();
+                    expr += otherOwner->getNameInDocument();
                 else
-                    expr = otherOwner->getFullName();
+                    expr += otherOwner->getFullName();
             }
             expr += ".";
             std::size_t exprSize = expr.size();
 
-            do {
-                CellAddress target(*rangeTarget);
-                CellAddress source(*range);
-                if(other == this && source.row() >= targetFrom.row()
-                        && source.row() <= targetTo.row()
-                        && source.col() >= targetFrom.col()
-                        && source.col() <= targetTo.col())
-                    continue;
+            auto normalize = [](CellAddress &from, CellAddress &to) {
+                if (from.row() > to.row()) {
+                    int tmp = from.row();
+                    from.setRow(to.row());
+                    to.setRow(tmp);
+                }
+                if (from.col() > to.col()) {
+                    int tmp = from.col();
+                    from.setCol(to.col());
+                    to.setCol(tmp);
+                }
+            };
 
-                Cell *dst = other->getValue(target);
-                Cell *src = getValue(source);
-                if(!dst) {
-                    if(src) {
+            normalize(from, to);
+            normalize(targetFrom, targetTo);
+            App::Range totalRange(from, to);
+            std::set<CellAddress> touched;
+
+            while(from.row() <= to.row()
+                    && from.col() <= to.col()
+                    && targetFrom.row() <= targetTo.row()
+                    && targetFrom.col() <= targetTo.col())
+            {
+                App::Range range(from, to);
+                App::Range rangeTarget(targetFrom, targetTo);
+                int rowCount = std::min(range.rowCount(), rangeTarget.rowCount());
+                int colCount = std::min(range.colCount(), rangeTarget.colCount());
+                if (rowCount == range.rowCount())
+                    from.setCol(from.col() + colCount);
+                else if (colCount == range.colCount())
+                    from.setRow(from.row() + rowCount);
+                if (rowCount == rangeTarget.rowCount())
+                    targetFrom.setCol(targetFrom.col() + colCount);
+                else if (colCount == rangeTarget.colCount())
+                    targetFrom.setRow(targetFrom.row() + rowCount);
+
+                range = App::Range(range.from().row(),
+                                   range.from().col(),
+                                   range.from().row()+rowCount-1,
+                                   range.from().col()+colCount-1);
+                rangeTarget = App::Range(rangeTarget.from().row(),
+                                         rangeTarget.from().col(),
+                                         rangeTarget.from().row()+rowCount-1,
+                                         rangeTarget.from().col()+colCount-1);
+                do {
+                    CellAddress target(*rangeTarget);
+                    CellAddress source(*range);
+                    if(other == this && source.row() >= rangeTarget.from().row()
+                            && source.row() <= rangeTarget.to().row()
+                            && source.col() >= rangeTarget.from().col()
+                            && source.col() <= rangeTarget.to().col())
+                        continue;
+
+                    Cell *dst = other->getValue(target);
+                    Cell *src = getValue(source);
+                    if(!dst)
+                        continue;
+
+                    touched.insert(source);
+
+                    if(!src) {
                         signaller.aboutToChange();
-                        owner->clear(source);
-                        owner->cellUpdated(source);
+                        src = createCell(source);
                     }
-                    continue;
-                }
 
-                if(!src) {
-                    signaller.aboutToChange();
-                    src = createCell(source);
-                }
+                    std::string alias;
+                    if(this!=other && dst->getAlias(alias)) {
+                        auto *oldCell = getValueFromAlias(alias);
+                        if(oldCell && oldCell!=dst) {
+                            signaller.aboutToChange();
+                            oldCell->setAlias("");
+                        }
+                        std::string oldAlias;
+                        if(!src->getAlias(oldAlias) || oldAlias!=alias) {
+                            signaller.aboutToChange();
+                            setAlias(source,alias);
+                        }
+                    }
 
-                std::string alias;
-                if(this!=other && dst->getAlias(alias)) {
-                    auto *oldCell = getValueFromAlias(alias);
-                    if(oldCell && oldCell!=dst) {
+                    expr.resize(exprSize);
+                    expr += rangeTarget.address();
+                    if(href)
+                        expr += ")";
+                    auto e = App::ExpressionPtr(App::Expression::parse(owner,expr));
+                    auto e2 = src->getExpression();
+                    if(!e2 || !e->isSame(*e2,false)) {
                         signaller.aboutToChange();
-                        oldCell->setAlias("");
+                        src->setExpression(std::move(e));
                     }
-                    std::string oldAlias;
-                    if(!src->getAlias(oldAlias) || oldAlias!=alias) {
+
+                } while(range.next() && rangeTarget.next());
+            }
+
+            if (totalRange.size() != (int)touched.size()) {
+                do {
+                    CellAddress addr(*totalRange);
+                    if (touched.count(addr))
+                        continue;
+                    Cell *src = getValue(addr);
+                    if (src && src->getExpression()) {
                         signaller.aboutToChange();
-                        setAlias(source,alias);
+                        src->setExpression(nullptr);
                     }
-                }
+                } while(totalRange.next());
+            }
 
-                expr.resize(exprSize);
-                expr += rangeTarget.address();
-                if(href)
-                    expr += ")";
-                auto e = App::ExpressionPtr(App::Expression::parse(owner,expr));
-                auto e2 = src->getExpression();
-                if(!e2 || !e->isSame(*e2,false)) {
-                    signaller.aboutToChange();
-                    src->setExpression(std::move(e));
-                }
-
-            } while(range.next() && rangeTarget.next());
-            owner->rangeUpdated(range);
+            owner->rangeUpdated(totalRange);
             signaller.tryInvoke();
             return;
         }
