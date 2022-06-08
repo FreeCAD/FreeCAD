@@ -509,10 +509,7 @@ class _TaskPanel:
         plt.ylabel(translate("FEM","Nodes"))
         plt.grid(True)
         fig_manager = plt.get_current_fig_manager()
-        # we purposely don't bring the window to top to keep FreeCAD's main window accessible
-        # see https://github.com/FreeCAD/FreeCAD/issues/6959
-        fig_manager.window.setWindowState(fig_manager.window.windowState() | QtCore.Qt.WindowActive)
-        fig_manager.window.activateWindow()
+        fig_manager.window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)    # stay ontop
 
     def update_colors_stats(self, res_values, res_unit, minm, maxm):
         QApplication.setOverrideCursor(Qt.WaitCursor)
