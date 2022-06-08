@@ -6,21 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>250</width>
     <height>167</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>250</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Cosmetic Vertex</string>
@@ -39,7 +27,7 @@
        </property>
       </widget>
      </item>
-    <item row="0" column="1">
+     <item row="0" column="1">
       <widget class="QLineEdit" name="leBaseView">
        <property name="enabled">
         <bool>false</bool>
@@ -55,7 +43,7 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

@@ -245,6 +245,8 @@ void SoFCColorLegend::setLegendLabels(const App::ColorLegend& legend, int prec)
 
     setMarkerLabel(labels);
     setMarkerValue(values);
+
+    setModified();
 }
 
 void SoFCColorLegend::modifyPoints(const SbBox2f& box)

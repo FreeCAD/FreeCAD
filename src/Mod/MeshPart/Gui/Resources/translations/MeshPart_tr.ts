@@ -2,25 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr" sourcelanguage="en">
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation>Metal Örgü Paketini Aç</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Bir metal örgünün düz bir temsilini bulun.</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation>Yüz Paketini Aç</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -529,6 +510,25 @@ Lütfen farklı bir şekil seçin.</translation>
       <location filename="../../Tessellation.cpp" line="256"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Önce metal örgü haline getirmek için bir şekil seçiniz.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>Metal Örgü Paketini Aç</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Bir metal örgünün düz bir temsilini bulun.</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>Yüz Paketini Aç</translation>
     </message>
   </context>
   <context>

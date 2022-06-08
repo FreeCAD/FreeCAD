@@ -62,7 +62,7 @@ class Draft_SelectPlane:
         """Set icon, menu and tooltip."""
         d = {'Pixmap': 'Draft_SelectPlane',
              'Accel': "W, P",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectPlane", "SelectPlane"),
+             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select Plane"),
              'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select the face of solid body to create a working plane on which to sketch Draft objects.\nYou may also select a three vertices or a Working Plane Proxy.")}
         return d
 

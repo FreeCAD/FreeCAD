@@ -370,8 +370,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SheetTableView.cpp" line="576"/>
         <location filename="../../SpreadsheetView.cpp" line="167"/>
+        <location filename="../../SheetTableView.cpp" line="576"/>
         <source>Clear cell(s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -394,70 +394,82 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBindSheet.ui" line="20"/>
-        <source>From cells:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgBindSheet.ui" line="27"/>
-        <source>Binding cell range start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgBindSheet.ui" line="34"/>
-        <source>Binding cell range end
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgBindSheet.ui" line="42"/>
+        <location filename="../../DlgBindSheet.ui" line="69"/>
         <source>To cells:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBindSheet.ui" line="49"/>
-        <source>Starting cell address to bind to. Type &apos;=&apos; if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgBindSheet.ui" line="57"/>
-        <source>Ending cell address to bind to. Type &apos;=&apos; if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgBindSheet.ui" line="65"/>
+        <location filename="../../DlgBindSheet.ui" line="117"/>
         <source>Sheet:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBindSheet.ui" line="72"/>
-        <source>Select which spread sheet to bind to.</source>
+        <location filename="../../DlgBindSheet.ui" line="22"/>
+        <source>First cell in range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBindSheet.ui" line="79"/>
-        <source>Use hidden reference to avoid creating a dependency with the referenced object. Use with caution!</source>
+        <location filename="../../DlgBindSheet.ui" line="29"/>
+        <source>Last cell in range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgBindSheet.ui" line="36"/>
+        <source>Bind cells:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgBindSheet.ui" line="49"/>
+        <source>Start cell address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgBindSheet.ui" line="62"/>
+        <source>End cell address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgBindSheet.ui" line="82"/>
+        <source>Start cell address to bind to.
+Type &apos;=&apos; if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgBindSheet.ui" line="97"/>
+        <source>End cell address to bind to.
+Type &apos;=&apos; if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgBindSheet.ui" line="110"/>
+        <source>Which spread sheet to bind to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgBindSheet.ui" line="126"/>
+        <source>Use hidden reference to avoid creating a dependency
+with the referenced object. Use with caution!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgBindSheet.ui" line="130"/>
         <source>Use hidden reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBindSheet.ui" line="91"/>
+        <location filename="../../DlgBindSheet.ui" line="139"/>
         <source>Unbind</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBindSheet.ui" line="98"/>
+        <location filename="../../DlgBindSheet.ui" line="146"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBindSheet.ui" line="105"/>
+        <location filename="../../DlgBindSheet.ui" line="153"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -901,12 +913,12 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-        <location filename="../../DlgBindSheet.cpp" line="180"/>
+        <location filename="../../DlgBindSheet.cpp" line="182"/>
         <source>Bind cells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgBindSheet.cpp" line="197"/>
+        <location filename="../../DlgBindSheet.cpp" line="199"/>
         <source>Unbind cells</source>
         <translation type="unfinished"></translation>
     </message>

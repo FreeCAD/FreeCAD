@@ -2,105 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="it" sourcelanguage="en">
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>Foglio di calcolo</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>Cella</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>Applica</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation>Applica le modifiche alla cella corrente</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>Elimina</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation>Elimina il contenuto della cella corrente</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>Calcola</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation>Aggiorna i valori gestiti dai controllori</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>Crea folgio di calcolo</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation>Aggiungi controllore</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation>Aggiungi controllore di proprietà</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation>Aggiungi controllore</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>Aggiunge un controllore di celle a un foglio di calcolo selezionato</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>Foglio di calcolo</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation>Aggiunge un oggetto foglio di calcolo al documento attivo</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation>Aggiungi controllore di proprietà</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>Aggiunge un controllore di proprietà a un foglio di calcolo selezionato</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <location filename="../../Command.cpp" line="892"/>
@@ -446,7 +347,7 @@
       <translation>Imposta proprieta cella</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="487"/>
+      <location filename="../../SheetModel.cpp" line="471"/>
       <source>Edit cell</source>
       <translation>Modifica cella</translation>
     </message>
@@ -469,8 +370,8 @@
       <translation>Inserisci colonne</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="576"/>
       <location filename="../../SpreadsheetView.cpp" line="167"/>
+      <location filename="../../SheetTableView.cpp" line="576"/>
       <source>Clear cell(s)</source>
       <translation>Svuota cella(e)</translation>
     </message>
@@ -490,76 +391,90 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Associa Celle Foglio di Calcolo</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="20"/>
-      <source>From cells:</source>
-      <translation>Dalle celle:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="27"/>
-      <source>Binding cell range start</source>
-      <translation type="unfinished">Binding cell range start</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="34"/>
-      <source>Binding cell range end
-</source>
-      <translation type="unfinished">Binding cell range end
-</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="42"/>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
       <translation>Alle celle:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="49"/>
-      <source>Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="57"/>
-      <source>Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation type="unfinished">Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="65"/>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
       <translation>Foglio:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="72"/>
-      <source>Select which spread sheet to bind to.</source>
-      <translation type="unfinished">Select which spread sheet to bind to.</translation>
+      <location filename="../../DlgBindSheet.ui" line="22"/>
+      <source>First cell in range</source>
+      <translation>Prima cella nell'intervallo</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="79"/>
-      <source>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</source>
-      <translation type="unfinished">Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</translation>
+      <location filename="../../DlgBindSheet.ui" line="29"/>
+      <source>Last cell in range</source>
+      <translation>Ultima cella nell'intervallo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells:</source>
+      <translation>Collega celle:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="49"/>
+      <source>Start cell address</source>
+      <translation>Indirizzo di partenza cella</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="62"/>
+      <source>End cell address</source>
+      <translation>Indirizzo di fine cella</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
+      <source>Start cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation>Indirizzo cella di partenza a cui collegare.
+Digitare '=' se si desidera utilizzare un'espressione.
+L'espressione deve valutare una stringa di qualche indirizzo di cella.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="97"/>
+      <source>End cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation>Indirizzo della cella finale a cui collegare.
+Digita '=' se vuoi usare l'espressione.
+L'espressione deve essere valutata in una stringa di qualche indirizzo di cella.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="110"/>
+      <source>Which spread sheet to bind to</source>
+      <translation>A quale foglio di calcolo associare</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="126"/>
+      <source>Use hidden reference to avoid creating a dependency
+with the referenced object. Use with caution!</source>
+      <translation>Usa il riferimento nascosto per evitare di creare una dipendenza
+con l'oggetto referenziato. Usa con cautela!</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="130"/>
       <source>Use hidden reference</source>
       <translation>Usa riferimento nascosto</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="91"/>
+      <location filename="../../DlgBindSheet.ui" line="139"/>
       <source>Unbind</source>
       <translation>Scollega</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="98"/>
+      <location filename="../../DlgBindSheet.ui" line="146"/>
       <source>Cancel</source>
       <translation>Annulla</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="105"/>
+      <location filename="../../DlgBindSheet.ui" line="153"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
@@ -569,12 +484,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Imposta Tabella di Configurazione</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Intervallo di celle:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -587,14 +502,13 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Indirizzo cella di partenza.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Si presume che la prima colonna dell'intervallo contenga un elenco di nomi di configurazione, che sarà utilizzato per generare una lista di stringhe e collegarsi alla proprietà
+data per l'utente di cambiare dinamicamente la configurazione.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+La prima riga dell'intervallo sarà associata a qualsiasi riga (indirettamente) selezionata
+da quella proprietà.
 </translation>
     </message>
     <message>
@@ -608,14 +522,13 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Indirizzo della cella finale.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Si presume che la prima colonna dell'intervallo contenga un elenco di nomi di configurazione, che sarà utilizzato per generare una lista di stringhe e collegarsi alla proprietà
+data per l'utente di cambiare dinamicamente la configurazione.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+La prima riga dell'intervallo sarà associata a qualsiasi riga (indirettamente) selezionata
+da quella proprietà.
 </translation>
     </message>
     <message>
@@ -638,7 +551,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Nome del gruppo di proprietà opzionale.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -960,14 +873,74 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Foglio di calcolo</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Cella</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Applica</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Applica le modifiche alla cella corrente</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Elimina</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Elimina il contenuto della cella corrente</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Calcola</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Aggiorna i valori gestiti dai controllori</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Crea folgio di calcolo</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Aggiungi controllore</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Aggiungi controllore di proprietà</translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="180"/>
+      <location filename="../../DlgBindSheet.cpp" line="182"/>
       <source>Bind cells</source>
       <translation>Collega celle</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="197"/>
+      <location filename="../../DlgBindSheet.cpp" line="199"/>
       <source>Unbind cells</source>
       <translation>Scollega le celle</translation>
     </message>
@@ -1192,6 +1165,45 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Aggiungi controllore</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Aggiunge un controllore di celle a un foglio di calcolo selezionato</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Foglio di calcolo</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Aggiunge un oggetto foglio di calcolo al documento attivo</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Aggiungi controllore di proprietà</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Aggiunge un controllore di proprietà a un foglio di calcolo selezionato</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -1201,7 +1213,7 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Foglio di calcolo</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

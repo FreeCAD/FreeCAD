@@ -15,692 +15,6 @@
     </message>
   </context>
   <context>
-    <name>ControlWidget</name>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
-      <source>Solver Control</source>
-      <translation>Contrôle du solveur</translation>
-    </message>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
-      <source>Working Directory</source>
-      <translation>Répertoire de travail</translation>
-    </message>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
-      <source>Write</source>
-      <translation>Écrire</translation>
-    </message>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="304"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="312"/>
-      <source>Edit</source>
-      <translation>Éditer</translation>
-    </message>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="245"/>
-      <source>Elapsed Time:</source>
-      <translation>Temps écoulé :</translation>
-    </message>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="309"/>
-      <source>Run</source>
-      <translation>Lancer</translation>
-    </message>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
-      <source>Re-write</source>
-      <translation>Ré-écrire</translation>
-    </message>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="313"/>
-      <source>Re-run</source>
-      <translation>Relancer</translation>
-    </message>
-    <message>
-      <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
-      <source>Abort</source>
-      <translation>Abandonner</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_Analysis</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="57"/>
-      <source>Analysis container</source>
-      <translation>Conteneur d'analyse</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="62"/>
-      <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation>Crée un conteneur d’analyse avec le solveur standard CalculiX</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ClippingPlaneAdd</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="85"/>
-      <source>Clipping plane on face</source>
-      <translation>Plan de coupe sur la face</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="89"/>
-      <source>Add a clipping plane on a selected face</source>
-      <translation>Ajouter un plan de coupe sur une face sélectionnée</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ClippingPlaneRemoveAll</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="140"/>
-      <location filename="../../../femcommands/commands.py" line="144"/>
-      <source>Remove all clipping planes</source>
-      <translation>Supprimer tous les plans de coupe</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstantVacuumPermittivity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="166"/>
-      <source>Constant vacuum permittivity</source>
-      <translation>Constante de permissibilité au vide</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="170"/>
-      <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation>Crée une constante FEM de permittivité du vide pour écraser la valeur standard</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintBodyHeatSource</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="185"/>
-      <source>Constraint body heat source</source>
-      <translation>Contrainte source de chaleur pour le corps</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="189"/>
-      <source>Creates a FEM constraint body heat source</source>
-      <translation>Créer une contrainte FEM de type source de chaleur pour un corps</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintCentrif</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="202"/>
-      <source>Constraint centrif</source>
-      <translation>Contrainte centrifuge</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="206"/>
-      <source>Creates a FEM constraint centrif</source>
-      <translation>Crée une contrainte FEM de type centrifuge</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintElectrostaticPotential</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="219"/>
-      <source>Constraint electrostatic potential</source>
-      <translation>Contrainte de potentiel électrostatique</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="223"/>
-      <source>Creates a FEM constraint electrostatic potential</source>
-      <translation>Créer une contrainte FEM de type potentiel électrostatique</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintFlowVelocity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="236"/>
-      <source>Constraint flow velocity</source>
-      <translation>Contrainte de vitesse d'écoulement</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="240"/>
-      <source>Creates a FEM constraint flow velocity</source>
-      <translation>Créer une contrainte de type vitesse d'écoulement</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintInitialFlowVelocity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="253"/>
-      <source>Constraint initial flow velocity</source>
-      <translation>Contrainte de vitesse d'écoulement initiale</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="257"/>
-      <source>Creates a FEM constraint initial flow velocity</source>
-      <translation>Créer une contrainte de type vitesse d'écoulement initiale</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintSectionPrint</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="270"/>
-      <source>Constraint sectionprint</source>
-      <translation>Contrainte d'empreinte de section</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="274"/>
-      <source>Creates a FEM constraint sectionprint</source>
-      <translation>Crée une contrainte FEM d'empreinte de section</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintSelfWeight</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="287"/>
-      <source>Constraint self weight</source>
-      <translation>Contrainte de poids propre</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="291"/>
-      <source>Creates a FEM constraint self weight</source>
-      <translation>Crée une contrainte FEM de poids propre</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintTie</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="304"/>
-      <source>Constraint tie</source>
-      <translation>Contrainte de liaison</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="308"/>
-      <source>Creates a FEM constraint tie</source>
-      <translation>Crée une contrainte FEM de liaison</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ElementFluid1D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="321"/>
-      <source>Fluid section for 1D flow</source>
-      <translation>Section de fluide pour un écoulement 1D</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="325"/>
-      <source>Creates a FEM fluid section for 1D flow</source>
-      <translation>Crée une section de fluide FEM pour un écoulement 1D</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ElementGeometry1D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="338"/>
-      <source>Beam cross section</source>
-      <translation>Coupe transversale de poutre</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="342"/>
-      <source>Creates a FEM beam cross section</source>
-      <translation>Crée une coupe transversale d'une poutre FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ElementGeometry2D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="355"/>
-      <source>Shell plate thickness</source>
-      <translation>Epaisseur de la coque</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="359"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation>Crée une épaisseur de coque FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ElementRotation1D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="372"/>
-      <source>Beam rotation</source>
-      <translation>Rotation de poutre</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="376"/>
-      <source>Creates a FEM beam rotation</source>
-      <translation>Crée une rotation de poutre FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationElasticity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="406"/>
-      <source>Elasticity equation</source>
-      <translation>Équation de l’élasticité</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="410"/>
-      <source>Creates a FEM equation for elasticity</source>
-      <translation>Crée une équation FEM pour l'élasticité</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationElectricforce</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="457"/>
-      <source>Electricforce equation</source>
-      <translation>Équation de force électrique</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="461"/>
-      <source>Creates a FEM equation for electric forces</source>
-      <translation>Crée une équation FEM pour les forces électriques</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationElectrostatic</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="389"/>
-      <source>Electrostatic equation</source>
-      <translation>Équation électrostatique</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="393"/>
-      <source>Creates a FEM equation for electrostatic</source>
-      <translation>Créer une équation FEM pour l'électrostatique</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationFlow</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="423"/>
-      <source>Flow equation</source>
-      <translation>Équation d’écoulement</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="427"/>
-      <source>Creates a FEM equation for flow</source>
-      <translation>Crée une équation FEM pour un écoulement</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationFlux</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="440"/>
-      <source>Flux equation</source>
-      <translation>Équation de flux</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="444"/>
-      <source>Creates a FEM equation for flux</source>
-      <translation>Crée une équation FEM pour un flux</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationHeat</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="474"/>
-      <source>Heat equation</source>
-      <translation>Équation de chaleur</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="478"/>
-      <source>Creates a FEM equation for heat</source>
-      <translation>Crée une équation FEM pour la chaleur</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_Examples</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="492"/>
-      <location filename="../../../femcommands/commands.py" line="496"/>
-      <source>Open FEM examples</source>
-      <translation>Ouvrir des exemples FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_FEMMesh2Mesh</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="655"/>
-      <source>FEM mesh to mesh</source>
-      <translation>Maillage à maillage FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="659"/>
-      <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Convertir la surface d'un maillage FEM en maillage</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MaterialEditor</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="513"/>
-      <source>Material editor</source>
-      <translation>Éditeur de matériaux</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="517"/>
-      <source>Opens the FreeCAD material editor</source>
-      <translation>Ouvre l’éditeur de matériaux de FreeCAD</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="533"/>
-      <source>Material for fluid</source>
-      <translation>Matériau pour fluide</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="537"/>
-      <source>Creates a FEM material for fluid</source>
-      <translation>Crée un matériau FEM pour fluide</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MaterialMechanicalNonlinear</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="550"/>
-      <source>Nonlinear mechanical material</source>
-      <translation>Matériau mécanique non linéaire</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="554"/>
-      <source>Creates a nonlinear mechanical material</source>
-      <translation>Crée un matériau à mécanique non linéaire</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MaterialReinforced</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="620"/>
-      <source>Reinforced material (concrete)</source>
-      <translation>Matériau renforcé (béton)</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="624"/>
-      <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation>Crée un matériau pour les matériaux renforcés tels que le béton</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MaterialSolid</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="637"/>
-      <source>Material for solid</source>
-      <translation>Matériau pour solide</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="642"/>
-      <source>Creates a FEM material for solid</source>
-      <translation>Crée un matériau FEM pour un solide</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshBoundaryLayer</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="702"/>
-      <source>FEM mesh boundary layer</source>
-      <translation>Couche limite de maillage FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="706"/>
-      <source>Creates a FEM mesh boundary layer</source>
-      <translation>Crée une couche limite de maillage FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshClear</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="719"/>
-      <source>Clear FEM mesh</source>
-      <translation>Effacer le maillage FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="723"/>
-      <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Effacer le maillage d'un objet de type maillage FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshDisplayInfo</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="744"/>
-      <location filename="../../../femcommands/commands.py" line="748"/>
-      <source>Display FEM mesh info</source>
-      <translation>Afficher les informations du maillage FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshGmshFromShape</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="773"/>
-      <source>FEM mesh from shape by Gmsh</source>
-      <translation>Maillage FEM à partir d'une forme de Gmsh</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="777"/>
-      <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation>Crée un maillage FEM à partir d'une forme avec le mailleur Gmsh</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshGroup</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="818"/>
-      <source>FEM mesh group</source>
-      <translation>Groupe de maillage FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="822"/>
-      <source>Creates a FEM mesh group</source>
-      <translation>Crée un groupe de maillage FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshNetgenFromShape</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="835"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation>Maillage FEM à partir d'une forme de Netgen</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="839"/>
-      <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Crée un maillage FEM à partir d'un solide ou d'une forme de face par le mailleur interne Netgen</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshRegion</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="880"/>
-      <source>FEM mesh region</source>
-      <translation>Région de maillage FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="884"/>
-      <source>Creates a FEM mesh region</source>
-      <translation>Crée une région de maillage FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ResultShow</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="897"/>
-      <source>Show result</source>
-      <translation>Afficher le résultat</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="902"/>
-      <source>Shows and visualizes selected result data</source>
-      <translation>Visualiser les données pour les résultats sélectionnés</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ResultsPurge</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="917"/>
-      <source>Purge results</source>
-      <translation>Purger les résultats</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="922"/>
-      <source>Purges all results from active analysis</source>
-      <translation>Purger tous les résultats de l'analyse active</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="980"/>
-      <source>Solver CalculiX (new framework)</source>
-      <translation>Solveur CalculiX (nouveau modèle)</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="985"/>
-      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation>Crée un solveur FEM CalculiX nouveau modèle (moins de traitement des erreurs de résultat)</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculixCxxtools</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation>Solveur CalculiX standard</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>Crée un solveur FEM CalculiX standard avec les outils ccx</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverControl</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="999"/>
-      <source>Solver job control</source>
-      <translation>Contrôle de tâches du solveur</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1004"/>
-      <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Modifie les attributs du solveur et lance les calculs pour le solveur sélectionné</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverElmer</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1016"/>
-      <source>Solver Elmer</source>
-      <translation>Solveur Elmer</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1021"/>
-      <source>Creates a FEM solver Elmer</source>
-      <translation>Crée un solveur FEM Elmer</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverMystran</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1032"/>
-      <source>Solver Mystran</source>
-      <translation>Solveur Mystran</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1034"/>
-      <source>Creates a FEM solver Mystran</source>
-      <translation>Crée un solveur FEM Mystran</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverRun</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1044"/>
-      <source>Run solver calculations</source>
-      <translation>Lancer les calculs du solveur</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1049"/>
-      <source>Runs the calculations for the selected solver</source>
-      <translation>Lance les calculs pour le solveur sélectionné</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverZ88</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1064"/>
-      <source>Solver Z88</source>
-      <translation>Solveur Z88</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1066"/>
-      <source>Creates a FEM solver Z88</source>
-      <translation>Crée un solveur FEM Z88</translation>
-    </message>
-  </context>
-  <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="273"/>
-      <source>Geometry reference selector for a</source>
-      <translation>Sélecteur de référence de géométrie pour une</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="276"/>
-      <source>Add</source>
-      <translation>Ajouter</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="283"/>
-      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation>Cliquez sur "Ajouter" et sélectionnez les éléments géométriques pour les ajouter à la liste. {}Les éléments géométriques suivants sont autorisés à être sélectionner : {}{}{}</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="286"/>
-      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation>{}Si aucune géométrie n'est ajoutée à la liste, tous les éléments restants seront utilisés.</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
-      <source>Selection mode</source>
-      <translation>Mode de sélection</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
-      <source>Solid</source>
-      <translation>Solide</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="151"/>
-      <source>Select Solids</source>
-      <translation>Sélectionner les solides</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="155"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Sélectionnez les éléments du solide qui seront ajoutés à la liste. Pour ajouter le solide, cliquez sur "Ajouter".</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="52"/>
-      <source>Add</source>
-      <translation>Ajouter</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="53"/>
-      <source>Remove</source>
-      <translation>Enlever</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemConstraintBearing</name>
     <message>
       <location filename="../../Command.cpp" line="288"/>
@@ -1066,7 +380,7 @@
   <context>
     <name>CmdFemPostCreateDataAtPointFilter</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="903"/>
+      <location filename="../../TaskPostBoxes.cpp" line="916"/>
       <source>Data At Point</source>
       <translation>Données au point</translation>
     </message>
@@ -1361,11 +675,65 @@
     </message>
   </context>
   <context>
+    <name>ControlWidget</name>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
+      <source>Solver Control</source>
+      <translation>Contrôle du solveur</translation>
+    </message>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
+      <source>Working Directory</source>
+      <translation>Répertoire de travail</translation>
+    </message>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
+      <source>Write</source>
+      <translation>Écrire</translation>
+    </message>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="304"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="312"/>
+      <source>Edit</source>
+      <translation>Éditer</translation>
+    </message>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="245"/>
+      <source>Elapsed Time:</source>
+      <translation>Temps écoulé :</translation>
+    </message>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="309"/>
+      <source>Run</source>
+      <translation>Lancer</translation>
+    </message>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
+      <source>Re-write</source>
+      <translation>Ré-écrire</translation>
+    </message>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="313"/>
+      <source>Re-run</source>
+      <translation>Relancer</translation>
+    </message>
+    <message>
+      <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
+      <source>Abort</source>
+      <translation>Abandonner</translation>
+    </message>
+  </context>
+  <context>
     <name>Dialog</name>
     <message>
-      <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
+      <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Fenêtre de dialogue</translation>
     </message>
@@ -1405,20 +773,20 @@
       <translation>Sélectionnez les sommets, les lignes et les surfaces: </translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="43"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <source>Temperature:</source>
       <translation>Température :</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
       <source>25</source>
       <translation>25</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -1441,6 +809,573 @@
     </message>
   </context>
   <context>
+    <name>FEM</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="290"/>
+      <source>Displacement Magnitude</source>
+      <translation>Magnitude de déplacement</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="300"/>
+      <source>Displacement X</source>
+      <translation>Déplacement X</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="310"/>
+      <source>Displacement Y</source>
+      <translation>Déplacement Y</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="320"/>
+      <source>Displacement Z</source>
+      <translation>Déplacement Z</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="327"/>
+      <source>von Mises Stress</source>
+      <translation>contraintes de von Mises</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="334"/>
+      <source>Max Shear Stress</source>
+      <translation>Contrainte maximale de cisaillement</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="341"/>
+      <source>Max Principal Stress</source>
+      <translation>Contrainte principale maxi</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="348"/>
+      <source>Temperature</source>
+      <translation>Température</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="355"/>
+      <source>Mass Flow Rate</source>
+      <translation>Flux massique</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="362"/>
+      <source>Network Pressure</source>
+      <translation>Pression du réseau</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="369"/>
+      <source>Min Principal Stress</source>
+      <translation>Contrainte principale mini</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="376"/>
+      <source>Equivalent Plastic Strain</source>
+      <translation>Déformation plastique équivalente : Peeq</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="395"/>
+      <source>Information</source>
+      <translation>Informations</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="397"/>
+      <source>No histogram available.
+Please select a result type first.</source>
+      <translation>Aucun histogramme disponible.
+Veuillez d'abord sélectionner un type de résultat.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="508"/>
+      <source>Histogram of {}</source>
+      <translation>Histogramme de {}</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="509"/>
+      <source>Nodes</source>
+      <translation>Nœuds</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="628"/>
+      <source>FEM: there are no nodes in result mesh, there will be nothing to show.</source>
+      <translation>FEM: il n'y a pas de nœuds dans le maillage résultant, il n'y aura rien à montrer.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="631"/>
+      <source>Empty result mesh</source>
+      <translation>Aucun résultat de maillage</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="638"/>
+      <source>FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</source>
+      <translation>FEM: Contrainte de flexion graphique pour les maillages FEM de poutre ou de coque pas encore pris en charge.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="641"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="645"/>
+      <source>No result object</source>
+      <translation>Aucun résultat d'objet</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="643"/>
+      <source>FEM: Result node numbers are not equal to FEM Mesh NodeCount.</source>
+      <translation>FEM : Le résultat du nombre de nœuds ne sont pas égaux au nombre de nœuds du maillage FEM.</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_Analysis</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="57"/>
+      <source>Analysis container</source>
+      <translation>Conteneur d'analyse</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="62"/>
+      <source>Creates an analysis container with standard solver CalculiX</source>
+      <translation>Crée un conteneur d’analyse avec le solveur standard CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneAdd</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="85"/>
+      <source>Clipping plane on face</source>
+      <translation>Plan de coupe sur la face</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="89"/>
+      <source>Add a clipping plane on a selected face</source>
+      <translation>Ajouter un plan de coupe sur une face sélectionnée</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneRemoveAll</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="140"/>
+      <location filename="../../../femcommands/commands.py" line="144"/>
+      <source>Remove all clipping planes</source>
+      <translation>Supprimer tous les plans de coupe</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstantVacuumPermittivity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="166"/>
+      <source>Constant vacuum permittivity</source>
+      <translation>Constante de permissibilité au vide</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="170"/>
+      <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
+      <translation>Crée une constante FEM de permittivité du vide pour écraser la valeur standard</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintBodyHeatSource</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="185"/>
+      <source>Constraint body heat source</source>
+      <translation>Contrainte source de chaleur pour le corps</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="189"/>
+      <source>Creates a FEM constraint body heat source</source>
+      <translation>Créer une contrainte FEM de type source de chaleur pour un corps</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintCentrif</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="202"/>
+      <source>Constraint centrif</source>
+      <translation>Contrainte centrifuge</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="206"/>
+      <source>Creates a FEM constraint centrif</source>
+      <translation>Crée une contrainte FEM de type centrifuge</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectrostaticPotential</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="219"/>
+      <source>Constraint electrostatic potential</source>
+      <translation>Contrainte de potentiel électrostatique</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="223"/>
+      <source>Creates a FEM constraint electrostatic potential</source>
+      <translation>Créer une contrainte FEM de type potentiel électrostatique</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="236"/>
+      <source>Constraint flow velocity</source>
+      <translation>Contrainte de vitesse d'écoulement</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="240"/>
+      <source>Creates a FEM constraint flow velocity</source>
+      <translation>Créer une contrainte de type vitesse d'écoulement</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintInitialFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="253"/>
+      <source>Constraint initial flow velocity</source>
+      <translation>Contrainte de vitesse d'écoulement initiale</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="257"/>
+      <source>Creates a FEM constraint initial flow velocity</source>
+      <translation>Créer une contrainte de type vitesse d'écoulement initiale</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintSectionPrint</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="270"/>
+      <source>Constraint sectionprint</source>
+      <translation>Contrainte d'empreinte de section</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="274"/>
+      <source>Creates a FEM constraint sectionprint</source>
+      <translation>Crée une contrainte FEM d'empreinte de section</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintSelfWeight</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="287"/>
+      <source>Constraint self weight</source>
+      <translation>Contrainte de poids propre</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="291"/>
+      <source>Creates a FEM constraint self weight</source>
+      <translation>Crée une contrainte FEM de poids propre</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintTie</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="304"/>
+      <source>Constraint tie</source>
+      <translation>Contrainte de liaison</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="308"/>
+      <source>Creates a FEM constraint tie</source>
+      <translation>Crée une contrainte FEM de liaison</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementFluid1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="321"/>
+      <source>Fluid section for 1D flow</source>
+      <translation>Section de fluide pour un écoulement 1D</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="325"/>
+      <source>Creates a FEM fluid section for 1D flow</source>
+      <translation>Crée une section de fluide FEM pour un écoulement 1D</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementGeometry1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="338"/>
+      <source>Beam cross section</source>
+      <translation>Coupe transversale de poutre</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="342"/>
+      <source>Creates a FEM beam cross section</source>
+      <translation>Crée une coupe transversale d'une poutre FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementGeometry2D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="355"/>
+      <source>Shell plate thickness</source>
+      <translation>Epaisseur de la coque</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="359"/>
+      <source>Creates a FEM shell plate thickness</source>
+      <translation>Crée une épaisseur de coque FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementRotation1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="372"/>
+      <source>Beam rotation</source>
+      <translation>Rotation de poutre</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="376"/>
+      <source>Creates a FEM beam rotation</source>
+      <translation>Crée une rotation de poutre FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElasticity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="406"/>
+      <source>Elasticity equation</source>
+      <translation>Équation d’élasticité</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="410"/>
+      <source>Creates a FEM equation for elasticity</source>
+      <translation>Crée une équation FEM pour l'élasticité</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElectricforce</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="457"/>
+      <source>Electricforce equation</source>
+      <translation>Équation de force électrique</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="461"/>
+      <source>Creates a FEM equation for electric forces</source>
+      <translation>Crée une équation FEM pour les forces électriques</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElectrostatic</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="389"/>
+      <source>Electrostatic equation</source>
+      <translation>Équation électrostatique</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="393"/>
+      <source>Creates a FEM equation for electrostatic</source>
+      <translation>Créer une équation FEM pour l'électrostatique</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFlow</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="423"/>
+      <source>Flow equation</source>
+      <translation>Équation d’écoulement</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="427"/>
+      <source>Creates a FEM equation for flow</source>
+      <translation>Crée une équation FEM pour un écoulement</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFlux</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="440"/>
+      <source>Flux equation</source>
+      <translation>Équation de flux</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="444"/>
+      <source>Creates a FEM equation for flux</source>
+      <translation>Crée une équation FEM pour un flux</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationHeat</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="474"/>
+      <source>Heat equation</source>
+      <translation>Équation de chaleur</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="478"/>
+      <source>Creates a FEM equation for heat</source>
+      <translation>Crée une équation FEM pour la chaleur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_Examples</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="492"/>
+      <location filename="../../../femcommands/commands.py" line="496"/>
+      <source>Open FEM examples</source>
+      <translation>Ouvrir des exemples FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_FEMMesh2Mesh</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="655"/>
+      <source>FEM mesh to mesh</source>
+      <translation>Maillage à maillage FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="659"/>
+      <source>Convert the surface of a FEM mesh to a mesh</source>
+      <translation>Convertir la surface d'un maillage FEM en maillage</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialEditor</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="513"/>
+      <source>Material editor</source>
+      <translation>Éditeur de matériaux</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="517"/>
+      <source>Opens the FreeCAD material editor</source>
+      <translation>Ouvre l’éditeur de matériaux de FreeCAD</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="533"/>
+      <source>Material for fluid</source>
+      <translation>Matériau pour fluide</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="537"/>
+      <source>Creates a FEM material for fluid</source>
+      <translation>Crée un matériau FEM pour fluide</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialMechanicalNonlinear</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="550"/>
+      <source>Nonlinear mechanical material</source>
+      <translation>Matériau mécanique non linéaire</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="554"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Crée un matériau à mécanique non linéaire</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialReinforced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="620"/>
+      <source>Reinforced material (concrete)</source>
+      <translation>Matériau renforcé (type béton)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="624"/>
+      <source>Creates a material for reinforced matrix material such as concrete</source>
+      <translation>Crée un matériau pour les matériaux renforcés tels que le béton</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialSolid</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="637"/>
+      <source>Material for solid</source>
+      <translation>Matériau pour solide</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="642"/>
+      <source>Creates a FEM material for solid</source>
+      <translation>Crée un matériau FEM pour un solide</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="702"/>
+      <source>FEM mesh boundary layer</source>
+      <translation>Couche limite de maillage FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="706"/>
+      <source>Creates a FEM mesh boundary layer</source>
+      <translation>Crée une couche limite de maillage FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshClear</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="719"/>
+      <source>Clear FEM mesh</source>
+      <translation>Effacer le maillage FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="723"/>
+      <source>Clear the Mesh of a FEM mesh object</source>
+      <translation>Effacer le maillage d'un objet de type maillage FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshDisplayInfo</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="744"/>
+      <location filename="../../../femcommands/commands.py" line="748"/>
+      <source>Display FEM mesh info</source>
+      <translation>Afficher les informations du maillage FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="773"/>
+      <source>FEM mesh from shape by Gmsh</source>
+      <translation>Maillage FEM à partir d'une forme de Gmsh</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="777"/>
+      <source>Create a FEM mesh from a shape by Gmsh mesher</source>
+      <translation>Crée un maillage FEM à partir d'une forme avec le mailleur Gmsh</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGroup</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="818"/>
+      <source>FEM mesh group</source>
+      <translation>Groupe de maillage FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="822"/>
+      <source>Creates a FEM mesh group</source>
+      <translation>Crée un groupe de maillage FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshNetgenFromShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="835"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Maillage FEM à partir d'une forme de Netgen</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="839"/>
+      <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Crée un maillage FEM à partir d'un solide ou d'une forme de face par le mailleur interne Netgen</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshRegion</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="880"/>
+      <source>FEM mesh region</source>
+      <translation>Région de maillage FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="884"/>
+      <source>Creates a FEM mesh region</source>
+      <translation>Crée une région de maillage FEM</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
       <location filename="../../Command.cpp" line="1711"/>
@@ -1451,6 +1386,123 @@
       <location filename="../../Command.cpp" line="1716"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Créer une fonction de sphère, définie par son centre et son rayon</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ResultShow</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="897"/>
+      <source>Show result</source>
+      <translation>Afficher le résultat</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="902"/>
+      <source>Shows and visualizes selected result data</source>
+      <translation>Visualiser les données pour les résultats sélectionnés</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ResultsPurge</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="917"/>
+      <source>Purge results</source>
+      <translation>Purger les résultats</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="922"/>
+      <source>Purges all results from active analysis</source>
+      <translation>Purger tous les résultats de l'analyse active</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="980"/>
+      <source>Solver CalculiX (new framework)</source>
+      <translation>Solveur CalculiX (nouveau modèle)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="985"/>
+      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
+      <translation>Crée un solveur FEM CalculiX nouveau modèle (moins de traitement des erreurs de résultat)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solveur CalculiX standard</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Crée un solveur FEM CalculiX standard avec les outils ccx</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverControl</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="999"/>
+      <source>Solver job control</source>
+      <translation>Contrôle de tâches du solveur</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1004"/>
+      <source>Changes solver attributes and runs the calculations for the selected solver</source>
+      <translation>Modifie les attributs du solveur et lance les calculs pour le solveur sélectionné</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverElmer</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1016"/>
+      <source>Solver Elmer</source>
+      <translation>Solveur Elmer</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1021"/>
+      <source>Creates a FEM solver Elmer</source>
+      <translation>Crée un solveur FEM Elmer</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverMystran</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1032"/>
+      <source>Solver Mystran</source>
+      <translation>Solveur Mystran</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1034"/>
+      <source>Creates a FEM solver Mystran</source>
+      <translation>Crée un solveur FEM Mystran</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverRun</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1044"/>
+      <source>Run solver calculations</source>
+      <translation>Lancer les calculs du solveur</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1049"/>
+      <source>Runs the calculations for the selected solver</source>
+      <translation>Lance les calculs pour le solveur sélectionné</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverZ88</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1064"/>
+      <source>Solver Z88</source>
+      <translation>Solveur Z88</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1066"/>
+      <source>Creates a FEM solver Z88</source>
+      <translation>Crée un solveur FEM Z88</translation>
     </message>
   </context>
   <context>
@@ -2982,7 +3034,7 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1160"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1173"/>
       <source>Function cut, choose implicit function</source>
       <translation>Coupe de fonction, choisissez une fonction implicite</translation>
     </message>
@@ -3022,7 +3074,7 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="911"/>
+      <location filename="../../TaskPostBoxes.cpp" line="924"/>
       <source>Scalar clip options</source>
       <translation>Options de l'écrêtage scalaire</translation>
     </message>
@@ -3030,7 +3082,7 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1019"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1032"/>
       <source>Warp options</source>
       <translation>Options de la déformation</translation>
     </message>
@@ -3067,15 +3119,15 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>Matériau FEM</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Matériau</translation>
     </message>
@@ -3100,9 +3152,9 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Nom du matériau</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>TextLabel</translation>
     </message>
@@ -3472,7 +3524,7 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Paramètre de liaison</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintTie.ui" line="52"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
@@ -3481,9 +3533,9 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
+      <location filename="../ui/ConstraintTie.ui" line="52"/>
       <location filename="../ui/ElementGeometry2D.ui" line="52"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -3499,10 +3551,10 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paramètre</translation>
     </message>
@@ -3532,9 +3584,9 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Paramètre de l'empreinte de section</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <source>Constraint Properties</source>
       <translation>Propriétés de contrainte</translation>
     </message>
@@ -3549,14 +3601,14 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Potentiel électrique en V</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="143"/>
-      <location filename="../ui/FlowVelocity.ui" line="56"/>
-      <location filename="../ui/FlowVelocity.ui" line="83"/>
-      <location filename="../ui/FlowVelocity.ui" line="110"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="45"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="79"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="113"/>
+      <location filename="../ui/FlowVelocity.ui" line="56"/>
+      <location filename="../ui/FlowVelocity.ui" line="83"/>
+      <location filename="../ui/FlowVelocity.ui" line="110"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="143"/>
       <source>unspecified</source>
       <translation>non spécifié</translation>
     </message>
@@ -3607,8 +3659,8 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Paramètre de section de la poutre</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Paramètre de section de passage</translation>
     </message>
@@ -3659,30 +3711,30 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Rotation :     </translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="20"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="23"/>
+      <location filename="../ui/FlowVelocity.ui" line="20"/>
       <source>Velocity x:</source>
       <translation>Vitesse x :</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="27"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="57"/>
+      <location filename="../ui/FlowVelocity.ui" line="27"/>
       <source>Velocity y:</source>
       <translation>Vitesse y:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="34"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="91"/>
+      <location filename="../ui/FlowVelocity.ui" line="34"/>
       <source>Velocity z:</source>
       <translation>Vitesse z:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="49"/>
-      <location filename="../ui/FlowVelocity.ui" line="76"/>
-      <location filename="../ui/FlowVelocity.ui" line="103"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="38"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="72"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="106"/>
+      <location filename="../ui/FlowVelocity.ui" line="49"/>
+      <location filename="../ui/FlowVelocity.ui" line="76"/>
+      <location filename="../ui/FlowVelocity.ui" line="103"/>
       <source>m/s</source>
       <translation>m/s</translation>
     </message>
@@ -3740,6 +3792,39 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Max element size:</source>
       <translation>Taille maximale de l'élément :</translation>
+    </message>
+  </context>
+  <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="273"/>
+      <source>Geometry reference selector for a</source>
+      <translation>Sélecteur de référence de géométrie pour une</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="276"/>
+      <source>Add</source>
+      <translation>Ajouter</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation>Cliquez sur "Ajouter" et sélectionnez les éléments géométriques pour les ajouter à la liste. {}Les éléments géométriques suivants sont autorisés à être sélectionner : {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>{}Si aucune géométrie n'est ajoutée à la liste, tous les éléments restants seront utilisés.</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
+      <source>Selection mode</source>
+      <translation>Mode de sélection</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
+      <source>Solid</source>
+      <translation>Solide</translation>
     </message>
   </context>
   <context>
@@ -3842,26 +3927,26 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Modifier la contrainte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="77"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="77"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="75"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="76"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="76"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="75"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="340"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="604"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="75"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="75"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="76"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="76"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une boîte de dialogue est déjà ouverte dans le panneau des tâches</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="78"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="78"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="76"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="77"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="77"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="76"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="341"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="605"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="76"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="76"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="78"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="78"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="77"/>
       <source>Do you want to close this dialog?</source>
       <translation>Voulez-vous fermer cette boîte de dialogue?</translation>
     </message>
@@ -3993,9 +4078,9 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Groupes</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="227"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="150"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="681"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="227"/>
       <location filename="../../ViewProviderSolver.cpp" line="71"/>
       <source>Are you sure you want to continue?</source>
       <translation>Êtes-vous sûr de vouloir continuer ?</translation>
@@ -4060,8 +4145,8 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="130"/>
-      <source>Peeq</source>
-      <translation>Peeq</translation>
+      <source>Equivalent Plastic Strain</source>
+      <translation>Déformation plastique équivalente : Peeq</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="137"/>
@@ -4119,22 +4204,30 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
       <translation>Équation définie par l'utilisateur</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="333"/>
-      <source>Calculate and plot</source>
-      <translation>Calculer et tracer</translation>
+      <location filename="../ui/ResultShow.ui" line="331"/>
+      <source>Runs the equation given in the field below,
+outputs the results to the Min and Max fields
+and colors the result mesh accordingly</source>
+      <translation>Exécute l'équation donnée dans le champ ci-dessous,
+donne les résultats de la plage Min au Max
+et colore le maillage résultat en conséquence</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="340"/>
-      <source>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu'; font-size:8pt;"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu'; font-size:8pt;"&gt;P1-P3 # Équation d'intensité des contraintes. Les valeurs disponibles sont au format tableau numpy. Le calcul np.function peut être utilisé sur les valeurs disponibles.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <location filename="../ui/ResultShow.ui" line="336"/>
+      <source>Calculate</source>
+      <translation>Calculer</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="355"/>
+      <source>Enter here an equation to be calculated.
+For possible variables, see the description box below.</source>
+      <translation>Entrez ici une équation à calculer.
+Pour les variables possibles, voir la zone de description ci-dessous.</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="359"/>
+      <source>P1 - P3 # Max - Min Principal Stress</source>
+      <translation>P1 - P3 # Max - Min Contrainte principale</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
@@ -4177,44 +4270,72 @@ p, li { white-space: pre-wrap; }
       <translation>débit massique : MF</translation>
     </message>
     <message>
-      <location filename="../ui/ResultHints.ui" line="148"/>
+      <location filename="../ui/ResultHints.ui" line="158"/>
       <source>von Mises stress: vM</source>
       <translation>contraintes de von Mises : vM</translation>
     </message>
     <message>
-      <location filename="../ui/ResultHints.ui" line="158"/>
-      <source>reinforcement ratio: rx, ry, rz</source>
-      <translation>ratio de renfort: rx, ry, rz</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultHints.ui" line="168"/>
-      <source>principal stresses: P1, P2, P3</source>
-      <translation>contraintes principales: P1, P2, P3</translation>
-    </message>
-    <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
-      <source>Mohr Coulomb: mc</source>
-      <translation>Mohr-Coulomb : mc</translation>
+      <source>max shear stress: MS</source>
+      <translation>contrainte maximale de cisaillement: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
-      <source>equivalent plastic strain: Peeq</source>
-      <translation>déformation plastique équivalente : Peeq</translation>
+      <source>max princ. stress vector: s3x, s3y, s3z</source>
+      <translation>vecteur de contrainte principal max : s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
-      <source>min. principal stress vector: s1x, s1y, s1z</source>
-      <translation>vecteur de contrainte principale min. : s1x, s1y, s1z</translation>
+      <source>max principal stress: P1</source>
+      <translation>contrainte principale max: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
-      <source>med. principal stress vector: s2x, s2y, s2z</source>
+      <source>med princ. stress vector: s2x, s2y, s2z</source>
       <translation>vecteur de contrainte principale med. : s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
-      <source>max. principal stress vector: s3x, s3y, s3z</source>
-      <translation>vecteur de contrainte principal max : s3x, s3y, s3z</translation>
+      <source>med principal stress: P2</source>
+      <translation>contrainte principale med: P2</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="228"/>
+      <source>min princ. stress vector: s1x, s1y, s1z</source>
+      <translation>vecteur de contrainte principale min. : s1x, s1y, s1z</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="238"/>
+      <source>min principal stress: P3</source>
+      <translation>contrainte principale min: P3</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="148"/>
+      <source>reinforcement ratio: rx, ry, rz</source>
+      <translation>ratio de renfort: rx, ry, rz</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="248"/>
+      <source>Mohr Coulomb: mc</source>
+      <translation>Mohr-Coulomb : mc</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="168"/>
+      <source>equivalent plastic strain: Peeq</source>
+      <translation>déformation plastique équivalente : Peeq</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="151"/>
+      <source>Select Solids</source>
+      <translation>Sélectionner les solides</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="155"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation>Sélectionnez les éléments du solide qui seront ajoutés à la liste. Pour ajouter le solide, cliquez sur "Ajouter".</translation>
     </message>
   </context>
   <context>
@@ -4312,9 +4433,9 @@ following referencing objects might be lost:</source>
       <translation>L'analyse n'est pas vide, donc les objets de référencement suivants peuvent être perdus :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="230"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="153"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="684"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="230"/>
       <location filename="../../ViewProviderSolver.cpp" line="74"/>
       <source>Object dependencies</source>
       <translation>Dépendances des objets</translation>
@@ -5609,12 +5730,12 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Overwrite Constants</source>
-      <translation>Écraser les constantes</translation>
+      <translation>Remplacer les constantes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Overwrite Constants</source>
-      <translation>Écraser les c&amp;onstantes</translation>
+      <translation>Remplacer les c&amp;onstantes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -5660,6 +5781,19 @@ vecteur normal de la face est utilisée comme sens</translation>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>Utilities</source>
       <translation>Utilitaires</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="52"/>
+      <source>Add</source>
+      <translation>Ajouter</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="53"/>
+      <source>Remove</source>
+      <translation>Enlever</translation>
     </message>
   </context>
   <context>

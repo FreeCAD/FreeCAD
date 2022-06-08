@@ -1473,6 +1473,8 @@ class CommandAddonManager:
     def update_progress_bar(self, current_value: int, max_value: int) -> None:
         """Update the progress bar, showing it if it's hidden"""
 
+        max_value = max_value if max_value > 0 else 1
+
         if current_value < 0:
             current_value = 0
         elif current_value > max_value:

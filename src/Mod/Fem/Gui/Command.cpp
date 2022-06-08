@@ -1213,9 +1213,17 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 }
 
 
-std::string Plot() {
+std::string Plot() 
+{
+    auto xAxisLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Thickness [mm]", "Plot X-Axis Label").toStdString();
+    auto yAxisLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Stress [MPa]", "Plot Y-Axis Label").toStdString();
+    auto titleLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Linearized Stresses", "Plot title").toStdString();
+    auto legendEntryA = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Membrane", "Plot legend item label").toStdString();
+    auto legendEntryB = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Membrane and Bending", "Plot legend item label").toStdString();
+    auto legendEntryC = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Total", "Plot legend item label").toStdString();
 
-    return "t=t_coords[len(t_coords)-1]\n\
+    std::ostringstream oss;
+    oss << "t=t_coords[len(t_coords)-1]\n\
 for i in range(len(t_coords)):\n\
     dum = t_coords[i]\n\
     t_coords[i] = dum - t_coords[len(t_coords)-1]*0.5\n\
@@ -1262,12 +1270,13 @@ FreeCAD.Console.PrintError('Total stress min = ')\n\
 FreeCAD.Console.PrintError([str(round(peak[0],2))])\n\
 FreeCAD.Console.PrintError('Total stress max = ')\n\
 FreeCAD.Console.PrintError([str(round(peak[len(t_coords)-1],2))])\n\
-plt.legend([\"Membrane\", \"Membrane and Bending\", \"Total\"], loc = \"best\")\n\
-plt.xlabel(\"Thickness [mm] \")\n\
-plt.ylabel(\"Stress [MPa]\")\n\
-plt.title(\"Linearized Stresses\")\n\
+plt.legend([\"" << legendEntryA << "\", \"" << legendEntryB << "\", \"" << legendEntryC << "\"], loc = \"best\")\n\
+plt.xlabel(\"" << xAxisLabel << "\")\n\
+plt.ylabel(\"" << yAxisLabel << "\")\n\
+plt.title(\"" << titleLabel << "\")\n\
 plt.grid()\n\
 plt.show()\n";
+    return oss.str();
 }
 
 

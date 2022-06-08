@@ -2,105 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="uk" sourcelanguage="en">
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>Секція</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>Застосувати</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation>Застосувати зміни до поточної комірки</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>Видалити</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation>Видаляє вміст поточної комірки</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>Обчислити</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation>Оновлює значення, які обробляються елементами керування</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>Створити таблицю</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation>Додати елемент керування</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation>Додати контролер властивостей</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation>Додати елемент керування</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>Додає елемент керування коміркою до вибраної електронної таблиці</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation>Додає обʼєкт електронної таблиці до активного документа</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation>Додати контролер властивостей</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>Додає контролер властивостей до вибраної електронної таблиці</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <location filename="../../Command.cpp" line="892"/>
@@ -446,7 +347,7 @@
       <translation>Зміна властивостей комірок</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="487"/>
+      <location filename="../../SheetModel.cpp" line="471"/>
       <source>Edit cell</source>
       <translation>Редагування комірки</translation>
     </message>
@@ -469,8 +370,8 @@
       <translation>Вставити стовпці</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="576"/>
       <location filename="../../SpreadsheetView.cpp" line="167"/>
+      <location filename="../../SheetTableView.cpp" line="576"/>
       <source>Clear cell(s)</source>
       <translation>Очистити комірку(и)</translation>
     </message>
@@ -493,73 +394,87 @@
       <translation>Звʼязування комірок таблиці</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="20"/>
-      <source>From cells:</source>
-      <translation>З комірки:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="27"/>
-      <source>Binding cell range start</source>
-      <translation>Початковий діапазон звʼязування комірок</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="34"/>
-      <source>Binding cell range end
-</source>
-      <translation>Кінцевий діапазон звʼязування комірок
-</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="42"/>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
       <translation>До комірки:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="49"/>
-      <source>Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation>Початковий діапазон для звʼязування комірок. Наберіть '=' якщо хочете використати вираз.
-Вираз має бути рядковою зміною з використанням адреси комірки.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="57"/>
-      <source>Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation>Кінцевий діапазон для звʼязування комірок. Наберіть '=' якщо хочете використати вираз.
-Вираз має бути рядковою зміною з використанням адреси комірки.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="65"/>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
       <translation>Таблиця:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="72"/>
-      <source>Select which spread sheet to bind to.</source>
-      <translation>Виберіть таблицю для звʼязування.</translation>
+      <location filename="../../DlgBindSheet.ui" line="22"/>
+      <source>First cell in range</source>
+      <translation>Перша комірка діапазону</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="79"/>
-      <source>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</source>
-      <translation>Використання прихованого посилання дозволяє уникнути створення залежності з обʼєктом, на який посилаються. Використовуйте з обережністю!</translation>
+      <location filename="../../DlgBindSheet.ui" line="29"/>
+      <source>Last cell in range</source>
+      <translation>Остання комірка діапазону</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells:</source>
+      <translation>Звʼязати комірки:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="49"/>
+      <source>Start cell address</source>
+      <translation>Початкові адреси комірок</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="62"/>
+      <source>End cell address</source>
+      <translation>Кінцеві адреси комірок</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
+      <source>Start cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation type="unfinished">Start cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="97"/>
+      <source>End cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation type="unfinished">End cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="110"/>
+      <source>Which spread sheet to bind to</source>
+      <translation type="unfinished">Which spread sheet to bind to</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="126"/>
+      <source>Use hidden reference to avoid creating a dependency
+with the referenced object. Use with caution!</source>
+      <translation type="unfinished">Use hidden reference to avoid creating a dependency
+with the referenced object. Use with caution!</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="130"/>
       <source>Use hidden reference</source>
       <translation>Використати приховані посилання</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="91"/>
+      <location filename="../../DlgBindSheet.ui" line="139"/>
       <source>Unbind</source>
       <translation>Відвʼязати</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="98"/>
+      <location filename="../../DlgBindSheet.ui" line="146"/>
       <source>Cancel</source>
       <translation>Скасувати</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="105"/>
+      <location filename="../../DlgBindSheet.ui" line="153"/>
       <source>OK</source>
       <translation>Підтвердити</translation>
     </message>
@@ -960,14 +875,74 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Таблиця</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Секція</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Застосувати</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Застосувати зміни до поточної комірки</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Видалити</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Видаляє вміст поточної комірки</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Обчислити</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Оновлює значення, які обробляються елементами керування</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Створити таблицю</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Додати елемент керування</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Додати контролер властивостей</translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="180"/>
+      <location filename="../../DlgBindSheet.cpp" line="182"/>
       <source>Bind cells</source>
       <translation>Звʼязати комірки</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="197"/>
+      <location filename="../../DlgBindSheet.cpp" line="199"/>
       <source>Unbind cells</source>
       <translation>Відвʼязати комірки</translation>
     </message>
@@ -1205,6 +1180,45 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
       <location filename="../../SpreadsheetView.cpp" line="263"/>
       <source>PDF file</source>
       <translation>PDF-файл</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Додати елемент керування</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Додає елемент керування коміркою до вибраної електронної таблиці</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Таблиця</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Додає обʼєкт електронної таблиці до активного документа</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Додати контролер властивостей</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Додає контролер властивостей до вибраної електронної таблиці</translation>
     </message>
   </context>
   <context>

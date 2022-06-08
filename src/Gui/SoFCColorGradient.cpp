@@ -35,6 +35,7 @@
 #endif
 
 #include "SoFCColorGradient.h"
+#include "SoTextLabel.h"
 #include "DlgSettingsColorGradientImp.h"
 #include "MainWindow.h"
 #include "MDIView.h"
@@ -98,7 +99,7 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
         for (int i = 0; i < num; i++) {
             SoTransform* trans = new SoTransform;
             SoBaseColor* color = new SoBaseColor;
-            SoText2    * text2 = new SoText2;
+            SoText2    * text2 = new SoColorBarLabel;
 
             trans->translation.setValue(0, -fStep, 0);
             color->rgb.setValue(0, 0, 0);
@@ -108,6 +109,8 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
             labels->addChild(text2);
         }
     }
+
+    setModified();
 }
 
 void SoFCColorGradient::setViewportSize(const SbVec2s& size)

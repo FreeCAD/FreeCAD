@@ -315,21 +315,15 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
             return;
         }
     } else if (edgeType == isBSpline) {
-        QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
-                             QObject::tr("Selected edge is a BSpline.  Radius will be approximate. Continue?"),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result == QMessageBox::Ok) {
-            objs.push_back(objFeat);
-            subs.push_back(SubNames[0]);
-        } else {
-            return;
-        }
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("BSpline Curve Error"),
+                             QObject::tr("Selected edge is a BSpline and a radius can not be calculated."));
+        return;
     } else {
-        std::stringstream edgeMsg;
-        edgeMsg << "Selection for Radius does not contain a circular edge (edge type: " << _edgeTypeToText(edgeType) << ")";
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr(edgeMsg.str().c_str()));
+        QMessageBox::warning(
+            Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+            QObject::tr("Selection for Radius does not contain a circular edge "
+                        "(edge type: %1)")
+                .arg(QString::fromStdString(_edgeTypeToText(edgeType))));
         return;
     }
 
@@ -437,22 +431,16 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
             return;
         }
     } else if (edgeType == isBSpline) {
-        QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
-                             QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result == QMessageBox::Ok) {
-            objs.push_back(objFeat);
-            subs.push_back(SubNames[0]);
-        } else {
-            return;
-        }
-    } else {
-        std::stringstream edgeMsg;
-        edgeMsg << "Selection for Diameter does not contain a circular edge (edge type: " << _edgeTypeToText(edgeType) << ")";
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr(edgeMsg.str().c_str()));
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("BSpline Curve Error"),
+                             QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
         return;
+    } else {
+      QMessageBox::warning(
+          Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+          QObject::tr("Selection for Diameter does not contain a circular edge "
+                      "(edge type: %1)")
+              .arg(QString::fromStdString(_edgeTypeToText(edgeType))));
+      return;
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
@@ -545,11 +533,11 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
-        std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension";
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr(edgeMsg.str().c_str()));
-        return;
+      QMessageBox::warning(Gui::getMainWindow(),
+                           QObject::tr("Incorrect Selection"),
+                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
+                                       "and 1 Edge for Distance Dimension"));
+      return;
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
@@ -648,11 +636,11 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
-        std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension";
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr(edgeMsg.str().c_str()));
-        return;
+      QMessageBox::warning(Gui::getMainWindow(),
+                           QObject::tr("Incorrect Selection"),
+                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
+                                       "and 1 Edge for Horizontal Dimension"));
+      return;
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
@@ -751,11 +739,11 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
-        std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension";
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr(edgeMsg.str().c_str()));
-        return;
+      QMessageBox::warning(Gui::getMainWindow(),
+                           QObject::tr("Incorrect Selection"),
+                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
+                                       "and 1 Edge for Vertical Dimension"));
+      return;
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));

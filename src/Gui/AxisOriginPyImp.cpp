@@ -53,16 +53,21 @@ std::string AxisOriginPy::representation(void) const
 PyObject* AxisOriginPy::getElementPicked(PyObject* args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O",&obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return nullptr;
+
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
-    SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
-    if(!pp)
-        throw Base::TypeError("type must be of coin.SoPickedPoint");
+    if (!ptr) {
+        PyErr_SetString(PyExc_TypeError, "'pickedPoint' must be a coin.SoPickedPoint");
+        return nullptr;
+    }
+
+    SoPickedPoint *pp = static_cast<SoPickedPoint*>(ptr);
     std::string name;
-    if(!getAxisOriginPtr()->getElementPicked(pp,name))
+    if (!getAxisOriginPtr()->getElementPicked(pp,name))
         Py_Return;
+
     return Py::new_reference_to(Py::String(name));
 }
 
@@ -70,82 +75,100 @@ PyObject* AxisOriginPy::getDetailPath(PyObject* args)
 {
     const char *sub;
     PyObject *path;
-    if (!PyArg_ParseTuple(args, "sO",&sub,&path))
+    if (!PyArg_ParseTuple(args, "sO", &sub,&path))
         return nullptr;
+
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
-    SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
-    if(!pPath)
-        throw Base::TypeError("type must be of coin.SoPath");
+    if (!ptr) {
+        PyErr_SetString(PyExc_TypeError, "'path' must be a coin.SoPath");
+        return nullptr;
+    }
+
+    SoPath *pPath = static_cast<SoPath*>(ptr);
     SoDetail *det = nullptr;
-    if(!getAxisOriginPtr()->getDetailPath(
-            sub,static_cast<SoFullPath*>(pPath),det))
-    {
-        if(det) delete det;
+    if (!getAxisOriginPtr()->getDetailPath(sub, static_cast<SoFullPath*>(pPath), det)) {
+        delete det;
         Py_Return;
     }
-    if(!det)
-        return Py::new_reference_to(Py::True());
-    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", (void*)det, 0);
+    if (!det)
+        Py_Return;
+
+    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", static_cast<void*>(det), 0);
 }
 
-Py::Float AxisOriginPy::getAxisLength() const {
+Py::Float AxisOriginPy::getAxisLength() const
+{
     return Py::Float(getAxisOriginPtr()->getAxisLength());
 }
 
-void AxisOriginPy::setAxisLength(Py::Float size) {
+void AxisOriginPy::setAxisLength(Py::Float size)
+{
     getAxisOriginPtr()->setAxisLength(size);
 }
 
-Py::Float AxisOriginPy::getLineWidth() const {
+Py::Float AxisOriginPy::getLineWidth() const
+{
     return Py::Float(getAxisOriginPtr()->getLineWidth());
 }
 
-void AxisOriginPy::setLineWidth(Py::Float size) {
+void AxisOriginPy::setLineWidth(Py::Float size)
+{
     getAxisOriginPtr()->setLineWidth(size);
 }
 
-Py::Float AxisOriginPy::getPointSize() const {
+Py::Float AxisOriginPy::getPointSize() const
+{
     return Py::Float(getAxisOriginPtr()->getPointSize());
 }
 
-void AxisOriginPy::setPointSize(Py::Float size) {
+void AxisOriginPy::setPointSize(Py::Float size)
+{
     getAxisOriginPtr()->setPointSize(size);
 }
 
-Py::Float AxisOriginPy::getScale() const {
+Py::Float AxisOriginPy::getScale() const
+{
     return Py::Float(getAxisOriginPtr()->getScale());
 }
 
-void AxisOriginPy::setScale(Py::Float size) {
+void AxisOriginPy::setScale(Py::Float size)
+{
     getAxisOriginPtr()->setScale(size);
 }
 
-Py::Tuple AxisOriginPy::getPlane() const {
+Py::Tuple AxisOriginPy::getPlane() const
+{
     auto info = getAxisOriginPtr()->getPlane();
     Py::Tuple ret(2);
     ret.setItem(0,Py::Float(info.first));
     ret.setItem(1,Py::Float(info.second));
+
     return ret;
 }
 
-void AxisOriginPy::setPlane(Py::Tuple tuple) {
+void AxisOriginPy::setPlane(Py::Tuple tuple)
+{
     float s,d;
-    if (!PyArg_ParseTuple(*tuple, "dd",&s,&d))
+    if (!PyArg_ParseTuple(*tuple, "ff",&s,&d))
         throw Py::Exception();
+
     getAxisOriginPtr()->setPlane(s,d);
 }
 
-Py::Dict AxisOriginPy::getLabels() const {
+Py::Dict AxisOriginPy::getLabels() const
+{
     Py::Dict dict;
-    for(auto &v : getAxisOriginPtr()->getLabels())
+    for (auto &v : getAxisOriginPtr()->getLabels())
         dict.setItem(Py::String(v.first),Py::String(v.second));
+
     return dict;
 }
 
-void AxisOriginPy::setLabels(Py::Dict dict) {
+void AxisOriginPy::setLabels(Py::Dict dict)
+{
     std::map<std::string,std::string> labels;
-    for(auto it=dict.begin();it!=dict.end();++it) {
+    for (auto it=dict.begin(); it!=dict.end(); ++it) {
         const auto &value = *it;
         labels[value.first.as_string()] = Py::Object(value.second).as_string();
     }

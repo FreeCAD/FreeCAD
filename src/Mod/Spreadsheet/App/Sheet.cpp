@@ -824,8 +824,11 @@ void Sheet::recomputeCell(CellAddress p)
         cellSpanChanged(p);
 }
 
-PropertySheet::BindingType Sheet::getCellBinding(Range &range,
-        ExpressionPtr *pStart, ExpressionPtr *pEnd) const 
+PropertySheet::BindingType
+Sheet::getCellBinding(Range &range,
+                      ExpressionPtr *pStart,
+                      ExpressionPtr *pEnd,
+                      App::ObjectIdentifier *pTarget) const 
 {
     do {
         CellAddress addr = *range;
@@ -835,7 +838,7 @@ PropertySheet::BindingType Sheet::getCellBinding(Range &range,
                     && addr.col()>=r.from().col()
                     && addr.col()<=r.to().col())
             {
-                auto res = cells.getBinding(r,pStart,pEnd);
+                auto res = cells.getBinding(r,pStart,pEnd,pTarget);
                 if(res != PropertySheet::BindingNone) {
                     range = r;
                     return res;
