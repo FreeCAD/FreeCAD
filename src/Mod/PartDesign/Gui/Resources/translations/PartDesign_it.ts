@@ -2,90 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="it" sourcelanguage="en">
   <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
-      <source>Involute gear...</source>
-      <translation>Ruota dentata ad evolvente...</translation>
-    </message>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
-      <source>Creates or edit the involute gear definition.</source>
-      <translation>Crea o modifica la definizione dell'ingranaggio ad evolvente.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="62"/>
-      <source>Sprocket...</source>
-      <translation>Pignone...</translation>
-    </message>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="66"/>
-      <source>Creates or edit the sprocket definition.</source>
-      <translation>Crea o modifica la definizione del pignone.</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaft</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-      <source>Shaft design wizard...</source>
-      <translation>Progettazione albero assistita...</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-      <source>Start the shaft design wizard</source>
-      <translation>Avvia la procedura guidata di progettazione dell'albero</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaftTable</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-      <source>Length [mm]</source>
-      <translation>Lunghezza [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-      <source>Diameter [mm]</source>
-      <translation>Diametro [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-      <source>Inner diameter [mm]</source>
-      <translation>Diametro interno [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-      <source>Constraint type</source>
-      <translation>Tipo di vincolo</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-      <source>Start edge type</source>
-      <translation>Tipo di bordo iniziale</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-      <source>Start edge size</source>
-      <translation>Dimensione bordo iniziale</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-      <source>End edge type</source>
-      <translation>Tipo di bordo finale</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-      <source>End edge size</source>
-      <translation>Dimensione bordo finale</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
@@ -948,8 +864,8 @@ so that self intersection is avoided.</translation>
       <translation>Crea pallinatura</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
+      <location filename="../../CommandBody.cpp" line="189"/>
       <source>Add a Body</source>
       <translation>Aggiungi corpo</translation>
     </message>
@@ -3356,8 +3272,8 @@ fare nuovamente clic per terminare la selezione</translation>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
-      <translation>Parametri Smusso</translation>
+      <source>Fillet parameters</source>
+      <translation>Parametri di raccordo</translation>
     </message>
   </context>
   <context>
@@ -3495,6 +3411,19 @@ fare nuovamente clic per terminare la selezione</translation>
     </message>
   </context>
   <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Ruota dentata ad evolvente...</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Crea o modifica la definizione dell'ingranaggio ad evolvente.</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesign_MoveFeature</name>
     <message>
       <location filename="../../CommandBody.cpp" line="728"/>
@@ -3533,6 +3462,19 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation>Vuoi che l'ultima funzione sia il nuovo suggerimento?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Pignone...</translation>
+    </message>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Crea o modifica la definizione del pignone.</translation>
     </message>
   </context>
   <context>
@@ -3605,28 +3547,28 @@ fare nuovamente clic per terminare la selezione</translation>
       <translation>Si prega di creare prima un piano oppure di selezionare una faccia su cui posizionare lo schizzo</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="80"/>
       <location filename="../../Command.cpp" line="811"/>
       <location filename="../../Command.cpp" line="1226"/>
       <location filename="../../Command.cpp" line="2225"/>
-      <location filename="../../ViewProvider.cpp" line="98"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../ViewProvider.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="81"/>
       <location filename="../../Command.cpp" line="812"/>
       <location filename="../../Command.cpp" line="1227"/>
       <location filename="../../Command.cpp" line="2226"/>
-      <location filename="../../ViewProvider.cpp" line="99"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../ViewProvider.cpp" line="99"/>
       <source>Do you want to close this dialog?</source>
       <translation>Si desidera chiudere questa finestra?</translation>
     </message>
@@ -3954,11 +3896,11 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Per poter utilizzare questa funzione essa deve appartenere a un oggetto parte del documento.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="65"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
+      <location filename="../../ViewProvider.cpp" line="65"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -4718,6 +4660,64 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
       <source>No message</source>
       <translation>Nessun messaggio</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Progettazione albero assistita...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Avvia la procedura guidata di progettazione dell'albero</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Lunghezza [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Diametro [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Diametro interno [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Tipo di vincolo</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Tipo di bordo iniziale</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Dimensione bordo iniziale</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Tipo di bordo finale</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Dimensione bordo finale</translation>
     </message>
   </context>
   <context>

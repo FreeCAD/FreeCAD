@@ -2,90 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="uk" sourcelanguage="en">
   <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
-      <source>Involute gear...</source>
-      <translation>Евольвентна шестерня...</translation>
-    </message>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
-      <source>Creates or edit the involute gear definition.</source>
-      <translation>Створює або редагує параметри евольвентної шестерні.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="62"/>
-      <source>Sprocket...</source>
-      <translation>Зірочка...</translation>
-    </message>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="66"/>
-      <source>Creates or edit the sprocket definition.</source>
-      <translation>Створює або редагує зірочку ланцюгової передачі.</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaft</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-      <source>Shaft design wizard...</source>
-      <translation>Майстер конструювання валів ...</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-      <source>Start the shaft design wizard</source>
-      <translation>Запусткає майстер конструювання валів</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaftTable</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-      <source>Length [mm]</source>
-      <translation>Довжина [мм]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-      <source>Diameter [mm]</source>
-      <translation>Діаметр [мм]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-      <source>Inner diameter [mm]</source>
-      <translation>Внутрішній діаметр [мм]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-      <source>Constraint type</source>
-      <translation>Тип Обмеження</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-      <source>Start edge type</source>
-      <translation>Тип початкового ребра</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-      <source>Start edge size</source>
-      <translation>Розмір початкового ребра</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-      <source>End edge type</source>
-      <translation>Тип кінцевого ребра</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-      <source>End edge size</source>
-      <translation>Розмір кінцевого ребра</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
@@ -948,8 +864,8 @@ so that self intersection is avoided.</source>
       <translation>Створити Булеву операцію</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
+      <location filename="../../CommandBody.cpp" line="189"/>
       <source>Add a Body</source>
       <translation>Додати Тіло</translation>
     </message>
@@ -3355,7 +3271,7 @@ click again to end selection</source>
     <name>PartDesignGui::ViewProviderFillet</name>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
-      <source>Fillet parrameters</source>
+      <source>Fillet parameters</source>
       <translation>Параметри заокруглення</translation>
     </message>
   </context>
@@ -3494,6 +3410,19 @@ click again to end selection</source>
     </message>
   </context>
   <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Евольвентна шестерня...</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Створює або редагує параметри евольвентної шестерні.</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesign_MoveFeature</name>
     <message>
       <location filename="../../CommandBody.cpp" line="728"/>
@@ -3532,6 +3461,19 @@ click again to end selection</source>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation>Бажаєте, щоб остання функція була новою кінцевою точкою розрахунку?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Зірочка...</translation>
+    </message>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Створює або редагує зірочку ланцюгової передачі.</translation>
     </message>
   </context>
   <context>
@@ -3604,28 +3546,28 @@ click again to end selection</source>
       <translation>Будь ласка, спочатку створіть або виберіть грань для розміщення ескізу</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="80"/>
       <location filename="../../Command.cpp" line="811"/>
       <location filename="../../Command.cpp" line="1226"/>
       <location filename="../../Command.cpp" line="2225"/>
-      <location filename="../../ViewProvider.cpp" line="98"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../ViewProvider.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Діалогове вікно вже відкрито в панелі задач</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="81"/>
       <location filename="../../Command.cpp" line="812"/>
       <location filename="../../Command.cpp" line="1227"/>
       <location filename="../../Command.cpp" line="2226"/>
-      <location filename="../../ViewProvider.cpp" line="99"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../ViewProvider.cpp" line="99"/>
       <source>Do you want to close this dialog?</source>
       <translation>Ви бажаєте закрити це діалогове вікно?</translation>
     </message>
@@ -3961,11 +3903,11 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Щоб використовувати цю функцію, вона повина належати обʼєкту Деталь в документі.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="65"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
+      <location filename="../../ViewProvider.cpp" line="65"/>
       <source>Edit %1</source>
       <translation>Редагувати %1</translation>
     </message>
@@ -4726,6 +4668,64 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
       <source>No message</source>
       <translation>Повідомлень немає</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Майстер конструювання валів ...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Запусткає майстер конструювання валів</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Довжина [мм]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Діаметр [мм]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Внутрішній діаметр [мм]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Тип Обмеження</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Тип початкового ребра</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Розмір початкового ребра</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Тип кінцевого ребра</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Розмір кінцевого ребра</translation>
     </message>
   </context>
   <context>

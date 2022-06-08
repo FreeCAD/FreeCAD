@@ -4,6 +4,337 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="../../AddonManager.py" line="106"/>
+      <source>Addon Manager</source>
+      <translation>დამატებების მმართველი</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="125"/>
+      <source>Addon Manager installation problem: could not locate ALLOWED_PYTHON_PACKAGES.txt</source>
+      <translation>დამატებების მმართველის დაყენების პრობლემა: ALLOWED_PYTHON_PACKAGES.txt არ არსებობს</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="225"/>
+      <source>Checking connection</source>
+      <translation>შეერთების შემოწმება</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="226"/>
+      <source>Checking for connection to GitHub...</source>
+      <translation>GitHub-მდე კავშირის შემოწმება...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="248"/>
+      <source>Connection failed</source>
+      <translation>კავშირის შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="253"/>
+      <source>Missing dependency</source>
+      <translation>აკლია დამოკიდებულება</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="257"/>
+      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
+      <translation>QtNetwork-ის შემოტანის შეცდომა -- დეტალებისთვის იხილეთ ანგარიში. დამატებების მმართველი ხელმიუწვდომელია.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="326"/>
+      <source>Starting up...</source>
+      <translation>გაშვება...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="361"/>
+      <source>Loading addon information</source>
+      <translation>დამატების შესახებ ინფორმაციის ჩატვირთვა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="389"/>
+      <source>Worker process {} is taking a long time to stop...
+</source>
+      <translation>დამხმარე პროცესი {} გაჩერებას მეტისმეტად დიდხანს უნდება...
+</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="447"/>
+      <source>Previous cache process was interrupted, restarting...
+</source>
+      <translation>ქეშის წინა პროცესი გაწყდა. თავიდან დაწყება...
+</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="466"/>
+      <source>Custom repo list changed, forcing recache...
+</source>
+      <translation>ხელით მითითებული რეპოების სია შეიცვალა. მიმდინარეობს ლოკალური ქეშის თავიდან აგება...
+</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="518"/>
+      <source>Addon manager</source>
+      <translation>დამატებების მმართველი</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="525"/>
+      <source>You must restart FreeCAD for changes to take effect.</source>
+      <translation>ცვლილებების ძალაში შესასვლელად საჭიროა FreeCAD-ის გადატვირთვა.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="531"/>
+      <source>Restart now</source>
+      <translation>ახლავე გადატვირთვა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="532"/>
+      <source>Restart later</source>
+      <translation>მოგვიანებით გადატვირთვა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="597"/>
+      <location filename="../../AddonManager.py" line="1500"/>
+      <source>Refresh local cache</source>
+      <translation>ლოკალური კეშის განახლება</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="734"/>
+      <source>Updating cache...</source>
+      <translation>კეშის განახლება...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="776"/>
+      <source>Could not find addon &apos;{}&apos; to select
+</source>
+      <translation>ასარჩევი განახლება ნაპოვნი არაა&apos;{}&apos;
+</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="806"/>
+      <location filename="../../AddonManager.py" line="841"/>
+      <source>Checking for updates...</source>
+      <translation>განახლების შემოწმება...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="836"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} განახლების გადატარება</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="845"/>
+      <source>No updates available</source>
+      <translation>განახლებები არაა ხელმისაწვდომი</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1046"/>
+      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
+      <translation>ამ დამატებას სჭირდება Python-ის პაკეტები, რომლებიც დაყენებული არაა და მათი დაყენება ავტომატურადაც შეუძლებელია. ამ სამუშაო მაგიდის გამოსაყენებლად საჭიროა ხელით დააყენოთ Python-ის შემდეგი პაკეტები:</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1055"/>
+      <source>Too many to list</source>
+      <translation>მეტისმეტად ბევრ ელემენტს ამატებთ სიაში</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1061"/>
+      <location filename="../../AddonManager.py" line="1105"/>
+      <source>Missing Requirement</source>
+      <translation>არასაკმარისი პირობები</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1070"/>
+      <source>The following Python packages are allowed to be automatically installed</source>
+      <translation>Python-ის შემდეგი პაკეტების ავტომატურად დაყენება ნებადართულია</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1089"/>
+      <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
+      <translation>დამატება &apos;{}&apos;-ს ესაჭიროება &apos;{}&apos;, რომელიც FreeCAD-ის თქვენს ვერსიაში ხელმიუწვდომელია.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1096"/>
+      <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
+      <translation>დამატება &apos;{}&apos;-ს ესაჭიროება შემდეგი სამუშაო მაგიდები, რომელიც FreeCAD-ის თქვენს ვერსიაში ხელმიუწვდომელია:</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1103"/>
+      <source>Press OK to install anyway.</source>
+      <translation>დააწექით "დიახ"-ს ნებისმიერ შემთხვევაში დასაყენებლად.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1158"/>
+      <source>Optional dependency on {} ignored because it is not in the allow-list
+</source>
+      <translation>არასავალდებულო დამოკიდებულება {} იგნორირებულია. ის დაშვებულ სიაში არაა
+</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1213"/>
+      <location filename="../../AddonManager.py" line="1214"/>
+      <source>Installing dependencies</source>
+      <translation>მიმდინარეობს გაფართოებების დაყენება</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1229"/>
+      <source>Cannot execute Python</source>
+      <translation>Python-ის გაშვების შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1234"/>
+      <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
+      <translation>Python-ის გამშვები ფაილის პოვნა შეუძლებელია. დარწმუნდით, რომ დამატებების მმართველის პარამეტრებში ბილიკი Python-ის გამშვებ ფაილებამდე სწორადაა დაყენებული.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1238"/>
+      <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
+      <translation>დამოკიდებულებების დაყენების შეცდომა. მაინც დავაყენო {}?</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1249"/>
+      <source>Cannot execute pip</source>
+      <translation>Pip-ის გაშვების შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1254"/>
+      <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
+      <translation>Pip-ის გაშვების შეცდომა. შეიძლება ის Python-ის თქვენს დისტრიბუტივს უბრალოდ აკლია. დარწმუნდით, რომ pip-ი აყენია და თავიდან სცადეთ. ბრძანება, რომელმაც შეცდომა დააბრუნა: </translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1258"/>
+      <source>Continue with installation of {} anyway?</source>
+      <translation>გნებავთ მაინც გააგრძელოთ {}-ის დაყენება?</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1270"/>
+      <source>Package installation failed</source>
+      <translation>პაკეტის დაყენების შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1273"/>
+      <source>See Report View for detailed failure log.</source>
+      <translation>შეცდომის შესახებ დეტალური ინფორმაციისთვის იხილეთ ანგარიშის ხედი.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1336"/>
+      <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
+      <translation>მაკრო წარმატებით დადგა. მაკრო ხელმისაწვდომია მაკროების ფანჯრიდან.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1339"/>
+      <source>Installation of macro failed</source>
+      <translation>მაკროს დაყენების შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1395"/>
+      <source>{} total, see Report view for list</source>
+      <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
+      <translation>ჯამში {}, სიის სანახავად იხილეთ ანგარიშის ხედი</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1406"/>
+      <source>All packages were successfully updated</source>
+      <translation>ყველა პაკეტი წარმატებით განახლდა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1409"/>
+      <location filename="../../AddonManager.py" line="1429"/>
+      <location filename="../../AddonManager.py" line="1432"/>
+      <source>Succeeded</source>
+      <translation>წარმატებულია</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1413"/>
+      <source>All packages updates failed:</source>
+      <translation>განუახლებელი პაკეტების სია:</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1416"/>
+      <location filename="../../AddonManager.py" line="1435"/>
+      <location filename="../../AddonManager.py" line="1437"/>
+      <source>Failed</source>
+      <translation>შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1424"/>
+      <source>Some packages updates failed.</source>
+      <translation>ზოგიერთი პაკეტის განახლება შეუძლებელია.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1454"/>
+      <source>Update report</source>
+      <translation>ანგარიშის განახლება</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1515"/>
+      <source>Installation succeeded</source>
+      <translation>დაყენება წარმატებულია</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1536"/>
+      <source>Installation failed</source>
+      <translation>ინსტალაცია ვერ განხორციელდა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1561"/>
+      <source>Execution of macro failed. See console for failure details.</source>
+      <translation>მაკროს შესრულების შეცდომა. მეტი დეტალებისთვის იხილეთ კონსოლი.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1580"/>
+      <source>Confirm remove</source>
+      <translation>წაშლის დადასტურება</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1583"/>
+      <source>Are you sure you want to uninstall this Addon?</source>
+      <translation>დარწმუნებული ხართ, რომ გსურთ ამ გაფართოების წაშლა?</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1621"/>
+      <source>Macro {} has local changes in the macros directory, so is not being removed by this uninstall process.
+</source>
+      <translation>მაკრო {} შეიცვალა მაკროების საქაღალდეში, ამიტომ ის არ წაიშლება.
+</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1636"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation>დამატების uninstall.py სკრიპტის შესრულება ვერ მოხერხდა. ვუშვებ წაშლის პროცესს...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1653"/>
+      <source>Unable to remove this addon with the Addon Manager.</source>
+      <translation>დამატებების მმართველს დამატების წაშლა არ შეუძლია.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1660"/>
+      <source>Successfully uninstalled {}</source>
+      <translation>{} წარმატებით წაიშალა</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="1674"/>
+      <source>Failed to uninstall {}. Please remove manually.</source>
+      <translation>{}-ის წაშლის შეცდომა. გთხოვთ, ხელით წაშალოთ.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_utilities.py" line="236"/>
+      <source>Outdated GitPython detected, consider upgrading with pip.</source>
+      <translation>ნაპოვნია GitPython-ის მოძველებული ვერსია. სცადეთ განაახლოთ pip-ით.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_utilities.py" line="244"/>
+      <source>Failed to repair missing .git directory</source>
+      <translation>გამოტოვებული .git კატალოგის შეკეთება ვერ მოხერხდა</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_utilities.py" line="247"/>
+      <source>Repository URL</source>
+      <translation>რეპოზიტორიის URL</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_utilities.py" line="250"/>
+      <source>Clone directory</source>
+      <translation>ასლის საქაღალდე</translation>
+    </message>
+    <message>
       <location filename="../../addonmanager_workers.py" line="129"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
       <translation>GitHub-დან მონაცემების წაკითხვა შეუძლებელია. შეამოწმეთ ინტერნეტთან შეერთებისა და პროქსის პარამეტრებ და თავიდან სცადეთ.</translation>
@@ -59,176 +390,183 @@
       <translation>Git Python-ის გაშვების შეცდომა: შეამოწმეთ, GitPython-ის ან/და git თუ გიყენიათ</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="645"/>
+      <location filename="../../addonmanager_workers.py" line="631"/>
+      <source>Attempting to change non-git Macro setup to use git
+</source>
+      <translation>მცდელობა, არა-git-ის მაკროსი git-ის გამოყენებაზე გადავრთო
+</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="646"/>
       <source>An error occurred updating macros from GitHub</source>
       <translation>მაკროების GitHub-დან განახლების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="686"/>
+      <location filename="../../addonmanager_workers.py" line="689"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>ვიკისთან დაკავშირების შეცდომა. FreeCAD-ს ამჟამად ვკიდან მაკროების სიის მიღება არ შეუძლია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="732"/>
+      <location filename="../../addonmanager_workers.py" line="735"/>
       <source>Caching macro code...</source>
       <translation>მაკროს კოდის კეშირება...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="756"/>
+      <location filename="../../addonmanager_workers.py" line="759"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>დამატებების მმართველი: დამხმარე პროცესის შეჩერების შეცდომა ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="775"/>
+      <location filename="../../addonmanager_workers.py" line="778"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>დამატებების მმართველი: დამხმარე პროცესის შეცდომა {name}-ის გადმოწერისას</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="790"/>
+      <location filename="../../addonmanager_workers.py" line="793"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>{num_macros} მაკროდან {num_failed}-ის დამუშავების ვადა გავიდა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="821"/>
+      <location filename="../../addonmanager_workers.py" line="824"/>
       <source>Getting metadata from macro {}</source>
       <translation>მაკროდან {} მეტამონაცემების მიღება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="834"/>
+      <location filename="../../addonmanager_workers.py" line="837"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>მაკროს {} მეტამონაცემების გამოთხოვნის ვადა გავიდა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="845"/>
+      <location filename="../../addonmanager_workers.py" line="848"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>მაკროს {} პროცესის მოკვლა შეუძლებელია!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="866"/>
+      <location filename="../../addonmanager_workers.py" line="869"/>
       <source>Retrieving macro description...</source>
       <translation>მაკროს აღწერის მიღება...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="870"/>
+      <location filename="../../addonmanager_workers.py" line="873"/>
       <source>Retrieving info from git</source>
       <translation>ინფორმაციის git-დან მიღება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="875"/>
+      <location filename="../../addonmanager_workers.py" line="878"/>
       <source>Retrieving info from wiki</source>
       <translation>ინფორმაციის wiki-დან მიღება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="926"/>
+      <location filename="../../addonmanager_workers.py" line="929"/>
       <source>GitPython not found. Using ZIP file download instead.</source>
       <translation>მოდული GitPython-ი ნაპოვნი არაა. მის ნაცვლად ZIP ფაილი იქნება გამოყენებული.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="934"/>
+      <location filename="../../addonmanager_workers.py" line="937"/>
       <source>Your version of Python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>როგორც ჩანს, პითონის თქვენი ვერსიას არ აქვს ZIP ფაილების ხარდაჭერა. გაგრძელება შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="971"/>
+      <location filename="../../addonmanager_workers.py" line="974"/>
       <source>No Git Python installed, skipping git operations</source>
       <translation>Git Python დაყენებული არაა. git-ის ოპერაციები გამოტოვებული იქნება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="990"/>
-      <location filename="../../addonmanager_workers.py" line="1037"/>
+      <location filename="../../addonmanager_workers.py" line="993"/>
+      <location filename="../../addonmanager_workers.py" line="1040"/>
       <source>You are installing a Python 2 workbench on a system running Python 3 - </source>
       <translation>აპირებთ დააყენოთ Python2-ზე დაწერილი სამუშაო მაგიდა სისტემაზე, რომელიც Python3-ზე მუშაობს - </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1004"/>
+      <location filename="../../addonmanager_workers.py" line="1007"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>სამუშაო მაგიდა წარმატებით განახლდა. ცვლილებების გადასატარებლად დაარესტარტეთ FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1009"/>
+      <location filename="../../addonmanager_workers.py" line="1012"/>
       <source>Workbench successfully updated.</source>
       <translation>სამუშაო მაგიდა წარმატებით განახლდა.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1012"/>
+      <location filename="../../addonmanager_workers.py" line="1015"/>
       <source>Error updating module</source>
       <translation>მოდულის განახლების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1016"/>
+      <location filename="../../addonmanager_workers.py" line="1019"/>
       <source>Please fix manually</source>
       <translation>გთხოვთ ხელით გაასწოროთ</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1084"/>
+      <location filename="../../addonmanager_workers.py" line="1087"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>სამუშაო მაგიდის დაყენება წარმატებულია. ცვლილებების გადასატარებლად დაარესტარტეთ FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1090"/>
+      <location filename="../../addonmanager_workers.py" line="1093"/>
       <source>Addon successfully installed.</source>
       <translation>დამატების დაყენება წარმატებულია.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1114"/>
+      <location filename="../../addonmanager_workers.py" line="1117"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>მაკრო დაყენებულია და ხელმისაწვდომია მაკრო -&gt; მაკროს მენიუდან</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1133"/>
+      <location filename="../../addonmanager_workers.py" line="1136"/>
       <source>Error: Unable to locate ZIP from</source>
       <translation>Zip ფაილის პოვნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1161"/>
+      <location filename="../../addonmanager_workers.py" line="1164"/>
       <source>Downloading: {mbytes_str}MB of {mbytes_total_str}MB ({percent}%)</source>
       <translation>გადმოწერა: {mbytes_str}მბ {mbytes_total_str}მბ-დან ({percent}%)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1176"/>
+      <location filename="../../addonmanager_workers.py" line="1179"/>
       <source>Downloading: {bytes_str} of {bytes_total_str} bytes ({percent}%)</source>
       <translation>გადმოწერა {bytes_str} {bytes_total_str} ბაიტიდან ({percent}%)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1189"/>
+      <location filename="../../addonmanager_workers.py" line="1192"/>
       <source>Downloading: {bytes_str}MB of unknown total</source>
       <translation>გადმოწერა: {bytes_str}მბ. ჯამური ზომა უცნობია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1200"/>
+      <location filename="../../addonmanager_workers.py" line="1203"/>
       <source>Error: Error while downloading ZIP file for {}</source>
       <translation>შეცდომა: {}-ის ZIP ფაილის გადმოწერა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1225"/>
+      <location filename="../../addonmanager_workers.py" line="1228"/>
       <source>Successfully installed {} from ZIP file</source>
       <translation>{}-ის დაყენება ZIP ფაილიდან წარმატებულია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1348"/>
-      <location filename="../../addonmanager_workers.py" line="1367"/>
+      <location filename="../../addonmanager_workers.py" line="1351"/>
+      <location filename="../../addonmanager_workers.py" line="1370"/>
       <source>Installation of Python package {} failed</source>
       <translation>Python-ის პაკეტის {} დაყენება შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1484"/>
+      <location filename="../../addonmanager_workers.py" line="1487"/>
       <source>Downloaded package.xml for {}</source>
       <translation>{}-ის package.xml გადმოწერილია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1514"/>
+      <location filename="../../addonmanager_workers.py" line="1517"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>{}-ის metadata.txt გადმოწერილია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1565"/>
+      <location filename="../../addonmanager_workers.py" line="1568"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>{}-ის requirements.txt გადმოწერილია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1588"/>
+      <location filename="../../addonmanager_workers.py" line="1591"/>
       <source>Downloaded icon for {}</source>
       <translation>ხატულა გადმოწერილია {}</translation>
     </message>
@@ -241,47 +579,6 @@
       <location filename="../../Addon.py" line="343"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>დამატების პროგრამისტის გაფრთხილება: რეპოს ბრენჩი, რომელიც დაყენებულია დამატების {} ({}) package.xml ფაილში, არ ემთხვევა ბრენჩს, საიდანაც ის გადმოვწერეთ ({})</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_macro.py" line="175"/>
-      <source>In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.</source>
-      <translation>მაკროში {} ელემენტის {} ტექსტური მნიშვნელობა ვერ ვიპოვე. შევეცდები გამოვიცნო მისი დანიშნულება და გამოვიყენო სტრიქონი თარიღის ელემენტიდან.</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_macro.py" line="185"/>
-      <source>In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.</source>
-      <translation>მაკროში {} ელემენტის {} ტექსტური მნიშვნელობა ვერ ვიპოვე. შევეცდები გამოვიცნო მისი დანიშნულება და გამოვიყენო მისი შემცველობის ტექსტური ფორმა.</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_macro.py" line="203"/>
-      <location filename="../../addonmanager_macro.py" line="220"/>
-      <source>Syntax error while reading {} from macro {}</source>
-      <translation>მაკროდან {} {}-ის წაკითხვის შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_macro.py" line="247"/>
-      <source>Unable to open macro wiki page at {}</source>
-      <translation>მაკროების ვიკის გვერდის {} გახსნის შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_macro.py" line="264"/>
-      <source>Unable to open macro code URL {rawcodeurl}</source>
-      <translation>მაკროს კოდის URL-ის გახსნა შეუძლებელია: {rawcodeurl}</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_macro.py" line="283"/>
-      <source>Unable to fetch the code of this macro.</source>
-      <translation>მაკროს კოდის მოპოვება შეუძლებელია.</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_macro.py" line="297"/>
-      <source>Unable to retrieve a description from the wiki for macro {}</source>
-      <translation>ვიკიდან მაკროს {} აღწერის მიღება შეუძლებელია</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_macro.py" line="424"/>
-      <source>Could not locate macro-specified file {} (should have been at {})</source>
-      <translation>მაკროს მიერ მითითებული ფაილის {} შექმნა შეუძლებელია (უნდა ყოფილიყო {})</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="102"/>
@@ -348,24 +645,20 @@
       <translation>დაშორებული შემცველობა განახლდა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_utilities.py" line="236"/>
-      <source>Outdated GitPython detected, consider upgrading with pip.</source>
-      <translation>ნაპოვნია GitPython-ის მოძველებული ვერსია. სცადეთ განაახლოთ pip-ით.</translation>
+      <location filename="../../install_to_toolbar.py" line="94"/>
+      <source>Create new toolbar</source>
+      <translation>ხელსაწყოების ახალი ზოლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_utilities.py" line="244"/>
-      <source>Failed to repair missing .git directory</source>
-      <translation>გამოტოვებული .git კატალოგის შეკეთება ვერ მოხერხდა</translation>
+      <location filename="../../install_to_toolbar.py" line="237"/>
+      <source>A macro installed with the FreeCAD Addon Manager</source>
+      <translation>FreeCAD-ის დამატებების მმართველით დაყენებული მაკრო</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_utilities.py" line="247"/>
-      <source>Repository URL</source>
-      <translation>რეპოზიტორიის URL</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_utilities.py" line="250"/>
-      <source>Clone directory</source>
-      <translation>ასლის საქაღალდე</translation>
+      <location filename="../../install_to_toolbar.py" line="239"/>
+      <source>Run</source>
+      <comment>Indicates a macro that can be &apos;run&apos;</comment>
+      <translation>გაშვება</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="92"/>
@@ -582,312 +875,6 @@
       <translation>გვერდის ჩატვირთვას მეტისმეტად დიდი დრო სჭირდება... ნაჩვენები იქნება მონაცემები, რისი მიღებაც მოვასწარით...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="123"/>
-      <source>Addon Manager installation problem: could not locate ALLOWED_PYTHON_PACKAGES.txt</source>
-      <translation>დამატებების მმართველის დაყენების პრობლემა: ALLOWED_PYTHON_PACKAGES.txt არ არსებობს</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="220"/>
-      <source>Checking connection</source>
-      <translation>შეერთების შემოწმება</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="221"/>
-      <source>Checking for connection to GitHub...</source>
-      <translation>GitHub-მდე კავშირის შემოწმება...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="243"/>
-      <source>Connection failed</source>
-      <translation>კავშირის შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="248"/>
-      <source>Missing dependency</source>
-      <translation>აკლია დამოკიდებულება</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="252"/>
-      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation>QtNetwork-ის შემოტანის შეცდომა -- დეტალებისთვის იხილეთ ანგარიში. დამატებების მმართველი ხელმიუწვდომელია.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="321"/>
-      <source>Starting up...</source>
-      <translation>გაშვება...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="356"/>
-      <source>Loading addon information</source>
-      <translation>დამატების შესახებ ინფორმაციის ჩატვირთვა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="384"/>
-      <source>Worker process {} is taking a long time to stop...
-</source>
-      <translation>დამხმარე პროცესი {} გაჩერებას მეტისმეტად დიდხანს უნდება...
-</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="442"/>
-      <source>Previous cache process was interrupted, restarting...
-</source>
-      <translation>ქეშის წინა პროცესი გაწყდა. თავიდან დაწყება...
-</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="461"/>
-      <source>Custom repo list changed, forcing recache...
-</source>
-      <translation>ხელით მითითებული რეპოების სია შეიცვალა. მიმდინარეობს ლოკალური ქეშის თავიდან აგება...
-</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="513"/>
-      <source>Addon manager</source>
-      <translation>დამატებების მმართველი</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="520"/>
-      <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation>ცვლილებების ძალაში შესასვლელად საჭიროა FreeCAD-ის გადატვირთვა.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="526"/>
-      <source>Restart now</source>
-      <translation>ახლავე გადატვირთვა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="527"/>
-      <source>Restart later</source>
-      <translation>მოგვიანებით გადატვირთვა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="590"/>
-      <location filename="../../AddonManager.py" line="1491"/>
-      <source>Refresh local cache</source>
-      <translation>ლოკალური კეშის განახლება</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="727"/>
-      <source>Updating cache...</source>
-      <translation>კეშის განახლება...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="769"/>
-      <source>Could not find addon &apos;{}&apos; to select
-</source>
-      <translation>ასარჩევი განახლება ნაპოვნი არაა&apos;{}&apos;
-</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="799"/>
-      <location filename="../../AddonManager.py" line="834"/>
-      <source>Checking for updates...</source>
-      <translation>განახლების შემოწმება...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="829"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} განახლების გადატარება</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="838"/>
-      <source>No updates available</source>
-      <translation>განახლებები არაა ხელმისაწვდომი</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1039"/>
-      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation>ამ დამატებას სჭირდება Python-ის პაკეტები, რომლებიც დაყენებული არაა და მათი დაყენება ავტომატურადაც შეუძლებელია. ამ სამუშაო მაგიდის გამოსაყენებლად საჭიროა ხელით დააყენოთ Python-ის შემდეგი პაკეტები:</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1048"/>
-      <source>Too many to list</source>
-      <translation>მეტისმეტად ბევრ ელემენტს ამატებთ სიაში</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1054"/>
-      <location filename="../../AddonManager.py" line="1098"/>
-      <source>Missing Requirement</source>
-      <translation>არასაკმარისი პირობები</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1063"/>
-      <source>The following Python packages are allowed to be automatically installed</source>
-      <translation>Python-ის შემდეგი პაკეტების ავტომატურად დაყენება ნებადართულია</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1082"/>
-      <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
-      <translation>დამატება &apos;{}&apos;-ს ესაჭიროება &apos;{}&apos;, რომელიც FreeCAD-ის თქვენს ვერსიაში ხელმიუწვდომელია.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1089"/>
-      <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation>დამატება &apos;{}&apos;-ს ესაჭიროება შემდეგი სამუშაო მაგიდები, რომელიც FreeCAD-ის თქვენს ვერსიაში ხელმიუწვდომელია:</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1096"/>
-      <source>Press OK to install anyway.</source>
-      <translation>დააწექით "დიახ"-ს ნებისმიერ შემთხვევაში დასაყენებლად.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1151"/>
-      <source>Optional dependency on {} ignored because it is not in the allow-list
-</source>
-      <translation>არასავალდებულო დამოკიდებულება {} იგნორირებულია. ის დაშვებულ სიაში არაა
-</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1206"/>
-      <location filename="../../AddonManager.py" line="1207"/>
-      <source>Installing dependencies</source>
-      <translation>მიმდინარეობს გაფართოებების დაყენება</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1222"/>
-      <source>Cannot execute Python</source>
-      <translation>Python-ის გაშვების შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1227"/>
-      <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation>Python-ის გამშვები ფაილის პოვნა შეუძლებელია. დარწმუნდით, რომ დამატებების მმართველის პარამეტრებში ბილიკი Python-ის გამშვებ ფაილებამდე სწორადაა დაყენებული.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1231"/>
-      <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
-      <translation>დამოკიდებულებების დაყენების შეცდომა. მაინც დავაყენო {}?</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1242"/>
-      <source>Cannot execute pip</source>
-      <translation>Pip-ის გაშვების შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1247"/>
-      <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
-      <translation>Pip-ის გაშვების შეცდომა. შეიძლება ის Python-ის თქვენს დისტრიბუტივს უბრალოდ აკლია. დარწმუნდით, რომ pip-ი აყენია და თავიდან სცადეთ. ბრძანება, რომელმაც შეცდომა დააბრუნა: </translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1251"/>
-      <source>Continue with installation of {} anyway?</source>
-      <translation>გნებავთ მაინც გააგრძელოთ {}-ის დაყენება?</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1263"/>
-      <source>Package installation failed</source>
-      <translation>პაკეტის დაყენების შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1266"/>
-      <source>See Report View for detailed failure log.</source>
-      <translation>შეცდომის შესახებ დეტალური ინფორმაციისთვის იხილეთ ანგარიშის ხედი.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1329"/>
-      <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
-      <translation>მაკრო წარმატებით დადგა. მაკრო ხელმისაწვდომია მაკროების ფანჯრიდან.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1332"/>
-      <source>Installation of macro failed</source>
-      <translation>მაკროს დაყენების შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1388"/>
-      <source>{} total, see Report view for list</source>
-      <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
-      <translation>ჯამში {}, სიის სანახავად იხილეთ ანგარიშის ხედი</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1399"/>
-      <source>All packages were successfully updated</source>
-      <translation>ყველა პაკეტი წარმატებით განახლდა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1402"/>
-      <location filename="../../AddonManager.py" line="1422"/>
-      <location filename="../../AddonManager.py" line="1425"/>
-      <source>Succeeded</source>
-      <translation>წარმატებულია</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1406"/>
-      <source>All packages updates failed:</source>
-      <translation>განუახლებელი პაკეტების სია:</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1409"/>
-      <location filename="../../AddonManager.py" line="1428"/>
-      <location filename="../../AddonManager.py" line="1430"/>
-      <source>Failed</source>
-      <translation>შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1417"/>
-      <source>Some packages updates failed.</source>
-      <translation>ზოგიერთი პაკეტის განახლება შეუძლებელია.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1447"/>
-      <source>Update report</source>
-      <translation>ანგარიშის განახლება</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1506"/>
-      <source>Installation succeeded</source>
-      <translation>დაყენება წარმატებულია</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1527"/>
-      <source>Installation failed</source>
-      <translation>ინსტალაცია ვერ განხორციელდა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1552"/>
-      <source>Execution of macro failed. See console for failure details.</source>
-      <translation>მაკროს შესრულების შეცდომა. მეტი დეტალებისთვის იხილეთ კონსოლი.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1571"/>
-      <source>Confirm remove</source>
-      <translation>წაშლის დადასტურება</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1574"/>
-      <source>Are you sure you want to uninstall this Addon?</source>
-      <translation>დარწმუნებული ხართ, რომ გსურთ ამ გაფართოების წაშლა?</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1612"/>
-      <source>Macro {} has local changes in the macros directory, so is not being removed by this uninstall process.
-</source>
-      <translation>მაკრო {} შეიცვალა მაკროების საქაღალდეში, ამიტომ ის არ წაიშლება.
-</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1627"/>
-      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation>დამატების uninstall.py სკრიპტის შესრულება ვერ მოხერხდა. ვუშვებ წაშლის პროცესს...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1644"/>
-      <source>Unable to remove this addon with the Addon Manager.</source>
-      <translation>დამატებების მმართველს დამატების წაშლა არ შეუძლია.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1651"/>
-      <source>Successfully uninstalled {}</source>
-      <translation>{} წარმატებით წაიშალა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="1665"/>
-      <source>Failed to uninstall {}. Please remove manually.</source>
-      <translation>{}-ის წაშლის შეცდომა. გთხოვთ, ხელით წაშალოთ.</translation>
-    </message>
-    <message>
       <location filename="../../package_list.py" line="151"/>
       <source>Filter is valid</source>
       <translation>ფილტრი სწორია</translation>
@@ -1033,33 +1020,45 @@
       <translation>&amp;დიახ</translation>
     </message>
     <message>
-      <location filename="../../install_to_toolbar.py" line="94"/>
-      <source>Create new toolbar</source>
-      <translation>ხელსაწყოების ახალი ზოლის შექმნა</translation>
+      <location filename="../../addonmanager_macro.py" line="175"/>
+      <source>In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.</source>
+      <translation>მაკროში {} ელემენტის {} ტექსტური მნიშვნელობა ვერ ვიპოვე. შევეცდები გამოვიცნო მისი დანიშნულება და გამოვიყენო სტრიქონი თარიღის ელემენტიდან.</translation>
     </message>
     <message>
-      <location filename="../../install_to_toolbar.py" line="237"/>
-      <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation>FreeCAD-ის დამატებების მმართველით დაყენებული მაკრო</translation>
+      <location filename="../../addonmanager_macro.py" line="185"/>
+      <source>In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.</source>
+      <translation>მაკროში {} ელემენტის {} ტექსტური მნიშვნელობა ვერ ვიპოვე. შევეცდები გამოვიცნო მისი დანიშნულება და გამოვიყენო მისი შემცველობის ტექსტური ფორმა.</translation>
     </message>
     <message>
-      <location filename="../../install_to_toolbar.py" line="239"/>
-      <source>Run</source>
-      <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>გაშვება</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_AddonMgr</name>
-    <message>
-      <location filename="../../AddonManager.py" line="129"/>
-      <source>&amp;Addon manager</source>
-      <translation>&amp;დამატებების მმართველი</translation>
+      <location filename="../../addonmanager_macro.py" line="203"/>
+      <location filename="../../addonmanager_macro.py" line="220"/>
+      <source>Syntax error while reading {} from macro {}</source>
+      <translation>მაკროდან {} {}-ის წაკითხვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="133"/>
-      <source>Manage external workbenches, macros, and preference packs</source>
-      <translation>მართეთ გარე სამუშაო მაგიდები, მაკროები და პარამეტრების ნაკრებები</translation>
+      <location filename="../../addonmanager_macro.py" line="247"/>
+      <source>Unable to open macro wiki page at {}</source>
+      <translation>მაკროების ვიკის გვერდის {} გახსნის შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_macro.py" line="264"/>
+      <source>Unable to open macro code URL {rawcodeurl}</source>
+      <translation>მაკროს კოდის URL-ის გახსნა შეუძლებელია: {rawcodeurl}</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_macro.py" line="283"/>
+      <source>Unable to fetch the code of this macro.</source>
+      <translation>მაკროს კოდის მოპოვება შეუძლებელია.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_macro.py" line="297"/>
+      <source>Unable to retrieve a description from the wiki for macro {}</source>
+      <translation>ვიკიდან მაკროს {} აღწერის მიღება შეუძლებელია</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_macro.py" line="424"/>
+      <source>Could not locate macro-specified file {} (should have been at {})</source>
+      <translation>მაკროს მიერ მითითებული ფაილის {} შექმნა შეუძლებელია (უნდა ყოფილიყო {})</translation>
     </message>
   </context>
   <context>
@@ -1143,11 +1142,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Pause cache update</source>
       <translation>ქეშის განახლების შეჩერება</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="89"/>
-      <source>labelStatusInfo</source>
-      <translation>labelStatusInfo</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -1300,10 +1294,6 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="47"/>
-      <location filename="../../AddonManagerOptions.ui" line="105"/>
-      <location filename="../../AddonManagerOptions.ui" line="121"/>
-      <location filename="../../AddonManagerOptions.ui" line="134"/>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Addons</source>
       <translation>დამატებები</translation>
     </message>
@@ -1333,29 +1323,14 @@ installed addons will be checked for available updates
       <translation>მხოლოდ Python v2-თან თავსებადი დამატებების დამალვა</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="102"/>
-      <source>HidePy2</source>
-      <translation>HidePy2</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>მოძველებულად მონიშნული დამატებების დამალვა</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="118"/>
-      <source>HideObsolete</source>
-      <translation>HideObsolete</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="128"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>იმ დამატებების დამალვა, რომელსაც FreeCAD-ის უფრო ახალი ვერსია სჭირდებათ</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="137"/>
-      <source>HideNewerFreeCADRequired</source>
-      <translation>HideNewerFreeCADRequired</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="144"/>
@@ -1409,11 +1384,6 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</sou
       <source>Show option to change branches (Requires GitPython)</source>
       <translation>ბრენჩების ცვლილების მხარდაჭერის ჩართვა (საჭიროა GitPython)</translation>
     </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="305"/>
-      <source>ShowBranchSwitcher</source>
-      <translation>ShowBranchSwitcherც</translation>
-    </message>
   </context>
   <context>
     <name>PackageDetails</name>
@@ -1456,6 +1426,19 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</sou
       <location filename="../../package_details.ui" line="80"/>
       <source>Change branch</source>
       <translation>ბრენჩის შეცვლა</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_AddonMgr</name>
+    <message>
+      <location filename="../../AddonManager.py" line="131"/>
+      <source>&amp;Addon manager</source>
+      <translation>&amp;დამატებების მმართველი</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="135"/>
+      <source>Manage external workbenches, macros, and preference packs</source>
+      <translation>მართეთ გარე სამუშაო მაგიდები, მაკროები და პარამეტრების ნაკრებები</translation>
     </message>
   </context>
   <context>

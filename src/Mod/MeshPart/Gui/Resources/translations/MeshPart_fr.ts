@@ -2,25 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr" sourcelanguage="en">
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation>Développer le maillage</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Rechercher une représentation plane d’un maillage.</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation>Développer la face</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -533,6 +514,25 @@ Merci de sélectionner une forme différente.</translation>
       <location filename="../../Tessellation.cpp" line="256"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Sélectionner d'abord une forme pour le maillage.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>Développer le maillage</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Rechercher une représentation plane d’un maillage.</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>Développer la face</translation>
     </message>
   </context>
   <context>

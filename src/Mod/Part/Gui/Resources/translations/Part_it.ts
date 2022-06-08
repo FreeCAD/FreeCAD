@@ -2,859 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="it" sourcelanguage="en">
   <context>
-    <name>AttachmentEditor</name>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="77"/>
-      <source>No object named {name}</source>
-      <translation>Nessun oggetto denominato {name}</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="81"/>
-      <source>Failed to parse link (more than one colon encountered)</source>
-      <translation>Analisi del collegamento non riuscita (più di due-punti incontrati)</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="194"/>
-      <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
-      <translation>L'oggetto {name} non è né mobile, né allegabile, non può modificare l'allegato</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
-      <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation>{obj} non è allegabile. Puoi ancora usare la finestra di modifica degli allegati per allineare l'oggetto, ma l'allegato non sarà parametrico.</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="205"/>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
-      <source>Attachment</source>
-      <translation>Associazione</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="207"/>
-      <source>Continue</source>
-      <translation>Continua</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="307"/>
-      <source>Edit attachment of {feat}</source>
-      <translation>Modifica allegato di {feat}</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
-      <source>Ignored. Can't attach object to itself!</source>
-      <translation>Ignorato. Impossibile allegare un oggetto a se stesso!</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="355"/>
-      <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation>{obj1} dipende dall'oggetto in allegato, impossibile usarlo per l'allegato</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="495"/>
-      <source>{mode} (add {morerefs})</source>
-      <translation>{mode} (aggiungi {morerefs})</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="498"/>
-      <source>{mode} (add more references)</source>
-      <translation>{mode} (aggiungi altri riferimenti)</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="528"/>
-      <source>Reference combinations:</source>
-      <translation>Combinazioni di riferimenti:</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="544"/>
-      <source>Reference{i}</source>
-      <translation>Riferimento{i}</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="549"/>
-      <source>Selecting...</source>
-      <translation>Selezione...</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="573"/>
-      <source>Failed to resolve links. {err}</source>
-      <translation>Impossibile risolvere i link. {err}</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
-      <source>Not attached</source>
-      <translation>Non associato</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="584"/>
-      <source>Attached with mode {mode}</source>
-      <translation>Associato con modalità {mode}</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
-      <source>Error: {err}</source>
-      <translation>Errore: {err}</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Offset di associazione (in coordinate locali):</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="596"/>
-      <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Offset di associazione (inattivo - non associato):</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
-      <source>Attachment...</source>
-      <translation>Allegato...</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
-      <source>Edit attachment of selected object.</source>
-      <translation>Modifica l'allegato dell'oggetto selezionato.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_CompoundFilter</name>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="40"/>
-      <source>Compound Filter</source>
-      <translation>Filtra composto</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="50"/>
-      <source>Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</source>
-      <translation>Filtra gli oggetti da un composto selezionato per caratteristiche come volume,
-area o lunghezza, o scegliendo elementi specifici.
-Se è selezionato un secondo oggetto, verrà usato come riferimento, ad esempio,
-per il filtraggio di collisione o distanza.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
-      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation>Seleziona prima una forma che è un composto. Se viene selezionato un secondo oggetto (opzionale) sarà trattato come una forma.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="100"/>
-      <source>Bad selection</source>
-      <translation>Selezione errata</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="99"/>
-      <source>Computing the result failed with an error: 
-
-{errstr}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Il calcolo del risultato è fallito con un errore: 
-
-{errstr}
-
-Fare clic su 'Continua' per creare comunque la caratteristica, oppure su 'Annullare' per annullare.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_ExplodeCompound</name>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="41"/>
-      <source>Explode compound</source>
-      <translation>Esplodi composto</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="47"/>
-      <source>Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="53"/>
-      <source>First select a shape that is a compound.</source>
-      <translation>Prima selezionare una forma che è un composto.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="54"/>
-      <source>Bad selection</source>
-      <translation>Selezione errata</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_JoinConnect</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="176"/>
-      <source>Connect objects</source>
-      <translation>Collega oggetti</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="181"/>
-      <source>Fuses objects, taking care to preserve voids.</source>
-      <translation>Fonde gli oggetti, avendo cura di preservare i vuoti.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_JoinCutout</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="367"/>
-      <source>Cutout for object</source>
-      <translation>Ritaglia per l'oggetto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
-      <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Crea un ritaglio in un oggetto per adattarsi ad un altro oggetto.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_JoinEmbed</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="272"/>
-      <source>Embed object</source>
-      <translation>Incorpora oggetto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="277"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Fonde un oggetto in un altro, avendo cura di preservare i vuoti.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_JoinFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="69"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Il calcolo del risultato è fallito con un errore:
-
-{err}
-
-Fare clic su 'Continua' per creare comunque la caratteristica, oppure su 'Annullare' per annullare.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="70"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="189"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="286"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="382"/>
-      <source>Bad selection</source>
-      <translation>Selezione errata</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="72"/>
-      <source>Continue</source>
-      <translation>Continua</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation>Selezionare almeno due oggetti, o uno o più composti</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="285"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation>Selezionare l'oggetto base, quindi l'oggetto da incorporare, quindi invocare questo strumento.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation>Selezionare l'oggetto in cui effettuare un ritaglio, quindi l'oggetto che dovrebbe adattarsi al ritaglio, quindi invocare questo strumento.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="102"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="150"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="491"/>
-      <source>Continue</source>
-      <translation>Continua</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="147"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="292"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="488"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Il calcolo del risultato è fallito con un errore:
-
-{err}
-
-Fare clic su 'Continua' per creare comunque la caratteristica, oppure su 'Annullare' per annullare.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="148"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="293"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="347"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="378"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="530"/>
-      <source>Bad selection</source>
-      <translation>Selezione errata</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="171"/>
-      <source>Boolean fragments</source>
-      <translation>Frammenti booleani</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Crea un oggetto 'Frammenti Booleani' da due o più oggetti selezionati,
-o dalle forme all'interno di un composto.
-Si tratta di un'unione booleana che viene poi affettata alle intersezioni
-delle forme originali.
-Un 'Composto Filtro' può essere usato per estrarre le singole fette.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="529"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Selezionare almeno due oggetti, o uno o più composti. Se è selezionato un solo composto, le forme composte saranno intersecate tra di loro (altrimenti, i composti con auto-intersezioni non sono validi).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="330"/>
-      <source>Slice to compound</source>
-      <translation>Affetta in un composto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Affetta un oggetto selezionato usando altri oggetti come strumenti di taglio.
-I pezzi risultanti saranno memorizzati in un composto.
-Un 'Composto Filtro' può essere usato per estrarre le singole fette.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="346"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="377"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Seleziona almeno due oggetti. Il primo è l'oggetto da affettare; il resto sono oggetti con cui tagliare.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="362"/>
-      <source>Slice apart</source>
-      <translation>Affetta</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="368"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Affetta l'oggetto selezionato con gli altri oggetti, e lo dividerà in parti.
-Creerà un 'Composto Filtro' per ogni ritaglio.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="512"/>
-      <source>Boolean XOR</source>
-      <translation>XOR Booleano</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="520"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation>Esegue un'operazione booleana 'esclusiva OR' con due o più oggetti selezionati,
-o con le forme all'interno di un composto.
-Questo significa che i volumi sovrapposti delle forme saranno rimossi.
-Un 'Composto Filtro' può essere usato per estrarre i pezzi rimanenti.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Tube</name>
-    <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
-      <source>Create tube</source>
-      <translation>Crea tubo</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
-      <source>Creates a tube</source>
-      <translation>Crea un tubo</translation>
-    </message>
-  </context>
-  <context>
-    <name>QObject</name>
-    <message>
-      <location filename="../../ViewProvider.cpp" line="50"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="66"/>
-      <source>Edit %1</source>
-      <translation>Edita %1</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
-      <source>Create tube</source>
-      <translation>Crea tubo</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="211"/>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <source>Part design</source>
-      <translation>Part design</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <location filename="../../AppPartGui.cpp" line="215"/>
-      <source>Import-Export</source>
-      <translation>Importa/Esporta</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="313"/>
-      <location filename="../../Command.cpp" line="408"/>
-      <location filename="../../Command.cpp" line="508"/>
-      <location filename="../../Command.cpp" line="927"/>
-      <location filename="../../Command.cpp" line="984"/>
-      <location filename="../../Command.cpp" line="2154"/>
-      <source>Wrong selection</source>
-      <translation>Selezione errata</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="314"/>
-      <location filename="../../Command.cpp" line="985"/>
-      <source>Select two shapes please.</source>
-      <translation>Selezionare due forme.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="323"/>
-      <location filename="../../Command.cpp" line="423"/>
-      <location filename="../../Command.cpp" line="523"/>
-      <source>Non-solids selected</source>
-      <translation>Forme selezionate non solide</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="424"/>
-      <location filename="../../Command.cpp" line="524"/>
-      <source>The use of non-solids for boolean operations may lead to unexpected results.
-Do you want to continue?</source>
-      <translation>L'uso di forme non solide per operazioni booleane può portare a risultati imprevisti. Si desidera continuare?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="409"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Selezionare due o più forme. In alternativa, è possibile selezionare un composto contenente due o più forme per calcolare la loro parte comune.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="509"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Selezionare due o più forme. In alternativa, è possibile selezionare un composto contenente due o più forme da fondere.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="928"/>
-      <source>Select one shape or more, please.</source>
-      <translation>Selezionare una o più forme, per favore.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1142"/>
-      <source>All CAD Files</source>
-      <translation>Tutti i file CAD</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1147"/>
-      <source>All Files</source>
-      <translation>Tutti i file</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2155"/>
-      <source>You have to select either two edges or two wires.</source>
-      <translation>È necessario selezionare due spigoli o due polilinee.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="73"/>
-      <location filename="../../TaskAttacher.cpp" line="109"/>
-      <source>No reference selected</source>
-      <translation>Nessun riferimento selezionato</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="82"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
-      <source>Face</source>
-      <translation>Faccia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="85"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="88"/>
-      <source>Edge</source>
-      <translation>Bordo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="88"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="89"/>
-      <source>Vertex</source>
-      <translation>Vertice</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
-      <source>Compound</source>
-      <translation>Composto</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
-      <source>Compound Solid</source>
-      <translation>Solido composto</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
-      <source>Solid</source>
-      <translation>Solido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
-      <source>Shell</source>
-      <translation>Shell</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="87"/>
-      <source>Wire</source>
-      <translation>Filo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="90"/>
-      <source>Shape</source>
-      <translation>Forma</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>No Error</source>
-      <translation>Nessun errore</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Invalid Point On Curve</source>
-      <translation>Punto non valido sulla curva</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>Punto non valido sulla curva sulla superficie</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>Invalid Point On Surface</source>
-      <translation>Punto non valido sulla superficie</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>No 3D Curve</source>
-      <translation>Nessuna curva 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Multiple 3D Curve</source>
-      <translation>Curva 3D multipla</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid 3D Curve</source>
-      <translation>Curva 3D non valida</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>No Curve On Surface</source>
-      <translation>Nessuna curva sulla superficie</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>Curva non valida sulla superficie</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>Curva non valida sulla superficie chiusa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid Same Range Flag</source>
-      <translation>Indicatore stesso intervallo, non valido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation>Indicatore stesso parametro, non valido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation>Indicatore degenerato, non valido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Free Edge</source>
-      <translation>Bordo libero</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>Invalid MultiConnexity</source>
-      <translation>Connettività multipla, non valida</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>Invalid Range</source>
-      <translation>Intervallo non valido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Empty Wire</source>
-      <translation>Wire vuoto</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Redundant Edge</source>
-      <translation>Bordo ridondante</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Self Intersecting Wire</source>
-      <translation>Wire interseca se stesso</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>No Surface</source>
-      <translation>Nessuna superficie</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Invalid Wire</source>
-      <translation>Wire non valido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Redundant Wire</source>
-      <translation>Wire ridondante</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Intersecting Wires</source>
-      <translation>Wire che si intersecano</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation>Embricattura di wire non valida</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Empty Shell</source>
-      <translation>Shell vuoto</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Redundant Face</source>
-      <translation>Faccia ridondante</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Unorientable Shape</source>
-      <translation>Forma non orientabile</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Not Closed</source>
-      <translation>Non chiuso</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Not Connected</source>
-      <translation>Non connesso</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>La subforma non è nella forma</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
-      <source>Bad Orientation</source>
-      <translation>Cattivo orientamento</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>Cattivo orientamento della subforma</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>Valore di tolleranza non valido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
-      <source>Check Failed</source>
-      <translation>Controllo non riuscito</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
-      <source>No Result</source>
-      <translation>Nessun risultato</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="152"/>
-      <source>Out Of Enum Range:</source>
-      <translation>Fuori dai limiti Enum:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo CheckUnknown</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo BadType</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo SelfIntersect</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo TooSmallEdge</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo NonRecoverableFace</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo IncompatibilityOfVertex</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo IncompatibilityOfEdge</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo IncompatibilityOfFace</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo OperationAborted</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="173"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_InvalidCurveOnSurface</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo NotValid</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="713"/>
-      <source>Invalid</source>
-      <translation>Non valido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="632"/>
-      <location filename="../../TaskDimension.cpp" line="1770"/>
-      <source>Selections</source>
-      <translation>Selezioni</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="639"/>
-      <location filename="../../TaskDimension.cpp" line="1777"/>
-      <source>Control</source>
-      <translation>Controllo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1398"/>
-      <source>Selection </source>
-      <translation>Selezione </translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1482"/>
-      <source>Reset selection</source>
-      <translation>Azzera selezione</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1486"/>
-      <source>Toggle direct dimensions</source>
-      <translation>Attiva/Disattiva quotature dirette</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1491"/>
-      <source>Toggle orthogonal dimensions</source>
-      <translation>Commuta quotature ortogonali</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1496"/>
-      <source>Clear all dimensions</source>
-      <translation>Cancella tutte le quotature</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderExt.cpp" line="864"/>
-      <source>Set colors...</source>
-      <translation>Imposta i colori...</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="78"/>
-      <source>Edit mirror plane</source>
-      <translation>Modifica il piano di specchiatura</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="278"/>
-      <source>Edit fillet edges</source>
-      <translation>Modifica gli spigoli raccordati</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="382"/>
-      <source>Edit chamfer edges</source>
-      <translation>Modifica gli spigoli smussati</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="526"/>
-      <source>Edit offset</source>
-      <translation>Modifica offset</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="610"/>
-      <source>Edit thickness</source>
-      <translation>Modificare spessore</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpline.cpp" line="100"/>
-      <source>Show control points</source>
-      <translation>Visualizza i punti di controllo</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
-      <source>Attachment editor</source>
-      <translation>Editor allegato</translation>
-    </message>
-  </context>
-  <context>
     <name>Attacher</name>
     <message>
       <location filename="../../AttacherTexts.cpp" line="311"/>
@@ -1883,6 +1030,111 @@ Do you want to continue?</source>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Abbina l'origine con il primo vertice. Allinea gli assi del piano verticale e orizzontale al vertice, lungo la linea.</translation>
+    </message>
+  </context>
+  <context>
+    <name>AttachmentEditor</name>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
+      <source>No object named {}</source>
+      <translation>Nessun oggetto denominato {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
+      <source>Failed to parse link (more than one colon encountered)</source>
+      <translation>Analisi del collegamento non riuscita (più di due-punti incontrati)</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <source>Object {} is neither movable nor attachable, can't edit attachment</source>
+      <translation>L'oggetto {} non è né spostabile né allegabile, non è possibile modificare l'allegato</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
+      <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
+      <translation>{} non è allegabile. Puoi ancora usare la finestra di modifica degli allegati per allineare l'oggetto, ma l'allegato non sarà parametrico.</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
+      <source>Attachment</source>
+      <translation>Associazione</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
+      <source>Continue</source>
+      <translation>Continua</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
+      <source>Edit attachment of {}</source>
+      <translation>Modifica allegato di {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
+      <source>Ignored. Can't attach object to itself!</source>
+      <translation>Ignorato. Impossibile allegare un oggetto a se stesso!</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
+      <source>{} depends on object being attached, can't use it for attachment</source>
+      <translation>{} dipende dall'oggetto che viene associato, non è possibile utilizzarlo per l'associazione</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="505"/>
+      <source>{} (add {})</source>
+      <translation>{} (aggiungi {})</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="507"/>
+      <source>{} (add more references)</source>
+      <translation>{} (aggiungere ulteriori riferimenti)</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
+      <source>Reference combinations:</source>
+      <translation>Combinazioni di riferimenti:</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
+      <source>Reference{}</source>
+      <translation>Riferimento{}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
+      <source>Selecting...</source>
+      <translation>Selezione...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
+      <source>Failed to resolve links. {}</source>
+      <translation>Impossibile risolvere i collegamenti. {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
+      <source>Not attached</source>
+      <translation>Non associato</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
+      <source>Attached with mode {}</source>
+      <translation>Allegato con modalità {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
+      <source>Error: {}</source>
+      <translation>Errore: {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Offset di associazione (in coordinate locali):</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Offset di associazione (inattivo - non associato):</translation>
     </message>
   </context>
   <context>
@@ -3502,7 +2754,7 @@ Nota: il posizionamento è espresso nello spazio locale dell'oggetto da allegare
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1042"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1044"/>
       <source>Chamfer Edges</source>
       <translation>Smussa spigoli</translation>
     </message>
@@ -3746,6 +2998,7 @@ Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</tr
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
+      <location filename="../../DlgFilletEdges.cpp" line="276"/>
       <source>Fillet Parameter</source>
       <translation>Parametri raccordo</translation>
     </message>
@@ -3796,86 +3049,91 @@ Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</tr
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="266"/>
+      <source>Chamfer Parameter</source>
+      <translation>Parametri di smusso</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="267"/>
       <source>Length:</source>
       <translation>Lunghezza:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="267"/>
+      <location filename="../../DlgFilletEdges.cpp" line="268"/>
       <source>Constant Length</source>
       <translation>Larghezza costante</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="268"/>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Variable Length</source>
       <translation>Larghezza variabile</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="270"/>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Edges to chamfer</source>
       <translation>Spigoli da smussare</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
-      <location filename="../../DlgFilletEdges.cpp" line="839"/>
+      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="841"/>
       <source>Start length</source>
       <translation>Valore iniziale</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>End length</source>
       <translation>Valore finale</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="275"/>
+      <location filename="../../DlgFilletEdges.cpp" line="277"/>
       <source>Edges to fillet</source>
       <translation>Spigoli da raccordare</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="276"/>
-      <location filename="../../DlgFilletEdges.cpp" line="841"/>
+      <location filename="../../DlgFilletEdges.cpp" line="278"/>
+      <location filename="../../DlgFilletEdges.cpp" line="843"/>
       <source>Start radius</source>
       <translation>Raggio iniziale</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="277"/>
+      <location filename="../../DlgFilletEdges.cpp" line="279"/>
       <source>End radius</source>
       <translation>Raggio finale</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="688"/>
-      <location filename="../../DlgFilletEdges.cpp" line="748"/>
+      <location filename="../../DlgFilletEdges.cpp" line="690"/>
+      <location filename="../../DlgFilletEdges.cpp" line="750"/>
       <source>Edge%1</source>
       <translation>Spigolo %1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="831"/>
+      <location filename="../../DlgFilletEdges.cpp" line="833"/>
       <source>Length</source>
       <translation>Lunghezza</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="833"/>
+      <location filename="../../DlgFilletEdges.cpp" line="835"/>
       <source>Radius</source>
       <translation>Raggio</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="887"/>
+      <location filename="../../DlgFilletEdges.cpp" line="889"/>
       <source>No shape selected</source>
       <translation>Nessuna forma selezionata</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="888"/>
+      <location filename="../../DlgFilletEdges.cpp" line="890"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Non è stata selezionata nessuna forma valida.
 Selezionare prima una forma valida dal menù a tendina.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="939"/>
+      <location filename="../../DlgFilletEdges.cpp" line="941"/>
       <source>No edge selected</source>
       <translation>Nessuno spigolo selezionato</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="940"/>
+      <location filename="../../DlgFilletEdges.cpp" line="942"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Non è stata selezionata nessuna entità spigolo da raccordare.
@@ -5412,12 +4670,12 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
-      <source>If checked, the color and transpareny
+      <source>If checked, the color and transparency
 will be taken from the cut objects.
 Works only if all objects have the same values.</source>
-      <translation type="unfinished">If checked, the color and transpareny
-will be taken from the cut objects.
-Works only if all objects have the same values.</translation>
+      <translation>Se selezionato, il colore e la trasparenza
+saranno presi dagli oggetti tagliati.
+Funziona solo se tutti gli oggetti hanno gli stessi valori.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="307"/>
@@ -6326,17 +5584,85 @@ in the 3D view for the sweep path.</source>
     </message>
   </context>
   <context>
+    <name>Part_CompoundFilter</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
+      <source>Compound Filter</source>
+      <translation>Filtra composto</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
+      <source>Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+      <translation>Filtra gli oggetti da un composto selezionato per caratteristiche come volume,
+area o lunghezza, o scegliendo elementi specifici.
+Se è selezionato un secondo oggetto, verrà usato come riferimento, ad esempio,
+per il filtraggio di collisione o distanza.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
+      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+      <translation>Seleziona prima una forma che è un composto. Se viene selezionato un secondo oggetto (opzionale) sarà trattato come una forma.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
+      <source>Bad selection</source>
+      <translation>Selezione errata</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Il calcolo del risultato è fallito con un errore:</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Fare clic su 'Continua' per creare comunque la funzionalità, o 'Annulla' per annullare.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_EditAttachment</name>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
+      <source>Attachment...</source>
+      <translation>Allegato...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Modifica l'allegato dell'oggetto selezionato.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
+      <source>Explode compound</source>
+      <translation>Esplodi composto</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
+      <source>Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</source>
+      <translation type="unfinished">Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
+      <source>First select a shape that is a compound.</source>
+      <translation>Prima selezionare una forma che è un composto.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
+      <source>Bad selection</source>
+      <translation>Selezione errata</translation>
+    </message>
+  </context>
+  <context>
     <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="171"/>
-      <source>Simple</source>
-      <translation>Semplice</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="176"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Crea facce piane separate da ogni polilinea in modo indipendente. Nessun supporto per i fori; le polilinee possono essere su piani diversi.</translation>
-    </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="59"/>
       <source>Bull's-eye facemaker</source>
@@ -6346,6 +5672,16 @@ in the 3D view for the sweep path.</source>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="64"/>
       <source>Supports making planar faces with holes with islands.</source>
       <translation>Supporta la creazione di facce planari con fori e con isole.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="171"/>
+      <source>Simple</source>
+      <translation>Semplice</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="176"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>Crea facce piane separate da ogni polilinea in modo indipendente. Nessun supporto per i fori; le polilinee possono essere su piani diversi.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
@@ -6366,6 +5702,674 @@ in the 3D view for the sweep path.</source>
       <location filename="../../../App/FeatureExtrusion.cpp" line="344"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Supporta la creazione di facce con fori, non supporta la nidificazione.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Collega oggetti</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Fonde gli oggetti, avendo cura di preservare i vuoti.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
+      <source>Cutout for object</source>
+      <translation>Ritaglia per l'oggetto</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Crea un ritaglio in un oggetto per adattarsi ad un altro oggetto.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
+      <source>Embed object</source>
+      <translation>Incorpora oggetto</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
+      <source>Fuses one object into another, taking care to preserve voids.</source>
+      <translation>Fonde un oggetto in un altro, avendo cura di preservare i vuoti.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Il calcolo del risultato è fallito con un errore:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Fare clic su 'Continua' per creare comunque la funzionalità, o 'Annulla' per annullare.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="199"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
+      <source>Bad selection</source>
+      <translation>Selezione errata</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
+      <source>Continue</source>
+      <translation>Continua</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Selezionare almeno due oggetti, o uno o più composti</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Selezionare l'oggetto base, quindi l'oggetto da incorporare, quindi invocare questo strumento.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Selezionare l'oggetto in cui effettuare un ritaglio, quindi l'oggetto che dovrebbe adattarsi al ritaglio, quindi invocare questo strumento.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="302"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="496"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
+      <source>Continue</source>
+      <translation>Continua</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="155"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Il calcolo del risultato è fallito con un errore:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Fare clic su 'Continua' per creare comunque la funzionalità, o 'Annulla' per annullare.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="199"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="300"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="354"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="385"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
+      <source>Bad selection</source>
+      <translation>Selezione errata</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <source>Boolean fragments</source>
+      <translation>Frammenti booleani</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Crea un oggetto 'Frammenti Booleani' da due o più oggetti selezionati,
+o dalle forme all'interno di un composto.
+Si tratta di un'unione booleana che viene poi affettata alle intersezioni
+delle forme originali.
+Un 'Composto Filtro' può essere usato per estrarre le singole fette.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Selezionare almeno due oggetti, o uno o più composti. Se è selezionato un solo composto, le forme composte saranno intersecate tra di loro (altrimenti, i composti con auto-intersezioni non sono validi).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
+      <source>Slice to compound</source>
+      <translation>Affetta in un composto</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Affetta un oggetto selezionato usando altri oggetti come strumenti di taglio.
+I pezzi risultanti saranno memorizzati in un composto.
+Un 'Composto Filtro' può essere usato per estrarre le singole fette.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Seleziona almeno due oggetti. Il primo è l'oggetto da affettare; il resto sono oggetti con cui tagliare.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
+      <source>Slice apart</source>
+      <translation>Affetta</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Affetta l'oggetto selezionato con gli altri oggetti, e lo dividerà in parti.
+Creerà un 'Composto Filtro' per ogni ritaglio.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <source>Boolean XOR</source>
+      <translation>XOR Booleano</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>Esegue un'operazione booleana 'esclusiva OR' con due o più oggetti selezionati,
+o con le forme all'interno di un composto.
+Questo significa che i volumi sovrapposti delle forme saranno rimossi.
+Un 'Composto Filtro' può essere usato per estrarre i pezzi rimanenti.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
+      <source>Create tube</source>
+      <translation>Crea tubo</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
+      <source>Creates a tube</source>
+      <translation>Crea un tubo</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="66"/>
+      <location filename="../../ViewProvider.cpp" line="50"/>
+      <source>Edit %1</source>
+      <translation>Edita %1</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="211"/>
+      <location filename="../../AppPartGui.cpp" line="212"/>
+      <location filename="../../AppPartGui.cpp" line="213"/>
+      <source>Part design</source>
+      <translation>Part design</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="214"/>
+      <location filename="../../AppPartGui.cpp" line="215"/>
+      <source>Import-Export</source>
+      <translation>Importa/Esporta</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="927"/>
+      <location filename="../../Command.cpp" line="984"/>
+      <location filename="../../Command.cpp" line="2154"/>
+      <source>Wrong selection</source>
+      <translation>Selezione errata</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="985"/>
+      <source>Select two shapes please.</source>
+      <translation>Selezionare due forme.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="323"/>
+      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="523"/>
+      <source>Non-solids selected</source>
+      <translation>Forme selezionate non solide</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="424"/>
+      <location filename="../../Command.cpp" line="524"/>
+      <source>The use of non-solids for boolean operations may lead to unexpected results.
+Do you want to continue?</source>
+      <translation>L'uso di forme non solide per operazioni booleane può portare a risultati imprevisti. Si desidera continuare?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="409"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
+      <translation>Selezionare due o più forme. In alternativa, è possibile selezionare un composto contenente due o più forme per calcolare la loro parte comune.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="509"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation>Selezionare due o più forme. In alternativa, è possibile selezionare un composto contenente due o più forme da fondere.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="928"/>
+      <source>Select one shape or more, please.</source>
+      <translation>Selezionare una o più forme, per favore.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1142"/>
+      <source>All CAD Files</source>
+      <translation>Tutti i file CAD</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1147"/>
+      <source>All Files</source>
+      <translation>Tutti i file</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2155"/>
+      <source>You have to select either two edges or two wires.</source>
+      <translation>È necessario selezionare due spigoli o due polilinee.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="73"/>
+      <location filename="../../TaskAttacher.cpp" line="109"/>
+      <source>No reference selected</source>
+      <translation>Nessun riferimento selezionato</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+      <source>Face</source>
+      <translation>Faccia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="88"/>
+      <source>Edge</source>
+      <translation>Bordo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="88"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="89"/>
+      <source>Vertex</source>
+      <translation>Vertice</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <source>Compound</source>
+      <translation>Composto</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <source>Compound Solid</source>
+      <translation>Solido composto</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <source>Solid</source>
+      <translation>Solido</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <source>Shell</source>
+      <translation>Shell</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="87"/>
+      <source>Wire</source>
+      <translation>Filo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="90"/>
+      <source>Shape</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <source>No Error</source>
+      <translation>Nessun errore</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <source>Invalid Point On Curve</source>
+      <translation>Punto non valido sulla curva</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Punto non valido sulla curva sulla superficie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <source>Invalid Point On Surface</source>
+      <translation>Punto non valido sulla superficie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <source>No 3D Curve</source>
+      <translation>Nessuna curva 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <source>Multiple 3D Curve</source>
+      <translation>Curva 3D multipla</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <source>Invalid 3D Curve</source>
+      <translation>Curva 3D non valida</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <source>No Curve On Surface</source>
+      <translation>Nessuna curva sulla superficie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <source>Invalid Curve On Surface</source>
+      <translation>Curva non valida sulla superficie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Curva non valida sulla superficie chiusa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <source>Invalid Same Range Flag</source>
+      <translation>Indicatore stesso intervallo, non valido</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Indicatore stesso parametro, non valido</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Indicatore degenerato, non valido</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <source>Free Edge</source>
+      <translation>Bordo libero</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <source>Invalid MultiConnexity</source>
+      <translation>Connettività multipla, non valida</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <source>Invalid Range</source>
+      <translation>Intervallo non valido</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <source>Empty Wire</source>
+      <translation>Wire vuoto</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <source>Redundant Edge</source>
+      <translation>Bordo ridondante</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <source>Self Intersecting Wire</source>
+      <translation>Wire interseca se stesso</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <source>No Surface</source>
+      <translation>Nessuna superficie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <source>Invalid Wire</source>
+      <translation>Wire non valido</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <source>Redundant Wire</source>
+      <translation>Wire ridondante</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <source>Intersecting Wires</source>
+      <translation>Wire che si intersecano</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Embricattura di wire non valida</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <source>Empty Shell</source>
+      <translation>Shell vuoto</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <source>Redundant Face</source>
+      <translation>Faccia ridondante</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <source>Unorientable Shape</source>
+      <translation>Forma non orientabile</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <source>Not Closed</source>
+      <translation>Non chiuso</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <source>Not Connected</source>
+      <translation>Non connesso</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <source>Sub Shape Not In Shape</source>
+      <translation>La subforma non è nella forma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
+      <source>Bad Orientation</source>
+      <translation>Cattivo orientamento</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Cattivo orientamento della subforma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
+      <source>Invalid Tolerance Value</source>
+      <translation>Valore di tolleranza non valido</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
+      <source>Check Failed</source>
+      <translation>Controllo non riuscito</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
+      <source>No Result</source>
+      <translation>Nessun risultato</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="152"/>
+      <source>Out Of Enum Range:</source>
+      <translation>Fuori dai limiti Enum:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <source>BOPAlgo CheckUnknown</source>
+      <translation>BOPAlgo CheckUnknown</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <source>BOPAlgo BadType</source>
+      <translation>BOPAlgo BadType</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <source>BOPAlgo SelfIntersect</source>
+      <translation>BOPAlgo SelfIntersect</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <source>BOPAlgo TooSmallEdge</source>
+      <translation>BOPAlgo TooSmallEdge</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <source>BOPAlgo NonRecoverableFace</source>
+      <translation>BOPAlgo NonRecoverableFace</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
+      <source>BOPAlgo IncompatibilityOfVertex</source>
+      <translation>BOPAlgo IncompatibilityOfVertex</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
+      <source>BOPAlgo IncompatibilityOfEdge</source>
+      <translation>BOPAlgo IncompatibilityOfEdge</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <source>BOPAlgo IncompatibilityOfFace</source>
+      <translation>BOPAlgo IncompatibilityOfFace</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
+      <source>BOPAlgo OperationAborted</source>
+      <translation>BOPAlgo OperationAborted</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="173"/>
+      <source>BOPAlgo GeomAbs_C0</source>
+      <translation>BOPAlgo GeomAbs_C0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
+      <source>BOPAlgo_InvalidCurveOnSurface</source>
+      <translation>BOPAlgo_InvalidCurveOnSurface</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
+      <source>BOPAlgo NotValid</source>
+      <translation>BOPAlgo NotValid</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="713"/>
+      <source>Invalid</source>
+      <translation>Non valido</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="638"/>
+      <location filename="../../TaskDimension.cpp" line="1776"/>
+      <source>Selections</source>
+      <translation>Selezioni</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="645"/>
+      <location filename="../../TaskDimension.cpp" line="1783"/>
+      <source>Control</source>
+      <translation>Controllo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1404"/>
+      <source>Selection </source>
+      <translation>Selezione </translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1488"/>
+      <source>Reset selection</source>
+      <translation>Azzera selezione</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1492"/>
+      <source>Toggle direct dimensions</source>
+      <translation>Attiva/Disattiva quotature dirette</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1497"/>
+      <source>Toggle orthogonal dimensions</source>
+      <translation>Commuta quotature ortogonali</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1502"/>
+      <source>Clear all dimensions</source>
+      <translation>Cancella tutte le quotature</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="864"/>
+      <source>Set colors...</source>
+      <translation>Imposta i colori...</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="78"/>
+      <source>Edit mirror plane</source>
+      <translation>Modifica il piano di specchiatura</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="278"/>
+      <source>Edit fillet edges</source>
+      <translation>Modifica gli spigoli raccordati</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="382"/>
+      <source>Edit chamfer edges</source>
+      <translation>Modifica gli spigoli smussati</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="526"/>
+      <source>Edit offset</source>
+      <translation>Modifica offset</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="610"/>
+      <source>Edit thickness</source>
+      <translation>Modificare spessore</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="100"/>
+      <source>Show control points</source>
+      <translation>Visualizza i punti di controllo</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
+      <source>Attachment editor</source>
+      <translation>Editor allegato</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
+      <source>Create tube</source>
+      <translation>Crea tubo</translation>
     </message>
   </context>
   <context>
@@ -6419,6 +6423,16 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
       <translation>Composto</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="43"/>
+      <source>Create a copy</source>
+      <translation>Crea una copia</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="44"/>
+      <source>Measure</source>
+      <translation>Misura</translation>
     </message>
   </context>
 </TS>

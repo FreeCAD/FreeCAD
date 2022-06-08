@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru" sourcelanguage="en">
   <context>
-    <name>Sketcher_ProfilesHexagon1</name>
-    <message>
-      <location filename="../../../Profiles.py" line="53"/>
-      <source>Creates a hexagonal profile</source>
-      <translation>Создать шестиугольный профиль</translation>
-    </message>
-    <message>
-      <location filename="../../../Profiles.py" line="58"/>
-      <source>Creates a hexagonal profile in the sketch</source>
-      <translation>Создать шестиугольный профиль в эскизе</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="203"/>
@@ -2344,8 +2331,6 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Не присоединять</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
       <location filename="../../CommandConstraints.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="911"/>
@@ -2477,14 +2462,6 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="7485"/>
       <location filename="../../CommandConstraints.cpp" line="7558"/>
       <location filename="../../CommandConstraints.cpp" line="7569"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <location filename="../../CommandSketcherTools.cpp" line="130"/>
       <location filename="../../CommandSketcherTools.cpp" line="138"/>
       <location filename="../../CommandSketcherTools.cpp" line="180"/>
@@ -2508,6 +2485,16 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <source>Wrong selection</source>
       <translation>Неправильный выбор</translation>
     </message>
@@ -5134,10 +5121,10 @@ This is purely based on topological shape of the sketch and not on its geometry/
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
-      <source>Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</source>
-      <translation type="unfinished">Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</translation>
+      <source>Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</source>
+      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -5788,6 +5775,19 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../Command.cpp" line="182"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Выберите способ прикрепления эскиза к выбранному объекту</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ProfilesHexagon1</name>
+    <message>
+      <location filename="../../../Profiles.py" line="53"/>
+      <source>Creates a hexagonal profile</source>
+      <translation>Создать шестиугольный профиль</translation>
+    </message>
+    <message>
+      <location filename="../../../Profiles.py" line="58"/>
+      <source>Creates a hexagonal profile in the sketch</source>
+      <translation>Создать шестиугольный профиль в эскизе</translation>
     </message>
   </context>
   <context>

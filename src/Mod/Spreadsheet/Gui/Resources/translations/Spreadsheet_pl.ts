@@ -2,105 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pl" sourcelanguage="en">
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>Arkusz kalkulacyjny</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>Komórka</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>Zastosuj</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation>Zastosuj zmiany do bieżącej komórki</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>Usuń</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation>Usuwa zawartość bieżącej komórki</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>Oblicz</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation>Aktualizuje wartości obsługiwane przez kontrolery</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>Utwórz Arkusz kalkulacyjny</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation>Dodaj kontroler</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation>Dodaj kontroler właściwości</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation>Dodaj kontroler</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler komórki</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>Arkusz kalkulacyjny</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation>Dodaje do aktywnego dokumentu obiekt arkusza kalkulacyjnego</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation>Dodaj kontroler właściwości</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler własności</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <location filename="../../Command.cpp" line="892"/>
@@ -446,7 +347,7 @@
       <translation>Ustaw właściwości komórki</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="487"/>
+      <location filename="../../SheetModel.cpp" line="471"/>
       <source>Edit cell</source>
       <translation>Edytuj komórkę</translation>
     </message>
@@ -469,8 +370,8 @@
       <translation>Wstaw kolumny</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="576"/>
       <location filename="../../SpreadsheetView.cpp" line="167"/>
+      <location filename="../../SheetTableView.cpp" line="576"/>
       <source>Clear cell(s)</source>
       <translation>Wyczyść komórkę(i)</translation>
     </message>
@@ -493,73 +394,87 @@
       <translation>Powiąż komórki arkusza kalkulacyjnego</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="20"/>
-      <source>From cells:</source>
-      <translation>Z komórek:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="27"/>
-      <source>Binding cell range start</source>
-      <translation>Powiązanie komórek, rozpoczęcie zakresu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="34"/>
-      <source>Binding cell range end
-</source>
-      <translation>Powiązanie komórek, zakończenie zakresu
-</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="42"/>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
       <translation>Do komórek:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="49"/>
-      <source>Starting cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation>Początkowy adres komórki do powiązania. Wpisz '=' jeśli chcesz użyć wyrażenia.
-Wyrażenie musi zostać obliczone jako ciąg adresów wybranych komórek.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="57"/>
-      <source>Ending cell address to bind to. Type '=' if you want to use expression.
-The expression must evaluates to a string of some cell address.</source>
-      <translation>Końcowy adresu komórki, aby powiązać. Wpisz '=' jeśli chcesz użyć wyrażenia.
-Wyrażenie musi zostać obliczone jako ciąg adresów wybranych komórek.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="65"/>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
       <translation>Arkusz:</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="72"/>
-      <source>Select which spread sheet to bind to.</source>
-      <translation>Wybierz arkusz kalkulacyjny z którym chcesz powiązać.</translation>
+      <location filename="../../DlgBindSheet.ui" line="22"/>
+      <source>First cell in range</source>
+      <translation>Pierwsza komórka w zakresie</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="79"/>
-      <source>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</source>
-      <translation>Użyj ukrytego odniesienia, nie unikaj tworzenia zależności z obiektem odniesienia. Używaj ostrożnie!</translation>
+      <location filename="../../DlgBindSheet.ui" line="29"/>
+      <source>Last cell in range</source>
+      <translation>Ostatnia komórka w zakresie</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells:</source>
+      <translation>Powiąż komórki:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="49"/>
+      <source>Start cell address</source>
+      <translation>Adres komórki startowej</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="62"/>
+      <source>End cell address</source>
+      <translation>Adres komórki końcowej</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
+      <source>Start cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation>Adres komórki początkowej do powiązania.
+Wpisz "=" jeśli chcesz użyć wyrażenia.
+Wyrażenie musi dawać w rezultacie ciąg adresów komórek.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="97"/>
+      <source>End cell address to bind to.
+Type '=' if you want to use an expression.
+The expression must evaluate to a string of some cell address.</source>
+      <translation>Adres komórki końcowej do powiązania.
+Wpisz "=" jeśli chcesz użyć wyrażenia.
+Wyrażenie musi dawać w rezultacie ciąg adresów komórek.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="110"/>
+      <source>Which spread sheet to bind to</source>
+      <translation>Który arkusz kalkulacyjny ma być powiązany z</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="126"/>
+      <source>Use hidden reference to avoid creating a dependency
+with the referenced object. Use with caution!</source>
+      <translation>Użyj ukrytego odniesienia, by uniknąć tworzenia zależności
+z obiektem będącym przedmiotem odniesienia. Używaj ostrożnie!</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="130"/>
       <source>Use hidden reference</source>
       <translation>Użyj ukrytego odniesienia</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="91"/>
+      <location filename="../../DlgBindSheet.ui" line="139"/>
       <source>Unbind</source>
       <translation>Usuń powiązanie</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="98"/>
+      <location filename="../../DlgBindSheet.ui" line="146"/>
       <source>Cancel</source>
       <translation>Anuluj</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="105"/>
+      <location filename="../../DlgBindSheet.ui" line="153"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
@@ -959,14 +874,74 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     </message>
   </context>
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Komórka</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Zastosuj</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Zastosuj zmiany do bieżącej komórki</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Usuń</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Usuwa zawartość bieżącej komórki</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Oblicz</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Aktualizuje wartości obsługiwane przez kontrolery</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Utwórz Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Dodaj kontroler</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Dodaj kontroler właściwości</translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="180"/>
+      <location filename="../../DlgBindSheet.cpp" line="182"/>
       <source>Bind cells</source>
       <translation>Powiąż komórki</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="197"/>
+      <location filename="../../DlgBindSheet.cpp" line="199"/>
       <source>Unbind cells</source>
       <translation>Usuń powiązanie komórek</translation>
     </message>
@@ -1204,6 +1179,45 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
       <location filename="../../SpreadsheetView.cpp" line="263"/>
       <source>PDF file</source>
       <translation>Plik PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Dodaj kontroler</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler komórki</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Dodaje do aktywnego dokumentu obiekt arkusza kalkulacyjnego</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Dodaj kontroler właściwości</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler własności</translation>
     </message>
   </context>
   <context>

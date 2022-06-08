@@ -2,25 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu" sourcelanguage="en">
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation>Háló kicsomagolása</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Háló sík ábrázolásának keresése.</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation>Felület kicsomagolása</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -533,6 +514,25 @@ Válasszon másik alakzatot.</translation>
       <location filename="../../Tessellation.cpp" line="256"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Válassza ki a formát kapcsolás előtt.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>Háló kicsomagolása</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Háló sík ábrázolásának keresése.</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>Felület kicsomagolása</translation>
     </message>
   </context>
   <context>
