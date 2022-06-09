@@ -1390,22 +1390,22 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
-      <source>Multiple defined shortcut</source>
+      <source>Multiple defined keyboard shortcut</source>
       <translation>Mehrfach belegte Tastenkombination</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
-      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
       <translation>Die Tastenkombination '%1' ist mehr als einmal definiert. Dies kann zu unerwartetem Verhalten führen.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
-      <source>Already defined shortcut</source>
+      <source>Already defined keyboard shortcut</source>
       <translation>Bereits belegte Tastenkombination</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
-      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
       <translation>Die Tastenkombination '%1' ist bereits '%2' zugewiesen.</translation>
     </message>
     <message>
@@ -4656,7 +4656,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
-      <source>Shortcut count</source>
+      <source>Keyboard shortcut count</source>
       <translation>Anzahl der Tastenkürzel</translation>
     </message>
     <message>
@@ -7533,7 +7533,7 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="939"/>
-      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Makro %1 ausführen (Umschalt+Klick zum Bearbeiten) Tastenkürzel: %2</translation>
     </message>
     <message>
