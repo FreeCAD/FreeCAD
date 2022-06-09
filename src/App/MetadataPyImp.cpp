@@ -34,7 +34,7 @@ XERCES_CPP_NAMESPACE_USE
 // Returns a string which represents the object e.g. when printed in Python
 std::string MetadataPy::representation(void) const
 {
-    MetadataPy::PointerType ptr = reinterpret_cast<MetadataPy::PointerType>(_pcTwinPointer);
+    MetadataPy::PointerType ptr = getMetadataPtr();
     std::stringstream str;
     str << "Metadata [Name=(";
     str << ptr->name();
@@ -288,10 +288,11 @@ Py::Object MetadataPy::getContent(void) const
 PyObject* MetadataPy::getGenericMetadata(PyObject* args)
 {
     const char* name;
-    if (!PyArg_ParseTuple(args, "s!", &name))
+    if (!PyArg_ParseTuple(args, "s", &name))
         return nullptr;
+
     auto gm = (*getMetadataPtr())[name];
-    auto pyGenericMetadata = new Py::List;
+    Py::List pyGenericMetadata;
     for (const auto& item : gm) {
         Py::Dict pyItem;
         pyItem["contents"] = Py::String(item.contents);
@@ -300,12 +301,12 @@ PyObject* MetadataPy::getGenericMetadata(PyObject* args)
             pyAttributes[attribute.first] = Py::String(attribute.second);
         }
         pyItem["attributes"] = pyAttributes;
-        pyGenericMetadata->append(pyItem);
+        pyGenericMetadata.append(pyItem);
     }
-    return pyGenericMetadata->ptr();
+    return Py::new_reference_to(pyGenericMetadata);
 }
 
-Py::Object  MetadataPy::getFreeCADMin() const
+Py::Object MetadataPy::getFreeCADMin() const
 {
     return Py::String(getMetadataPtr()->freecadmin().str());
 }
@@ -316,10 +317,11 @@ void MetadataPy::setFreeCADMin(Py::Object args)
     PyObject* p = args.ptr();
     if (!PyArg_ParseTuple(p, "s", &version))
         return;
+
     getMetadataPtr()->setFreeCADMin(App::Meta::Version(version));
 }
 
-Py::Object  MetadataPy::getFreeCADMax() const
+Py::Object MetadataPy::getFreeCADMax() const
 {
     return Py::String(getMetadataPtr()->freecadmax().str());
 }
@@ -330,6 +332,7 @@ void MetadataPy::setFreeCADMax(Py::Object args)
     PyObject* p = args.ptr();
     if (!PyArg_ParseTuple(p, "s", &version))
         return;
+
     getMetadataPtr()->setFreeCADMax(App::Meta::Version(version));
 }
 
