@@ -39,16 +39,16 @@
       <translation>Ennek a vonalnak a hossza</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="77"/>
       <location filename="../../draftobjects/rectangle.py" line="52"/>
       <location filename="../../draftobjects/polygon.py" line="60"/>
+      <location filename="../../draftobjects/wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Sarkok lekerekítéséhez használt rádiusz</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="81"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
       <location filename="../../draftobjects/polygon.py" line="64"/>
+      <location filename="../../draftobjects/wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Sarkokhoz használt letörés mérete</translation>
     </message>
@@ -63,12 +63,12 @@
       <translation>Minden él al-osztályainak száma</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="70"/>
-      <location filename="../../draftobjects/circle.py" line="62"/>
-      <location filename="../../draftobjects/bspline.py" line="57"/>
-      <location filename="../../draftobjects/wire.py" line="93"/>
       <location filename="../../draftobjects/rectangle.py" line="67"/>
+      <location filename="../../draftobjects/circle.py" line="62"/>
       <location filename="../../draftobjects/polygon.py" line="72"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
+      <location filename="../../draftobjects/bezcurve.py" line="70"/>
+      <location filename="../../draftobjects/wire.py" line="93"/>
       <source>The area of this object</source>
       <translation>Ennek a tárgynak a területe</translation>
     </message>
@@ -270,10 +270,10 @@ vagy a 'VégpontN', 'ÉlN' vagy 'FelületN' al-elemből, ha megadott.</translati
       <translation>Kör sugara</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/ellipse.py" line="58"/>
-      <location filename="../../draftobjects/circle.py" line="58"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
+      <location filename="../../draftobjects/circle.py" line="58"/>
       <location filename="../../draftobjects/polygon.py" line="68"/>
+      <location filename="../../draftobjects/ellipse.py" line="58"/>
       <source>Create a face</source>
       <translation>Felület létrehozása</translation>
     </message>
@@ -325,8 +325,8 @@ vagy a 'VégpontN', 'ÉlN' vagy 'FelületN' al-elemből, ha megadott.</translati
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="320"/>
-      <location filename="../../draftobjects/pointarray.py" line="112"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
+      <location filename="../../draftobjects/pointarray.py" line="112"/>
       <location filename="../../draftobjects/patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>Az egyes tömbelemek megmutatása (csak csatolási tömbökhöz)</translation>
@@ -991,33 +991,33 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
       <translation>Az egyes másolati példányokon elvégzett további elhelyezés, elmozdítás és elforgatás</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="74"/>
       <location filename="../../draftviewproviders/view_text.py" line="60"/>
+      <location filename="../../draftviewproviders/view_label.py" line="74"/>
       <source>The size of the text</source>
       <translation>A szöveg mérete</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="83"/>
       <location filename="../../draftviewproviders/view_text.py" line="69"/>
+      <location filename="../../draftviewproviders/view_label.py" line="83"/>
       <source>The font of the text</source>
       <translation>A szöveg betütípusa</translation>
     </message>
     <message>
+      <location filename="../../draftviewproviders/view_text.py" line="78"/>
       <location filename="../../draftviewproviders/view_label.py" line="92"/>
       <location filename="../../draftviewproviders/view_label.py" line="119"/>
-      <location filename="../../draftviewproviders/view_text.py" line="78"/>
       <source>The vertical alignment of the text</source>
       <translation>A szöveg függőleges igazítása</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="102"/>
       <location filename="../../draftviewproviders/view_text.py" line="87"/>
+      <location filename="../../draftviewproviders/view_label.py" line="102"/>
       <source>Text color</source>
       <translation>Szöveg szín</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="128"/>
       <location filename="../../draftviewproviders/view_text.py" line="95"/>
+      <location filename="../../draftviewproviders/view_label.py" line="128"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Egyenes illesztés (relatív a betűméretehez)</translation>
     </message>
@@ -1589,16 +1589,16 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
       <translation>Az eltolás iránya nem meghatározott. Először mozgassa az egeret a tárgy egyik oldalára, hogy meghatározza az irányt</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="144"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
       <source>True</source>
       <translation>Igaz</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="160"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="148"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="160"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
       <source>False</source>
       <translation>Hamis</translation>
     </message>
@@ -4286,13 +4286,13 @@ mint a " Arial: Dőlt "</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="535"/>
-      <location filename="../ui/preferences-svg.ui" line="209"/>
       <location filename="../ui/preferences-drafttexts.ui" line="92"/>
       <location filename="../ui/preferences-drafttexts.ui" line="211"/>
       <location filename="../ui/preferences-drafttexts.ui" line="247"/>
       <location filename="../ui/preferences-drafttexts.ui" line="283"/>
       <location filename="../ui/preferences-drafttexts.ui" line="365"/>
       <location filename="../ui/preferences-drafttexts.ui" line="432"/>
+      <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -4611,9 +4611,9 @@ a Kiegészítők kezelőjéből.</translation>
       <translation>Engedélyezze a FreeCAD-hoz az automatikus DXF-könyvtárak letöltését és frissítését</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-dxf.ui" line="119"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
-      <location filename="../ui/preferences-oca.ui" line="26"/>
       <source>Import options</source>
       <translation>Importálási beállítások</translation>
     </message>
@@ -5508,11 +5508,11 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="../../DraftGui.py" line="76"/>
       <location filename="../../DraftGui.py" line="801"/>
+      <location filename="../../draftguitools/gui_move.py" line="207"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
       <location filename="../../draftguitools/gui_scale.py" line="227"/>
       <location filename="../../draftguitools/gui_scale.py" line="356"/>
       <location filename="../../draftguitools/gui_rotate.py" line="283"/>
-      <location filename="../../draftguitools/gui_move.py" line="207"/>
       <source>Copy</source>
       <translation>Másolás</translation>
     </message>
@@ -6187,41 +6187,41 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>anyagminta betöltése sikertelen</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="720"/>
-      <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/utils.py" line="1014"/>
+      <location filename="../../draftfunctions/cut.py" line="57"/>
       <location filename="../../draftmake/make_pointarray.py" line="108"/>
+      <location filename="../../draftmake/make_text.py" line="84"/>
+      <location filename="../../draftmake/make_text.py" line="172"/>
       <location filename="../../draftmake/make_dimension.py" line="215"/>
       <location filename="../../draftmake/make_dimension.py" line="308"/>
       <location filename="../../draftmake/make_dimension.py" line="438"/>
       <location filename="../../draftmake/make_dimension.py" line="564"/>
+      <location filename="../../draftmake/make_array.py" line="85"/>
       <location filename="../../draftmake/make_layer.py" line="58"/>
       <location filename="../../draftmake/make_layer.py" line="149"/>
       <location filename="../../draftmake/make_patharray.py" line="161"/>
       <location filename="../../draftmake/make_patharray.py" line="330"/>
       <location filename="../../draftmake/make_label.py" line="195"/>
-      <location filename="../../draftmake/make_text.py" line="84"/>
-      <location filename="../../draftmake/make_text.py" line="172"/>
-      <location filename="../../draftmake/make_array.py" line="85"/>
-      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftutils/utils.py" line="1014"/>
+      <location filename="../../draftutils/groups.py" line="95"/>
+      <location filename="../../draftutils/gui_utils.py" line="720"/>
       <source>No active document. Aborting.</source>
       <translation>Nincs aktív dokumentum. Megszakítás.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="729"/>
-      <location filename="../../draftutils/groups.py" line="132"/>
       <location filename="../../draftmake/make_pointarray.py" line="117"/>
       <location filename="../../draftmake/make_pointarray.py" line="128"/>
       <location filename="../../draftmake/make_circulararray.py" line="131"/>
+      <location filename="../../draftmake/make_polararray.py" line="103"/>
       <location filename="../../draftmake/make_dimension.py" line="322"/>
       <location filename="../../draftmake/make_dimension.py" line="447"/>
       <location filename="../../draftmake/make_patharray.py" line="170"/>
       <location filename="../../draftmake/make_patharray.py" line="181"/>
       <location filename="../../draftmake/make_patharray.py" line="339"/>
       <location filename="../../draftmake/make_patharray.py" line="350"/>
-      <location filename="../../draftmake/make_polararray.py" line="103"/>
-      <location filename="../../draftmake/make_label.py" line="236"/>
       <location filename="../../draftmake/make_orthoarray.py" line="167"/>
+      <location filename="../../draftmake/make_label.py" line="236"/>
+      <location filename="../../draftutils/groups.py" line="132"/>
+      <location filename="../../draftutils/gui_utils.py" line="729"/>
       <source>Wrong input: object not in document.</source>
       <translation>Helytelen bemenet: az tárgy nincs a dokumentumban.</translation>
     </message>
@@ -6644,6 +6644,7 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="164"/>
+      <location filename="../../draftmake/make_polararray.py" line="126"/>
       <location filename="../../draftmake/make_dimension.py" line="222"/>
       <location filename="../../draftmake/make_dimension.py" line="229"/>
       <location filename="../../draftmake/make_dimension.py" line="237"/>
@@ -6656,15 +6657,14 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <location filename="../../draftmake/make_patharray.py" line="200"/>
       <location filename="../../draftmake/make_patharray.py" line="254"/>
       <location filename="../../draftmake/make_patharray.py" line="265"/>
-      <location filename="../../draftmake/make_polararray.py" line="126"/>
       <location filename="../../draftmake/make_label.py" line="204"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Rossz bemenet: vektornak kell lennie.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="147"/>
-      <location filename="../../draftmake/make_label.py" line="215"/>
       <location filename="../../draftmake/make_text.py" line="107"/>
+      <location filename="../../draftmake/make_label.py" line="215"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Helytelen bemenet: elhelyezésnek, vektornak vagy forgatásnak kell lennie.</translation>
     </message>
@@ -6696,10 +6696,10 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Helytelen bevitel: label_type az alábbiak egyikének kell lennie: </translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="286"/>
-      <location filename="../../draftmake/make_label.py" line="291"/>
       <location filename="../../draftmake/make_text.py" line="91"/>
       <location filename="../../draftmake/make_text.py" line="96"/>
+      <location filename="../../draftmake/make_label.py" line="286"/>
+      <location filename="../../draftmake/make_label.py" line="291"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Helytelen bemenet: karakterláncnak vagy egyetlen karakternek kell lennie.</translation>
     </message>
@@ -6710,12 +6710,12 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Helytelen bemenet: karakterláncnak kell lennie, 'Vízszintes', 'Függőleges' vagy 'Egyéni'.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_polararray.py" line="119"/>
       <location filename="../../draftmake/make_layer.py" line="201"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="360"/>
-      <location filename="../../draftmake/make_polararray.py" line="119"/>
-      <location filename="../../draftmake/make_label.py" line="313"/>
       <location filename="../../draftmake/make_orthoarray.py" line="151"/>
+      <location filename="../../draftmake/make_label.py" line="313"/>
       <source>Wrong input: must be a number.</source>
       <translation>Rossz bemenet: számnak kell lennie.</translation>
     </message>
@@ -7255,10 +7255,10 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Körív 3 pontból</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="83"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
+      <location filename="../../draftguitools/gui_lines.py" line="83"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
       <translation>Első pont kiválasztása</translation>
     </message>
@@ -7351,8 +7351,8 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Válassza ki a tárgyakat a vágáshoz/nyújtáshoz</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Távolság kiválasztása</translation>
     </message>
@@ -7480,8 +7480,8 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Nyújtás</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
       <location filename="../../draftguitools/gui_patharray.py" line="102"/>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
       <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
       <translation>A parancs hívása előtt jelöljön ki pontosan két tárgyat, az alap tárgyat és az útvonal tárgyat.</translation>
     </message>
@@ -7572,8 +7572,8 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Téglalap rajzolása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="202"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="196"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="202"/>
       <source>Pick opposite point</source>
       <translation>Ellenkező pont kiválasztása</translation>
     </message>
@@ -7827,8 +7827,8 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Mozgat</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
       <location filename="../../draftguitools/gui_move.py" line="213"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
       <source>Some subelements could not be moved.</source>
       <translation>Egyes al elemeket nem lehetett áthelyezni.</translation>
     </message>
@@ -7999,16 +7999,16 @@ A végső szög lesz az alapszög plusz ez az összege.</translation>
       <translation>Vonal felosztása</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <source>Task panel:</source>
       <translation>Feladat panel:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
       <source>At least one element must be selected.</source>
       <translation>Legalább egy tételt ki kell választani.</translation>
     </message>
@@ -8018,19 +8018,19 @@ A végső szög lesz az alapszög plusz ez az összege.</translation>
       <translation>A tételek számának legalább 1-nek kell lennie.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
       <source>Selection is not suitable for array.</source>
       <translation>A kijelölés nem alkalmas tömbökhöz.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="372"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="372"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
       <source>Object:</source>
       <translation>Tárgy:</translation>
     </message>
@@ -8050,16 +8050,16 @@ A végső szög lesz az alapszög plusz ez az összege.</translation>
       <translation>Z intervallum alaphelyzetbe állítása:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="296"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
       <source>Fuse:</source>
       <translation>Egybeolvaszt:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
       <source>Create Link array:</source>
       <translation>Elrendezés csatolás létrehozása:</translation>
     </message>
@@ -8094,9 +8094,9 @@ A végső szög lesz az alapszög plusz ez az összege.</translation>
       <translation>Z intervallum:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
       <source>Aborted:</source>
       <translation>Megszakított:</translation>
     </message>
@@ -8126,8 +8126,8 @@ A végső szög lesz az alapszög plusz ez az összege.</translation>
       <translation>Az érintő távolság negatív. Pozitívvá alakítva a továbblépéshez.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
       <source>Center reset:</source>
       <translation>Középre visszaállítás:</translation>
     </message>
@@ -8152,8 +8152,8 @@ A végső szög lesz az alapszög plusz ez az összege.</translation>
       <translation>Szimmetria paraméter:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
       <source>Center of rotation:</source>
       <translation>Forgatás középpontja:</translation>
     </message>

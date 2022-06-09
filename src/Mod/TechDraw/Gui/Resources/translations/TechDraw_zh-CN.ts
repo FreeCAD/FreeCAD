@@ -1857,8 +1857,8 @@
       <translation>创建电子表格视图</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="918"/>
       <location filename="../../Command.cpp" line="1454"/>
+      <location filename="../../MDIViewPage.cpp" line="918"/>
       <source>Save page to dxf</source>
       <translation>保存页面到 dxf</translation>
     </message>
@@ -2448,14 +2448,14 @@
       <location filename="../../Command.cpp" line="789"/>
       <location filename="../../Command.cpp" line="796"/>
       <location filename="../../Command.cpp" line="808"/>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="394"/>
-      <location filename="../../CommandDecorate.cpp" line="401"/>
       <location filename="../../CommandCreateDims.cpp" line="1427"/>
       <location filename="../../CommandCreateDims.cpp" line="1434"/>
       <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <location filename="../../CommandCreateDims.cpp" line="1453"/>
       <location filename="../../CommandCreateDims.cpp" line="1470"/>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="394"/>
+      <location filename="../../CommandDecorate.cpp" line="401"/>
       <source>Incorrect selection</source>
       <translation>选择错误</translation>
     </message>
@@ -2596,9 +2596,6 @@
       <translation>所选边是贝赛尔曲线。 半径将是近似值。继续？</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="411"/>
-      <location filename="../../CommandDecorate.cpp" line="408"/>
-      <location filename="../../CommandDecorate.cpp" line="414"/>
       <location filename="../../CommandCreateDims.cpp" line="323"/>
       <location filename="../../CommandCreateDims.cpp" line="439"/>
       <location filename="../../CommandCreateDims.cpp" line="537"/>
@@ -2608,6 +2605,9 @@
       <location filename="../../CommandCreateDims.cpp" line="925"/>
       <location filename="../../CommandCreateDims.cpp" line="1009"/>
       <location filename="../../CommandCreateDims.cpp" line="1015"/>
+      <location filename="../../TaskDimension.cpp" line="411"/>
+      <location filename="../../CommandDecorate.cpp" line="408"/>
+      <location filename="../../CommandDecorate.cpp" line="414"/>
       <source>Incorrect Selection</source>
       <translation>选择错误</translation>
     </message>
@@ -2707,11 +2707,6 @@
       <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="286"/>
-      <location filename="../../CommandExtensionPack.cpp" line="593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1302"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1656"/>
       <location filename="../../CommandAnnotate.cpp" line="119"/>
       <location filename="../../CommandAnnotate.cpp" line="180"/>
       <location filename="../../CommandAnnotate.cpp" line="232"/>
@@ -2727,6 +2722,11 @@
       <location filename="../../CommandAnnotate.cpp" line="1283"/>
       <location filename="../../CommandAnnotate.cpp" line="1361"/>
       <location filename="../../CommandAnnotate.cpp" line="1427"/>
+      <location filename="../../CommandExtensionPack.cpp" line="286"/>
+      <location filename="../../CommandExtensionPack.cpp" line="593"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1302"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1656"/>
       <location filename="../../CommandCreateDims.cpp" line="1061"/>
       <location filename="../../CommandCreateDims.cpp" line="1155"/>
       <location filename="../../CommandCreateDims.cpp" line="1242"/>
@@ -2746,11 +2746,6 @@
       <translation type="unfinished">Selection for Radius does not contain a circular edge (edge type: %1)</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="287"/>
-      <location filename="../../CommandExtensionPack.cpp" line="594"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1072"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1303"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1657"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="181"/>
       <location filename="../../CommandAnnotate.cpp" line="233"/>
@@ -2766,6 +2761,11 @@
       <location filename="../../CommandAnnotate.cpp" line="1284"/>
       <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <location filename="../../CommandAnnotate.cpp" line="1428"/>
+      <location filename="../../CommandExtensionPack.cpp" line="287"/>
+      <location filename="../../CommandExtensionPack.cpp" line="594"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1072"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1303"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1657"/>
       <location filename="../../CommandCreateDims.cpp" line="1062"/>
       <location filename="../../CommandCreateDims.cpp" line="1156"/>
       <location filename="../../CommandCreateDims.cpp" line="1243"/>
@@ -3009,9 +3009,9 @@
       <translation>以 SVG格式导出页面</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderTemplate.cpp" line="195"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="201"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="195"/>
       <source>Are you sure you want to continue?</source>
       <translation>您确定要继续吗？</translation>
     </message>
@@ -3250,19 +3250,19 @@ it has a weld symbol that would become broken.</source>
       <translation>指引线</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="227"/>
+      <location filename="../../ViewProviderWeld.cpp" line="187"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="166"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="175"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="183"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="191"/>
-      <location filename="../../ViewProviderWeld.cpp" line="187"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="188"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="204"/>
       <location filename="../../ViewProviderViewPart.cpp" line="348"/>
       <location filename="../../ViewProviderViewPart.cpp" line="356"/>
       <location filename="../../ViewProviderViewPart.cpp" line="364"/>
       <location filename="../../ViewProviderTemplate.cpp" line="199"/>
       <location filename="../../ViewProviderLeader.cpp" line="243"/>
+      <location filename="../../ViewProviderPage.cpp" line="227"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="188"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="204"/>
       <source>Object dependencies</source>
       <translation>对象依赖关系</translation>
     </message>
@@ -5113,47 +5113,47 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskCenterLine</name>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="29"/>
+      <location filename="../../TaskCenterLine.ui" line="17"/>
       <source>Center Line</source>
       <translation>中心线</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="41"/>
+      <location filename="../../TaskCenterLine.ui" line="29"/>
       <source>Base View</source>
       <translation>基准视图</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="64"/>
+      <location filename="../../TaskCenterLine.ui" line="52"/>
       <source>Elements</source>
       <translation>元素</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="95"/>
+      <location filename="../../TaskCenterLine.ui" line="83"/>
       <source>Orientation</source>
       <translation>方向</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="101"/>
+      <location filename="../../TaskCenterLine.ui" line="89"/>
       <source>Top to Bottom line</source>
       <translation type="unfinished">Top to Bottom line</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="104"/>
+      <location filename="../../TaskCenterLine.ui" line="92"/>
       <source>Vertical</source>
       <translation>垂直</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="120"/>
+      <location filename="../../TaskCenterLine.ui" line="108"/>
       <source>Left to Right line</source>
       <translation type="unfinished">Left to Right line</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="123"/>
+      <location filename="../../TaskCenterLine.ui" line="111"/>
       <source>Horizontal</source>
       <translation>水平</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="136"/>
+      <location filename="../../TaskCenterLine.ui" line="124"/>
       <source>centerline between
 - lines: in equal distance to the lines and with
   half of the angle the lines have to each other
@@ -5164,92 +5164,92 @@ Do you want to continue?</source>
 - points: in equal distance to the points</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="142"/>
+      <location filename="../../TaskCenterLine.ui" line="130"/>
       <source>Aligned</source>
       <translation>对齐</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="157"/>
+      <location filename="../../TaskCenterLine.ui" line="145"/>
       <source>Shift Horizontal</source>
       <translation>水平偏移</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="170"/>
+      <location filename="../../TaskCenterLine.ui" line="158"/>
       <source>Move line -Left or +Right</source>
       <translation type="unfinished">Move line -Left or +Right</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="183"/>
+      <location filename="../../TaskCenterLine.ui" line="171"/>
       <source>Shift Vertical</source>
       <translation>垂直偏移</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="196"/>
+      <location filename="../../TaskCenterLine.ui" line="184"/>
       <source>Move line +Up or -Down</source>
       <translation type="unfinished">Move line +Up or -Down</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="209"/>
+      <location filename="../../TaskCenterLine.ui" line="197"/>
       <source>Rotate</source>
       <translation>旋转</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="222"/>
+      <location filename="../../TaskCenterLine.ui" line="210"/>
       <source>Rotate line +CCW or -CW</source>
       <translation type="unfinished">Rotate line +CCW or -CW</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="249"/>
+      <location filename="../../TaskCenterLine.ui" line="237"/>
       <source>Extend By</source>
       <translation>延长</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="262"/>
+      <location filename="../../TaskCenterLine.ui" line="250"/>
       <source>Make the line a little longer.</source>
       <translation>使线条稍稍变长。</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="268"/>
+      <location filename="../../TaskCenterLine.ui" line="256"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="278"/>
+      <location filename="../../TaskCenterLine.ui" line="266"/>
       <source>Color</source>
       <translation>颜色</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="296"/>
+      <location filename="../../TaskCenterLine.ui" line="284"/>
       <source>Weight</source>
       <translation>重量</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="316"/>
+      <location filename="../../TaskCenterLine.ui" line="304"/>
       <source>Style</source>
       <translation>样式</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="327"/>
+      <location filename="../../TaskCenterLine.ui" line="315"/>
       <source>Continuous</source>
       <translation type="unfinished">Continuous</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="336"/>
+      <location filename="../../TaskCenterLine.ui" line="324"/>
       <source>Dash</source>
       <translation>虚线</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="345"/>
+      <location filename="../../TaskCenterLine.ui" line="333"/>
       <source>Dot</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="354"/>
+      <location filename="../../TaskCenterLine.ui" line="342"/>
       <source>DashDot</source>
       <translation>点划线</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="363"/>
+      <location filename="../../TaskCenterLine.ui" line="351"/>
       <source>DashDotDot</source>
       <translation>双点划线</translation>
     </message>
@@ -5257,38 +5257,38 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskCosVertex</name>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="26"/>
+      <location filename="../../TaskCosVertex.ui" line="14"/>
       <source>Cosmetic Vertex</source>
       <translation type="unfinished">Cosmetic Vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="38"/>
+      <location filename="../../TaskCosVertex.ui" line="26"/>
       <source>Base View</source>
       <translation>基准视图</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="78"/>
+      <location filename="../../TaskCosVertex.ui" line="66"/>
       <location filename="../../TaskCosVertex.cpp" line="136"/>
       <source>Point Picker</source>
       <translation>点选取器</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="107"/>
+      <location filename="../../TaskCosVertex.ui" line="95"/>
       <source>Position from the view center</source>
       <translation type="unfinished">Position from the view center</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="110"/>
+      <location filename="../../TaskCosVertex.ui" line="98"/>
       <source>Position</source>
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="118"/>
+      <location filename="../../TaskCosVertex.ui" line="106"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="154"/>
+      <location filename="../../TaskCosVertex.ui" line="142"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -5365,312 +5365,312 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskCustomizeFormat</name>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="26"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="14"/>
       <source>Format Symbols</source>
       <translation type="unfinished">Format Symbols</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="32"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="20"/>
       <source>GD&amp;T</source>
       <translation type="unfinished">GD&amp;T</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="41"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="29"/>
       <source>Straightness</source>
       <translation type="unfinished">Straightness</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="51"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="39"/>
       <source>Flatness</source>
       <translation type="unfinished">Flatness</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="61"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="49"/>
       <source>Circularity</source>
       <translation type="unfinished">Circularity</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="71"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="59"/>
       <source>Cylindricity</source>
       <translation type="unfinished">Cylindricity</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="81"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="69"/>
       <source>Parallelism</source>
       <translation type="unfinished">Parallelism</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="91"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="79"/>
       <source>Perpendicularity</source>
       <translation type="unfinished">Perpendicularity</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="101"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="89"/>
       <source>Angularity</source>
       <translation type="unfinished">Angularity</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="116"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="104"/>
       <source>Profile of a line</source>
       <translation type="unfinished">Profile of a line</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="126"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="114"/>
       <source>Profile of a surface</source>
       <translation type="unfinished">Profile of a surface</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="136"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="124"/>
       <source>Circular runout</source>
       <translation type="unfinished">Circular runout</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="146"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="134"/>
       <source>Total runout</source>
       <translation type="unfinished">Total runout</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="156"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="144"/>
       <source>Position</source>
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="166"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="154"/>
       <source>Concentricity</source>
       <translation type="unfinished">Concentricity</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="176"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="164"/>
       <source>Symmetry</source>
       <translation>对称</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="188"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="176"/>
       <source>Modifiers</source>
       <translation type="unfinished">Modifiers</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="202"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="190"/>
       <source>derived geometry element</source>
       <translation type="unfinished">derived geometry element</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="217"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="205"/>
       <source>Minimax (Tschebyschew)</source>
       <translation type="unfinished">Minimax (Tschebyschew)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="232"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="220"/>
       <source>Hull condition</source>
       <translation type="unfinished">Hull condition</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="247"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="235"/>
       <source>Free state</source>
       <translation type="unfinished">Free state</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="262"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="250"/>
       <source>Least square geometry element</source>
       <translation type="unfinished">Least square geometry element</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="277"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="265"/>
       <source>Least material condition (LMC)</source>
       <translation type="unfinished">Least material condition (LMC)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="292"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="280"/>
       <source>Maximum material condition (MMC)</source>
       <translation type="unfinished">Maximum material condition (MMC)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="307"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="295"/>
       <source>least inscribed geometry element</source>
       <translation type="unfinished">least inscribed geometry element</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="322"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="310"/>
       <source>Projected tolerance zone</source>
       <translation type="unfinished">Projected tolerance zone</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="337"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="325"/>
       <source>Reciprocity condition</source>
       <translation type="unfinished">Reciprocity condition</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="352"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="340"/>
       <source>Regardless of feature size (RFS)</source>
       <translation type="unfinished">Regardless of feature size (RFS)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="367"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="355"/>
       <source>Tangent plane</source>
       <translation type="unfinished">Tangent plane</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="382"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="370"/>
       <source>Unequal Bilateral</source>
       <translation type="unfinished">Unequal Bilateral</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="397"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="385"/>
       <source>most inscribed geometry element</source>
       <translation type="unfinished">most inscribed geometry element</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="409"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="397"/>
       <source>Radius &amp; Diameter</source>
       <translation type="unfinished">Radius &amp; Diameter</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="418"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="406"/>
       <source>Radius</source>
       <translation>半径</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="428"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="416"/>
       <source>Diameter</source>
       <translation>直径</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="438"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="426"/>
       <source>Radius of sphere</source>
       <translation type="unfinished">Radius of sphere</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="448"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="436"/>
       <source>Diameter of sphere</source>
       <translation type="unfinished">Diameter of sphere</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="458"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="446"/>
       <source>Square</source>
       <translation>正方形</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="470"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="458"/>
       <source>Angles</source>
       <translation type="unfinished">Angles</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="479"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="467"/>
       <source>Degree</source>
       <translation>度</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="489"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="477"/>
       <source>(Arc) Minute</source>
       <translation type="unfinished">(Arc) Minute</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="499"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="487"/>
       <source>(Arc) Second</source>
       <translation type="unfinished">(Arc) Second</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="509"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="497"/>
       <source>(Arc) Tertie</source>
       <translation type="unfinished">(Arc) Tertie</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="521"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="509"/>
       <source>Other</source>
       <translation>其它</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="533"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="521"/>
       <source>Taper</source>
       <translation>锥度</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="543"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="531"/>
       <source>Slope</source>
       <translation type="unfinished">Slope</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="553"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="541"/>
       <source>Counterbore</source>
       <translation>沉孔</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="563"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="551"/>
       <source>Countersink</source>
       <translation>埋头孔</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="573"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="561"/>
       <source>Plus - Minus</source>
       <translation type="unfinished">Plus - Minus</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="583"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="571"/>
       <source>Centerline</source>
       <translation>中心线</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="593"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="581"/>
       <source>Left/right arrow</source>
       <translation type="unfinished">Left/right arrow</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="603"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="591"/>
       <source>Downward arrow</source>
       <translation type="unfinished">Downward arrow</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="613"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="601"/>
       <source>Multiplication sign</source>
       <translation type="unfinished">Multiplication sign</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="625"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="613"/>
       <source>Greek Letters</source>
       <translation type="unfinished">Greek Letters</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="634"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="622"/>
       <source>Capital delta</source>
       <translation type="unfinished">Capital delta</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="644"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="632"/>
       <source>Capital sigma</source>
       <translation type="unfinished">Capital sigma</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="654"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="642"/>
       <source>Capital omega</source>
       <translation type="unfinished">Capital omega</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="664"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="652"/>
       <source>Small mu</source>
       <translation type="unfinished">Small mu</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="674"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="662"/>
       <source>Small sigma</source>
       <translation type="unfinished">Small sigma</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="684"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="672"/>
       <source>Small phi</source>
       <translation type="unfinished">Small phi</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="694"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="682"/>
       <source>Small omega</source>
       <translation type="unfinished">Small omega</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="708"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="696"/>
       <source>Format:</source>
       <translation type="unfinished">Format:</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="718"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="706"/>
       <source>Preview:</source>
       <translation>预览:</translation>
     </message>
@@ -5683,68 +5683,68 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskDetail</name>
     <message>
-      <location filename="../../TaskDetail.ui" line="26"/>
+      <location filename="../../TaskDetail.ui" line="14"/>
       <source>Detail Anchor</source>
       <translation type="unfinished">Detail Anchor</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="38"/>
+      <location filename="../../TaskDetail.ui" line="26"/>
       <source>Base View</source>
       <translation>基准视图</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="61"/>
+      <location filename="../../TaskDetail.ui" line="49"/>
       <source>Detail View</source>
       <translation>局部视图</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="92"/>
+      <location filename="../../TaskDetail.ui" line="80"/>
       <source>Click to drag detail highlight to new position</source>
       <translation type="unfinished">Click to drag detail highlight to new position</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="95"/>
+      <location filename="../../TaskDetail.ui" line="83"/>
       <location filename="../../TaskDetail.cpp" line="296"/>
       <source>Drag Highlight</source>
       <translation type="unfinished">Drag Highlight</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="126"/>
+      <location filename="../../TaskDetail.ui" line="114"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="146"/>
+      <location filename="../../TaskDetail.ui" line="134"/>
       <source>x position of detail highlight within view</source>
       <translation type="unfinished">x position of detail highlight within view</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="165"/>
+      <location filename="../../TaskDetail.ui" line="153"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="172"/>
+      <location filename="../../TaskDetail.ui" line="160"/>
       <source>y position of detail highlight within view</source>
       <translation type="unfinished">y position of detail highlight within view</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="188"/>
+      <location filename="../../TaskDetail.ui" line="176"/>
       <source>Radius</source>
       <translation>半径</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="195"/>
+      <location filename="../../TaskDetail.ui" line="183"/>
       <source>size of detail view</source>
       <translation>局部视图大小</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="214"/>
+      <location filename="../../TaskDetail.ui" line="202"/>
       <source>Scale Type</source>
       <translation type="unfinished">Scale Type</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="221"/>
+      <location filename="../../TaskDetail.ui" line="209"/>
       <source>Page: scale factor of page is used
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
@@ -5755,37 +5755,37 @@ Automatic: if the detail view is larger than the page,
 Custom: custom scale factor is used</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="228"/>
+      <location filename="../../TaskDetail.ui" line="216"/>
       <source>Page</source>
       <translation>页</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="233"/>
+      <location filename="../../TaskDetail.ui" line="221"/>
       <source>Automatic</source>
       <translation>自动</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="238"/>
+      <location filename="../../TaskDetail.ui" line="226"/>
       <source>Custom</source>
       <translation>自定义</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="246"/>
+      <location filename="../../TaskDetail.ui" line="234"/>
       <source>Scale Factor</source>
       <translation>缩放比例</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="256"/>
+      <location filename="../../TaskDetail.ui" line="244"/>
       <source>scale factor for detail view</source>
       <translation>局部视图缩放比例</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="278"/>
+      <location filename="../../TaskDetail.ui" line="266"/>
       <source>Reference</source>
       <translation>参考</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="285"/>
+      <location filename="../../TaskDetail.ui" line="273"/>
       <source>reference label</source>
       <translation type="unfinished">reference label</translation>
     </message>

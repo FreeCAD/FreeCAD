@@ -1696,11 +1696,11 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Přidat blokovou vazbu</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="256"/>
       <location filename="../../CommandConstraints.cpp" line="1843"/>
       <location filename="../../CommandConstraints.cpp" line="2001"/>
       <location filename="../../CommandConstraints.cpp" line="2066"/>
-      <location filename="../../CommandSketcherTools.cpp" line="149"/>
-      <location filename="../../CommandSketcherTools.cpp" line="256"/>
       <source>Add coincident constraint</source>
       <translation>Přidat vazbu shodnosti</translation>
     </message>
@@ -2334,6 +2334,39 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Nelze připojit</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandSketcherTools.cpp" line="130"/>
+      <location filename="../../CommandSketcherTools.cpp" line="138"/>
+      <location filename="../../CommandSketcherTools.cpp" line="180"/>
+      <location filename="../../CommandSketcherTools.cpp" line="241"/>
+      <location filename="../../CommandSketcherTools.cpp" line="249"/>
+      <location filename="../../CommandSketcherTools.cpp" line="328"/>
+      <location filename="../../CommandSketcherTools.cpp" line="975"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1087"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1095"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1200"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1209"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1468"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1477"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2023"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2032"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2094"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2290"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2299"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2344"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <location filename="../../CommandConstraints.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="911"/>
@@ -2465,39 +2498,6 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="7485"/>
       <location filename="../../CommandConstraints.cpp" line="7558"/>
       <location filename="../../CommandConstraints.cpp" line="7569"/>
-      <location filename="../../CommandSketcherTools.cpp" line="130"/>
-      <location filename="../../CommandSketcherTools.cpp" line="138"/>
-      <location filename="../../CommandSketcherTools.cpp" line="180"/>
-      <location filename="../../CommandSketcherTools.cpp" line="241"/>
-      <location filename="../../CommandSketcherTools.cpp" line="249"/>
-      <location filename="../../CommandSketcherTools.cpp" line="328"/>
-      <location filename="../../CommandSketcherTools.cpp" line="975"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1087"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1095"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1200"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1209"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1468"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1477"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1536"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2023"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2032"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2094"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2290"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2299"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2344"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
@@ -2561,6 +2561,8 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Vyber hranu z náčrtu.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="170"/>
+      <location filename="../../CommandSketcherTools.cpp" line="273"/>
       <location filename="../../CommandConstraints.cpp" line="937"/>
       <location filename="../../CommandConstraints.cpp" line="951"/>
       <location filename="../../CommandConstraints.cpp" line="957"/>
@@ -2577,8 +2579,6 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="1268"/>
       <location filename="../../CommandConstraints.cpp" line="1277"/>
       <location filename="../../CommandConstraints.cpp" line="1288"/>
-      <location filename="../../CommandSketcherTools.cpp" line="170"/>
-      <location filename="../../CommandSketcherTools.cpp" line="273"/>
       <source>Impossible constraint</source>
       <translation>Nemožné omezení</translation>
     </message>
@@ -2680,6 +2680,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Vyberte pouze hrany z náčrtu.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="861"/>
       <location filename="../../CommandConstraints.cpp" line="1673"/>
       <location filename="../../CommandConstraints.cpp" line="1718"/>
       <location filename="../../CommandConstraints.cpp" line="3470"/>
@@ -2687,7 +2688,6 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="4168"/>
       <location filename="../../CommandConstraints.cpp" line="4677"/>
       <location filename="../../CommandConstraints.cpp" line="6926"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="861"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -3164,9 +3164,9 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <translation type="unfinished">Define B-Spline Degree, between 1 and %1:</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5890"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="718"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1077"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5890"/>
       <source>CAD Kernel Error</source>
       <translation>Chyba jádra CADu</translation>
     </message>

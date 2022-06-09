@@ -95,14 +95,14 @@
       <translation>工具轴周围的基础旋转 (仅在 BasePerpendicularToToot 为 True)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="404"/>
       <location filename="../../ArchStructure.py" line="694"/>
+      <location filename="../../ArchPanel.py" line="404"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>该元素长度, 其不基于轮廓</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="406"/>
       <location filename="../../ArchStructure.py" line="696"/>
+      <location filename="../../ArchPanel.py" line="406"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>该元素宽度, 其不基于轮廓</translation>
     </message>
@@ -113,14 +113,14 @@
     </message>
     <message>
       <location filename="../../ArchWall.py" line="737"/>
-      <location filename="../../ArchPanel.py" line="433"/>
       <location filename="../../ArchStructure.py" line="700"/>
+      <location filename="../../ArchPanel.py" line="433"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>该对象的法向拉伸方向((0,0,0)表示自动法向)</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="68"/>
       <location filename="../../ArchStructure.py" line="702"/>
+      <location filename="../../ArchPrecast.py" line="68"/>
       <source>The structural nodes of this element</source>
       <translation>这个元素的结构节点</translation>
     </message>
@@ -135,8 +135,8 @@
       <translation>中线和节点线之间的偏移距离</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="430"/>
       <location filename="../../ArchStructure.py" line="708"/>
+      <location filename="../../ArchPanel.py" line="430"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>用于生成此对象轮廓的面生成器类型</translation>
     </message>
@@ -425,14 +425,14 @@
       <translation>定义孔的线数。值0表示自动</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="204"/>
       <location filename="../../ArchBuildingPart.py" line="335"/>
+      <location filename="../../ArchFloor.py" line="204"/>
       <source>The height of this object</source>
       <translation>此对象的高度</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="206"/>
       <location filename="../../ArchBuildingPart.py" line="342"/>
+      <location filename="../../ArchFloor.py" line="206"/>
       <source>The computed floor area of this floor</source>
       <translation>地板的计算面积</translation>
     </message>
@@ -850,9 +850,9 @@
       <translation>楼梯末尾与上层地板块之间的连接类型</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="276"/>
       <location filename="../../ArchBuildingPart.py" line="237"/>
       <location filename="../../ArchBuildingPart.py" line="261"/>
+      <location filename="../../ArchBuilding.py" line="276"/>
       <source>The type of this building</source>
       <translation>此建筑的类型</translation>
     </message>
@@ -956,8 +956,8 @@
       <translation>模型 (0, 0, 0) 原点与地理坐标指示的点之间的可选偏移量</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="635"/>
       <location filename="../../ArchIFC.py" line="69"/>
+      <location filename="../../ArchSite.py" line="635"/>
       <source>The type of this object</source>
       <translation>此对象的类型</translation>
     </message>
@@ -1147,20 +1147,20 @@
       <translation>此级别的(0,0,0) 点的级别</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="200"/>
       <location filename="../../ArchBuildingPart.py" line="344"/>
+      <location filename="../../ArchComponent.py" line="200"/>
       <source>An optional description for this component</source>
       <translation>此组件的可选说明</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="202"/>
       <location filename="../../ArchBuildingPart.py" line="346"/>
+      <location filename="../../ArchComponent.py" line="202"/>
       <source>An optional tag for this component</source>
       <translation>此组件的可选标签</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="917"/>
       <location filename="../../ArchBuildingPart.py" line="348"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>The shape of this object</source>
       <translation>此对象的形状</translation>
     </message>
@@ -1180,8 +1180,8 @@
       <translation>材质名称: 从你的材料列表中引用，它将材料名称与实体索引联系起来，以便在从其他文件引用该对象时使用</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1011"/>
       <location filename="../../ArchBuildingPart.py" line="554"/>
+      <location filename="../../ArchSectionPlane.py" line="1011"/>
       <source>The line width of this object</source>
       <translation>此对象的线条宽度</translation>
     </message>
@@ -1664,8 +1664,8 @@
       <translation>要显示的文本。使用$area，$label，$label，$tag，$floor，$floor，$walls，$ceiling来插入各自的数据</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1026"/>
       <location filename="../../ArchSpace.py" line="509"/>
+      <location filename="../../ArchSectionPlane.py" line="1026"/>
       <source>The name of the font</source>
       <translation>字体的名称</translation>
     </message>
@@ -1675,8 +1675,8 @@
       <translation>区域文本的颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1029"/>
       <location filename="../../ArchSpace.py" line="515"/>
+      <location filename="../../ArchSectionPlane.py" line="1029"/>
       <source>The size of the text font</source>
       <translation>文本字体的大小</translation>
     </message>
@@ -2339,23 +2339,23 @@
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1020"/>
-      <location filename="../../ArchPrecast.py" line="1394"/>
       <location filename="../../ArchWall.py" line="491"/>
       <location filename="../../ArchStructure.py" line="460"/>
+      <location filename="../../ArchPrecast.py" line="1394"/>
       <source>Length</source>
       <translation>长度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1395"/>
       <location filename="../../ArchWall.py" line="497"/>
       <location filename="../../ArchStructure.py" line="470"/>
+      <location filename="../../ArchPrecast.py" line="1395"/>
       <source>Width</source>
       <translation>宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1396"/>
       <location filename="../../ArchWall.py" line="503"/>
       <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchPrecast.py" line="1396"/>
       <source>Height</source>
       <translation>高度</translation>
     </message>
@@ -2387,8 +2387,8 @@
       <translation>该网格是无效实体</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="538"/>
       <location filename="../../ArchStructure.py" line="835"/>
+      <location filename="../../ArchPanel.py" line="538"/>
       <source>Facemaker returned an error</source>
       <translation>服务器返回一个错误</translation>
     </message>
@@ -2501,8 +2501,8 @@
       <translation>完成</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="770"/>
       <location filename="../../ArchStructure.py" line="1409"/>
+      <location filename="../../ArchPanel.py" line="770"/>
       <source>Couldn't compute a shape</source>
       <translation>无法计算形状</translation>
     </message>
@@ -2769,21 +2769,21 @@
       <translation>选取选定的</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="779"/>
       <location filename="../../ArchComponent.py" line="1941"/>
       <location filename="../../ArchAxisSystem.py" line="356"/>
+      <location filename="../../ArchSpace.py" line="790"/>
       <location filename="../../ArchSectionPlane.py" line="1502"/>
       <location filename="../../ArchWindow.py" line="1731"/>
-      <location filename="../../ArchSpace.py" line="790"/>
+      <location filename="../../ArchAxis.py" line="779"/>
       <source>Remove</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="780"/>
       <location filename="../../ArchComponent.py" line="1942"/>
       <location filename="../../ArchAxisSystem.py" line="357"/>
-      <location filename="../../ArchWindow.py" line="1732"/>
       <location filename="../../ArchSpace.py" line="784"/>
+      <location filename="../../ArchWindow.py" line="1732"/>
+      <location filename="../../ArchAxis.py" line="780"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
@@ -2936,9 +2936,9 @@ floor函数创建中止。</translation>
       <translation>请至少选择一个坐标轴</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="778"/>
       <location filename="../../ArchComponent.py" line="1948"/>
       <location filename="../../ArchAxisSystem.py" line="355"/>
+      <location filename="../../ArchAxis.py" line="778"/>
       <source>Axes</source>
       <translation>轴线</translation>
     </message>
@@ -2953,8 +2953,8 @@ floor函数创建中止。</translation>
       <translation>桁架</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="113"/>
       <location filename="../../ArchTruss.py" line="94"/>
+      <location filename="../../ArchCurtainWall.py" line="113"/>
       <source>Please select only one base object or none</source>
       <translation>请只选择一个基对象或不选</translation>
     </message>
@@ -3006,10 +3006,10 @@ floor函数创建中止。</translation>
       <translation>标签</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="126"/>
-      <location filename="../../importSH3D.py" line="70"/>
       <location filename="../../import3DS.py" line="83"/>
+      <location filename="../../importSH3D.py" line="70"/>
       <location filename="../../importIFClegacy.py" line="821"/>
+      <location filename="../../importDAE.py" line="126"/>
       <source>Error: Couldn't determine character encoding</source>
       <translation>错误:无法确定字符编码</translation>
     </message>
@@ -3027,8 +3027,8 @@ floor函数创建中止。</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1656"/>
-      <location filename="../../ArchRoof.py" line="243"/>
       <location filename="../../ArchSpace.py" line="250"/>
+      <location filename="../../ArchRoof.py" line="243"/>
       <source>Please select a base object</source>
       <translation>请选择一个基物体</translation>
     </message>
@@ -3634,9 +3634,9 @@ Site creation aborted.</source>
       <translation>导出 CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1019"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1019"/>
       <source>Description</source>
       <translation>描述</translation>
     </message>
@@ -3651,8 +3651,8 @@ Site creation aborted.</source>
       <translation>总计</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1110"/>
       <location filename="../../ArchSchedule.py" line="539"/>
+      <location filename="../../ArchCommands.py" line="1110"/>
       <source>Export CSV File</source>
       <translation>导出 CSV 文件</translation>
     </message>
@@ -3720,16 +3720,16 @@ Site creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2002"/>
-      <location filename="../../ArchCommands.py" line="1648"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1648"/>
       <source>Value</source>
       <translation>值</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1649"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1649"/>
       <source>Unit</source>
       <translation>单位</translation>
     </message>

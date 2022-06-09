@@ -66,7 +66,7 @@
       <location filename="../../AddonManager.py" line="466"/>
       <source>Custom repo list changed, forcing recache...
 </source>
-      <translation type="unfinished">Custom repo list changed, forcing recache...
+      <translation>L'elenco dei repository personalizzati è stato modificato, si forza la recache...
 </translation>
     </message>
     <message>
@@ -587,7 +587,7 @@
     <message>
       <location filename="../../change_branch.py" line="106"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation type="unfinished">DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</translation>
+      <translation>PERICOLO: La commutazione dei rami è destinata a sviluppatori e beta tester, e può causare documenti corrotti, non compatibili all'indietro, instabilità, crash e/o morte termica prematura dell'universo. Sei sicuro di voler continuare?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="115"/>
@@ -597,7 +597,7 @@
     <message>
       <location filename="../../change_branch.py" line="119"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation type="unfinished">WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</translation>
+      <translation>ATTENZIONE: Questo repository ha modifiche locali non effettuate. Sei sicuro di voler cambiare i rami (apportando le modifiche con te)?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="171"/>
@@ -1233,7 +1233,7 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
-      <translation type="unfinished">&lt;h1&gt;Package Name&lt;/h1&gt;</translation>
+      <translation>&lt;h1&gt;Nome pacchetto&lt;/h1&gt;</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="114"/>
@@ -1320,7 +1320,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
       <source>Hide Addons marked Python 2 Only</source>
-      <translation type="unfinished">Hide Addons marked Python 2 Only</translation>
+      <translation>Nascondi Addons contrassegnati con Solo Python 2</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
@@ -1330,7 +1330,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../AddonManagerOptions.ui" line="128"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
-      <translation type="unfinished">Hide Addons that require a newer version of FreeCAD</translation>
+      <translation>Nascondi Addons che richiedono una nuova versione di FreeCAD</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="144"/>

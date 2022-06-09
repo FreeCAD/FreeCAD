@@ -6003,20 +6003,20 @@ Ali želite nadaljevati?</translation>
       <translation>Noben sklic ni izbran</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="82"/>
       <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+      <location filename="../../TaskAttacher.cpp" line="82"/>
       <source>Face</source>
       <translation>Ploskev</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="85"/>
       <location filename="../../TaskCheckGeometry.cpp" line="88"/>
+      <location filename="../../TaskAttacher.cpp" line="85"/>
       <source>Edge</source>
       <translation>Rob</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="88"/>
       <location filename="../../TaskCheckGeometry.cpp" line="89"/>
+      <location filename="../../TaskAttacher.cpp" line="88"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>

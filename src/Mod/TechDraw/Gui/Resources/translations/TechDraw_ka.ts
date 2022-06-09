@@ -1857,8 +1857,8 @@
       <translation>ელცხრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="918"/>
       <location filename="../../Command.cpp" line="1454"/>
+      <location filename="../../MDIViewPage.cpp" line="918"/>
       <source>Save page to dxf</source>
       <translation>გვერდის DXF-ში შენახვა</translation>
     </message>
@@ -2448,14 +2448,14 @@
       <location filename="../../Command.cpp" line="789"/>
       <location filename="../../Command.cpp" line="796"/>
       <location filename="../../Command.cpp" line="808"/>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="394"/>
-      <location filename="../../CommandDecorate.cpp" line="401"/>
       <location filename="../../CommandCreateDims.cpp" line="1427"/>
       <location filename="../../CommandCreateDims.cpp" line="1434"/>
       <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <location filename="../../CommandCreateDims.cpp" line="1453"/>
       <location filename="../../CommandCreateDims.cpp" line="1470"/>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="394"/>
+      <location filename="../../CommandDecorate.cpp" line="401"/>
       <source>Incorrect selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
@@ -2596,9 +2596,6 @@
       <translation>მონიშნული წიბო B-სპლაინს წარმოადგენს. რადიუსი მხოლოდ დაახლოებითი იქნება. გავაგრძელო?</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="411"/>
-      <location filename="../../CommandDecorate.cpp" line="408"/>
-      <location filename="../../CommandDecorate.cpp" line="414"/>
       <location filename="../../CommandCreateDims.cpp" line="323"/>
       <location filename="../../CommandCreateDims.cpp" line="439"/>
       <location filename="../../CommandCreateDims.cpp" line="537"/>
@@ -2608,6 +2605,9 @@
       <location filename="../../CommandCreateDims.cpp" line="925"/>
       <location filename="../../CommandCreateDims.cpp" line="1009"/>
       <location filename="../../CommandCreateDims.cpp" line="1015"/>
+      <location filename="../../TaskDimension.cpp" line="411"/>
+      <location filename="../../CommandDecorate.cpp" line="408"/>
+      <location filename="../../CommandDecorate.cpp" line="414"/>
       <source>Incorrect Selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
@@ -2707,11 +2707,6 @@
       <translation>მონიშნულში მოხაზულობის მქონე თვისება არ არსებობს.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="286"/>
-      <location filename="../../CommandExtensionPack.cpp" line="593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1302"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1656"/>
       <location filename="../../CommandAnnotate.cpp" line="119"/>
       <location filename="../../CommandAnnotate.cpp" line="180"/>
       <location filename="../../CommandAnnotate.cpp" line="232"/>
@@ -2727,6 +2722,11 @@
       <location filename="../../CommandAnnotate.cpp" line="1283"/>
       <location filename="../../CommandAnnotate.cpp" line="1361"/>
       <location filename="../../CommandAnnotate.cpp" line="1427"/>
+      <location filename="../../CommandExtensionPack.cpp" line="286"/>
+      <location filename="../../CommandExtensionPack.cpp" line="593"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1302"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1656"/>
       <location filename="../../CommandCreateDims.cpp" line="1061"/>
       <location filename="../../CommandCreateDims.cpp" line="1155"/>
       <location filename="../../CommandCreateDims.cpp" line="1242"/>
@@ -2746,11 +2746,6 @@
       <translation type="unfinished">Selection for Radius does not contain a circular edge (edge type: %1)</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="287"/>
-      <location filename="../../CommandExtensionPack.cpp" line="594"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1072"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1303"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1657"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="181"/>
       <location filename="../../CommandAnnotate.cpp" line="233"/>
@@ -2766,6 +2761,11 @@
       <location filename="../../CommandAnnotate.cpp" line="1284"/>
       <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <location filename="../../CommandAnnotate.cpp" line="1428"/>
+      <location filename="../../CommandExtensionPack.cpp" line="287"/>
+      <location filename="../../CommandExtensionPack.cpp" line="594"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1072"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1303"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1657"/>
       <location filename="../../CommandCreateDims.cpp" line="1062"/>
       <location filename="../../CommandCreateDims.cpp" line="1156"/>
       <location filename="../../CommandCreateDims.cpp" line="1243"/>
@@ -3009,9 +3009,9 @@
       <translation>გვერდის SVG ფაილად გატანა</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderTemplate.cpp" line="195"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="201"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="195"/>
       <source>Are you sure you want to continue?</source>
       <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ გააგრძელოთ?</translation>
     </message>
@@ -3251,19 +3251,19 @@ it has a weld symbol that would become broken.</source>
 რომ მას აქვს შედუღების ნიშანი, რომელიც გაფუჭდება.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="227"/>
+      <location filename="../../ViewProviderWeld.cpp" line="187"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="166"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="175"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="183"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="191"/>
-      <location filename="../../ViewProviderWeld.cpp" line="187"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="188"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="204"/>
       <location filename="../../ViewProviderViewPart.cpp" line="348"/>
       <location filename="../../ViewProviderViewPart.cpp" line="356"/>
       <location filename="../../ViewProviderViewPart.cpp" line="364"/>
       <location filename="../../ViewProviderTemplate.cpp" line="199"/>
       <location filename="../../ViewProviderLeader.cpp" line="243"/>
+      <location filename="../../ViewProviderPage.cpp" line="227"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="188"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="204"/>
       <source>Object dependencies</source>
       <translation>ობიექტის დამოკიდებულებები</translation>
     </message>
@@ -5115,47 +5115,47 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskCenterLine</name>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="29"/>
+      <location filename="../../TaskCenterLine.ui" line="17"/>
       <source>Center Line</source>
       <translation>ცენტრის ხაზი</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="41"/>
+      <location filename="../../TaskCenterLine.ui" line="29"/>
       <source>Base View</source>
       <translation>საბაზისო ხედი</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="64"/>
+      <location filename="../../TaskCenterLine.ui" line="52"/>
       <source>Elements</source>
       <translation>ელემენტები</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="95"/>
+      <location filename="../../TaskCenterLine.ui" line="83"/>
       <source>Orientation</source>
       <translation>ორიენტაცია</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="101"/>
+      <location filename="../../TaskCenterLine.ui" line="89"/>
       <source>Top to Bottom line</source>
       <translation>ხაზი ზემოდან ქვემოთ</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="104"/>
+      <location filename="../../TaskCenterLine.ui" line="92"/>
       <source>Vertical</source>
       <translation>ვერტიკალურად</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="120"/>
+      <location filename="../../TaskCenterLine.ui" line="108"/>
       <source>Left to Right line</source>
       <translation>ხაზი მარცხნიდან მარჯვნივ</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="123"/>
+      <location filename="../../TaskCenterLine.ui" line="111"/>
       <source>Horizontal</source>
       <translation>ჰორიზონტალურად</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="136"/>
+      <location filename="../../TaskCenterLine.ui" line="124"/>
       <source>centerline between
 - lines: in equal distance to the lines and with
   half of the angle the lines have to each other
@@ -5166,92 +5166,92 @@ Do you want to continue?</source>
 - points: in equal distance to the points</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="142"/>
+      <location filename="../../TaskCenterLine.ui" line="130"/>
       <source>Aligned</source>
       <translation>გათანაბრებული</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="157"/>
+      <location filename="../../TaskCenterLine.ui" line="145"/>
       <source>Shift Horizontal</source>
       <translation>ჰორიზონტალური წანაცვლება</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="170"/>
+      <location filename="../../TaskCenterLine.ui" line="158"/>
       <source>Move line -Left or +Right</source>
       <translation>ხაზის -მარცხნივ ან +მარჯვნივ გაწევა</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="183"/>
+      <location filename="../../TaskCenterLine.ui" line="171"/>
       <source>Shift Vertical</source>
       <translation>ვერტიკალური წანაცვლება</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="196"/>
+      <location filename="../../TaskCenterLine.ui" line="184"/>
       <source>Move line +Up or -Down</source>
       <translation>ხაზის +მაღლა ან -დაბლა გადატანა</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="209"/>
+      <location filename="../../TaskCenterLine.ui" line="197"/>
       <source>Rotate</source>
       <translation>შებრუნება</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="222"/>
+      <location filename="../../TaskCenterLine.ui" line="210"/>
       <source>Rotate line +CCW or -CW</source>
       <translation>ხაზის მოტრიალება +სისმ ან -სიმ</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="249"/>
+      <location filename="../../TaskCenterLine.ui" line="237"/>
       <source>Extend By</source>
       <translation>გაფართოება</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="262"/>
+      <location filename="../../TaskCenterLine.ui" line="250"/>
       <source>Make the line a little longer.</source>
       <translation>ხაზის ოდნავ გაგრძელება.</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="268"/>
+      <location filename="../../TaskCenterLine.ui" line="256"/>
       <source>mm</source>
       <translation>მმ</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="278"/>
+      <location filename="../../TaskCenterLine.ui" line="266"/>
       <source>Color</source>
       <translation>ფერი</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="296"/>
+      <location filename="../../TaskCenterLine.ui" line="284"/>
       <source>Weight</source>
       <translation>სისქე</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="316"/>
+      <location filename="../../TaskCenterLine.ui" line="304"/>
       <source>Style</source>
       <translation>სტილი</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="327"/>
+      <location filename="../../TaskCenterLine.ui" line="315"/>
       <source>Continuous</source>
       <translation>უწყვეტი</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="336"/>
+      <location filename="../../TaskCenterLine.ui" line="324"/>
       <source>Dash</source>
       <translation>შტრიხი</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="345"/>
+      <location filename="../../TaskCenterLine.ui" line="333"/>
       <source>Dot</source>
       <translation>წერტილი</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="354"/>
+      <location filename="../../TaskCenterLine.ui" line="342"/>
       <source>DashDot</source>
       <translation>შტრიხპუნქტირი</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="363"/>
+      <location filename="../../TaskCenterLine.ui" line="351"/>
       <source>DashDotDot</source>
       <translation>ტირე-წერტილის ხაზი 2 წერტილით</translation>
     </message>
@@ -5259,38 +5259,38 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskCosVertex</name>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="26"/>
+      <location filename="../../TaskCosVertex.ui" line="14"/>
       <source>Cosmetic Vertex</source>
       <translation>დამხმარე წვერო</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="38"/>
+      <location filename="../../TaskCosVertex.ui" line="26"/>
       <source>Base View</source>
       <translation>საბაზისო ხედი</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="78"/>
+      <location filename="../../TaskCosVertex.ui" line="66"/>
       <location filename="../../TaskCosVertex.cpp" line="136"/>
       <source>Point Picker</source>
       <translation>აირჩიეთ წერტილები</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="107"/>
+      <location filename="../../TaskCosVertex.ui" line="95"/>
       <source>Position from the view center</source>
       <translation>პოზიცია ხედის ცენტრიდან</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="110"/>
+      <location filename="../../TaskCosVertex.ui" line="98"/>
       <source>Position</source>
       <translation type="unfinished">Position</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="118"/>
+      <location filename="../../TaskCosVertex.ui" line="106"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="154"/>
+      <location filename="../../TaskCosVertex.ui" line="142"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -5367,312 +5367,312 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskCustomizeFormat</name>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="26"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="14"/>
       <source>Format Symbols</source>
       <translation>სიმბოლოების ფორმატი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="32"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="20"/>
       <source>GD&amp;T</source>
       <translation>GD&amp;T</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="41"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="29"/>
       <source>Straightness</source>
       <translation>სისწორე</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="51"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="39"/>
       <source>Flatness</source>
       <translation>სიბრტყელე</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="61"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="49"/>
       <source>Circularity</source>
       <translation>სიმრგვალე</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="71"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="59"/>
       <source>Cylindricity</source>
       <translation>ცილინდრულობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="81"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="69"/>
       <source>Parallelism</source>
       <translation>პარალელიზმი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="91"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="79"/>
       <source>Perpendicularity</source>
       <translation>მართობულობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="101"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="89"/>
       <source>Angularity</source>
       <translation>მაქსიმალური კუთხე</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="116"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="104"/>
       <source>Profile of a line</source>
       <translation>ხაზის პროფილი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="126"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="114"/>
       <source>Profile of a surface</source>
       <translation>ზედაპირის პროფილი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="136"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="124"/>
       <source>Circular runout</source>
       <translation>წრიული გამოსვლა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="146"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="134"/>
       <source>Total runout</source>
       <translation>ჯამური გადაცილება</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="156"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="144"/>
       <source>Position</source>
       <translation type="unfinished">Position</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="166"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="154"/>
       <source>Concentricity</source>
       <translation>კონცენტრირებულობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="176"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="164"/>
       <source>Symmetry</source>
       <translation>სიმეტრია</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="188"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="176"/>
       <source>Modifiers</source>
       <translation>მოდიფიკატორი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="202"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="190"/>
       <source>derived geometry element</source>
       <translation>მიღებულ გეომეტრიული ელემენტი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="217"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="205"/>
       <source>Minimax (Tschebyschew)</source>
       <translation>მინიმაქსი (ჩებიშევი)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="232"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="220"/>
       <source>Hull condition</source>
       <translation>კორპუსის მდგომარეობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="247"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="235"/>
       <source>Free state</source>
       <translation>თავისუფალი მდგომარეობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="262"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="250"/>
       <source>Least square geometry element</source>
       <translation>ყველაზე ნაკლებად ოთხკუთხედი გეომეტრიული ელემენტი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="277"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="265"/>
       <source>Least material condition (LMC)</source>
       <translation>უმცირესი მასალის პირობა (LMC)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="292"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="280"/>
       <source>Maximum material condition (MMC)</source>
       <translation>ყველაზე მეტი მასალის პირობა (MMC)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="307"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="295"/>
       <source>least inscribed geometry element</source>
       <translation>ყველაზე იშვიათად ჩაწერილი გეომეტრიული ელემენტი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="322"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="310"/>
       <source>Projected tolerance zone</source>
       <translation>პროექციის სიზუსტის ზონა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="337"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="325"/>
       <source>Reciprocity condition</source>
       <translation>ორმხრივი პირობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="352"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="340"/>
       <source>Regardless of feature size (RFS)</source>
       <translation>თვისების ზომის მიუხედავად (RFS)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="367"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="355"/>
       <source>Tangent plane</source>
       <translation>მხები სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="382"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="370"/>
       <source>Unequal Bilateral</source>
       <translation>არათანაბარი ორმხრივი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="397"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="385"/>
       <source>most inscribed geometry element</source>
       <translation>ყველაზე ხშირად ჩაწერილი გეომეტრიული ელემენტი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="409"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="397"/>
       <source>Radius &amp; Diameter</source>
       <translation>რადიუსი &amp; დიამეტრი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="418"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="406"/>
       <source>Radius</source>
       <translation>რადიუსი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="428"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="416"/>
       <source>Diameter</source>
       <translation>დიამეტრი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="438"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="426"/>
       <source>Radius of sphere</source>
       <translation>სფეროს რადიუსი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="448"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="436"/>
       <source>Diameter of sphere</source>
       <translation>სფეროს დიამეტრი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="458"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="446"/>
       <source>Square</source>
       <translation>კვადრატი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="470"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="458"/>
       <source>Angles</source>
       <translation>კუთხეები</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="479"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="467"/>
       <source>Degree</source>
       <translation>გრადუსი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="489"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="477"/>
       <source>(Arc) Minute</source>
       <translation>(რკალი) მინუტი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="499"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="487"/>
       <source>(Arc) Second</source>
       <translation>(რკალი) სეკუნდი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="509"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="497"/>
       <source>(Arc) Tertie</source>
       <translation>(რკალი) მესამეული</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="521"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="509"/>
       <source>Other</source>
       <translation>სხვა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="533"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="521"/>
       <source>Taper</source>
       <translation>შევიწროება</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="543"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="531"/>
       <source>Slope</source>
       <translation>დახრა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="553"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="541"/>
       <source>Counterbore</source>
       <translation>მოტორსვა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="563"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="551"/>
       <source>Countersink</source>
       <translation>ჩაძირვა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="573"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="561"/>
       <source>Plus - Minus</source>
       <translation>პლუს - მინუს</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="583"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="571"/>
       <source>Centerline</source>
       <translation>ღერძის ხაზი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="593"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="581"/>
       <source>Left/right arrow</source>
       <translation>მარცხენა/მარჯვენა ისარი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="603"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="591"/>
       <source>Downward arrow</source>
       <translation>დაბლა ისარი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="613"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="601"/>
       <source>Multiplication sign</source>
       <translation>გამრავლების ნიშანი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="625"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="613"/>
       <source>Greek Letters</source>
       <translation>ბერძნული ასოები</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="634"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="622"/>
       <source>Capital delta</source>
       <translation>დიდი დელტა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="644"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="632"/>
       <source>Capital sigma</source>
       <translation>დიდი სიგმა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="654"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="642"/>
       <source>Capital omega</source>
       <translation>დიდი ომეგა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="664"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="652"/>
       <source>Small mu</source>
       <translation>მატარა მიუ</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="674"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="662"/>
       <source>Small sigma</source>
       <translation>პატარა სიგმა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="684"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="672"/>
       <source>Small phi</source>
       <translation>პატარა ფი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="694"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="682"/>
       <source>Small omega</source>
       <translation>პატარა ომეგა</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="708"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="696"/>
       <source>Format:</source>
       <translation>ფორმატი:</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="718"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="706"/>
       <source>Preview:</source>
       <translation>მინიატურა:</translation>
     </message>
@@ -5685,68 +5685,68 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskDetail</name>
     <message>
-      <location filename="../../TaskDetail.ui" line="26"/>
+      <location filename="../../TaskDetail.ui" line="14"/>
       <source>Detail Anchor</source>
       <translation>დეტალური მიბმა</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="38"/>
+      <location filename="../../TaskDetail.ui" line="26"/>
       <source>Base View</source>
       <translation>საბაზისო ხედი</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="61"/>
+      <location filename="../../TaskDetail.ui" line="49"/>
       <source>Detail View</source>
       <translation>დეტალური ხედი</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="92"/>
+      <location filename="../../TaskDetail.ui" line="80"/>
       <source>Click to drag detail highlight to new position</source>
       <translation>დეტალის გამოკვეთის გადასათრევად დააწკაპუნეთ</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="95"/>
+      <location filename="../../TaskDetail.ui" line="83"/>
       <location filename="../../TaskDetail.cpp" line="296"/>
       <source>Drag Highlight</source>
       <translation>მონიშნულის გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="126"/>
+      <location filename="../../TaskDetail.ui" line="114"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="146"/>
+      <location filename="../../TaskDetail.ui" line="134"/>
       <source>x position of detail highlight within view</source>
       <translation>ხედზე დეტალის გამოკვეთის X მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="165"/>
+      <location filename="../../TaskDetail.ui" line="153"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="172"/>
+      <location filename="../../TaskDetail.ui" line="160"/>
       <source>y position of detail highlight within view</source>
       <translation>ხედზე დეტალის გამოკვეთის Y მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="188"/>
+      <location filename="../../TaskDetail.ui" line="176"/>
       <source>Radius</source>
       <translation>რადიუსი</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="195"/>
+      <location filename="../../TaskDetail.ui" line="183"/>
       <source>size of detail view</source>
       <translation>ნაწილის ხედის ზომა</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="214"/>
+      <location filename="../../TaskDetail.ui" line="202"/>
       <source>Scale Type</source>
       <translation>მასშტაბირების ტიპი</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="221"/>
+      <location filename="../../TaskDetail.ui" line="209"/>
       <source>Page: scale factor of page is used
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
@@ -5757,37 +5757,37 @@ Custom: custom scale factor is used</source>
 მორგება: იყენებს მორგებული მასშტაბირების ფაქტორს</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="228"/>
+      <location filename="../../TaskDetail.ui" line="216"/>
       <source>Page</source>
       <translation>გვერდი</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="233"/>
+      <location filename="../../TaskDetail.ui" line="221"/>
       <source>Automatic</source>
       <translation>ავტომატური</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="238"/>
+      <location filename="../../TaskDetail.ui" line="226"/>
       <source>Custom</source>
       <translation>მომხმარებლის</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="246"/>
+      <location filename="../../TaskDetail.ui" line="234"/>
       <source>Scale Factor</source>
       <translation>გადიდების კოეფიციენტი</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="256"/>
+      <location filename="../../TaskDetail.ui" line="244"/>
       <source>scale factor for detail view</source>
       <translation>დეტალის ხედის მასშტაბის კოეფიციენტი</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="278"/>
+      <location filename="../../TaskDetail.ui" line="266"/>
       <source>Reference</source>
       <translation>ბმა</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="285"/>
+      <location filename="../../TaskDetail.ui" line="273"/>
       <source>reference label</source>
       <translation>ბმული ჭდე</translation>
     </message>

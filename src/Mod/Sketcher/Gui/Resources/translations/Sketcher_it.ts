@@ -1698,11 +1698,11 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <translation>Aggiungi vincolo di blocco</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="256"/>
       <location filename="../../CommandConstraints.cpp" line="1843"/>
       <location filename="../../CommandConstraints.cpp" line="2001"/>
       <location filename="../../CommandConstraints.cpp" line="2066"/>
-      <location filename="../../CommandSketcherTools.cpp" line="149"/>
-      <location filename="../../CommandSketcherTools.cpp" line="256"/>
       <source>Add coincident constraint</source>
       <translation>Vincola la coincidenza</translation>
     </message>
@@ -2336,6 +2336,39 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <translation>Non allegare</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandSketcherTools.cpp" line="130"/>
+      <location filename="../../CommandSketcherTools.cpp" line="138"/>
+      <location filename="../../CommandSketcherTools.cpp" line="180"/>
+      <location filename="../../CommandSketcherTools.cpp" line="241"/>
+      <location filename="../../CommandSketcherTools.cpp" line="249"/>
+      <location filename="../../CommandSketcherTools.cpp" line="328"/>
+      <location filename="../../CommandSketcherTools.cpp" line="975"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1087"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1095"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1200"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1209"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1468"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1477"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2023"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2032"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2094"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2290"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2299"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2344"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <location filename="../../CommandConstraints.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="911"/>
@@ -2467,39 +2500,6 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="7485"/>
       <location filename="../../CommandConstraints.cpp" line="7558"/>
       <location filename="../../CommandConstraints.cpp" line="7569"/>
-      <location filename="../../CommandSketcherTools.cpp" line="130"/>
-      <location filename="../../CommandSketcherTools.cpp" line="138"/>
-      <location filename="../../CommandSketcherTools.cpp" line="180"/>
-      <location filename="../../CommandSketcherTools.cpp" line="241"/>
-      <location filename="../../CommandSketcherTools.cpp" line="249"/>
-      <location filename="../../CommandSketcherTools.cpp" line="328"/>
-      <location filename="../../CommandSketcherTools.cpp" line="975"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1087"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1095"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1200"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1209"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1468"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1477"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1536"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2023"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2032"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2094"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2290"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2299"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2344"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
       <source>Wrong selection</source>
       <translation>Selezione errata</translation>
     </message>
@@ -2563,6 +2563,8 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <translation>Seleziona un bordo dello schizzo.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="170"/>
+      <location filename="../../CommandSketcherTools.cpp" line="273"/>
       <location filename="../../CommandConstraints.cpp" line="937"/>
       <location filename="../../CommandConstraints.cpp" line="951"/>
       <location filename="../../CommandConstraints.cpp" line="957"/>
@@ -2579,8 +2581,6 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1268"/>
       <location filename="../../CommandConstraints.cpp" line="1277"/>
       <location filename="../../CommandConstraints.cpp" line="1288"/>
-      <location filename="../../CommandSketcherTools.cpp" line="170"/>
-      <location filename="../../CommandSketcherTools.cpp" line="273"/>
       <source>Impossible constraint</source>
       <translation>Vincolo Impossible</translation>
     </message>
@@ -2682,6 +2682,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <translation>Selezionare solo i bordi dallo schizzo.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="861"/>
       <location filename="../../CommandConstraints.cpp" line="1673"/>
       <location filename="../../CommandConstraints.cpp" line="1718"/>
       <location filename="../../CommandConstraints.cpp" line="3470"/>
@@ -2689,7 +2690,6 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="4168"/>
       <location filename="../../CommandConstraints.cpp" line="4677"/>
       <location filename="../../CommandConstraints.cpp" line="6926"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="861"/>
       <source>Error</source>
       <translation>Errore</translation>
     </message>
@@ -2805,7 +2805,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2881"/>
       <location filename="../../CommandConstraints.cpp" line="3130"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
-      <translation type="unfinished">This constraint only makes sense on a line segment or a pair of points.</translation>
+      <translation>Questo vincolo ha senso solo su un segmento di linea o su una coppia di punti.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3021"/>
@@ -2998,7 +2998,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="6324"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
-      <translation type="unfinished">Sketch axes cannot be used in equality constraints.</translation>
+      <translation>Gli assi dello schizzo non possono essere usati nei vincoli di uguaglianza.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6343"/>
@@ -3073,7 +3073,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="6999"/>
       <source>Sketch axes cannot be used in internal alignment constraint.</source>
-      <translation type="unfinished">Sketch axes cannot be used in internal alignment constraint.</translation>
+      <translation>Gli assi dello schizzo non possono essere usati nel vincolo di allineamento interno.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7044"/>
@@ -3158,17 +3158,17 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4739"/>
       <source>B-Spline Degree</source>
-      <translation type="unfinished">B-Spline Degree</translation>
+      <translation>Grado B-Spline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4740"/>
       <source>Define B-Spline Degree, between 1 and %1:</source>
-      <translation type="unfinished">Define B-Spline Degree, between 1 and %1:</translation>
+      <translation>Definisci il grado B-Spline, tra 1 e %1:</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5890"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="718"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1077"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5890"/>
       <source>CAD Kernel Error</source>
       <translation>Errore Kernel CAD</translation>
     </message>
@@ -4781,7 +4781,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="279"/>
       <source>Restricts 3D visibility to the listed elements</source>
-      <translation type="unfinished">Restricts 3D visibility to the listed elements</translation>
+      <translation>Limita la visibilità 3D agli elementi elencati</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="282"/>

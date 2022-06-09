@@ -83,12 +83,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
       <source>Enter distance</source>
-      <translation type="unfinished">Enter distance</translation>
+      <translation>Abstand eingeben</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="168"/>
       <source>Select ImagePlane</source>
-      <translation type="unfinished">Select ImagePlane</translation>
+      <translation>Bildebene auswählen</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>

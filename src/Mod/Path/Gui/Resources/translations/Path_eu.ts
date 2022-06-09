@@ -4,15 +4,15 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="125"/>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="59"/>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="57"/>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="69"/>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="59"/>
+      <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="953"/>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="427"/>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="65"/>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="69"/>
-      <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="953"/>
-      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="57"/>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="55"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="125"/>
       <source>The base path to modify</source>
       <translation>Aldatuko den oinarri-bidea</translation>
     </message>
@@ -55,13 +55,13 @@
       <location filename="../../../PathScripts/PathPocketBase.py" line="127"/>
       <location filename="../../../PathScripts/PathProfile.py" line="109"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
+      <translation>Tresna-bideak piezaren inguruan izan behar duen norabidea: erlojuaren noranzkoan (CW), edo aurka (CCW)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="118"/>
       <location filename="../../../PathScripts/PathSurface.py" line="247"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="266"/>
       <location filename="../../../PathScripts/PathPocket.py" line="68"/>
+      <location filename="../../../PathScripts/PathProfile.py" line="118"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>Aukeratu nola prozesatuko diren oinarri-geometriako elementu anitz.</translation>
     </message>
@@ -76,9 +76,9 @@
       <translation>Elkartze zorrotz bat trunkatzen hasteko distantzia maximoa</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="144"/>
       <location filename="../../../PathScripts/PathHelix.py" line="143"/>
       <location filename="../../../PathScripts/PathHelix.py" line="168"/>
+      <location filename="../../../PathScripts/PathProfile.py" line="144"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Amaierako profiletik aldentzeko balio gehigarria - ona arbastatzeko tresna-bidearentzako</translation>
     </message>
@@ -139,8 +139,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="174"/>
-      <location filename="../../../PathScripts/PathPlane.py" line="47"/>
       <location filename="../../../PathScripts/PathFixture.py" line="64"/>
+      <location filename="../../../PathScripts/PathPlane.py" line="47"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Markatu 'Gezurra', eragiketak koderik sortu dezan saihestu nahi baduzu</translation>
     </message>
@@ -167,11 +167,11 @@
       <translation>Eragiketa honetarako oinarri-kokapenak</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="219"/>
       <location filename="../../../PathScripts/PathCopy.py" line="50"/>
+      <location filename="../../../PathScripts/PathOp.py" line="219"/>
       <location filename="../../../PathScripts/PathArray.py" line="134"/>
       <source>The tool controller that will be used to calculate the path</source>
-      <translation type="unfinished">The tool controller that will be used to calculate the path</translation>
+      <translation>Bidea kalkulatzeko erabiliko den tresna-kontrolatzailea</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="228"/>
@@ -219,10 +219,10 @@
       <translation>Bide honen hasiera-puntua</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="316"/>
       <location filename="../../../PathScripts/PathSurface.py" line="431"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="240"/>
+      <location filename="../../../PathScripts/PathOp.py" line="316"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="459"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="240"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Markatu 'Egia', hasierako puntu bat adieraziko bada</translation>
     </message>
@@ -367,44 +367,44 @@
       <translation>Noraino luzatuko den zulatze-sakonera</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="131"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="959"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="131"/>
       <source>Width of tags.</source>
       <translation>Etiketen zabalera.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="137"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="965"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="137"/>
       <source>Height of tags.</source>
       <translation>Etiketen altuera.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="143"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="971"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="143"/>
       <source>Angle of tag plunge and ascent.</source>
       <translation>Etiketaren murgiltze- eta igotze-angelua.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="149"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="977"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="149"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>Biribiltze-erradioa etiketarako.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="155"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="983"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="155"/>
       <source>Locations of inserted holding tags</source>
       <translation>Txertatutako euste-etiketen kokapenak</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="161"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="989"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="161"/>
       <source>IDs of disabled holding tags</source>
       <translation>Desgaitutako euste-etiketen IDak</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="170"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="998"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="170"/>
       <source>Factor determining the # of segments used to approximate rounded tags.</source>
       <translation>Etiketa biribilduetara hurbiltzeko erabiliko diren # segmentuak zehazteko faktorea.</translation>
     </message>
@@ -451,8 +451,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="127"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="126"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="204"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="126"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
       <translation>Erakutsi aldi baterako bide-eraikuntzaren objektuak modulua ARAZKETA moduan dagoenean.</translation>
     </message>
@@ -547,8 +547,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="291"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="151"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="328"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="151"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Ezarri eragiketarako erabiliko den garbitze geometrikoko eredua.</translation>
     </message>
@@ -572,8 +572,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="326"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="178"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="371"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="178"/>
       <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
       <translation>Osatu eragiketa pasaldi bakarrean sakoneran, edo pasaldi anitzetan azken sakoneraraino.</translation>
     </message>
@@ -637,8 +637,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="423"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="232"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="451"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="232"/>
       <source>The custom start point for the path of this operation</source>
       <translation type="unfinished">The custom start point for the path of this operation</translation>
     </message>
@@ -796,8 +796,8 @@
       <translation type="unfinished">When enabled connected extension edges are combined to wires.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="71"/>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1116"/>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="71"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Oinarri-geometriaren eskema erabiltzen du.</translation>
     </message>
@@ -868,9 +868,9 @@
       <translation type="unfinished">Influences accuracy and performance</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathAdaptive.py" line="985"/>
       <location filename="../../../PathScripts/PathPocketBase.py" line="150"/>
       <location filename="../../../PathScripts/PathHelix.py" line="128"/>
-      <location filename="../../../PathScripts/PathAdaptive.py" line="985"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Pasaldi bakoitzean ebakigailu-diametroaren zein ehuneko gainditu behar den</translation>
     </message>
@@ -953,37 +953,37 @@
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="160"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
-      <translation type="unfinished">Positive extends the beginning of the path, negative shortens.</translation>
+      <translation>Balio positiboak bidearen hasiera luzatzen du, negatiboak laburtu egiten du.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="169"/>
       <source>Positive extends the end of the path, negative shortens.</source>
-      <translation type="unfinished">Positive extends the end of the path, negative shortens.</translation>
+      <translation>Balio positiboak bidearen amaiera luzatzen du, negatiboak laburtu egiten du.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="187"/>
       <source>Choose the path orientation with regard to the feature(s) selected.</source>
-      <translation type="unfinished">Choose the path orientation with regard to the feature(s) selected.</translation>
+      <translation>Aukeratu elementu hautatu(ar)en araberako bide-orientazioa.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="196"/>
       <source>Choose what point to use on the first selected feature.</source>
-      <translation type="unfinished">Choose what point to use on the first selected feature.</translation>
+      <translation>Aukeratu zein puntu erabiliko den hautatutako lehen elementuan.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="205"/>
       <source>Choose what point to use on the second selected feature.</source>
-      <translation type="unfinished">Choose what point to use on the second selected feature.</translation>
+      <translation>Aukeratu zein puntu erabiliko den hautatutako bigarren elementuan.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="214"/>
       <source>For arcs/circlular edges, offset the radius for the path.</source>
-      <translation type="unfinished">For arcs/circlular edges, offset the radius for the path.</translation>
+      <translation>Arkuen/ertz zirkularren kasurako, desplazatu bidearen erradioa.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="223"/>
       <source>Enable to reverse the cut direction of the slot path.</source>
-      <translation type="unfinished">Enable to reverse the cut direction of the slot path.</translation>
+      <translation>Gaitu arteka-bidearen mozte-norabidea alderantzikatzea.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="65"/>
@@ -1008,17 +1008,17 @@
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="92"/>
       <source>Should the dressup ignore motion commands above DressupStartDepth</source>
-      <translation type="unfinished">Should the dressup ignore motion commands above DressupStartDepth</translation>
+      <translation>Jantziak DressupStartDepth gaineko mugimendu-komandoak ezikusiko dituen ala ez</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="101"/>
       <source>The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</source>
-      <translation type="unfinished">The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</translation>
+      <translation>Arrapalaren jantzia zein sakoneran gaituko den. Honetatik gora, arrapalak ez dira sortzen, baina mugimendu-komandoak bere horretan igarotzen dira.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="216"/>
       <location filename="../../../PathScripts/PathEngrave.py" line="72"/>
       <location filename="../../../PathScripts/PathEngrave.py" line="82"/>
-      <location filename="../../../PathScripts/PathVcarve.py" line="216"/>
       <source>Additional base objects to be engraved</source>
       <translation>Grabatuko diren oinarri-objektu gehigarriak</translation>
     </message>
@@ -1255,32 +1255,32 @@
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="119"/>
       <source>Extra allowance from part bound box in negative X direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative X direction</translation>
+      <translation>Piezaren muga-kutxaren perdoi gehigarria X norabide negatiboan</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="128"/>
       <source>Extra allowance from part bound box in positive X direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive X direction</translation>
+      <translation>Piezaren muga-kutxaren perdoi gehigarria X norabide positiboan</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="137"/>
       <source>Extra allowance from part bound box in negative Y direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative Y direction</translation>
+      <translation>Piezaren muga-kutxaren perdoi gehigarria Y norabide negatiboan</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="146"/>
       <source>Extra allowance from part bound box in positive Y direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive Y direction</translation>
+      <translation>Piezaren muga-kutxaren perdoi gehigarria Y norabide positiboan</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="155"/>
       <source>Extra allowance from part bound box in negative Z direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative Z direction</translation>
+      <translation>Piezaren muga-kutxaren perdoi gehigarria Z norabide negatiboan</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="164"/>
       <source>Extra allowance from part bound box in positive Z direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive Z direction</translation>
+      <translation>Piezaren muga-kutxaren perdoi gehigarria Z norabide positiboan</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="170"/>
@@ -1405,7 +1405,7 @@
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="136"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation type="unfinished">Extra offset to apply to the operation. Direction is operation dependent.</translation>
+      <translation>Eragiketari aplikatuko zaion desplazamendu gehigarria. Norabidea eragiketaren menpekoa da.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="142"/>
@@ -1966,31 +1966,31 @@
   <context>
     <name>Form</name>
     <message>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="14"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="14"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="14"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="14"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="14"/>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="20"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="14"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="14"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="14"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="14"/>
-      <location filename="../panels/SetupOp.ui" line="14"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="14"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="14"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="14"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="14"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="14"/>
-      <location filename="../panels/ToolEditor.ui" line="14"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="14"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="14"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <location filename="../panels/DressupPathBoundary.ui" line="14"/>
-      <location filename="../panels/PageOpPocketExtEdit.ui" line="14"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="14"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="14"/>
+      <location filename="../panels/PageOpPocketExtEdit.ui" line="14"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="14"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="14"/>
+      <location filename="../panels/SetupOp.ui" line="14"/>
+      <location filename="../panels/DressupPathBoundary.ui" line="14"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="20"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="14"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="14"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="14"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="14"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="14"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="14"/>
+      <location filename="../panels/ToolEditor.ui" line="14"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="14"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="14"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="14"/>
+      <location filename="../preferences/PathDressupHoldingTags.ui" line="14"/>
       <source>Form</source>
       <translation>Inprimakia</translation>
     </message>
@@ -2151,9 +2151,9 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gehitu hautatutako elementuak eragiketa honetarako oinarri-geometrien zerrendari.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="45"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <source>Add</source>
       <translation>Gehitu</translation>
     </message>
@@ -2163,10 +2163,10 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kendu hautatutako zerrenda-elementuak oinarri-geometrien zerrendatik. Eragiketa ez zaie aplikatuko.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <location filename="../panels/PropertyBag.ui" line="48"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="55"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
       <source>Remove</source>
       <translation>Kendu</translation>
     </message>
@@ -2176,8 +2176,8 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Garbitu oinarri-geometrien zerrenda.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <source>Clear</source>
       <translation>Garbitu</translation>
     </message>
@@ -2268,53 +2268,53 @@
       <translation>Kokapen guztiak eragiketa-propietate berak erabilita prozesatuko dira.</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="36"/>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
+      <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
       <translation>Hasierako sakonera</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eragiketaren hasierako sakonera. Eragiketak Z ardatzean prozesatu behar duen punturik altuena.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transferitu hautatutako elementuaren Z balioa eragiketaren hasierako sakonerara.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="155"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="46"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="83"/>
       <location filename="../panels/PageDepthsEdit.ui" line="62"/>
       <location filename="../panels/PageDepthsEdit.ui" line="108"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="46"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="83"/>
       <source>...</source>
       <translation>...</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="50"/>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
+      <location filename="../panels/SetupGlobal.ui" line="50"/>
       <source>Final Depth</source>
       <translation>Amaierako sakonera</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eragiketaren sakonera, eragiketak Z ardatzean prozesatu behar duen punturik baxuenari dagokiona.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Final Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transferitu hautatutako elementuaren Z balioa eragiketaren amaierako sakonerara.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="64"/>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
+      <location filename="../panels/SetupGlobal.ui" line="64"/>
       <source>Step Down</source>
       <translation>Beheratzea</translation>
     </message>
@@ -2365,53 +2365,53 @@
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <source>ToolController</source>
       <translation>Tresna-kontrolagailua</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eragiketa honetan erabiliko den tresna eta bere ezarpenak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
-      <location filename="../panels/SetupGlobal.ui" line="241"/>
-      <location filename="../panels/SetupGlobal.ui" line="247"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
+      <location filename="../panels/SetupGlobal.ui" line="241"/>
+      <location filename="../panels/SetupGlobal.ui" line="247"/>
       <source>Coolant Mode</source>
       <translation>Hozgarri-modua</translation>
     </message>
@@ -2421,20 +2421,20 @@
       <translation>G Gode</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-      <location filename="../panels/SetupGlobal.ui" line="166"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
+      <location filename="../panels/SetupGlobal.ui" line="166"/>
       <source>Tool Controller</source>
       <translation>Tresna-kontrolagailua</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
-      <location filename="../panels/SetupGlobal.ui" line="235"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
+      <location filename="../panels/SetupGlobal.ui" line="235"/>
       <source>Coolant</source>
       <translation>Hozgarria</translation>
     </message>
@@ -2451,7 +2451,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
       <source>Operation Type</source>
-      <translation type="unfinished">Operation Type</translation>
+      <translation>Eragiketa mota</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
@@ -2459,8 +2459,8 @@
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="176"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
       <source>Step Over Percent</source>
       <translation>Gainditze-ehunekoa</translation>
     </message>
@@ -2550,8 +2550,8 @@
       <translation type="unfinished">Finishing Profile</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="245"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="235"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="245"/>
       <source>Use Outline</source>
       <translation>Erabili eskema</translation>
     </message>
@@ -2561,10 +2561,10 @@
       <translation>Gelditu</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="167"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="82"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
       <source>Direction</source>
       <translation>Norabidea</translation>
     </message>
@@ -2884,8 +2884,8 @@
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="183"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="183"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna saiheska zenbat desplazatuko den ereduaren ziklo bakoitzean.&lt;/p&gt;&lt;p&gt;Gainditzea % 100ekoa bada, ez da gainjartzerik egongo zikloen artean.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -2905,8 +2905,8 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zehaztu eragiketa honek hasierako puntu bat erabiltzen duen ala ez.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="225"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="255"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="225"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
       <source>Use Start Point</source>
       <translation>Erabili hasiera-puntua</translation>
@@ -3139,15 +3139,15 @@
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <source>Layer Mode</source>
       <translation>Geruza-modua</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Osatu eragiketa sakoneko pasaera bakarrean edo pasaera anitzetan azken sakoneraraino.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -3473,8 +3473,8 @@
       <translation>TPI</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="144"/>
+      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <source>Operation</source>
       <translation>Eragiketa</translation>
     </message>
@@ -4036,8 +4036,8 @@ For example:
       <translation>Ez erakutsi berriro</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="93"/>
       <location filename="../../../PathScripts/PathPost.py" line="421"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="93"/>
       <source>Choose a Path Job</source>
       <translation>Aukeratu bide-lan bat</translation>
     </message>
@@ -4054,12 +4054,12 @@ For example:
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="789"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
-      <translation type="unfinished">No Tool Controller is selected. We need a tool to build a Path.</translation>
+      <translation>Ez da tresna-kontrolagailurik hautatu. Tresna bat behar da bide bat eraikitzeko.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="803"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
-      <translation type="unfinished">No Tool found or diameter is zero. We need a tool to build a Path.</translation>
+      <translation>Ez da tresnarik aurkitu edo diametroa zero da. Tresna bat behar da bide bat eraikitzeko.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="838"/>
@@ -4074,7 +4074,7 @@ For example:
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="854"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
-      <translation type="unfinished">Tool Controller feedrates required to calculate the cycle time.</translation>
+      <translation>Tresna-kontrolagailuaren elikatze-abiadura behar da ziklo-denbora kalkulatzeko.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="857"/>
@@ -4084,7 +4084,7 @@ For example:
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="865"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
-      <translation type="unfinished">Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</translation>
+      <translation>Gehitu tresna-kontrolagailuaren abiadura azkarrak konfigurazio-orrian, ziklo-denbora zehatzagoak izateko.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="874"/>
@@ -4104,22 +4104,22 @@ For example:
     <message>
       <location filename="../../../PathScripts/PathPreferences.py" line="196"/>
       <source>Legacy tools are deprecated. They will be removed after version 0.20</source>
-      <translation type="unfinished">Legacy tools are deprecated. They will be removed after version 0.20</translation>
+      <translation>Tresna zaharkituak kendu egingo dira 0.20 bertsioaren ondoren</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="558"/>
       <source>This job contains Legacy tools. Legacy tools are deprecated. They will be removed after version 0.20</source>
-      <translation type="unfinished">This job contains Legacy tools. Legacy tools are deprecated. They will be removed after version 0.20</translation>
+      <translation>Lanak tresna zaharrak ditu. Tresna zaharrak kendu egingo dira 0.20 bertsioaren ondoren</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathCircularHoleBase.py" line="117"/>
       <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
-      <translation type="unfinished">Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</translation>
+      <translation>Zulo-diametroa beharbada ez da zehatza aurpegiaren teselazioaren ondorioz. Agian zuloaren ertza hautatu beharko zenuke.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathCircularHoleBase.py" line="151"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
-      <translation type="unfinished">Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</translation>
+      <translation>%s.%s elementua ezin da prozesatu zulo zirkular gisa - kendu oinarri-geometrien zerrendatik.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="628"/>
@@ -4142,15 +4142,15 @@ For example:
       <translation>Profilatu eredu osoa, aurpegi hautatua(k) edo ertz hautatua(k)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathIconViewProvider.py" line="98"/>
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="117"/>
+      <location filename="../../../PathScripts/PathIconViewProvider.py" line="98"/>
       <source>Edit</source>
       <translation>Editatu</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocket.py" line="335"/>
       <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
-      <translation type="unfinished">A planar adaptive start is unavailable. The non-planar will be attempted.</translation>
+      <translation>Hasiera moldakor planarra ez dago erabilgarri. Planarra ez dena probatuko da.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocket.py" line="351"/>
@@ -4171,7 +4171,7 @@ For example:
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="558"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
-      <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</translation>
+      <translation>Mozte-ertzaren angelu baliogabea (%.2f), &gt;0° and &lt;=180° artekoa izan behar du</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="570"/>
@@ -4179,8 +4179,8 @@ For example:
       <translation>Mozte-ertzaren angeluak (%.2f) tresna-puntaren luzera negatiboa ematen du</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="76"/>
       <location filename="../../../PathScripts/PathVcarveGui.py" line="65"/>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="76"/>
       <source>%s is not a Base Model object of the job %s</source>
       <translation>%s ez da oinarri-ereduen objektua %s lanerako</translation>
     </message>
@@ -4737,14 +4737,14 @@ Aukeren sorrera abortatzen</translation>
       <translation>Zorrotza</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="210"/>
       <location filename="../../../PathScripts/PathHelix.py" line="76"/>
+      <location filename="../../../PathScripts/PathProfile.py" line="210"/>
       <source>Outside</source>
       <translation>Kanpoan</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="211"/>
       <location filename="../../../PathScripts/PathHelix.py" line="77"/>
+      <location filename="../../../PathScripts/PathProfile.py" line="211"/>
       <source>Inside</source>
       <translation>Barruan</translation>
     </message>
@@ -5145,24 +5145,24 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="369"/>
       <location filename="../../../PathScripts/PathDressupAxisMap.py" line="287"/>
+      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="369"/>
       <source>Please select one path object
 </source>
       <translation>Hautatu bide-objektu bat
 </translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="374"/>
       <location filename="../../../PathScripts/PathDressupAxisMap.py" line="292"/>
+      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="374"/>
       <source>The selected object is not a path
 </source>
       <translation>Hautatutako objektua ez da bide bat
 </translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="379"/>
       <location filename="../../../PathScripts/PathDressupAxisMap.py" line="297"/>
+      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="379"/>
       <source>Please select a Path object</source>
       <translation>Hautatu bide-objektu bat</translation>
     </message>
@@ -5311,7 +5311,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
       <source>Use Machine CRC</source>
-      <translation type="unfinished">Use Machine CRC</translation>
+      <translation>Erabili makinaren CRCa</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="60"/>
@@ -5351,7 +5351,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="713"/>
       <source>Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</source>
-      <translation type="unfinished">Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</translation>
+      <translation>Ebakigailu-erradioaren konpentsazioaren G41/G42 sarrerako jantzi-objektu bat sortzen du hautatutako bide bat erabilita</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="728"/>
@@ -5379,7 +5379,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="269"/>
       <source>Creates a Path Boundary Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Path Boundary Dress-up object from a selected path</translation>
+      <translation>Bide-mugen jantzi-objektu bat sortzen du hautatutako bide bat erabiliz</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="285"/>
@@ -5442,7 +5442,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="906"/>
       <source>Creates a Ramp Entry Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Ramp Entry Dress-up object from a selected path</translation>
+      <translation>Arrapala-sarreraren jantzi-objektu bat sortzen du hautatutako bide bat erabiliz</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="922"/>
@@ -5483,14 +5483,14 @@ Aukeren sorrera abortatzen</translation>
       <translation>Oinarri-bidea hutsik dago.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="302"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="1378"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="302"/>
       <source>The selected object is not a path</source>
       <translation>Hautatutako objektua ez da bide bat</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="307"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="1383"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="307"/>
       <source>Please select a Profile object</source>
       <translation>Hautatu profil-objektu bat</translation>
     </message>
@@ -5517,7 +5517,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="1324"/>
       <source>Cannot insert holding tags for this path - please select a Profile path</source>
-      <translation type="unfinished">Cannot insert holding tags for this path - please select a Profile path</translation>
+      <translation>Ezin dira euste-etiketak txertatu bide honetarako - hautatu profil-bide bat</translation>
     </message>
   </context>
   <context>
@@ -5568,7 +5568,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathDrillingGui.py" line="162"/>
       <source>Creates a Path Drilling object from a features of a base object</source>
-      <translation type="unfinished">Creates a Path Drilling object from a features of a base object</translation>
+      <translation>Bidea zulatzeko objektu bat sortzen du oinarri-objektu bateko elementuetatik</translation>
     </message>
   </context>
   <context>
@@ -5602,7 +5602,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathJobCmd.py" line="107"/>
       <source>Exports Path Job as a template to be used for other jobs</source>
-      <translation type="unfinished">Exports Path Job as a template to be used for other jobs</translation>
+      <translation>Bide-lana txantiloi gisa esportatzen du, beste lan batzuetan erabili ahal izateko</translation>
     </message>
   </context>
   <context>
@@ -6044,15 +6044,15 @@ Aukeren sorrera abortatzen</translation>
     <name>Path_Profile</name>
     <message>
       <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="50"/>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="50"/>
       <location filename="../../../PathScripts/PathProfileContourGui.py" line="48"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="50"/>
       <source>Profile</source>
       <translation>Profila</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="53"/>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="53"/>
       <location filename="../../../PathScripts/PathProfileContourGui.py" line="51"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="53"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation>Profilatu eredu osoa, aurpegi hautatua(k) edo ertz hautatua(k)</translation>
     </message>
@@ -6067,7 +6067,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathPropertyBagGui.py" line="438"/>
       <source>Creates an object which can be used to store reference properties.</source>
-      <translation type="unfinished">Creates an object which can be used to store reference properties.</translation>
+      <translation>Erreferentzia-propietateak biltegiratzeko erabili daitekeen objektu bat sortzen du.</translation>
     </message>
   </context>
   <context>
@@ -6456,7 +6456,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="682"/>
       <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation type="unfinished">Current Extend Radius value produces negative arc radius.</translation>
+      <translation>Uneko hedadura-erradioaren balioak arku-erradio negatiboak sortzen ditu.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="700"/>
@@ -6483,7 +6483,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="992"/>
       <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation type="unfinished">Only a vertex selected. Add another feature to the Base Geometry.</translation>
+      <translation>Erpin bakarra hautatu da. Gehitu beste elementu bat oinarri-geometriari.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1018"/>
@@ -6508,7 +6508,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1248"/>
       <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-      <translation type="unfinished">Failed, slot from edge only accepts lines, arcs and circles.</translation>
+      <translation>Huts egitea, ertzaren artekak lerroak, arkuak eta zirkuluak soilik onartzen ditu.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1267"/>
@@ -6715,7 +6715,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathThreadMillingGui.py" line="263"/>
       <source>Creates a Path Thread Milling operation from features of a base object</source>
-      <translation type="unfinished">Creates a Path Thread Milling operation from features of a base object</translation>
+      <translation>Haria fresatzeko bide-eragiketa bat sortzen du oinarri-objektu bateko elementuetatik</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="193"/>
@@ -6958,7 +6958,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="340"/>
       <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
-      <translation type="unfinished">VCarve requires an engraving cutter with CuttingEdgeAngle</translation>
+      <translation>VCarve aplikazioak CuttingEdgeAngle duen grabatze-ebakigailua behar du</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="347"/>
@@ -7066,8 +7066,8 @@ Aukeren sorrera abortatzen</translation>
       <translation>Txakur-hezurrak</translation>
     </message>
     <message>
-      <location filename="../panels/DogboneEdit.ui" line="35"/>
       <location filename="../panels/ZCorrectEdit.ui" line="35"/>
+      <location filename="../panels/DogboneEdit.ui" line="35"/>
       <source>Dressup</source>
       <translation>Jantzi</translation>
     </message>

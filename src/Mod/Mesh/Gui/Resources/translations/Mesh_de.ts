@@ -2394,8 +2394,8 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <translation>Farben anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
+      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Info-Modus verlassen</translation>
     </message>

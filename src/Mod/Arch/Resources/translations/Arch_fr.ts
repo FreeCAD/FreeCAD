@@ -95,14 +95,14 @@
       <translation>Rotation de la base autour de l'axe outil (utilisé uniquement si BasePerpendicularToTool est vrai)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="404"/>
       <location filename="../../ArchStructure.py" line="694"/>
+      <location filename="../../ArchPanel.py" line="404"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>La longueur de cet élément, si il n'est pas basé sur un profil</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="406"/>
       <location filename="../../ArchStructure.py" line="696"/>
+      <location filename="../../ArchPanel.py" line="406"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>La largeur de cet élément, si il n'est pas basé sur un profil</translation>
     </message>
@@ -113,14 +113,14 @@
     </message>
     <message>
       <location filename="../../ArchWall.py" line="737"/>
-      <location filename="../../ArchPanel.py" line="433"/>
       <location filename="../../ArchStructure.py" line="700"/>
+      <location filename="../../ArchPanel.py" line="433"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>La direction d'extrusion normale de cet objet (mettre (0,0,0) pour normale automatique)</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="68"/>
       <location filename="../../ArchStructure.py" line="702"/>
+      <location filename="../../ArchPrecast.py" line="68"/>
       <source>The structural nodes of this element</source>
       <translation>Les nœuds structurels de cet élément</translation>
     </message>
@@ -135,8 +135,8 @@
       <translation>Décalage entre la ligne centrale et la ligne des nœuds</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="430"/>
       <location filename="../../ArchStructure.py" line="708"/>
+      <location filename="../../ArchPanel.py" line="430"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Le type de générateur de face à utiliser pour créer le profil de cet objet</translation>
     </message>
@@ -425,14 +425,14 @@
       <translation>Le numéro du tracé qui définit le trou. Une valeur de 0 signifie automatique</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="204"/>
       <location filename="../../ArchBuildingPart.py" line="335"/>
+      <location filename="../../ArchFloor.py" line="204"/>
       <source>The height of this object</source>
       <translation>La hauteur de cet objet</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="206"/>
       <location filename="../../ArchBuildingPart.py" line="342"/>
+      <location filename="../../ArchFloor.py" line="206"/>
       <source>The computed floor area of this floor</source>
       <translation>La surface de plancher calculée de cet étage</translation>
     </message>
@@ -850,9 +850,9 @@
       <translation>Le type de connexion entre la fin de l'escalier et la dalle de l'étage supérieur</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="276"/>
       <location filename="../../ArchBuildingPart.py" line="237"/>
       <location filename="../../ArchBuildingPart.py" line="261"/>
+      <location filename="../../ArchBuilding.py" line="276"/>
       <source>The type of this building</source>
       <translation>Le type de ce bâtiment</translation>
     </message>
@@ -956,8 +956,8 @@
       <translation>Un décalage optionnel entre l'origine du modèle (0,0,0) et le point indiqué par les géocoordonnées</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="635"/>
       <location filename="../../ArchIFC.py" line="69"/>
+      <location filename="../../ArchSite.py" line="635"/>
       <source>The type of this object</source>
       <translation>Le type de cet objet</translation>
     </message>
@@ -1147,20 +1147,20 @@
       <translation>Le niveau du point (0,0,0) de cet étage</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="200"/>
       <location filename="../../ArchBuildingPart.py" line="344"/>
+      <location filename="../../ArchComponent.py" line="200"/>
       <source>An optional description for this component</source>
       <translation>Une description facultative pour ce composant</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="202"/>
       <location filename="../../ArchBuildingPart.py" line="346"/>
+      <location filename="../../ArchComponent.py" line="202"/>
       <source>An optional tag for this component</source>
       <translation>Une balise facultative pour ce composant</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="917"/>
       <location filename="../../ArchBuildingPart.py" line="348"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>The shape of this object</source>
       <translation>La forme de cet objet</translation>
     </message>
@@ -1180,8 +1180,8 @@
       <translation>Une liste de correspondance NomMatériau:ListeIndexsSolides qui relie les noms des matériaux aux indexs des solides à utiliser quand cet objet est référencé dans d'autres fichiers</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1011"/>
       <location filename="../../ArchBuildingPart.py" line="554"/>
+      <location filename="../../ArchSectionPlane.py" line="1011"/>
       <source>The line width of this object</source>
       <translation>La largeur de la ligne des objets</translation>
     </message>
@@ -1664,8 +1664,8 @@
       <translation>Le texte à afficher. Utilisez $area, $label, $tag, $floor, $walls, $ceiling pour insérer les données respectives</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1026"/>
       <location filename="../../ArchSpace.py" line="509"/>
+      <location filename="../../ArchSectionPlane.py" line="1026"/>
       <source>The name of the font</source>
       <translation>Le nom de la police</translation>
     </message>
@@ -1675,8 +1675,8 @@
       <translation>La couleur de la zone de texte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1029"/>
       <location filename="../../ArchSpace.py" line="515"/>
+      <location filename="../../ArchSectionPlane.py" line="1029"/>
       <source>The size of the text font</source>
       <translation>La taille de la police de texte</translation>
     </message>
@@ -2339,23 +2339,23 @@
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1020"/>
-      <location filename="../../ArchPrecast.py" line="1394"/>
       <location filename="../../ArchWall.py" line="491"/>
       <location filename="../../ArchStructure.py" line="460"/>
+      <location filename="../../ArchPrecast.py" line="1394"/>
       <source>Length</source>
       <translation>Longueur</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1395"/>
       <location filename="../../ArchWall.py" line="497"/>
       <location filename="../../ArchStructure.py" line="470"/>
+      <location filename="../../ArchPrecast.py" line="1395"/>
       <source>Width</source>
       <translation>Largeur</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1396"/>
       <location filename="../../ArchWall.py" line="503"/>
       <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchPrecast.py" line="1396"/>
       <source>Height</source>
       <translation>Hauteur</translation>
     </message>
@@ -2387,8 +2387,8 @@
       <translation>Ce maillage n'est pas un solide valide</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="538"/>
       <location filename="../../ArchStructure.py" line="835"/>
+      <location filename="../../ArchPanel.py" line="538"/>
       <source>Facemaker returned an error</source>
       <translation>FaceMaker a retouné une erreur</translation>
     </message>
@@ -2501,8 +2501,8 @@
       <translation>Fait</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="770"/>
       <location filename="../../ArchStructure.py" line="1409"/>
+      <location filename="../../ArchPanel.py" line="770"/>
       <source>Couldn't compute a shape</source>
       <translation>Forme incalculable</translation>
     </message>
@@ -2769,21 +2769,21 @@
       <translation>Choix sélectionné</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="779"/>
       <location filename="../../ArchComponent.py" line="1941"/>
       <location filename="../../ArchAxisSystem.py" line="356"/>
+      <location filename="../../ArchSpace.py" line="790"/>
       <location filename="../../ArchSectionPlane.py" line="1502"/>
       <location filename="../../ArchWindow.py" line="1731"/>
-      <location filename="../../ArchSpace.py" line="790"/>
+      <location filename="../../ArchAxis.py" line="779"/>
       <source>Remove</source>
       <translation>Enlever</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="780"/>
       <location filename="../../ArchComponent.py" line="1942"/>
       <location filename="../../ArchAxisSystem.py" line="357"/>
-      <location filename="../../ArchWindow.py" line="1732"/>
       <location filename="../../ArchSpace.py" line="784"/>
+      <location filename="../../ArchWindow.py" line="1732"/>
+      <location filename="../../ArchAxis.py" line="780"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
@@ -2936,9 +2936,9 @@ La création du niveau est abandonnée.</translation>
       <translation>Veuillez sélectionner au moins un axe</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="778"/>
       <location filename="../../ArchComponent.py" line="1948"/>
       <location filename="../../ArchAxisSystem.py" line="355"/>
+      <location filename="../../ArchAxis.py" line="778"/>
       <source>Axes</source>
       <translation>Axes</translation>
     </message>
@@ -2953,8 +2953,8 @@ La création du niveau est abandonnée.</translation>
       <translation>Ferme</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="113"/>
       <location filename="../../ArchTruss.py" line="94"/>
+      <location filename="../../ArchCurtainWall.py" line="113"/>
       <source>Please select only one base object or none</source>
       <translation>Veuillez sélectionner un seul objet de base ou aucun</translation>
     </message>
@@ -3006,10 +3006,10 @@ La création du niveau est abandonnée.</translation>
       <translation>Étiquette</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="126"/>
-      <location filename="../../importSH3D.py" line="70"/>
       <location filename="../../import3DS.py" line="83"/>
+      <location filename="../../importSH3D.py" line="70"/>
       <location filename="../../importIFClegacy.py" line="821"/>
+      <location filename="../../importDAE.py" line="126"/>
       <source>Error: Couldn't determine character encoding</source>
       <translation>Erreur : impossible de déterminer l'encodage de caractères</translation>
     </message>
@@ -3027,8 +3027,8 @@ La création du niveau est abandonnée.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1656"/>
-      <location filename="../../ArchRoof.py" line="243"/>
       <location filename="../../ArchSpace.py" line="250"/>
+      <location filename="../../ArchRoof.py" line="243"/>
       <source>Please select a base object</source>
       <translation>Veuillez sélectionner un objet de base</translation>
     </message>
@@ -3640,9 +3640,9 @@ La création du site est abandonnée.</translation>
       <translation>Exporter CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1019"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1019"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
@@ -3657,8 +3657,8 @@ La création du site est abandonnée.</translation>
       <translation>Total</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1110"/>
       <location filename="../../ArchSchedule.py" line="539"/>
+      <location filename="../../ArchCommands.py" line="1110"/>
       <source>Export CSV File</source>
       <translation>Exporter vers un fichier CSV</translation>
     </message>
@@ -3726,16 +3726,16 @@ La création du site est abandonnée.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2002"/>
-      <location filename="../../ArchCommands.py" line="1648"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1648"/>
       <source>Value</source>
       <translation>Valeur</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1649"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1649"/>
       <source>Unit</source>
       <translation>Unité</translation>
     </message>

@@ -95,14 +95,14 @@
       <translation>Roteer de basis om de werkas (alleen gebruiken als BasePerpendicularToTool waar is)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="404"/>
       <location filename="../../ArchStructure.py" line="694"/>
+      <location filename="../../ArchPanel.py" line="404"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>De lengte van dit element, indien niet gebaseerd op een profiel</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="406"/>
       <location filename="../../ArchStructure.py" line="696"/>
+      <location filename="../../ArchPanel.py" line="406"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>De breedte van dit element, indien niet gebaseerd op een profiel</translation>
     </message>
@@ -113,14 +113,14 @@
     </message>
     <message>
       <location filename="../../ArchWall.py" line="737"/>
-      <location filename="../../ArchPanel.py" line="433"/>
       <location filename="../../ArchStructure.py" line="700"/>
+      <location filename="../../ArchPanel.py" line="433"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>De normale extrusierichting van dit opject (houd (0,0,0) voor automatische normaal)</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="68"/>
       <location filename="../../ArchStructure.py" line="702"/>
+      <location filename="../../ArchPrecast.py" line="68"/>
       <source>The structural nodes of this element</source>
       <translation>De structuur knooppunten van dit element</translation>
     </message>
@@ -135,8 +135,8 @@
       <translation>De afstand tussen de middellijn en de knooppunten-lijn</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="430"/>
       <location filename="../../ArchStructure.py" line="708"/>
+      <location filename="../../ArchPanel.py" line="430"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Het type facemaker dat moet worden gebruikt om het profiel van dit object te maken</translation>
     </message>
@@ -425,14 +425,14 @@
       <translation>Het nummer van de draad die het gat definieert. Een waarde van 0 betekent automatisch</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="204"/>
       <location filename="../../ArchBuildingPart.py" line="335"/>
+      <location filename="../../ArchFloor.py" line="204"/>
       <source>The height of this object</source>
       <translation>De hoogte van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="206"/>
       <location filename="../../ArchBuildingPart.py" line="342"/>
+      <location filename="../../ArchFloor.py" line="206"/>
       <source>The computed floor area of this floor</source>
       <translation>De berekende oppervlakte van deze vloer</translation>
     </message>
@@ -850,9 +850,9 @@
       <translation>Het type verbinding tussen het einde van de trap en de bovenste vloerplaat</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="276"/>
       <location filename="../../ArchBuildingPart.py" line="237"/>
       <location filename="../../ArchBuildingPart.py" line="261"/>
+      <location filename="../../ArchBuilding.py" line="276"/>
       <source>The type of this building</source>
       <translation>Het type van dit gebouw</translation>
     </message>
@@ -956,8 +956,8 @@
       <translation>Een optionele offset tussen de oorsprong van het model (0,0,0) en het punt aangegeven door de geo-coördinaten</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="635"/>
       <location filename="../../ArchIFC.py" line="69"/>
+      <location filename="../../ArchSite.py" line="635"/>
       <source>The type of this object</source>
       <translation>Het type van dit object</translation>
     </message>
@@ -1147,20 +1147,20 @@
       <translation>Het niveau van het (0,0,0) punt van dit niveau</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="200"/>
       <location filename="../../ArchBuildingPart.py" line="344"/>
+      <location filename="../../ArchComponent.py" line="200"/>
       <source>An optional description for this component</source>
       <translation>Een optionele omschrijving voor dit onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="202"/>
       <location filename="../../ArchBuildingPart.py" line="346"/>
+      <location filename="../../ArchComponent.py" line="202"/>
       <source>An optional tag for this component</source>
       <translation>Een optionele tag voor dit onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="917"/>
       <location filename="../../ArchBuildingPart.py" line="348"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>The shape of this object</source>
       <translation>De vorm van dit object</translation>
     </message>
@@ -1180,8 +1180,8 @@
       <translation>Een MateriaalNaam:SolidIndexesList map die betrekking heeft op de materiaalnamen met een solid index om te gebruiken, als er verwijzen vanuit dit object naar andere bestanden zijn</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1011"/>
       <location filename="../../ArchBuildingPart.py" line="554"/>
+      <location filename="../../ArchSectionPlane.py" line="1011"/>
       <source>The line width of this object</source>
       <translation>De lijnbreedte van dit object</translation>
     </message>
@@ -1664,8 +1664,8 @@
       <translation>De tekst weergeven. Gebruik $area, $label, $tag, $floor, $walls, $ceiling om de betrokken gegevens in te voegen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1026"/>
       <location filename="../../ArchSpace.py" line="509"/>
+      <location filename="../../ArchSectionPlane.py" line="1026"/>
       <source>The name of the font</source>
       <translation>De naam van het lettertype</translation>
     </message>
@@ -1675,8 +1675,8 @@
       <translation>De kleur van het gebied tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1029"/>
       <location filename="../../ArchSpace.py" line="515"/>
+      <location filename="../../ArchSectionPlane.py" line="1029"/>
       <source>The size of the text font</source>
       <translation>De grootte van het lettertype</translation>
     </message>
@@ -2339,23 +2339,23 @@
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1020"/>
-      <location filename="../../ArchPrecast.py" line="1394"/>
       <location filename="../../ArchWall.py" line="491"/>
       <location filename="../../ArchStructure.py" line="460"/>
+      <location filename="../../ArchPrecast.py" line="1394"/>
       <source>Length</source>
       <translation>Lengte</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1395"/>
       <location filename="../../ArchWall.py" line="497"/>
       <location filename="../../ArchStructure.py" line="470"/>
+      <location filename="../../ArchPrecast.py" line="1395"/>
       <source>Width</source>
       <translation>Breedte</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1396"/>
       <location filename="../../ArchWall.py" line="503"/>
       <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchPrecast.py" line="1396"/>
       <source>Height</source>
       <translation>Hoogte</translation>
     </message>
@@ -2387,8 +2387,8 @@
       <translation>Dit net vormt een ongeldig volumemodel</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="538"/>
       <location filename="../../ArchStructure.py" line="835"/>
+      <location filename="../../ArchPanel.py" line="538"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker gaf een foutmelding</translation>
     </message>
@@ -2500,8 +2500,8 @@
       <translation>Klaar</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="770"/>
       <location filename="../../ArchStructure.py" line="1409"/>
+      <location filename="../../ArchPanel.py" line="770"/>
       <source>Couldn't compute a shape</source>
       <translation>Kon geen vorm berekenen</translation>
     </message>
@@ -2768,21 +2768,21 @@
       <translation>Neem geselecteerde</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="779"/>
       <location filename="../../ArchComponent.py" line="1941"/>
       <location filename="../../ArchAxisSystem.py" line="356"/>
+      <location filename="../../ArchSpace.py" line="790"/>
       <location filename="../../ArchSectionPlane.py" line="1502"/>
       <location filename="../../ArchWindow.py" line="1731"/>
-      <location filename="../../ArchSpace.py" line="790"/>
+      <location filename="../../ArchAxis.py" line="779"/>
       <source>Remove</source>
       <translation>Verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="780"/>
       <location filename="../../ArchComponent.py" line="1942"/>
       <location filename="../../ArchAxisSystem.py" line="357"/>
-      <location filename="../../ArchWindow.py" line="1732"/>
       <location filename="../../ArchSpace.py" line="784"/>
+      <location filename="../../ArchWindow.py" line="1732"/>
+      <location filename="../../ArchAxis.py" line="780"/>
       <source>Add</source>
       <translation>Toevoegen</translation>
     </message>
@@ -2935,9 +2935,9 @@ Floor creation aborted.</translation>
       <translation>Selecteer alstublieft minimaal 1 as</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="778"/>
       <location filename="../../ArchComponent.py" line="1948"/>
       <location filename="../../ArchAxisSystem.py" line="355"/>
+      <location filename="../../ArchAxis.py" line="778"/>
       <source>Axes</source>
       <translation>Assen</translation>
     </message>
@@ -2952,8 +2952,8 @@ Floor creation aborted.</translation>
       <translation>Vakwerk</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="113"/>
       <location filename="../../ArchTruss.py" line="94"/>
+      <location filename="../../ArchCurtainWall.py" line="113"/>
       <source>Please select only one base object or none</source>
       <translation>Gelieve enkel een vlak of een basisobject te kiezen</translation>
     </message>
@@ -3005,10 +3005,10 @@ Floor creation aborted.</translation>
       <translation>Label</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="126"/>
-      <location filename="../../importSH3D.py" line="70"/>
       <location filename="../../import3DS.py" line="83"/>
+      <location filename="../../importSH3D.py" line="70"/>
       <location filename="../../importIFClegacy.py" line="821"/>
+      <location filename="../../importDAE.py" line="126"/>
       <source>Error: Couldn't determine character encoding</source>
       <translation>Fout: Kan de tekencodering niet bepalen</translation>
     </message>
@@ -3026,8 +3026,8 @@ Floor creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1656"/>
-      <location filename="../../ArchRoof.py" line="243"/>
       <location filename="../../ArchSpace.py" line="250"/>
+      <location filename="../../ArchRoof.py" line="243"/>
       <source>Please select a base object</source>
       <translation>Selecteer een basisobject</translation>
     </message>
@@ -3640,9 +3640,9 @@ Site creation aborted.</translation>
       <translation>Exporteer CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1019"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1019"/>
       <source>Description</source>
       <translation>Omschrijving</translation>
     </message>
@@ -3657,8 +3657,8 @@ Site creation aborted.</translation>
       <translation>Totaal</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1110"/>
       <location filename="../../ArchSchedule.py" line="539"/>
+      <location filename="../../ArchCommands.py" line="1110"/>
       <source>Export CSV File</source>
       <translation>Exporteren als CSV bestand</translation>
     </message>
@@ -3726,16 +3726,16 @@ Site creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2002"/>
-      <location filename="../../ArchCommands.py" line="1648"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1648"/>
       <source>Value</source>
       <translation>Waarde</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1649"/>
       <location filename="../../ArchSchedule.py" line="584"/>
       <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchCommands.py" line="1649"/>
       <source>Unit</source>
       <translation>Eenheid</translation>
     </message>

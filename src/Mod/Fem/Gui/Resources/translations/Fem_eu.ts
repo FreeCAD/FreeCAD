@@ -334,17 +334,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1747"/>
       <source>Apply changes to pipeline</source>
       <translation>Aplikatu aldaketak kanalizazioari</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1739"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>Aplikatu parametroak aldaketak zuzenean eta ez birkalkulatzean soilik...</translation>
     </message>
@@ -352,27 +352,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1290"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1291"/>
       <source>Region clip filter</source>
       <translation>Eskualde-ebaketako iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
+      <location filename="../../Command.cpp" line="1292"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
       <translation>Definitu/sortu eskualde ebaki bat definitzeko funtzioak erabiltzen dituen ebaketa-iragazki bat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1666"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>Select a pipeline, please.</source>
       <translation>Hautatu kanalizazio bat, mesedez.</translation>
     </message>
@@ -380,7 +380,7 @@
   <context>
     <name>CmdFemPostCreateDataAtPointFilter</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="916"/>
+      <location filename="../../TaskPostBoxes.cpp" line="919"/>
       <source>Data At Point</source>
       <translation>Datuak puntuan</translation>
     </message>
@@ -388,17 +388,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1333"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Function cut filter</source>
       <translation>Eskualde-mozketako iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1326"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Cut the data along an implicit function</source>
       <translation>Moztu datuak funtzio inplizitu baten luzeran</translation>
     </message>
@@ -406,17 +406,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1367"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1368"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Line clip filter</source>
       <translation>Lerro-ebaketako iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Define/create a clip filter which clips a field along a line</source>
       <translation>Definitu/sortu eremu bat lerro batean zehar ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
@@ -424,17 +424,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1417"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1409"/>
+      <location filename="../../Command.cpp" line="1418"/>
       <source>Data at point clip filter</source>
       <translation>Datuak puntuan ebakitzeko iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1410"/>
+      <location filename="../../Command.cpp" line="1419"/>
       <source>Define/create a clip filter which clips a field data at point</source>
       <translation>Definitu/sortu eremu bateko datuak puntu baten ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
@@ -442,27 +442,27 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Filter functions</source>
       <translation>Iragazki-funtzioak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1599"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>Post-prozesatzeko iragazkian erabiliko diren funtzioak...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1710"/>
+      <location filename="../../Command.cpp" line="1719"/>
       <source>Plane</source>
       <translation>Planoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1715"/>
+      <location filename="../../Command.cpp" line="1724"/>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
@@ -470,29 +470,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1453"/>
+      <location filename="../../Command.cpp" line="1218"/>
+      <source>Thickness [mm]</source>
+      <comment>Plot X-Axis Label</comment>
+      <translation>Lodiera [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1219"/>
+      <source>Stress [MPa]</source>
+      <comment>Plot Y-Axis Label</comment>
+      <translation>Estresa [MPa]</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1220"/>
+      <source>Linearized Stresses</source>
+      <comment>Plot title</comment>
+      <translation>Estres linealizatua</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1221"/>
+      <source>Membrane</source>
+      <comment>Plot legend item label</comment>
+      <translation>Mintza</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1222"/>
+      <source>Membrane and Bending</source>
+      <comment>Plot legend item label</comment>
+      <translation type="unfinished">Membrane and Bending</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1223"/>
+      <source>Total</source>
+      <comment>Plot legend item label</comment>
+      <translation>Totala</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1454"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Stress linearization plot</source>
       <translation>Estresa linealizatzeko trazaketa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1455"/>
+      <location filename="../../Command.cpp" line="1464"/>
       <source>Define/create stress linearization plots</source>
       <translation>Definitu/sortu estresa linealizatzeko trazaketak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1485"/>
-      <location filename="../../Command.cpp" line="1491"/>
+      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1486"/>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
       <translation>Hautatu ESTRES eremu bat lerro batean zehar ebakitzen duen ebaketa-iragazki bat.</translation>
     </message>
@@ -500,27 +536,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="1776"/>
+      <location filename="../../Command.cpp" line="1785"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1777"/>
+      <location filename="../../Command.cpp" line="1786"/>
       <source>Post pipeline from result</source>
       <translation>Argitaratu kanalizazioa emaitzatik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1778"/>
+      <location filename="../../Command.cpp" line="1787"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Post-prozesuko kanalizazio bat sortzen du emaitza-objektu batetik abiatuta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1841"/>
+      <location filename="../../Command.cpp" line="1850"/>
       <source>Wrong selection type</source>
       <translation>Hautapen mota okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1842"/>
+      <location filename="../../Command.cpp" line="1851"/>
       <source>Select a result object, please.</source>
       <translation>Hautatu emaitzako objektua.</translation>
     </message>
@@ -528,17 +564,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1515"/>
+      <location filename="../../Command.cpp" line="1524"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1516"/>
+      <location filename="../../Command.cpp" line="1525"/>
       <source>Scalar clip filter</source>
       <translation>Ebaketa-iragazki eskalarra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1517"/>
+      <location filename="../../Command.cpp" line="1526"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
       <translation>Definitu/sortu eremu bat balio eskalar batekin ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
@@ -546,17 +582,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1565"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1557"/>
+      <location filename="../../Command.cpp" line="1566"/>
       <source>Warp filter</source>
       <translation>Bihurritze-iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1558"/>
+      <location filename="../../Command.cpp" line="1567"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>Bihurritu geometria eremu bektorial baten luzeran, faktore jakin bat erabilita</translation>
     </message>
@@ -659,12 +695,12 @@
       <translation>Sortu iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1621"/>
+      <location filename="../../Command.cpp" line="1630"/>
       <source>Create function</source>
       <translation>Sortu funtzioa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1824"/>
+      <location filename="../../Command.cpp" line="1833"/>
       <source>Create pipeline from result</source>
       <translation>Sortu kanalizazioa emaitzatik</translation>
     </message>
@@ -868,7 +904,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="376"/>
       <source>Equivalent Plastic Strain</source>
-      <translation type="unfinished">Equivalent Plastic Strain</translation>
+      <translation>Tentsio plastiko baliokidea</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="395"/>
@@ -879,8 +915,8 @@ hasierako tenperatura:</translation>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="397"/>
       <source>No histogram available.
 Please select a result type first.</source>
-      <translation type="unfinished">No histogram available.
-Please select a result type first.</translation>
+      <translation>Ez dago histogramarik erabilgarri.
+Hasteko, hautatu emaitza mota bat.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="508"/>
@@ -1378,12 +1414,12 @@ Please select a result type first.</translation>
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../Command.cpp" line="1720"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Sortu plano-funtzioa, bere jatorria eta normala abiapuntutzat hartuta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1716"/>
+      <location filename="../../Command.cpp" line="1725"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Sortu esfera-funtzioa, bere zentroa eta erradioa abiapuntutzat hartuta</translation>
     </message>
@@ -3044,7 +3080,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1173"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1176"/>
       <source>Function cut, choose implicit function</source>
       <translation>Funtzio moztua, aukeratu funtzio inplizitua</translation>
     </message>
@@ -3056,11 +3092,17 @@ that "MAXKOI" needs to be increased.</translation>
       <source>Data along a line options</source>
       <translation>Lerro baten luzeran dauden datuen aukerak</translation>
     </message>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="735"/>
+      <source>Length</source>
+      <comment>X-Axis plot label</comment>
+      <translation>Luzera</translation>
+    </message>
   </context>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="750"/>
+      <location filename="../../TaskPostBoxes.cpp" line="753"/>
       <source>Data at point options</source>
       <translation>Puntu bateko datuek aukerak</translation>
     </message>
@@ -3084,7 +3126,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="924"/>
+      <location filename="../../TaskPostBoxes.cpp" line="927"/>
       <source>Scalar clip options</source>
       <translation>Ebaketa eskalarraren aukerak</translation>
     </message>
@@ -3092,7 +3134,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1032"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1035"/>
       <source>Warp options</source>
       <translation>Bihurritze-aukerak</translation>
     </message>
@@ -3534,7 +3576,10 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Lokarri-parametroa</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintTie.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/MeshRegion.ui" line="56"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
@@ -3543,9 +3588,6 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-      <location filename="../ui/ConstraintTie.ui" line="52"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -3560,11 +3602,11 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Zentrifugazio-parametroa</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametroa</translation>
     </message>
@@ -3594,9 +3636,9 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Sekzio-inprimatzearen parametroa</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <source>Constraint Properties</source>
       <translation>Murrizketa-propietateak</translation>
     </message>
@@ -3611,14 +3653,14 @@ that "MAXKOI" needs to be increased.</translation>
       <translation type="unfinished">Electric potential in V</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="45"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="79"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="113"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="143"/>
       <location filename="../ui/FlowVelocity.ui" line="56"/>
       <location filename="../ui/FlowVelocity.ui" line="83"/>
       <location filename="../ui/FlowVelocity.ui" line="110"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="143"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="45"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="79"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="113"/>
       <source>unspecified</source>
       <translation>zehaztu gabea</translation>
     </message>
@@ -3721,30 +3763,30 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Biraketa:     </translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="23"/>
       <location filename="../ui/FlowVelocity.ui" line="20"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="23"/>
       <source>Velocity x:</source>
       <translation>X abiadura:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="57"/>
       <location filename="../ui/FlowVelocity.ui" line="27"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="57"/>
       <source>Velocity y:</source>
       <translation>Y abiadura:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="91"/>
       <location filename="../ui/FlowVelocity.ui" line="34"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="91"/>
       <source>Velocity z:</source>
       <translation>Z abiadura:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="38"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="72"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="106"/>
       <location filename="../ui/FlowVelocity.ui" line="49"/>
       <location filename="../ui/FlowVelocity.ui" line="76"/>
       <location filename="../ui/FlowVelocity.ui" line="103"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="38"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="72"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="106"/>
       <source>m/s</source>
       <translation>m/s</translation>
     </message>
@@ -3937,26 +3979,26 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Editatu murrizketa</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="75"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="76"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="76"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="75"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="340"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="604"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="75"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="75"/>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="77"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="77"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="76"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="76"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="76"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="78"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="78"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="76"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="341"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="605"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="76"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="76"/>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="78"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="78"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="77"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="77"/>
       <source>Do you want to close this dialog?</source>
       <translation>Koadro hori itxi nahi duzu?</translation>
     </message>
@@ -4088,10 +4130,10 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Taldeak</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="150"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="681"/>
       <location filename="../../ViewProviderAnalysis.cpp" line="227"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="150"/>
       <location filename="../../ViewProviderSolver.cpp" line="71"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="681"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ziur zaude jarraitu nahi duzula?</translation>
     </message>
@@ -4156,7 +4198,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="130"/>
       <source>Equivalent Plastic Strain</source>
-      <translation type="unfinished">Equivalent Plastic Strain</translation>
+      <translation>Tentsio plastiko baliokidea</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="137"/>
@@ -4225,14 +4267,14 @@ and colors the result mesh accordingly</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="336"/>
       <source>Calculate</source>
-      <translation type="unfinished">Calculate</translation>
+      <translation>Kalkulatu</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="355"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
-      <translation type="unfinished">Enter here an equation to be calculated.
-For possible variables, see the description box below.</translation>
+      <translation>Sartu hemen kalkulatuko den ekuazioa.
+Balizko aldagaietarako, ikusi beheko deskribapen-koadroa.</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="359"/>
@@ -4444,10 +4486,10 @@ following referencing objects might be lost:</source>
 following referencing objects might be lost:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="153"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="684"/>
       <location filename="../../ViewProviderAnalysis.cpp" line="230"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="153"/>
       <location filename="../../ViewProviderSolver.cpp" line="74"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="684"/>
       <source>Object dependencies</source>
       <translation>Objektuaren mendekotasunak</translation>
     </message>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../AddonManager.py" line="125"/>
       <source>Addon Manager installation problem: could not locate ALLOWED_PYTHON_PACKAGES.txt</source>
-      <translation type="unfinished">Addon Manager installation problem: could not locate ALLOWED_PYTHON_PACKAGES.txt</translation>
+      <translation>Installationsproblem beim Addon-Manager: Konnte Datei ALLOWED_PYTHON_PACKAGES.txt nicht finden</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="225"/>
@@ -52,7 +52,7 @@
       <location filename="../../AddonManager.py" line="389"/>
       <source>Worker process {} is taking a long time to stop...
 </source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...
+      <translation>Arbeitsprozess {} braucht lange, um beendet zu werden...
 </translation>
     </message>
     <message>
@@ -470,7 +470,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="974"/>
       <source>No Git Python installed, skipping git operations</source>
-      <translation type="unfinished">No Git Python installed, skipping git operations</translation>
+      <translation>Kein Git Python installiert, Git Operationen werden übersprungen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="993"/>
@@ -637,13 +637,13 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
       <location filename="../../change_branch.py" line="278"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Lokale Version aktualisiert</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="284"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Remote aktualisiert</translation>
     </message>
     <message>
       <location filename="../../install_to_toolbar.py" line="94"/>
@@ -717,7 +717,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="../../package_details.py" line="206"/>
       <source>On branch {}, update available to version</source>
-      <translation type="unfinished">On branch {}, update available to version</translation>
+      <translation>Auf Zweig {}, Aktualisierung verfügbar auf Version</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="215"/>
@@ -737,7 +737,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="../../package_details.py" line="252"/>
       <source>This is the latest version available for branch {}</source>
-      <translation type="unfinished">This is the latest version available for branch {}</translation>
+      <translation>Dies ist die neueste verfügbare Version für den Zweig {}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="260"/>
@@ -1039,7 +1039,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="../../addonmanager_macro.py" line="247"/>
       <source>Unable to open macro wiki page at {}</source>
-      <translation type="unfinished">Unable to open macro wiki page at {}</translation>
+      <translation>Makro-Wiki-Seite unter {} kann nicht geöffnet werden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="264"/>
@@ -1077,7 +1077,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Package Name&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Paketname&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="73"/>
@@ -1092,7 +1092,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>Update verfügbar</translation>
     </message>
   </context>
   <context>
@@ -1107,24 +1107,24 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation type="unfinished">This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
+      <translation>Diese Erweiterung hat die folgenden erforderlichen/ optionalen Abhängigkeiten. Sie müssen sie installieren, bevor dieses Addon verwendet werden kann.
 
-Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</translation>
+Möchten Sie, dass der Addon-Manager sie automatisch installiert? Wählen Sie &quot;Ignorieren&quot;, um die Erweiterung zu installieren, ohne die Abhängigkeiten zu installieren.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation type="unfinished">FreeCAD Addons</translation>
+      <translation>FreeCAD Erweiterungen</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation type="unfinished">Required Python modules</translation>
+      <translation>Erforderliche Python-Module</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation type="unfinished">Optional Python modules</translation>
+      <translation>Optionale Python-Module</translation>
     </message>
   </context>
   <context>
@@ -1157,12 +1157,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation type="unfinished">Update all Addons</translation>
+      <translation>Alle Erweiterungen aktualisieren</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
       <source>Check for updates</source>
-      <translation type="unfinished">Check for updates</translation>
+      <translation>Auf Aktualisierungen prüfen</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
@@ -1177,7 +1177,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation type="unfinished">Welcome to the Addon Manager</translation>
+      <translation>Willkommen beim Addon-Manager</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
@@ -1187,7 +1187,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Download Settings</source>
-      <translation type="unfinished">Download Settings</translation>
+      <translation>Herunterladeeinstellungen</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
@@ -1212,12 +1212,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="80"/>
       <source>User-defined proxy:</source>
-      <translation type="unfinished">User-defined proxy:</translation>
+      <translation>Benutzerdefinierter Proxy:</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="93"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation type="unfinished">These and other settings are available in the FreeCAD Preferences window.</translation>
+      <translation>Diese und andere Einstellungen sind im FreeCAD Einstellungs-Fenster verfügbar.</translation>
     </message>
   </context>
   <context>
@@ -1235,7 +1235,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
-      <translation type="unfinished">&lt;h1&gt;Package Name&lt;/h1&gt;</translation>
+      <translation>&lt;h1&gt;Paketname&lt;/h1&gt;</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="114"/>
@@ -1245,7 +1245,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation type="unfinished">(tags)</translation>
+      <translation>(Tags)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="149"/>
@@ -1260,7 +1260,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>Update verfügbar</translation>
     </message>
   </context>
   <context>
@@ -1268,7 +1268,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation type="unfinished">Addon manager options</translation>
+      <translation>Addon-Manager Optionen</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
@@ -1280,7 +1280,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
+      <translation>Automatisch beim Start nach Updates suchen (benötigt GitPython)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
@@ -1290,22 +1290,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="44"/>
       <source>DownloadMacros</source>
-      <translation type="unfinished">DownloadMacros</translation>
+      <translation>Makros herunterladen</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="47"/>
       <source>Addons</source>
-      <translation type="unfinished">Addons</translation>
+      <translation>Erweiterungen</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
       <source>Cache update frequency</source>
-      <translation type="unfinished">Cache update frequency</translation>
+      <translation>Häufigkeit des Cache-Updates</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="76"/>
       <source>Manual (no automatic updates)</source>
-      <translation type="unfinished">Manual (no automatic updates)</translation>
+      <translation>Manuell (keine automatischen Aktualisierungen)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="81"/>
@@ -1320,17 +1320,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
       <source>Hide Addons marked Python 2 Only</source>
-      <translation type="unfinished">Hide Addons marked Python 2 Only</translation>
+      <translation>Nur für Python 2 markierte Erweiterungen ausblenden</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
       <source>Hide Addons marked Obsolete</source>
-      <translation type="unfinished">Hide Addons marked Obsolete</translation>
+      <translation>Veraltete Erweiterungen ausblenden</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="128"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
-      <translation type="unfinished">Hide Addons that require a newer version of FreeCAD</translation>
+      <translation>Erweiterungen ausblenden, die eine neuere Version von FreeCAD voraussetzen</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="144"/>
@@ -1364,12 +1364,12 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../AddonManagerOptions.ui" line="219"/>
       <source>User-defined proxy:</source>
-      <translation type="unfinished">User-defined proxy:</translation>
+      <translation>Benutzerdefinierter Proxy:</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="256"/>
       <source>Python executable (optional):</source>
-      <translation type="unfinished">Python executable (optional):</translation>
+      <translation>Ausführbare Python-Datei (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="275"/>
@@ -1402,7 +1402,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation type="unfinished">Uninstalls a selected macro or workbench</translation>
+      <translation>Deinstalliert ein ausgewähltes Makro oder einen Arbeitsbereich</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="52"/>
@@ -1453,7 +1453,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Eine Werkzeugleistenschaltfläche für dieses Makro hinzufügen?</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
@@ -1489,12 +1489,12 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../proxy_authentication.ui" line="14"/>
       <source>Proxy login required</source>
-      <translation type="unfinished">Proxy login required</translation>
+      <translation>Proxy-Anmeldung erforderlich</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="20"/>
       <source>Proxy requires authentication</source>
-      <translation type="unfinished">Proxy requires authentication</translation>
+      <translation>Proxy erfordert Authentifizierung</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="29"/>
@@ -1509,7 +1509,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../proxy_authentication.ui" line="49"/>
       <source>Realm:</source>
-      <translation type="unfinished">Realm:</translation>
+      <translation>Bereich:</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="56"/>
@@ -1537,7 +1537,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="26"/>
       <source>Select a toolbar to add this macro to:</source>
-      <translation type="unfinished">Select a toolbar to add this macro to:</translation>
+      <translation>Wählen Sie eine Symbolleiste, um dieses Makro hinzuzufügen:</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
@@ -1555,7 +1555,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</tra
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Eine Werkzeugleistenschaltfläche für dieses Makro hinzufügen?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>

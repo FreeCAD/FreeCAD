@@ -2123,7 +2123,7 @@ itxura leunagoa ematen du.
     <message>
       <location filename="../../Workbench.cpp" line="77"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>Alderdi kopurua:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="83"/>
@@ -2398,8 +2398,8 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
       <translation>Bistaratu koloreak</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
+      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Utzi informazio modua</translation>
     </message>

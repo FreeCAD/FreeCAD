@@ -406,57 +406,57 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>Première cellule de la plage</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
+      <translation>Dernière cellule de la plage</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
+      <translation>Lier les cellules :</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>Adresse de la cellule de départ</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Adresse de la cellule de fin</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Adresse de la cellule de départ à laquelle se lier.
+Tapez '=' si vous voulez utiliser une expression.
+L'expression doit être interprétée comme une chaîne de caractères d'une certaine adresse de cellule.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Adresse de la cellule de fin à laquelle se lier.
+Tapez '=' si vous voulez utiliser une expression.
+L'expression doit être interprétée comme une chaîne de caractères d'une certaine adresse de cellule.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>A quelle feuille de calcul se lier</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
       <source>Use hidden reference to avoid creating a dependency
 with the referenced object. Use with caution!</source>
-      <translation type="unfinished">Use hidden reference to avoid creating a dependency
-with the referenced object. Use with caution!</translation>
+      <translation>Utilisez la référence cachée pour éviter de créer une dépendance
+avec l'objet référencé. A utiliser avec précaution !</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="130"/>
