@@ -39,16 +39,16 @@
       <translation>Längden på denna linje</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="77"/>
       <location filename="../../draftobjects/rectangle.py" line="52"/>
       <location filename="../../draftobjects/polygon.py" line="60"/>
+      <location filename="../../draftobjects/wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Radie som ska användas för att avrunda hörnen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="81"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
       <location filename="../../draftobjects/polygon.py" line="64"/>
+      <location filename="../../draftobjects/wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Storleken på hörnens avfasning</translation>
     </message>
@@ -63,12 +63,12 @@
       <translation>Antalet indelningar av varje kant</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bezcurve.py" line="70"/>
-      <location filename="../../draftobjects/circle.py" line="62"/>
-      <location filename="../../draftobjects/bspline.py" line="57"/>
-      <location filename="../../draftobjects/wire.py" line="93"/>
       <location filename="../../draftobjects/rectangle.py" line="67"/>
+      <location filename="../../draftobjects/circle.py" line="62"/>
       <location filename="../../draftobjects/polygon.py" line="72"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
+      <location filename="../../draftobjects/bezcurve.py" line="70"/>
+      <location filename="../../draftobjects/wire.py" line="93"/>
       <source>The area of this object</source>
       <translation>Arean för detta objekt</translation>
     </message>
@@ -269,10 +269,10 @@ eller från underelementet 'VertexN', 'EdgeN', respektive 'FaceN', om det anges.
       <translation>Cirkelns radie</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/ellipse.py" line="58"/>
-      <location filename="../../draftobjects/circle.py" line="58"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
+      <location filename="../../draftobjects/circle.py" line="58"/>
       <location filename="../../draftobjects/polygon.py" line="68"/>
+      <location filename="../../draftobjects/ellipse.py" line="58"/>
       <source>Create a face</source>
       <translation>Skapa en yta</translation>
     </message>
@@ -324,8 +324,8 @@ eller från underelementet 'VertexN', 'EdgeN', respektive 'FaceN', om det anges.
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="320"/>
-      <location filename="../../draftobjects/pointarray.py" line="112"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
+      <location filename="../../draftobjects/pointarray.py" line="112"/>
       <location filename="../../draftobjects/patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>Visa de enskilda matriselementen (endast för Länkmatriser)</translation>
@@ -989,33 +989,33 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på de punkter som ryms 
       <translation>Ytterligare placering, förflyttning och rotation, som kommer att tillämpas på varje kopia</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="74"/>
       <location filename="../../draftviewproviders/view_text.py" line="60"/>
+      <location filename="../../draftviewproviders/view_label.py" line="74"/>
       <source>The size of the text</source>
       <translation>Textstorleken</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="83"/>
       <location filename="../../draftviewproviders/view_text.py" line="69"/>
+      <location filename="../../draftviewproviders/view_label.py" line="83"/>
       <source>The font of the text</source>
       <translation>Textens teckensnitt</translation>
     </message>
     <message>
+      <location filename="../../draftviewproviders/view_text.py" line="78"/>
       <location filename="../../draftviewproviders/view_label.py" line="92"/>
       <location filename="../../draftviewproviders/view_label.py" line="119"/>
-      <location filename="../../draftviewproviders/view_text.py" line="78"/>
       <source>The vertical alignment of the text</source>
       <translation>Textens vertikala justering</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="102"/>
       <location filename="../../draftviewproviders/view_text.py" line="87"/>
+      <location filename="../../draftviewproviders/view_label.py" line="102"/>
       <source>Text color</source>
       <translation>Textfärg</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="128"/>
       <location filename="../../draftviewproviders/view_text.py" line="95"/>
+      <location filename="../../draftviewproviders/view_label.py" line="128"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Radavstånd (förhållande till teckenstorlek)</translation>
     </message>
@@ -1585,16 +1585,16 @@ menyverktyg -&gt; Insticksmodulshanterare</translation>
       <translation>Förskjutningsriktning är inte definierad. Flytta musen på ena sidan av objektet först för att indikera en riktning</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="144"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
       <source>True</source>
       <translation>Sant</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="160"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="148"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="160"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
       <source>False</source>
       <translation>Falskt</translation>
     </message>
@@ -4273,13 +4273,13 @@ som "Arial:Bold"</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="535"/>
-      <location filename="../ui/preferences-svg.ui" line="209"/>
       <location filename="../ui/preferences-drafttexts.ui" line="92"/>
       <location filename="../ui/preferences-drafttexts.ui" line="211"/>
       <location filename="../ui/preferences-drafttexts.ui" line="247"/>
       <location filename="../ui/preferences-drafttexts.ui" line="283"/>
       <location filename="../ui/preferences-drafttexts.ui" line="365"/>
       <location filename="../ui/preferences-drafttexts.ui" line="432"/>
+      <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -4597,9 +4597,9 @@ från Addon Manager.</translation>
       <translation>Tillåt FreeCAD att automatiskt hämta och uppdatera DXF-biblioteken</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-dxf.ui" line="119"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
-      <location filename="../ui/preferences-oca.ui" line="26"/>
       <source>Import options</source>
       <translation>Importeringsalternativ</translation>
     </message>
@@ -5492,11 +5492,11 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
     <message>
       <location filename="../../DraftGui.py" line="76"/>
       <location filename="../../DraftGui.py" line="801"/>
+      <location filename="../../draftguitools/gui_move.py" line="207"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
       <location filename="../../draftguitools/gui_scale.py" line="227"/>
       <location filename="../../draftguitools/gui_scale.py" line="356"/>
       <location filename="../../draftguitools/gui_rotate.py" line="283"/>
-      <location filename="../../draftguitools/gui_move.py" line="207"/>
       <source>Copy</source>
       <translation>Kopiera</translation>
     </message>
@@ -6171,41 +6171,41 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">unable to load texture</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="720"/>
-      <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/utils.py" line="1014"/>
+      <location filename="../../draftfunctions/cut.py" line="57"/>
       <location filename="../../draftmake/make_pointarray.py" line="108"/>
+      <location filename="../../draftmake/make_text.py" line="84"/>
+      <location filename="../../draftmake/make_text.py" line="172"/>
       <location filename="../../draftmake/make_dimension.py" line="215"/>
       <location filename="../../draftmake/make_dimension.py" line="308"/>
       <location filename="../../draftmake/make_dimension.py" line="438"/>
       <location filename="../../draftmake/make_dimension.py" line="564"/>
+      <location filename="../../draftmake/make_array.py" line="85"/>
       <location filename="../../draftmake/make_layer.py" line="58"/>
       <location filename="../../draftmake/make_layer.py" line="149"/>
       <location filename="../../draftmake/make_patharray.py" line="161"/>
       <location filename="../../draftmake/make_patharray.py" line="330"/>
       <location filename="../../draftmake/make_label.py" line="195"/>
-      <location filename="../../draftmake/make_text.py" line="84"/>
-      <location filename="../../draftmake/make_text.py" line="172"/>
-      <location filename="../../draftmake/make_array.py" line="85"/>
-      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftutils/utils.py" line="1014"/>
+      <location filename="../../draftutils/groups.py" line="95"/>
+      <location filename="../../draftutils/gui_utils.py" line="720"/>
       <source>No active document. Aborting.</source>
       <translation>Inget aktivt dokument. Avbryter.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="729"/>
-      <location filename="../../draftutils/groups.py" line="132"/>
       <location filename="../../draftmake/make_pointarray.py" line="117"/>
       <location filename="../../draftmake/make_pointarray.py" line="128"/>
       <location filename="../../draftmake/make_circulararray.py" line="131"/>
+      <location filename="../../draftmake/make_polararray.py" line="103"/>
       <location filename="../../draftmake/make_dimension.py" line="322"/>
       <location filename="../../draftmake/make_dimension.py" line="447"/>
       <location filename="../../draftmake/make_patharray.py" line="170"/>
       <location filename="../../draftmake/make_patharray.py" line="181"/>
       <location filename="../../draftmake/make_patharray.py" line="339"/>
       <location filename="../../draftmake/make_patharray.py" line="350"/>
-      <location filename="../../draftmake/make_polararray.py" line="103"/>
-      <location filename="../../draftmake/make_label.py" line="236"/>
       <location filename="../../draftmake/make_orthoarray.py" line="167"/>
+      <location filename="../../draftmake/make_label.py" line="236"/>
+      <location filename="../../draftutils/groups.py" line="132"/>
+      <location filename="../../draftutils/gui_utils.py" line="729"/>
       <source>Wrong input: object not in document.</source>
       <translation>Fel inmatning: objekt inte i dokument.</translation>
     </message>
@@ -6628,6 +6628,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="164"/>
+      <location filename="../../draftmake/make_polararray.py" line="126"/>
       <location filename="../../draftmake/make_dimension.py" line="222"/>
       <location filename="../../draftmake/make_dimension.py" line="229"/>
       <location filename="../../draftmake/make_dimension.py" line="237"/>
@@ -6640,15 +6641,14 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../draftmake/make_patharray.py" line="200"/>
       <location filename="../../draftmake/make_patharray.py" line="254"/>
       <location filename="../../draftmake/make_patharray.py" line="265"/>
-      <location filename="../../draftmake/make_polararray.py" line="126"/>
       <location filename="../../draftmake/make_label.py" line="204"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Fel inmatning: måste vara en vektor.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="147"/>
-      <location filename="../../draftmake/make_label.py" line="215"/>
       <location filename="../../draftmake/make_text.py" line="107"/>
+      <location filename="../../draftmake/make_label.py" line="215"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Fel inmatning: måste vara en placering, en vektor, eller en rotation.</translation>
     </message>
@@ -6680,10 +6680,10 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="286"/>
-      <location filename="../../draftmake/make_label.py" line="291"/>
       <location filename="../../draftmake/make_text.py" line="91"/>
       <location filename="../../draftmake/make_text.py" line="96"/>
+      <location filename="../../draftmake/make_label.py" line="286"/>
+      <location filename="../../draftmake/make_label.py" line="291"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Fel inmatning: måste vara en lista över strängar eller en enda sträng.</translation>
     </message>
@@ -6694,12 +6694,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Fel inmatning: måste vara en sträng, 'Horisontell', 'Vertikal' eller 'Anpassad'.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_polararray.py" line="119"/>
       <location filename="../../draftmake/make_layer.py" line="201"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="360"/>
-      <location filename="../../draftmake/make_polararray.py" line="119"/>
-      <location filename="../../draftmake/make_label.py" line="313"/>
       <location filename="../../draftmake/make_orthoarray.py" line="151"/>
+      <location filename="../../draftmake/make_label.py" line="313"/>
       <source>Wrong input: must be a number.</source>
       <translation>Fel inmatning: måste vara ett tal.</translation>
     </message>
@@ -7239,10 +7239,10 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Cirkelbåge med 3 punkter</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="83"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
+      <location filename="../../draftguitools/gui_lines.py" line="83"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
       <translation>Välj första punkt</translation>
     </message>
@@ -7335,8 +7335,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Markera objekt att trimma/förlänga</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Välj avstånd</translation>
     </message>
@@ -7464,8 +7464,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Töj ut</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
       <location filename="../../draftguitools/gui_patharray.py" line="102"/>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
       <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
       <translation>Välj exakt två objekt, basobjektet och banobjektet, innan du anropar detta kommando.</translation>
     </message>
@@ -7556,8 +7556,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Skapa rektangel</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="202"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="196"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="202"/>
       <source>Pick opposite point</source>
       <translation>Välj motstående punkt</translation>
     </message>
@@ -7811,8 +7811,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Flytta</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
       <location filename="../../draftguitools/gui_move.py" line="213"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
       <source>Some subelements could not be moved.</source>
       <translation>Några underelement kunde inte flyttas.</translation>
     </message>
@@ -7983,16 +7983,16 @@ Den slutliga vinkeln kommer att vara basvinkeln plus denna mängd.</translation>
       <translation>Dela linje</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <source>Task panel:</source>
       <translation>Uppgiftspanel:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
       <source>At least one element must be selected.</source>
       <translation>Minst ett element måste väljas.</translation>
     </message>
@@ -8002,19 +8002,19 @@ Den slutliga vinkeln kommer att vara basvinkeln plus denna mängd.</translation>
       <translation>Antal element måste vara minst 1.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
       <source>Selection is not suitable for array.</source>
       <translation>Urval är inte lämpligt för matris.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="372"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="372"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
       <source>Object:</source>
       <translation>Objekt:</translation>
     </message>
@@ -8034,16 +8034,16 @@ Den slutliga vinkeln kommer att vara basvinkeln plus denna mängd.</translation>
       <translation>Återställning av intervall Z:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="296"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
       <source>Fuse:</source>
       <translation>Kombinera:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
       <source>Create Link array:</source>
       <translation>Skapa länkmatris:</translation>
     </message>
@@ -8078,9 +8078,9 @@ Den slutliga vinkeln kommer att vara basvinkeln plus denna mängd.</translation>
       <translation>Z Intervall:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
       <source>Aborted:</source>
       <translation>Avbruten:</translation>
     </message>
@@ -8110,8 +8110,8 @@ Den slutliga vinkeln kommer att vara basvinkeln plus denna mängd.</translation>
       <translation>Radiellt avstånd är negativt. Det görs positivt att fortsätta.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
       <source>Center reset:</source>
       <translation>Återställ centrum:</translation>
     </message>
@@ -8136,8 +8136,8 @@ Den slutliga vinkeln kommer att vara basvinkeln plus denna mängd.</translation>
       <translation>Symmetriparameter:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
       <source>Center of rotation:</source>
       <translation>Rotationscentrum:</translation>
     </message>

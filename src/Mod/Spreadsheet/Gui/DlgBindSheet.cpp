@@ -188,8 +188,8 @@ void DlgBindSheet::accept()
         else {
             checkAddress(toEnd, toCellEnd, true);
             if (toCellStart.isValid()) {
-                App::Range fromRange(fromCellStart, fromCellEnd);
-                App::Range toRange(toCellStart, toCellEnd);
+                App::Range fromRange(fromCellStart, fromCellEnd, true);
+                App::Range toRange(toCellStart, toCellEnd, true);
                 if (fromRange.size() != toRange.size()) {
                     auto res = QMessageBox::warning(this, tr("Bind cells"),
                             tr("Source and target cell count mismatch. Partial binding may still work.\n\n"
@@ -219,7 +219,7 @@ void DlgBindSheet::accept()
         QDialog::accept();
     } catch(Base::Exception &e) {
         e.ReportException();
-        QMessageBox::critical(this, tr("Bind cells"), QString::fromUtf8(e.what()));
+        QMessageBox::critical(this, tr("Bind Spreadsheet Cells"), tr("Error: \n") + QString::fromUtf8(e.what()));
         if(commandActive)
             Gui::Command::abortCommand();
     }

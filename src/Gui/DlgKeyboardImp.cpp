@@ -370,16 +370,16 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
             ui->assignedTreeWidget->resizeColumnToContents(0);
 
         if (countAmbiguous > 1) {
-            QMessageBox::warning(this, tr("Multiple defined shortcut"),
-                                 tr("The shortcut '%1' is defined more than once. This could result in unexpected behaviour.").arg(sc) );
+            QMessageBox::warning(this, tr("Multiple defined keyboard shortcut"),
+                                 tr("The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.").arg(sc) );
             ui->editShortcut->setFocus();
             ui->buttonAssign->setEnabled(false);
         }
         else if (countAmbiguous == 1 && ambiguousCommand != QLatin1String(name)) {
             QMessageBox box(this);
             box.setIcon(QMessageBox::Warning);
-            box.setWindowTitle(tr("Already defined shortcut"));
-            box.setText(tr("The shortcut '%1' is already assigned to '%2'.").arg(sc, ambiguousMenu));
+            box.setWindowTitle(tr("Already defined keyboard shortcut"));
+            box.setText(tr("The keyboard shortcut '%1' is already assigned to '%2'.").arg(sc, ambiguousMenu));
             box.setInformativeText(tr("Do you want to override it?"));
             box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             box.setDefaultButton(QMessageBox::No);

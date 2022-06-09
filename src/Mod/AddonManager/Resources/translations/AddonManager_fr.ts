@@ -393,7 +393,7 @@
       <location filename="../../addonmanager_workers.py" line="631"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
-      <translation type="unfinished">Attempting to change non-git Macro setup to use git
+      <translation>Tentative de changement de la configuration non-git de la Macro pour utiliser git
 </translation>
     </message>
     <message>

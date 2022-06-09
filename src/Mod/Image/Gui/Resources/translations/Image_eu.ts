@@ -83,12 +83,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
       <source>Enter distance</source>
-      <translation type="unfinished">Enter distance</translation>
+      <translation>Sartu distantzia</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="168"/>
       <source>Select ImagePlane</source>
-      <translation type="unfinished">Select ImagePlane</translation>
+      <translation>Hautatu irudi-planoa</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>

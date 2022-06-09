@@ -16,181 +16,207 @@
 
 		<Documentation>
 			<Author Licence="LGPL" Name="Chris Hennes" EMail="chennes@pioneerlibrarysystem.org" />
-			<UserDocu>
-				Metadata
-				A Metadata object reads an XML-formatted package metadata file and provides read-only access to its contents.
-
-				A single constructor is supported:
-				Metadata(file) -- Reads the XML file and provides access to the metadata it specifies.
-			</UserDocu>
+			<UserDocu>App.Metadata class.\n
+A Metadata object reads an XML-formatted package metadata file and provides
+read-only access to its contents.\n
+The following constructors are supported:\n
+Metadata()
+Empty constructor.\n
+Metadata(metadata)
+Copy constructor.
+metadata : App.Metadata\n
+Metadata(file)
+Reads the XML file and provides access to the metadata it specifies.
+file : str\n    XML file name.</UserDocu>
 			<DeveloperDocu>Metadata</DeveloperDocu>
 		</Documentation>
 
 		<Attribute Name="Name" ReadOnly="true">
 			<Documentation>
-				<UserDocu>String: the name of this item</UserDocu>
+				<UserDocu>String representing the name of this item.</UserDocu>
 			</Documentation>
 			<Parameter Name="Name" Type="Object" />
 		</Attribute>
 		<Attribute Name="Version" ReadOnly="true">
 			<Documentation>
-				<UserDocu>String: the version of this item in semantic triplet format</UserDocu>
+				<UserDocu>String representing the version of this item in semantic triplet format.</UserDocu>
 			</Documentation>
 			<Parameter Name="Version" Type="Object" />
 		</Attribute>
 		<Attribute Name="Description" ReadOnly="true">
 			<Documentation>
-				<UserDocu>String: the description of this item (text only, no markup allowed)</UserDocu>
+				<UserDocu>String representing the description of this item (text only, no markup allowed).</UserDocu>
 			</Documentation>
 			<Parameter Name="Description" Type="Object" />
 		</Attribute>
 		<Attribute Name="Maintainer" ReadOnly="true">
 			<Documentation>
-				<UserDocu>List of maintainer objects with 'name' and 'email' string attributes</UserDocu>
+				<UserDocu>List of maintainer objects with 'name' and 'email' string attributes.</UserDocu>
 			</Documentation>
 			<Parameter Name="Maintainer" Type="Object" />
 		</Attribute>
 		<Attribute Name="License" ReadOnly="true">
 			<Documentation>
-				<UserDocu>List of applicable licenses as objects with 'name' and 'file' string attributes</UserDocu>
+				<UserDocu>List of applicable licenses as objects with 'name' and 'file' string attributes.</UserDocu>
 			</Documentation>
 			<Parameter Name="License" Type="Object" />
 		</Attribute>
 		<Attribute Name="Urls" ReadOnly="true">
 			<Documentation>
-				<UserDocu>
-					List of URLs as objects with 'location' and 'type' string attributes, where type is one of:
-					* website
-					* repository
-					* bugtracker
-					* readme
-					* documentation
-				</UserDocu>
+				<UserDocu>List of URLs as objects with 'location' and 'type' string attributes, where type
+is one of:
+* website
+* repository
+* bugtracker
+* readme
+* documentation</UserDocu>
 			</Documentation>
 			<Parameter Name="Urls" Type="Object" />
 		</Attribute>
 		<Attribute Name="Author" ReadOnly="true">
 			<Documentation>
-				<UserDocu>List of author objects, each with a 'name' and a (potentially empty) 'email' string attribute</UserDocu>
+				<UserDocu>List of author objects, each with a 'name' and a (potentially empty) 'email'
+string attribute.</UserDocu>
 			</Documentation>
 			<Parameter Name="Author" Type="Object" />
 		</Attribute>
 		<Attribute Name="Depend" ReadOnly="true">
 			<Documentation>
-				<UserDocu>
-					List of dependencies, as objects with the following attributes:
-					* package -- Required: must exactly match the contents of the 'name' element in the referenced package's package.xml file
-					* version_lt -- Optional: The dependency to the package is restricted to versions less than the stated version number
-					* version_lte -- Optional: The dependency to the package is restricted to versions less or equal than the stated version number
-					* version_eq -- Optional: The dependency to the package is restricted to a version equal than the stated version number
-					* version_gte -- Optional: The dependency to the package is restricted to versions greater or equal than the stated version number
-					* version_gt -- Optional: The dependency to the package is restricted to versions greater than the stated version number
-					* condition -- Optional: Conditional expression as documented in REP149
-				</UserDocu>
+				<UserDocu>List of dependencies, as objects with the following attributes:
+* package
+    Required. Must exactly match the contents of the 'name' element in the
+    referenced package's package.xml file.
+* version_lt
+    Optional. The dependency to the package is restricted to versions less than
+    the stated version number.
+* version_lte
+    Optional. The dependency to the package is restricted to versions less or
+    equal than the stated version number.
+* version_eq
+    Optional. The dependency to the package is restricted to a version equal
+    than the stated version number.
+* version_gte
+    Optional. The dependency to the package is restricted to versions greater
+    or equal than the stated version number.
+* version_gt
+    Optional. The dependency to the package is restricted to versions greater
+    than the stated version number.
+* condition
+    Optional. Conditional expression as documented in REP149.</UserDocu>
 			</Documentation>
 			<Parameter Name="Depend" Type="Object" />
 		</Attribute>
 		<Attribute Name="Conflict" ReadOnly="true">
 			<Documentation>
-				<UserDocu>List of conflicts, format identical to dependencies</UserDocu>
+				<UserDocu>List of conflicts, format identical to dependencies.</UserDocu>
 			</Documentation>
 			<Parameter Name="Conflict" Type="Object" />
 		</Attribute>
 		<Attribute Name="Replace" ReadOnly="true">
 			<Documentation>
-				<UserDocu>List of things this item is considered by its author to replace: format identical to dependencies</UserDocu>
+				<UserDocu>List of things this item is considered by its author to replace. The format is
+identical to dependencies.</UserDocu>
 			</Documentation>
 			<Parameter Name="Replace" Type="Object" />
 		</Attribute>
 		<Attribute Name="Tag" ReadOnly="true">
 			<Documentation>
-				<UserDocu>List of strings</UserDocu>
+				<UserDocu>List of strings.</UserDocu>
 			</Documentation>
 			<Parameter Name="Tag" Type="Object" />
 		</Attribute>
 		<Attribute Name="Icon" ReadOnly="true">
 			<Documentation>
-				<UserDocu>Relative path to an icon file</UserDocu>
+				<UserDocu>Relative path to an icon file.</UserDocu>
 			</Documentation>
 			<Parameter Name="Icon" Type="Object" />
 		</Attribute>
 		<Attribute Name="Classname" ReadOnly="true">
 			<Documentation>
-				<UserDocu>String: the name of the main Python class this item creates/represents</UserDocu>
+				<UserDocu>String representing the name of the main Python class this item
+creates/represents.</UserDocu>
 			</Documentation>
 			<Parameter Name="Classname" Type="Object" />
 		</Attribute>
 		<Attribute Name="Subdirectory" ReadOnly="true">
 			<Documentation>
-				<UserDocu>String: the name of the subdirectory this content item is located in. If empty, the item is in a directory named the same as the content item.</UserDocu>
+				<UserDocu>String representing the name of the subdirectory this content item is located in.
+If empty, the item is in a directory named the same as the content item.</UserDocu>
 			</Documentation>
 			<Parameter Name="Subdirectory" Type="Object" />
 		</Attribute>
 		<Attribute Name="File" ReadOnly="true">
 			<Documentation>
-				<UserDocu>A list of files associated with this item -- the meaning of each file is implementation-defined</UserDocu>
+				<UserDocu>List of files associated with this item.
+The meaning of each file is implementation-defined.</UserDocu>
 			</Documentation>
 			<Parameter Name="File" Type="Object" />
 		</Attribute>
 		<Attribute Name="Content" ReadOnly="true">
 			<Documentation>
-				<UserDocu>A dictionary of lists of content items: defined recursively, each item is itself a Metadata object -- see package.xml file format documentation for details</UserDocu>
+				<UserDocu>Dictionary of lists of content items: defined recursively, each item is itself
+a Metadata object.
+See package.xml file format documentation for details.</UserDocu>
 			</Documentation>
 			<Parameter Name="Content" Type="Object" />
 		</Attribute>
 
 		<Attribute Name="FreeCADMin">
 			<Documentation>
-				<UserDocu>A string representing the minimum version of FreeCAD needed for this item. If unset it will be 0.0.0.</UserDocu>
+				<UserDocu>String representing the minimum version of FreeCAD needed for this item.
+If unset it will be 0.0.0.</UserDocu>
 			</Documentation>
 			<Parameter Name="FreeCADMin" Type="Object" />
 		</Attribute>
 
 		<Attribute Name="FreeCADMax">
 			<Documentation>
-				<UserDocu>A string representing the maximum version of FreeCAD needed for this item. If unset it will be 0.0.0.</UserDocu>
+				<UserDocu>String representing the maximum version of FreeCAD needed for this item.
+If unset it will be 0.0.0.</UserDocu>
 			</Documentation>
 			<Parameter Name="FreeCADMax" Type="Object" />
 		</Attribute>
 
 		<Methode Name="getLastSupportedFreeCADVersion">
 			<Documentation>
-				<UserDocu>getLastSupportedFreeCADVersion()
-Search through all content package items, and determine if a maximum supported version of FreeCAD
-is set. Returns None if no maximum version is set, or if *any* content item fails to provide a
-maximum version (implying that that content item will work with all known versions).
-				</UserDocu>
+				<UserDocu>getLastSupportedFreeCADVersion() -> str or None\n
+Search through all content package items, and determine if a maximum supported
+version of FreeCAD is set.
+Returns None if no maximum version is set, or if *any* content item fails to
+provide a maximum version (implying that that content item will work with all
+known versions).</UserDocu>
 			</Documentation>
 		</Methode>
 
 		<Methode Name="getFirstSupportedFreeCADVersion">
 			<Documentation>
-				<UserDocu>getFirstSupportedFreeCADVersion()
-Search through all content package items, and determine if a minimum supported version of FreeCAD
-is set. Returns 0.0 if no minimum version is set, or if *any* content item fails to provide a
-minimum version (implying that that content item will work with all known versions -- technically
-limited to 0.20 as the lowest known version since the metadata standard was added then).
-				</UserDocu>
+				<UserDocu>getFirstSupportedFreeCADVersion() -> str or None\n
+Search through all content package items, and determine if a minimum supported
+version of FreeCAD is set.
+Returns 0.0 if no minimum version is set, or if *any* content item fails to
+provide a minimum version (implying that that content item will work with all
+known versions. Technically limited to 0.20 as the lowest known version since
+the metadata standard was added then).</UserDocu>
 			</Documentation>
 		</Methode>
 
     <Methode Name="supportsCurrentFreeCAD">
       <Documentation>
-        <UserDocu>supportsCurrentFreeCAD()
-Returns false if this metadata object directly indicates that it does not support the current
-version of FreeCAD, or true if it makes no indication, or specifically indicates that it does
-support the current version. Does not recurse into Content items.
-        </UserDocu>
+        <UserDocu>supportsCurrentFreeCAD() -> bool\n
+Returns False if this metadata object directly indicates that it does not
+support the current version of FreeCAD, or True if it makes no indication, or
+specifically indicates that it does support the current version. Does not
+recurse into Content items.</UserDocu>
       </Documentation>
     </Methode>
 
 		<Methode Name="getGenericMetadata">
 			<Documentation>
-				<UserDocu>getGenericMetadata(name)
-Get the list of GenericMetadata objects with key 'name'. Generic metadata objects are Python objects with
-a string 'contents' and a dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
-in the metadata file.
-				</UserDocu>
+				<UserDocu>getGenericMetadata(name) -> list\n
+Get the list of GenericMetadata objects with key 'name'. 
+Generic metadata objects are Python objects with a string 'contents' and a
+dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
+in the metadata file.</UserDocu>
 			</Documentation>
 		</Methode>
 

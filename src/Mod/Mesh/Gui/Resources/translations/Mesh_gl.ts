@@ -2396,8 +2396,8 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
+      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Saír do modo de información</translation>
     </message>

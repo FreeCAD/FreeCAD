@@ -4,15 +4,15 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="125"/>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="59"/>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="57"/>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="69"/>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="59"/>
+      <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="953"/>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="427"/>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="65"/>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="69"/>
-      <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="953"/>
-      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="57"/>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="55"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="125"/>
       <source>The base path to modify</source>
       <translation>Le parcours de base à modifier</translation>
     </message>
@@ -58,10 +58,10 @@
       <translation>Direction du parcours d’outils autour de la pièce dans le sens des aiguilles d’une montre ou le sens inverse des aiguilles d’une montre</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="118"/>
       <location filename="../../../PathScripts/PathSurface.py" line="247"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="266"/>
       <location filename="../../../PathScripts/PathPocket.py" line="68"/>
+      <location filename="../../../PathScripts/PathProfile.py" line="118"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>Choisissez comment traiter plusieurs fonctions de géométrie de base.</translation>
     </message>
@@ -76,9 +76,9 @@
       <translation>Distance maximale avant le troncature de la jointure à onglet</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="144"/>
       <location filename="../../../PathScripts/PathHelix.py" line="143"/>
       <location filename="../../../PathScripts/PathHelix.py" line="168"/>
+      <location filename="../../../PathScripts/PathProfile.py" line="144"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Valeur supplémentaire pour rester loin du contour définitif - bon pour les trajectoires d'ébauche</translation>
     </message>
@@ -139,8 +139,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="174"/>
-      <location filename="../../../PathScripts/PathPlane.py" line="47"/>
       <location filename="../../../PathScripts/PathFixture.py" line="64"/>
+      <location filename="../../../PathScripts/PathPlane.py" line="47"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Mettre à faux, pour empêcher l'opération de générer du code</translation>
     </message>
@@ -167,8 +167,8 @@
       <translation>Point de départ de cette opération</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="219"/>
       <location filename="../../../PathScripts/PathCopy.py" line="50"/>
+      <location filename="../../../PathScripts/PathOp.py" line="219"/>
       <location filename="../../../PathScripts/PathArray.py" line="134"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>Le contrôleur d’outil qui sera utilisé pour calculer la trajectoire</translation>
@@ -219,10 +219,10 @@
       <translation>Le point de départ de ce parcours</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="316"/>
       <location filename="../../../PathScripts/PathSurface.py" line="431"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="240"/>
+      <location filename="../../../PathScripts/PathOp.py" line="316"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="459"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="240"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Marquer « true » si vous définissez un point de départ</translation>
     </message>
@@ -367,44 +367,44 @@
       <translation>Distance d’extension de la profondeur de perçage</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="131"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="959"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="131"/>
       <source>Width of tags.</source>
       <translation>Largeur des étiquettes.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="137"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="965"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="137"/>
       <source>Height of tags.</source>
       <translation>Hauteur des étiquettes.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="143"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="971"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="143"/>
       <source>Angle of tag plunge and ascent.</source>
       <translation>Angle de plongée et de montée.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="149"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="977"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="149"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>Rayon du filet pour l'étiquette.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="155"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="983"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="155"/>
       <source>Locations of inserted holding tags</source>
       <translation>Emplacement des attaches insérées</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="161"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="989"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="161"/>
       <source>IDs of disabled holding tags</source>
       <translation>Identifiants des attaches désactivées</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="170"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="998"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="170"/>
       <source>Factor determining the # of segments used to approximate rounded tags.</source>
       <translation>Facteur déterminant le nombre de segments utilisés pour obtenir des attaches arrondies.</translation>
     </message>
@@ -451,8 +451,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="127"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="126"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="204"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="126"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
       <translation>Afficher les objets de construction de la trajectoire temporaire lorsque le module est en mode DEBUG.</translation>
     </message>
@@ -547,8 +547,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="291"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="151"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="328"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="151"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Définissez le modèle de compensation géométrique à utiliser pour l'opération.</translation>
     </message>
@@ -572,8 +572,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="326"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="178"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="371"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="178"/>
       <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
       <translation>Effectuez l'opération en une seule passe à la profondeur voulue, ou en plusieurs passes jusqu'à la profondeur finale.</translation>
     </message>
@@ -637,8 +637,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="423"/>
-      <location filename="../../../PathScripts/PathSlot.py" line="232"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="451"/>
+      <location filename="../../../PathScripts/PathSlot.py" line="232"/>
       <source>The custom start point for the path of this operation</source>
       <translation>Le point de départ personnalisé pour le trajectoire de cette opération</translation>
     </message>
@@ -796,8 +796,8 @@
       <translation>Lorsque ceci est activé, les bords d'extension connectés sont combinés à des fils.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="71"/>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1116"/>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="71"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Utiliser les contours de la géométrie de base.</translation>
     </message>
@@ -868,9 +868,9 @@
       <translation>Influence sur la précision et les performances</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathAdaptive.py" line="985"/>
       <location filename="../../../PathScripts/PathPocketBase.py" line="150"/>
       <location filename="../../../PathScripts/PathHelix.py" line="128"/>
-      <location filename="../../../PathScripts/PathAdaptive.py" line="985"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Avance en pourcentage du diamètre de l'outil à chaque passe</translation>
     </message>
@@ -1016,9 +1016,9 @@
       <translation>La profondeur à laquelle la rampe d'entrée est activé. Au-dessus de cette profondeur, les rampes ne sont pas générées, mais les commandes de mouvement sont transmises telles quelles.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="216"/>
       <location filename="../../../PathScripts/PathEngrave.py" line="72"/>
       <location filename="../../../PathScripts/PathEngrave.py" line="82"/>
-      <location filename="../../../PathScripts/PathVcarve.py" line="216"/>
       <source>Additional base objects to be engraved</source>
       <translation>Objets de base à graver</translation>
     </message>
@@ -1966,31 +1966,31 @@
   <context>
     <name>Form</name>
     <message>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="14"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="14"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="14"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="14"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="14"/>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="20"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="14"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="14"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="14"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="14"/>
-      <location filename="../panels/SetupOp.ui" line="14"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="14"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="14"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="14"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="14"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="14"/>
-      <location filename="../panels/ToolEditor.ui" line="14"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="14"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="14"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <location filename="../panels/DressupPathBoundary.ui" line="14"/>
-      <location filename="../panels/PageOpPocketExtEdit.ui" line="14"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="14"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="14"/>
+      <location filename="../panels/PageOpPocketExtEdit.ui" line="14"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="14"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="14"/>
+      <location filename="../panels/SetupOp.ui" line="14"/>
+      <location filename="../panels/DressupPathBoundary.ui" line="14"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="20"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="14"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="14"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="14"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="14"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="14"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="14"/>
+      <location filename="../panels/ToolEditor.ui" line="14"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="14"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="14"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="14"/>
+      <location filename="../preferences/PathDressupHoldingTags.ui" line="14"/>
       <source>Form</source>
       <translation>Forme</translation>
     </message>
@@ -2151,9 +2151,9 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ajoutez les fonctions sélectionnées à la liste des géométries de base à cette opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="45"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
@@ -2163,10 +2163,10 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Supprimez les éléments sélectionnés de la liste des géométries de base. L'opération ne leur sera pas appliquée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <location filename="../panels/PropertyBag.ui" line="48"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="55"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
       <source>Remove</source>
       <translation>Enlever</translation>
     </message>
@@ -2176,8 +2176,8 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Efface la liste des géométries de base.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <source>Clear</source>
       <translation>Effacer</translation>
     </message>
@@ -2268,53 +2268,53 @@
       <translation>Tous les emplacements seront traités en utilisant les mêmes propriétés d'opération.</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="36"/>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
+      <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
       <translation>Profondeur initiale</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profondeur initiale de l'opération. Le point le plus élevé de l'axe Z que l'opération doit traiter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utilisez la valeur Z de l'élément sélectionné comme profondeur initiale pour l'opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="155"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="46"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="83"/>
       <location filename="../panels/PageDepthsEdit.ui" line="62"/>
       <location filename="../panels/PageDepthsEdit.ui" line="108"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="46"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="83"/>
       <source>...</source>
       <translation>...</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="50"/>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
+      <location filename="../panels/SetupGlobal.ui" line="50"/>
       <source>Final Depth</source>
       <translation>Profondeur finale</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La profondeur de l'opération qui correspond à la valeur la plus basse selon l'axe Z que l'opération doit traiter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Final Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utilisez la valeur Z de l'élément sélectionné comme profondeur de fin pour l'opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="64"/>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
+      <location filename="../panels/SetupGlobal.ui" line="64"/>
       <source>Step Down</source>
       <translation>Pas vers le bas</translation>
     </message>
@@ -2365,53 +2365,53 @@
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <source>ToolController</source>
       <translation>Contrôleur d'outil</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;L'outil et ses paramètres à utiliser pour cette opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
-      <location filename="../panels/SetupGlobal.ui" line="241"/>
-      <location filename="../panels/SetupGlobal.ui" line="247"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
+      <location filename="../panels/SetupGlobal.ui" line="241"/>
+      <location filename="../panels/SetupGlobal.ui" line="247"/>
       <source>Coolant Mode</source>
       <translation>Mode de refroidissement</translation>
     </message>
@@ -2421,20 +2421,20 @@
       <translation>G Gode</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-      <location filename="../panels/SetupGlobal.ui" line="166"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
+      <location filename="../panels/SetupGlobal.ui" line="166"/>
       <source>Tool Controller</source>
       <translation>Contrôleur d'outil</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
-      <location filename="../panels/SetupGlobal.ui" line="235"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
+      <location filename="../panels/SetupGlobal.ui" line="235"/>
       <source>Coolant</source>
       <translation>Refroidisseur</translation>
     </message>
@@ -2459,8 +2459,8 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type d'opération adaptative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="176"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
       <source>Step Over Percent</source>
       <translation>Pourcentage du dépassement</translation>
     </message>
@@ -2550,8 +2550,8 @@
       <translation>Profil de finition</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="245"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="235"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="245"/>
       <source>Use Outline</source>
       <translation>Utiliser le contour</translation>
     </message>
@@ -2561,10 +2561,10 @@
       <translation>Arrêter</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="167"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="82"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
       <source>Direction</source>
       <translation>Direction</translation>
     </message>
@@ -2884,8 +2884,8 @@
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="183"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="183"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La quantité par laquelle l'outil est déplacé latéralement sur chaque cycle du motif, spécifiée en pourcentage du diamètre de l'outil.&lt;/p&gt;&lt;p&gt;Un dépassement de 100% n'entraîne aucun chevauchement entre deux cycles différents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -2905,8 +2905,8 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indiquez si cette opération utilise un point de départ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="225"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="255"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="225"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
       <source>Use Start Point</source>
       <translation>Utiliser le point de départ</translation>
@@ -3139,15 +3139,15 @@
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <source>Layer Mode</source>
       <translation>Mode couche</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Effectuer l'opération en une seule passe à la profondeur, ou en plusieurs passes jusquà la profondeur finale.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -3473,8 +3473,8 @@
       <translation>TPI</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="144"/>
+      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <source>Operation</source>
       <translation>Opération</translation>
     </message>
@@ -3492,7 +3492,7 @@
       <location filename="../panels/PageOpVcarveEdit.ui" line="63"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="95"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="66"/>
@@ -4037,8 +4037,8 @@ Par exemple :
       <translation>Ne plus afficher</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="93"/>
       <location filename="../../../PathScripts/PathPost.py" line="421"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="93"/>
       <source>Choose a Path Job</source>
       <translation>Choisir un chemin de travail</translation>
     </message>
@@ -4143,8 +4143,8 @@ Par exemple :
       <translation>Profiler l'intégralité du modèle, de la face ou des faces sélectionnée(s) ou de l'arête ou des arêtes sélectionnée(s)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathIconViewProvider.py" line="98"/>
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="117"/>
+      <location filename="../../../PathScripts/PathIconViewProvider.py" line="98"/>
       <source>Edit</source>
       <translation>Éditer</translation>
     </message>
@@ -4180,8 +4180,8 @@ Par exemple :
       <translation>L'angle de l'arête de coupe (%.2f) entraîne une longueur négative de la pointe de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="76"/>
       <location filename="../../../PathScripts/PathVcarveGui.py" line="65"/>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="76"/>
       <source>%s is not a Base Model object of the job %s</source>
       <translation>%s n’est pas un objet Modèle de Base de la tâche %s</translation>
     </message>
@@ -4738,14 +4738,14 @@ Abandon de la création</translation>
       <translation>Onglet</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="210"/>
       <location filename="../../../PathScripts/PathHelix.py" line="76"/>
+      <location filename="../../../PathScripts/PathProfile.py" line="210"/>
       <source>Outside</source>
       <translation>Extérieur</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="211"/>
       <location filename="../../../PathScripts/PathHelix.py" line="77"/>
+      <location filename="../../../PathScripts/PathProfile.py" line="211"/>
       <source>Inside</source>
       <translation>Intérieur</translation>
     </message>
@@ -5146,24 +5146,24 @@ Abandon de la création</translation>
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="369"/>
       <location filename="../../../PathScripts/PathDressupAxisMap.py" line="287"/>
+      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="369"/>
       <source>Please select one path object
 </source>
       <translation>Veuillez sélectionner un objet parcours
 </translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="374"/>
       <location filename="../../../PathScripts/PathDressupAxisMap.py" line="292"/>
+      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="374"/>
       <source>The selected object is not a path
 </source>
       <translation>L'objet sélectionné n'est pas un parcours
 </translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="379"/>
       <location filename="../../../PathScripts/PathDressupAxisMap.py" line="297"/>
+      <location filename="../../../PathScripts/PathDressupZCorrect.py" line="379"/>
       <source>Please select a Path object</source>
       <translation>Veuillez sélectionner un object parcours</translation>
     </message>
@@ -5484,14 +5484,14 @@ Abandon de la création</translation>
       <translation>Le parcours de base est vide.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="302"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="1378"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="302"/>
       <source>The selected object is not a path</source>
       <translation>L'objet sélectionné n'est pas un parcours</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupTag.py" line="307"/>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="1383"/>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="307"/>
       <source>Please select a Profile object</source>
       <translation>Veuillez sélectionner un objet Contour</translation>
     </message>
@@ -6045,15 +6045,15 @@ Abandon de la création</translation>
     <name>Path_Profile</name>
     <message>
       <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="50"/>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="50"/>
       <location filename="../../../PathScripts/PathProfileContourGui.py" line="48"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="50"/>
       <source>Profile</source>
       <translation>Profil</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="53"/>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="53"/>
       <location filename="../../../PathScripts/PathProfileContourGui.py" line="51"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="53"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation>Profiler l'intégralité du modèle, de la face ou des faces sélectionnée(s) ou de l'arête ou des arêtes sélectionnée(s)</translation>
     </message>
@@ -7067,8 +7067,8 @@ Abandon de la création</translation>
       <translation>Dégagements des angles</translation>
     </message>
     <message>
-      <location filename="../panels/DogboneEdit.ui" line="35"/>
       <location filename="../panels/ZCorrectEdit.ui" line="35"/>
+      <location filename="../panels/DogboneEdit.ui" line="35"/>
       <source>Dressup</source>
       <translation>Habiller</translation>
     </message>

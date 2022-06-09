@@ -412,7 +412,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Netz Segmentierung</translation>
+      <translation>Netz-Segmentierung</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>

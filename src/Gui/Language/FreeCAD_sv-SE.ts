@@ -221,8 +221,8 @@
       <translation>Placering</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <location filename="../Transform.cpp" line="104"/>
       <source>Transform</source>
       <translation>Omvandla</translation>
@@ -6870,66 +6870,66 @@ Vill du spara ändringarna?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
+      <location filename="../InputVector.cpp" line="108"/>
+      <location filename="../InputVector.cpp" line="122"/>
       <location filename="../InputVector.h" line="129"/>
       <location filename="../InputVector.h" line="143"/>
       <location filename="../InputVector.h" line="260"/>
       <location filename="../InputVector.h" line="274"/>
       <location filename="../InputVector.h" line="446"/>
       <location filename="../InputVector.h" line="460"/>
-      <location filename="../InputVector.cpp" line="108"/>
-      <location filename="../InputVector.cpp" line="122"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="109"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="130"/>
       <location filename="../InputVector.h" line="144"/>
       <location filename="../InputVector.h" line="261"/>
       <location filename="../InputVector.h" line="275"/>
       <location filename="../InputVector.h" line="447"/>
       <location filename="../InputVector.h" line="461"/>
-      <location filename="../InputVector.cpp" line="109"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="110"/>
+      <location filename="../InputVector.cpp" line="124"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="145"/>
       <location filename="../InputVector.h" line="262"/>
       <location filename="../InputVector.h" line="276"/>
       <location filename="../InputVector.h" line="448"/>
       <location filename="../InputVector.h" line="462"/>
-      <location filename="../InputVector.cpp" line="110"/>
-      <location filename="../InputVector.cpp" line="124"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="111"/>
+      <location filename="../InputVector.cpp" line="126"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="147"/>
       <location filename="../InputVector.h" line="263"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="449"/>
       <location filename="../InputVector.h" line="464"/>
-      <location filename="../InputVector.cpp" line="111"/>
-      <location filename="../InputVector.cpp" line="126"/>
       <source>User defined...</source>
       <translation>Användardefinierad...</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="213"/>
       <location filename="../InputVector.h" line="223"/>
       <location filename="../InputVector.h" line="343"/>
       <location filename="../InputVector.h" line="529"/>
-      <location filename="../InputVector.cpp" line="213"/>
       <source>Wrong direction</source>
       <translation>Fel riktning</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="214"/>
       <location filename="../InputVector.h" line="224"/>
       <location filename="../InputVector.h" line="344"/>
       <location filename="../InputVector.h" line="530"/>
-      <location filename="../InputVector.cpp" line="214"/>
       <source>Direction must not be the null vector</source>
       <translation>Riktningen får inte vara noll vektorn</translation>
     </message>
@@ -6960,9 +6960,9 @@ Vill du spara ändringarna?</translation>
   <context>
     <name>Gui::MacroCommand</name>
     <message>
+      <location filename="../DlgCommandsImp.cpp" line="92"/>
       <location filename="../DlgKeyboardImp.cpp" line="85"/>
       <location filename="../DlgToolbarsImp.cpp" line="92"/>
-      <location filename="../DlgCommandsImp.cpp" line="92"/>
       <source>Macros</source>
       <translation>Makron</translation>
     </message>
@@ -9241,8 +9241,8 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Flytta annotering</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="88"/>
       <location filename="../ViewProviderLink.cpp" line="2657"/>
+      <location filename="../ViewProviderDragger.cpp" line="88"/>
       <source>Transform</source>
       <translation>Omvandla</translation>
     </message>
@@ -10433,9 +10433,9 @@ the current copy will be lost.
       <translation>Skapa ett nytt tomt dokument</translation>
     </message>
     <message>
+      <location filename="../DocumentRecovery.cpp" line="389"/>
       <location filename="../MainWindow.cpp" line="1863"/>
       <location filename="../CommandDoc.cpp" line="607"/>
-      <location filename="../DocumentRecovery.cpp" line="389"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>
@@ -12092,12 +12092,12 @@ Vill du fortfarande fortsätta?</translation>
   <context>
     <name>ViewIsometricCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1696"/>
+      <location filename="../NaviCube.cpp" line="1699"/>
       <source>Isometric</source>
       <translation>Isometrisk</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1697"/>
+      <location filename="../NaviCube.cpp" line="1700"/>
       <source>Set NaviCube to Isometric mode</source>
       <translation>Använd isometriskt läge för NaviKuben</translation>
     </message>
@@ -12105,12 +12105,12 @@ Vill du fortfarande fortsätta?</translation>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1716"/>
+      <location filename="../NaviCube.cpp" line="1719"/>
       <source>Orthographic</source>
       <translation>Ortografisk</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1717"/>
+      <location filename="../NaviCube.cpp" line="1720"/>
       <source>Set View to Orthographic mode</source>
       <translation>Använd ortografisk vy</translation>
     </message>
@@ -12118,12 +12118,12 @@ Vill du fortfarande fortsätta?</translation>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1737"/>
+      <location filename="../NaviCube.cpp" line="1740"/>
       <source>Perspective</source>
       <translation>Perspektiv</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1738"/>
+      <location filename="../NaviCube.cpp" line="1741"/>
       <source>Set View to Perspective mode</source>
       <translation>Använd perspektivvy</translation>
     </message>
@@ -12131,12 +12131,12 @@ Vill du fortfarande fortsätta?</translation>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1758"/>
+      <location filename="../NaviCube.cpp" line="1761"/>
       <source>Zoom to fit</source>
       <translation>Anpassa storlek</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1759"/>
+      <location filename="../NaviCube.cpp" line="1762"/>
       <source>Zoom so that model fills the view</source>
       <translation>Zooma så att modellen fyller vyn</translation>
     </message>

@@ -553,7 +553,7 @@ void DocumentRecovery::on_buttonCleanup_clicked()
 
     DocumentRecoveryHandler handler;
     handler.checkForPreviousCrashes(std::bind(&DocumentRecovery::cleanup, this, sp::_1, sp::_2, sp::_3));
-    DlgCheckableMessageBox::showMessage(tr("Transient deleted"), tr("Transient directories deleted."));
+    DlgCheckableMessageBox::showMessage(tr("Delete"), tr("Transient directories deleted."));
     reject();
 }
 

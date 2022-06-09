@@ -1505,7 +1505,7 @@ beim Schreiben einer Datei im AMF-Format verwendet wird</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="119"/>
       <source>Default line color for new meshes</source>
-      <translation>Standard Linienfarbe für neue Netze</translation>
+      <translation>Standard-Kantenfarbe für neue Netze</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="155"/>
@@ -1682,7 +1682,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Running gmsh...</source>
-      <translation>Bearbeitung von gmsh...</translation>
+      <translation>Gmsh ausführen...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="253"/>
@@ -1731,7 +1731,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="159"/>
       <source>Surface fit</source>
-      <translation>Oberflächen Annäherung</translation>
+      <translation>Flächen-Annäherung</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
@@ -1779,7 +1779,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Neuvernetzung durch Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -2119,33 +2119,33 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../Workbench.cpp" line="77"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>Dreiecksanzahl:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="83"/>
       <source>Minimum bound:</source>
-      <translation type="unfinished">Minimum bound:</translation>
+      <translation>Untergrenze:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="86"/>
       <source>Maximum bound:</source>
-      <translation type="unfinished">Maximum bound:</translation>
+      <translation>Obergrenze:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Mesh info box</source>
-      <translation type="unfinished">Mesh info box</translation>
+      <translation>Netz-Infobox</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>Netz-Informationen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="128"/>
       <location filename="../../Workbench.cpp" line="130"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>
@@ -2394,8 +2394,8 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <translation>Farben anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
+      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Info-Modus verlassen</translation>
     </message>
@@ -2470,7 +2470,7 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Netz schneiden</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>

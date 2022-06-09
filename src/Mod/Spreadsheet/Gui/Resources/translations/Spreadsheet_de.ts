@@ -396,12 +396,12 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>An Zellen:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Blatt:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
@@ -421,12 +421,12 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>Adresse der Startzelle</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Adresse der Endzelle</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
@@ -461,7 +461,7 @@ with the referenced object. Use with caution!</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="130"/>
       <source>Use hidden reference</source>
-      <translation type="unfinished">Use hidden reference</translation>
+      <translation>Versteckte Referenz verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="139"/>
@@ -484,12 +484,12 @@ with the referenced object. Use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Konfigurationstabelle einrichten</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Zellbereich:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -553,7 +553,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Optionaler Eigenschaftsgruppenname.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -1020,12 +1020,12 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="245"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Konfigurationstabelle einrichten</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="292"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Konfigurationstabelle aufheben</translation>
     </message>
   </context>
   <context>
@@ -1110,7 +1110,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="182"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Neuberechnung</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="186"/>
@@ -1120,7 +1120,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Konfigurationstabelle...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="198"/>
@@ -1215,7 +1215,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Kalkulationstabelle</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1225,7 +1225,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Stile</translation>
     </message>
   </context>
 </TS>

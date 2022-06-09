@@ -1249,6 +1249,7 @@ for i in range(len(sValues)):\n\
     peak.append(sValues[i])\n\
     mb.append(bending[i] + membrane[0])\n\
 import FreeCAD\n\
+from PySide import QtCore\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
 plt.figure(1)\n\
@@ -1270,11 +1271,15 @@ FreeCAD.Console.PrintError('Total stress min = ')\n\
 FreeCAD.Console.PrintError([str(round(peak[0],2))])\n\
 FreeCAD.Console.PrintError('Total stress max = ')\n\
 FreeCAD.Console.PrintError([str(round(peak[len(t_coords)-1],2))])\n\
+plt.ioff()\n\
 plt.legend([\"" << legendEntryA << "\", \"" << legendEntryB << "\", \"" << legendEntryC << "\"], loc = \"best\")\n\
 plt.xlabel(\"" << xAxisLabel << "\")\n\
 plt.ylabel(\"" << yAxisLabel << "\")\n\
 plt.title(\"" << titleLabel << "\")\n\
 plt.grid()\n\
+fig_manager = plt.get_current_fig_manager()\n\
+fig_manager.window.setParent(FreeCADGui.getMainWindow())\n\
+fig_manager.window.setWindowFlag(QtCore.Qt.Tool)\n\
 plt.show()\n";
     return oss.str();
 }

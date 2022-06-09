@@ -2398,8 +2398,8 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>Barve prikaza</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
+      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Zapusti podatkovni način</translation>
     </message>

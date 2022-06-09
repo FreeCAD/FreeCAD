@@ -255,7 +255,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1424"/>
       <source>Some packages updates failed.</source>
-      <translation type="unfinished">Some packages updates failed.</translation>
+      <translation>Pakete batzuen eguneratzeak huts egin du.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="1454"/>
@@ -275,7 +275,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1561"/>
       <source>Execution of macro failed. See console for failure details.</source>
-      <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
+      <translation>Makroaren exekuzioak huts egin du. Begiratu kontsola xehetasun gehiagorako.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="1580"/>

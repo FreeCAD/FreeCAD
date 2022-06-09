@@ -735,14 +735,19 @@ std::string TaskPostDataAlongLine::Plot() {
     auto xlabel = tr("Length", "X-Axis plot label");
     std::ostringstream oss;
     oss << "import FreeCAD\n\
+from PySide import QtCore\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
+plt.ioff()\n\
 plt.figure(1)\n\
 plt.plot(x, y)\n\
 plt.xlabel(\"" << xlabel.toStdString() << "\")\n\
 plt.ylabel(title)\n\
 plt.title(title)\n\
 plt.grid()\n\
+fig_manager = plt.get_current_fig_manager()\n\
+fig_manager.window.setParent(FreeCADGui.getMainWindow())\n\
+fig_manager.window.setWindowFlag(QtCore.Qt.Tool)\n\
 plt.show()\n";
     return oss.str();
 }

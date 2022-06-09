@@ -2397,8 +2397,8 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
       <translation>Visa färger</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
+      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Lämna info läge</translation>
     </message>
