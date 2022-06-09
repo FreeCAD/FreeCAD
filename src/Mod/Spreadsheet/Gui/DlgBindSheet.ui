@@ -85,7 +85,7 @@ The expression must evaluate to a string of some cell address.</string>
        </property>
       </widget>
      </item>
-    <item row="2" column="2">
+     <item row="2" column="2">
       <widget class="Gui::ExpressionLineEdit" name="lineEditToEnd">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -100,7 +100,7 @@ The expression must evaluate to a string of some cell address.</string>
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <layout class="QFormLayout" name="formLayout">
@@ -123,11 +123,12 @@ The expression must evaluate to a string of some cell address.</string>
    <item>
     <widget class="QCheckBox" name="checkBoxHREF">
      <property name="toolTip">
-      <string>Use hidden reference to avoid creating a dependency
-with the referenced object. Use with caution!</string>
+      <string>The dependency with the referenced spreadsheet will
+be hidden to the dependency checking.
+Useful to avoid cyclic dependencies, but use with caution!</string>
      </property>
      <property name="text">
-      <string>Use hidden reference</string>
+      <string>Hide dependency of binding</string>
      </property>
     </widget>
    </item>
