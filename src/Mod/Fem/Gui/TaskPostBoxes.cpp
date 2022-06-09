@@ -739,7 +739,7 @@ from PySide import QtCore\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
 plt.ioff()\n\
-plt.figure(1)\n\
+plt.figure(title)\n\
 plt.plot(x, y)\n\
 plt.xlabel(\"" << xlabel.toStdString() << "\")\n\
 plt.ylabel(title)\n\

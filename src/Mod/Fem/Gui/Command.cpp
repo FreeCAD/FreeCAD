@@ -1252,7 +1252,7 @@ import FreeCAD\n\
 from PySide import QtCore\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
-plt.figure(1)\n\
+plt.figure(\"" << titleLabel << "\")\n\
 plt.plot(t_coords, membrane, \"k--\")\n\
 plt.plot(t_coords, mb, \"b*-\")\n\
 plt.plot(t_coords, peak, \"r-x\")\n\

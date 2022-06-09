@@ -504,6 +504,7 @@ class _TaskPanel:
         if len(plt.get_fignums()) > 0:
             plt.close()
         plt.ioff() # disable interactive mode so we have full control when plot is shown
+        plt.figure(res_title)
         plt.hist(res_values, bins=50, alpha=0.5, facecolor="blue")
         plt.xlabel(res_unit)
         plt.title(translate("FEM","Histogram of {}").format(res_title))
