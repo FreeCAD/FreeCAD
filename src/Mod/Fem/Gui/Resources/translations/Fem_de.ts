@@ -709,7 +709,7 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="309"/>
       <source>Run</source>
-      <translation>laufen</translation>
+      <translation>Ausführen</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
