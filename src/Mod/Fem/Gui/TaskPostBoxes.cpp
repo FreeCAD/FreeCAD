@@ -736,7 +736,6 @@ std::string TaskPostDataAlongLine::Plot() {
     std::ostringstream oss;
     oss << "import FreeCAD\n\
 from PySide import QtCore\n\
-from PySide.QtCore import Qt\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
 plt.ioff()\n\
