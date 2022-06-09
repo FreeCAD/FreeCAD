@@ -1154,7 +1154,8 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter"))
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostScalarClipFilter"))
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostCutFilter"))
-        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter")) )
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter"))
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostDataAlongLineFilter")) )
         ) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("setupFilter", "Error: no post processing object selected."),
