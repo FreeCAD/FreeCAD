@@ -117,13 +117,16 @@ protected:
 
 class AppExport Range {
 public:
-    Range(const char *range);
+    Range(const char *range, bool normalize=false);
 
-    Range(int _row_begin, int _col_begin, int _row_end, int _col_end);
+    Range(int _row_begin, int _col_begin, int _row_end, int _col_end, bool normalize=false);
 
-    Range(const CellAddress & from, const CellAddress & to);
+    Range(const CellAddress & from, const CellAddress & to, bool normalize=false);
 
     bool next();
+
+    /** Make sure the range starts from top left and ends with bottom right corner **/
+    void normalize();
 
     /** Current row */
     inline int row() const { return row_curr; }

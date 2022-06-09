@@ -37,7 +37,7 @@ using namespace App;
 const int App::CellAddress::MAX_ROWS = 16384;
 const int App::CellAddress::MAX_COLUMNS = 26 * 26 + 26;
 
-Range::Range(const char * range)
+Range::Range(const char * range, bool normalize)
 {
     std::string from;
     std::string to;
@@ -62,28 +62,42 @@ Range::Range(const char * range)
     row_end = end.row();
     col_end = end.col();
 
+    if (normalize)
+        this->normalize();
     row_curr = row_begin;
     col_curr = col_begin;
 }
 
-Range::Range(int _row_begin, int _col_begin, int _row_end, int _col_end)
-    : row_curr(_row_begin)
-    , col_curr(_col_begin)
-    , row_begin(_row_begin)
+Range::Range(int _row_begin, int _col_begin, int _row_end, int _col_end, bool normalize)
+    : row_begin(_row_begin)
     , col_begin(_col_begin)
     , row_end(_row_end)
     , col_end(_col_end)
 {
+    if (normalize)
+        this->normalize();
+    row_curr = row_begin;
+    col_curr = col_begin;
 }
 
-Range::Range(const CellAddress &from, const CellAddress &to)
-    : row_curr(from.row())
-    , col_curr(from.col())
-    , row_begin(from.row())
+Range::Range(const CellAddress &from, const CellAddress &to, bool normalize)
+    : row_begin(from.row())
     , col_begin(from.col())
     , row_end(to.row())
     , col_end(to.col())
 {
+    if (normalize)
+        this->normalize();
+    row_curr = row_begin;
+    col_curr = col_begin;
+}
+
+void Range::normalize()
+{
+    if (row_begin > row_end)
+        std::swap(row_begin, row_end);
+    if (col_begin > col_end)
+        std::swap(col_begin, col_end);
 }
 
 bool Range::next()
