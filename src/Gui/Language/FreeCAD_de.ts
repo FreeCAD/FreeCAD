@@ -351,7 +351,7 @@
     <message>
       <location filename="../DlgCustomizeSpNavSettings.ui" line="82"/>
       <source>Enable Rotations</source>
-      <translation>Drehung aktivieren</translation>
+      <translation>Drehungen zulassen</translation>
     </message>
     <message>
       <location filename="../DlgCustomizeSpNavSettings.ui" line="107"/>
@@ -389,7 +389,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="26"/>
       <source>Formula editor</source>
-      <translation>Formel Editor</translation>
+      <translation>Formel-Editor</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="67"/>
@@ -522,7 +522,7 @@
     <message>
       <location filename="../ManualAlignment.cpp" line="430"/>
       <source>Fixed object</source>
-      <translation>fixiertes Objekt</translation>
+      <translation>Fixiertes Objekt</translation>
     </message>
   </context>
   <context>
@@ -1396,7 +1396,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
       <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation>Die Verknüpfung '%1' ist mehr als einmal definiert. Dies kann zu unerwartetem Verhalten führen.</translation>
+      <translation>Die Tastenkombination '%1' ist mehr als einmal definiert. Dies kann zu unerwartetem Verhalten führen.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
@@ -1406,7 +1406,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
       <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation>Die Verknüpfung '%1' ist bereits '%2' zugewiesen.</translation>
+      <translation>Die Tastenkombination '%1' ist bereits '%2' zugewiesen.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -2111,7 +2111,7 @@ entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen
       <location filename="../DlgGeneral.ui" line="552"/>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>Auswahl des Arbeitsbereichs, der nach dem FreeCAD Start aktiviert und angezeigt werden soll</translation>
+      <translation>Auswahl des Arbeitsbereichs, der nach dem Start von FreeCAD aktiviert und angezeigt werden soll</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="562"/>
@@ -2368,7 +2368,7 @@ Diese Datei ist bereits vorhanden.</translation>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="450"/>
       <source>Guided Walkthrough</source>
-      <translation>Programm Einführung</translation>
+      <translation>Programm-Einführung</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="451"/>
@@ -3537,7 +3537,7 @@ aber langsamere Reaktion auf Szenenänderungen.</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="361"/>
       <source>Size of vertices in the Sketcher workbench</source>
-      <translation>Größe der Punkte in der Sketcher-Werkbank</translation>
+      <translation>Größe der Punkte im Sketcher-Arbeitsbereich</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="368"/>
@@ -4657,22 +4657,22 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
       <source>Shortcut count</source>
-      <translation>Verknüpfungsanzahl</translation>
+      <translation>Anzahl der Tastenkürzel</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
       <source>How many recent macros should have shortcuts</source>
-      <translation>Wie viele der aktuellen Makros sollten Verknüpfungen haben</translation>
+      <translation>Wie viele der aktuellen Makros sollten Tastenkürzel haben</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="321"/>
       <source>Keyboard Modifiers</source>
-      <translation>Tastatur Modifikatoren</translation>
+      <translation>Tastaturmodifikatoren</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="341"/>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation>Tastatur Modifikatoren, Standard = Strg + Shift</translation>
+      <translation>Tastaturmodifikatoren, Standard = Strg + Shift</translation>
     </message>
   </context>
   <context>
@@ -4900,7 +4900,7 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="538"/>
       <source>Disable touchscreen tilt gesture</source>
-      <translation>Deaktiviere die Touchscreen Neige Geste</translation>
+      <translation>Deaktiviere die Touchscreen Neige-Geste</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.cpp" line="142"/>
@@ -5028,7 +5028,7 @@ wenn sie die verfügbare Zeilenlänge überschreiten</translation>
     <message>
       <location filename="../DlgSettingsSelection.ui" line="48"/>
       <source>Add checkboxes for selection in document tree</source>
-      <translation>Checkboxen für die Auswahl im Dokumentenbaum hinzufügen</translation>
+      <translation>Kontrollkästchen für die Auswahl im Dokumentenbaum hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -5578,11 +5578,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Transient directories deleted.</source>
       <translation>Temporäre Verzeichnisse gelöscht.</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="556"/>
-      <source>Transient deleted</source>
-      <translation>Vorübergehend gelöscht</translation>
     </message>
   </context>
   <context>
@@ -6300,7 +6295,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
       <translation>Abhängigkeiten ignorieren und mit Objekten
-fortfahren die ursprünglich vor dem Öffnen
+fortfahren, die ursprünglich vor dem Öffnen
 dieses Dialogs ausgewählt wurden</translation>
     </message>
   </context>
@@ -7339,7 +7334,7 @@ How do you want to proceed?</source>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="664"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="774"/>
       <source>Rename property group</source>
-      <translation>Eigenschaft Gruppe umbenennen</translation>
+      <translation>Eigenschaften-Gruppe umbenennen</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="681"/>
@@ -7539,7 +7534,7 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     <message>
       <location filename="../Action.cpp" line="939"/>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation>Makro %1 ausführen (Umschalt+Klick zum Bearbeiten) Verknüpfung: %2</translation>
+      <translation>Makro %1 ausführen (Umschalt+Klick zum Bearbeiten) Tastenkürzel: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>
@@ -7688,7 +7683,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
       <location filename="../OnlineDocumentation.cpp" line="361"/>
       <location filename="../OnlineDocumentation.cpp" line="363"/>
       <source>Opens a browser to show the Python modules documentation</source>
-      <translation>Öffnet einen Browser um die Python Modul Dokumentation zu zeigen</translation>
+      <translation>Öffnet einen Browser, um die Python-Modul-Dokumentation anzuzeigen</translation>
     </message>
   </context>
   <context>
@@ -7717,12 +7712,12 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="../TaskCSysDragger.cpp" line="79"/>
       <source>Translation Increment:</source>
-      <translation>Bewegungs Schrittweite:</translation>
+      <translation>Bewegungsschrittweite:</translation>
     </message>
     <message>
       <location filename="../TaskCSysDragger.cpp" line="90"/>
       <source>Rotation Increment:</source>
-      <translation>Drehung Schrittweite:</translation>
+      <translation>Drehungsschrittweite:</translation>
     </message>
   </context>
   <context>
@@ -10712,7 +10707,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="766"/>
       <source>Revert</source>
-      <translation>Rückgängig</translation>
+      <translation>Zurücksetzen</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="767"/>
