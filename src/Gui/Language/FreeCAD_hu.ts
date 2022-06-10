@@ -1390,23 +1390,23 @@ Ha ez nincs bejelölve, akkor a tulajdonságot egyedileg kell elnevezni, és úg
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
-      <source>Multiple defined shortcut</source>
-      <translation>Többszörösen definiált billentyűparancs</translation>
+      <source>Multiple defined keyboard shortcut</source>
+      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
-      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation>Az '%1' billentyűparancsot többször definiálta. Ez nem megfelelő működéshez vezethet.</translation>
+      <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
-      <source>Already defined shortcut</source>
-      <translation>Már definiált billentyűparancs</translation>
+      <source>Already defined keyboard shortcut</source>
+      <translation type="unfinished">Already defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
-      <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation>A '%1' billentyűparancs már hozzárendelt ehhez: '%2'.</translation>
+      <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -4668,8 +4668,8 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
-      <source>Shortcut count</source>
-      <translation>Billentyűparancs számláló</translation>
+      <source>Keyboard shortcut count</source>
+      <translation type="unfinished">Keyboard shortcut count</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -5558,6 +5558,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="499"/>
+      <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Delete</source>
       <translation>Törlés</translation>
     </message>
@@ -5591,11 +5592,6 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
       <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Transient directories deleted.</source>
       <translation>Átmeneti könyvtárak törölve.</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="556"/>
-      <source>Transient deleted</source>
-      <translation>Ideiglenes fájlok törölve</translation>
     </message>
   </context>
   <context>
@@ -7553,8 +7549,8 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="939"/>
-      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation>A(z) %1 makró futtatása (Shift+kattintás szerkesztéshez) parancsikon: %2</translation>
+      <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>

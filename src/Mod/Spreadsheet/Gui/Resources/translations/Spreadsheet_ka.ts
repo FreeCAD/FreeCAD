@@ -352,26 +352,26 @@
       <translation>უჯრედის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="295"/>
-      <location filename="../../SheetTableView.cpp" line="327"/>
+      <location filename="../../SheetTableView.cpp" line="276"/>
+      <location filename="../../SheetTableView.cpp" line="308"/>
       <source>Insert rows</source>
       <translation>სვეტების ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="346"/>
-      <location filename="../../SheetTableView.cpp" line="419"/>
+      <location filename="../../SheetTableView.cpp" line="327"/>
+      <location filename="../../SheetTableView.cpp" line="400"/>
       <source>Remove rows</source>
       <translation>სვეტების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="367"/>
-      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="348"/>
+      <location filename="../../SheetTableView.cpp" line="381"/>
       <source>Insert columns</source>
       <translation>სვეტების ჩასმა</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="167"/>
-      <location filename="../../SheetTableView.cpp" line="576"/>
+      <location filename="../../SheetTableView.cpp" line="557"/>
       <source>Clear cell(s)</source>
       <translation>უჯრედ(ებ)ის გასუფთავება</translation>
     </message>
@@ -451,28 +451,30 @@ The expression must evaluate to a string of some cell address.</source>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
-      <source>Use hidden reference to avoid creating a dependency
-with the referenced object. Use with caution!</source>
-      <translation>გამოიყენეთ უხილავი მიბმამიბმულ ობიექტზე დამოკიდებულებისთვის 
-თავიდან ასაცილებლად. ფრთხილად გამოიყენეთ!</translation>
+      <source>The dependency with the referenced spreadsheet will
+be hidden to the dependency checking.
+Useful to avoid cyclic dependencies, but use with caution!</source>
+      <translation type="unfinished">The dependency with the referenced spreadsheet will
+be hidden to the dependency checking.
+Useful to avoid cyclic dependencies, but use with caution!</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="130"/>
-      <source>Use hidden reference</source>
-      <translation>დამალული ბმულის გამოყენება</translation>
+      <location filename="../../DlgBindSheet.ui" line="131"/>
+      <source>Hide dependency of binding</source>
+      <translation type="unfinished">Hide dependency of binding</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="139"/>
+      <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
       <translation>მოხსნა</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="146"/>
+      <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
       <translation>გაუქმება</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="153"/>
+      <location filename="../../DlgBindSheet.ui" line="154"/>
       <source>OK</source>
       <translation>&amp;დიახ</translation>
     </message>
@@ -712,7 +714,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>უჯრედ(ებ)-ის წინა ფონის ფერის დაყენება</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="696"/>
+      <location filename="../../SheetTableView.cpp" line="677"/>
       <source>Copy &amp; Paste failed</source>
       <translation>კოპირებისა და ჩასმის შეცდომა</translation>
     </message>
@@ -928,12 +930,33 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="182"/>
+      <location filename="../../DlgBindSheet.cpp" line="194"/>
       <source>Bind cells</source>
       <translation>უჯრედების მიმაგრება</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="199"/>
+      <location filename="../../DlgBindSheet.cpp" line="195"/>
+      <source>Source and target cell count mismatch. Partial binding may still work.
+
+Do you want to continue?</source>
+      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+
+Do you want to continue?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <source>Bind Spreadsheet Cells</source>
+      <translation>ელცხრილის უჯრედების გადაბმა</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <source>Error: 
+</source>
+      <translation type="unfinished">Error: 
+</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="240"/>
       <source>Unbind cells</source>
       <translation>უჯრედების მიმაგრების მოხსნა</translation>
     </message>

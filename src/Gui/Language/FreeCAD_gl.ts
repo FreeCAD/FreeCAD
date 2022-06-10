@@ -1390,23 +1390,23 @@ Se non marca esta opción, entón a propiedade debe nomearse de forma única, e 
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
-      <source>Multiple defined shortcut</source>
-      <translation>Definidos varios atallos</translation>
+      <source>Multiple defined keyboard shortcut</source>
+      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
-      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation>O atallo '%1' está definido máis dunha vez. Isto pode resultar nun comportamento inesperado.</translation>
+      <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
-      <source>Already defined shortcut</source>
-      <translation>Atallo xa definido</translation>
+      <source>Already defined keyboard shortcut</source>
+      <translation type="unfinished">Already defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
-      <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation>O atallo '%1' está xa asignado a '%2'.</translation>
+      <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -4673,8 +4673,8 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
-      <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <source>Keyboard shortcut count</source>
+      <translation type="unfinished">Keyboard shortcut count</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -5564,6 +5564,7 @@ A columna 'Estado' amosa se é posible recuperar o documento.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="499"/>
+      <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Delete</source>
       <translation>Desbotar</translation>
     </message>
@@ -5597,11 +5598,6 @@ A columna 'Estado' amosa se é posible recuperar o documento.</translation>
       <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Transient directories deleted.</source>
       <translation>Cartafoles temporais eliminados.</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="556"/>
-      <source>Transient deleted</source>
-      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -7559,8 +7555,8 @@ Quere saír sen gardar os seus datos?</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="939"/>
-      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>

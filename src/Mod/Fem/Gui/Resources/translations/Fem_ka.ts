@@ -334,17 +334,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1752"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Apply changes to pipeline</source>
       <translation>მილსადენის ცვლილებების გადატარება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1748"/>
+      <location filename="../../Command.cpp" line="1754"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>პარამეტრების ცვლილებების პირდაპირ და არა მხოლოდ გადათვლისას გადატარება...</translation>
     </message>
@@ -352,27 +352,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1290"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1291"/>
+      <location filename="../../Command.cpp" line="1297"/>
       <source>Region clip filter</source>
       <translation>არეალის კვეთის ფილტრი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1292"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
       <translation>ფილტრის აღწერა/შექმნა, რომელიც კვეთის არეალის აღსაწერად ფუნქციებს იყენებს</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
+      <location filename="../../Command.cpp" line="1680"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1681"/>
       <source>Select a pipeline, please.</source>
       <translation>გთხოვთ, აირჩიოთ მილსადენი.</translation>
     </message>
@@ -380,7 +380,7 @@
   <context>
     <name>CmdFemPostCreateDataAtPointFilter</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="919"/>
+      <location filename="../../TaskPostBoxes.cpp" line="947"/>
       <source>Data At Point</source>
       <translation>წერტილის მონაცემები</translation>
     </message>
@@ -388,17 +388,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1333"/>
+      <location filename="../../Command.cpp" line="1339"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1340"/>
       <source>Function cut filter</source>
       <translation>ამოჭრის ფუნქციის ფილტრი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
+      <location filename="../../Command.cpp" line="1341"/>
       <source>Cut the data along an implicit function</source>
       <translation>მონაცემების არაცხადი ფუნქციის გასწვრივ კვეთა</translation>
     </message>
@@ -406,17 +406,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1383"/>
       <source>Line clip filter</source>
       <translation>ხაზის კვეთის ფილტრი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
+      <location filename="../../Command.cpp" line="1384"/>
       <source>Define/create a clip filter which clips a field along a line</source>
       <translation>ფილტრის აღწერა/შექმნა, რომელიც ველს ხაზის გასწვრივ კვეთს</translation>
     </message>
@@ -424,17 +424,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1423"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
+      <location filename="../../Command.cpp" line="1424"/>
       <source>Data at point clip filter</source>
       <translation>მონაცემების ფილტრი წერტილის ჭრილზე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1419"/>
+      <location filename="../../Command.cpp" line="1425"/>
       <source>Define/create a clip filter which clips a field data at point</source>
       <translation>ფილტრის აღწერა/შექმნა, რომელიც ველის მონაცემებს წერტილზე კვეთს</translation>
     </message>
@@ -442,27 +442,27 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="1606"/>
+      <location filename="../../Command.cpp" line="1612"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>Filter functions</source>
       <translation>ფილტრის ფუნქციები</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1614"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>პოსტპროცესორის ფილტრის მიერ გამოყენებული ფუნქციები...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1719"/>
+      <location filename="../../Command.cpp" line="1725"/>
       <source>Plane</source>
       <translation>სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1724"/>
+      <location filename="../../Command.cpp" line="1730"/>
       <source>Sphere</source>
       <translation>სფერო</translation>
     </message>
@@ -470,65 +470,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1218"/>
+      <location filename="../../Command.cpp" line="1219"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>სისქე [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1219"/>
+      <location filename="../../Command.cpp" line="1220"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>მექანიკური ძაბვა [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1221"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation type="unfinished">Linearized Stresses</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1221"/>
+      <location filename="../../Command.cpp" line="1222"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>მემბრანა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1223"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation type="unfinished">Membrane and Bending</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1223"/>
+      <location filename="../../Command.cpp" line="1224"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>სულ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1462"/>
+      <location filename="../../Command.cpp" line="1468"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1469"/>
       <source>Stress linearization plot</source>
       <translation>დეფორმაციის ხაზოვნების დახაზვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1470"/>
       <source>Define/create stress linearization plots</source>
       <translation>განსაზღვრეთ/დაამატეთ სტრესის ხაზოვანი ნახაზები</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
       <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
       <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
       <translation>გთხოვთ, აირჩიეთ კვეთს ფილტრი, რომელიც სტრესის ველს ხაზის გასწვრივ კვეთს.</translation>
     </message>
@@ -536,27 +536,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Post pipeline from result</source>
       <translation>მაჩვენე მილსადენი შედეგიდან</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1787"/>
+      <location filename="../../Command.cpp" line="1793"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>შედეგის ობიექტიდან მილსადენის პოსტპროცესინგის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1856"/>
       <source>Wrong selection type</source>
       <translation>მონიშნულის არასწორი ტიპი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1851"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>Select a result object, please.</source>
       <translation>გთხოვთ მონიშნოთ შედეგი.</translation>
     </message>
@@ -564,17 +564,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1524"/>
+      <location filename="../../Command.cpp" line="1530"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1531"/>
       <source>Scalar clip filter</source>
       <translation>სკალარის კვეთის ფილტრი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1532"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
       <translation>ფილტრის აღწერა/შექმნა, რომელიც ველს სკალარული მნიშვნელობით კვეთს</translation>
     </message>
@@ -582,17 +582,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1565"/>
+      <location filename="../../Command.cpp" line="1571"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1572"/>
       <source>Warp filter</source>
       <translation>დეფორმაციის ვიზუალიზაციის ფილტრი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1573"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>გეომეტრიის მითითებული ფაქტორით დეფორმაცია ვექტორული ველის გასწვრივ</translation>
     </message>
@@ -690,17 +690,17 @@
       <translation>კვანძების ჯგუფის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1193"/>
+      <location filename="../../Command.cpp" line="1194"/>
       <source>Create filter</source>
       <translation>ფილტრის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1630"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Create function</source>
       <translation>ფუნქციის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1833"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>Create pipeline from result</source>
       <translation>შედეგიდან მილსადენის შექმნა</translation>
     </message>
@@ -919,38 +919,38 @@ Please select a result type first.</source>
 Please select a result type first.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="508"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="510"/>
       <source>Histogram of {}</source>
       <translation>{}-ის ჰისტოგრამა</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="509"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="511"/>
       <source>Nodes</source>
       <translation>კვანძები</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="628"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="632"/>
       <source>FEM: there are no nodes in result mesh, there will be nothing to show.</source>
       <translation type="unfinished">FEM: there are no nodes in result mesh, there will be nothing to show.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="631"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="635"/>
       <source>Empty result mesh</source>
       <translation>ცარიელი შედეგი ბადე</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="638"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="642"/>
       <source>FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</source>
       <translation type="unfinished">FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="641"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="645"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="649"/>
       <source>No result object</source>
       <translation>შედეგი ობიექტის გარეშე</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="643"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="647"/>
       <source>FEM: Result node numbers are not equal to FEM Mesh NodeCount.</source>
       <translation type="unfinished">FEM: Result node numbers are not equal to FEM Mesh NodeCount.</translation>
     </message>
@@ -1414,12 +1414,12 @@ Please select a result type first.</translation>
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>შექმენით სიბრტყის ფუნქცია, აღწერილი მისი საწყისი წერტილითა და ნორმალით</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1725"/>
+      <location filename="../../Command.cpp" line="1731"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>შექმენით სფეროს ფუნქცია, აღწერილი მისი ცენტრით და რადიუსით</translation>
     </message>
@@ -2419,7 +2419,7 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="266"/>
+      <location filename="../../TaskPostBoxes.cpp" line="267"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -3063,7 +3063,7 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="413"/>
+      <location filename="../../TaskPostBoxes.cpp" line="414"/>
       <source>Clip region, choose implicit function</source>
       <translation>რეგიონის კვეთა, აირჩიეთ არაცხადი ფუნქცია</translation>
     </message>
@@ -3071,7 +3071,7 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1176"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1204"/>
       <source>Function cut, choose implicit function</source>
       <translation>ფუნქციის კვეთა, აირჩიეთ არაცხადი ფუნქცია</translation>
     </message>
@@ -3079,12 +3079,12 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="540"/>
+      <location filename="../../TaskPostBoxes.cpp" line="541"/>
       <source>Data along a line options</source>
       <translation>ხაზის გასწვრივი მონაცემების პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="735"/>
+      <location filename="../../TaskPostBoxes.cpp" line="736"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>სიგრძე</translation>
@@ -3093,7 +3093,7 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="753"/>
+      <location filename="../../TaskPostBoxes.cpp" line="759"/>
       <source>Data at point options</source>
       <translation>წერტილის მონაცემების პარამეტრები</translation>
     </message>
@@ -3101,7 +3101,7 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="333"/>
+      <location filename="../../TaskPostBoxes.cpp" line="334"/>
       <source>Result display options</source>
       <translation>შედეგის ჩვენების მორგება</translation>
     </message>
@@ -3109,7 +3109,7 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="390"/>
+      <location filename="../../TaskPostBoxes.cpp" line="391"/>
       <source>Implicit function</source>
       <translation>არაცხადი ფუნქცია</translation>
     </message>
@@ -3117,7 +3117,7 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="927"/>
+      <location filename="../../TaskPostBoxes.cpp" line="955"/>
       <source>Scalar clip options</source>
       <translation>სკალარის ფილტრის მორგება</translation>
     </message>
@@ -3125,7 +3125,7 @@ that "MAXKOI" needs to be increased.</source>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1035"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1063"/>
       <source>Warp options</source>
       <translation>გადატანის პარამეტრები</translation>
     </message>
@@ -4081,7 +4081,7 @@ that "MAXKOI" needs to be increased.</source>
       <translation>გარდაქნის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="247"/>
+      <location filename="../../TaskPostBoxes.cpp" line="248"/>
       <source>Edit post processing object</source>
       <translation>პოსტპროცესორის ობიექტის ჩასწორება</translation>
     </message>
@@ -5384,22 +5384,32 @@ normal vector of the face is used as direction</source>
   <context>
     <name>TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="14"/>
-      <source>Form</source>
-      <translation>ფორმა</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
       <translation>ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="107"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="23"/>
+      <source>x</source>
+      <translation>x</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="33"/>
+      <source>y</source>
+      <translation>y</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="43"/>
+      <source>z</source>
+      <translation>z</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="116"/>
       <source>Select Point</source>
       <translation>აირჩიეთ წერტილი</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="126"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="135"/>
       <source>Field</source>
       <translation>ველი</translation>
     </message>
@@ -5850,14 +5860,14 @@ normal vector of the face is used as direction</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1146"/>
-      <location filename="../../Command.cpp" line="1161"/>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1162"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>The filter could not be set up.</source>
       <translation>ფილტრის მორგება შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1160"/>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1161"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>Error: no post processing object selected.</source>
       <translation>შეცდომა: პოსტპროცესინგის ობიექტი მონიშნული არაა.</translation>
     </message>

@@ -6277,7 +6277,7 @@ Você pode indicar mais pontos para obter segmentos de linha.</translation>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="550"/>
       <source>Save Points</source>
-      <translation type="unfinished">Save Points</translation>
+      <translation>Salvar pontos</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="574"/>
@@ -7200,38 +7200,38 @@ usando o espaçamento X/Y fornecido</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Mover Vista para uma nova página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Mover Vista para outra página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Selecionar Vista e movê-la pela lista.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Selecionar vista</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Selecionar página de origem.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecionar Página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Selecionar página de destino.</translation>
     </message>
   </context>
   <context>
@@ -7247,48 +7247,48 @@ usando o espaçamento X/Y fornecido</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>Compartilhar vista</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Compartilhar vista em uma segunda página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Compartilhar vista em outra página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Compartilhar vista</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Selecione a vista a ser compartilhada.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Selecionar vista</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Selecionar página de origem.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecionar Página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Selecionar página de destino.</translation>
     </message>
   </context>
   <context>

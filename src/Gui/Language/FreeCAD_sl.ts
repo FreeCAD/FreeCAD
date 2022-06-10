@@ -1391,23 +1391,23 @@ Neglede na to ima lastnost v skriptih še vedno polni naziv, kot npr. "obj.Ime_S
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
-      <source>Multiple defined shortcut</source>
-      <translation>Večkrat dodeljena bližnica</translation>
+      <source>Multiple defined keyboard shortcut</source>
+      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
-      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation>Bližnjica »%1« je določena več kot enkrat. To lahko povzroči nepričakovano odzivanje.</translation>
+      <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
-      <source>Already defined shortcut</source>
-      <translation>Že dodeljena bližnjica</translation>
+      <source>Already defined keyboard shortcut</source>
+      <translation type="unfinished">Already defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
-      <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation>Bližnjica "%1" je že izbrana za "%2".</translation>
+      <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -4673,8 +4673,8 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
-      <source>Shortcut count</source>
-      <translation>Štetje bližnjic</translation>
+      <source>Keyboard shortcut count</source>
+      <translation type="unfinished">Keyboard shortcut count</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -5562,6 +5562,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="499"/>
+      <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
@@ -5595,11 +5596,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Transient directories deleted.</source>
       <translation>Začasne mape izbrisane.</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="556"/>
-      <source>Transient deleted</source>
-      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -7555,8 +7551,8 @@ Ali želite končati ne da bi shranili podatke?</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="939"/>
-      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation>Bližnjica za zagon makra %1 (Premakni (Shift)+kliknite za urejanje): %2</translation>
+      <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>

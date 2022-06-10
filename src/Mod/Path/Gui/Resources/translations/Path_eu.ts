@@ -181,7 +181,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="238"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation>Tresnaren hasierako sakonera - lehen mozketaren sakonera Z ardatzean</translation>
+      <translation>Tresnaren hasierako sakonera - lehen moztearen sakonera Z ardatzean</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="246"/>
@@ -1103,7 +1103,7 @@
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="351"/>
       <source>Set to True to get lead in and lead out arcs at the start and end of the thread cut</source>
-      <translation>Ezarri 'Egia' sarrerako eta irteerako arkuak sortzeko hari-mozketaren hasieran eta amaieran</translation>
+      <translation>Ezarri 'Egia' sarrerako eta irteerako arkuak sortzeko hari-moztearen hasieran eta amaieran</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="359"/>
@@ -2331,7 +2331,7 @@
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eragiketaren azken mozketaren sakonera. Amaiera garbiagoa sortzeko erabili daiteke.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eragiketaren azken moztearen sakonera. Amaiera garbiagoa sortzeko erabili daiteke.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
@@ -2594,7 +2594,7 @@
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of chamfer cut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alaka-mozketaren zabalera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alaka-moztearen zabalera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>

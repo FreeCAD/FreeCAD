@@ -2130,7 +2130,7 @@ Cria um grupo de construção se não existir.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="73"/>
       <source>Move to group...</source>
-      <translation type="unfinished">Move to group...</translation>
+      <translation>Mover para o grupo...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="76"/>
@@ -2272,7 +2272,7 @@ para polar ou circular e suas propriedades podem ser modificadas.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="64"/>
       <source>Bézier curve</source>
-      <translation type="unfinished">Bézier curve</translation>
+      <translation>Curva Bézier</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="67"/>
@@ -2287,12 +2287,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="475"/>
       <source>Bézier tools</source>
-      <translation type="unfinished">Bézier tools</translation>
+      <translation>Ferramentas Bézier</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="478"/>
       <source>Create various types of Bézier curves.</source>
-      <translation type="unfinished">Create various types of Bézier curves.</translation>
+      <translation>Criar vários tipos de curvas Bézier.</translation>
     </message>
   </context>
   <context>
@@ -2349,7 +2349,7 @@ O clone resultante pode ser dimensionado em cada uma de suas três direções.</
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="242"/>
       <source>Cubic Bézier curve</source>
-      <translation type="unfinished">Cubic Bézier curve</translation>
+      <translation>Curva Bézier cúbica</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="245"/>
@@ -2927,7 +2927,7 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</source>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="65"/>
       <source>Select Plane</source>
-      <translation type="unfinished">Select Plane</translation>
+      <translation>Selecionar plano</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="67"/>
@@ -4975,7 +4975,7 @@ Isto pode falhar para modelos DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
       <source>Show human figure</source>
-      <translation type="unfinished">Show human figure</translation>
+      <translation>Mostrar figura humana</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="357"/>
@@ -5080,7 +5080,7 @@ Isto pode falhar para modelos DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Conversion method:</source>
-      <translation type="unfinished">Conversion method:</translation>
+      <translation>Método de conversão:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
@@ -5095,27 +5095,27 @@ Isto pode falhar para modelos DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>LibreDWG</source>
-      <translation type="unfinished">LibreDWG</translation>
+      <translation>LibreDWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="61"/>
       <source>ODA Converter</source>
-      <translation type="unfinished">ODA Converter</translation>
+      <translation>Conversor ODA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="66"/>
       <source>QCAD pro</source>
-      <translation type="unfinished">QCAD pro</translation>
+      <translation>QCAD pro</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="78"/>
       <source>Path to file converter</source>
-      <translation type="unfinished">Path to file converter</translation>
+      <translation>Caminho para o conversor de arquivo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="85"/>
       <source>The path to your DWG file converter executable</source>
-      <translation type="unfinished">The path to your DWG file converter executable</translation>
+      <translation>O caminho para o executável do conversor de arquivo DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
@@ -5434,7 +5434,7 @@ Isto pode falhar para modelos DXF R12.</translation>
     <message>
       <location filename="../../draftutils/init_tools.py" line="58"/>
       <source>Bézier tools</source>
-      <translation type="unfinished">Bézier tools</translation>
+      <translation>Ferramentas Bézier</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="89"/>
@@ -7480,7 +7480,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../draftguitools/gui_beziers.py" line="132"/>
       <location filename="../../draftguitools/gui_beziers.py" line="332"/>
       <source>Bézier curve has been closed</source>
-      <translation type="unfinished">Bézier curve has been closed</translation>
+      <translation>A curva Bézier foi fechada</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="140"/>

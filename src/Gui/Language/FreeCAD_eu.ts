@@ -1390,23 +1390,23 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
-      <source>Multiple defined shortcut</source>
-      <translation>Definitutako lasterbide anitz</translation>
+      <source>Multiple defined keyboard shortcut</source>
+      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
-      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation>'%1' lasterbidea behin baino gehiagotan definitu da. Horrek ustekabeko portaera sor dezake.</translation>
+      <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
-      <source>Already defined shortcut</source>
-      <translation>Dagoeneko definitutako lasterbidea</translation>
+      <source>Already defined keyboard shortcut</source>
+      <translation type="unfinished">Already defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
-      <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation>'%1' lasterbidea dagoeneko esleitu zaio '%2' ekintzari.</translation>
+      <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -3841,7 +3841,7 @@ grisez bistaratuko dira</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="163"/>
       <source>Out g&amp;rayed</source>
-      <translation>Irteera g&amp;risa</translation>
+      <translation>Kanpokoa g&amp;risez</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="166"/>
@@ -3858,7 +3858,7 @@ gardentasunez bistaratuko dira</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="177"/>
       <source>Out &amp;transparent</source>
-      <translation type="unfinished">Out &amp;transparent</translation>
+      <translation>Kanpokoa &amp;garden</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="180"/>
@@ -4674,8 +4674,8 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
-      <source>Shortcut count</source>
-      <translation>Lasterbide kopurua</translation>
+      <source>Keyboard shortcut count</source>
+      <translation type="unfinished">Keyboard shortcut count</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -5565,6 +5565,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="499"/>
+      <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Delete</source>
       <translation>Ezabatu</translation>
     </message>
@@ -5598,11 +5599,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Transient directories deleted.</source>
       <translation>Aldi baterako direktorioak ezabatu dira.</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="556"/>
-      <source>Transient deleted</source>
-      <translation>Aldi baterakoa ezabatu da</translation>
     </message>
   </context>
   <context>
@@ -7559,8 +7555,8 @@ Datuak gorde gabe irten nahi duzu?</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="939"/>
-      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation>Exekutatu %1 makroa (Shift+klik editatzeko), lasterbidea: %2</translation>
+      <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>
@@ -9490,10 +9486,9 @@ Berregin automatikoki kopia estekatutako jatorrizko objektua aldatzen bada.</tra
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
-      <translation type="unfinished">Synchronize the original configurable source object by
-creating a new deep copy. Note that any changes made to
-the current copy will be lost.
-</translation>
+      <translation>Sinkronizatu jatorrizko iturbur-objektu konfiguragarria
+kopia sakon berri bat sortuz. Kontuan izan uneko kopiari
+egindako aldaketak galdu egingo direla.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2632"/>
@@ -9503,7 +9498,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderLink.cpp" line="2641"/>
       <source>Change whether show each link array element as individual objects</source>
-      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+      <translation>Aldatu esteka-matrize elementu bakoitza banakako objektu gisa erakutsiko den</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2658"/>

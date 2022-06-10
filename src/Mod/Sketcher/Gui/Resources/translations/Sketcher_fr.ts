@@ -5333,10 +5333,13 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       <source>Under constrained:</source>
       <translation>L'esquisse manque de contraintes:</translation>
     </message>
-    <message>
+    <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
-      <source>DoF</source>
-      <translation>Degrés de liberté</translation>
+      <source>%n DoF(s)</source>
+      <translation type="unfinished">
+        <numerusform>%n DoF(s)</numerusform>
+        <numerusform>%n DoF(s)</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2917"/>

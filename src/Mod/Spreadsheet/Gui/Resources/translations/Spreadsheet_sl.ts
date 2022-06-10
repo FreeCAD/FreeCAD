@@ -352,26 +352,26 @@
       <translation>Uredi polje</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="295"/>
-      <location filename="../../SheetTableView.cpp" line="327"/>
+      <location filename="../../SheetTableView.cpp" line="276"/>
+      <location filename="../../SheetTableView.cpp" line="308"/>
       <source>Insert rows</source>
       <translation>Vstavi vrstice</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="346"/>
-      <location filename="../../SheetTableView.cpp" line="419"/>
+      <location filename="../../SheetTableView.cpp" line="327"/>
+      <location filename="../../SheetTableView.cpp" line="400"/>
       <source>Remove rows</source>
       <translation>Odstrani vrstice</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="367"/>
-      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="348"/>
+      <location filename="../../SheetTableView.cpp" line="381"/>
       <source>Insert columns</source>
       <translation>Vstavi stolpce</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="167"/>
-      <location filename="../../SheetTableView.cpp" line="576"/>
+      <location filename="../../SheetTableView.cpp" line="557"/>
       <source>Clear cell(s)</source>
       <translation>Počisti polje (i, a)</translation>
     </message>
@@ -453,28 +453,30 @@ The expression must evaluate to a string of some cell address.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
-      <source>Use hidden reference to avoid creating a dependency
-with the referenced object. Use with caution!</source>
-      <translation type="unfinished">Use hidden reference to avoid creating a dependency
-with the referenced object. Use with caution!</translation>
+      <source>The dependency with the referenced spreadsheet will
+be hidden to the dependency checking.
+Useful to avoid cyclic dependencies, but use with caution!</source>
+      <translation type="unfinished">The dependency with the referenced spreadsheet will
+be hidden to the dependency checking.
+Useful to avoid cyclic dependencies, but use with caution!</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="130"/>
-      <source>Use hidden reference</source>
-      <translation type="unfinished">Use hidden reference</translation>
+      <location filename="../../DlgBindSheet.ui" line="131"/>
+      <source>Hide dependency of binding</source>
+      <translation type="unfinished">Hide dependency of binding</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="139"/>
+      <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
       <translation type="unfinished">Unbind</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="146"/>
+      <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
       <translation>Prekliči</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="153"/>
+      <location filename="../../DlgBindSheet.ui" line="154"/>
       <source>OK</source>
       <translation>Potrdi</translation>
     </message>
@@ -721,7 +723,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Nastavi barvo ozadja polij v preglednici</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="696"/>
+      <location filename="../../SheetTableView.cpp" line="677"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Kopiranje in Lepljenje spodletelo</translation>
     </message>
@@ -937,12 +939,33 @@ Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="182"/>
+      <location filename="../../DlgBindSheet.cpp" line="194"/>
       <source>Bind cells</source>
       <translation type="unfinished">Bind cells</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="199"/>
+      <location filename="../../DlgBindSheet.cpp" line="195"/>
+      <source>Source and target cell count mismatch. Partial binding may still work.
+
+Do you want to continue?</source>
+      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+
+Do you want to continue?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <source>Bind Spreadsheet Cells</source>
+      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <source>Error: 
+</source>
+      <translation type="unfinished">Error: 
+</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="240"/>
       <source>Unbind cells</source>
       <translation type="unfinished">Unbind cells</translation>
     </message>

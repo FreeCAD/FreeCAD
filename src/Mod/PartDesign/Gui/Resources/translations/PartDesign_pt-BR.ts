@@ -3229,7 +3229,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../ViewProviderChamfer.h" line="41"/>
       <source>Chamfer parameters</source>
-      <translation type="unfinished">Chamfer parameters</translation>
+      <translation>Parâmetros do chanfro</translation>
     </message>
   </context>
   <context>
@@ -3268,7 +3268,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
       <source>Fillet parameters</source>
-      <translation type="unfinished">Fillet parameters</translation>
+      <translation>Parâmetros do filete</translation>
     </message>
   </context>
   <context>
@@ -3300,7 +3300,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../ViewProviderScaled.h" line="38"/>
       <source>Scaled parameters</source>
-      <translation type="unfinished">Scaled parameters</translation>
+      <translation>Parâmetros de Escala</translation>
     </message>
   </context>
   <context>
@@ -3308,7 +3308,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../ViewProviderThickness.h" line="41"/>
       <source>Thickness parameters</source>
-      <translation type="unfinished">Thickness parameters</translation>
+      <translation>Parâmetros de espessura</translation>
     </message>
   </context>
   <context>
@@ -3316,7 +3316,7 @@ clique novamente para terminar a seleção</translation>
     <message>
       <location filename="../../ViewProviderMirrored.h" line="38"/>
       <source>Mirrored parameters</source>
-      <translation type="unfinished">Mirrored parameters</translation>
+      <translation>Parâmetros espelhados</translation>
     </message>
   </context>
   <context>

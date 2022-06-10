@@ -476,7 +476,7 @@
     <message>
       <location filename="../Widgets.cpp" line="377"/>
       <source>Press a keyboard shortcut</source>
-      <translation type="unfinished">Press a keyboard shortcut</translation>
+      <translation>Pressione um atalho de teclado</translation>
     </message>
   </context>
   <context>
@@ -763,7 +763,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="233"/>
       <source>Do you want to clear it now?</source>
-      <translation type="unfinished">Do you want to clear it now?</translation>
+      <translation>Você quer limpar tudo?</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="234"/>
@@ -1130,7 +1130,7 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="158"/>
       <source>Pack already exists</source>
-      <translation type="unfinished">Pack already exists</translation>
+      <translation>O pacote já existe</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="159"/>
@@ -1390,23 +1390,23 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
-      <source>Multiple defined shortcut</source>
-      <translation>Atalho definido várias vezes</translation>
+      <source>Multiple defined keyboard shortcut</source>
+      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
-      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation>O atalho '%1' é definido mais de uma vez. Isso pode provocar um comportamento inesperado.</translation>
+      <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
-      <source>Already defined shortcut</source>
-      <translation>Atalho já definido</translation>
+      <source>Already defined keyboard shortcut</source>
+      <translation type="unfinished">Already defined keyboard shortcut</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
-      <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation>O atalho '%1' já está atribuído a '%2'.</translation>
+      <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
+      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -1958,7 +1958,7 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgGeneral.ui" line="76"/>
       <source>Number format:</source>
-      <translation type="unfinished">Number format:</translation>
+      <translation>Formato do número:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="90"/>
@@ -2008,7 +2008,7 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgGeneral.ui" line="238"/>
       <source>Save new...</source>
-      <translation type="unfinished">Save new...</translation>
+      <translation>Salvar novo...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="251"/>
@@ -2018,7 +2018,7 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgGeneral.ui" line="258"/>
       <source>Revert...</source>
-      <translation type="unfinished">Revert...</translation>
+      <translation>Reverter...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="272"/>
@@ -2050,12 +2050,12 @@ Veja a Wiki do FreeCAD para mais detalhes sobre a imagem.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="379"/>
       <source>The text cursor will be blinking</source>
-      <translation type="unfinished">The text cursor will be blinking</translation>
+      <translation>O cursor do texto estará piscando</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="382"/>
       <source>Enable cursor blinking</source>
-      <translation type="unfinished">Enable cursor blinking</translation>
+      <translation>Habilitar cursor piscante</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="417"/>
@@ -2132,7 +2132,7 @@ a tela de abertura será exibida</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="91"/>
       <source>Manage preference packs</source>
-      <translation type="unfinished">Manage preference packs</translation>
+      <translation>Gerenciar pacotes de preferências</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="262"/>
@@ -2182,7 +2182,7 @@ a tela de abertura será exibida</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="362"/>
       <source>Preference Pack Name</source>
-      <translation type="unfinished">Preference Pack Name</translation>
+      <translation>Nome do pacote de preferências</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="363"/>
@@ -2197,7 +2197,7 @@ a tela de abertura será exibida</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="390"/>
       <source>Apply the %1 preference pack</source>
-      <translation type="unfinished">Apply the %1 preference pack</translation>
+      <translation>Aplicar o pacote de preferências %1</translation>
     </message>
   </context>
   <context>
@@ -2782,12 +2782,12 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="14"/>
       <source>Manage Preference Packs</source>
-      <translation type="unfinished">Manage Preference Packs</translation>
+      <translation>Gerenciar Pacotes de Preferências</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="56"/>
       <source>Open Addon Manager...</source>
-      <translation type="unfinished">Open Addon Manager...</translation>
+      <translation>Abrir o Gestor de Add-ons...</translation>
     </message>
   </context>
   <context>
@@ -2795,12 +2795,12 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="88"/>
       <source>User-Saved Preference Packs</source>
-      <translation type="unfinished">User-Saved Preference Packs</translation>
+      <translation>Pacotes de preferências salvos pelo usuário</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="92"/>
       <source>Built-In Preference Packs</source>
-      <translation type="unfinished">Built-In Preference Packs</translation>
+      <translation>Pacotes de preferências criados pelo FreeCAD</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="127"/>
@@ -2810,7 +2810,7 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="134"/>
       <source>Delete user-saved preference pack '%1'</source>
-      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+      <translation>Excluir pacote de preferências '%1'</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="144"/>
@@ -4662,8 +4662,8 @@ Você também pode usar o formulário: João Silva &lt;joao@silva.com&gt;</trans
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
-      <source>Shortcut count</source>
-      <translation>Contagem de atalhos</translation>
+      <source>Keyboard shortcut count</source>
+      <translation type="unfinished">Keyboard shortcut count</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -5550,6 +5550,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="499"/>
+      <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Delete</source>
       <translation>Excluir</translation>
     </message>
@@ -5583,11 +5584,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>Transient directories deleted.</source>
       <translation>Diretórios temporários excluídos.</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="556"/>
-      <source>Transient deleted</source>
-      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -6261,7 +6257,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.ui" line="157"/>
       <source>Auto select depending objects</source>
-      <translation type="unfinished">Auto select depending objects</translation>
+      <translation>Seleção automática de objetos dependentes</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="107"/>
@@ -6392,7 +6388,7 @@ originalmente selecionados antes de abrir esta caixa de diálogo</translation>
     <message>
       <location filename="../ReportView.cpp" line="574"/>
       <source>Show output window on</source>
-      <translation type="unfinished">Show output window on</translation>
+      <translation>Mostrar janela de saída em</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="595"/>
@@ -6982,7 +6978,7 @@ Deseja salvar as alterações?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="708"/>
       <source>Help addon needed!</source>
-      <translation type="unfinished">Help addon needed!</translation>
+      <translation>Add-on de ajuda é necessário!</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="709"/>
@@ -6992,7 +6988,7 @@ Deseja salvar as alterações?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="711"/>
       <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
+      <translation>Abrir o Gestor de Add-ons</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="906"/>
@@ -7175,7 +7171,7 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../Widgets.cpp" line="474"/>
       <source>Press modifier keys</source>
-      <translation type="unfinished">Press modifier keys</translation>
+      <translation>Pressione as teclas modificadoras</translation>
     </message>
   </context>
   <context>
@@ -7219,17 +7215,17 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="55"/>
       <source>Press right mouse button and move mouse</source>
-      <translation type="unfinished">Press right mouse button and move mouse</translation>
+      <translation>Pressione o botão direito do mouse e mova-o</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="57"/>
       <source>Press left mouse button and move mouse</source>
-      <translation type="unfinished">Press left mouse button and move mouse</translation>
+      <translation>Pressione o botão esquerdo do mouse e mova-o</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="59"/>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
-      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
+      <translation>Pressione o botão do meio do mouse ou aperte SHIFT e pressione o botão direito do mouse</translation>
     </message>
   </context>
   <context>
@@ -7353,7 +7349,7 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="774"/>
       <source>Group name:</source>
-      <translation type="unfinished">Group name:</translation>
+      <translation>Nome do grupo:</translation>
     </message>
   </context>
   <context>
@@ -7541,8 +7537,8 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <location filename="../Action.cpp" line="939"/>
-      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation>Executar macro %1 (Shift+clique para editar) atalho: %2</translation>
+      <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>
@@ -7588,17 +7584,17 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../EditorView.cpp" line="747"/>
       <source>Next</source>
-      <translation type="unfinished">Next</translation>
+      <translation>Próximo</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="748"/>
       <source>Case sensitive</source>
-      <translation type="unfinished">Case sensitive</translation>
+      <translation>Sensível à maiúsculas e minúsculas</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="749"/>
       <source>Whole words</source>
-      <translation type="unfinished">Whole words</translation>
+      <translation>Palavras inteiras</translation>
     </message>
   </context>
   <context>
@@ -7897,7 +7893,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="57"/>
       <source>Press right mouse button</source>
-      <translation type="unfinished">Press right mouse button</translation>
+      <translation>Pressione o botão direito do mouse</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="59"/>
@@ -8128,7 +8124,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="Translator.cpp" line="173"/>
       <source>Georgian</source>
-      <translation type="unfinished">Georgian</translation>
+      <translation>Georgiano</translation>
     </message>
   </context>
   <context>
@@ -8242,12 +8238,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="2846"/>
       <source>Add dependent objects to selection</source>
-      <translation type="unfinished">Add dependent objects to selection</translation>
+      <translation>Adicionar objetos dependentes à seleção</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2847"/>
       <source>Adds all dependent objects to the selection</source>
-      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+      <translation>Adicionar todos os objetos dependentes à seleção</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2849"/>
@@ -8975,13 +8971,13 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="1084"/>
       <source>Physical path:</source>
-      <translation type="unfinished">Physical path:</translation>
+      <translation>Caminho físico:</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1086"/>
       <location filename="../Document.cpp" line="1092"/>
       <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
+      <translation>Documento:</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1088"/>
@@ -9410,7 +9406,7 @@ ou underscore e não deve começar com um número.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2503"/>
       <source>Apply to all</source>
-      <translation type="unfinished">Apply to all</translation>
+      <translation>Aplicar a todos</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2504"/>
@@ -9422,7 +9418,7 @@ option to apply only to this link.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2549"/>
       <source>Copy on change</source>
-      <translation type="unfinished">Copy on change</translation>
+      <translation>Copiar ao alterar</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2550"/>
@@ -9451,12 +9447,12 @@ Also auto redo the copy if the original linked object is changed.
     <message>
       <location filename="../ViewProviderLink.cpp" line="2584"/>
       <source>Disable copy on change</source>
-      <translation type="unfinished">Disable copy on change</translation>
+      <translation>Desativar cópia ao allterar</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2599"/>
       <source>Refresh configurable object</source>
-      <translation type="unfinished">Refresh configurable object</translation>
+      <translation>Atualizar o objeto configurável</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2600"/>
@@ -10695,13 +10691,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="702"/>
       <source>Report a bug</source>
-      <translation type="unfinished">Report a bug</translation>
+      <translation>Reporte um bug</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="703"/>
       <location filename="../CommandStd.cpp" line="705"/>
       <source>Report a bug or suggest a feature</source>
-      <translation type="unfinished">Report a bug or suggest a feature</translation>
+      <translation>Comunique erros encontrados ou solicite novas funcionalidades</translation>
     </message>
   </context>
   <context>

@@ -1207,7 +1207,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
       <source>Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</source>
-      <translation type="unfinished">Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</translation>
+      <translation>Adabegi bat txertatzen du emandako parametro batean. Adabegia lehendik badago parametro horretan, bere aniztasuna batean gehitzen da.</translation>
     </message>
   </context>
   <context>
@@ -2263,17 +2263,17 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5941"/>
       <source>Knot cannot have zero multiplicity.</source>
-      <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
+      <translation>Adabegiak ezin du zero aniztasuna izan.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5955"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
-      <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
+      <translation>Adabegi-aniztasunak ezin du izan BSpline-aren graduak baino handiagoa.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5958"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
-      <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
+      <translation>Adabegia ezin da txertatu BSpline parametro-barrutiaren kanpoaldean.</translation>
     </message>
   </context>
   <context>
@@ -2549,7 +2549,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <location filename="../../CommandConstraints.cpp" line="544"/>
       <location filename="../../CommandConstraints.cpp" line="556"/>
       <source>Only sketch and its support are allowed to be selected.</source>
-      <translation type="unfinished">Only sketch and its support are allowed to be selected.</translation>
+      <translation>Krokisa eta bere euskarria soilik onartzen dira hautatzea.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="565"/>
@@ -5097,7 +5097,7 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="42"/>
       <source>Highlight troublesome vertexes</source>
-      <translation type="unfinished">Highlight troublesome vertexes</translation>
+      <translation>Nabarmendu arazoak dituzten erpinak</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="52"/>
@@ -5122,7 +5122,7 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
       <source>If checked, construction geometries are ignored in the search</source>
-      <translation type="unfinished">If checked, construction geometries are ignored in the search</translation>
+      <translation>Markatuta badago, eraikuntza-geometriei ez ikusiarena egingo zaie bilaketan</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
@@ -5344,10 +5344,13 @@ This is done by analyzing the sketch geometries and constraints.</translation>
       <source>Under constrained:</source>
       <translation>Gutxiegi murriztutakoa:</translation>
     </message>
-    <message>
+    <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
-      <source>DoF</source>
-      <translation>askatasun-gradua</translation>
+      <source>%n DoF(s)</source>
+      <translation type="unfinished">
+        <numerusform>%n DoF(s)</numerusform>
+        <numerusform>%n DoF(s)</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2917"/>

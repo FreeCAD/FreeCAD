@@ -4124,12 +4124,12 @@ For example:
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="628"/>
       <source>Feed(H)</source>
-      <translation type="unfinished">Feed(H)</translation>
+      <translation>Alimentação (H)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="632"/>
       <source>Feed(V)</source>
-      <translation type="unfinished">Feed(V)</translation>
+      <translation>Alimentação (V)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileGui.py" line="165"/>
@@ -5615,7 +5615,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../PathScripts/post/gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Nenhum objeto Job</translation>
     </message>
   </context>
   <context>
@@ -5676,12 +5676,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../PathScripts/PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Inspecionar comandos Path</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Inspecionar os ocnteúdos de um objeto Path</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathInspect.py" line="277"/>

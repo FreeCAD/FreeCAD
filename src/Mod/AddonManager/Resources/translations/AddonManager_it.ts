@@ -91,225 +91,225 @@
     </message>
     <message>
       <location filename="../../AddonManager.py" line="597"/>
-      <location filename="../../AddonManager.py" line="1500"/>
+      <location filename="../../AddonManager.py" line="1502"/>
       <source>Refresh local cache</source>
       <translation>Aggiorna cache locale</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="734"/>
+      <location filename="../../AddonManager.py" line="735"/>
       <source>Updating cache...</source>
       <translation>Aggiornamento cache...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="776"/>
+      <location filename="../../AddonManager.py" line="777"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
       <translation>Impossibile trovare l'addon &apos;{}&apos; da selezionare</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="806"/>
-      <location filename="../../AddonManager.py" line="841"/>
+      <location filename="../../AddonManager.py" line="807"/>
+      <location filename="../../AddonManager.py" line="842"/>
       <source>Checking for updates...</source>
       <translation>Controllo aggiornamenti...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="836"/>
+      <location filename="../../AddonManager.py" line="837"/>
       <source>Apply {} update(s)</source>
       <translation>Applica {} aggiornamento(i)</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="845"/>
+      <location filename="../../AddonManager.py" line="846"/>
       <source>No updates available</source>
       <translation>Nessun aggiornamento disponibile</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1046"/>
+      <location filename="../../AddonManager.py" line="1048"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
       <translation>Questo addon richiede pacchetti Python che non sono installati e non possono essere installati automaticamente. Per utilizzare questo ambiente di lavoro è necessario installare manualmente i seguenti pacchetti Python:</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1055"/>
+      <location filename="../../AddonManager.py" line="1057"/>
       <source>Too many to list</source>
       <translation>Troppi da elencare</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1061"/>
-      <location filename="../../AddonManager.py" line="1105"/>
+      <location filename="../../AddonManager.py" line="1063"/>
+      <location filename="../../AddonManager.py" line="1107"/>
       <source>Missing Requirement</source>
       <translation>Requisito Mancante</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1070"/>
+      <location filename="../../AddonManager.py" line="1072"/>
       <source>The following Python packages are allowed to be automatically installed</source>
       <translation>I seguenti pacchetti Python possono essere installati automaticamente</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1089"/>
+      <location filename="../../AddonManager.py" line="1091"/>
       <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
       <translation>Addon &apos;{}&apos; richiede &apos;{}&apos;, che non è disponibile nella tua copia di FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1096"/>
+      <location filename="../../AddonManager.py" line="1098"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
       <translation>Addon &apos;{}&apos; richiede i seguenti ambienti di lavoro, che non sono disponibili nella tua copia di FreeCAD:</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1103"/>
+      <location filename="../../AddonManager.py" line="1105"/>
       <source>Press OK to install anyway.</source>
       <translation>Premere OK per installare comunque.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1158"/>
+      <location filename="../../AddonManager.py" line="1160"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list
 </source>
       <translation>Dipendenza opzionale da {} ignorata perché non è nella lista permessi
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1213"/>
-      <location filename="../../AddonManager.py" line="1214"/>
+      <location filename="../../AddonManager.py" line="1215"/>
+      <location filename="../../AddonManager.py" line="1216"/>
       <source>Installing dependencies</source>
       <translation>Installazione delle dipendenze</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1229"/>
+      <location filename="../../AddonManager.py" line="1231"/>
       <source>Cannot execute Python</source>
       <translation>Impossibile eseguire Python</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1234"/>
+      <location filename="../../AddonManager.py" line="1236"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
       <translation>Impossibile localizzare automaticamente l'eseguibile Python, o il percorso è impostato in modo errato. Controlla l'impostazione delle preferenze di Addon Manager per il percorso di Python.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1238"/>
+      <location filename="../../AddonManager.py" line="1240"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
       <translation>Le dipendenze non possono essere installate. Continuare con l'installazione di {} comunque?</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1249"/>
+      <location filename="../../AddonManager.py" line="1251"/>
       <source>Cannot execute pip</source>
       <translation>Impossibile eseguire pip</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1254"/>
+      <location filename="../../AddonManager.py" line="1256"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
       <translation>Esecuzione di pip non riuscita, che potrebbe mancare dall'installazione di Python. Assicurarsi che il sistema abbia pip installato e riprovare. Il comando fallito era: </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1258"/>
+      <location filename="../../AddonManager.py" line="1260"/>
       <source>Continue with installation of {} anyway?</source>
       <translation>Continuare con l'installazione di {} comunque?</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1270"/>
+      <location filename="../../AddonManager.py" line="1272"/>
       <source>Package installation failed</source>
       <translation>Installazione del pacchetto fallita</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1273"/>
+      <location filename="../../AddonManager.py" line="1275"/>
       <source>See Report View for detailed failure log.</source>
       <translation>Vedere Report View per il registro di errore dettagliato.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1336"/>
+      <location filename="../../AddonManager.py" line="1338"/>
       <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
       <translation>Macro installata con successo. Ora la macro è disponibile dalla finestra di dialogo Macro.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1339"/>
+      <location filename="../../AddonManager.py" line="1341"/>
       <source>Installation of macro failed</source>
       <translation>Installazione della macro fallita</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1395"/>
+      <location filename="../../AddonManager.py" line="1397"/>
       <source>{} total, see Report view for list</source>
       <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
       <translation>{} totale, vedere Vista report per l'elenco</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1406"/>
+      <location filename="../../AddonManager.py" line="1408"/>
       <source>All packages were successfully updated</source>
       <translation>Tutti i pacchetti sono stati aggiornati con successo</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1409"/>
-      <location filename="../../AddonManager.py" line="1429"/>
-      <location filename="../../AddonManager.py" line="1432"/>
+      <location filename="../../AddonManager.py" line="1411"/>
+      <location filename="../../AddonManager.py" line="1431"/>
+      <location filename="../../AddonManager.py" line="1434"/>
       <source>Succeeded</source>
       <translation>Riuscito</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1413"/>
+      <location filename="../../AddonManager.py" line="1415"/>
       <source>All packages updates failed:</source>
       <translation>Aggiornamento di tutti i pacchetti non riuscito:</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1416"/>
-      <location filename="../../AddonManager.py" line="1435"/>
+      <location filename="../../AddonManager.py" line="1418"/>
       <location filename="../../AddonManager.py" line="1437"/>
+      <location filename="../../AddonManager.py" line="1439"/>
       <source>Failed</source>
       <translation>Non riuscito</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1424"/>
+      <location filename="../../AddonManager.py" line="1426"/>
       <source>Some packages updates failed.</source>
       <translation>Aggiornamento di alcuni pacchetti non riuscito.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1454"/>
+      <location filename="../../AddonManager.py" line="1456"/>
       <source>Update report</source>
       <translation>Aggiorna report</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1515"/>
+      <location filename="../../AddonManager.py" line="1517"/>
       <source>Installation succeeded</source>
       <translation>Installazione riuscita</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1536"/>
+      <location filename="../../AddonManager.py" line="1538"/>
       <source>Installation failed</source>
       <translation>Installazione non riuscita</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1561"/>
+      <location filename="../../AddonManager.py" line="1563"/>
       <source>Execution of macro failed. See console for failure details.</source>
       <translation>Esecuzione della macro non riuscita. Consultare la console per i dettagli dell'errore.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1580"/>
+      <location filename="../../AddonManager.py" line="1582"/>
       <source>Confirm remove</source>
       <translation>Conferma rimozione</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1583"/>
+      <location filename="../../AddonManager.py" line="1585"/>
       <source>Are you sure you want to uninstall this Addon?</source>
       <translation>Sei sicuro di voler disinstallare questo Addon?</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1621"/>
+      <location filename="../../AddonManager.py" line="1623"/>
       <source>Macro {} has local changes in the macros directory, so is not being removed by this uninstall process.
 </source>
       <translation>Macro {} ha modifiche locali nella directory macro, quindi non viene rimossa da questo processo di disinstallazione.
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1636"/>
+      <location filename="../../AddonManager.py" line="1638"/>
       <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
       <translation>Esecuzione dello script di Addon&apos;s uninstall.py non riuscita. Proseguire con la disinstallazione...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1653"/>
+      <location filename="../../AddonManager.py" line="1655"/>
       <source>Unable to remove this addon with the Addon Manager.</source>
       <translation>Impossibile rimuovere questo addon con Addon Manager.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1660"/>
+      <location filename="../../AddonManager.py" line="1662"/>
       <source>Successfully uninstalled {}</source>
       <translation>Disinstallato con successo {}</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1674"/>
+      <location filename="../../AddonManager.py" line="1676"/>
       <source>Failed to uninstall {}. Please remove manually.</source>
       <translation>Impossibile disinstallare {}. Si prega di rimuovere manualmente.</translation>
     </message>
@@ -334,238 +334,253 @@
       <translation>Clona directory</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="129"/>
+      <location filename="../../addonmanager_workers.py" line="130"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
       <translation>Impossibile leggere i dati da GitHub: controllare la connessione internet e le impostazioni proxy e riprovare.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="205"/>
+      <location filename="../../addonmanager_workers.py" line="206"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Impossibile connettersi a GitHub. Controlla le impostazioni di connessione e proxy.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="305"/>
+      <location filename="../../addonmanager_workers.py" line="306"/>
       <source>Workbenches list was updated.</source>
       <translation>Elenco degli ambienti di lavoro aggiornato.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="456"/>
+      <location filename="../../addonmanager_workers.py" line="457"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Impossibile recuperare gli aggiornamenti git per l'ambiente di lavoro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="471"/>
+      <location filename="../../addonmanager_workers.py" line="472"/>
       <source>git fetch failed for {}</source>
       <translation>git fetch fallito per {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="512"/>
+      <location filename="../../addonmanager_workers.py" line="513"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Lettura dei metadati da {name} non riuscita</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="535"/>
+      <location filename="../../addonmanager_workers.py" line="536"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Recupero del codice per macro &apos;{name}&apos; non riuscito</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="593"/>
+      <location filename="../../addonmanager_workers.py" line="594"/>
       <source>Retrieving macros from FreeCAD/FreeCAD-Macros Git repository</source>
       <translation>Recupero macro dal repository Git FreeCAD/FreeCAD-Macros</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="602"/>
+      <location filename="../../addonmanager_workers.py" line="603"/>
       <source>Retrieving macros from FreeCAD wiki</source>
       <translation>Recupero macro da FreeCAD wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="610"/>
+      <location filename="../../addonmanager_workers.py" line="611"/>
       <source>Done locating macros.</source>
       <translation>Individuazione delle macro completata.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="624"/>
+      <location filename="../../addonmanager_workers.py" line="625"/>
       <source>Failed to execute Git Python command: check installation of GitPython and/or git</source>
       <translation>Esecuzione del comando Git Python non riuscita: verifica l'installazione di GitPython e/o git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="631"/>
+      <location filename="../../addonmanager_workers.py" line="632"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Tentativo di modificare la configurazione Macro non git per usare git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="646"/>
-      <source>An error occurred updating macros from GitHub</source>
-      <translation>Si è verificato un errore durante l'aggiornamento delle macro da GitHub</translation>
+      <location filename="../../addonmanager_workers.py" line="647"/>
+      <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
+      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="689"/>
+      <location filename="../../addonmanager_workers.py" line="653"/>
+      <source>Attempting to do a clean checkout...</source>
+      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="664"/>
+      <source>Clean checkout succeeded</source>
+      <translation type="unfinished">Clean checkout succeeded</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="671"/>
+      <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
+      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="715"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Errore nel connettersi al Wiki, FreeCAD non può recuperare l'elenco macro Wiki in questo momento</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="735"/>
+      <location filename="../../addonmanager_workers.py" line="768"/>
       <source>Caching macro code...</source>
       <translation>Memorizzazione nella cache codice macro...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="759"/>
+      <location filename="../../addonmanager_workers.py" line="792"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Addon Manager: un processo in corso impedisce di arrestare ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="778"/>
+      <location filename="../../addonmanager_workers.py" line="811"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Addon Manager: un processo in corso non è riuscito a completare durante il recupero di {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="793"/>
+      <location filename="../../addonmanager_workers.py" line="826"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Su {num_macros} macro, {num_failed} sono scadute durante l'elaborazione</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="824"/>
+      <location filename="../../addonmanager_workers.py" line="857"/>
       <source>Getting metadata from macro {}</source>
       <translation>Ottenere i metadati dalla macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="837"/>
+      <location filename="../../addonmanager_workers.py" line="870"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Timeout durante il recupero dei metadati per macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="848"/>
+      <location filename="../../addonmanager_workers.py" line="881"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Impossibile terminare il processo per macro {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="869"/>
+      <location filename="../../addonmanager_workers.py" line="902"/>
       <source>Retrieving macro description...</source>
       <translation>Recupero descrizione macro...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="873"/>
+      <location filename="../../addonmanager_workers.py" line="906"/>
       <source>Retrieving info from git</source>
       <translation>Recupero informazioni da git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="878"/>
+      <location filename="../../addonmanager_workers.py" line="911"/>
       <source>Retrieving info from wiki</source>
       <translation>Recupero informazioni dal wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="929"/>
+      <location filename="../../addonmanager_workers.py" line="962"/>
       <source>GitPython not found. Using ZIP file download instead.</source>
       <translation>GitPython non trovato. Usare invece il download del file ZIP.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="937"/>
+      <location filename="../../addonmanager_workers.py" line="970"/>
       <source>Your version of Python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>La tua versione di Python non supporta i file ZIP. Impossibile procedere.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="974"/>
+      <location filename="../../addonmanager_workers.py" line="1007"/>
       <source>No Git Python installed, skipping git operations</source>
       <translation>Git Python non installato, saltano le operazioni git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="993"/>
-      <location filename="../../addonmanager_workers.py" line="1040"/>
+      <location filename="../../addonmanager_workers.py" line="1026"/>
+      <location filename="../../addonmanager_workers.py" line="1073"/>
       <source>You are installing a Python 2 workbench on a system running Python 3 - </source>
       <translation>Stai installando un ambiente di lavoro Python 2 su un sistema che esegue Python 3 - </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1007"/>
+      <location filename="../../addonmanager_workers.py" line="1040"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>Ambiente di lavoro aggiornato con successo. Riavvia FreeCAD per applicare le modifiche.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1012"/>
+      <location filename="../../addonmanager_workers.py" line="1045"/>
       <source>Workbench successfully updated.</source>
       <translation>Ambiente di lavoro aggiornato correttamente.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1015"/>
+      <location filename="../../addonmanager_workers.py" line="1048"/>
       <source>Error updating module</source>
       <translation>Errore nell'aggiornamento del modulo</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1019"/>
+      <location filename="../../addonmanager_workers.py" line="1052"/>
       <source>Please fix manually</source>
       <translation>Correggi manualmente</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1087"/>
+      <location filename="../../addonmanager_workers.py" line="1120"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Ambiente di lavoro installato con successo. Riavvia FreeCAD per applicare le modifiche.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1093"/>
+      <location filename="../../addonmanager_workers.py" line="1126"/>
       <source>Addon successfully installed.</source>
       <translation>Addon installato con successo.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1117"/>
+      <location filename="../../addonmanager_workers.py" line="1150"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Una macro è stata installata ed è disponibile sotto Macro -&gt; Macros menu</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1136"/>
+      <location filename="../../addonmanager_workers.py" line="1169"/>
       <source>Error: Unable to locate ZIP from</source>
       <translation>Errore: Impossibile individuare zip da</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1164"/>
+      <location filename="../../addonmanager_workers.py" line="1197"/>
       <source>Downloading: {mbytes_str}MB of {mbytes_total_str}MB ({percent}%)</source>
       <translation>Scaricamento: {mbytes_str}MB di {mbytes_total_str}MB ({percent}%)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1179"/>
+      <location filename="../../addonmanager_workers.py" line="1212"/>
       <source>Downloading: {bytes_str} of {bytes_total_str} bytes ({percent}%)</source>
       <translation>Scaricamento: {bytes_str} di {bytes_total_str} byte ({percent}%)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1192"/>
+      <location filename="../../addonmanager_workers.py" line="1225"/>
       <source>Downloading: {bytes_str}MB of unknown total</source>
       <translation>Scaricamento: {bytes_str}MB di totale sconosciuto</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1203"/>
+      <location filename="../../addonmanager_workers.py" line="1236"/>
       <source>Error: Error while downloading ZIP file for {}</source>
       <translation>Errore: errore durante il download del file ZIP per {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1228"/>
+      <location filename="../../addonmanager_workers.py" line="1261"/>
       <source>Successfully installed {} from ZIP file</source>
       <translation>Installato con successo {} dal file ZIP</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1351"/>
-      <location filename="../../addonmanager_workers.py" line="1370"/>
+      <location filename="../../addonmanager_workers.py" line="1384"/>
+      <location filename="../../addonmanager_workers.py" line="1403"/>
       <source>Installation of Python package {} failed</source>
       <translation>Installazione del pacchetto Python {} fallita</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1487"/>
+      <location filename="../../addonmanager_workers.py" line="1520"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Pacchetto.xml scaricato per {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1517"/>
+      <location filename="../../addonmanager_workers.py" line="1550"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Metadati.txt scaricato per {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1568"/>
+      <location filename="../../addonmanager_workers.py" line="1601"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Scaricato requirements.txt per {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="1591"/>
+      <location filename="../../addonmanager_workers.py" line="1624"/>
       <source>Downloaded icon for {}</source>
       <translation>Icona scaricata per {}</translation>
     </message>
