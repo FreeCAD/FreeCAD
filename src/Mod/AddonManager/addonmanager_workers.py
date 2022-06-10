@@ -25,6 +25,7 @@
 import os
 import re
 import shutil
+import stat
 import json
 import tempfile
 import hashlib
@@ -639,14 +640,37 @@ class FillMacroListWorker(QtCore.QThread):
                     "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
                 )
         except Exception as e:
-            FreeCAD.Console.PrintWarning(
+            FreeCAD.Console.PrintMessage(
                 translate(
-                    "AddonsInstaller", "An error occurred updating macros from GitHub"
+                    "AddonsInstaller", "An error occurred updating macros from GitHub, trying clean checkout..."
                 )
                 + f":\n{e}\n"
             )
-            FreeCAD.Console.PrintWarning(f"{self.repo_dir}\n")
-            return
+            FreeCAD.Console.PrintMessage(f"{self.repo_dir}\n")
+            FreeCAD.Console.PrintMessage(
+                translate(
+                    "AddonsInstaller", "Attempting to do a clean checkout..."
+                ) + "\n"
+            )
+            try:
+                shutil.rmtree(self.repo_dir, onerror=self.remove_readonly)
+                git.Repo.clone_from(
+                    "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
+                )
+                FreeCAD.Console.PrintMessage(
+                    translate(
+                        "AddonsInstaller", "Clean checkout succeeded"
+                    )
+                    + "\n"
+                )
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "AddonsInstaller", "Failed to update macros from GitHub -- try clearing the Addon Manager's cache."
+                    )
+                    + f":\n{str(e)}\n"
+                )
+                return
         n_files = 0
         for _, _, filenames in os.walk(self.repo_dir):
             n_files += len(filenames)
@@ -665,7 +689,9 @@ class FillMacroListWorker(QtCore.QThread):
                     macro = Macro(filename[:-8])  # Remove ".FCMacro".
                     macro.on_git = True
                     macro.src_filename = os.path.join(dirpath, filename)
+                    macro.fill_details_from_file(macro.src_filename)
                     repo = Addon.from_macro(macro)
+                    FreeCAD.Console.PrintLog(f"Found macro {repo.name}\n")
                     repo.url = "https://github.com/FreeCAD/FreeCAD-macros.git"
                     utils.update_macro_installation_details(repo)
                     self.add_macro_signal.emit(repo)
@@ -709,10 +735,17 @@ class FillMacroListWorker(QtCore.QThread):
                 macro_names.append(macname)
                 macro = Macro(macname)
                 macro.on_wiki = True
+                macro.parsed = False
                 repo = Addon.from_macro(macro)
                 repo.url = "https://wiki.freecad.org/Macros_recipes"
                 utils.update_macro_installation_details(repo)
                 self.add_macro_signal.emit(repo)
+
+    def remove_readonly(self, func, path, _) -> None:
+        """Remove a read-only file."""
+
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
 
 
 class CacheMacroCode(QtCore.QThread):
