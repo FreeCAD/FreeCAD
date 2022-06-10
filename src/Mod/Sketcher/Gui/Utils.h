@@ -125,6 +125,12 @@ void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElement
 
 }
 
+/// converts a 2D vector into a 3D vector in the XY plane
+inline Base::Vector3d toVector3d(const Base::Vector2d & vector2d) {
+    return Base::Vector3d(vector2d.x, vector2d.y, 0.);
+}
+
+
 template <typename T>
 auto toPointerVector(const std::vector<std::unique_ptr<T>> & vector) {
     std::vector<T *> vp (vector.size());
@@ -133,6 +139,5 @@ auto toPointerVector(const std::vector<std::unique_ptr<T>> & vector) {
 
     return vp;
 }
-
 #endif // SKETCHERGUI_Recompute_H
 
