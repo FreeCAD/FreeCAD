@@ -2,20 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="64"
    height="64"
    id="svg249"
-   inkscape:version="0.92.4 (unknown)"
-   sodipodi:docname="indentMore.svg">
+   inkscape:version="1.2-beta (1b65182ce9, 2022-04-05)"
+   sodipodi:docname="indentMore.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -25,20 +25,22 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1358"
-     inkscape:window-height="703"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
      id="namedview91"
      showgrid="true"
      inkscape:snap-global="true"
      inkscape:snap-bbox="true"
      inkscape:snap-nodes="false"
      inkscape:zoom="4.015625"
-     inkscape:cx="-29.600025"
-     inkscape:cy="42.681203"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:cx="-46.692607"
+     inkscape:cy="42.957198"
+     inkscape:window-x="1913"
+     inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg249">
+     inkscape:current-layer="svg249"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid3068"
@@ -591,6 +593,13 @@
       </cc:License>
     </rdf:RDF>
   </metadata>
+  <rect
+     style="fill:#ffffff;stroke:#ffffff;stroke-width:16.6634;stroke-linejoin:round;stroke-dashoffset:128.504"
+     id="rect2999"
+     width="47.063217"
+     height="46.938217"
+     x="8.4683914"
+     y="8.5308914" />
   <g
      id="layer4"
      style="display:inline"
