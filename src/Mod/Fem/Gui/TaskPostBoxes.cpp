@@ -36,6 +36,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -767,6 +768,17 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
+    // set decimals before the edits are filled to avoid rounding mistakes
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->centerX->setDecimals(UserDecimals);
+    ui->centerY->setDecimals(UserDecimals);
+    ui->centerZ->setDecimals(UserDecimals);
+
+    const Base::Unit lengthUnit = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Center.getUnit();
+    ui->centerX->setUnit(lengthUnit);
+    ui->centerY->setUnit(lengthUnit);
+    ui->centerZ->setUnit(lengthUnit);
+
     const Base::Vector3d& vec = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Center.getValue();
     ui->centerX->setValue(vec.x);
     ui->centerY->setValue(vec.y);
@@ -852,9 +864,10 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z) {
 
 void TaskPostDataAtPoint::centerChanged(double) {
 
-    Base::Vector3d vec(ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
+    Base::Vector3d vec(ui->centerX->value().getValue(), ui->centerY->value().getValue(), ui->centerZ->value().getValue());
     std::string ObjName = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", ObjName.c_str(),
+        ui->centerX->value().getValue(), ui->centerY->value().getValue(), ui->centerZ->value().getValue());
 }
 
 void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
@@ -921,6 +934,9 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     }
     // ToDo: set a proper unit once it is known
     else if (FieldName == "potential loads") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
+    }
+    else {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
     }
 
