@@ -896,10 +896,15 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
-    if ((FieldName == "Von Mises stress") || (FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Median Principal stress") || (FieldName == "Stress vectors")) {
+    if ((FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
+        || (FieldName == "Major Principal Stress") || (FieldName == "Intermediate Principal Stress")
+        || (FieldName == "Minor Principal Stress") || (FieldName == "Minor Principal Stress")
+        || (FieldName == "Stress xx component") || (FieldName == "Stress xy component")
+        || (FieldName == "Stress xz component") || (FieldName == "Stress yy component")
+        || (FieldName == "Stress yz component") || (FieldName == "Stress zz component")) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("Pa");
     }
-    else if (FieldName == "Displacement") {
+    else if ((FieldName == "Displacement") || (FieldName == "Displacement Magnitude")) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("m");
     }
     else if (FieldName == "Temperature") {
@@ -919,7 +924,9 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
     }
 
-    std::string PointData = " The value at that location is " + std::to_string(static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0]) + " " + static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
+    std::string PointData = " The value at that location is "
+        + std::to_string(static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0])
+        + " " + static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
     QMessageBox::information(Gui::getMainWindow(),
         qApp->translate("CmdFemPostCreateDataAtPointFilter", "Data At Point"),
         qApp->translate("CmdFemPostCreateDataAtPointFilter", PointData.c_str()));
