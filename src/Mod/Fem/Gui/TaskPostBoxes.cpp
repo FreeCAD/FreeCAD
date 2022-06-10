@@ -328,6 +328,7 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
     box->setCurrentIndex(index);
 }
 
+
 // ***************************************************************************
 // post pipeline results
 TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget* parent)
@@ -407,6 +408,7 @@ void TaskPostFunction::applyPythonCode() {
 
     //we apply the views widgets python code
 }
+
 
 // ***************************************************************************
 // region clip filter
@@ -534,6 +536,7 @@ void TaskPostClip::on_InsideOut_toggled(bool val) {
     static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
 }
+
 
 // ***************************************************************************
 // data along a line
@@ -753,6 +756,7 @@ plt.show()\n";
     return oss.str();
 }
 
+
 // ***************************************************************************
 // data at point
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidget* parent)
@@ -864,7 +868,6 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z) {
 
 void TaskPostDataAtPoint::centerChanged(double) {
 
-    Base::Vector3d vec(ui->centerX->value().getValue(), ui->centerY->value().getValue(), ui->centerZ->value().getValue());
     std::string ObjName = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Label.getValue();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", ObjName.c_str(),
         ui->centerX->value().getValue(), ui->centerY->value().getValue(), ui->centerZ->value().getValue());
@@ -908,10 +911,15 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
 
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
+    // there is no "None" for the FieldName property, thus return here
+    if (FieldName == "None") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
+        return;
+    }
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
     if ((FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
         || (FieldName == "Major Principal Stress") || (FieldName == "Intermediate Principal Stress")
-        || (FieldName == "Minor Principal Stress") || (FieldName == "Minor Principal Stress")
+        || (FieldName == "Minor Principal Stress")
         || (FieldName == "Stress xx component") || (FieldName == "Stress xy component")
         || (FieldName == "Stress xz component") || (FieldName == "Stress yy component")
         || (FieldName == "Stress yz component") || (FieldName == "Stress zz component")) {
@@ -948,6 +956,7 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
         qApp->translate("CmdFemPostCreateDataAtPointFilter", PointData.c_str()));
     Base::Console().Error(PointData.c_str());
 }
+
 
 // ***************************************************************************
 // scalar clip filter
@@ -1054,6 +1063,7 @@ void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
     static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
 }
+
 
 // ***************************************************************************
 // warp filter
@@ -1197,6 +1207,7 @@ void TaskPostWarpVector::on_Min_valueChanged(double) {
     ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
 }
+
 
 // ***************************************************************************
 // function clip filter
