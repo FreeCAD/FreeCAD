@@ -56,53 +56,6 @@ class PathPostTestCases(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("boxtest")
 
-    def testLinuxCNC(self):
-        from PathScripts.post import linuxcnc_post as postprocessor
-
-        args = (
-            "--no-header --no-line-numbers --no-comments --no-show-editor --precision=2"
-        )
-        gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
-
-        referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_linuxcnc_00.ngc"
-        )
-        with open(referenceFile, "r") as fp:
-            refGCode = fp.read()
-
-        # Use if this test fails in order to have a real good look at the changes
-        if WriteDebugOutput:
-            with open("testLinuxCNC.tmp", "w") as fp:
-                fp.write(gcode)
-
-        if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
-            self.fail("linuxcnc output doesn't match: " + msg)
-
-    def testLinuxCNCImperial(self):
-        from PathScripts.post import linuxcnc_post as postprocessor
-
-        args = "--no-header --no-line-numbers --no-comments --no-show-editor --precision=2 --inches"
-        gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
-
-        referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_linuxcnc_10.ngc"
-        )
-        with open(referenceFile, "r") as fp:
-            refGCode = fp.read()
-
-        # Use if this test fails in order to have a real good look at the changes
-        if WriteDebugOutput:
-            with open("testLinuxCNCImplerial.tmp", "w") as fp:
-                fp.write(gcode)
-
-        if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
-            self.fail("linuxcnc output doesn't match: " + msg)
 
     def testCentroid(self):
         from PathScripts.post import centroid_post as postprocessor
