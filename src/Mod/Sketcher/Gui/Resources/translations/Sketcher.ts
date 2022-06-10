@@ -5308,10 +5308,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
         <source>Under constrained:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../../ViewProviderSketch.cpp" line="2914"/>
-        <source>DoF</source>
-        <translation type="unfinished"></translation>
+        <source>%n DoF(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../../ViewProviderSketch.cpp" line="2917"/>
