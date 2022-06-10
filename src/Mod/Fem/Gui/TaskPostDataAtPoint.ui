@@ -102,9 +102,6 @@
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
         </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
        </widget>
       </item>
      </layout>
