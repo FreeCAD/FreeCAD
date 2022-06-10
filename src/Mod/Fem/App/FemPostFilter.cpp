@@ -195,8 +195,8 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter(void) : FemPostFilter() {
     ADD_PROPERTY_TYPE(PlotData, (""), "DataAlongLine", App::Prop_None, "Field used for plotting");
 
     PlotData.setStatus(App::Property::ReadOnly, true);
-    XAxisData.setStatus(App::Property::ReadOnly, true);
-    YAxisData.setStatus(App::Property::ReadOnly, true);
+    XAxisData.setStatus(App::Property::Output, true);
+    YAxisData.setStatus(App::Property::Output, true);
 
     FilterPipeline clip;
 
@@ -316,7 +316,7 @@ FemPostDataAtPointFilter::FemPostDataAtPointFilter(void) : FemPostFilter() {
     ADD_PROPERTY_TYPE(FieldName, (""), "DataAtPoint", App::Prop_None, "Field used for plotting");
     ADD_PROPERTY_TYPE(Unit, (""), "DataAtPoint", App::Prop_None, "Unit used for Field");
 
-    PointData.setStatus(App::Property::ReadOnly, true);
+    PointData.setStatus(App::Property::Output, true);
     FieldName.setStatus(App::Property::ReadOnly, true);
     Unit.setStatus(App::Property::ReadOnly, true);
 
