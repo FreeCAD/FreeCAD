@@ -553,6 +553,24 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
+    // set decimals before the edits are filled to avoid rounding mistakes
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->point1X->setDecimals(UserDecimals);
+    ui->point1Y->setDecimals(UserDecimals);
+    ui->point1Z->setDecimals(UserDecimals);
+    ui->point2X->setDecimals(UserDecimals);
+    ui->point2Y->setDecimals(UserDecimals);
+    ui->point2Z->setDecimals(UserDecimals);
+
+    Base::Unit lengthUnit = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Point1.getUnit();
+    ui->point1X->setUnit(lengthUnit);
+    ui->point1Y->setUnit(lengthUnit);
+    ui->point1Z->setUnit(lengthUnit);
+    lengthUnit = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Point2.getUnit();
+    ui->point2X->setUnit(lengthUnit);
+    ui->point2Y->setUnit(lengthUnit);
+    ui->point2Z->setUnit(lengthUnit);
+
     const Base::Vector3d& vec1 = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Point1.getValue();
     ui->point1X->setValue(vec1.x);
     ui->point1Y->setValue(vec1.y);
@@ -628,7 +646,8 @@ void TaskPostDataAlongLine::on_SelectPoints_clicked() {
         FemGui::PointMarker* marker = new FemGui::PointMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
             FemGui::TaskPostDataAlongLine::pointCallback, marker);
-        connect(marker, SIGNAL(PointsChanged(double, double, double, double, double, double)), this, SLOT(onChange(double, double, double, double, double, double)));
+        connect(marker, SIGNAL(PointsChanged(double, double, double, double, double, double)), this,
+            SLOT(onChange(double, double, double, double, double, double)));
     }
 }
 
@@ -664,16 +683,16 @@ void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2,
 
 void TaskPostDataAlongLine::point1Changed(double) {
 
-    Base::Vector3d vec(ui->point1X->value(), ui->point1Y->value(), ui->point1Z->value());
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->point1X->value(), ui->point1Y->value(), ui->point1Z->value());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", ObjName.c_str(),
+        ui->point1X->value().getValue(), ui->point1Y->value().getValue(), ui->point1Z->value().getValue());
 }
 
 void TaskPostDataAlongLine::point2Changed(double) {
 
-    Base::Vector3d vec(ui->point2X->value(), ui->point2Y->value(), ui->point2Z->value());
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->point2X->value(), ui->point2Y->value(), ui->point2Z->value());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", ObjName.c_str(),
+        ui->point2X->value().getValue(), ui->point2Y->value().getValue(), ui->point2Z->value().getValue());
 }
 
 void TaskPostDataAlongLine::resolutionChanged(int val) {

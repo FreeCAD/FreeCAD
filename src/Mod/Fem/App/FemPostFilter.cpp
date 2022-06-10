@@ -236,6 +236,24 @@ DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
+void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+// transforms properties that had been changed
+{
+    // property Point1 had the App::PropertyVector and was changed to App::PropertyVectorDistance
+    if (prop == &Point1 && strcmp(TypeName, "App::PropertyVector") == 0) {
+        App::PropertyVector Point1Property;
+        // restore the PropertyFloat to be able to set its value
+        Point1Property.Restore(reader);
+        Point1.setValue(Point1Property.getValue());
+    }
+    // property Point2 had the App::PropertyVector and was changed to App::PropertyVectorDistance
+    else if (prop == &Point2 && strcmp(TypeName, "App::PropertyVector") == 0) {
+        App::PropertyVector Point2Property;
+        Point2Property.Restore(reader);
+        Point2.setValue(Point2Property.getValue());
+    }
+}
+
 
 void FemPostDataAlongLineFilter::onChanged(const Property* prop) {
     if (prop == &Point1) {
