@@ -106,12 +106,12 @@ public:
     FemPostDataAlongLineFilter(void);
     virtual ~FemPostDataAlongLineFilter();
 
-    App::PropertyVector   Point2;
-    App::PropertyVector   Point1;
-    App::PropertyInteger  Resolution;
-    App::PropertyFloatList XAxisData;
-    App::PropertyFloatList YAxisData;
-    App::PropertyString    PlotData;
+    App::PropertyVectorDistance Point1;
+    App::PropertyVectorDistance Point2;
+    App::PropertyInteger        Resolution;
+    App::PropertyFloatList      XAxisData;
+    App::PropertyFloatList      YAxisData;
+    App::PropertyString         PlotData;
 
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostDataAlongLine";
@@ -122,6 +122,7 @@ protected:
     virtual App::DocumentObjectExecReturn* execute(void);
     virtual void onChanged(const App::Property* prop);
     void GetAxisData();
+    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
 
 private:
 

@@ -2138,18 +2138,18 @@ itxura leunagoa ematen du.
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Mesh info box</source>
-      <translation type="unfinished">Mesh info box</translation>
+      <translation>Amaraun-informazioaren koadroa</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>Amaraun-informazioa</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="128"/>
       <location filename="../../Workbench.cpp" line="130"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>

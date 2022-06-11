@@ -1154,7 +1154,8 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter"))
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostScalarClipFilter"))
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostCutFilter"))
-        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter")) )
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter"))
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostDataAlongLineFilter")) )
         ) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("setupFilter", "Error: no post processing object selected."),
@@ -1252,7 +1253,7 @@ import FreeCAD\n\
 from PySide import QtCore\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
-plt.figure(1)\n\
+plt.figure(\"" << titleLabel << "\")\n\
 plt.plot(t_coords, membrane, \"k--\")\n\
 plt.plot(t_coords, mb, \"b*-\")\n\
 plt.plot(t_coords, peak, \"r-x\")\n\

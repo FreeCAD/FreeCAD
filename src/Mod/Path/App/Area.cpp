@@ -42,50 +42,51 @@
 # include <boost/range/adaptor/indexed.hpp>
 # include <boost/range/adaptor/transformed.hpp>
 
+# include <Bnd_Box.hxx>
 # include <BRepLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_FindPlane.hxx>
-# include <BRepLib_FindSurface.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepLib_MakeFace.hxx>
+# include <BRepLib_FindSurface.hxx>
 # include <BRepTools.hxx>
 # include <BRepTools_WireExplorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <GeomAbs_JoinType.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Ellipse.hxx>
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
-# include <Standard_Failure.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
 # include <gp_Circ.hxx>
 # include <gp_GTrsf.hxx>
-# include <Standard_Version.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
-# include <GCPnts_UniformDeflection.hxx>
-# include <GCPnts_UniformAbscissa.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepLib_MakeFace.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
 # include <HLRBRep.hxx>
 # include <HLRBRep_Algo.hxx>
 # include <HLRBRep_HLRToShape.hxx>
 # include <HLRAlgo_Projector.hxx>
-# include <ShapeFix_ShapeTolerance.hxx>
 # include <ShapeExtend_WireData.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
+# include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Vertex.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
@@ -2610,6 +2611,18 @@ struct ShapeInfo{
                 if(mySupportEdge) {
                     //if best point is on some edge, split the edge in half
                     if(edge.IsEqual(mySupport)) {
+                        //to fix PointProjectionFailed.     
+                        GeomAPI_ProjectPointOnCurve gpp;
+                        gpp.Init(myBestPt, curve);
+                        gpp.Perform(myBestPt);
+                        myBestPt = gpp.NearestPoint();
+                            
+                        gpp.Perform(pprev);
+                        pprev = gpp.NearestPoint();
+                        
+                        gpp.Perform(pt);
+                        pt = gpp.NearestPoint();
+                            
                         double d1 = pprev.SquareDistance(myBestPt);
                         double d2 = pt.SquareDistance(myBestPt);
 

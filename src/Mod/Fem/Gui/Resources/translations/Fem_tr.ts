@@ -334,17 +334,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1752"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Apply changes to pipeline</source>
       <translation>İş hattına değişiklikleri uygula</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1748"/>
+      <location filename="../../Command.cpp" line="1754"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>Değişiklikleri yalnızca yeniden hesaplamada değil, doğrudan parametrelere uygulayın...</translation>
     </message>
@@ -352,27 +352,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1290"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1291"/>
+      <location filename="../../Command.cpp" line="1297"/>
       <source>Region clip filter</source>
       <translation>Bölge alıntısı süzgeci</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1292"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
       <translation>Alıntılanmış bölgeyi tanımlamak için işlevler kullanan bir alıntı süzgeci tanımlayın/oluşturun</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
+      <location filename="../../Command.cpp" line="1680"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1681"/>
       <source>Select a pipeline, please.</source>
       <translation>Bir iş hattı seçiniz, lütfen.</translation>
     </message>
@@ -380,7 +380,7 @@
   <context>
     <name>CmdFemPostCreateDataAtPointFilter</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="919"/>
+      <location filename="../../TaskPostBoxes.cpp" line="947"/>
       <source>Data At Point</source>
       <translation>Noktasal Veri</translation>
     </message>
@@ -388,17 +388,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1333"/>
+      <location filename="../../Command.cpp" line="1339"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1340"/>
       <source>Function cut filter</source>
       <translation>Kesme filtresi fonksiyonu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
+      <location filename="../../Command.cpp" line="1341"/>
       <source>Cut the data along an implicit function</source>
       <translation>Verileri örtük bir fonksiyon boyunca kesin</translation>
     </message>
@@ -406,17 +406,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1383"/>
       <source>Line clip filter</source>
       <translation>Çizgi alıntı süzgeci</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
+      <location filename="../../Command.cpp" line="1384"/>
       <source>Define/create a clip filter which clips a field along a line</source>
       <translation>Bir çizgi boyunca bir alanı alıntılayan alıntı süzgeci tanımlayın/oluşturun</translation>
     </message>
@@ -424,17 +424,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1423"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
+      <location filename="../../Command.cpp" line="1424"/>
       <source>Data at point clip filter</source>
       <translation>Noktasal veri alıntısı süzgeci</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1419"/>
+      <location filename="../../Command.cpp" line="1425"/>
       <source>Define/create a clip filter which clips a field data at point</source>
       <translation>Noktasal veri alanını alıntılayan bir alıntı süzgeci tanımlayın/oluşturun</translation>
     </message>
@@ -442,27 +442,27 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="1606"/>
+      <location filename="../../Command.cpp" line="1612"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>Filter functions</source>
       <translation>Süzgeç işlevleri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1614"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>İşlem sonrası filtrede kullanılacak fonksiyonlar...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1719"/>
+      <location filename="../../Command.cpp" line="1725"/>
       <source>Plane</source>
       <translation>Düzlem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1724"/>
+      <location filename="../../Command.cpp" line="1730"/>
       <source>Sphere</source>
       <translation>Küre</translation>
     </message>
@@ -470,65 +470,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1218"/>
+      <location filename="../../Command.cpp" line="1219"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation type="unfinished">Thickness [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1219"/>
+      <location filename="../../Command.cpp" line="1220"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation type="unfinished">Stress [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1221"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation type="unfinished">Linearized Stresses</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1221"/>
+      <location filename="../../Command.cpp" line="1222"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation type="unfinished">Membrane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1223"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation type="unfinished">Membrane and Bending</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1223"/>
+      <location filename="../../Command.cpp" line="1224"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Toplam</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1462"/>
+      <location filename="../../Command.cpp" line="1468"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1469"/>
       <source>Stress linearization plot</source>
       <translation>Gerilme doğrusallaştırma grafiği</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1470"/>
       <source>Define/create stress linearization plots</source>
       <translation>Gerilme doğrusallaştırma grafiklerini tanımlayın/oluşturun</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
       <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
       <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
       <translation>Bir çizgi boyunca bir STRES alanını kırpan bir Darbe filtresi seçin, lütfen.</translation>
     </message>
@@ -536,27 +536,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Post pipeline from result</source>
       <translation>Sonuçtaki iş hattını yayınla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1787"/>
+      <location filename="../../Command.cpp" line="1793"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Bir sonuç nesnesinden bir işlem sonrası oluşturur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1856"/>
       <source>Wrong selection type</source>
       <translation>Yanlış seçim türü</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1851"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>Select a result object, please.</source>
       <translation>Bir sonuç nesnesi seçin, lütfen.</translation>
     </message>
@@ -564,17 +564,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1524"/>
+      <location filename="../../Command.cpp" line="1530"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1531"/>
       <source>Scalar clip filter</source>
       <translation>Skaler kırpma filtresi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1532"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
       <translation>Skaler değere sahip bir alanı kırpan bir kırpma filtresi tanımlayın/oluşturun</translation>
     </message>
@@ -582,17 +582,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1565"/>
+      <location filename="../../Command.cpp" line="1571"/>
       <source>Fem</source>
       <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1572"/>
       <source>Warp filter</source>
       <translation>Saptırma filtresi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1573"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>Geometriyi bir vektör alanı boyunca belirli bir etkenle saptırın</translation>
     </message>
@@ -690,17 +690,17 @@
       <translation>Düğüm noktaları kümesi oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1193"/>
+      <location filename="../../Command.cpp" line="1194"/>
       <source>Create filter</source>
       <translation>Filtre edici oluşturun</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1630"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Create function</source>
       <translation>Fonksiyon oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1833"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>Create pipeline from result</source>
       <translation>Sonuçtan iş hattı oluştur</translation>
     </message>
@@ -919,38 +919,38 @@ Please select a result type first.</source>
 Please select a result type first.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="508"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="510"/>
       <source>Histogram of {}</source>
       <translation type="unfinished">Histogram of {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="509"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="511"/>
       <source>Nodes</source>
       <translation>Düğümler</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="628"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="632"/>
       <source>FEM: there are no nodes in result mesh, there will be nothing to show.</source>
       <translation type="unfinished">FEM: there are no nodes in result mesh, there will be nothing to show.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="631"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="635"/>
       <source>Empty result mesh</source>
       <translation type="unfinished">Empty result mesh</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="638"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="642"/>
       <source>FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</source>
       <translation type="unfinished">FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="641"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="645"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="649"/>
       <source>No result object</source>
       <translation type="unfinished">No result object</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="643"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="647"/>
       <source>FEM: Result node numbers are not equal to FEM Mesh NodeCount.</source>
       <translation type="unfinished">FEM: Result node numbers are not equal to FEM Mesh NodeCount.</translation>
     </message>
@@ -1414,12 +1414,12 @@ Please select a result type first.</translation>
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Başlangıç noktası ve dik yönüne göre tanımlanan bir düzlem işlevi oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1725"/>
+      <location filename="../../Command.cpp" line="1731"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Merkezi ve yarıçapına göre tanımlanan bir küre işlevi oluştur</translation>
     </message>
@@ -2418,7 +2418,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="266"/>
+      <location filename="../../TaskPostBoxes.cpp" line="267"/>
       <source>Input error</source>
       <translation>Girdi hatası</translation>
     </message>
@@ -3062,7 +3062,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="413"/>
+      <location filename="../../TaskPostBoxes.cpp" line="414"/>
       <source>Clip region, choose implicit function</source>
       <translation>Bölgeyi alıntılayın, örtülü işlevi seçin</translation>
     </message>
@@ -3070,7 +3070,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1176"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1204"/>
       <source>Function cut, choose implicit function</source>
       <translation>Kesilecek, örtük fonksiyonu seçiniz</translation>
     </message>
@@ -3078,12 +3078,12 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="540"/>
+      <location filename="../../TaskPostBoxes.cpp" line="541"/>
       <source>Data along a line options</source>
       <translation>Çizgisel veri seçenekleri</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="735"/>
+      <location filename="../../TaskPostBoxes.cpp" line="736"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Uzunluk</translation>
@@ -3092,7 +3092,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="753"/>
+      <location filename="../../TaskPostBoxes.cpp" line="759"/>
       <source>Data at point options</source>
       <translation>Noktasal veri seçenekleri</translation>
     </message>
@@ -3100,7 +3100,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="333"/>
+      <location filename="../../TaskPostBoxes.cpp" line="334"/>
       <source>Result display options</source>
       <translation>Sonuç ekranı seçenekleri</translation>
     </message>
@@ -3108,7 +3108,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="390"/>
+      <location filename="../../TaskPostBoxes.cpp" line="391"/>
       <source>Implicit function</source>
       <translation>Örtülü işlev</translation>
     </message>
@@ -3116,7 +3116,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="927"/>
+      <location filename="../../TaskPostBoxes.cpp" line="955"/>
       <source>Scalar clip options</source>
       <translation>Skaler kırpma seçenekleri</translation>
     </message>
@@ -3124,7 +3124,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1035"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1063"/>
       <source>Warp options</source>
       <translation>Saptırma seçenekleri</translation>
     </message>
@@ -4080,7 +4080,7 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Dönüşümü kısıtla</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="247"/>
+      <location filename="../../TaskPostBoxes.cpp" line="248"/>
       <source>Edit post processing object</source>
       <translation>İşleme sonrası nesneyi düzenle</translation>
     </message>
@@ -5385,22 +5385,32 @@ yön olarak kullanılır</translation>
   <context>
     <name>TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="14"/>
-      <source>Form</source>
-      <translation>Şekil:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
       <translation>Ortala</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="107"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="23"/>
+      <source>x</source>
+      <translation>x</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="33"/>
+      <source>y</source>
+      <translation>y</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="43"/>
+      <source>z</source>
+      <translation>z</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="116"/>
       <source>Select Point</source>
       <translation>Nokta Seçin</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="126"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="135"/>
       <source>Field</source>
       <translation>Alan</translation>
     </message>
@@ -5851,14 +5861,14 @@ yön olarak kullanılır</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1146"/>
-      <location filename="../../Command.cpp" line="1161"/>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1162"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>The filter could not be set up.</source>
       <translation>Filtre kurulamadı.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1160"/>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1161"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>Error: no post processing object selected.</source>
       <translation type="unfinished">Error: no post processing object selected.</translation>
     </message>

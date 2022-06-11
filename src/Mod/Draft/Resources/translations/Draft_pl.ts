@@ -5189,7 +5189,7 @@ Może się to nie udać w przypadku szablonów po DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="213"/>
       <source>Subelement Mode</source>
-      <translation>Tryb podelementów</translation>
+      <translation>Tryb elementów podrzędnych</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="235"/>
@@ -5520,7 +5520,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="81"/>
       <source>Subelement mode</source>
-      <translation>Tryb podelementów</translation>
+      <translation>Tryb elementów podrzędnych</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="86"/>

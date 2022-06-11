@@ -3273,7 +3273,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
       <source>Fillet parameters</source>
-      <translation type="unfinished">Fillet parameters</translation>
+      <translation>Biribiltze-parametroak</translation>
     </message>
   </context>
   <context>
@@ -3281,7 +3281,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../ViewProviderLinearPattern.h" line="38"/>
       <source>LinearPattern parameters</source>
-      <translation type="unfinished">LinearPattern parameters</translation>
+      <translation>Eredu linealaren parametroak</translation>
     </message>
   </context>
   <context>
@@ -3289,7 +3289,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="38"/>
       <source>MultiTransform parameters</source>
-      <translation type="unfinished">MultiTransform parameters</translation>
+      <translation>Transformazio anitzaren parametroak</translation>
     </message>
   </context>
   <context>
@@ -3297,7 +3297,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="38"/>
       <source>PolarPattern parameters</source>
-      <translation type="unfinished">PolarPattern parameters</translation>
+      <translation>Eredu polarraren parametroak</translation>
     </message>
   </context>
   <context>
@@ -4559,7 +4559,7 @@ Haririk ez duten zuloetan soilik erabilgarri</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="433"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Zulo-mozketa&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Zulo-moztea&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="446"/>

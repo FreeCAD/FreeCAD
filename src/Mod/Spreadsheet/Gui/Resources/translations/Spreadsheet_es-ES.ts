@@ -352,26 +352,26 @@
       <translation>Editar celda</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="295"/>
-      <location filename="../../SheetTableView.cpp" line="327"/>
+      <location filename="../../SheetTableView.cpp" line="276"/>
+      <location filename="../../SheetTableView.cpp" line="308"/>
       <source>Insert rows</source>
       <translation>Insertar filas</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="346"/>
-      <location filename="../../SheetTableView.cpp" line="419"/>
+      <location filename="../../SheetTableView.cpp" line="327"/>
+      <location filename="../../SheetTableView.cpp" line="400"/>
       <source>Remove rows</source>
       <translation>Eliminar filas</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="367"/>
-      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="348"/>
+      <location filename="../../SheetTableView.cpp" line="381"/>
       <source>Insert columns</source>
       <translation>Insertar columnas</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="167"/>
-      <location filename="../../SheetTableView.cpp" line="576"/>
+      <location filename="../../SheetTableView.cpp" line="557"/>
       <source>Clear cell(s)</source>
       <translation>Limpiar celda(s)</translation>
     </message>
@@ -406,12 +406,12 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>Celda inicial en rango</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation>Última celda en rango</translation>
+      <translation>Celda final en rango</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
@@ -426,25 +426,25 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Dirección de celda final</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Dirección de celda inicial a enlazar. 
+Escriba '=' si desea utilizar una expresión.
+La expresión debe evaluar a una cadena de alguna dirección de celda.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Dirección de celda final a enlazar.
+Escriba '=' si desea utilizar una expresión.
+La expresión debe evaluar a una cadena de alguna dirección de celda.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
@@ -453,28 +453,30 @@ The expression must evaluate to a string of some cell address.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
-      <source>Use hidden reference to avoid creating a dependency
-with the referenced object. Use with caution!</source>
-      <translation type="unfinished">Use hidden reference to avoid creating a dependency
-with the referenced object. Use with caution!</translation>
+      <source>The dependency with the referenced spreadsheet will
+be hidden to the dependency checking.
+Useful to avoid cyclic dependencies, but use with caution!</source>
+      <translation type="unfinished">The dependency with the referenced spreadsheet will
+be hidden to the dependency checking.
+Useful to avoid cyclic dependencies, but use with caution!</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="130"/>
-      <source>Use hidden reference</source>
-      <translation>Usar referencia oculta</translation>
+      <location filename="../../DlgBindSheet.ui" line="131"/>
+      <source>Hide dependency of binding</source>
+      <translation type="unfinished">Hide dependency of binding</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="139"/>
+      <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
       <translation>Desenlazar</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="146"/>
+      <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
       <translation>Cancelar</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="153"/>
+      <location filename="../../DlgBindSheet.ui" line="154"/>
       <source>OK</source>
       <translation>Aceptar</translation>
     </message>
@@ -721,7 +723,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
       <translation>Ajuste de color de fondo de celda(s) de la hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="696"/>
+      <location filename="../../SheetTableView.cpp" line="677"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Copiar &amp; Pegar ha fallado</translation>
     </message>
@@ -937,12 +939,33 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="182"/>
+      <location filename="../../DlgBindSheet.cpp" line="194"/>
       <source>Bind cells</source>
       <translation>Enlazar celdas</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="199"/>
+      <location filename="../../DlgBindSheet.cpp" line="195"/>
+      <source>Source and target cell count mismatch. Partial binding may still work.
+
+Do you want to continue?</source>
+      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+
+Do you want to continue?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <source>Bind Spreadsheet Cells</source>
+      <translation>Enlazar celdas de hoja de cálculo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <source>Error: 
+</source>
+      <translation type="unfinished">Error: 
+</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="240"/>
       <source>Unbind cells</source>
       <translation>Desenlazar celdas</translation>
     </message>

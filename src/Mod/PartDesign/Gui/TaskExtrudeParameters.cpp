@@ -96,7 +96,7 @@ void TaskExtrudeParameters::setupDialog()
     }
 
     // set decimals for the direction edits
-    // do this here before the edits are filed to avoid rounding mistakes
+    // do this here before the edits are filled to avoid rounding mistakes
     int UserDecimals = Base::UnitsApi::getDecimals();
     ui->XDirectionEdit->setDecimals(UserDecimals);
     ui->YDirectionEdit->setDecimals(UserDecimals);

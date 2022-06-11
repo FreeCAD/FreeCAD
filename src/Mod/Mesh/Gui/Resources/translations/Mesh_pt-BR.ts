@@ -2142,13 +2142,13 @@ a uma aparência suavizada.
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>Informação da malha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="128"/>
       <location filename="../../Workbench.cpp" line="130"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>
@@ -2394,7 +2394,7 @@ Favor visitar http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="753"/>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Exibir cores</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
@@ -2463,17 +2463,17 @@ Favor visitar http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Modificar malha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Malha booleana</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Corte de malha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>

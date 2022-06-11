@@ -667,6 +667,7 @@ class CommandAddonManager:
             if size > 1000:  # Make sure there is actually data in there
                 cache_is_bad = False
         if self.update_cache or cache_is_bad:
+            self.update_cache = True
             self.macro_worker = FillMacroListWorker(self.get_cache_file_name("Macros"))
             self.macro_worker.status_message_signal.connect(self.show_information)
             self.macro_worker.progress_made.connect(self.update_progress_bar)
@@ -856,6 +857,7 @@ class CommandAddonManager:
             addon_repo.icon = self.get_icon(addon_repo)
         for repo in self.item_model.repos:
             if repo.name == addon_repo.name:
+                #self.item_model.reload_item(repo) # If we want to have later additions supercede earlier
                 return
         self.item_model.append_item(addon_repo)
 

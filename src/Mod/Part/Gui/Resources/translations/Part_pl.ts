@@ -3050,7 +3050,7 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="266"/>
       <source>Chamfer Parameter</source>
-      <translation>Zakres fazki</translation>
+      <translation>Parametry fazki</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="267"/>

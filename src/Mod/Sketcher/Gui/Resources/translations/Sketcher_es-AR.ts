@@ -5339,10 +5339,13 @@ Esto se hace al analizar las geometrías y restricciones del croquis.</translati
       <source>Under constrained:</source>
       <translation>Sub-restringido:</translation>
     </message>
-    <message>
+    <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
-      <source>DoF</source>
-      <translation>Grados de libertad</translation>
+      <source>%n DoF(s)</source>
+      <translation type="unfinished">
+        <numerusform>%n DoF(s)</numerusform>
+        <numerusform>%n DoF(s)</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2917"/>

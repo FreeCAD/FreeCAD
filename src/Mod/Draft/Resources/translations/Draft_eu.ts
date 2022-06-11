@@ -435,8 +435,8 @@ ezarri 'Egia' fusiorako edo 'Faltsua' konposaturako</translation>
       <location filename="../../draftobjects/shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation>Mozketa-lerroen eta mozketa-aurpegien moduetarako, 
-                honek mozketa-tokian uzten ditu aurpegiak</translation>
+      <translation>Mozte-lerroen eta mozte-aurpegien moduetarako, 
+                honek mozte-tokian uzten ditu aurpegiak</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="105"/>

@@ -1855,7 +1855,7 @@
     <message>
       <location filename="../../ArchPanel.py" line="1217"/>
       <source>The linked Panel cuts</source>
-      <translation>Estekatutako panel-mozketak</translation>
+      <translation>Estekatutako panel-mozteak</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1219"/>
@@ -3553,7 +3553,7 @@ Gunearen sorrera utzi egin da.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="346"/>
       <source>Create Panel Cut</source>
-      <translation>Sortu panel-mozketa</translation>
+      <translation>Sortu panel-moztea</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="372"/>
@@ -4556,7 +4556,7 @@ Gunearen sorrera utzi egin da.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="335"/>
       <source>Panel Cut</source>
-      <translation>Panel-mozketa</translation>
+      <translation>Panel-moztea</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="339"/>
@@ -4574,7 +4574,7 @@ Gunearen sorrera utzi egin da.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="366"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
-      <translation>Panel-mozketak izan ditzakeen 2D orri bat sortzen du</translation>
+      <translation>Panel-mozteak izan ditzakeen 2D orri bat sortzen du</translation>
     </message>
   </context>
   <context>

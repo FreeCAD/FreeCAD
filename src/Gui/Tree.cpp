@@ -1002,7 +1002,7 @@ void TreeWidget::onCreateGroup()
         DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
         QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
-            "(\"App::DocumentObjectGroup\",\"%2\")")
+            "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\"")
             .arg(QString::fromLatin1(doc->getName()), name);
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
     }
@@ -1012,7 +1012,7 @@ void TreeWidget::onCreateGroup()
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
         QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\")"
-            ".newObject(\"App::DocumentObjectGroup\",\"%3\")")
+            ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\"")
             .arg(QString::fromLatin1(doc->getName()),
                 QString::fromLatin1(obj->getNameInDocument()),
                 name);

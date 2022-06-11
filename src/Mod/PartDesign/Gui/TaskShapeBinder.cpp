@@ -84,7 +84,7 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool /*newObj*/,
     PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);
 
     if (obj)
-        ui->baseEdit->setText(QString::fromUtf8(obj->getNameInDocument()));
+        ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));
 
     for (auto sub : subs)
         ui->listWidgetReferences->addItem(QString::fromStdString(sub));
@@ -109,6 +109,13 @@ void TaskShapeBinder::updateUI()
 
 void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    auto setObjectLabel = [=](const Gui::SelectionChanges& msg) {
+        App::DocumentObject* obj = msg.Object.getObject();
+        if (obj) {
+            ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));
+        }
+    };
+
     if (selectionMode == none)
         return;
 
@@ -119,7 +126,7 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
                 if (!sub.isEmpty())
                     ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
 
-                ui->baseEdit->setText(QString::fromStdString(msg.pObjectName));
+                setObjectLabel(msg);
             }
             else if (selectionMode == refRemove) {
                 QString sub = QString::fromStdString(msg.pSubName);
@@ -131,7 +138,7 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
             else if (selectionMode == refObjAdd) {
                 ui->listWidgetReferences->clear();
-                ui->baseEdit->setText(QString::fromUtf8(msg.pObjectName));
+                setObjectLabel(msg);
             }
             clearButtons();
             static_cast<ViewProviderShapeBinder*>(vp)->highlightReferences(false, false);

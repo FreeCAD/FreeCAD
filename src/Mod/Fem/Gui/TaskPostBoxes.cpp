@@ -36,6 +36,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -327,6 +328,7 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
     box->setCurrentIndex(index);
 }
 
+
 // ***************************************************************************
 // post pipeline results
 TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget* parent)
@@ -406,6 +408,7 @@ void TaskPostFunction::applyPythonCode() {
 
     //we apply the views widgets python code
 }
+
 
 // ***************************************************************************
 // region clip filter
@@ -534,6 +537,7 @@ void TaskPostClip::on_InsideOut_toggled(bool val) {
     recompute();
 }
 
+
 // ***************************************************************************
 // data along a line
 TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, QWidget* parent)
@@ -548,6 +552,24 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
 
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
+
+    // set decimals before the edits are filled to avoid rounding mistakes
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->point1X->setDecimals(UserDecimals);
+    ui->point1Y->setDecimals(UserDecimals);
+    ui->point1Z->setDecimals(UserDecimals);
+    ui->point2X->setDecimals(UserDecimals);
+    ui->point2Y->setDecimals(UserDecimals);
+    ui->point2Z->setDecimals(UserDecimals);
+
+    Base::Unit lengthUnit = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Point1.getUnit();
+    ui->point1X->setUnit(lengthUnit);
+    ui->point1Y->setUnit(lengthUnit);
+    ui->point1Z->setUnit(lengthUnit);
+    lengthUnit = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Point2.getUnit();
+    ui->point2X->setUnit(lengthUnit);
+    ui->point2Y->setUnit(lengthUnit);
+    ui->point2Z->setUnit(lengthUnit);
 
     const Base::Vector3d& vec1 = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Point1.getValue();
     ui->point1X->setValue(vec1.x);
@@ -624,7 +646,8 @@ void TaskPostDataAlongLine::on_SelectPoints_clicked() {
         FemGui::PointMarker* marker = new FemGui::PointMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
             FemGui::TaskPostDataAlongLine::pointCallback, marker);
-        connect(marker, SIGNAL(PointsChanged(double, double, double, double, double, double)), this, SLOT(onChange(double, double, double, double, double, double)));
+        connect(marker, SIGNAL(PointsChanged(double, double, double, double, double, double)), this,
+            SLOT(onChange(double, double, double, double, double, double)));
     }
 }
 
@@ -660,16 +683,16 @@ void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2,
 
 void TaskPostDataAlongLine::point1Changed(double) {
 
-    Base::Vector3d vec(ui->point1X->value(), ui->point1Y->value(), ui->point1Z->value());
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->point1X->value(), ui->point1Y->value(), ui->point1Z->value());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", ObjName.c_str(),
+        ui->point1X->value().getValue(), ui->point1Y->value().getValue(), ui->point1Z->value().getValue());
 }
 
 void TaskPostDataAlongLine::point2Changed(double) {
 
-    Base::Vector3d vec(ui->point2X->value(), ui->point2Y->value(), ui->point2Z->value());
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->point2X->value(), ui->point2Y->value(), ui->point2Z->value());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", ObjName.c_str(),
+        ui->point2X->value().getValue(), ui->point2Y->value().getValue(), ui->point2Z->value().getValue());
 }
 
 void TaskPostDataAlongLine::resolutionChanged(int val) {
@@ -739,7 +762,7 @@ from PySide import QtCore\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
 plt.ioff()\n\
-plt.figure(1)\n\
+plt.figure(title)\n\
 plt.plot(x, y)\n\
 plt.xlabel(\"" << xlabel.toStdString() << "\")\n\
 plt.ylabel(title)\n\
@@ -751,6 +774,7 @@ fig_manager.window.setWindowFlag(QtCore.Qt.Tool)\n\
 plt.show()\n";
     return oss.str();
 }
+
 
 // ***************************************************************************
 // data at point
@@ -766,6 +790,17 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
 
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
+
+    // set decimals before the edits are filled to avoid rounding mistakes
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->centerX->setDecimals(UserDecimals);
+    ui->centerY->setDecimals(UserDecimals);
+    ui->centerZ->setDecimals(UserDecimals);
+
+    const Base::Unit lengthUnit = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Center.getUnit();
+    ui->centerX->setUnit(lengthUnit);
+    ui->centerY->setUnit(lengthUnit);
+    ui->centerZ->setUnit(lengthUnit);
 
     const Base::Vector3d& vec = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Center.getValue();
     ui->centerX->setValue(vec.x);
@@ -852,9 +887,9 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z) {
 
 void TaskPostDataAtPoint::centerChanged(double) {
 
-    Base::Vector3d vec(ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
     std::string ObjName = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", ObjName.c_str(),
+        ui->centerX->value().getValue(), ui->centerY->value().getValue(), ui->centerZ->value().getValue());
 }
 
 void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
@@ -895,11 +930,21 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
 
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
+    // there is no "None" for the FieldName property, thus return here
+    if (FieldName == "None") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
+        return;
+    }
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
-    if ((FieldName == "Von Mises stress") || (FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Median Principal stress") || (FieldName == "Stress vectors")) {
+    if ((FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
+        || (FieldName == "Major Principal Stress") || (FieldName == "Intermediate Principal Stress")
+        || (FieldName == "Minor Principal Stress")
+        || (FieldName == "Stress xx component") || (FieldName == "Stress xy component")
+        || (FieldName == "Stress xz component") || (FieldName == "Stress yy component")
+        || (FieldName == "Stress yz component") || (FieldName == "Stress zz component")) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("Pa");
     }
-    else if (FieldName == "Displacement") {
+    else if ((FieldName == "Displacement") || (FieldName == "Displacement Magnitude")) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("m");
     }
     else if (FieldName == "Temperature") {
@@ -918,13 +963,19 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     else if (FieldName == "potential loads") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
     }
+    else {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
+    }
 
-    std::string PointData = " The value at that location is " + std::to_string(static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0]) + " " + static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
+    std::string PointData = " The value at that location is "
+        + std::to_string(static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0])
+        + " " + static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
     QMessageBox::information(Gui::getMainWindow(),
         qApp->translate("CmdFemPostCreateDataAtPointFilter", "Data At Point"),
         qApp->translate("CmdFemPostCreateDataAtPointFilter", PointData.c_str()));
     Base::Console().Error(PointData.c_str());
 }
+
 
 // ***************************************************************************
 // scalar clip filter
@@ -1031,6 +1082,7 @@ void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
     static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
 }
+
 
 // ***************************************************************************
 // warp filter
@@ -1174,6 +1226,7 @@ void TaskPostWarpVector::on_Min_valueChanged(double) {
     ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
 }
+
 
 // ***************************************************************************
 // function clip filter
