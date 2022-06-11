@@ -111,6 +111,8 @@ vtkDataObject* FemPostFilter::getInputData() {
 }
 
 
+// ***************************************************************************
+// clip filter
 PROPERTY_SOURCE(Fem::FemPostClipFilter, Fem::FemPostFilter)
 
 FemPostClipFilter::FemPostClipFilter(void) : FemPostFilter() {
@@ -183,6 +185,9 @@ DocumentObjectExecReturn* FemPostClipFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
+
+// ***************************************************************************
+// data along a line
 PROPERTY_SOURCE(Fem::FemPostDataAlongLineFilter, Fem::FemPostFilter)
 
 FemPostDataAlongLineFilter::FemPostDataAlongLineFilter(void) : FemPostFilter() {
@@ -254,7 +259,6 @@ void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& read
     }
 }
 
-
 void FemPostDataAlongLineFilter::onChanged(const Property* prop) {
     if (prop == &Point1) {
         const Base::Vector3d& vec1 = Point1.getValue();
@@ -324,6 +328,9 @@ void FemPostDataAlongLineFilter::GetAxisData() {
     XAxisData.setValues(coords);
 }
 
+
+// ***************************************************************************
+// data point filter
 PROPERTY_SOURCE(Fem::FemPostDataAtPointFilter, Fem::FemPostFilter)
 
 FemPostDataAtPointFilter::FemPostDataAtPointFilter(void) : FemPostFilter() {
@@ -373,7 +380,6 @@ DocumentObjectExecReturn* FemPostDataAtPointFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
-
 void FemPostDataAtPointFilter::onChanged(const Property* prop) {
     if (prop == &Center) {
         const Base::Vector3d& vec = Center.getValue();
@@ -420,6 +426,9 @@ void FemPostDataAtPointFilter::GetPointData() {
     PointData.setValues(values);
 }
 
+
+// ***************************************************************************
+// scalar clip filter
 PROPERTY_SOURCE(Fem::FemPostScalarClipFilter, Fem::FemPostFilter)
 
 FemPostScalarClipFilter::FemPostScalarClipFilter(void) : FemPostFilter() {
@@ -475,7 +484,6 @@ DocumentObjectExecReturn* FemPostScalarClipFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
-
 void FemPostScalarClipFilter::onChanged(const Property* prop) {
 
     if (prop == &Value) {
@@ -521,6 +529,8 @@ void FemPostScalarClipFilter::setConstraintForField() {
 }
 
 
+// ***************************************************************************
+// warp vector filter
 PROPERTY_SOURCE(Fem::FemPostWarpVectorFilter, Fem::FemPostFilter)
 
 FemPostWarpVectorFilter::FemPostWarpVectorFilter(void) : FemPostFilter() {
@@ -539,7 +549,6 @@ FemPostWarpVectorFilter::FemPostWarpVectorFilter(void) : FemPostFilter() {
 FemPostWarpVectorFilter::~FemPostWarpVectorFilter() {
 
 }
-
 
 DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
 
@@ -574,7 +583,6 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
-
 void FemPostWarpVectorFilter::onChanged(const Property* prop) {
 
     if (prop == &Factor) {
@@ -599,6 +607,8 @@ short int FemPostWarpVectorFilter::mustExecute(void) const {
 }
 
 
+// ***************************************************************************
+// cut filter
 PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
 
 FemPostCutFilter::FemPostCutFilter(void) : FemPostFilter() {
