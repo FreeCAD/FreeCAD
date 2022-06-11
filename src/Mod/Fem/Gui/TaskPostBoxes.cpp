@@ -967,8 +967,20 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
     }
 
-    std::string PointData = " The value at that location is "
-        + std::to_string(static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0])
+    auto pointValue = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0];
+
+    // for display we must therefore convert large and small numbers to scientific notation
+    // if pointValue is in the range [1e-2, 1e+4] -> fixed notation, else scientific
+    bool scientific = (pointValue < 1e-2) || (pointValue > 1e4);
+    std::ios::fmtflags flags = scientific ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
+                                          : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    std::stringstream valueStream;
+    valueStream.precision(UserDecimals);
+    valueStream.setf(flags);
+    valueStream << pointValue;
+
+    std::string PointData = " The value at that location is " + valueStream.str()
         + " " + static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
     QMessageBox::information(Gui::getMainWindow(),
         qApp->translate("CmdFemPostCreateDataAtPointFilter", "Data At Point"),
