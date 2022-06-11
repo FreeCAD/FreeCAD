@@ -83,8 +83,10 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool /*newObj*/,
 
     PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);
 
-    if (obj)
+    if (obj) {
         ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));
+        ui->baseEdit->setReadOnly(true);
+    }
 
     for (auto sub : subs)
         ui->listWidgetReferences->addItem(QString::fromStdString(sub));
@@ -295,6 +297,22 @@ void TaskShapeBinder::exitSelectionMode() {
     Gui::Selection().clearSelection();
 }
 
+void TaskShapeBinder::accept()
+{
+    if (vp.expired())
+        return;
+
+    std::string label = ui->baseEdit->text().toStdString();
+    PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
+    if (!binder->Support.getValue() && !label.empty()) {
+        auto mode = selectionMode;
+        selectionMode = refObjAdd;
+        SelectionChanges msg(SelectionChanges::AddSelection, binder->getDocument()->getName(), label.c_str());
+        referenceSelected(msg);
+        selectionMode = mode;
+    }
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -321,6 +339,8 @@ TaskDlgShapeBinder::~TaskDlgShapeBinder()
 bool TaskDlgShapeBinder::accept()
 {
     try {
+        parameter->accept();
+
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());

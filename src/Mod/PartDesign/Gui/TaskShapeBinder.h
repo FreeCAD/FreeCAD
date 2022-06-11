@@ -53,6 +53,8 @@ public:
     TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
     ~TaskShapeBinder();
 
+    void accept();
+
 private Q_SLOTS:
     void onButtonRefAdd(bool checked);
     void onButtonRefRemove(bool checked);
