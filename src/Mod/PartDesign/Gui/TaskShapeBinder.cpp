@@ -59,6 +59,7 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool /*newObj*/,
         tr("Datum shape parameters"), true, parent)
     , SelectionObserver(view)
     , ui(new Ui_TaskShapeBinder)
+    , vp(view)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -75,7 +76,6 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool /*newObj*/,
     this->groupLayout()->addWidget(proxy);
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    vp = view;
 
     //add initial values   
     App::GeoFeature* obj = nullptr;
@@ -140,9 +140,13 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
                 ui->listWidgetReferences->clear();
                 setObjectLabel(msg);
             }
+
             clearButtons();
-            static_cast<ViewProviderShapeBinder*>(vp)->highlightReferences(false, false);
-            vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+
+            if (!vp.expired()) {
+                vp->highlightReferences(false, false);
+                vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+            }
         }
         clearButtons();
         exitSelectionMode();
@@ -150,21 +154,7 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
 }
 
 TaskShapeBinder::~TaskShapeBinder()
-{/*
-    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-
-    //make sure the user sees all important things: the base feature to select edges and the
-    //spine/auxiliary spine they already selected
-    if(pipe->BaseFeature.getValue())
-        doc->getViewProvider(pipe->BaseFeature.getValue())->hide();
-    if(pipe->Spine.getValue()) {
-        auto* svp = doc->getViewProvider(pipe->Spine.getValue());
-        svp->setVisible(supportShow);
-        supportShow = false;
-    }
-    static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
-    */
+{
 }
 
 void TaskShapeBinder::changeEvent(QEvent*)
@@ -189,7 +179,9 @@ void TaskShapeBinder::onButtonRefRemove(bool checked) {
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
-        vp->highlightReferences(true, false);
+
+        if (!vp.expired())
+            vp->highlightReferences(true, false);
     }
 }
 
@@ -215,7 +207,10 @@ void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
     }
 }
 
-bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
+bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
+{
+    if (vp.expired())
+        return false;
 
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
         (selectionMode == refAdd) || (selectionMode == refRemove)
@@ -307,10 +302,10 @@ void TaskShapeBinder::exitSelectionMode() {
 
 TaskDlgShapeBinder::TaskDlgShapeBinder(ViewProviderShapeBinder* view, bool newObj)
     : Gui::TaskView::TaskDialog()
+    , vp(view)
 {
     assert(view);
     parameter = new TaskShapeBinder(view, newObj);
-    vp = view;
 
     Content.push_back(parameter);
 }
@@ -325,8 +320,6 @@ TaskDlgShapeBinder::~TaskDlgShapeBinder()
 
 bool TaskDlgShapeBinder::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-
     try {
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())

@@ -26,6 +26,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Gui/DocumentObserver.h>
 
 #include "ViewProviderShapeBinder.h"
 
@@ -52,7 +53,6 @@ public:
     TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
     ~TaskShapeBinder();
 
- 
 private Q_SLOTS:
     void onButtonRefAdd(bool checked);
     void onButtonRefRemove(bool checked);
@@ -73,11 +73,11 @@ private:
     void exitSelectionMode();
 
     bool supportShow = false;
-    
+
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskShapeBinder> ui;
-    ViewProviderShapeBinder* vp;
+    Gui::WeakPtrT<ViewProviderShapeBinder> vp;
 };
 
 
@@ -98,7 +98,7 @@ public:
 
 protected:
     TaskShapeBinder  *parameter;
-    ViewProviderShapeBinder* vp;
+    Gui::WeakPtrT<ViewProviderShapeBinder> vp;
 };
 
 } //namespace PartDesignGui
