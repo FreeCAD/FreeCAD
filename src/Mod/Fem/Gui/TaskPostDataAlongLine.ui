@@ -166,6 +166,9 @@
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
        <property name="maximum">
         <number>999999999</number>
        </property>
