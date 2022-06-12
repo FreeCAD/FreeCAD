@@ -1975,3 +1975,8 @@ const boost::any PropertySheet::getPathValue(const App::ObjectIdentifier & path)
         return boost::any();
     return path.getValue();
 }
+
+bool PropertySheet::hasSpan() const
+{
+    return !mergedCells.empty();
+}
