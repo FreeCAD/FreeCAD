@@ -1909,7 +1909,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier &path, const boost::any 
 
                     Cell *dst = other->getValue(target);
                     Cell *src = getValue(source);
-                    if(!dst)
+                    if(!dst || !dst->getExpression())
                         continue;
 
                     touched.insert(source);
