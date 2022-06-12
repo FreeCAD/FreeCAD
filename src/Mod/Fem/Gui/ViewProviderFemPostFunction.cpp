@@ -501,6 +501,14 @@ PlaneWidget::PlaneWidget() {
     ui = new Ui_PlaneWidget();
     ui->setupUi(this);
 
+    QSize size = ui->originX->sizeForText(QStringLiteral("000000000000"));
+    ui->originX->setMinimumWidth(size.width());
+    ui->originY->setMinimumWidth(size.width());
+    ui->originZ->setMinimumWidth(size.width());
+    ui->normalX->setMinimumWidth(size.width());
+    ui->originY->setMinimumWidth(size.width());
+    ui->originZ->setMinimumWidth(size.width());
+
     int UserDecimals = Base::UnitsApi::getDecimals();
     ui->originX->setDecimals(UserDecimals);
     ui->originY->setDecimals(UserDecimals);
@@ -673,6 +681,12 @@ SphereWidget::SphereWidget() {
 
     ui = new Ui_SphereWidget();
     ui->setupUi(this);
+
+    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    ui->centerX->setMinimumWidth(size.width());
+    ui->centerY->setMinimumWidth(size.width());
+    ui->centerZ->setMinimumWidth(size.width());
+    ui->radius->setMinimumWidth(size.width());
 
     int UserDecimals = Base::UnitsApi::getDecimals();
     ui->centerX->setDecimals(UserDecimals);

@@ -552,6 +552,14 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
+    QSize size = ui->point1X->sizeForText(QStringLiteral("000000000000"));
+    ui->point1X->setMinimumWidth(size.width());
+    ui->point1Y->setMinimumWidth(size.width());
+    ui->point1Z->setMinimumWidth(size.width());
+    ui->point2X->setMinimumWidth(size.width());
+    ui->point2Y->setMinimumWidth(size.width());
+    ui->point2Z->setMinimumWidth(size.width());
+
     // set decimals before the edits are filled to avoid rounding mistakes
     int UserDecimals = Base::UnitsApi::getDecimals();
     ui->point1X->setDecimals(UserDecimals);
@@ -827,6 +835,11 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
 
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
+
+    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    ui->centerX->setMinimumWidth(size.width());
+    ui->centerY->setMinimumWidth(size.width());
+    ui->centerZ->setMinimumWidth(size.width());
 
     // set decimals before the edits are filled to avoid rounding mistakes
     int UserDecimals = Base::UnitsApi::getDecimals();
