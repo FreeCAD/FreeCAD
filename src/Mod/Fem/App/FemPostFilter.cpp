@@ -385,19 +385,16 @@ void FemPostDataAtPointFilter::onChanged(const Property* prop) {
         const Base::Vector3d& vec = Center.getValue();
         m_point->SetCenter(vec.x, vec.y, vec.z);
     }
-    else if (prop == &FieldName) {
-        GetPointData();
-    }
+    GetPointData();
     Fem::FemPostFilter::onChanged(prop);
 }
 
 short int FemPostDataAtPointFilter::mustExecute(void) const {
 
-    if (Center.isTouched()) {
-
+    if (Center.isTouched())
         return 1;
-    }
-    else return App::DocumentObject::mustExecute();
+    else
+        return App::DocumentObject::mustExecute();
 }
 
 void FemPostDataAtPointFilter::GetPointData() {

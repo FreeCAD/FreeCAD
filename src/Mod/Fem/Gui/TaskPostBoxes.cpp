@@ -257,7 +257,6 @@ void TaskDlgPost::clicked(int button)
 
 bool TaskDlgPost::accept()
 {
-
     try {
         std::vector<TaskPostBox*>::iterator it = m_boxes.begin();
         for (; it != m_boxes.end(); ++it)
@@ -811,12 +810,16 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
     connect(ui->centerY, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
     connect(ui->centerZ, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
 
-    //update all fields
+    // update all fields
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
+
+    // the point filter object needs to be recompiled
+    // to fill all fields with data at the current point
+    static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->recomputeFeature();
 }
 
 TaskPostDataAtPoint::~TaskPostDataAtPoint() {
-
+    App::GetApplication().getActiveDocument()->recompute();
 }
 
 void TaskPostDataAtPoint::applyPythonCode() {
@@ -883,6 +886,12 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z) {
     ui->centerX->setValue(x);
     ui->centerY->setValue(y);
     ui->centerZ->setValue(z);
+    Base::Console().Error("on Change\n");
+    // recompute the feature to fill all fields with data at this point
+    static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->recomputeFeature();
+    // show the data ba calling on_Field_activated with the field that is currently set
+    auto Field = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
+    on_Field_activated(Field);
 }
 
 void TaskPostDataAtPoint::centerChanged(double) {
@@ -974,9 +983,8 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     bool scientific = (pointValue < 1e-2) || (pointValue > 1e4);
     std::ios::fmtflags flags = scientific ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
                                           : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
-    int UserDecimals = Base::UnitsApi::getDecimals();
     std::stringstream valueStream;
-    valueStream.precision(UserDecimals);
+    valueStream.precision(Base::UnitsApi::getDecimals());
     valueStream.setf(flags);
     valueStream << pointValue;
 
