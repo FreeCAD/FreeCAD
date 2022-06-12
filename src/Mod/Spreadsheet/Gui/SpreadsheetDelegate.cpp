@@ -109,7 +109,7 @@ static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &opt
 
     QRect rect = option.rect.adjusted(1,1,0,0);
     if(flags == Sheet::BorderAll) {
-        painter->drawRect(rect);
+        painter->drawRect(rect.adjusted(0,0,-1,-1));
         return;
     }
     if(flags & Sheet::BorderLeft) 
