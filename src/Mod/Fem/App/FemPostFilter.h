@@ -117,11 +117,11 @@ public:
         return "FemGui::ViewProviderFemPostDataAlongLine";
     }
     virtual short int mustExecute(void) const;
+    void GetAxisData();
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void);
     virtual void onChanged(const App::Property* prop);
-    void GetAxisData();
     virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
 
 private:

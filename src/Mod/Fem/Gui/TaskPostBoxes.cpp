@@ -707,6 +707,8 @@ void TaskPostDataAlongLine::point1Changed(double) {
     // refresh the color bar range
     auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField);
+    // also the axis data must be refreshed to get correct plots
+    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->GetAxisData();
 }
 
 void TaskPostDataAlongLine::point2Changed(double) {
@@ -720,6 +722,8 @@ void TaskPostDataAlongLine::point2Changed(double) {
     // refresh the color bar range
     auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField);
+    // also the axis data must be refreshed to get correct plots
+    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->GetAxisData();
 }
 
 void TaskPostDataAlongLine::resolutionChanged(int val) {
