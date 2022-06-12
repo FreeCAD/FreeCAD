@@ -76,6 +76,7 @@ private:
     std::string ObjectInvisible();
 };
 
+
 class FemGuiExport ViewProviderPointMarker : public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER(FemGui::ViewProviderPointMarker);
@@ -88,6 +89,7 @@ protected:
     SoCoordinate3    * pCoords;
     friend class PointMarker;
 };
+
 
 class ViewProviderDataMarker;
 class DataMarker : public QObject
@@ -113,6 +115,7 @@ private:
     std::string m_name;
     std::string ObjectInvisible();
 };
+
 
 class FemGuiExport ViewProviderDataMarker : public Gui::ViewProviderDocumentObject
 {
@@ -157,6 +160,7 @@ private:
     Gui::ViewProviderDocumentObject*  m_view;
 };
 
+
 /// simulation dialog for the TaskView
 class TaskDlgPost : public Gui::TaskView::TaskDialog
 {
@@ -192,6 +196,7 @@ protected:
     std::vector<TaskPostBox*>   m_boxes;
 };
 
+
 class TaskPostDisplay : public TaskPostBox
 {
     Q_OBJECT
@@ -211,8 +216,9 @@ private Q_SLOTS:
 
 private:
     QWidget* proxy;
-    Ui_TaskPostDisplay* ui;
+    std::unique_ptr<Ui_TaskPostDisplay> ui;
 };
+
 
 class TaskPostFunction : public TaskPostBox {
 
@@ -224,6 +230,7 @@ public:
 
     virtual void applyPythonCode();
 };
+
 
 class TaskPostClip : public TaskPostBox {
 
@@ -246,9 +253,10 @@ private:
 
   //App::PropertyLink* m_functionProperty;
     QWidget* proxy;
-    Ui_TaskPostClip* ui;
+    std::unique_ptr<Ui_TaskPostClip> ui;
     FunctionWidget* fwidget;
 };
+
 
 class TaskPostDataAlongLine: public TaskPostBox {
 
@@ -277,8 +285,9 @@ private:
     std::string Plot();
     std::string ObjectVisible();
     QWidget* proxy;
-    Ui_TaskPostDataAlongLine* ui;
+    std::unique_ptr<Ui_TaskPostDataAlongLine> ui;
 };
+
 
 class TaskPostDataAtPoint: public TaskPostBox {
 
@@ -301,8 +310,9 @@ private Q_SLOTS:
 private:
     std::string ObjectVisible();
     QWidget* proxy;
-    Ui_TaskPostDataAtPoint* ui;
+    std::unique_ptr<Ui_TaskPostDataAtPoint> ui;
 };
+
 
 class TaskPostScalarClip : public TaskPostBox {
 
@@ -322,8 +332,9 @@ private Q_SLOTS:
 
 private:
     QWidget* proxy;
-    Ui_TaskPostScalarClip* ui;
+    std::unique_ptr<Ui_TaskPostScalarClip> ui;
 };
+
 
 class TaskPostWarpVector : public TaskPostBox {
 
@@ -344,9 +355,8 @@ private Q_SLOTS:
 
 private:
     QWidget* proxy;
-    Ui_TaskPostWarpVector* ui;
+    std::unique_ptr<Ui_TaskPostWarpVector> ui;
 };
-
 
 
 class TaskPostCut : public TaskPostBox {
@@ -368,7 +378,7 @@ private:
 
   //App::PropertyLink* m_functionProperty;
     QWidget* proxy;
-    Ui_TaskPostCut* ui;
+    std::unique_ptr<Ui_TaskPostCut> ui;
     FunctionWidget* fwidget;
 };
 
