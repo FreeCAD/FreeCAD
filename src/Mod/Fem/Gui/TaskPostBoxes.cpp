@@ -671,13 +671,29 @@ void TaskPostDataAlongLine::on_CreatePlot_clicked() {
 
 void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2, double y2, double z2) {
 
-    ui->point2X->setValue(x2);
-    ui->point2Y->setValue(y2);
-    ui->point2Z->setValue(z2);
-
+    // call point1Changed only once
+    ui->point1X->blockSignals(true);
+    ui->point1Y->blockSignals(true);
+    ui->point1Z->blockSignals(true);
     ui->point1X->setValue(x1);
     ui->point1Y->setValue(y1);
     ui->point1Z->setValue(z1);
+    ui->point1X->blockSignals(false);
+    ui->point1Y->blockSignals(false);
+    ui->point1Z->blockSignals(false);
+    point1Changed(0.0);
+
+    // same for point 2
+    ui->point2X->blockSignals(true);
+    ui->point2Y->blockSignals(true);
+    ui->point2Z->blockSignals(true);
+    ui->point2X->setValue(x2);
+    ui->point2Y->setValue(y2);
+    ui->point2Z->setValue(z2);
+    ui->point2X->blockSignals(false);
+    ui->point2Y->blockSignals(false);
+    ui->point2Z->blockSignals(false);
+    point2Changed(0.0);
 }
 
 void TaskPostDataAlongLine::point1Changed(double) {
@@ -685,6 +701,12 @@ void TaskPostDataAlongLine::point1Changed(double) {
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", ObjName.c_str(),
         ui->point1X->value().getValue(), ui->point1Y->value().getValue(), ui->point1Z->value().getValue());
+
+    // recompute the feature to fill all fields with data at this point
+    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->recomputeFeature();
+    // refresh the color bar range
+    auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
+    getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField);
 }
 
 void TaskPostDataAlongLine::point2Changed(double) {
@@ -692,6 +714,12 @@ void TaskPostDataAlongLine::point2Changed(double) {
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", ObjName.c_str(),
         ui->point2X->value().getValue(), ui->point2Y->value().getValue(), ui->point2Z->value().getValue());
+
+    // recompute the feature to fill all fields with data at this point
+    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->recomputeFeature();
+    // refresh the color bar range
+    auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
+    getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField);
 }
 
 void TaskPostDataAlongLine::resolutionChanged(int val) {
