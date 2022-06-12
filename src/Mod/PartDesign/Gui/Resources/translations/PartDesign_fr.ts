@@ -698,7 +698,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2126"/>
       <source>Thickness</source>
-      <translation>Épaisseur</translation>
+      <translation>Coque</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2127"/>
@@ -3307,7 +3307,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderThickness.h" line="41"/>
       <source>Thickness parameters</source>
-      <translation>Paramètres de l’épaisseur</translation>
+      <translation>Paramètres de la coque</translation>
     </message>
   </context>
   <context>

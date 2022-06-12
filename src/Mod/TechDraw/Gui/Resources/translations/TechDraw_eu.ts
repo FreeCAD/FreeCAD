@@ -382,7 +382,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1643"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Luzatu lerro kosmetiko bat edo erdiko lerro bat bi amaieratan:&lt;br&gt;- Zehaztu delta distantzia (aukerakoa)&lt;br&gt;- Hautatu lerro bakar bat&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1062"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Uniformeki banatutako kota horizontalak:&lt;br&gt;- Zehaztu teilakatze-tartea (aukerakoa)&lt;br&gt;- Hautatu bi kota horizontal edo gehiago&lt;br&gt;- Lehen kotak posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -438,7 +438,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="888"/>
       <location filename="../../CommandExtensionDims.cpp" line="1138"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Uniformeki banatutako kota horizontalak:&lt;br&gt;- Zehaztu teilakatze-tartea (aukerakoa)&lt;br&gt;- Hautatu bi kota horizontal edo gehiago&lt;br&gt;- Lehen kotak posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -458,7 +458,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1026"/>
       <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Uniformeki banatutako zeharkako kotak:&lt;br&gt;- Zehaztu teilakatze-tartea (aukerakoa)&lt;br&gt;- Hautatu zeharkako bi kota edo gehiago&lt;br&gt;- Lehen kotak posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -478,7 +478,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="953"/>
       <location filename="../../CommandExtensionDims.cpp" line="1147"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Uniformeki banatutako kota bertikalak:&lt;br&gt;- Zehaztu teilakatze-tartea (aukerakoa)&lt;br&gt;- Hautatu bi kota bertikal edo gehiago&lt;br&gt;- Lehen kotak posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -491,12 +491,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2031"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Sortu alaka-kota horizontala</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2032"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu alaka baten tamaina horizontala eta angelu-kota:&lt;br&gt;- Hautatu bi erpin&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -514,7 +514,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="747"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</translation>
+      <translation>Aldatu lerro kosmetikoen eta erdiko lerroen atributuak&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu lerro bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -534,7 +534,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="241"/>
       <location filename="../../CommandExtensionPack.cpp" line="341"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu erdiko lerroak zirkuluei eta arkuei:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu zirkulu edo arku bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -552,7 +552,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="275"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu erdiko lerroak zirkuluei eta arkuei&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu zirkulu edo arku bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -565,12 +565,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1408"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Sortu kate-kota horizontalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1409"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu lerrokatutako kota horizontalen sekuentzia bat:&lt;br&gt;- Hautatu hiru erpin edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -602,13 +602,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1215"/>
       <location filename="../../CommandExtensionDims.cpp" line="1482"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Sortu kate-kota horizontalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1216"/>
       <location filename="../../CommandExtensionDims.cpp" line="1483"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu lerrokatutako kota horizontalen sekuentzia bat:&lt;br&gt;- Hautatu hiru erpin edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -622,13 +622,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1929"/>
       <location filename="../../CommandExtensionDims.cpp" line="2098"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Sortu alaka-kota horizontala</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1930"/>
       <location filename="../../CommandExtensionDims.cpp" line="2099"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu alaka baten tamaina horizontala eta angelu-kota:&lt;br&gt;- Hautatu bi erpin&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -661,7 +661,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2131"/>
       <source>Create Arc Length Dimension</source>
-      <translation type="unfinished">Create Arc Length Dimension</translation>
+      <translation>Txertatu arku-luzeraren kota</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2132"/>
@@ -680,13 +680,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1374"/>
       <location filename="../../CommandExtensionDims.cpp" line="1496"/>
       <source>Create Oblique Chain Dimensions</source>
-      <translation type="unfinished">Create Oblique Chain Dimensions</translation>
+      <translation>Sortu zeharkako kate-kotak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1375"/>
       <location filename="../../CommandExtensionDims.cpp" line="1497"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu lerrokatutako zeharkako koten sekuentzia bat:&lt;br&gt;- Hautatu hiru erpin edo gehiago&lt;br&gt;- Lehen bi erpinek norabidea definitzen dute&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -700,7 +700,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1734"/>
       <location filename="../../CommandExtensionDims.cpp" line="1864"/>
       <source>Create Oblique Coordinate Dimensions</source>
-      <translation type="unfinished">Create Oblique Coordinate Dimensions</translation>
+      <translation>Sortu zeharkako koordenatu-kotak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1735"/>
@@ -720,13 +720,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1282"/>
       <location filename="../../CommandExtensionDims.cpp" line="1489"/>
       <source>Create Vertical Chain Dimensions</source>
-      <translation type="unfinished">Create Vertical Chain Dimensions</translation>
+      <translation>Sortu kate-kota bertikalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1283"/>
       <location filename="../../CommandExtensionDims.cpp" line="1490"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu lerrokatutako kota bertikalen sekuentzia bat:&lt;br&gt;- Hautatu hiru erpin edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -740,13 +740,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1998"/>
       <location filename="../../CommandExtensionDims.cpp" line="2105"/>
       <source>Create Vertical Chamfer Dimension</source>
-      <translation type="unfinished">Create Vertical Chamfer Dimension</translation>
+      <translation>Sortu alaka-kota bertikala</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1999"/>
       <location filename="../../CommandExtensionDims.cpp" line="2106"/>
       <source>Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu alaka baten tamaina bertikala eta angelu-kota:&lt;br&gt;- Hautatu bi erpin&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -760,7 +760,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1635"/>
       <location filename="../../CommandExtensionDims.cpp" line="1855"/>
       <source>Create Vertical Coordinate Dimensions</source>
-      <translation type="unfinished">Create Vertical Coordinate Dimensions</translation>
+      <translation>Sortu koordenatu-kota bertikalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1636"/>
@@ -804,7 +804,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="423"/>
       <location filename="../../CommandExtensionDims.cpp" line="530"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Txikitu kota-testuaren dezimal kopurua:&lt;br&gt;- Hautatu kota bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -876,17 +876,17 @@
       <location filename="../../CommandExtensionPack.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="1151"/>
       <source>Add Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">Add Cosmetic Circle 3 Points</translation>
+      <translation>Gehitu 3 puntuko zirkulu kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1022"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu zirkulu kosmetiko bat hiru erpinetan oinarrituta:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu 3 erpin&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1152"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Sortu zirkulu kosmetiko bat hiru erpinetan oinarrituta:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu hiru erpin&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -906,7 +906,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1573"/>
       <location filename="../../CommandExtensionPack.cpp" line="1711"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Luzatu lerro kosmetiko bat edo erdiko lerro bat bi amaieratan:&lt;br&gt;- Zehaztu delta distantzia (aukerakoa)&lt;br&gt;- Hautatu lerro bakar bat&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -920,13 +920,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="166"/>
       <location filename="../../CommandExtensionPack.cpp" line="348"/>
       <source>Add Bolt Circle Centerlines</source>
-      <translation type="unfinished">Add Bolt Circle Centerlines</translation>
+      <translation>Gehitu buloiaren zirkuluaren erdiko lerroak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="167"/>
       <location filename="../../CommandExtensionPack.cpp" line="349"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu erdiko lerroak zirkuluen eredu zirkular bati:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu eredu zirkular bat osatzen duten hiru zirkulu edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -940,13 +940,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="389"/>
       <location filename="../../CommandExtensionDims.cpp" line="522"/>
       <source>Increase Decimal Places</source>
-      <translation type="unfinished">Increase Decimal Places</translation>
+      <translation>Gehitu dezimalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="390"/>
       <location filename="../../CommandExtensionDims.cpp" line="523"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Handitu kota-testuaren dezimal kopurua:&lt;br&gt;- Hautatu kota bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -959,12 +959,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="455"/>
       <source>Increase Decimal Places</source>
-      <translation type="unfinished">Increase Decimal Places</translation>
+      <translation>Gehitu dezimalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="456"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Handitu kota-testuaren dezimal kopurua:&lt;br&gt;- Hautatu kota bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -978,13 +978,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="126"/>
       <location filename="../../CommandExtensionDims.cpp" line="322"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
+      <translation>Txertatu &apos;⌀&apos; aurrizkia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="127"/>
       <location filename="../../CommandExtensionDims.cpp" line="323"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Txertatu &apos;⌀&apos; ikurra kota-testuaren hasieran:&lt;br&gt;- Hautatu kota bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -997,7 +997,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="248"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
+      <translation>Txertatu &apos;⌀&apos; aurrizkia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="249"/>
@@ -1016,13 +1016,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
       <source>Insert &apos;□&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
+      <translation>Txertatu &apos;□&apos; aurrizkia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="160"/>
       <location filename="../../CommandExtensionDims.cpp" line="330"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Txertatu &apos;□&apos; ikurra kota-testuaren hasieran:&lt;br&gt;- Hautatu kota bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1035,7 +1035,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1288"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation type="unfinished">Add Cosmetic Parallel Line</translation>
+      <translation>Gehitu lerro paralelo kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1289"/>
@@ -1054,7 +1054,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1220"/>
       <location filename="../../CommandExtensionPack.cpp" line="1356"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation type="unfinished">Add Cosmetic Parallel Line</translation>
+      <translation>Gehitu lerro paralelo kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1221"/>
@@ -1074,7 +1074,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1254"/>
       <location filename="../../CommandExtensionPack.cpp" line="1364"/>
       <source>Add Cosmetic Perpendicular Line</source>
-      <translation type="unfinished">Add Cosmetic Perpendicular Line</translation>
+      <translation>Gehitu lerro perpendikular kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1255"/>
@@ -1098,7 +1098,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1392"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</translation>
+      <translation>Blokeatu edo desblokeatu bista baten kokapena:&lt;br&gt;- Hautatu bista bakar bat&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1111,12 +1111,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="740"/>
       <source>Position Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Position Horizontal Chain Dimensions</translation>
+      <translation>Kokatu kate-kota horizontalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="741"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Lerrokatu kota horizontalak kate-kota bat sortzeko:&lt;br&gt;- Hautatu bi kota horizontal edo gehiago&lt;br&gt;- Lehen kotak posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1130,13 +1130,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="580"/>
       <location filename="../../CommandExtensionDims.cpp" line="815"/>
       <source>Position Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Position Horizontal Chain Dimensions</translation>
+      <translation>Kokatu kate-kota horizontalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="581"/>
       <location filename="../../CommandExtensionDims.cpp" line="816"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Lerrokatu kota horizontalak kate-kota bat sortzeko:&lt;br&gt;- Hautatu bi kota horizontal edo gehiago&lt;br&gt;- Lehen kotak posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1150,13 +1150,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="705"/>
       <location filename="../../CommandExtensionDims.cpp" line="831"/>
       <source>Position Oblique Chain Dimensions</source>
-      <translation type="unfinished">Position Oblique Chain Dimensions</translation>
+      <translation>Kokatu zeharkako kate-kotak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="706"/>
       <location filename="../../CommandExtensionDims.cpp" line="832"/>
       <source>Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Lerrokatu zeharkako kotak kate-kota bat sortzeko:&lt;br&gt;- Hautatu zeharkako bi kota paralelo edo gehiago&lt;br&gt;- Lehen kotak posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1170,13 +1170,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="640"/>
       <location filename="../../CommandExtensionDims.cpp" line="823"/>
       <source>Position Vertical Chain Dimensions</source>
-      <translation type="unfinished">Position Vertical Chain Dimensions</translation>
+      <translation>Kokatu kate-kota bertikalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="641"/>
       <location filename="../../CommandExtensionDims.cpp" line="824"/>
       <source>Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Lerrokatu kota bertikalak kate-kota bat sortzeko:&lt;br&gt;- Hautatu bi kota bertikal edo gehiago&lt;br&gt;- Lehen kotak posizioa zehazten du&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1189,12 +1189,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1434"/>
       <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <translation>Kokatu sekzio-bista</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1435"/>
       <source>Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</translation>
+      <translation>Lerrokatu modu ortogonalean sekzio-bista bat eta bere iturburuko bista:&lt;br&gt;- Hautatu sekzio-bista bakarra&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1212,7 +1212,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="216"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Kendu aurrizki-ikurrak kota-testuen hasieran:&lt;br&gt;- Hautatu kota bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1225,12 +1225,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="712"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
-      <translation type="unfinished">Select Line Attributes, Cascade Spacing and Delta Distance</translation>
+      <translation>Hautatu lerro-atributuak, teilakatze-tartea eta delta distantzia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="713"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
-      <translation type="unfinished">Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</translation>
+      <translation>Hautatu lerro kosmetiko eta erdiko lerro berrien atributuak, eta zehaztu teilakatze-tartea eta delta distantzia:&lt;br&gt;- Egin klik tresna honetan&lt;br&gt;- Zehaztu atributuak, tarteak eta distantzia elkarrizketa-koadroan&lt;br&gt;- Sakatu 'Ados'</translation>
     </message>
   </context>
   <context>
@@ -1250,7 +1250,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1608"/>
       <location filename="../../CommandExtensionPack.cpp" line="1719"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Laburtu lerro kosmetiko bat edo erdiko lerro bat bi amaieratan:&lt;br&gt;- Zehaztu delta distantzia (aukerakoa)&lt;br&gt;- Hautatu lerro bakar bat&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1264,13 +1264,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="545"/>
       <location filename="../../CommandExtensionPack.cpp" line="685"/>
       <source>Add Cosmetic Thread Bolt Bottom View</source>
-      <translation type="unfinished">Add Cosmetic Thread Bolt Bottom View</translation>
+      <translation>Gehitu hari kosmetikoa buloiaren beheko bistari</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="546"/>
       <location filename="../../CommandExtensionPack.cpp" line="686"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu hari kosmetiko bat buloien/torlojuen/hagen goiko edo beheko bistan:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu zirkulu bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1284,13 +1284,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="443"/>
       <location filename="../../CommandExtensionPack.cpp" line="677"/>
       <source>Add Cosmetic Thread Bolt Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Bolt Side View</translation>
+      <translation>Gehitu hari kosmetikoa buloiaren alboko bistari</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="444"/>
       <location filename="../../CommandExtensionPack.cpp" line="678"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu hari kosmetiko bat buloien/torlojuen/hagen alboko bistan:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu bi lerro paralelo&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1304,13 +1304,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="494"/>
       <location filename="../../CommandExtensionPack.cpp" line="669"/>
       <source>Add Cosmetic Thread Hole Bottom View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Bottom View</translation>
+      <translation>Gehitu hari kosmetikoa zuloaren beheko bistari</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="495"/>
       <location filename="../../CommandExtensionPack.cpp" line="670"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu hari kosmetiko bat zuloen goiko edo beheko bistan:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu zirkulu bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1324,13 +1324,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="392"/>
       <location filename="../../CommandExtensionPack.cpp" line="661"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Side View</translation>
+      <translation>Gehitu hari kosmetikoa zuloaren alboko bistari</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="393"/>
       <location filename="../../CommandExtensionPack.cpp" line="662"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu hari kosmetiko bat zulo baten alboko bistan:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu bi lerro paralelo&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1343,12 +1343,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="579"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Side View</translation>
+      <translation>Gehitu hari kosmetikoa zuloaren alboko bistari</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="580"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Gehitu hari kosmetiko bat zulo baten alboko bistan:&lt;br&gt;- Zehaztu lerro-atributuak (aukerakoa)&lt;br&gt;- Hautatu bi lerro paralelo&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -1361,7 +1361,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="805"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">Add Cosmetic Intersection Vertex(es)</translation>
+      <translation>Gehitu ebakidura-erpin kosmetikoa(k)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="806"/>
@@ -2087,32 +2087,32 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="130"/>
       <source>Bolt Circle Centerlines</source>
-      <translation type="unfinished">Bolt Circle Centerlines</translation>
+      <translation>Buloiaren zirkuluaren erdiko lerroak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="200"/>
       <source>Circle Centerlines</source>
-      <translation type="unfinished">Circle Centerlines</translation>
+      <translation>Zirkuluaren erdiko lerroak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="374"/>
       <source>Cosmetic Thread Hole Side</source>
-      <translation type="unfinished">Cosmetic Thread Hole Side</translation>
+      <translation>Hari kosmetikoaren zulo-alboa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="425"/>
       <source>Cosmetic Thread Bolt Side</source>
-      <translation type="unfinished">Cosmetic Thread Bolt Side</translation>
+      <translation>Haridun buloi kosmetikoaren alboa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="476"/>
       <source>Cosmetic Thread Hole Bottom</source>
-      <translation type="unfinished">Cosmetic Thread Hole Bottom</translation>
+      <translation>Hari kosmetikoaren zulo-behealdea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="527"/>
       <source>Cosmetic Thread Bolt Bottom</source>
-      <translation type="unfinished">Cosmetic Thread Bolt Bottom</translation>
+      <translation>Hari kosmetikoaren buloi-behealdea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="763"/>
@@ -2122,7 +2122,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="822"/>
       <source>Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">Cosmetic Intersection Vertex(es)</translation>
+      <translation>Ebakidura-erpin kosmetikoa(k)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="868"/>
@@ -2137,12 +2137,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="991"/>
       <source>Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">Cosmetic Circle 3 Points</translation>
+      <translation>3 puntuko zirkulu kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1177"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
-      <translation type="unfinished">Cosmetic Line Parallel/Perpendicular</translation>
+      <translation>Lerro paralelo/perpendikular kosmetikoa</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1407"/>
@@ -2615,12 +2615,12 @@
       <location filename="../../CommandCreateDims.cpp" line="318"/>
       <location filename="../../CommandCreateDims.cpp" line="434"/>
       <source>BSpline Curve Error</source>
-      <translation type="unfinished">BSpline Curve Error</translation>
+      <translation>BSpline kurbaren errorea</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="319"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
-      <translation type="unfinished">Selected edge is a BSpline and a radius can not be calculated.</translation>
+      <translation>Hautatutako ertza B-spline bat da eta ezin da erradioa kalkulatu.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="414"/>
@@ -2635,7 +2635,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="435"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
-      <translation type="unfinished">Selected edge is a BSpline and a diameter can not be calculated.</translation>
+      <translation>Hautatutako ertza B-spline bat da eta ezin da diametroa kalkulatu.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="440"/>
@@ -2645,17 +2645,17 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="538"/>
       <source>Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension</source>
-      <translation type="unfinished">Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension</translation>
+      <translation>2 erpin, 2 ertz edo erpin 1 eta ertz 1 behar dira distanzia-kotarako</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="641"/>
       <source>Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension</source>
-      <translation type="unfinished">Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension</translation>
+      <translation>2 erpin, 2 ertz edo erpin 1 eta ertz 1 behar dira kota horizontalerako</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="744"/>
       <source>Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension</source>
-      <translation type="unfinished">Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension</translation>
+      <translation>2 erpin, 2 ertz edo erpin 1 eta ertz 1 behar dira kota bertikalerako</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="837"/>
@@ -2743,7 +2743,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="324"/>
       <source>Selection for Radius does not contain a circular edge (edge type: %1)</source>
-      <translation type="unfinished">Selection for Radius does not contain a circular edge (edge type: %1)</translation>
+      <translation>Erradiorako hautapenak ez du ertz zirkularrik (ertz mota: %1)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
@@ -2924,12 +2924,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1513"/>
       <source>No Part View in Selection</source>
-      <translation type="unfinished">No Part View in Selection</translation>
+      <translation>Ez dago pieza-bistarik hautapenean</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1526"/>
       <source>No %1 in Selection</source>
-      <translation type="unfinished">No %1 in Selection</translation>
+      <translation>Ez dago %1 hautapenean</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="124"/>
@@ -3153,7 +3153,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="617"/>
       <location filename="../../CommandExtensionDims.cpp" line="925"/>
       <source>No vertical dimensions selected</source>
-      <translation type="unfinished">No vertical dimensions selected</translation>
+      <translation>Ez da kota bertikalik hautatu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="676"/>
@@ -3164,7 +3164,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="677"/>
       <location filename="../../CommandExtensionDims.cpp" line="990"/>
       <source>No oblique dimensions selected</source>
-      <translation type="unfinished">No oblique dimensions selected</translation>
+      <translation>Ez da zeharkako kotarik hautatu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="860"/>
@@ -3197,12 +3197,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="126"/>
       <source>TechDraw Hole Circle</source>
-      <translation type="unfinished">TechDraw Hole Circle</translation>
+      <translation>TechDraw zulo-zirkulua</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="127"/>
       <source>Fewer than three circles selected</source>
-      <translation type="unfinished">Fewer than three circles selected</translation>
+      <translation>Hiru zirkulu baino gutxiago hautatu dira</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1450"/>
@@ -3222,12 +3222,12 @@
     <message>
       <location filename="../../TaskDimension.cpp" line="412"/>
       <source>Select 2 Vertexes or 1 Edge</source>
-      <translation type="unfinished">Select 2 Vertexes or 1 Edge</translation>
+      <translation>Hautatu 2 erpin edo ertz 1</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="147"/>
       <source>Please select a Line Group</source>
-      <translation type="unfinished">Please select a Line Group</translation>
+      <translation>Hautatu lerro-talde bat</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="158"/>
@@ -3235,10 +3235,10 @@
  thin: %2
  graphic: %3
  thick: %4</source>
-      <translation type="unfinished">%1 defines these line widths:
- thin: %2
- graphic: %3
- thick: %4</translation>
+      <translation>%1 elementuak honako lerro-zabalerak definitzen ditu:
+ mehea: %2
+ grafikoa: %3
+ lodia: %4</translation>
     </message>
   </context>
   <context>
@@ -3456,7 +3456,7 @@ bistaren goiko eta ezkerreko ertzetatik</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To Page</source>
-      <translation type="unfinished">To Page</translation>
+      <translation>Orrialdera</translation>
     </message>
   </context>
   <context>
@@ -3597,8 +3597,8 @@ gehitzen du gida-marraren muturrean</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="301"/>
       <source>Directory path for welding symbols.
 This directory will be used for the symbol selection.</source>
-      <translation type="unfinished">Directory path for welding symbols.
-This directory will be used for the symbol selection.</translation>
+      <translation>Soldadura-ikurren direktorioaren bide-izena.
+Direktorio hau ikurrak hautatzeko erabiliko da.</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="308"/>
@@ -3616,12 +3616,12 @@ This directory will be used for the symbol selection.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
       <source>FreeCAD could not determine which Page to use.  Please select a Page.</source>
-      <translation type="unfinished">FreeCAD could not determine which Page to use.  Please select a Page.</translation>
+      <translation>FreeCADek ezin du zehaztu zein orrialde erabili behar den. Hautatu orrialde bat.</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
       <source>Select a Page that should be used</source>
-      <translation type="unfinished">Select a Page that should be used</translation>
+      <translation>Hautatu erabili beharko den orrialde bat</translation>
     </message>
   </context>
   <context>
@@ -4313,7 +4313,7 @@ erabiliko den itzal-lerro kopuru maximoa</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank for automatic dimension format.  Use %f, %g or %w specifiers to override.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank for automatic dimension format.  Use %f, %g or %w specifiers to override.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utzi hutsik kota-formatu automatikoa erabiltzeko.  Erabili %f, %g edo %w zehaztaileak gainidazteko.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="247"/>
@@ -4621,7 +4621,7 @@ proiekzio-taldeetarako</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="849"/>
       <source>Distance between Page grid lines.</source>
-      <translation type="unfinished">Distance between Page grid lines.</translation>
+      <translation>Orrialdeko sareta-lerroen arteko distantzia.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="879"/>
@@ -5309,7 +5309,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="197"/>
       <source>Escape picking</source>
-      <translation type="unfinished">Escape picking</translation>
+      <translation>Ezeztatu hautapena</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="222"/>
@@ -5425,12 +5425,12 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="124"/>
       <source>Circular runout</source>
-      <translation type="unfinished">Circular runout</translation>
+      <translation>Deszentratze zirkularra</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="134"/>
       <source>Total runout</source>
-      <translation type="unfinished">Total runout</translation>
+      <translation>Deszentratze osoa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="144"/>
@@ -5440,7 +5440,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="154"/>
       <source>Concentricity</source>
-      <translation type="unfinished">Concentricity</translation>
+      <translation>Zentrokidetasuna</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="164"/>
@@ -5455,17 +5455,17 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="190"/>
       <source>derived geometry element</source>
-      <translation type="unfinished">derived geometry element</translation>
+      <translation>eratorritako geometria-elementua</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="205"/>
       <source>Minimax (Tschebyschew)</source>
-      <translation type="unfinished">Minimax (Tschebyschew)</translation>
+      <translation>Minimax (Txebixev)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="220"/>
       <source>Hull condition</source>
-      <translation type="unfinished">Hull condition</translation>
+      <translation>Krosko-baldintza</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="235"/>
@@ -5475,52 +5475,52 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="250"/>
       <source>Least square geometry element</source>
-      <translation type="unfinished">Least square geometry element</translation>
+      <translation>Geometria karratuko elementu minimoa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="265"/>
       <source>Least material condition (LMC)</source>
-      <translation type="unfinished">Least material condition (LMC)</translation>
+      <translation>Material-baldintza minimoa (LMC)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="280"/>
       <source>Maximum material condition (MMC)</source>
-      <translation type="unfinished">Maximum material condition (MMC)</translation>
+      <translation>Material-baldintza maximoa (MMC)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="295"/>
       <source>least inscribed geometry element</source>
-      <translation type="unfinished">least inscribed geometry element</translation>
+      <translation>geometria-elementu inskribatu minimoa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="310"/>
       <source>Projected tolerance zone</source>
-      <translation type="unfinished">Projected tolerance zone</translation>
+      <translation>Proiektatutako tolerantzia-zona</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="325"/>
       <source>Reciprocity condition</source>
-      <translation type="unfinished">Reciprocity condition</translation>
+      <translation>Elkarrekikotasun-baldintza</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="340"/>
       <source>Regardless of feature size (RFS)</source>
-      <translation type="unfinished">Regardless of feature size (RFS)</translation>
+      <translation>Elementu-tamaina kontuan hartu gabe (RFS)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="355"/>
       <source>Tangent plane</source>
-      <translation type="unfinished">Tangent plane</translation>
+      <translation>Plano tangentziala</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="370"/>
       <source>Unequal Bilateral</source>
-      <translation type="unfinished">Unequal Bilateral</translation>
+      <translation>Aldebiko desberdina</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="385"/>
       <source>most inscribed geometry element</source>
-      <translation type="unfinished">most inscribed geometry element</translation>
+      <translation>geometria-elementu inskribatu maximoa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="397"/>
@@ -5565,17 +5565,17 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="477"/>
       <source>(Arc) Minute</source>
-      <translation type="unfinished">(Arc) Minute</translation>
+      <translation>(Arkua) minutua</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="487"/>
       <source>(Arc) Second</source>
-      <translation type="unfinished">(Arc) Second</translation>
+      <translation>(Arkua) segundoa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="497"/>
       <source>(Arc) Tertie</source>
-      <translation type="unfinished">(Arc) Tertie</translation>
+      <translation>(Arkua) tertziarioa</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="509"/>
@@ -5620,7 +5620,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="591"/>
       <source>Downward arrow</source>
-      <translation type="unfinished">Downward arrow</translation>
+      <translation>Beheranzko gezia</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="601"/>
@@ -5975,7 +5975,7 @@ edukia erabiliko da kota-balioaren ordez</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="319"/>
       <source>Use override angles if checked. Use default angles if unchecked.</source>
-      <translation type="unfinished">Use override angles if checked. Use default angles if unchecked.</translation>
+      <translation>Erabili angelu gainidatziak hau aktibatuta badago. Erabili angelu lehenetsiak aktibatuta ez badago.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="322"/>
@@ -5985,17 +5985,17 @@ edukia erabiliko da kota-balioaren ordez</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="329"/>
       <source>Dimension line angle</source>
-      <translation type="unfinished">Dimension line angle</translation>
+      <translation>Kota-lerroaren angelua</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="336"/>
       <source>Angle of dimension line with drawing X axis (degrees)</source>
-      <translation type="unfinished">Angle of dimension line with drawing X axis (degrees)</translation>
+      <translation>Kota-lerroaren angelua marrazkiaren X ardatzarekiko (graduak)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="352"/>
       <source>Set dimension line angle to default (ortho view).</source>
-      <translation type="unfinished">Set dimension line angle to default (ortho view).</translation>
+      <translation>Ezarri kota-lerroaren angelu lehenetsia (ikuspegi ortogonala).</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="355"/>
@@ -6006,7 +6006,7 @@ edukia erabiliko da kota-balioaren ordez</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="362"/>
       <source>Set dimension line angle to match selected edge or vertices.</source>
-      <translation type="unfinished">Set dimension line angle to match selected edge or vertices.</translation>
+      <translation>Ezarri kota-lerroaren angelua hautatutako ertzarekin edo erpinekin bat etor dadin.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="365"/>
@@ -6017,22 +6017,22 @@ edukia erabiliko da kota-balioaren ordez</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="372"/>
       <source>Extension line angle</source>
-      <translation type="unfinished">Extension line angle</translation>
+      <translation>Hedatze-lerroaren angelua</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="379"/>
       <source>Angle of extension lines with drawing X axis (degrees)</source>
-      <translation type="unfinished">Angle of extension lines with drawing X axis (degrees)</translation>
+      <translation>Hedatze-lerroen angelua marrazkiaren X ardatzarekiko (graduak)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="395"/>
       <source>Set extension line angle to default (ortho).</source>
-      <translation type="unfinished">Set extension line angle to default (ortho).</translation>
+      <translation>Ezarri hedatze-lerroaren angelu lehenetsia (ortogonala).</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="405"/>
       <source>Set extension line angle to match selected edge or vertices.</source>
-      <translation type="unfinished">Set extension line angle to match selected edge or vertices.</translation>
+      <translation>Ezarri hedatze-lerroaren angelua hautatutako ertzarekin edo erpinekin bat etor dadin.</translation>
     </message>
   </context>
   <context>
@@ -6254,7 +6254,7 @@ Puntu gehiago ere aukeratu daitezke lerro segmentuak sortzeko.</translation>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="273"/>
       <source>Pick points</source>
-      <translation type="unfinished">Pick points</translation>
+      <translation>Aukeratu puntuak</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="322"/>
@@ -7164,7 +7164,7 @@ emandako X/Y espazioa erabilita</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="337"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Kendu aurrizki-ikurrak kota-testuen hasieran:&lt;br&gt;- Hautatu kota bat edo gehiago&lt;br&gt;- Egin klik tresna honetan</translation>
     </message>
   </context>
   <context>
@@ -7316,7 +7316,7 @@ emandako X/Y espazioa erabilita</translation>
       <location filename="../../Workbench.cpp" line="39"/>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Extensions: Centerlines/Threading</source>
-      <translation type="unfinished">Extensions: Centerlines/Threading</translation>
+      <translation>Hedapenak: erdiko lerroak/harilkatzea</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>

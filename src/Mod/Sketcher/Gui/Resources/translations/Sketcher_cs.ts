@@ -2266,12 +2266,12 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5955"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
-      <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
+      <translation>Násobnost uzlu nemůže být vyšší než stupeň BSplajnu.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5958"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
-      <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
+      <translation>Nelze vložit uzel mimo rozsah parametrů BSplajnu.</translation>
     </message>
   </context>
   <context>
@@ -2530,7 +2530,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="163"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</translation>
+      <translation>Nelze přidat vazbu mezi dvě pevné geometrie. Pevné geometrie obsahují vnější geometrii, blokovanou geometrii a speciální body jako jsou uzly B-splajnu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="486"/>
@@ -2547,12 +2547,12 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="544"/>
       <location filename="../../CommandConstraints.cpp" line="556"/>
       <source>Only sketch and its support are allowed to be selected.</source>
-      <translation type="unfinished">Only sketch and its support are allowed to be selected.</translation>
+      <translation>Vybrán může být pouze náčert a jeho podpora.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="565"/>
       <source>One of the selected has to be on the sketch.</source>
-      <translation type="unfinished">One of the selected has to be on the sketch.</translation>
+      <translation>Jeden z vybraných musí být na náčrt.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="912"/>
@@ -2588,7 +2588,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="1176"/>
       <location filename="../../CommandConstraints.cpp" line="1269"/>
       <source>The selected edge is not a line segment.</source>
-      <translation type="unfinished">The selected edge is not a line segment.</translation>
+      <translation>Vybraný okraj není segment čáry.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="946"/>
@@ -2705,7 +2705,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="1980"/>
       <location filename="../../CommandConstraints.cpp" line="1990"/>
       <source>Select two or more vertices from the sketch.</source>
-      <translation type="unfinished">Select two or more vertices from the sketch.</translation>
+      <translation>Vyberte dva nebo více vrcholů z náčrtu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2147"/>
@@ -2721,7 +2721,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2370"/>
       <source>This constraint does not make sense for non-linear curves.</source>
-      <translation type="unfinished">This constraint does not make sense for non-linear curves.</translation>
+      <translation>Tato vazba nedává smysl pro nelineární křivky.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2487"/>
@@ -2764,7 +2764,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="6173"/>
       <location filename="../../CommandConstraints.cpp" line="6863"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight.</translation>
+      <translation>Vyberte hranu, která není váhou B-splajnu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2583"/>
@@ -2803,7 +2803,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="2881"/>
       <location filename="../../CommandConstraints.cpp" line="3130"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
-      <translation type="unfinished">This constraint only makes sense on a line segment or a pair of points.</translation>
+      <translation>Tato vazba má smysl pouze na segmentu čáry nebo na dvojici bodů.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3021"/>
@@ -2829,13 +2829,13 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3258"/>
       <source>Select a valid line.</source>
-      <translation type="unfinished">Select a valid line.</translation>
+      <translation>Vyberte platnou úsečku.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3274"/>
       <location filename="../../CommandConstraints.cpp" line="3312"/>
       <source>The selected edge is not a valid line.</source>
-      <translation type="unfinished">The selected edge is not a valid line.</translation>
+      <translation>Vybraná hrana není platnou úsečkou.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3376"/>
@@ -2991,12 +2991,12 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <location filename="../../CommandConstraints.cpp" line="6319"/>
       <location filename="../../CommandConstraints.cpp" line="7022"/>
       <source>Select two or more compatible edges.</source>
-      <translation type="unfinished">Select two or more compatible edges.</translation>
+      <translation>Vyberte dvě nebo více kompatibilních hran.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6324"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
-      <translation type="unfinished">Sketch axes cannot be used in equality constraints.</translation>
+      <translation>Osy náčrtu nelze použít pro vazby rovnosti.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6343"/>
@@ -3008,7 +3008,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <location filename="../../CommandConstraints.cpp" line="6388"/>
       <location filename="../../CommandConstraints.cpp" line="6440"/>
       <source>Select two or more edges of similar type.</source>
-      <translation type="unfinished">Select two or more edges of similar type.</translation>
+      <translation>Vyberte dvě nebo více hran podobného typu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6522"/>
@@ -3071,7 +3071,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../CommandConstraints.cpp" line="6999"/>
       <source>Sketch axes cannot be used in internal alignment constraint.</source>
-      <translation type="unfinished">Sketch axes cannot be used in internal alignment constraint.</translation>
+      <translation>Osy náčrtu nelze použít ve vazbě vnitřního uspořádání.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7044"/>
@@ -3156,12 +3156,12 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4739"/>
       <source>B-Spline Degree</source>
-      <translation type="unfinished">B-Spline Degree</translation>
+      <translation>Stupeň B-splajnu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4740"/>
       <source>Define B-Spline Degree, between 1 and %1:</source>
-      <translation type="unfinished">Define B-Spline Degree, between 1 and %1:</translation>
+      <translation>Definovat stupeň B-Splajnu mezi 1 a %1:</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="718"/>
@@ -3221,12 +3221,12 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1203"/>
       <source>Nothing is selected. Please select a b-spline.</source>
-      <translation type="unfinished">Nothing is selected. Please select a b-spline.</translation>
+      <translation>Nic není vybráno. Vyberte prosím B-splajn.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1217"/>
       <source>Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</source>
-      <translation type="unfinished">Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</translation>
+      <translation>Vyberte křivku B-splajn pro vložení uzlu (ne uzel na ni). Pokud křivka není b-splajn, nejprve ji na ni převeďte.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="131"/>
@@ -3361,12 +3361,12 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="23"/>
       <source>Multiple filter selection</source>
-      <translation type="unfinished">Multiple filter selection</translation>
+      <translation>Vícenásobný výběr filtru</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="29"/>
       <source>Check the filters to aggregate:</source>
-      <translation type="unfinished">Check the filters to aggregate:</translation>
+      <translation>Zkontrolovat filtry pro agregaci:</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="52"/>
@@ -3376,7 +3376,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="57"/>
       <source>Geometric</source>
-      <translation type="unfinished">Geometric</translation>
+      <translation>Geometrický</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="62"/>
@@ -3401,7 +3401,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="82"/>
       <source>Point on Object</source>
-      <translation type="unfinished">Point on Object</translation>
+      <translation>Bod na objekt</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="87"/>
@@ -3431,7 +3431,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="112"/>
       <source>Equality</source>
-      <translation type="unfinished">Equality</translation>
+      <translation>Rovnost</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="117"/>
@@ -3446,12 +3446,12 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="127"/>
       <source>Horizontal Distance</source>
-      <translation type="unfinished">Horizontal Distance</translation>
+      <translation>Vodorovná vzdálenost</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="132"/>
       <source>Vertical Distance</source>
-      <translation type="unfinished">Vertical Distance</translation>
+      <translation>Vertikální vzdálenost</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="137"/>
@@ -3481,32 +3481,32 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="162"/>
       <source>Snell's Law</source>
-      <translation type="unfinished">Snell's Law</translation>
+      <translation>Snellův zákon</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="167"/>
       <source>Internal Alignment</source>
-      <translation type="unfinished">Internal Alignment</translation>
+      <translation>Vnitřní zarovnání</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="186"/>
       <source>Shows all the constraints in the list</source>
-      <translation type="unfinished">Shows all the constraints in the list</translation>
+      <translation>Zobrazí všechny vazby v seznamu</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="189"/>
       <source>Check All</source>
-      <translation type="unfinished">Check All</translation>
+      <translation>Označit vše</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="202"/>
       <source>Hides all the constraints in the list</source>
-      <translation type="unfinished">Hides all the constraints in the list</translation>
+      <translation>Skryje všechny vazby v seznamu</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="205"/>
       <source>Uncheck All</source>
-      <translation type="unfinished">Uncheck All</translation>
+      <translation>Odškrtout vše</translation>
     </message>
   </context>
   <context>
@@ -3514,12 +3514,12 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="23"/>
       <source>Constraint widget settings</source>
-      <translation type="unfinished">Constraint widget settings</translation>
+      <translation>Nastavení widgetu omezení</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="35"/>
       <source>List control</source>
-      <translation type="unfinished">List control</translation>
+      <translation>Kontrola seznamu</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="47"/>
@@ -3544,17 +3544,17 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="100"/>
       <source>3D view control</source>
-      <translation type="unfinished">3D view control</translation>
+      <translation>Kontrola 3D pohledu</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="112"/>
       <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
-      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
+      <translation>Zobrazení vazeb odpovídá výběru filtru, takže filtrované vazby jsou skryté</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="115"/>
       <source>Show only filtered constraints</source>
-      <translation type="unfinished">Show only filtered constraints</translation>
+      <translation>Zobrazit pouze filtrované vazby</translation>
     </message>
   </context>
   <context>
@@ -4293,7 +4293,7 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
       <source>A dialog will pop up to input a value for new dimensional constraints.</source>
-      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+      <translation>Dialog se objeví pro zadání hodnoty nové rozměrové vazby.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
@@ -4303,7 +4303,7 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+      <translation>Aktuální nástroj v náčrtu zůstane po použití aktivní.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
@@ -4313,7 +4313,7 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
       <source>The current constraint creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+      <translation>Aktuální nástroj pro vytváření vazeb zůstane po vytvoření aktivní.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
@@ -4335,17 +4335,17 @@ Podporuje všechny jednotkové systémy kromě "US tradiční" a "stavební US/E
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+      <translation>Je-li zaškrtnuto, zobrazí se na rozměrových vazbách název (pokud existuje).</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show dimensional constraint name with format</source>
-      <translation type="unfinished">Show dimensional constraint name with format</translation>
+      <translation>Zobrazit název rozměrových vazeb s formátem</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
@@ -4354,16 +4354,16 @@ Defaults to: %N = %V
 
 %N - name parameter
 %V - dimension value</source>
-      <translation type="unfinished">The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
+      <translation>Formát pro zobrazení rozměrové vazby.
+Výchozí nastavení: %N = %V
 
-%N - name parameter
-%V - dimension value</translation>
+%N - název parametru
+%V - hodnota rozměru</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
       <source>DimensionalStringFormat</source>
-      <translation type="unfinished">DimensionalStringFormat</translation>
+      <translation>DimensionalStringFormat</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
@@ -4373,7 +4373,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
-      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
+      <translation>Při otevírání náčrtu skrýt všechny prvky, které na něm závisí.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
@@ -4383,7 +4383,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+      <translation>Při otevírání náčrtu zobrazit zdroje pro připojení externí geometrie.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="334"/>
@@ -4393,7 +4393,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
-      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+      <translation>Při otevírání náčrtu zobrazit objekty, ke kterým je náčrt připojený.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="353"/>
@@ -4403,7 +4403,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
-      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
+      <translation>Při zavírání náčrtu vrátit kameru tam, kde byla před jeho otevřením.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="372"/>
@@ -4414,25 +4414,25 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
-Works only when "Restore camera position after editing" is enabled.</translation>
+      <translation>Při vstupu do režimu úprav vynutit ortografické zobrazení.
+Funguje pouze v případě, že je povoleno "Obnovit pozici kamery po úpravě".</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+      <translation>Vynutit ortografický pohled na začátku editace</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>Ve výchozím nastavení otevřít náčrt v pohledu řezu.
+Pak jsou objekty viditelné pouze za rovinou náčrtu.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
       <source>Open sketch in Section View mode</source>
-      <translation type="unfinished">Open sketch in Section View mode</translation>
+      <translation>Otevřít náčrt v pohledu jeho řezu</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="434"/>
@@ -4442,7 +4442,7 @@ Then objects are only visible behind the sketch plane.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+      <translation>Použije aktuální nastavení automatické viditelnosti na všechny náčrty v otevřených dokumentech.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="456"/>
@@ -4615,7 +4615,7 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="62"/>
       <source>Geometric</source>
-      <translation type="unfinished">Geometric</translation>
+      <translation>Geometrický</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="67"/>
@@ -4640,7 +4640,7 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Point on Object</source>
-      <translation type="unfinished">Point on Object</translation>
+      <translation>Bod na objekt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="92"/>
@@ -4670,7 +4670,7 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="117"/>
       <source>Equality</source>
-      <translation type="unfinished">Equality</translation>
+      <translation>Rovnost</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="122"/>
@@ -4685,12 +4685,12 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="132"/>
       <source>Horizontal Distance</source>
-      <translation type="unfinished">Horizontal Distance</translation>
+      <translation>Vodorovná vzdálenost</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="137"/>
       <source>Vertical Distance</source>
-      <translation type="unfinished">Vertical Distance</translation>
+      <translation>Vertikální vzdálenost</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="142"/>
@@ -4720,37 +4720,37 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="167"/>
       <source>Snell's Law</source>
-      <translation type="unfinished">Snell's Law</translation>
+      <translation>Snellův zákon</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="172"/>
       <source>Internal Alignment</source>
-      <translation type="unfinished">Internal Alignment</translation>
+      <translation>Vnitřní zarovnání</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="177"/>
       <source>Multiple Filters</source>
-      <translation type="unfinished">Multiple Filters</translation>
+      <translation>Více filtrů</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="182"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>Filtr výběru</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="187"/>
       <source>Associated Constraint Filter</source>
-      <translation type="unfinished">Associated Constraint Filter</translation>
+      <translation>Přidružený filtr vazeb</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="207"/>
       <source>Click to select multiple filters</source>
-      <translation type="unfinished">Click to select multiple filters</translation>
+      <translation>Kliknutím vyberte více filtrů</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="210"/>
       <source>Select Multiple</source>
-      <translation type="unfinished">Select Multiple</translation>
+      <translation>Vybrat více</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="223"/>
@@ -4760,32 +4760,32 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="247"/>
       <source>Shows all the constraints in the list</source>
-      <translation type="unfinished">Shows all the constraints in the list</translation>
+      <translation>Zobrazí všechny vazby v seznamu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="250"/>
       <source>Show Listed</source>
-      <translation type="unfinished">Show Listed</translation>
+      <translation>Zobrazit seznam</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="263"/>
       <source>Hides all the constraints in the list</source>
-      <translation type="unfinished">Hides all the constraints in the list</translation>
+      <translation>Skryje všechny vazby v seznamu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="266"/>
       <source>Hide Listed</source>
-      <translation type="unfinished">Hide Listed</translation>
+      <translation>Skrýt seznam</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="279"/>
       <source>Restricts 3D visibility to the listed elements</source>
-      <translation type="unfinished">Restricts 3D visibility to the listed elements</translation>
+      <translation>Omezí 3D viditelnost na prvky v seznamu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="282"/>
       <source>Restrict Visibility</source>
-      <translation type="unfinished">Restrict Visibility</translation>
+      <translation>Omezit viditelnost</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="640"/>
@@ -5080,24 +5080,24 @@ Body musejí být blíž než pětina velikosti mřížky, aby došlo k přichyc
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and non-manifold vertexes</source>
-      <translation type="unfinished">Open and non-manifold vertexes</translation>
+      <translation>Otevřené a non-manifold vrcholy</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
 This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
-      <translation type="unfinished">Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
-This is purely based on topological shape of the sketch and not on its geometry/constrain set.</translation>
+      <translation>Zvýrazní otevřené a non-manifold vrcholy, které by mohly vést k chybě, pokud je náčrt použit pro vytvoření tělesa
+Je to založeno výhradně na topologickém tvaru náčrtu a ne na jeho prvcích geometrie/vazeb.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="42"/>
       <source>Highlight troublesome vertexes</source>
-      <translation type="unfinished">Highlight troublesome vertexes</translation>
+      <translation>Zvýraznit problémové vrcholy</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="52"/>
       <source>Fixes found missing coincidences by adding extra coincident constrains</source>
-      <translation type="unfinished">Fixes found missing coincidences by adding extra coincident constrains</translation>
+      <translation>Opraví chybějící shody přidáním dalších shodných vazeb</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="55"/>
@@ -5112,12 +5112,12 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="68"/>
       <source>Defines the X/Y tolerance inside which missing coincidences are searched.</source>
-      <translation type="unfinished">Defines the X/Y tolerance inside which missing coincidences are searched.</translation>
+      <translation>Definuje toleranci X/Y, ve které jsou hledány chybějící shody.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
       <source>If checked, construction geometries are ignored in the search</source>
-      <translation type="unfinished">If checked, construction geometries are ignored in the search</translation>
+      <translation>Je-li zaškrtnuto, konstrukční geometrie jsou ve vyhledávání ignorovány</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
@@ -5128,8 +5128,8 @@ This is purely based on topological shape of the sketch and not on its geometry/
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
       <source>Finds and displays missing coincidences in the sketch.
 This is done by analyzing the sketch geometries and constraints.</source>
-      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
-This is done by analyzing the sketch geometries and constraints.</translation>
+      <translation>Hledá a zobrazuje chybějící shody v náčrtu.
+Toto se provádí analýzou geometrií a vazeb náčrtu.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -5154,17 +5154,17 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="115"/>
       <source>Finds invalid/malformed constrains in the sketch</source>
-      <translation type="unfinished">Finds invalid/malformed constrains in the sketch</translation>
+      <translation>Najde neplatné/poškozené vazby v náčrtu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="125"/>
       <source>Tries to fix found invalid constraints</source>
-      <translation type="unfinished">Tries to fix found invalid constraints</translation>
+      <translation>Snaží se opravit nalezené neplatné vazby</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="135"/>
       <source>Deletes constraints referring to external geometry</source>
-      <translation type="unfinished">Deletes constraints referring to external geometry</translation>
+      <translation>Odstraní vazby odkazující na vnější geometrii</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="138"/>
@@ -5179,12 +5179,12 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="154"/>
       <source>Finds degenerated geometries in the sketch</source>
-      <translation type="unfinished">Finds degenerated geometries in the sketch</translation>
+      <translation>Nalezne degenerované geometrie v náčrtu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="164"/>
       <source>Tries to fix found degenerated geometries</source>
-      <translation type="unfinished">Tries to fix found degenerated geometries</translation>
+      <translation>Snaží se opravit nalezené degenerované geometrie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="177"/>
@@ -5194,12 +5194,12 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="183"/>
       <source>Finds reversed external geometries</source>
-      <translation type="unfinished">Finds reversed external geometries</translation>
+      <translation>Nalezne obrácené vnější geometrie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="193"/>
       <source>Fixes found reversed external geometries by swapping their endpoints</source>
-      <translation type="unfinished">Fixes found reversed external geometries by swapping their endpoints</translation>
+      <translation>Opraví nalezené obrácené vnější geometrie prohozením jejich koncových bodů</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="196"/>
@@ -5214,7 +5214,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="212"/>
       <source>Enables/updates constraint orientation locking</source>
-      <translation type="unfinished">Enables/updates constraint orientation locking</translation>
+      <translation>Povolí/aktualizuje uzamčení orientace vazby</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="215"/>
@@ -5224,7 +5224,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="222"/>
       <source>Disables constraint orientation locking</source>
-      <translation type="unfinished">Disables constraint orientation locking</translation>
+      <translation>Zakáže uzamčení orientace vazby</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="225"/>
@@ -5312,47 +5312,47 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2883"/>
       <source>Over-constrained: </source>
-      <translation type="unfinished">Over-constrained: </translation>
+      <translation>Přeurčené: </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2889"/>
       <source>Malformed constraints: </source>
-      <translation type="unfinished">Malformed constraints: </translation>
+      <translation>Poškozené vazby: </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2895"/>
       <source>Redundant constraints:</source>
-      <translation type="unfinished">Redundant constraints:</translation>
+      <translation>Nadbytečné vazby:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2901"/>
       <source>Partially redundant:</source>
-      <translation type="unfinished">Partially redundant:</translation>
+      <translation>Částečně nadbytečné:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2907"/>
       <source>Solver failed to converge</source>
-      <translation type="unfinished">Solver failed to converge</translation>
+      <translation>Řešič nezkonvergoval</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2912"/>
       <source>Under constrained:</source>
-      <translation type="unfinished">Under constrained:</translation>
+      <translation>Nedostatečně omezené:</translation>
     </message>
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
       <source>%n DoF(s)</source>
       <translation type="unfinished">
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
+        <numerusform>%n stupeň volnosti</numerusform>
+        <numerusform>%n stupně volnosti</numerusform>
+        <numerusform>%n stupňů volnosti</numerusform>
         <numerusform>%n DoF(s)</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2917"/>
       <source>Fully constrained</source>
-      <translation type="unfinished">Fully constrained</translation>
+      <translation>Plně vymezené</translation>
     </message>
   </context>
   <context>
@@ -5459,7 +5459,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5706"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+      <translation>Opravit poloměr/průměr kružnice nebo oblouku</translation>
     </message>
   </context>
   <context>
@@ -5476,7 +5476,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5705"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+      <translation>Opravit poloměr/průměr kružnice nebo oblouku</translation>
     </message>
   </context>
   <context>
@@ -5615,7 +5615,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1144"/>
       <source>Create a rounded rectangle</source>
-      <translation type="unfinished">Create a rounded rectangle</translation>
+      <translation>Vytvořit zaoblený obdélník</translation>
     </message>
   </context>
   <context>
@@ -5664,7 +5664,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1140"/>
       <source>Create a centered rectangle</source>
-      <translation type="unfinished">Create a centered rectangle</translation>
+      <translation>Vytvořit vystředěný obdélník</translation>
     </message>
   </context>
   <context>
@@ -5825,7 +5825,7 @@ Přeješ si odstranit podporu průčelí?</translation>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="22"/>
       <source>DOF</source>
-      <translation type="unfinished">DOF</translation>
+      <translation>Stupeň volnosti</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="29"/>
@@ -6174,7 +6174,7 @@ Eigen Sparse QR algoritmus je optimalizován pro řídké matrice; obvykle rychl
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2863"/>
       <source>and %1 more</source>
-      <translation type="unfinished">and %1 more</translation>
+      <translation>a %1 další</translation>
     </message>
   </context>
   <context>

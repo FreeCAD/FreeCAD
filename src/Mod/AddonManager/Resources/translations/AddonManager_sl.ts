@@ -399,22 +399,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="647"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
+      <translation>Pri posodabljanju makrov z GitHuba je prišlo do napake, poskušanje s čistim prevzemom ...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Poskušanje s čistim prevzemom ...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="664"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Čisti prevzem je uspel</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="671"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+      <translation>Posodobitev makrov z GitHuba je spodletela - poskusite počistiti predpomnilnik Upravljalnika dodatkov.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="715"/>

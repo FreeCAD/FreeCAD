@@ -456,14 +456,14 @@ L'expression doit être interprétée comme une chaîne de caractères d'une cer
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>La dépendance avec la feuille de calcul référencée
+sera masquée lors de la vérification des dépendances.
+Utile pour éviter les dépendances cycliques, mais à utiliser avec précaution !</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Masquer la dépendance de la liaison</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
@@ -946,9 +946,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>Les nombres de cellules sources et cibles ne correspondent pas. La liaison partielle peut éventuellement fonctionner.
 
-Do you want to continue?</translation>
+Voulez-vous poursuivre ?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
@@ -959,7 +959,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
+      <translation>Erreur :
 </translation>
     </message>
     <message>

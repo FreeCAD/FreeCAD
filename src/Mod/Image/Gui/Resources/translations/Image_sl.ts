@@ -73,12 +73,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>Razdalja [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>Izberite prvo točko</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
@@ -93,12 +93,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>Izberite drugo točko</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="202"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>Izberite ravnino slike in vnesite razdaljo</translation>
     </message>
   </context>
   <context>

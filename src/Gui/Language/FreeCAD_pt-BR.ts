@@ -753,12 +753,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="230"/>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Diretório de cache</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="232"/>
       <source>The cache directory %1 exceeds the size of %2.</source>
-      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+      <translation>O diretório de cache %1 excede o tamanho de %2.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="233"/>
@@ -768,7 +768,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="234"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>Aviso: Por favor, certifique-se de que esta é a única instância em execução de %1 e que nenhum documento está aberto, pois isso pode resultar em perda de dados!</translation>
     </message>
   </context>
   <context>
@@ -1112,7 +1112,7 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="17"/>
       <source>Create New Preference Pack</source>
-      <translation type="unfinished">Create New Preference Pack</translation>
+      <translation>Criar um novo pacote de preferências</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="28"/>
@@ -1122,7 +1122,7 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="53"/>
       <source>Property group templates</source>
-      <translation type="unfinished">Property group templates</translation>
+      <translation>Modelos de grupos de propriedades</translation>
     </message>
   </context>
   <context>
@@ -1135,7 +1135,7 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="159"/>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+      <translation>Já existe um pacote de preferências com esse nome. Deseja substituí-lo?</translation>
     </message>
   </context>
   <context>
@@ -1391,22 +1391,22 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
       <source>Multiple defined keyboard shortcut</source>
-      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
+      <translation>Atalho de teclado definido várias vezes</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
       <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>O atalho '%1' é definido mais de uma vez. Isso pode levar a um comportamento inesperado.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
       <source>Already defined keyboard shortcut</source>
-      <translation type="unfinished">Already defined keyboard shortcut</translation>
+      <translation>Atalho de teclado já definido</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
       <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>O atalho '%1' já está atribuído a '%2'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -1830,12 +1830,12 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgEditor.ui" line="81"/>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>A forma do cursor será um bloco</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="84"/>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Habilitar cursor de bloco</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="100"/>
@@ -1968,27 +1968,27 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgGeneral.ui" line="95"/>
       <source>Selected language</source>
-      <translation type="unfinished">Selected language</translation>
+      <translation>Selecionar o idioma</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="100"/>
       <source>C/POSIX</source>
-      <translation type="unfinished">C/POSIX</translation>
+      <translation>C/POSIX</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="108"/>
       <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+      <translation>Se habilitado, o separador decimal do teclado numérico será substituído pelo separador definido pelo idioma do sistema</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="111"/>
       <source>Substitute decimal separator (needs restart)</source>
-      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+      <translation>Substituir o separador decimal (necessário reiniciar)</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="127"/>
       <source>Preference packs</source>
-      <translation type="unfinished">Preference packs</translation>
+      <translation>Pacotes de preferências</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="193"/>
@@ -2013,7 +2013,7 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     <message>
       <location filename="../DlgGeneral.ui" line="251"/>
       <source>Manage...</source>
-      <translation type="unfinished">Manage...</translation>
+      <translation>Gerenciar...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="258"/>
@@ -2281,7 +2281,7 @@ a tela de abertura será exibida</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="249"/>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
-      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+      <translation>Lança um guia sobre como configurar uma macro na barra de ferramentas personalizada global.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="252"/>
@@ -2291,7 +2291,7 @@ a tela de abertura será exibida</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="275"/>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
-      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+      <translation>Abra o gerenciador de extensões onde macros criadas pela comunidade e outros complementos podem ser baixados.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="278"/>
@@ -2805,7 +2805,7 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="127"/>
       <source>Toggle visibility of built-in preference pack '%1'</source>
-      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+      <translation>Alternar a visibilidade do pacote de preferências internas '%1'</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="134"/>
@@ -2815,12 +2815,12 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="144"/>
       <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
-      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+      <translation>Alterna a visibilidade do pacote de preferências adicional '%1' (use o genreciador de extensões para removê-lo permanentemente)</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="179"/>
       <source>Delete saved preference pack?</source>
-      <translation type="unfinished">Delete saved preference pack?</translation>
+      <translation>Excluir pacote de preferências salvas?</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="180"/>
@@ -3676,7 +3676,7 @@ tamanho da caixa delimitadora do objeto 3D que está sendo exibido.</translation
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Diretório de cache</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="28"/>
@@ -4985,12 +4985,12 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="46"/>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>A forma do cursor será um bloco</translation>
     </message>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="49"/>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Habilitar cursor de bloco</translation>
     </message>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="65"/>

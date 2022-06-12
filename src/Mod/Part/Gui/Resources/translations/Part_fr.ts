@@ -1109,7 +1109,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
       <source>Failed to resolve links. {}</source>
-      <translation>Échec de la résolution du lien. {}</translation>
+      <translation>Échec de la résolution des liens. {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
@@ -5561,7 +5561,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../TaskThickness.cpp" line="280"/>
       <location filename="../../TaskThickness.cpp" line="290"/>
       <source>Thickness</source>
-      <translation>Épaisseur</translation>
+      <translation>Coque</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="178"/>
@@ -5610,7 +5610,7 @@ pour le filtrage des collisions ou des distances.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation>Le traitement du résultat a échoué avec une erreur :</translation>
+      <translation>Le calcul du résultat a échoué avec une erreur :</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
@@ -5743,7 +5743,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
       <source>Computing the result failed with an error:</source>
-      <translation>Le traitement du résultat a échoué avec une erreur :</translation>
+      <translation>Le calcul du résultat a échoué avec une erreur :</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
@@ -5794,7 +5794,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
       <source>Computing the result failed with an error:</source>
-      <translation>Le traitement du résultat a échoué avec une erreur :</translation>
+      <translation>Le calcul du résultat a échoué avec une erreur :</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>

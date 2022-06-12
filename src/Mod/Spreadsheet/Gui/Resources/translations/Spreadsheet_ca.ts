@@ -456,14 +456,13 @@ The expression must evaluate to a string of some cell address.</translation>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>La referencia a la fulla de calcul referenciada quedarà oculta per al chequeig de dependències.
+útil per evitar dependències cícliques, però fer servir amb cautela!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Ocultar dependéncies d'unió</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
@@ -948,9 +947,8 @@ Spreadsheet.my_alias_name enlloc de Spreadsheet.B1</translation>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
-
-Do you want to continue?</translation>
+      <translation>Discrepancia entre el numero de celdes d'origen i destí. Unió Parcial pot, encara així, funcionar.
+Vols continuar?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
@@ -961,7 +959,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
+      <translation>Error:
 </translation>
     </message>
     <message>

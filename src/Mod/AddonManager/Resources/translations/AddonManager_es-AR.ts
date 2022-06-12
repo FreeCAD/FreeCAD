@@ -399,22 +399,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="647"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
+      <translation>Se ha producido un error al actualizar macros desde GitHub, intentando limpiar el checkout...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Intentando hacer una comprobación limpia...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="664"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Comprobación limpia exitosa</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="671"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+      <translation>Error al actualizar macros de GitHub -- intente limpiar la caché del administrador de complementos.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="715"/>
@@ -703,7 +703,7 @@
     <message>
       <location filename="../../package_details.py" line="66"/>
       <source>Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system&apos;s package manager to install the python3-pyside2.qtwebengine* and python3-pyside2.qtwebchannel packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until this dependency is resolved.</source>
-      <translation>Advertencia del administrador de complementos: No se pudo importar QtWebEngineWidgets, parece faltar en su sistema. Por favor, utilice el gestor de paquetes de su sistema para instalar los paquetes python3-pyside2.qtwebengine* y python3-pyside2.qtwebchannel y, si es posible, avise a su creador de paquetes de la dependencia faltante. La visualización del paquete README estará limitada hasta que se resuelva esta dependencia.</translation>
+      <translation>Advertencia del administrador de complementos: No se pudo importar QtWebEngineWidgets, parece faltar en su sistema. Por favor, utilice el gestor de paquetes de su sistema para instalar los paquetes python3-pyside2.qtwebengine* y python3-pyside2.qtwebchannel y, si es posible, avise a su creador de paquetes de la dependencia faltante. La visualización del README del complemento estará limitada hasta que se resuelva esta dependencia.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="183"/>
@@ -1037,12 +1037,12 @@
     <message>
       <location filename="../../addonmanager_macro.py" line="175"/>
       <source>In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.</source>
-      <translation type="unfinished">In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.</translation>
+      <translation>En la macro {}, no se ha encontrado una cadena literal para el elemento {}. Adivinando la intención y usando la cadena del elemento de fecha.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="185"/>
       <source>In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.</source>
-      <translation type="unfinished">In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.</translation>
+      <translation>En la macro {}, no se ha encontrado una cadena literal para el elemento {}. Adivinando la intención y usando la representación de cadena de contenidos.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="203"/>

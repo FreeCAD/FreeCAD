@@ -347,7 +347,7 @@
     <message>
       <location filename="../../ArchWindow.py" line="596"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
-      <translation>Głębokość otworu, które to okno tworzy w obiekcie obsługującym. Jeśli 0, wartość zostanie obliczona automatycznie.</translation>
+      <translation>Głębokość otworu, które to okno tworzy w obiekcie obsługującym. Dla wartości 0 wyliczenia nastąpią automatycznie.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="598"/>

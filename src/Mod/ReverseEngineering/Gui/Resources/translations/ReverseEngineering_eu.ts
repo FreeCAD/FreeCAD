@@ -235,7 +235,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="229"/>
       <source>Fit B-Spline</source>
-      <translation>Doitu B-Spline kurba</translation>
+      <translation>Doitu B-spline kurba</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>

@@ -162,12 +162,12 @@
     <message>
       <location filename="../CommandDoc.cpp" line="1885"/>
       <source>Paste expressions</source>
-      <translation type="unfinished">Paste expressions</translation>
+      <translation>Įklijuoti išraiškas</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="140"/>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Sukurti saitų rinkinį</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="236"/>
@@ -177,7 +177,7 @@
     <message>
       <location filename="../CommandLink.cpp" line="289"/>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Sukurti papildomą saitą</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="577"/>
@@ -192,12 +192,12 @@
     <message>
       <location filename="../CommandStd.cpp" line="768"/>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>Įterpti išmatavimą</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="799"/>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>Įterpti tekstinį dokumentą</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="62"/>
@@ -230,12 +230,12 @@
     <message>
       <location filename="../ViewProviderLink.cpp" line="2634"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Įjungti ar išjungti masyvo narius</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3035"/>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Susieti transformacijas</translation>
     </message>
     <message>
       <location filename="../ViewProviderMeasureDistance.cpp" line="272"/>
@@ -458,12 +458,12 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="53"/>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Įvesti išraišką...</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Išraiška: </translation>
     </message>
   </context>
   <context>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../Widgets.cpp" line="377"/>
       <source>Press a keyboard shortcut</source>
-      <translation type="unfinished">Press a keyboard shortcut</translation>
+      <translation>Paspauskite mygtukų trumpinį</translation>
     </message>
   </context>
   <context>
@@ -712,19 +712,19 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Splashscreen.cpp" line="406"/>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>„FreeCad“ nebūtų be šių įnašų</translation>
     </message>
     <message>
       <location filename="../Splashscreen.cpp" line="409"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Asmenys</translation>
     </message>
     <message>
       <location filename="../Splashscreen.cpp" line="420"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Įstaigos</translation>
     </message>
     <message>
       <location filename="../Splashscreen.cpp" line="447"/>
@@ -753,22 +753,22 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="230"/>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Podėlio aplankas</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="232"/>
       <source>The cache directory %1 exceeds the size of %2.</source>
-      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+      <translation>Podėlio aplankas %1 viršyjo %2 dydį.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="233"/>
       <source>Do you want to clear it now?</source>
-      <translation type="unfinished">Do you want to clear it now?</translation>
+      <translation>Ar norite išvalyti jį dabar?</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="234"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>Įspėjimas: Įsitikinkite, kad tai yra vienintelis veikiantis %1 egzempliorius ir kad jokie dokumentai nėra atidaryti, nes galite prarasti sukurtus sesijoje duomenis!</translation>
     </message>
   </context>
   <context>
@@ -776,12 +776,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="285"/>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> “</translation>
     </message>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="285"/>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>„</translation>
     </message>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="286"/>
@@ -1018,7 +1018,7 @@ while doing a left or right click and move the mouse up or down</source>
       <location filename="../DlgAddProperty.ui" line="50"/>
       <location filename="../DlgAddProperty.ui" line="60"/>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Išplėstinis naujos ypatybės aprašas.</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.ui" line="53"/>
@@ -1032,16 +1032,13 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
-
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+      <translation>Laukelyje prieš ypatybės pavadinimą pridėkite ir grupės pavadinimą „Grupės_pavadinimas“, kad išvengtumėte konfliktų su esama ypatybe. Tokiu atveju priešdėlis bus savaime apkarpomas, kai jis bus rodomas ypatybių rengyklėje. Tačiau ypatybė vistiek bus naudojama scenarijuje su pilnupavadinimu, pvz., „obj.Grupės_pavadinimas“.
+Jei tai nepažymėta, tuomet ypatybė turi būti vienareikšmiškai pavadinta ir pasiekiama vardu, pnašiu į „obj.Pavadinimas“.</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.ui" line="74"/>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Grupės pavadinimo priešdėlis</translation>
     </message>
   </context>
   <context>
@@ -1112,7 +1109,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="17"/>
       <source>Create New Preference Pack</source>
-      <translation type="unfinished">Create New Preference Pack</translation>
+      <translation>Sukurti naują nuostatų rinkinį</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="28"/>
@@ -1122,7 +1119,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="53"/>
       <source>Property group templates</source>
-      <translation type="unfinished">Property group templates</translation>
+      <translation>Ypatybių rinkinių šablonai</translation>
     </message>
   </context>
   <context>
@@ -1130,12 +1127,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="158"/>
       <source>Pack already exists</source>
-      <translation type="unfinished">Pack already exists</translation>
+      <translation>Rinkinys jau yra</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="159"/>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+      <translation>Nuostatų rinkinys su tokiu pavadinimu jau yra. Ar norite perrašyti?</translation>
     </message>
   </context>
   <context>
@@ -1391,22 +1388,22 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
       <source>Multiple defined keyboard shortcut</source>
-      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
+      <translation>Daugiau, nei kartą apibrėžtas klaviatūros trumpinys</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
       <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>Klaviatūros trumpinys „%1“ yra nurodytas daugiau, nei kartą. Tai gali sukelti nenumatytą elgseną.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
       <source>Already defined keyboard shortcut</source>
-      <translation type="unfinished">Already defined keyboard shortcut</translation>
+      <translation>Trumpinys jau nurodytas</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
       <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>Trumpinys „%1“ jau yra priskirtas „%2“.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -1515,7 +1512,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="295"/>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 modulis neįkeltas</translation>
     </message>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="487"/>
@@ -1820,7 +1817,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgEditor.ui" line="59"/>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Kodo eilutės bus sunumeruotos</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="62"/>
@@ -1830,12 +1827,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgEditor.ui" line="81"/>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>Žymeklio pavidalas bus stačiakampis</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="84"/>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Įgalinti stačiakampio pavidalo žymeklį</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="100"/>
@@ -1855,7 +1852,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgEditor.ui" line="163"/>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>Tabuliacijos ilgis (tarpo ženklais)</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="179"/>
@@ -1865,12 +1862,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgEditor.ui" line="186"/>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>Kiek tarpo ženklų bus įterpta paspaudus mygtuką &lt;Tab&gt;</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="202"/>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</translation>
+      <translation>Paspaudus &lt;Tab&gt; mygtuką bus įterptas nurodytas tarpo ženklų skaičius</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="205"/>
@@ -1880,7 +1877,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgEditor.ui" line="221"/>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>Paspaudus &lt;Tab&gt; mygtuką bus įterptas įtraukai nurodytas tarpo ženklų skaičius</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="224"/>
@@ -1895,7 +1892,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgEditor.ui" line="267"/>
       <source>Color and font settings will be applied to selected type</source>
-      <translation type="unfinished">Color and font settings will be applied to selected type</translation>
+      <translation>Spalvos ir šrifto nuostatos bus pritaikytos pasirinktai rūšiai</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="282"/>
@@ -1905,7 +1902,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgEditor.ui" line="295"/>
       <source>Font family to be used for selected code type</source>
-      <translation type="unfinished">Font family to be used for selected code type</translation>
+      <translation>Šriftų šeima, kuri bus naudojama pasirinktai kodo rūšiai</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="302"/>
@@ -1915,7 +1912,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgEditor.ui" line="315"/>
       <source>Font size to be used for selected code type</source>
-      <translation type="unfinished">Font size to be used for selected code type</translation>
+      <translation>Šrifto dydis kuris bus naudojama pasirinktai kodo rūšiai</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="334"/>
@@ -1953,12 +1950,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgGeneral.ui" line="69"/>
       <source>Language of the application's user interface</source>
-      <translation type="unfinished">Language of the application's user interface</translation>
+      <translation>Programos vartotojo sąsajos kalba</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="76"/>
       <source>Number format:</source>
-      <translation type="unfinished">Number format:</translation>
+      <translation>Skaičių formatas:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="90"/>
@@ -1968,27 +1965,27 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgGeneral.ui" line="95"/>
       <source>Selected language</source>
-      <translation type="unfinished">Selected language</translation>
+      <translation>Pasirinkite kalbą</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="100"/>
       <source>C/POSIX</source>
-      <translation type="unfinished">C/POSIX</translation>
+      <translation>C/POSIX</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="108"/>
       <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+      <translation>Jei įgalinta, dešimtainis skyrybos ženklas bus pakaistas nurodytu kalbos nuostatose ženklu</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="111"/>
       <source>Substitute decimal separator (needs restart)</source>
-      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+      <translation>Pakeisti dešimtainį trupmenos ženklą (reikės paleisti iš naujo)</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="127"/>
       <source>Preference packs</source>
-      <translation type="unfinished">Preference packs</translation>
+      <translation>Nuostatų rinkinys</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="193"/>
@@ -2008,12 +2005,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgGeneral.ui" line="238"/>
       <source>Save new...</source>
-      <translation type="unfinished">Save new...</translation>
+      <translation>Išsaugoti naują...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="251"/>
       <source>Manage...</source>
-      <translation type="unfinished">Manage...</translation>
+      <translation>Tvarkyti...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="258"/>
@@ -3685,7 +3682,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Podėlio aplankas</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="28"/>
@@ -4996,12 +4993,12 @@ horizontal space in Python console</translation>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="46"/>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>Žymeklio pavidalas bus stačiakampis</translation>
     </message>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="49"/>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Įgalinti stačiakampio pavidalo žymeklį</translation>
     </message>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="65"/>
@@ -9490,7 +9487,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderLink.cpp" line="2632"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Įjungti ar išjungti masyvo narius</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2641"/>
@@ -10190,7 +10187,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="77"/>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Sukurti saitų rinkinį</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="78"/>
@@ -10203,7 +10200,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="271"/>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Sukurti papildomą saitą</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="272"/>

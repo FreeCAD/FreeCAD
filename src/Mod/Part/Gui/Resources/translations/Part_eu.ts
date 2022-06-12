@@ -2162,12 +2162,12 @@ zehazten du.</translation>
     <message>
       <location filename="../../Command.cpp" line="2538"/>
       <source>Persistent section cut</source>
-      <translation type="unfinished">Persistent section cut</translation>
+      <translation>Sekzio-mozte iraunkorra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2539"/>
       <source>Creates a persistent section cut of visible part objects</source>
-      <translation type="unfinished">Creates a persistent section cut of visible part objects</translation>
+      <translation>Sekzio-mozte iraunkorra sortzen du ikusgai dauden pieza-objektuetan</translation>
     </message>
   </context>
   <context>
@@ -2875,22 +2875,22 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="277"/>
       <source>Taper angle along</source>
-      <translation type="unfinished">Taper angle along</translation>
+      <translation>Estutu angelua alde</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="290"/>
       <source>Taper (draft) angle along extrusion direction</source>
-      <translation type="unfinished">Taper (draft) angle along extrusion direction</translation>
+      <translation>Estutu (zirriborratu) angelua estrusio-norabidearen alde</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="306"/>
       <source>Taper angle against</source>
-      <translation type="unfinished">Taper angle against</translation>
+      <translation>Estutu angelua aurka</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="319"/>
       <source>Taper (draft) angle against extrusion direction</source>
-      <translation type="unfinished">Taper (draft) angle against extrusion direction</translation>
+      <translation>Estutu (zirriborratu) angelua estrusio-norabidearen aurka</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
@@ -2905,7 +2905,7 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
       <source>Select shape(s) that should be extruded</source>
-      <translation type="unfinished">Select shape(s) that should be extruded</translation>
+      <translation>Hautatu estruitu behar d(ir)en forma(k)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="373"/>
@@ -4625,12 +4625,12 @@ bestela krokisaren planoren bektore normala erabiliko da</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Permanent Section Cutting</source>
-      <translation type="unfinished">Permanent Section Cutting</translation>
+      <translation>Sekzio-mozte iraunkorra</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
       <source>Cutting X</source>
-      <translation type="unfinished">Cutting X</translation>
+      <translation>X moztea</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="44"/>
@@ -4649,12 +4649,12 @@ bestela krokisaren planoren bektore normala erabiliko da</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="106"/>
       <source>Cutting Y</source>
-      <translation type="unfinished">Cutting Y</translation>
+      <translation>Y moztea</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="174"/>
       <source>Cutting Z</source>
-      <translation type="unfinished">Cutting Z</translation>
+      <translation>Z moztea</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
@@ -4676,9 +4676,9 @@ bestela krokisaren planoren bektore normala erabiliko da</translation>
       <source>If checked, the color and transparency
 will be taken from the cut objects.
 Works only if all objects have the same values.</source>
-      <translation type="unfinished">If checked, the color and transparency
-will be taken from the cut objects.
-Works only if all objects have the same values.</translation>
+      <translation>Aktibatuta badago, kolorea eta gardentasuna
+moztutako objektuetatik hartuko da.
+Objektu guztiek balio berak badituzte soilik.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="307"/>
@@ -4720,12 +4720,12 @@ sortutako mozketak soilik daude ikusgai</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="398"/>
       <source>Keep only cuts visible when closing</source>
-      <translation type="unfinished">Keep only cuts visible when closing</translation>
+      <translation>Mozteak ixtean soilik mantendu ikusgai</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.cpp" line="399"/>
       <source>Sliders are disabled for assemblies</source>
-      <translation type="unfinished">Sliders are disabled for assemblies</translation>
+      <translation>Graduatzaileak desgaituta daude muntaketetarako</translation>
     </message>
   </context>
   <context>
@@ -4809,7 +4809,7 @@ sortutako mozketak soilik daude ikusgai</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
       <source>Sew shape</source>
-      <translation type="unfinished">Sew shape</translation>
+      <translation>Josi forma</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
@@ -5617,12 +5617,12 @@ adibidez talketarako edo distantzien iragazkietarako.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Emaitza kalkulatzean errore bat gertatu da:</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Egin klik 'Jarraitu' aukeran elementua sortzeko, edo sakatu 'Abortatu' bertan behera uzteko.</translation>
     </message>
   </context>
   <context>
@@ -5750,12 +5750,12 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Emaitza kalkulatzean errore bat gertatu da:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Egin klik 'Jarraitu' aukeran elementua sortzeko, edo sakatu 'Abortatu' bertan behera uzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
@@ -5801,14 +5801,14 @@ It will create a 'Compound Filter' for each shape.</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Emaitza kalkulatzean errore bat gertatu da:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Egin klik 'Jarraitu' aukeran elementua sortzeko, edo sakatu 'Abortatu' bertan behera uzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>

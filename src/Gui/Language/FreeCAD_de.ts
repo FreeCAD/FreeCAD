@@ -1391,22 +1391,22 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
       <source>Multiple defined keyboard shortcut</source>
-      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
+      <translation>Mehrfach festgelegtes Tastaturkürzel</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
       <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>Das Tastaturkürzel '%1' ist mehr als einmal festgelegt. Dies kann zu unerwartetem Verhalten führen.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
       <source>Already defined keyboard shortcut</source>
-      <translation type="unfinished">Already defined keyboard shortcut</translation>
+      <translation>Bereits festgelegtes Tastaturkürzel</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
       <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>Das Tastaturkürzel '%1' ist bereits '%2' zugewiesen.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -4657,7 +4657,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
       <source>Keyboard shortcut count</source>
-      <translation type="unfinished">Keyboard shortcut count</translation>
+      <translation>Anzahl der Tastenkürzel</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -7535,7 +7535,7 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     <message>
       <location filename="../Action.cpp" line="939"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
+      <translation>Makro %1 ausführen (Umschalt+Klick zum Bearbeiten) Tastenkürzel: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>

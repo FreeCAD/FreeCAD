@@ -399,22 +399,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="647"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
+      <translation>Un error ha ocurregut actualitzant les macros desde GitHub, intentant versió neta...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Intentan fer una sortida neta...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="664"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Sortida neta exitosa</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="671"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+      <translation>Actualització fallida de macros desde GitHub -- intenta netejar el cache del Manager de Complements&apos;.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="715"/>

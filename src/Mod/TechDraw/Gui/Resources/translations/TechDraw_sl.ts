@@ -346,12 +346,12 @@
     <message>
       <location filename="../../Command.cpp" line="1445"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Shrani datoteko DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
   </context>
   <context>
@@ -377,12 +377,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1642"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>Podaljšaj črto</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1643"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Podaljšaj dopolnilno črto ali središčnico na obeh koncih:&lt;br&gt;– Določi spremembo dolžine (po želji)&lt;br&gt;– Izberite eno samo črto&lt;br&gt;– Kliknite to orodje</translation>
     </message>
   </context>
   <context>
@@ -395,12 +395,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1745"/>
       <source>Calculate the area of selected faces</source>
-      <translation type="unfinished">Calculate the area of selected faces</translation>
+      <translation>Izračunaj površino izbranih ploskev</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1746"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
-      <translation type="unfinished">Select several faces&lt;br&gt;    - click this tool</translation>
+      <translation>Izberite poljubno ploskev&lt;br&gt;    – kliknite to orodje</translation>
     </message>
   </context>
   <context>
@@ -413,12 +413,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1061"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation type="unfinished">Cascade Horizontal Dimensions</translation>
+      <translation>Stopničasto vodoravno kotiranje</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1062"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Enakomerno razmakni vodoravne kote:&lt;br&gt;– Določite stopničasti zamik (po želji)&lt;br&gt;– Izberite dve ali več vodoravnih kot&lt;br&gt;– Prva kota določa položaj&lt;br&gt;– Kliknite to orodje</translation>
     </message>
   </context>
   <context>
@@ -432,13 +432,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="887"/>
       <location filename="../../CommandExtensionDims.cpp" line="1137"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation type="unfinished">Cascade Horizontal Dimensions</translation>
+      <translation>Stopničasto vodoravno kotiranje</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="888"/>
       <location filename="../../CommandExtensionDims.cpp" line="1138"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Enakomerno razmakni vodoravne kote:&lt;br&gt;– Določite stopničasti zamik (po želji)&lt;br&gt;– Izberite dve ali več vodoravnih kot&lt;br&gt;– Prva kota določa položaj&lt;br&gt;– Kliknite to orodje</translation>
     </message>
   </context>
   <context>
@@ -452,13 +452,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1025"/>
       <location filename="../../CommandExtensionDims.cpp" line="1155"/>
       <source>Cascade Oblique Dimensions</source>
-      <translation type="unfinished">Cascade Oblique Dimensions</translation>
+      <translation>Stopničasto ležeče kotiranje</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1026"/>
       <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Enakomerno razmakni ležeče kote:&lt;br&gt;– Določite stopničasti zamik (po želji)&lt;br&gt;– Izberite dve ali več vzporednih ležečih kot&lt;br&gt;– Prva kota določa položaj&lt;br&gt;– Kliknite to orodje</translation>
     </message>
   </context>
   <context>
@@ -472,13 +472,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="952"/>
       <location filename="../../CommandExtensionDims.cpp" line="1146"/>
       <source>Cascade Vertical Dimensions</source>
-      <translation type="unfinished">Cascade Vertical Dimensions</translation>
+      <translation>Stopničasto navpično kotiranje</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="953"/>
       <location filename="../../CommandExtensionDims.cpp" line="1147"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Enakomerno razmakni navpične kote:&lt;br&gt;– Določite stopničasti zamik (po želji)&lt;br&gt;– Izberite dve ali več navpičnih kot&lt;br&gt;– Prva kota določa položaj&lt;br&gt;– Kliknite to orodje</translation>
     </message>
   </context>
   <context>
@@ -491,7 +491,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2031"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Ustvari vodoravno koto priseka</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2032"/>
@@ -622,7 +622,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1929"/>
       <location filename="../../CommandExtensionDims.cpp" line="2098"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Ustvari vodoravno koto priseka</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1930"/>
@@ -900,13 +900,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="1572"/>
       <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>Podaljšaj črto</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1573"/>
       <location filename="../../CommandExtensionPack.cpp" line="1711"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Podaljšaj dopolnilno črto ali središčnico na obeh koncih:&lt;br&gt;– Določi spremembo dolžine (po želji)&lt;br&gt;– Izberite eno samo črto&lt;br&gt;– Kliknite to orodje</translation>
     </message>
   </context>
   <context>
@@ -4910,12 +4910,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="902"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Shrani datoteko DXF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="904"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1389"/>

@@ -1600,7 +1600,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="105"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Немає режиму привʼязки, який би відповідав поточному набору орієнтирів. Якщо ви вирішите продовжити, елемент залишиться на поточному місці та не буде переміщений при зміні орієнтиру. Продовжити?</translation>
+      <translation>Відсутній режим приєднання, який би відповідав поточному набору орієнтирів. Якщо ви вирішите продовжити, елемент залишиться на поточному місці та не буде переміщений при зміні орієнтиру. Продовжити?</translation>
     </message>
   </context>
   <context>
@@ -2900,7 +2900,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="893"/>
       <source>Attachment</source>
-      <translation>Вкладення</translation>
+      <translation>Приєднання</translation>
     </message>
   </context>
   <context>

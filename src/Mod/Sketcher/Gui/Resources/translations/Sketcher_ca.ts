@@ -5326,9 +5326,9 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
       <source>%n DoF(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
+      <translation>
+        <numerusform>%n Grau(s) de llibertat</numerusform>
+        <numerusform>%n Graus de llivbertat</numerusform>
       </translation>
     </message>
     <message>

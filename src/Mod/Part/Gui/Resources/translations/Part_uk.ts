@@ -136,7 +136,7 @@
       <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Додаток відключений. Точка може бути перенесена шляхом редагування властивості місця розташування.</translation>
+      <translation>Приєднання вимкнене. Точка може бути перенесена шляхом редагування властивості місця розташування.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="271"/>
@@ -271,7 +271,7 @@
       <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Додаток вимкнений. Лінію можна перемістити, змінивши властивість "Розташування".</translation>
+      <translation>Приєднання вимкнене. Лінію можна перемістити, змінивши властивість "Розташування".</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="202"/>
@@ -1047,7 +1047,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
-      <translation>Обʼєкт {} не рухомий і не привʼязний, не можна відредагувати привʼязку</translation>
+      <translation>Обʼєкт {} не рухомий і не приєднаний, не можна відредагувати приєднання</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
@@ -1058,7 +1058,7 @@
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
       <source>Attachment</source>
-      <translation>Вкладення</translation>
+      <translation>Приєднання</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
@@ -1129,7 +1129,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Зсув прикріплення (в локальних координатах):</translation>
+      <translation>Зсув приєднання (в локальних координатах):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
@@ -2514,7 +2514,7 @@ of projection.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Зсув прикріплення (в локальних координатах):</translation>
+      <translation>Зсув приєднання (в локальних координатах):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -4940,7 +4940,7 @@ only created cuts will be visible</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="336"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Зсув прикріплення (в локальних координатах):</translation>
+      <translation>Зсув приєднання (в локальних координатах):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -6370,7 +6370,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
       <source>Attachment editor</source>
-      <translation>Редактор вкладень</translation>
+      <translation>Редактор Приєднання</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>

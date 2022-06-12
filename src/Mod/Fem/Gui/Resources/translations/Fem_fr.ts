@@ -947,7 +947,7 @@ Veuillez d'abord sélectionner un type de résultat.</translation>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="645"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="649"/>
       <source>No result object</source>
-      <translation>Aucun résultat d'objet</translation>
+      <translation>Aucun objet de résultat</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="647"/>
@@ -4251,7 +4251,7 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez un solveur itéra
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
       <translation>Exécute l'équation donnée dans le champ ci-dessous,
-donne les résultats de la plage Min au Max
+transfère les résultats dans les champs Min et Max
 et colore le maillage résultat en conséquence</translation>
     </message>
     <message>

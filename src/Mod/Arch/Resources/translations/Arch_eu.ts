@@ -2898,22 +2898,22 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Edozer jarri daiteke, honako objektuak salbu: gunea, eraikina eta solairua, solairu-objektu batean.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+Solairu-objektuak ez ditu onartzen guneak, eraikinak edo solairuak.
 
-Site, Building, and Floor objects will be removed from the selection.
+Guneak, eraikinak eta solairuak kendu egingo dira hautapenetik.
 
-You can change that in the preferences.</translation>
+Portaera hori hobespenetan aldatu daiteke.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="154"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Ez dago baliozko objekturik hautapenean.
 
-Floor creation aborted.</translation>
+Solairuaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="161"/>
@@ -3228,13 +3228,13 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
+      <translation>Hautatu eraikin-objektuak edo ezer ere ez.
 
-Site is not allowed to accept any other object besides Building.
+Gune-objektuek eraikinak besterik ez dute onartzen.
 
-Other objects will be removed from the selection.
+Beste objektuak kendu egingo dira hautapenetik.
 
-Note: You can change that in the preferences.</translation>
+Portaera hori hobespenetan aldatu daiteke.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="535"/>

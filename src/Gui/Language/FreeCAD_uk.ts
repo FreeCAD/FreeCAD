@@ -1392,22 +1392,22 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
       <source>Multiple defined keyboard shortcut</source>
-      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
+      <translation>Декілька визначень комбінацій клавіш</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
       <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>Комбінація клавіш "%1" може бути визначена більше одного разу. Це може призвести до несподіваної поведінки.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
       <source>Already defined keyboard shortcut</source>
-      <translation type="unfinished">Already defined keyboard shortcut</translation>
+      <translation>Вже визначена комбінація клавіш</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
       <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>Комбінація клавіш '%1' вже визначена для команди '%2.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -4670,7 +4670,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
       <source>Keyboard shortcut count</source>
-      <translation type="unfinished">Keyboard shortcut count</translation>
+      <translation>Кількість комбінацій клавіш</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -7547,7 +7547,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../Action.cpp" line="939"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
+      <translation>Комбінація клавіш: %2 для виконання макросу %1 (Shift + клац для редагування)</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>
@@ -9413,7 +9413,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2486"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
+      <translation>Виділіть об'єкт який необхідно копіювати або виключити під час зміни конфігурації. За замовчуванням виключаються всі пов'язані зовнішні об'єкти.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2501"/>

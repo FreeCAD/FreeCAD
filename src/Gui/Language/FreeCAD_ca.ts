@@ -1391,22 +1391,22 @@ Si no està activat, la propietat ha de tenir un nom únic, i s'accedeix a ella 
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
       <source>Multiple defined keyboard shortcut</source>
-      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
+      <translation>Multiples dreceras de teclat definides</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
       <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>La drecera de teclat «%1» s'ha definit més d'una vegada. Això pot provocar un comportament inesperat.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
       <source>Already defined keyboard shortcut</source>
-      <translation type="unfinished">Already defined keyboard shortcut</translation>
+      <translation>La decera de teclat ja s'ha definit</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
       <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>La dreçera de teclat «%1» ja s'ha assignat a «%2».</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -4668,7 +4668,7 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
       <source>Keyboard shortcut count</source>
-      <translation type="unfinished">Keyboard shortcut count</translation>
+      <translation>Número de dreceres del teclat</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -7540,7 +7540,7 @@ Esteu segur que voleu sortir sense desar les dades?</translation>
     <message>
       <location filename="../Action.cpp" line="939"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
+      <translation>Corre la macro %1 (Maj+clic per editar) drecera de teclat: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>

@@ -433,37 +433,36 @@
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Початкова адреса комірки для прив'язки.
+Введіть '=', якщо хочете використовувати вираз.
+Вираз повинен обчислювати рядок якоїсь адреси комірки.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Кінцева адреса комірки для прив'язки.
+Введіть '=', якщо хочете використовувати вираз.
+Вираз повинен обчислювати рядок якоїсь адреси комірки.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>Яку Таблицю привʼязувати</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>Залежність із повʼязаною таблицею буде прихована при перевірці залежностей.
+Корисно для запобігання циклічним залежностям, але використовуйте з обережністю!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Приховати залежність від привʼязки</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
@@ -948,9 +947,9 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>Невідповідність кількості вихідних і цільових комірок. Можлива часткова прив’язка.
 
-Do you want to continue?</translation>
+Бажаєте продовжити?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
@@ -961,7 +960,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
+      <translation>Помилка: 
 </translation>
     </message>
     <message>

@@ -399,22 +399,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="647"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
+      <translation>Une erreur est survenue lors de la mise à jour des macros depuis GitHub, tentative d’effectuer un clean checkout…</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Tentative d’effectuer un clean checkout…</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="664"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Succès du clean checkout</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="671"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+      <translation>Échec de la mise à jour des macros depuis GitHub -- essayez de vider le cache du gestionnaire d’extensions.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="715"/>

@@ -399,22 +399,24 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="647"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
+      <translation>Wystąpił błąd podczas aktualizacji makrodefinicji z GitHub, próba czyszczenia ...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Próba wyczyszczenia ...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="664"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Czyszczenie zakończone pomyślnie</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="671"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+      <translation>Nie udało się zaktualizować makrodefinicji z repozytorium GitHub — próba oczyszczenia pamięci podręcznej Menedżera dodatków.
+
+</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="715"/>

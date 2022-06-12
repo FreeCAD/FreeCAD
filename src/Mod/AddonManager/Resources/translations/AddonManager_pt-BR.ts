@@ -409,7 +409,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="664"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Check-out limpo bem-sucedido</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="671"/>

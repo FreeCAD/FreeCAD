@@ -456,14 +456,14 @@ Wyrażenie musi dawać w rezultacie ciąg adresów komórek.</translation>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>Zależność od wskazanego arkusza kalkulacyjnego będzie
+ukryta w sprawdzaniu zależności.
+Jest to przydatne do unikania cyklicznych zależności, ale należy zachować ostrożność!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Ukryj zależność powiązań</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
@@ -947,9 +947,9 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>Niezgodność liczby komórek źródłowych i docelowych. Częściowe wiązanie może nadal działać.
 
-Do you want to continue?</translation>
+Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
@@ -960,7 +960,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
+      <translation>Błąd:
 </translation>
     </message>
     <message>

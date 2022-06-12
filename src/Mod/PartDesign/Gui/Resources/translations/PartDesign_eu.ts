@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>Helizearen hasieraren erdiko puntua; erreferentzia-ardatzetik eratorria.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>Helizearen norabidea; erreferentzia-ardatzetik eratorria.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
@@ -22,8 +22,8 @@
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>Helizearen sarrea moduak zehazten du erabiltzaileak zein propietate ezartzen dituen.
+Ondoren, mendeko propietateak kalkulatzen dira.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
@@ -45,40 +45,39 @@ Dependent properties are then calculated.</translation>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>Helizearen inguruan krosko bat eratzen duen konoaren angelua.
+Zero ez diren balioekin, helizea espiral koniko bihurtuko da.
+Balio positiboekin, erradioa hazi egingo da eta txikitzea negatiboa da.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>Helize-erradioaren hazkundea birako.
+Zero ez diren balioekin helizea espiral koniko bihurtuko da.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Biratze-norabidea ezkertiarrentzat sortzen du,
+alegia, erlojuaren noranzkoaren aurka ardatzean zehar mugitzean.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>Helizea ardatzaren aurkako norabiderantz doan zehazten du.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation type="unfinished">If set, the result will be the intersection of the profile and the preexisting body.</translation>
+      <translation>Ezartzen bada, emaitza izango da profilaren eta lehendik dagoen gorputzaren ebakidura.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Faltsua bada, tresnak hasierako balio bat proposatuko du buruzkatzerako, profilaren muga-koadroan oinarrituta, autoebakidura saihestu dadin.</translation>
     </message>
   </context>
   <context>
@@ -1737,7 +1736,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>Aurpegiaren normala</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
@@ -2381,7 +2380,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset from face at which pad will end</source>
-      <translation type="unfinished">Offset from face at which pad will end</translation>
+      <translation>Estrusioa amaituko den aurpegitik dagoen desplazamendua</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
@@ -2455,8 +2454,8 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation type="unfinished">Set a direction or select an edge
-from the model as reference</translation>
+      <translation>Ezarri norabide bat edo hautatu
+ereduaren ertz bat erreferentzia gisa</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="97"/>
@@ -2546,7 +2545,7 @@ zehaztutako norabidean</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
       <location filename="../../TaskPadPocketParameters.ui" line="317"/>
       <source>Angle to taper the extrusion</source>
-      <translation type="unfinished">Angle to taper the extrusion</translation>
+      <translation>Estrusioari kono forma emateko angelua</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
@@ -2800,7 +2799,7 @@ zehaztutako norabidean</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation type="unfinished">Offset from face at which pocket will end</translation>
+      <translation>Poltsa amaituko den aurpegitik dagoen desplazamendua</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>

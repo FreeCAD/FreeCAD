@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="289"/>
       <source>Constraint bearing</source>
-      <translation type="unfinished">Constraint bearing</translation>
+      <translation>Ação de rolamento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="290"/>
       <source>Creates a FEM constraint for a bearing</source>
-      <translation type="unfinished">Creates a FEM constraint for a bearing</translation>
+      <translation>Criar uma ação MEF para um rolamento</translation>
     </message>
   </context>
   <context>
@@ -42,12 +42,12 @@
     <message>
       <location filename="../../Command.cpp" line="330"/>
       <source>Constraint contact</source>
-      <translation type="unfinished">Constraint contact</translation>
+      <translation>Ação de contato</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="331"/>
       <source>Creates a FEM constraint for contact between faces</source>
-      <translation type="unfinished">Creates a FEM constraint for contact between faces</translation>
+      <translation>Cria uma ação MEF de contato entre faces</translation>
     </message>
   </context>
   <context>
@@ -60,12 +60,12 @@
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Constraint displacement</source>
-      <translation type="unfinished">Constraint displacement</translation>
+      <translation>Ação de deslocamento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>Creates a FEM constraint for a displacement acting on a geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a displacement acting on a geometric entity</translation>
+      <translation>Criar uma ação MEF no deslocamento de uma entidade geométrica</translation>
     </message>
   </context>
   <context>
@@ -78,12 +78,12 @@
     <message>
       <location filename="../../Command.cpp" line="418"/>
       <source>Constraint fixed</source>
-      <translation type="unfinished">Constraint fixed</translation>
+      <translation>Ação fixa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="419"/>
       <source>Creates a FEM constraint for a fixed geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a fixed geometric entity</translation>
+      <translation>Criar uma ação FEM para a fixação de uma entidade geométrica</translation>
     </message>
   </context>
   <context>
@@ -96,12 +96,12 @@
     <message>
       <location filename="../../Command.cpp" line="460"/>
       <source>Fluid boundary condition</source>
-      <translation type="unfinished">Fluid boundary condition</translation>
+      <translation>Condição do limite fluido</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="461"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation type="unfinished">Create fluid boundary condition on face entity for Computional Fluid Dynamics</translation>
+      <translation>Criar uma condição de limite de fluido para CFD numa face de uma entidade</translation>
     </message>
   </context>
   <context>
@@ -114,12 +114,12 @@
     <message>
       <location filename="../../Command.cpp" line="503"/>
       <source>Constraint force</source>
-      <translation>Restrição de força</translation>
+      <translation>Ação de força</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="504"/>
       <source>Creates a FEM constraint for a force acting on a geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a force acting on a geometric entity</translation>
+      <translation>Criar uma ação MEF para uma força atuando em uma entidade geométrica</translation>
     </message>
   </context>
   <context>
@@ -132,12 +132,12 @@
     <message>
       <location filename="../../Command.cpp" line="547"/>
       <source>Constraint gear</source>
-      <translation type="unfinished">Constraint gear</translation>
+      <translation>Ação de engrenagem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="548"/>
       <source>Creates a FEM constraint for a gear</source>
-      <translation type="unfinished">Creates a FEM constraint for a gear</translation>
+      <translation>Criar uma ação MEF para uma engrenagem</translation>
     </message>
   </context>
   <context>
@@ -150,12 +150,12 @@
     <message>
       <location filename="../../Command.cpp" line="588"/>
       <source>Constraint heatflux</source>
-      <translation type="unfinished">Constraint heatflux</translation>
+      <translation>Ação de fluxo de calor</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="589"/>
       <source>Creates a FEM constraint for a heatflux acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a heatflux acting on a face</translation>
+      <translation>Cria uma ação MEF para um flux de calor atuando em uma face</translation>
     </message>
   </context>
   <context>
@@ -168,12 +168,12 @@
     <message>
       <location filename="../../Command.cpp" line="633"/>
       <source>Constraint initial temperature</source>
-      <translation type="unfinished">Constraint initial temperature</translation>
+      <translation>Ação de temperatura inicial</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="634"/>
       <source>Creates a FEM constraint for initial temperature acting on a body</source>
-      <translation type="unfinished">Creates a FEM constraint for initial temperature acting on a body</translation>
+      <translation>Cria uma ação MEF de temperatura inicial agindo em um corpo</translation>
     </message>
   </context>
   <context>
@@ -186,12 +186,12 @@
     <message>
       <location filename="../../Command.cpp" line="676"/>
       <source>Constraint plane rotation</source>
-      <translation type="unfinished">Constraint plane rotation</translation>
+      <translation>Ação de rotação de plano</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="677"/>
       <source>Creates a FEM constraint for plane rotation face</source>
-      <translation type="unfinished">Creates a FEM constraint for plane rotation face</translation>
+      <translation>Cria uma ação MEF de plano de rotação em uma face</translation>
     </message>
   </context>
   <context>
@@ -204,12 +204,12 @@
     <message>
       <location filename="../../Command.cpp" line="718"/>
       <source>Constraint pressure</source>
-      <translation type="unfinished">Constraint pressure</translation>
+      <translation>Ação de pressão</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="719"/>
       <source>Creates a FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a pressure acting on a face</translation>
+      <translation>Cria uma ação MEF de pressão atuando em uma face</translation>
     </message>
   </context>
   <context>
@@ -222,12 +222,12 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>Constraint pulley</source>
-      <translation type="unfinished">Constraint pulley</translation>
+      <translation>Ação de polia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="809"/>
       <source>Creates a FEM constraint for a pulley</source>
-      <translation type="unfinished">Creates a FEM constraint for a pulley</translation>
+      <translation>Cria uma ação MEF para uma polia</translation>
     </message>
   </context>
   <context>
@@ -240,12 +240,12 @@
     <message>
       <location filename="../../Command.cpp" line="763"/>
       <source>Constraint spring</source>
-      <translation>Restrição de mola</translation>
+      <translation>Ação de mola</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
       <source>Creates a FEM constraint for a spring acting on a face</source>
-      <translation>Criar uma restrição FEM para uma mola atuando sobre uma face</translation>
+      <translation>Criar uma ação FEM para uma mola atuando sobre uma face</translation>
     </message>
   </context>
   <context>
@@ -258,12 +258,12 @@
     <message>
       <location filename="../../Command.cpp" line="854"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Ação de temperatura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="855"/>
       <source>Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</translation>
+      <translation>Cria uma ação MEF para um fluxo de calor concentrado/temperatura atuando em uma face</translation>
     </message>
   </context>
   <context>
@@ -276,12 +276,12 @@
     <message>
       <location filename="../../Command.cpp" line="897"/>
       <source>Constraint transform</source>
-      <translation type="unfinished">Constraint transform</translation>
+      <translation>Ação de transformação</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="898"/>
       <source>Create FEM constraint for transforming a face</source>
-      <translation type="unfinished">Create FEM constraint for transforming a face</translation>
+      <translation>Criar uma ação MEF para transformar uma face</translation>
     </message>
   </context>
   <context>
@@ -299,7 +299,7 @@
     <message>
       <location filename="../../Command.cpp" line="1090"/>
       <source>Creates a FEM mesh nodes set</source>
-      <translation type="unfinished">Creates a FEM mesh nodes set</translation>
+      <translation>Cria um conjunto de nós de malha MEF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1118"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Command.cpp" line="1033"/>
       <source>Node set by poly</source>
-      <translation type="unfinished">Node set by poly</translation>
+      <translation>Nó definido por polígono</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1034"/>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>Apply changes to pipeline</source>
-      <translation type="unfinished">Apply changes to pipeline</translation>
+      <translation>Aplicar alterações ao pipeline</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation type="unfinished">Apply changes to parameters directly and not on recompute only...</translation>
+      <translation>Aplica as alterações dos parâmetros diretamente e não apenas na recalculação...</translation>
     </message>
   </context>
   <context>
@@ -359,12 +359,12 @@
     <message>
       <location filename="../../Command.cpp" line="1297"/>
       <source>Region clip filter</source>
-      <translation type="unfinished">Region clip filter</translation>
+      <translation>Filtro de recorte de região</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1298"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
-      <translation type="unfinished">Define/create a clip filter which uses functions to define the cliped region</translation>
+      <translation>Definir/criar um filtro que utiliza funções para definir uma região a ser recortada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1680"/>
@@ -374,7 +374,7 @@
     <message>
       <location filename="../../Command.cpp" line="1681"/>
       <source>Select a pipeline, please.</source>
-      <translation type="unfinished">Select a pipeline, please.</translation>
+      <translation>Selecione um pipeline.</translation>
     </message>
   </context>
   <context>
@@ -382,7 +382,7 @@
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="947"/>
       <source>Data At Point</source>
-      <translation type="unfinished">Data At Point</translation>
+      <translation>Dados no ponto</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../Command.cpp" line="1341"/>
       <source>Cut the data along an implicit function</source>
-      <translation type="unfinished">Cut the data along an implicit function</translation>
+      <translation>Recorta os dados por meio de uma função implícita</translation>
     </message>
   </context>
   <context>
@@ -413,12 +413,12 @@
     <message>
       <location filename="../../Command.cpp" line="1383"/>
       <source>Line clip filter</source>
-      <translation type="unfinished">Line clip filter</translation>
+      <translation>Filtro de recorte de linha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field along a line</translation>
+      <translation>Definir / criar um filtro que recorta um campo ao longo de uma linha</translation>
     </message>
   </context>
   <context>
@@ -431,12 +431,12 @@
     <message>
       <location filename="../../Command.cpp" line="1424"/>
       <source>Data at point clip filter</source>
-      <translation type="unfinished">Data at point clip filter</translation>
+      <translation>Dados no ponto do filtro</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1425"/>
       <source>Define/create a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field data at point</translation>
+      <translation>Definir / criar um filtro que recorda um campo de dados em um ponto</translation>
     </message>
   </context>
   <context>
@@ -449,12 +449,12 @@
     <message>
       <location filename="../../Command.cpp" line="1613"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Funções de filtro</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1614"/>
       <source>Functions for use in postprocessing filter...</source>
-      <translation type="unfinished">Functions for use in postprocessing filter...</translation>
+      <translation>Funções para uso em filtro pós-processamento...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1725"/>
@@ -485,7 +485,7 @@
       <location filename="../../Command.cpp" line="1221"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
-      <translation type="unfinished">Linearized Stresses</translation>
+      <translation>Estresse linear</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1222"/>
@@ -497,7 +497,7 @@
       <location filename="../../Command.cpp" line="1223"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
-      <translation type="unfinished">Membrane and Bending</translation>
+      <translation>Membrana e curvatura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1224"/>
@@ -513,12 +513,12 @@
     <message>
       <location filename="../../Command.cpp" line="1469"/>
       <source>Stress linearization plot</source>
-      <translation type="unfinished">Stress linearization plot</translation>
+      <translation>Gráfico de estresse linear</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1470"/>
       <source>Define/create stress linearization plots</source>
-      <translation type="unfinished">Define/create stress linearization plots</translation>
+      <translation>Definir/criar gráficos de estresse linear</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
@@ -530,7 +530,7 @@
       <location filename="../../Command.cpp" line="1501"/>
       <location filename="../../Command.cpp" line="1507"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation type="unfinished">Select a Clip filter which clips a STRESS field along a line, please.</translation>
+      <translation>Selecione um filtro que corta um campo de controle de estresse ao longo de uma linha.</translation>
     </message>
   </context>
   <context>
@@ -543,22 +543,22 @@
     <message>
       <location filename="../../Command.cpp" line="1792"/>
       <source>Post pipeline from result</source>
-      <translation type="unfinished">Post pipeline from result</translation>
+      <translation>Pipeline de pós-processamento a partir de um resultado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1793"/>
       <source>Creates a post processing pipeline from a result object</source>
-      <translation type="unfinished">Creates a post processing pipeline from a result object</translation>
+      <translation>Cria um pipeline de pós-processamento a partir de um objeto de resultado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1856"/>
       <source>Wrong selection type</source>
-      <translation type="unfinished">Wrong selection type</translation>
+      <translation>Tipo de seleção errado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1857"/>
       <source>Select a result object, please.</source>
-      <translation type="unfinished">Select a result object, please.</translation>
+      <translation>Por favor selecione um objeto de resultado.</translation>
     </message>
   </context>
   <context>
@@ -571,12 +571,12 @@
     <message>
       <location filename="../../Command.cpp" line="1531"/>
       <source>Scalar clip filter</source>
-      <translation type="unfinished">Scalar clip filter</translation>
+      <translation>Filtro de recorte escalar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1532"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field with a scalar value</translation>
+      <translation>Definir / criar um filtro que recorda um campo de dados com um valor escalar</translation>
     </message>
   </context>
   <context>
@@ -589,12 +589,12 @@
     <message>
       <location filename="../../Command.cpp" line="1572"/>
       <source>Warp filter</source>
-      <translation type="unfinished">Warp filter</translation>
+      <translation>Filtro de deformação</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1573"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
-      <translation type="unfinished">Warp the geometry along a vector field by a certain factor</translation>
+      <translation>Deforma a geometria ao longo de um campo de vetores por um determindado fator</translation>
     </message>
   </context>
   <context>
@@ -602,82 +602,82 @@
     <message>
       <location filename="../../Command.cpp" line="305"/>
       <source>Make FEM constraint for bearing</source>
-      <translation type="unfinished">Make FEM constraint for bearing</translation>
+      <translation>Criar ação MEF para um rolamento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Make FEM constraint contact on face</source>
-      <translation type="unfinished">Make FEM constraint contact on face</translation>
+      <translation>Cria uma ação MEF de contato numa face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="391"/>
       <source>Make FEM constraint displacement on face</source>
-      <translation type="unfinished">Make FEM constraint displacement on face</translation>
+      <translation>Cria uma ação MEF de deslocamento numa face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Make FEM constraint fixed geometry</source>
-      <translation type="unfinished">Make FEM constraint fixed geometry</translation>
+      <translation>Cria uma ação MEF de fixação de geometria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>Create fluid boundary condition</source>
-      <translation type="unfinished">Create fluid boundary condition</translation>
+      <translation>Criar condição de limite fluido</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Make FEM constraint force on geometry</source>
-      <translation type="unfinished">Make FEM constraint force on geometry</translation>
+      <translation>Cria uma ação MEF de força em uma geometria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="562"/>
       <source>Make FEM constraint for gear</source>
-      <translation type="unfinished">Make FEM constraint for gear</translation>
+      <translation>Criar uma restrição FEM para uma engrenagem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="604"/>
       <source>Make FEM constraint heatflux on face</source>
-      <translation type="unfinished">Make FEM constraint heatflux on face</translation>
+      <translation>Cria uma ação MEF de fluxo de calor numa face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>Make FEM constraint initial temperature on body</source>
-      <translation type="unfinished">Make FEM constraint initial temperature on body</translation>
+      <translation>Criar uma ação MEF de temperatura inicial em um corpo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="692"/>
       <source>Make FEM constraint Plane Rotation face</source>
-      <translation type="unfinished">Make FEM constraint Plane Rotation face</translation>
+      <translation>Cria uma ação MEF de plano de rotação em uma face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="734"/>
       <source>Make FEM constraint pressure on face</source>
-      <translation type="unfinished">Make FEM constraint pressure on face</translation>
+      <translation>Cria uma ação MEF de pressão numa face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="779"/>
       <source>Make FEM constraint spring on face</source>
-      <translation type="unfinished">Make FEM constraint spring on face</translation>
+      <translation>Cria uma ação MEF de mola numa face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="824"/>
       <source>Make FEM constraint for pulley</source>
-      <translation type="unfinished">Make FEM constraint for pulley</translation>
+      <translation>Criar uma restrição FEM para uma polia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="870"/>
       <source>Make FEM constraint temperature on face</source>
-      <translation type="unfinished">Make FEM constraint temperature on face</translation>
+      <translation>Cria uma ação MEF de temperatura numa face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="913"/>
       <source>Make FEM constraint transform on face</source>
-      <translation type="unfinished">Make FEM constraint transform on face</translation>
+      <translation>Cria uma ação MEF de transformação numa face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1002"/>
       <source>Place robot</source>
-      <translation type="unfinished">Place robot</translation>
+      <translation>Colocar robô</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1103"/>
@@ -1195,7 +1195,7 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="393"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Cria uma equação MEF para forças elétricas</translation>
     </message>
   </context>
   <context>
@@ -1203,12 +1203,12 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="423"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Equação de fluxo</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="427"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Cria uma equação MEF para um fluxo</translation>
     </message>
   </context>
   <context>
@@ -1216,12 +1216,12 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="440"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Equação de fluxo</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="444"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>Cria uma equação MEF para um fluxo</translation>
     </message>
   </context>
   <context>
@@ -1229,12 +1229,12 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="474"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>Equação de calor</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="478"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>Cria uma equação MEF para um calor</translation>
     </message>
   </context>
   <context>
@@ -1243,7 +1243,7 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
       <location filename="../../../femcommands/commands.py" line="492"/>
       <location filename="../../../femcommands/commands.py" line="496"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>Abrir exemplos MEF</translation>
     </message>
   </context>
   <context>
@@ -1251,12 +1251,12 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="655"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Malha MEF para malha</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Converter a superfície de uma malha MEF em uma malha comum</translation>
     </message>
   </context>
   <context>
@@ -1277,12 +1277,12 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="533"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Material para fluido</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Cria um material MEF para um fluido</translation>
     </message>
   </context>
   <context>
@@ -1290,12 +1290,12 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="550"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Material mecânico não linear</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="554"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Cria um material mecânico não-linear</translation>
     </message>
   </context>
   <context>
@@ -1308,7 +1308,7 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="624"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Cria um material para material de matriz reforçada, ex. concreto</translation>
     </message>
   </context>
   <context>
@@ -1316,12 +1316,12 @@ Por favor, selecione um tipo de resultado primeiro.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Material para sólido</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Cria um material MEF para um sólido</translation>
     </message>
   </context>
   <context>
@@ -2468,7 +2468,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="156"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation>Por favor, use apenas uma única referência para restrição de rolamentos</translation>
+      <translation>Por favor, use apenas uma única referência para ação de rolamentos</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="160"/>
@@ -3975,7 +3975,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="148"/>
       <source>Edit constraint</source>
-      <translation>Editar restrição</translation>
+      <translation>Editar ação</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="75"/>
@@ -4009,7 +4009,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="413"/>
       <source>Constraint force</source>
-      <translation>Restrição de força</translation>
+      <translation>Ação de força</translation>
     </message>
     <message>
       <location filename="../../AppFemGui.cpp" line="169"/>
@@ -4036,12 +4036,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="550"/>
       <source>Constraint displacement</source>
-      <translation type="unfinished">Constraint displacement</translation>
+      <translation>Ação de deslocamento</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="258"/>
       <source>Constraint fixed</source>
-      <translation type="unfinished">Constraint fixed</translation>
+      <translation>Ação fixa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
@@ -4056,7 +4056,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="101"/>
       <source>Constraint initial temperature</source>
-      <translation type="unfinished">Constraint initial temperature</translation>
+      <translation>Ação de temperatura inicial</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="267"/>
@@ -4066,27 +4066,27 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="275"/>
       <source>Constraint pressure</source>
-      <translation type="unfinished">Constraint pressure</translation>
+      <translation>Ação de pressão</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="187"/>
       <source>Constraint pulley</source>
-      <translation type="unfinished">Constraint pulley</translation>
+      <translation>Ação de polia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="276"/>
       <source>Constraint spring</source>
-      <translation>Restrição de mola</translation>
+      <translation>Ação de mola</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="334"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Ação de temperatura</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="487"/>
       <source>Constraint transform</source>
-      <translation type="unfinished">Constraint transform</translation>
+      <translation>Ação de transformação</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="248"/>
@@ -5835,7 +5835,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Funções de filtro</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>

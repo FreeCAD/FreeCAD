@@ -941,7 +941,7 @@ Hasteko, hautatu emaitza mota bat.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="642"/>
       <source>FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</source>
-      <translation type="unfinished">FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</translation>
+      <translation>FEM: Oraindik ez da onartzen makurdura-estresaren irteera grafikoa habeen edo maskorren FEM amaraunetan.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="645"/>
@@ -2251,7 +2251,7 @@ dioen mezua jasotzen bada.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="240"/>
       <source>Max places in coincidence vector</source>
-      <translation type="unfinished">Max places in coincidence vector</translation>
+      <translation>Toki kopuru maximoa bat etortze bektorean</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="253"/>
@@ -2262,13 +2262,13 @@ dioen mezua jasotzen bada.</translation>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation type="unfinished">Maximal places in coincidence vector.
-(number of knots per element times
- number of finite elements)
+      <translation>Toki kopuru maximoa bat etortze bektorean.
+(Adabegi kopurua elementuko bider
+elementu kopuru mugatua)
 
-You might need to increase this when using an
-iterative solver and you get the error message
-that "MAXKOI" needs to be increased.</translation>
+Hau handitu beharko da ebazle iteratibo bat
+erabiltzean. "MAXKOI" handitu behar dela dioen
+mezu bat jaso daiteke.</translation>
     </message>
   </context>
   <context>
@@ -3687,7 +3687,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="111"/>
       <source>Whether the constraint is for the electric force</source>
-      <translation type="unfinished">Whether the constraint is for the electric force</translation>
+      <translation>Murrizketa indar elektrikorako den ala ez</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="114"/>
@@ -3703,7 +3703,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="159"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation type="unfinished">Counter of the body (or face) with a capacitance</translation>
+      <translation>Gorputzaren (edo aurpegiaren) zenbagailua kapazitantzia batekin</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
@@ -4260,9 +4260,9 @@ that "MAXKOI" needs to be increased.</translation>
       <source>Runs the equation given in the field below,
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
-      <translation type="unfinished">Runs the equation given in the field below,
-outputs the results to the Min and Max fields
-and colors the result mesh accordingly</translation>
+      <translation>Beheko eremuan eman den ekuazioa exekutatzen du,
+irteerako emaitzak Min eta Max eremuetan sartzen dira
+eta amarauna horren arabera koloreztatzen du</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="336"/>
@@ -4279,7 +4279,7 @@ Balizko aldagaietarako, ikusi beheko deskribapen-koadroa.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="359"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
-      <translation type="unfinished">P1 - P3 # Max - Min Principal Stress</translation>
+      <translation>P1 - P3 # Estres nagusi max - min</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>

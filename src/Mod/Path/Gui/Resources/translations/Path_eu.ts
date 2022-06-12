@@ -191,7 +191,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="260"/>
       <source>Starting Depth internal use only for derived values</source>
-      <translation type="unfinished">Starting Depth internal use only for derived values</translation>
+      <translation>Hasierako sakoneraren barneko erabilera balio eratorrietarako soilik</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="271"/>
@@ -206,7 +206,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="292"/>
       <source>The height needed to clear clamps and obstructions</source>
-      <translation type="unfinished">The height needed to clear clamps and obstructions</translation>
+      <translation>Euskarriak eta buxadurak saihesteko behar den altuera</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="300"/>
@@ -254,7 +254,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="132"/>
       <source>Arguments for the Post Processor (specific to the script)</source>
-      <translation type="unfinished">Arguments for the Post Processor (specific to the script)</translation>
+      <translation>Post-prozesadorerako argumentuak (script-erako espezifikoak)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="138"/>
@@ -621,26 +621,26 @@
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="396"/>
       <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation type="unfinished">Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</translation>
+      <translation>Bihurtu arku planokideak G2/G3 gcode komandoetara, 'Zirkularra' eta 'Zigzag zirkularra' mozte-ereduetarako.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="405"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="433"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
-      <translation type="unfinished">Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</translation>
+      <translation>Atalase hau baino txikiagoak diren artefaktu-tarte lerrokideak eta erradiokideak itxi egiten dira bidean.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="414"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="442"/>
       <source>Feedback: three smallest gaps identified in the path geometry.</source>
-      <translation type="unfinished">Feedback: three smallest gaps identified in the path geometry.</translation>
+      <translation>Atzeraelikadura: hiru tarte txiki identifikatu dira bide-geometrian.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="423"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="451"/>
       <location filename="../../../PathScripts/PathSlot.py" line="232"/>
       <source>The custom start point for the path of this operation</source>
-      <translation type="unfinished">The custom start point for the path of this operation</translation>
+      <translation>Eragiketa honen bidearen hasiera-puntu pertsonalizatua</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="45"/>
@@ -738,12 +738,12 @@
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="164"/>
       <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
-      <translation>Eremu honen erabilera altuera segururako adierazpenaren mendekoa da - modu lehenetsian, balio hori hasierako sakonerari gehitzen zaio eta eragiketa baten altuera segururako erabiltzen da.</translation>
+      <translation>Eremu honen erabilera altuera libre segururako adierazpenaren mendekoa da - modu lehenetsian, balio hori hasierako sakonerari gehitzen zaio eta eragiketa baten altuera librerako erabiltzen da.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="173"/>
       <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation>Eragiketa berrien altuera segururako erabilitako adierazpena.</translation>
+      <translation>Eragiketa berrien altuera librerako erabilitako adierazpena.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="181"/>
@@ -793,7 +793,7 @@
     <message>
       <location filename="../../../PathScripts/PathFeatureExtensions.py" line="499"/>
       <source>When enabled connected extension edges are combined to wires.</source>
-      <translation type="unfinished">When enabled connected extension edges are combined to wires.</translation>
+      <translation>Gaituta dagoenean, konektatutako hedapenen ertzak konbinatu egiten dira eta hariak sortzen dira.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1116"/>
@@ -855,17 +855,17 @@
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="948"/>
       <source>Side of selected faces that tool should cut</source>
-      <translation type="unfinished">Side of selected faces that tool should cut</translation>
+      <translation>Tresnak moztu beharko lituzkeen aurpegi-albo hautatuak</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="962"/>
       <source>Type of adaptive operation</source>
-      <translation type="unfinished">Type of adaptive operation</translation>
+      <translation>Eragiketa moldakorraren mota</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="976"/>
       <source>Influences accuracy and performance</source>
-      <translation type="unfinished">Influences accuracy and performance</translation>
+      <translation>Zehaztasunean eta errendimenduan eragina du</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="985"/>
@@ -877,17 +877,17 @@
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="994"/>
       <source>Lift distance for rapid moves</source>
-      <translation type="unfinished">Lift distance for rapid moves</translation>
+      <translation>Jasotze-distantzia mugimendu azkarretarako</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1003"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
-      <translation type="unfinished">Max length of keep tool down path compared to direct distance between points</translation>
+      <translation>Tresna behean mantentzeko bidearen luzera maximoa, puntuen arteko distantzia zuzenarekin konparatuta</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1012"/>
       <source>How much stock to leave (i.e. for finishing operation)</source>
-      <translation type="unfinished">How much stock to leave (i.e. for finishing operation)</translation>
+      <translation>Zenbat pieza gordin utziko den (adibidez, eragiketa amaitzeko)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1021"/>
@@ -908,32 +908,32 @@
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1058"/>
       <source>Use Arcs (G2) for helix ramp</source>
-      <translation type="unfinished">Use Arcs (G2) for helix ramp</translation>
+      <translation>Erabili Arcs (G2) helize-arrapalarako</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1068"/>
       <source>Internal input state</source>
-      <translation type="unfinished">Internal input state</translation>
+      <translation>Barneko sarrera-egoera</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1077"/>
       <source>Internal output state</source>
-      <translation type="unfinished">Internal output state</translation>
+      <translation>Barneko irteera-egoera</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1088"/>
       <source>Helix ramp entry angle (degrees)</source>
-      <translation type="unfinished">Helix ramp entry angle (degrees)</translation>
+      <translation>Helize-arrapalaren sarrerako angelua (graduak)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1097"/>
       <source>Helix cone angle (degrees)</source>
-      <translation type="unfinished">Helix cone angle (degrees)</translation>
+      <translation>Helize-konoaren angelua (graduak)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1106"/>
       <source>Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used</source>
-      <translation type="unfinished">Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used</translation>
+      <translation>Mugatu helizearen sarrerako diametroa, muga tresnaren diametroa baino handiagoa edo 0 bada, tresnaren diametroa erabiliko da</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPlane.py" line="38"/>
@@ -1200,7 +1200,7 @@
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="87"/>
       <source>Keep the Tool Down in Path</source>
-      <translation>Mantendu tresna bidean</translation>
+      <translation>Mantendu tresna behean bidean</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="96"/>
@@ -2356,7 +2356,7 @@
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
       <source>Clearance Height</source>
-      <translation>Garbiketa-altuera</translation>
+      <translation>Altuera librea</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
@@ -2441,12 +2441,12 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
       <source>Cut Region</source>
-      <translation type="unfinished">Cut Region</translation>
+      <translation>Mozte-eskualdea</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="62"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cut inside or outside of the selected shapes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cut inside or outside of the selected shapes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moztu hautatutako formen barruan edo kanpoan&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
@@ -2456,7 +2456,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eragiketa moldakorraren mota.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="176"/>
@@ -2467,7 +2467,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimal value for tool stepover&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimal value for tool stepover&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna-gainditzearen balio optimoa.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="112"/>
@@ -2482,27 +2482,27 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="147"/>
       <source>Helix Ramp Angle</source>
-      <translation type="unfinished">Helix Ramp Angle</translation>
+      <translation>Helize-arrapalaren angelua</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="154"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix ramp entry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix ramp entry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Helize-arrapalaren sarreraren angelua.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="161"/>
       <source>Helix Cone Angle</source>
-      <translation type="unfinished">Helix Cone Angle</translation>
+      <translation>Helize-konoaren angelua</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix entry cone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix entry cone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Helize-sarreraren konoaren angelua.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="175"/>
       <source>Helix Max Diameter</source>
-      <translation type="unfinished">Helix Max Diameter</translation>
+      <translation>Helizearen diametro maximoa</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="182"/>
@@ -2512,17 +2512,17 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
       <source>Lift Distance</source>
-      <translation type="unfinished">Lift Distance</translation>
+      <translation>Jasotze-distantzia</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much to lift the tool up during the rapid linking moves over cleared regions.&lt;/p&gt;&lt;p&gt;If linking path is not clear tool is raised to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much to lift the tool up during the rapid linking moves over cleared regions.&lt;/p&gt;&lt;p&gt;If linking path is not clear tool is raised to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zenbat jasoko den tresna eskualde garbituen gaineko estekatze-mugimendu azkarretan.&lt;/p&gt;&lt;p&gt;Estekatze-bidea ez badago argi, tresna garbitze-altuerara jasoko da.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="203"/>
       <source>Keep Tool Down Ratio</source>
-      <translation type="unfinished">Keep Tool Down Ratio</translation>
+      <translation>Tresna behean mantentzeko tasa</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="210"/>
@@ -2532,12 +2532,12 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
       <source>Stock to Leave</source>
-      <translation type="unfinished">Stock to Leave</translation>
+      <translation>Utziko den pieza gordina</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="224"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much material to leave (i.e. for finishing operation)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much material to leave (i.e. for finishing operation)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zenbat material utziko den (eragiketa amaitzeko)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="231"/>
@@ -2547,7 +2547,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="238"/>
       <source>Finishing Profile</source>
-      <translation type="unfinished">Finishing Profile</translation>
+      <translation>Amaierako profila</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="235"/>
@@ -4008,17 +4008,17 @@ For example:
     'Metric, Small Parts &amp; CNC'
     'US Customary'
     'Imperial Decimal'</source>
-      <translation type="unfinished">The currently selected unit schema: 
+      <translation>Hautatutako unitate-eskema: 
      '{}'
- Does not use 'minutes' for velocity values. 
+ Ez ditu 'minutuak' erabiltzen abiadura-balioetarako. 
  
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct gcode: 
-Select a minute-based schema in preferences.
-For example:
-    'Metric, Small Parts &amp; CNC'
+CNC makinek elikatze-tasa unitate/minutu gisa
+adieraztea behar dute. gcode zuzena ziurtatzeko: 
+Hautatu minutuetan oinarritutako eskema hobespenetan.
+Adibidez:
+    'Zati txiki metrikoak &amp; CNC'
     'US Customary'
-    'Imperial Decimal'</translation>
+    'Dezimal inperiala'</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="275"/>
@@ -4228,7 +4228,7 @@ For example:
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="397"/>
       <source>Arrays of paths having different tool controllers are handled according to the tool controller of the first path.</source>
-      <translation type="unfinished">Arrays of paths having different tool controllers are handled according to the tool controller of the first path.</translation>
+      <translation>Tresna-kontrolagailu desberdinak dituzten bideen matrizeak lehen bidearen tresna-kontrolagailuaren arabera maneiatzen dira.</translation>
     </message>
   </context>
   <context>
@@ -4237,8 +4237,7 @@ For example:
       <location filename="../../../PathScripts/PathDeburr.py" line="93"/>
       <source>The selected tool has no CuttingEdgeAngle property. Assuming Endmill
 </source>
-      <translation type="unfinished">The selected tool has no CuttingEdgeAngle property. Assuming Endmill
-</translation>
+      <translation>Hautatutako tresnak ez du CuttingEdgeAngle propietaterik. Amaierako fresatzea dela onartu da</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDeburr.py" line="189"/>
@@ -4294,7 +4293,7 @@ For example:
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="732"/>
       <source>Zero working area to process. Check your selection and settings.</source>
-      <translation type="unfinished">Zero working area to process. Check your selection and settings.</translation>
+      <translation>Ez dago laneko arearik prozesatzeko. Begiratu zure hautapena eta ezarpenak.</translation>
     </message>
   </context>
   <context>
@@ -4490,7 +4489,7 @@ For example:
     <message>
       <location filename="../preferences/Advanced.ui" line="67"/>
       <source>Suppress Velocity warning</source>
-      <translation type="unfinished">Suppress Velocity warning</translation>
+      <translation>Ezabatu abiadura-abisua</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="86"/>
@@ -4606,8 +4605,8 @@ p, li { white-space: pre-wrap; }
       <location filename="../../../PathScripts/PathOpGui.py" line="915"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation type="unfinished">FinalDepth cannot be modified for this operation.
-If it is necessary to set the FinalDepth manually please select a different operation.</translation>
+      <translation>Azken sakonera ezin da aldatu eragiketa honetarako.
+Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="938"/>
@@ -4676,12 +4675,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathPocketBaseGui.py" line="87"/>
       <source>The distance the facing operation will extend beyond the boundary shape.</source>
-      <translation type="unfinished">The distance the facing operation will extend beyond the boundary shape.</translation>
+      <translation>Aurpegia sortzeko eragiketa zein distantziara hedatuko den muga-formaz kanpo.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocket.py" line="193"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
-      <translation type="unfinished">Final depth set below ZMin of face(s) selected.</translation>
+      <translation>Azken sakonera, hautatutako aurpegi(ar)en ZMin azpitik ezarrita.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathFeatureExtensionsGui.py" line="180"/>
@@ -4751,7 +4750,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="383"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
-      <translation type="unfinished">The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
+      <translation>Ertz hautatua(k) ezin dira eskuratu. Anitz badira, hautapena berrordenatzeak arazoa konpondu dezake.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="489"/>
@@ -4761,7 +4760,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="638"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>Egiaztatu ertz irekia(k) profilatzeko behar diren ertz-hautapena eta amaierako sakonera.</translation>
     </message>
   </context>
   <context>
@@ -4807,7 +4806,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="811"/>
       <source>Canceling 3D Surface operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling 3D Surface operation. Error creating OCL cutter.</translation>
+      <translation>3D gainazalaren eragiketa uzten. Errorea OCL ebakigailua sortzean.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="1042"/>
@@ -4862,7 +4861,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2806"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
-      <translation type="unfinished">OCL tool not available. Cannot determine is cutter has tilt available.</translation>
+      <translation>OCL tresna ez dago erabilgarri. Ezin da zehaztu ebakigailuak inklinazioa erabilgarri duen.</translation>
     </message>
   </context>
   <context>
@@ -4885,7 +4884,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="509"/>
       <source>Face selection is unavailable for Rotational scans.</source>
-      <translation type="unfinished">Face selection is unavailable for Rotational scans.</translation>
+      <translation>Aupergien hautapena ez dago eskuragarri biraketa-eskaneatzeetarako.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="512"/>
@@ -4895,12 +4894,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="614"/>
       <source>Failed to pre-process base as a whole.</source>
-      <translation type="unfinished">Failed to pre-process base as a whole.</translation>
+      <translation>Huts egin du oinarria osotasun gisa aurreprozesatzeak.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2419"/>
       <source>Failed to identify a horizontal cross-section for Face</source>
-      <translation type="unfinished">Failed to identify a horizontal cross-section for Face</translation>
+      <translation>Huts egin du zeharkako sekzio bat aurpegi baterako identifikatzeak</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2655"/>
@@ -4951,7 +4950,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="283"/>
       <source>Unsupported Path tooltable template version %s</source>
-      <translation type="unfinished">Unsupported Path tooltable template version %s</translation>
+      <translation>Onartzen ez den Path tresna-mahaiaren txantiloi-bertsioa (%s)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="298"/>
@@ -4964,7 +4963,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="377"/>
       <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
-      <translation type="unfinished">The Job Base Object has no engraveable element. Engraving operation will produce no output.</translation>
+      <translation>Lanaren oinarri-objektuak ez du grabatuko den elementurik. Grabazio-eragiketak ez du irteerarik emango.</translation>
     </message>
   </context>
   <context>
@@ -4993,7 +4992,7 @@ Aukeren sorrera abortatzen</translation>
       <location filename="../../../PathScripts/PathWaterline.py" line="649"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="657"/>
       <source>Sample interval limits are 0.0001 to 25.4 millimeters.</source>
-      <translation type="unfinished">Sample interval limits are 0.0001 to 25.4 millimeters.</translation>
+      <translation>Lagin-tartearen mugak 0.0001 eta 25.4 milimetro dira.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="666"/>
@@ -5008,12 +5007,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="689"/>
       <source>AvoidLastX_Faces: Only zero or positive values permitted.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Only zero or positive values permitted.</translation>
+      <translation>AvoidLastX_Faces: Zero balioa edo balio positiboak soilik onartzen dira.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="697"/>
       <source>AvoidLastX_Faces: Avoid last X faces count limited to 100.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Avoid last X faces count limited to 100.</translation>
+      <translation>AvoidLastX_Faces: Saihestu azken X aurpegien zenbaketa 100era mugatuta.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="771"/>
@@ -5023,7 +5022,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="796"/>
       <source>Canceling Waterline operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling Waterline operation. Error creating OCL cutter.</translation>
+      <translation>Ur-lerroaren eragiketa uzten. Errorea OCL ebakigailua sortzean.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="1041"/>
@@ -5190,7 +5189,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1369"/>
       <source>Creates a Dogbone Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Dogbone Dress-up object from a selected path</translation>
+      <translation>Txakur-hezurraren jantzi-objektu bat sortzen du hautatutako bide bat erabiliz</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDogbone.py" line="1385"/>
@@ -5213,7 +5212,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="608"/>
       <source>Modifies a path to add dragknife corner actions</source>
-      <translation type="unfinished">Modifies a path to add dragknife corner actions</translation>
+      <translation>Bide bat aldatzen du arraste-hortz erako izkina-ekintzak gehitzeko</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="625"/>
@@ -5266,12 +5265,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="177"/>
       <source>Enable LeadOut</source>
-      <translation type="unfinished">Enable LeadOut</translation>
+      <translation>Gaitu irteera</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
       <source>Extend Out:</source>
-      <translation type="unfinished">Extend Out:</translation>
+      <translation>Irteerako luzapena:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="207"/>
@@ -5291,7 +5290,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="296"/>
       <source>Keep Tool Down</source>
-      <translation type="unfinished">Keep Tool Down</translation>
+      <translation>Mantendu tresna behean</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="303"/>
@@ -5301,12 +5300,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="314"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply Lead In/Out on all layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply Lead In/Out on all layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aplikatu sarrera/irteera geruza guztietan&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="317"/>
       <source>Include Layers</source>
-      <translation type="unfinished">Include Layers</translation>
+      <translation>Sartu geruzak</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
@@ -5670,8 +5669,8 @@ Aukeren sorrera abortatzen</translation>
       <location filename="../../../PathScripts/PathInspect.py" line="137"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post-processing.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
- Values will be converted to the desired unit during post-processing.</translation>
+      <translation>&lt;b&gt;Oharra&lt;/b&gt;: Elkarrizketa-koadro honek FreeCADen oinarri-unitateetan (mm/s) erakusten ditu bide-komandoak. 
+ Balioak post-prozesatzean bihurtuko dira nahi diren unitateetara.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathInspect.py" line="260"/>
@@ -7365,7 +7364,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
       <source>Clearance Height</source>
-      <translation>Garbiketa-altuera</translation>
+      <translation>Altuera librea</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>

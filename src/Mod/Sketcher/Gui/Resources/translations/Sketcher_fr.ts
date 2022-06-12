@@ -5337,7 +5337,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
       <source>%n DoF(s)</source>
       <translation type="unfinished">
-        <numerusform>%n DoF(s)</numerusform>
+        <numerusform>%n Degré(s) de liberté</numerusform>
         <numerusform>%n DoF(s)</numerusform>
       </translation>
     </message>

@@ -5348,7 +5348,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
         <numerusform>%n DoF(s)</numerusform>
         <numerusform>%n DoF(s)</numerusform>
         <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
+        <numerusform>%n prostostnih stopenj</numerusform>
       </translation>
     </message>
     <message>

@@ -67,22 +67,22 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via:</source>
-      <translation type="unfinished">Send to OpenSCAD via:</translation>
+      <translation>V OpenSCAD pošlji preko:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation type="unfinished">The transfer mechanism for getting data to and from OpenSCAD</translation>
+      <translation>Postopek prenašanja podatkov v OpenSCAD in iz njega</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
       <source>Standard temp directory</source>
-      <translation type="unfinished">Standard temp directory</translation>
+      <translation>Privzeta mapa začasnih datotek (temp)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
       <source>User-specified directory</source>
-      <translation type="unfinished">User-specified directory</translation>
+      <translation>Uporabniško določena mapa</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
@@ -92,12 +92,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
       <source>Transfer directory</source>
-      <translation type="unfinished">Transfer directory</translation>
+      <translation>Mapa prenosa</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="240"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation type="unfinished">The path to the directory for transferring files to and from OpenSCAD</translation>
+      <translation>Pot do mape, namenjene prenosu datotek v OpenSCAD in iz njega</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="258"/>
@@ -179,12 +179,12 @@
       <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="148"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+      <translation>Če izvedbena datoteka OpenSCADa ne naloži začasne datoteke, v prednastavitvah FreeCADovega delovnega okolja OpenSCAD spremenite način prenosa.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="143"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
+      <translation>Kaže, da uporabljate peskovniško različico FreeCADa.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>

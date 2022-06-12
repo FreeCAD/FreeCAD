@@ -2128,12 +2128,12 @@ itxura leunagoa ematen du.
     <message>
       <location filename="../../Workbench.cpp" line="83"/>
       <source>Minimum bound:</source>
-      <translation type="unfinished">Minimum bound:</translation>
+      <translation>Muga minimoa:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="86"/>
       <source>Maximum bound:</source>
-      <translation type="unfinished">Maximum bound:</translation>
+      <translation>Muga maximoa:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
@@ -2320,7 +2320,7 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
     <message>
       <location filename="../../Command.cpp" line="529"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>3D manufakturako formatua</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>

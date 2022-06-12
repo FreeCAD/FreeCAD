@@ -1020,7 +1020,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="111"/>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>„</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="130"/>

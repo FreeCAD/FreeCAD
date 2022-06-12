@@ -1392,7 +1392,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
       <source>Multiple defined keyboard shortcut</source>
-      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
+      <translation>Несколько раз назначенное сочетание клавиш</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
@@ -1402,7 +1402,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
       <source>Already defined keyboard shortcut</source>
-      <translation type="unfinished">Already defined keyboard shortcut</translation>
+      <translation>Уже назначенное сочетание клавиш</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
@@ -4671,7 +4671,7 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
       <source>Keyboard shortcut count</source>
-      <translation type="unfinished">Keyboard shortcut count</translation>
+      <translation>Количество горячих клавиш</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>

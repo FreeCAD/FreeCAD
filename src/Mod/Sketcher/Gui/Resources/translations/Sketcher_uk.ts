@@ -5346,11 +5346,11 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
       <source>%n DoF(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
+      <translation>
+        <numerusform>%n ступінь свободи</numerusform>
+        <numerusform>%n ступені свободи</numerusform>
+        <numerusform>%n ступені свободи</numerusform>
+        <numerusform>%n ступені свободи</numerusform>
       </translation>
     </message>
     <message>
@@ -5743,7 +5743,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../Command.cpp" line="615"/>
       <source>Sketch attachment</source>
-      <translation>Привʼязка ескізу</translation>
+      <translation>Приєднання ескізу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -5784,7 +5784,7 @@ Select the method to attach this sketch to selected objects.</source>
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Sketch attachment</source>
-      <translation>Привʼязка ескізу</translation>
+      <translation>Приєднання ескізу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="182"/>

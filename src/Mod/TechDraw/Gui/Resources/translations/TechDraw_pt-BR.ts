@@ -1189,12 +1189,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1434"/>
       <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <translation>Posição da Vista de Corte</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1435"/>
       <source>Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</translation>
+      <translation>Alinhar ortogonalmente a vista de corte com a origem da vista&lt;br&gt;- Selecione escolha uma única vista&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1207,12 +1207,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="215"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Remover Prefixo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="216"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Remova os símbolos de prefixo no início do texto da dimensão:&lt;br&gt;- Selecionar uma ou mais dimensões&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1225,12 +1225,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="712"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
-      <translation type="unfinished">Select Line Attributes, Cascade Spacing and Delta Distance</translation>
+      <translation>Selecione os Atributos da Linha, Espaçamento em Cascata e Distância Delta</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="713"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
-      <translation type="unfinished">Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</translation>
+      <translation>Selecione os atributos para novas linhas cosméticas e linhas de centro, e especifique o espaçamento em cascata e a distância do delta:&lt;br&gt; -Clique nesta ferramenta&lt;br&gt; -Especifique os atributos, espaçamento e distância na caixa de diálogo&lt;br&gt; -Pressione OK</translation>
     </message>
   </context>
   <context>
@@ -1244,13 +1244,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="1607"/>
       <location filename="../../CommandExtensionPack.cpp" line="1718"/>
       <source>Shorten Line</source>
-      <translation type="unfinished">Shorten Line</translation>
+      <translation>Encurtar Linha</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1608"/>
       <location filename="../../CommandExtensionPack.cpp" line="1719"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Diminuir uma linha cosmética ou linha de centro em ambas as pontas:&lt;br&gt; — Especifique a distância delta(opcional)&lt;br&gt; -Selecione uma única linha&lt;br&gt; -Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1264,13 +1264,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="545"/>
       <location filename="../../CommandExtensionPack.cpp" line="685"/>
       <source>Add Cosmetic Thread Bolt Bottom View</source>
-      <translation type="unfinished">Add Cosmetic Thread Bolt Bottom View</translation>
+      <translation>Adicionar Vista Interna de Parafuso de Rosca Cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="546"/>
       <location filename="../../CommandExtensionPack.cpp" line="686"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</translation>
+      <translation>Adicionar uma rosca cosmética na vista de topo ou inferior de parafuso/porca/haste:&lt;br&gt; -Especifique os atributos da linha(opcional)&lt;br&gt; -Selecione um ou mais círculos&lt;br&gt; -Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -2002,7 +2002,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="189"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Remover Prefixo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="359"/>
@@ -7158,12 +7158,12 @@ usando o espaçamento X/Y fornecido</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="336"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Remover Prefixo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="337"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>Remova os símbolos de prefixo no início do texto da dimensão:&lt;br&gt;- Selecionar uma ou mais dimensões&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>

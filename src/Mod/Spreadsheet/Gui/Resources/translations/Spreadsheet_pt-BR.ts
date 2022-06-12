@@ -456,9 +456,8 @@ The expression must evaluate to a string of some cell address.</translation>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>A relação de dependência com a referida planilha referenciada será desconsiderada no processo de verificação de dependências.
+Útil para evitar erros em checagens de dependências duplas entre planilhas. Use com cuidado!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
@@ -961,7 +960,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
+      <translation>Erro:
 </translation>
     </message>
     <message>

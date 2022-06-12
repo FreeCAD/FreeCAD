@@ -463,7 +463,7 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Ocultar dependencia del enlace</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
@@ -950,9 +950,9 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>El recuento de celdas de origen y destino no coincide. Puede que el enlace parcial funcione.
 
-Do you want to continue?</translation>
+¿Desea continuar?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
@@ -963,7 +963,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
+      <translation>Error: 
 </translation>
     </message>
     <message>
@@ -1250,7 +1250,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>E&amp;stilos</translation>
     </message>
   </context>
 </TS>

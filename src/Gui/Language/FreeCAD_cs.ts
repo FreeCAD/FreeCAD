@@ -230,7 +230,7 @@
     <message>
       <location filename="../ViewProviderLink.cpp" line="2634"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Přepnout prvky pole</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3035"/>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../Widgets.cpp" line="377"/>
       <source>Press a keyboard shortcut</source>
-      <translation type="unfinished">Press a keyboard shortcut</translation>
+      <translation>Stiskněte klávesovou zkratku</translation>
     </message>
   </context>
   <context>
@@ -753,22 +753,22 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="230"/>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Složka mezipaměti</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="232"/>
       <source>The cache directory %1 exceeds the size of %2.</source>
-      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+      <translation>Složka mezipaměti %1 přesahuje velikost %2.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="233"/>
       <source>Do you want to clear it now?</source>
-      <translation type="unfinished">Do you want to clear it now?</translation>
+      <translation>Chcete ji nyní vymazat?</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="234"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>Varování: Ujistěte se, že toto je jediná běžící %1 instance a že žádné dokumenty nejsou otevřeny, protože to může vést ke ztrátě dat!</translation>
     </message>
   </context>
   <context>
@@ -1112,7 +1112,7 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="17"/>
       <source>Create New Preference Pack</source>
-      <translation type="unfinished">Create New Preference Pack</translation>
+      <translation>Vytvořit nový balíček předvoleb</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="28"/>
@@ -1122,7 +1122,7 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="53"/>
       <source>Property group templates</source>
-      <translation type="unfinished">Property group templates</translation>
+      <translation>Šablony skupiny vlastností</translation>
     </message>
   </context>
   <context>
@@ -1130,12 +1130,12 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="158"/>
       <source>Pack already exists</source>
-      <translation type="unfinished">Pack already exists</translation>
+      <translation>Balíček již existuje</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="159"/>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+      <translation>Balíček preferencí s tímto názvem již existuje. Chcete jej přepsat?</translation>
     </message>
   </context>
   <context>
@@ -1391,22 +1391,22 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="373"/>
       <source>Multiple defined keyboard shortcut</source>
-      <translation type="unfinished">Multiple defined keyboard shortcut</translation>
+      <translation>Vícekrát definovaná klávesová zkratka</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="374"/>
       <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>Klávesová zkratka '%1' je definována vícekrát. To může vést k neočekávanému chování.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="381"/>
       <source>Already defined keyboard shortcut</source>
-      <translation type="unfinished">Already defined keyboard shortcut</translation>
+      <translation>Již definovaná klávesová zkratka</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="382"/>
       <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The keyboard shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>Klávesová zkratka '%1' je již přiřazena k '%2'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
@@ -1830,12 +1830,12 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgEditor.ui" line="81"/>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>Tvar kurzoru bude blok</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="84"/>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Povolit blokový kurzor</translation>
     </message>
     <message>
       <location filename="../DlgEditor.ui" line="100"/>
@@ -1958,7 +1958,7 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgGeneral.ui" line="76"/>
       <source>Number format:</source>
-      <translation type="unfinished">Number format:</translation>
+      <translation>Formát čísla:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="90"/>
@@ -1968,27 +1968,27 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgGeneral.ui" line="95"/>
       <source>Selected language</source>
-      <translation type="unfinished">Selected language</translation>
+      <translation>Vybraný jazyk</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="100"/>
       <source>C/POSIX</source>
-      <translation type="unfinished">C/POSIX</translation>
+      <translation>C/POSIX</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="108"/>
       <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+      <translation>Je-li zapnuto, bude oddělovač desetinných míst nastaven dle lokalizace</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="111"/>
       <source>Substitute decimal separator (needs restart)</source>
-      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+      <translation>Nahradit oddělovač desetinných míst (vyžaduje restart)</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="127"/>
       <source>Preference packs</source>
-      <translation type="unfinished">Preference packs</translation>
+      <translation>Balíčky předvoleb</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="193"/>
@@ -2008,17 +2008,17 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgGeneral.ui" line="238"/>
       <source>Save new...</source>
-      <translation type="unfinished">Save new...</translation>
+      <translation>Uložit nové...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="251"/>
       <source>Manage...</source>
-      <translation type="unfinished">Manage...</translation>
+      <translation>Spravovat...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="258"/>
       <source>Revert...</source>
-      <translation type="unfinished">Revert...</translation>
+      <translation>Vrátit...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="272"/>
@@ -2050,12 +2050,12 @@ Podrobnosti o naleznete ve FreeCAD Wiki.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="379"/>
       <source>The text cursor will be blinking</source>
-      <translation type="unfinished">The text cursor will be blinking</translation>
+      <translation>Textový kurzor bude blikat</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="382"/>
       <source>Enable cursor blinking</source>
-      <translation type="unfinished">Enable cursor blinking</translation>
+      <translation>Povolit blikání kurzoru</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="417"/>
@@ -2134,7 +2134,7 @@ FreeCAD toto okno zobrazí</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="91"/>
       <source>Manage preference packs</source>
-      <translation type="unfinished">Manage preference packs</translation>
+      <translation>Spravovat balíčky předvoleb</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="262"/>
@@ -2184,7 +2184,7 @@ FreeCAD toto okno zobrazí</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="362"/>
       <source>Preference Pack Name</source>
-      <translation type="unfinished">Preference Pack Name</translation>
+      <translation>Název balíčku předvoleb</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="363"/>
@@ -2199,7 +2199,7 @@ FreeCAD toto okno zobrazí</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="390"/>
       <source>Apply the %1 preference pack</source>
-      <translation type="unfinished">Apply the %1 preference pack</translation>
+      <translation>Použít balíček předvoleb %1</translation>
     </message>
   </context>
   <context>
@@ -2283,7 +2283,7 @@ FreeCAD toto okno zobrazí</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="249"/>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
-      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+      <translation>Spustit návod jak spustit makro z globálního panelu nástrojů.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="252"/>
@@ -2293,7 +2293,7 @@ FreeCAD toto okno zobrazí</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="275"/>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
-      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+      <translation>Otevřít Správce rozšíření, kde lze stáhnout makra vytvořená komunitou a další doplňky.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="278"/>
@@ -2783,12 +2783,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="14"/>
       <source>Manage Preference Packs</source>
-      <translation type="unfinished">Manage Preference Packs</translation>
+      <translation>Spravovat balíčky předvoleb</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="56"/>
       <source>Open Addon Manager...</source>
-      <translation type="unfinished">Open Addon Manager...</translation>
+      <translation>Otevřít správce rozšíření...</translation>
     </message>
   </context>
   <context>
@@ -2796,37 +2796,37 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="88"/>
       <source>User-Saved Preference Packs</source>
-      <translation type="unfinished">User-Saved Preference Packs</translation>
+      <translation>Balíčky předvoleb uložené uživatelem</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="92"/>
       <source>Built-In Preference Packs</source>
-      <translation type="unfinished">Built-In Preference Packs</translation>
+      <translation>Vestavěné balíčky předvoleb</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="127"/>
       <source>Toggle visibility of built-in preference pack '%1'</source>
-      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+      <translation>Přepnout viditelnost vestavěného balíčku předovleb '%1'</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="134"/>
       <source>Delete user-saved preference pack '%1'</source>
-      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+      <translation>Odstranit balíček předvoleb '%1' uložený uživatelem</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="144"/>
       <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
-      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+      <translation>Přepnout viditelnost doplňkového balíčku předvoleb '%1' (k trvalému odstranění použijte Správce rozšíření)</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="179"/>
       <source>Delete saved preference pack?</source>
-      <translation type="unfinished">Delete saved preference pack?</translation>
+      <translation>Smazat uložený balíček předvoleb?</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="180"/>
       <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
-      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+      <translation>Opravdu chcete odstranit balíček předvoleb s názvem '%1'? Tuto akci nelze vrátit zpět.</translation>
     </message>
   </context>
   <context>
@@ -3257,17 +3257,17 @@ z Python konzole do panelu Report</translation>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="14"/>
       <source>Revert to Backup Config</source>
-      <translation type="unfinished">Revert to Backup Config</translation>
+      <translation>Obnovit konfiguraci ze zálohy</translation>
     </message>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="26"/>
       <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
-      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+      <translation>VAROVÁNÍ: tento proces vrátí všechny změny v nastavení provedené od zadaného data, a také resetuje vaše nedávné soubory a makra do jejich stavu k tomuto datu.</translation>
     </message>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="52"/>
       <source>Available backup files:</source>
-      <translation type="unfinished">Available backup files:</translation>
+      <translation>Dostupné záložní soubory:</translation>
     </message>
   </context>
   <context>
@@ -3275,7 +3275,7 @@ z Python konzole do panelu Report</translation>
     <message>
       <location filename="../DlgRevertToBackupConfigImp.cpp" line="95"/>
       <source>No selection in dialog, cannot load backup file</source>
-      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
+      <translation>Žádný výběr v dialogovém okně, nelze načíst záložní soubor</translation>
     </message>
   </context>
   <context>
@@ -3353,14 +3353,14 @@ pravém dolním rohu v otevřených souborech</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="63"/>
       <source>Relative size :   </source>
-      <translation type="unfinished">Relative size :   </translation>
+      <translation>Relativní velikost:   </translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</translation>
+      <translation>Velikost hlavní soustavy souřadnic
+v rohu -- v % výšky/šířky pohledu</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="86"/>
@@ -3431,16 +3431,16 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+      <translation>Je-li vybráno, budou použity Vertex Buffer Objects (VBO).
+VBO je OpenGL funkce, která umožňuje nahrávání vrcholových 
+dat (poloha, normálový vektor, barva atd.) na grafickou kartu.
+VBO nabízejí výrazné zvýšení výkonnosti, protože data jsou umístěna
+v grafické paměti spíše než v systémové paměti, a proto může být
+vykreslena přímo na GPU. 
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Poznámka: Tato funkce může někdy vést k různým
+problémům od grafických anomálií až po chyby GPU. Nezapomeňte
+nahlásit toto nastavení při hledání podpory na FreeCAD fóru, je-li zapnuto</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="196"/>
@@ -3450,7 +3450,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     <message>
       <location filename="../DlgSettings3DView.ui" line="211"/>
       <source>Render cache</source>
-      <translation type="unfinished">Render cache</translation>
+      <translation>Mezipaměť vykreslování</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="224"/>
@@ -3461,13 +3461,14 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>"Mezipaměť vykreslování" (Render Caching) je jiné označení pro 
+"Akceleraci vykreslování" (Rendering Acceleration).
+Jsou k dispozici tři možnosti, jak toho dosáhnout: 
+1) 'Automaticky' (výchozí), Coin3D rozhodne, kdy použít mezipaměť.
+2) 'Distribuovaná', zapne mezipaměť pro všechny uzly poskytovatelů pohledu.
+3) 'Centralizovaná', vypne mezipaměť pro všechny uzly poskytovatelů pohledu a 
+mezipaměť v kořenovém uzlu pro graf scény. Toto nastavení se vykresluje
+nejrychleji, ale má pomalejší odezvu na změny scény.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="237"/>
@@ -3527,7 +3528,7 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="322"/>
       <source>Render types of transparent objects</source>
-      <translation type="unfinished">Render types of transparent objects</translation>
+      <translation>Vykreslovat typy průhledných objektů</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="332"/>
@@ -3573,14 +3574,14 @@ Větší hodnota usnadňuje výběr věcí, ale znemožňuje výběr malých prv
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Vzájemná vzdálenost očí pro stereo projekce.
+Zadaná hodnota je koeficient pro vynásobení velikosti 
+ohraničujícího kvádru 3D objektů, které jsou zobrazeny.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="454"/>
       <source>Backlight is enabled with the defined color</source>
-      <translation type="unfinished">Backlight is enabled with the defined color</translation>
+      <translation>Podsvícení je zapnuto s definovanou barvou</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="457"/>
@@ -3676,27 +3677,27 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="14"/>
       <source>Cache</source>
-      <translation type="unfinished">Cache</translation>
+      <translation>Mezipaměť</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Složka mezipaměti</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location:</source>
-      <translation type="unfinished">Location:</translation>
+      <translation>Poloha:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="56"/>
       <source>Check periodically at program start:</source>
-      <translation type="unfinished">Check periodically at program start:</translation>
+      <translation>Pravidelně kontrolovat při spuštění programu:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="83"/>
       <source>Always</source>
-      <translation type="unfinished">Always</translation>
+      <translation>Vždy</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="88"/>
@@ -3711,12 +3712,12 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="98"/>
       <source>Monthly</source>
-      <translation type="unfinished">Monthly</translation>
+      <translation>Měsíčně</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="103"/>
       <source>Yearly</source>
-      <translation type="unfinished">Yearly</translation>
+      <translation>Ročně</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="108"/>
@@ -3726,17 +3727,17 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="116"/>
       <source>Cache size limit:</source>
-      <translation type="unfinished">Cache size limit:</translation>
+      <translation>Limit velikosti mezipaměti:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="161"/>
       <source>Check now...</source>
-      <translation type="unfinished">Check now...</translation>
+      <translation>Zkontrolovat nyní...</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="58"/>
       <source>Notify the user if the cache size exceeds the specified limit</source>
-      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+      <translation>Upozornit uživatele, pokud velikost mezipaměti překročí zadaný limit</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="60"/>
@@ -3746,7 +3747,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="117"/>
       <source>Current cache size: %1</source>
-      <translation type="unfinished">Current cache size: %1</translation>
+      <translation>Aktuální velikost mezipaměti: %1</translation>
     </message>
   </context>
   <context>
@@ -3794,7 +3795,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="106"/>
       <source>Color gradient is used with its full color range</source>
-      <translation type="unfinished">Color gradient is used with its full color range</translation>
+      <translation>Barevný gradient je použit s plným rozsahem barev</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="109"/>
@@ -3809,7 +3810,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="122"/>
       <source>Color gradient starts from the zero value</source>
-      <translation type="unfinished">Color gradient starts from the zero value</translation>
+      <translation>Barevný gradient začíná od nulové hodnoty</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="125"/>
@@ -3830,8 +3831,8 @@ bounding box size of the 3D object that is currently displayed.</translation>
       <location filename="../DlgSettingsColorGradient.ui" line="159"/>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
-      <translation type="unfinished">Data outside the specified min-max range
-will be displayed in gray</translation>
+      <translation>Data mimo zadaný min-max rozsah
+budou zobrazena šedě</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="163"/>
@@ -3847,13 +3848,13 @@ will be displayed in gray</translation>
       <location filename="../DlgSettingsColorGradient.ui" line="173"/>
       <source>Data outside the specified min-max range
 will be displayed with transparency</source>
-      <translation type="unfinished">Data outside the specified min-max range
-will be displayed with transparency</translation>
+      <translation>Data mimo zadaný min-max rozsah
+budou zobrazena s průhledností</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="177"/>
       <source>Out &amp;transparent</source>
-      <translation type="unfinished">Out &amp;transparent</translation>
+      <translation>Mimo &amp;průhledné</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="180"/>
@@ -3878,7 +3879,7 @@ will be displayed with transparency</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="257"/>
       <source>Number of labels besides the color bar</source>
-      <translation type="unfinished">Number of labels besides the color bar</translation>
+      <translation>Počet štítků podél barevné stupnice</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="267"/>
@@ -3894,8 +3895,8 @@ will be displayed with transparency</translation>
       <location filename="../DlgSettingsColorGradient.ui" line="312"/>
       <source>Number of decimals for labels
 besides the color bar</source>
-      <translation type="unfinished">Number of decimals for labels
-besides the color bar</translation>
+      <translation>Počet desetinných míst pro popisky
+podél barevné škály</translation>
     </message>
     <message>
       <source/>
@@ -3999,8 +4000,8 @@ Tato funkce může mírně prodloužit dobu přepočítání.</translation>
       <location filename="../DlgSettingsDocument.ui" line="255"/>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation type="unfinished">If there is a recovery file available the application will
-automatically run a file recovery when it is started.</translation>
+      <translation>Při spuštění aplikace se automaticky spustí obnova
+souboru, pokud je soubor pro obnovu k dispozici.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="259"/>
@@ -4098,11 +4099,11 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation type="unfinished">Enable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</translation>
+      <translation>Povolit částečné načítání propojených externích dokumentů.
+Pouze když je propojený dokument automaticky otevřen společně s hlavním 
+dokumentem, budou odkazované objekty a jejich závislosti načteny.
+Částečně načtený dokument nemůže být upravován. Plně jej načtete 
+dvojitým kliknutím na ikonu dokumentu ve stromovém zobrazení.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="582"/>
@@ -4131,7 +4132,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="626"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
-      <translation type="unfinished">The field 'Last modified by' will be set to specified author when saving the file</translation>
+      <translation>Pole 'Naposledy upraveno' bude nastaveno na definovaného autora při ukládání souboru</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="629"/>
@@ -4489,12 +4490,12 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsImageImp.cpp" line="53"/>
       <source>Framebuffer (custom)</source>
-      <translation type="unfinished">Framebuffer (custom)</translation>
+      <translation>Framebuffer (vlastní)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImageImp.cpp" line="54"/>
       <source>Framebuffer (as is)</source>
-      <translation type="unfinished">Framebuffer (as is)</translation>
+      <translation>Framebuffer (jak je)</translation>
     </message>
   </context>
   <context>
@@ -4668,7 +4669,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
       <source>Keyboard shortcut count</source>
-      <translation type="unfinished">Keyboard shortcut count</translation>
+      <translation>Počet klávesových zkratek</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
@@ -4843,7 +4844,7 @@ Otočení: díl se otočí kolem osy z.</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="366"/>
       <source>Camera zoom</source>
-      <translation type="unfinished">Camera zoom</translation>
+      <translation>Zoom kamery</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="385"/>
@@ -4991,17 +4992,17 @@ místo v konzoli Pythonu</translation>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="46"/>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>Tvar kurzoru bude blok</translation>
     </message>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="49"/>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Povolit blokový kurzor</translation>
     </message>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="65"/>
       <source>Saves Python history across sessions</source>
-      <translation type="unfinished">Saves Python history across sessions</translation>
+      <translation>Uloží historii Pythonu napříč relacemi</translation>
     </message>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="68"/>
@@ -5328,8 +5329,8 @@ místo v konzoli Pythonu</translation>
       <location filename="../DlgUnitsCalculator.ui" line="83"/>
       <source>List of last used calculations.
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations.
-To add a calculation press Return in the value input field</translation>
+      <translation>Seznam naposledy použitých výpočtů.
+Pro přidání výpočtu stiskněte tlačítko Zpět ve vstupním poli</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="94"/>
@@ -6265,12 +6266,12 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../DlgObjectSelection.ui" line="157"/>
       <source>Auto select depending objects</source>
-      <translation type="unfinished">Auto select depending objects</translation>
+      <translation>Automaticky vybrat závislé objekty</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="107"/>
       <source>Depending on</source>
-      <translation type="unfinished">Depending on</translation>
+      <translation>Závisí na</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="108"/>
@@ -6287,7 +6288,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="111"/>
       <source>Depended by</source>
-      <translation type="unfinished">Depended by</translation>
+      <translation>Závisí</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
@@ -6396,7 +6397,7 @@ původně vybranými před otevřením tohoto dialogu</translation>
     <message>
       <location filename="../ReportView.cpp" line="574"/>
       <source>Show output window on</source>
-      <translation type="unfinished">Show output window on</translation>
+      <translation>Zobrazit výstupní okno na</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="595"/>
@@ -6985,17 +6986,17 @@ Chcete uložit provedené změny?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="708"/>
       <source>Help addon needed!</source>
-      <translation type="unfinished">Help addon needed!</translation>
+      <translation>Doplněk nápovědy je potřeba!</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="709"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
-      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+      <translation>Systém nápovědy %1 je nyní zpracován doplňkem "Nápověda". Může být snadno nainstalován prostřednictvím Správce rozšíření</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="711"/>
       <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
+      <translation>Otevřít správce rozšíření</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="906"/>
@@ -7180,7 +7181,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../Widgets.cpp" line="474"/>
       <source>Press modifier keys</source>
-      <translation type="unfinished">Press modifier keys</translation>
+      <translation>Stiskněte modifikační klávesu</translation>
     </message>
   </context>
   <context>
@@ -7224,17 +7225,17 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="55"/>
       <source>Press right mouse button and move mouse</source>
-      <translation type="unfinished">Press right mouse button and move mouse</translation>
+      <translation>Stiskněte pravé tlačítko myši a pohněte myší</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="57"/>
       <source>Press left mouse button and move mouse</source>
-      <translation type="unfinished">Press left mouse button and move mouse</translation>
+      <translation>Stiskněte levé tlačítko myši a pohněte myší</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="59"/>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
-      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
+      <translation>Stiskněte prostřední tlačítko myši nebo SHIFT a pravé tlačítko myši</translation>
     </message>
   </context>
   <context>
@@ -7348,7 +7349,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="664"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="774"/>
       <source>Rename property group</source>
-      <translation type="unfinished">Rename property group</translation>
+      <translation>Přejmenovat skupinu vlastností</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="681"/>
@@ -7358,7 +7359,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="774"/>
       <source>Group name:</source>
-      <translation type="unfinished">Group name:</translation>
+      <translation>Jméno skupiny:</translation>
     </message>
   </context>
   <context>
@@ -7548,7 +7549,7 @@ Chcete průvodce ukončit bez uložení dat?</translation>
     <message>
       <location filename="../Action.cpp" line="939"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
+      <translation>Spustit makro %1 (Shift+kliknutí pro úpravu) klávesová zkratka: %2</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>
@@ -7594,17 +7595,17 @@ Chcete průvodce ukončit bez uložení dat?</translation>
     <message>
       <location filename="../EditorView.cpp" line="747"/>
       <source>Next</source>
-      <translation type="unfinished">Next</translation>
+      <translation>Další</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="748"/>
       <source>Case sensitive</source>
-      <translation type="unfinished">Case sensitive</translation>
+      <translation>Rozlišovat velikost písmen</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="749"/>
       <source>Whole words</source>
-      <translation type="unfinished">Whole words</translation>
+      <translation>Celá slova</translation>
     </message>
   </context>
   <context>
@@ -7903,7 +7904,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="57"/>
       <source>Press right mouse button</source>
-      <translation type="unfinished">Press right mouse button</translation>
+      <translation>Stiskněte pravé tlačítko myši</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="59"/>
@@ -8134,7 +8135,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="Translator.cpp" line="173"/>
       <source>Georgian</source>
-      <translation type="unfinished">Georgian</translation>
+      <translation>Gruzínština</translation>
     </message>
   </context>
   <context>
@@ -8248,12 +8249,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="2846"/>
       <source>Add dependent objects to selection</source>
-      <translation type="unfinished">Add dependent objects to selection</translation>
+      <translation>Přidat závislé objekty k výběru</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2847"/>
       <source>Adds all dependent objects to the selection</source>
-      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+      <translation>Přidá do výběru všechny závislé objekty</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2849"/>
@@ -8978,18 +8979,18 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="1081"/>
       <source>Please check report view for more...</source>
-      <translation type="unfinished">Please check report view for more...</translation>
+      <translation>Další informace najdete v zobrazení reportu...</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1084"/>
       <source>Physical path:</source>
-      <translation type="unfinished">Physical path:</translation>
+      <translation>Fyzická cesta:</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1086"/>
       <location filename="../Document.cpp" line="1092"/>
       <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
+      <translation>Dokument:</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1088"/>
@@ -9405,34 +9406,34 @@ podtržítko a nesmí začínat číslicí.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2485"/>
       <source>Setup configurable object</source>
-      <translation type="unfinished">Setup configurable object</translation>
+      <translation>Nastavení konfigurovatelného objektu</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2486"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
+      <translation>Vyberte, který objekt chcete zkopírovat nebo vyloučit při změně konfigurace. Všechny externí propojené objekty jsou ve výchozím nastavení vyloučeny.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2501"/>
       <source>Please select which objects to copy when the configuration is changed</source>
-      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+      <translation>Vyberte objekty, které chcete kopírovat, když je konfigurace změněna</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2503"/>
       <source>Apply to all</source>
-      <translation type="unfinished">Apply to all</translation>
+      <translation>Použít na všechny</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2504"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
-option to apply only to this link.</translation>
+      <translation>Použít nastavení pro všechny odkazy. Nebo odškrtněte tuto
+volbu a nastavení se použije jen pro tento odkaz.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2549"/>
       <source>Copy on change</source>
-      <translation type="unfinished">Copy on change</translation>
+      <translation>Kopírovat při změně</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2550"/>
@@ -9442,7 +9443,7 @@ option to apply only to this link.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2551"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
-      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+      <translation>Povolit automatické kopírování propojených objektů při změně jejich konfigurace</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2564"/>
@@ -9454,19 +9455,19 @@ option to apply only to this link.</translation>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
-      <translation type="unfinished">Copy the linked object when its configuration is changed.
-Also auto redo the copy if the original linked object is changed.
+      <translation>Zkopírovat propojený objekt při změně jeho konfigurace.
+Také automaticky opakovat kopírování, pokud se změní původní propojený objekt.
 </translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2584"/>
       <source>Disable copy on change</source>
-      <translation type="unfinished">Disable copy on change</translation>
+      <translation>Zakázat kopírování při změně</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2599"/>
       <source>Refresh configurable object</source>
-      <translation type="unfinished">Refresh configurable object</translation>
+      <translation>Obnovit konfigurovatelný objekt</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2600"/>
@@ -9474,25 +9475,25 @@ Also auto redo the copy if the original linked object is changed.
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
-      <translation type="unfinished">Synchronize the original configurable source object by
-creating a new deep copy. Note that any changes made to
-the current copy will be lost.
+      <translation>Synchronizovat původní konfigurovatelný zdrojový objekt tím, 
+že se vytvoří nová kopie. Vemte v úvahu, že změny vykonané 
+na aktuální kopii budou ztraceny.
 </translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2632"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Přepnout prvky pole</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2641"/>
       <source>Change whether show each link array element as individual objects</source>
-      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+      <translation>Určuje, zda zobrazit jednotlivé prvky spojeného pole jako samostatné objekty</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2658"/>
       <source>Transform at the origin of the placement</source>
-      <translation type="unfinished">Transform at the origin of the placement</translation>
+      <translation>Transformovat v počátku umístění</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2667"/>
@@ -10221,13 +10222,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="845"/>
       <source>Link navigation</source>
-      <translation type="unfinished">Link navigation</translation>
+      <translation>Odkazová navigace</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="846"/>
       <location filename="../CommandLink.cpp" line="848"/>
       <source>Link navigation actions</source>
-      <translation type="unfinished">Link navigation actions</translation>
+      <translation>Akce odkazové navigace</translation>
     </message>
   </context>
   <context>
@@ -10705,13 +10706,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="702"/>
       <source>Report a bug</source>
-      <translation type="unfinished">Report a bug</translation>
+      <translation>Nahlásit chybu</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="703"/>
       <location filename="../CommandStd.cpp" line="705"/>
       <source>Report a bug or suggest a feature</source>
-      <translation type="unfinished">Report a bug or suggest a feature</translation>
+      <translation>Nahlásit chybu nebo navrhnout funkci</translation>
     </message>
   </context>
   <context>

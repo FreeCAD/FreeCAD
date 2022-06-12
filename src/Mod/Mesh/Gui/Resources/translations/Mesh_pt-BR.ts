@@ -1782,7 +1782,7 @@ a uma aparência suavizada.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Remalhar com Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -2122,22 +2122,22 @@ a uma aparência suavizada.
     <message>
       <location filename="../../Workbench.cpp" line="77"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>Número de facetas:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="83"/>
       <source>Minimum bound:</source>
-      <translation type="unfinished">Minimum bound:</translation>
+      <translation>Limite mínimo:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="86"/>
       <source>Maximum bound:</source>
-      <translation type="unfinished">Maximum bound:</translation>
+      <translation>Limite máximo:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Mesh info box</source>
-      <translation type="unfinished">Mesh info box</translation>
+      <translation>Caixa de informações de malha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
@@ -2319,7 +2319,7 @@ Favor visitar http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Command.cpp" line="529"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>Formato de Fabricação 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
@@ -2483,7 +2483,7 @@ Favor visitar http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>Análise de malha</translation>
     </message>
   </context>
 </TS>

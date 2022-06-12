@@ -856,7 +856,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5947"/>
       <source>Create a fillet between two lines or at a coincident point</source>
-      <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
+      <translation>Sortu bi lerroren arteko biribiltzea bat datozen puntu batean</translation>
     </message>
   </context>
   <context>
@@ -2766,7 +2766,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <location filename="../../CommandConstraints.cpp" line="6173"/>
       <location filename="../../CommandConstraints.cpp" line="6863"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight.</translation>
+      <translation>Hautatu B-spline pisua ez den ertz bat.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2583"/>
@@ -3163,7 +3163,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4740"/>
       <source>Define B-Spline Degree, between 1 and %1:</source>
-      <translation type="unfinished">Define B-Spline Degree, between 1 and %1:</translation>
+      <translation>Definitu B-spline gradua, 1 eta %1 artekoa:</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="718"/>
@@ -3223,12 +3223,12 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1203"/>
       <source>Nothing is selected. Please select a b-spline.</source>
-      <translation type="unfinished">Nothing is selected. Please select a b-spline.</translation>
+      <translation>Ez da ezer hautatu. Hautatu B-spline bat.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1217"/>
       <source>Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</source>
-      <translation type="unfinished">Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</translation>
+      <translation>Hautatu B-spline kurbat bat adabegi bat txertatzeko (ez adabegia gainean jartzeko). Kurba ez bada B-spline bat, bihurtu lehenengo.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="131"/>
@@ -3516,7 +3516,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="23"/>
       <source>Constraint widget settings</source>
-      <translation type="unfinished">Constraint widget settings</translation>
+      <translation>Murriketa-widgetaren ezarpenak</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="35"/>
@@ -4745,7 +4745,7 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="187"/>
       <source>Associated Constraint Filter</source>
-      <translation type="unfinished">Associated Constraint Filter</translation>
+      <translation>Elkartutako murrizketa-iragazkia</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="207"/>
@@ -4785,7 +4785,7 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="279"/>
       <source>Restricts 3D visibility to the listed elements</source>
-      <translation type="unfinished">Restricts 3D visibility to the listed elements</translation>
+      <translation>3D ikusgaitasuna zerrendako elementuetara murrizten du</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="282"/>
@@ -5085,14 +5085,13 @@ Puntuak lerro batetik sareta-tamainaren bosten bat baino hurbilago ezarri behar 
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and non-manifold vertexes</source>
-      <translation type="unfinished">Open and non-manifold vertexes</translation>
+      <translation>Erpin ireki eta ez anizkoitzak</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
 This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
-      <translation type="unfinished">Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
-This is purely based on topological shape of the sketch and not on its geometry/constrain set.</translation>
+      <translation>Krokisa solidoak sortzeko erabiltzen bada erroreak eragin ditzaketen erpin ireki eta ez anizkoitzak nabarmentzen ditu. Krokisaren forma topologikoan oinarrituta dago eta ez bere geometria/murrizketa multzoan.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="42"/>
@@ -5102,7 +5101,7 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="52"/>
       <source>Fixes found missing coincidences by adding extra coincident constrains</source>
-      <translation type="unfinished">Fixes found missing coincidences by adding extra coincident constrains</translation>
+      <translation>Falta diren bat etortzeak konpontzen ditu bat datozen murrizketa gehigarriak gehituta</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="55"/>
@@ -5117,7 +5116,7 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="68"/>
       <source>Defines the X/Y tolerance inside which missing coincidences are searched.</source>
-      <translation type="unfinished">Defines the X/Y tolerance inside which missing coincidences are searched.</translation>
+      <translation>Falta diren bat etortzeak bilatzeko erabiliko den X/Y tolerantzia definitzen du.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
@@ -5133,8 +5132,8 @@ This is purely based on topological shape of the sketch and not on its geometry/
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
       <source>Finds and displays missing coincidences in the sketch.
 This is done by analyzing the sketch geometries and constraints.</source>
-      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
-This is done by analyzing the sketch geometries and constraints.</translation>
+      <translation>Krokisean falta diren bat etortzeak aurkitu eta bistaratzen ditu.
+Krokisaren geometriak eta murrizketak analizatzen dira horretarako.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -5159,12 +5158,12 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="115"/>
       <source>Finds invalid/malformed constrains in the sketch</source>
-      <translation type="unfinished">Finds invalid/malformed constrains in the sketch</translation>
+      <translation>Krokiseko murrizketa baliogabeak/okerrak aurkitzen ditu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="125"/>
       <source>Tries to fix found invalid constraints</source>
-      <translation type="unfinished">Tries to fix found invalid constraints</translation>
+      <translation>Aurkitutako murrizketa baliogabeak konpontzen saiatzen da</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="135"/>
@@ -5184,12 +5183,12 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="154"/>
       <source>Finds degenerated geometries in the sketch</source>
-      <translation type="unfinished">Finds degenerated geometries in the sketch</translation>
+      <translation>Krokisaren geometria degeneratuak aurkitzen ditu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="164"/>
       <source>Tries to fix found degenerated geometries</source>
-      <translation type="unfinished">Tries to fix found degenerated geometries</translation>
+      <translation>Aurkitutako geometria degeneratuak konpontzen saiatzen da</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="177"/>
@@ -5199,12 +5198,12 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="183"/>
       <source>Finds reversed external geometries</source>
-      <translation type="unfinished">Finds reversed external geometries</translation>
+      <translation>Alderantzizko kanpo-geometriak aurkitzen ditu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="193"/>
       <source>Fixes found reversed external geometries by swapping their endpoints</source>
-      <translation type="unfinished">Fixes found reversed external geometries by swapping their endpoints</translation>
+      <translation>Aurkitutako alderantzizko kanpo-geometriak konpontzen ditu amaiera-puntuak trukatuz</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="196"/>
@@ -5219,7 +5218,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="212"/>
       <source>Enables/updates constraint orientation locking</source>
-      <translation type="unfinished">Enables/updates constraint orientation locking</translation>
+      <translation>Orientazio-blokearen murrizketa gaitzen/eguneratzen du</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="215"/>
@@ -5337,7 +5336,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2907"/>
       <source>Solver failed to converge</source>
-      <translation type="unfinished">Solver failed to converge</translation>
+      <translation>Ebazleak ezin izan du konbergitu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2912"/>
@@ -5347,9 +5346,9 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
       <source>%n DoF(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
+      <translation>
+        <numerusform>Askatasun-gradu %n</numerusform>
+        <numerusform>%n askatasu-gradu</numerusform>
       </translation>
     </message>
     <message>

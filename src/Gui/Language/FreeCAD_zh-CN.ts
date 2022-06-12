@@ -758,7 +758,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="232"/>
       <source>The cache directory %1 exceeds the size of %2.</source>
-      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+      <translation>缓存目录 %1 超过了 %2 的大小。</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="233"/>
@@ -768,7 +768,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="234"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>警告: 请确保这是唯一正在运行的 %1 实例，并且没有文件被打开，因为这可能导致数据丢失!</translation>
     </message>
   </context>
   <context>
@@ -2008,7 +2008,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgGeneral.ui" line="238"/>
       <source>Save new...</source>
-      <translation type="unfinished">Save new...</translation>
+      <translation>保存新文件...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="251"/>

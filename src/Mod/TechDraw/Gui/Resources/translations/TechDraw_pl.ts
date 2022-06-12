@@ -6621,7 +6621,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="710"/>
       <source>Horizontal space between border of projections</source>
-      <translation>Odstęp poziomy pomiędzy obramowaniem projekcji</translation>
+      <translation>Odstęp poziomy między ramkami wyświetlanych elementów</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="738"/>
@@ -6631,7 +6631,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="757"/>
       <source>Vertical space between border of projections</source>
-      <translation>Odstęp pionowy między obramowaniem wyświetlanych elementów</translation>
+      <translation>Odstęp pionowy między ramkami wyświetlanych elementów</translation>
     </message>
   </context>
   <context>

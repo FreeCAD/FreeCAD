@@ -5342,8 +5342,8 @@ Esto se hace al analizar las geometrías y restricciones del croquis.</translati
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
       <source>%n DoF(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n DoF(s)</numerusform>
+      <translation>
+        <numerusform>%n DoF</numerusform>
         <numerusform>%n DoF(s)</numerusform>
       </translation>
     </message>

@@ -391,7 +391,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Lotu kalkulu-orriaren gelaxkak</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
@@ -433,37 +433,37 @@
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Hasierako gelaxkaren helbidea.
+Idatzi '=' adierazpen bat erabiltzeko.
+Adierazpenak gelaxka-helbideren baten kate bati egin behar dio erreferentzia.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Amaierako gelaxkaren helbidea.
+Idatzi '=' adierazpen bat erabiltzeko.
+Adierazpenak gelaxka-helbideren baten kate bati egin behar dio erreferentzia.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>Zein kalkulu-orrirekin lotuko den</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>Erreferentziatutako kalkulu-orriaren mendekotasuna
+ezkutatu egingo zaio mendekotasunen egiaztapenari.
+Erabilgarria mendekotasun ziklikoak saihesteko, erabili kontuz.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Ezkutatu loturaren mendekotasuna</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
@@ -555,12 +555,12 @@ eta propietate-izena zehazteko. Propietatea sortu egingo da lehendik ez badago.<
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Propietate-taldeen izena (aukerakoa)</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Deskonfiguratu</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -948,20 +948,20 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>Sorburuko eta helburuko gelaxken zenbaketak ez datoz bat. Lotura partzial batek funtzionatu dezake.
 
-Do you want to continue?</translation>
+Jarraitu?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Lotu kalkulu-orriaren gelaxkak</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
+      <translation>Errorea: 
 </translation>
     </message>
     <message>

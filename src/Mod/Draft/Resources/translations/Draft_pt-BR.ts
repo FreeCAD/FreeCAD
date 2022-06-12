@@ -261,8 +261,8 @@ ou do subelemento 'VertexN', 'EdgeN', ou 'FaceN', respectivamente, se for especi
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Ângulo final do arco (para um círculo completo, 
+                use o mesmo valor do ângulo inicial)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>
@@ -437,15 +437,14 @@ ative para produzir uma fusão, senão produz um composto</translation>
       <location filename="../../draftobjects/shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Para os modos CutLines e CutFaces, isto deixa as faces no lugar do corte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Comprimento dos segmentos se tiver tesselação de Elipses ou Bsplines 
+                    em segmentos de linha</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="111"/>
@@ -731,9 +730,7 @@ Essa propriedade é somente-leitura pois o valor é calculado à partir das prop
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</translation>
+      <translation>Ângulo final do arco elíptico (para um círculo completo, use o mesmo valor do ângulo inicial)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="52"/>
@@ -2278,8 +2275,8 @@ para polar ou circular e suas propriedades podem ser modificadas.</translation>
       <location filename="../../draftguitools/gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Cria uma curva de Bézier de N graus. Quanto mais pontos você escolher, maior o grau.
+CTRL para snap, SHIFT para restringir.</translation>
     </message>
   </context>
   <context>
@@ -2356,9 +2353,7 @@ O clone resultante pode ser dimensionado em cada uma de suas três direções.</
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Cria uma curva de Bézier composta por segmentos de segundo grau (quadrática) e terceiro grau (cúbica) Clique e arraste para definir cada segmento. Depois da curva criada você pode retornar para editar cada ponto de controle e configurar as propriedades de cada nó. CTRL para snap, SHIFT para restringir.</translation>
     </message>
   </context>
   <context>
@@ -4970,7 +4965,7 @@ Isto pode falhar para modelos DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se marcado, o contorno de uma figura humana é exibido no canto inferior esquerdo da grade. Esta opção só funciona se a bancada BIM estiver instalada e se a opção &amp;quot;Mostrar a borda da grade&amp;quot; estiver ativada.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
@@ -5085,7 +5080,7 @@ Isto pode falhar para modelos DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation type="unfinished">This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</translation>
+      <translation>Este é o método que o FreeCAD usará para converter arquivos DWG para DXF. Se for escolhido "Automático", o FreeCAD tentará encontrar um dos seguintes conversores na mesma ordem que eles são mostrados aqui. Se o FreeCAD não for capaz de encontrar algum, será necessário escolher um conversor específico e indicar seu caminho aqui abaixo. Escolha o utilitário "dwg2dxf" se estiver usando o LibreDWG, "ODAFileConverter" se estiver usando o conversor de arquivos ODA, ou o utilitário "dwg2dwg" se estiver utilizando a versão pro do QCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
@@ -6369,42 +6364,42 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../draftutils/init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Snap de extensão</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Snap paralelo</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Snap especial</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Snap próximo</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>Snap orto</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>Snap de grade</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>Snap no plano de trabalho</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Dimensões de snap</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="187"/>
@@ -7423,7 +7418,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Aresta curta demais!</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="518"/>
@@ -7656,7 +7651,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="355"/>
       <source>Add a new group with a given name</source>
-      <translation type="unfinished">Add a new group with a given name</translation>
+      <translation>Adicionar um novo grupo com um determinado nome</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="383"/>

@@ -67,12 +67,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via:</source>
-      <translation type="unfinished">Send to OpenSCAD via:</translation>
+      <translation>Bidali OpenSCADi honen bidez:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation type="unfinished">The transfer mechanism for getting data to and from OpenSCAD</translation>
+      <translation>Datuak OpenSCADetik eta OpenSCADera transferitzeko mekanismoa</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
@@ -87,7 +87,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>stdout pipe (requires OpenSCAD &gt;= 2021.1)</source>
-      <translation type="unfinished">stdout pipe (requires OpenSCAD &gt;= 2021.1)</translation>
+      <translation>stdout kanalizazioa (OpenSCAD &gt;= 2021.1 behar du)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
@@ -97,7 +97,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="240"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation type="unfinished">The path to the directory for transferring files to and from OpenSCAD</translation>
+      <translation>Fitxategiak OpenSCADetik eta OpenSCADera transferitzeko direktorioaren bide-izena</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="258"/>
@@ -173,18 +173,18 @@
     <message>
       <location filename="../../InitGui.py" line="130"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
+      <translation>Agian OpenSCADen Snap bertsio bat erabiltzen ari zara.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="148"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+      <translation>OpenSCAD exekuzioan aldi baterako fitxategia kargatzeak huts egiten badu, erabili FreeCADen OpenSCAD lan-mahaien hobespenak transferentzia-mekanismoa aldatzeko.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="143"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
+      <translation>Agian OpenSCADen bertsio isolatu bat erabiltzen ari zara.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
