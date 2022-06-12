@@ -30,6 +30,7 @@ import time
 
 
 # PathLog.setLevel(PathLog.Level.DEBUG)
+PathLog.setLevel(PathLog.Level.NOTICE)
 
 DebugMode = PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG
 
@@ -833,6 +834,7 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
         """Verify adaptive length"""
 
         if True:
+            # horizontal bones
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2'), 0, 1), 0)
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1Y1'), 0, 1), 1)
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y1'), 0, 1), 0.414214)
@@ -841,11 +843,10 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y-1'), 0, 1), 2.414211)
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X1Y-1'), 0, 1), 1)
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y-1'), 0, 1), 0.414214)
-
-        if True:
             self.assertRoughly(calc_adaptive_length(KINK('G1X1Y1/G1X0Y2'), 0, 1), 0.414214)
 
         if True:
+            # more horizontal and some vertical bones
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2'), 0, 1), 0)
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y1X1'), PI, 1), 1)
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X1'), PI, 1), 0.089820)
@@ -856,4 +857,21 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y1X-1'), 0, 1), 1)
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X-1'), 0, 1), 0.089820)
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X-1'), PI/2, 1), 0.414214)
+
+        if True:
+            # dogbones
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1Y1'), -PI/4, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y1'), -PI/8, 1), 1.613126)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1Y-1'), PI/4, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y-1'), PI/8, 1), 1.613126)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1X-1'), PI/4, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1X1'), 3*PI/4, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y-1/G1X1'), -3*PI/4, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y-1/G1X-1'), -PI/4, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1Y1/G1X0Y2'), 0, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X-1Y1/G1X0Y2'), PI, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1Y1/G1X2Y0'), PI/2, 2), 0.828428)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X-1Y-1/G1X-2Y0'), -PI/2, 2), 0.828428)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X-1Y1/G1X-2Y0'), PI/2, 2), 0.828428)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1Y-1/G1X2Y0'), -PI/2, 2), 0.828428)
 
