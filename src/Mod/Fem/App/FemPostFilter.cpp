@@ -296,6 +296,10 @@ void FemPostDataAlongLineFilter::GetAxisData() {
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     vtkDataArray* pdata = dset->GetPointData()->GetArray(PlotData.getValue());
+    // VTK cannot deliver data when the filer relies e.g. on a scalar clip filter
+    // whose value is set so that all data are clipped
+    if (!pdata)
+        return;
     vtkDataArray* tcoords = dset->GetPointData()->GetTCoords("Texture Coordinates");
 
     vtkIdType component = 0;
@@ -522,6 +526,10 @@ void FemPostScalarClipFilter::setConstraintForField() {
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
 
     vtkDataArray* pdata = dset->GetPointData()->GetArray(Scalars.getValueAsString());
+    // VTK cannot deliver data when the filer relies e.g. on a cut clip filter
+    // whose value is set so that all data are cut
+    if (!pdata)
+        return;
     double p[2];
     pdata->GetRange(p);
     m_constraints.LowerBound = p[0];
