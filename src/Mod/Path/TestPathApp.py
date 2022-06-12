@@ -68,6 +68,9 @@ from PathTests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
 from PathTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
 from PathTests.TestRefactoredTestPost import TestRefactoredTestPost
 
+from PathTests.TestPathLanguage import TestPathLanguage
+from PathTests.TestPathDressupDogboneII import TestPathDressupDogboneII
+
 # dummy usage to get flake8 and lgtm quiet
 False if depthTestCases.__name__ else True
 False if TestApp.__name__ else True
@@ -112,3 +115,6 @@ False if TestRefactoredGrblPost.__name__ else True
 False if TestRefactoredLinuxCNCPost.__name__ else True
 False if TestRefactoredMach3Mach4Post.__name__ else True
 False if TestRefactoredTestPost.__name__ else True
+
+False if TestPathLanguage.__name__ else True
+False if TestPathDressupDogboneII.__name__ else True

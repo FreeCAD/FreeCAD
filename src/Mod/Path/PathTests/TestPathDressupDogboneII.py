@@ -23,178 +23,17 @@
 import FreeCAD
 import Path
 import PathScripts.PathGeom as PathGeom
+import PathScripts.PathLanguage as PathLanguage
 import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 import math
-import time
 
 
 # PathLog.setLevel(PathLog.Level.DEBUG)
 PathLog.setLevel(PathLog.Level.NOTICE)
 
-DebugMode = PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG
-
-CmdMoveStraight = PathGeom.CmdMoveStraight + PathGeom.CmdMoveRapid
-
 PI = math.pi
-
-def normalizeAngle(a):
-    while a > PI:
-        a = a - 2 * PI
-    while a < -PI:
-        a = a + 2 * PI
-    return a
-
-class Instruction (object):
-    '''An Instruction is pure python replacement of Path.Command which also tracks its begin position.'''
-
-    def __init__(self, begin, cmd, param=None):
-        self.begin = begin
-        if type(cmd) == Path.Command:
-            self.cmd = Path.Name
-            self.param = Path.Parameters
-        else:
-            self.cmd = cmd
-            if param is None:
-                self.param = {}
-            else:
-                self.param = param
-
-    def anglesOfTangents(self):
-        return (0, 0)
-
-    def setPositionBegin(self, begin):
-        self.begin = begin
-
-    def positionBegin(self):
-        '''positionBegin() ... returns a Vector of the begin position'''
-        return self.begin
-
-    def positionEnd(self):
-        '''positionEnd() ... returns a Vector of the end position'''
-        return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), self.z(self.begin.z))
-
-    def pathLength(self):
-        '''pathLength() ... returns the lenght in mm'''
-        return 0
-
-    def isMove(self):
-        return False
-
-    def x(self, default=0):
-        return self.param.get('X', default)
-
-    def y(self, default=0):
-        return self.param.get('Y', default)
-
-    def z(self, default=0):
-        return self.param.get('Z', default)
-
-    def i(self, default=0):
-        return self.param.get('I', default)
-
-    def j(self, default=0):
-        return self.param.get('J', default)
-
-    def k(self, default=0):
-        return self.param.get('K', default)
-
-    def xyBegin(self):
-        '''xyBegin() ... internal convenience function'''
-        return FreeCAD.Vector(self.begin.x, self.begin.y, 0)
-    def xyEnd(self):
-        '''xyEnd() ... internal convenience function'''
-        return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), 0)
-
-    def __repr__(self):
-        return f"{self.cmd}{self.param}"
-
-    def str(self, digits=2):
-        if digits == 0:
-            s = [f"{k}: {int(v)}" for k, v in self.param.items()]
-        else:
-            fmt = f"{{}}: {{:.{digits}}}"
-            s = [fmt.format(k, v) for k, v in self.param.items()]
-        return f"{self.cmd}{{{', '.join(s)}}}"
-
-class MoveStraight (Instruction):
-
-    def anglesOfTangents(self):
-        '''anglesOfTangents() ... return a tuple with the tangent angles at begin and end position'''
-        begin = self.xyBegin()
-        end = self.xyEnd()
-        if end == begin:
-            return (0, 0)
-        a = PathGeom.getAngle(end - begin)
-        return (a, a)
-
-    def isMove(self):
-        return True
-
-    def pathLength(self):
-        return (self.positionEnd() - self.positionBegin()).Length
-
-class MoveArc (Instruction):
-
-    def anglesOfTangents(self):
-        '''anglesOfTangents() ... return a tuple with the tangent angles at begin and end position'''
-        begin = self.xyBegin()
-        end = self.xyEnd()
-        center = self.xyCenter()
-        # calculate angle of the hypotenuse at begin and end
-        s0 = PathGeom.getAngle(begin - center)
-        s1 = PathGeom.getAngle(end - center)
-        # the tangents are perpendicular to the hypotenuse with the sign determined by the
-        # direction of the arc
-        return (normalizeAngle(s0 + self.arcDirection()), normalizeAngle(s1 + self.arcDirection()))
-
-    def isMove(self):
-        return True
-
-    def isArc(self):
-        return True
-
-    def isCW(self):
-        return self.arcDirection() < 0
-
-    def isCCW(self):
-        return self.arcDirection() > 0
-
-    def arcAngle(self):
-        '''arcAngle() ... return the angle of the arc opening'''
-        begin = self.xyBegin()
-        end = self.xyEnd()
-        center = self.xyCenter()
-        s0 = PathGeom.getAngle(begin - center)
-        s1 = PathGeom.getAngle(end - center)
-
-        if self.isCW():
-            while s0 < s1:
-                s0 = s0 + 2 * PI
-            return s0 - s1
-
-        # CCW
-        while s1 < s0:
-            s1 = s1 + 2 * PI
-        return s1 - s0
-
-    def arcRadius(self):
-        '''arcRadius() ... return the radius'''
-        return (self.xyBegin() - self.xyCenter()).Length
-
-    def pathLength(self):
-        return self.arcAngle() * self.arcRadius()
-
-    def xyCenter(self):
-        return FreeCAD.Vector(self.begin.x + self.i(), self.begin.y + self.j(), 0)
-
-class MoveArcCW (MoveArc):
-    def arcDirection(self):
-        return -PI/2
-
-class MoveArcCCW (MoveArc):
-    def arcDirection(self):
-        return PI/2
+DebugMode = PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG
 
 class Kink (object):
     '''A Kink represents the angle at which two moves connect.
@@ -211,7 +50,7 @@ A positive kink angle represents a move to the left, and a negative angle repres
 
     def deflection(self):
         '''deflection() ... returns the tangential difference of the two edges at their intersection'''
-        return normalizeAngle(self.t1 - self.t0)
+        return PathGeom.normalizeAngle(self.t1 - self.t0)
 
     def normAngle(self):
         '''normAngle() ... returns the angle opposite between the two tangents'''
@@ -220,8 +59,8 @@ A positive kink angle represents a move to the left, and a negative angle repres
         # is into which direction to turn. One lies in the center between the two edges and the
         # other is opposite to that. As it turns out, the magnitude of the tangents tell it all.
         if self.t0 > self.t1:
-            return normalizeAngle((self.t0 + self.t1 + PI) / 2)
-        return normalizeAngle((self.t0 + self.t1 - PI) / 2)
+            return PathGeom.normalizeAngle((self.t0 + self.t1 + PI) / 2)
+        return PathGeom.normalizeAngle((self.t0 + self.t1 - PI) / 2)
 
     def position(self):
         '''position() ... position of the edge's intersection'''
@@ -235,59 +74,6 @@ A positive kink angle represents a move to the left, and a negative angle repres
 
     def __repr__(self):
         return f"({self.x():.4f}, {self.y():.4f})[t0={180*self.t0/PI:.2f}, t1={180*self.t1/PI:.2f}, deflection={180*self.deflection()/PI:.2f}, normAngle={180*self.normAngle()/PI:.2f}]"
-
-class Maneuver (object):
-    '''A series of instructions and moves'''
-
-    def __init__(self, begin=None, instr=None):
-        self.instr = instr if instr else []
-        self.setPositionBegin(begin if begin else FreeCAD.Vector(0, 0, 0))
-
-    def setPositionBegin(self, begin):
-        self.begin = begin
-        for i in self.instr:
-            i.setPositionBegin(begin)
-            begin = i.positionEnd()
-
-    def positionBegin(self):
-        return self.begin
-
-    def getMoves(self):
-        return [instr for instr in self.instr if instr.isMove()]
-
-    def __repr__(self):
-        if self.instr:
-            return '\n'.join([str(i) for i in self.instr])
-        return ''
-
-    @classmethod
-    def InstructionFromCommand(cls, cmd, begin=None):
-        if not begin:
-            begin = FreeCAD.Vector(0, 0, 0)
-
-        if cmd.Name in CmdMoveStraight:
-            return MoveStraight(begin, cmd.Name, cmd.Parameters)
-        if cmd.Name in PathGeom.CmdMoveCW:
-            return MoveArcCW(begin, cmd.Name, cmd.Parameters)
-        if cmd.Name in PathGeom.CmdMoveCCW:
-            return MoveArcCCW(begin, cmd.Name, cmd.Parameters)
-        return Instruction(begin, cmd.Name, cmd.Parameters)
-
-    @classmethod
-    def FromPath(cls, path, begin=None):
-        maneuver = Maneuver(begin)
-        instr = []
-        begin = maneuver.positionBegin()
-        for cmd in path.Commands:
-            i = cls.InstructionFromCommand(cmd, begin)
-            instr.append(i)
-            begin = i.positionEnd()
-        maneuver.instr = instr
-        return maneuver
-
-    @classmethod
-    def FromGCode(cls, gcode, begin=None):
-        return cls.FromPath(Path.Path(gcode), begin)
 
 def createKinks(maneuver):
     k = []
@@ -362,8 +148,8 @@ def generate_tbone(kink, length, dim):
 
     d1 = d0 + length
 
-    moveIn = MoveStraight(kink.position(), 'G1', {dim: d1})
-    moveOut = MoveStraight(moveIn.positionEnd(), 'G1', {dim: d0})
+    moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {dim: d1})
+    moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {dim: d0})
     return Bone(kink, angle, [moveIn, moveOut])
 
 def generate_tbone_horizontal(kink, length):
@@ -388,27 +174,27 @@ def generate_bone(kink, length, angle):
     dy = length * math.sin(angle)
     p0 = kink.position()
 
-    moveIn = MoveStraight(kink.position(), 'G1', {'X': p0.x + dx, 'Y': p0.y + dy})
-    moveOut = MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
+    moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'X': p0.x + dx, 'Y': p0.y + dy})
+    moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
 
     return Bone(kink, angle, [moveIn, moveOut])
 
 def generate_tbone_on_short(kink, length):
     if kink.m0.pathLength() < kink.m1.pathLength():
-        a = normalizeAngle(kink.t0 + PI/2)
+        a = PathGeom.normalizeAngle(kink.t0 + PI/2)
     else:
-        a = normalizeAngle(kink.t1 - PI/2)
+        a = PathGeom.normalizeAngle(kink.t1 - PI/2)
     return generate_bone(kink, length, a)
 
 def generate_tbone_on_long(kink, length):
     if kink.m0.pathLength() > kink.m1.pathLength():
-        a = normalizeAngle(kink.t0 + PI/2)
+        a = PathGeom.normalizeAngle(kink.t0 + PI/2)
     else:
-        a = normalizeAngle(kink.t1 - PI/2)
+        a = PathGeom.normalizeAngle(kink.t1 - PI/2)
     return generate_bone(kink, length, a)
 
 def generate_dogbone(kink, length):
-    #return generate_bone(kink, length, normalizeAngle((kink.deflection() + PI) / 2))
+    #return generate_bone(kink, length, PathGeom.normalizeAngle((kink.deflection() + PI) / 2))
     return generate_bone(kink, length, kink.normAngle())
 
 def calc_adaptive_length(kink, angle, nominal_length):
@@ -448,7 +234,7 @@ def calc_adaptive_length(kink, angle, nominal_length):
     # speaking no intersection and the bone is ineffective. However, giving it our 
     # best shot we should probably move the entire depth.
 
-    da = normalizeAngle(kink.normAngle() - angle)
+    da = PathGeom.normalizeAngle(kink.normAngle() - angle)
     depth = dist * math.cos(da)
     if depth < 0:
         PathLog.debug(f"depth={depth:4f}: kink={kink}, angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI} -> depth=0.0")
@@ -484,7 +270,7 @@ def calc_adaptive_length(kink, angle, nominal_length):
 def MNVR(gcode, begin=None):
     # 'turns out the replace() isn't really necessary
     # leave it here anyway for clarity
-    return Maneuver.FromGCode(gcode.replace('/', '\n'), begin)
+    return PathLanguage.Maneuver.FromGCode(gcode.replace('/', '\n'), begin)
 
 def INSTR(gcode, begin=None):
     return MNVR(gcode, begin).instr[0]
@@ -495,14 +281,8 @@ def KINK(gcode, begin=None):
         return None
     return Kink(maneuver.instr[0], maneuver.instr[1])
 
-class TestDressupDogboneII(PathTestUtils.PathTestBase):
+class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
     """Unit tests for the Dogbone dressup."""
-
-    def assertTangents(self, instr, t1):
-        """Assert that the two tangent angles are identical"""
-        t0 = instr.anglesOfTangents()
-        self.assertRoughly(t0[0], t1[0])
-        self.assertRoughly(t0[1], t1[1])
 
     def assertKinks(self, maneuver, s):
         kinks = [f"{k.deflection():4.2f}" for k in createKinks(maneuver)]
@@ -522,81 +302,6 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
 
         b = [i.str(digits) for i in bone.instr]
         self.assertEqual(f"[{', '.join(b)}]", s)
-
-    def test00(self):
-        """Verify G0 instruction construction"""
-        self.assertEqual(str(Maneuver.FromGCode('')), '')
-        self.assertEqual(len(Maneuver.FromGCode('').instr), 0)
-
-        self.assertEqual(str(Maneuver.FromGCode('G0')), 'G0{}')
-        self.assertEqual(str(Maneuver.FromGCode('G0X3')), "G0{'X': 3.0}")
-        self.assertEqual(str(Maneuver.FromGCode('G0X3Y7')), "G0{'X': 3.0, 'Y': 7.0}")
-        self.assertEqual(str(Maneuver.FromGCode('G0X3Y7/G0Z0')), "G0{'X': 3.0, 'Y': 7.0}\nG0{'Z': 0.0}")
-        self.assertEqual(len(Maneuver.FromGCode('G0X3Y7').instr), 1)
-        self.assertEqual(len(Maneuver.FromGCode('G0X3Y7/G0Z0').instr), 2)
-        self.assertEqual(type(Maneuver.FromGCode('G0X3Y7').instr[0]), MoveStraight)
-
-    def test01(self):
-        """Verify G1 instruction construction"""
-        self.assertEqual(str(Maneuver.FromGCode('G1')), 'G1{}')
-        self.assertEqual(str(Maneuver.FromGCode('G1X3')), "G1{'X': 3.0}")
-        self.assertEqual(str(Maneuver.FromGCode('G1X3Y7')), "G1{'X': 3.0, 'Y': 7.0}")
-        self.assertEqual(str(Maneuver.FromGCode('G1X3Y7/G1Z0')), "G1{'X': 3.0, 'Y': 7.0}\nG1{'Z': 0.0}")
-        self.assertEqual(len(Maneuver.FromGCode('G1X3Y7').instr), 1)
-        self.assertEqual(len(Maneuver.FromGCode('G1X3Y7/G1Z0').instr), 2)
-        self.assertEqual(type(Maneuver.FromGCode('G1X3Y7').instr[0]), MoveStraight)
-
-    def test02(self):
-        """Verify G2 instruction construction"""
-        self.assertEqual(str(Maneuver.FromGCode('G2X2Y2I1')), "G2{'I': 1.0, 'X': 2.0, 'Y': 2.0}")
-        self.assertEqual(len(Maneuver.FromGCode('G2X2Y2I1').instr), 1)
-        self.assertEqual(type(Maneuver.FromGCode('G2X2Y2I1').instr[0]), MoveArcCW)
-
-    def test03(self):
-        """Verify G3 instruction construction"""
-        self.assertEqual(str(Maneuver.FromGCode('G3X2Y2I1')), "G3{'I': 1.0, 'X': 2.0, 'Y': 2.0}")
-        self.assertEqual(len(Maneuver.FromGCode('G3X2Y2I1').instr), 1)
-        self.assertEqual(type(Maneuver.FromGCode('G3X2Y2I1').instr[0]), MoveArcCCW)
-
-    def test04(self):
-        """Verify pathLength correctness"""
-        self.assertRoughly(Maneuver.FromGCode('G1X3').instr[0].pathLength(), 3)
-        self.assertRoughly(Maneuver.FromGCode('G1X-7').instr[0].pathLength(), 7)
-        self.assertRoughly(Maneuver.FromGCode('G1X3').instr[0].pathLength(), 3)
-
-        self.assertRoughly(Maneuver.FromGCode('G1X3Y4').instr[0].pathLength(), 5)
-        self.assertRoughly(Maneuver.FromGCode('G1X3Y-4').instr[0].pathLength(), 5)
-        self.assertRoughly(Maneuver.FromGCode('G1X-3Y-4').instr[0].pathLength(), 5)
-        self.assertRoughly(Maneuver.FromGCode('G1X-3Y4').instr[0].pathLength(), 5)
-
-        self.assertRoughly(Maneuver.FromGCode('G2X2I1').instr[0].pathLength(), PI)
-        self.assertRoughly(Maneuver.FromGCode('G2X1Y1I1').instr[0].pathLength(), PI/2)
-
-        self.assertRoughly(Maneuver.FromGCode('G3X2I1').instr[0].pathLength(), PI)
-        self.assertRoughly(Maneuver.FromGCode('G3X1Y1I1').instr[0].pathLength(), 3*PI/2)
-
-
-    def test10(self):
-        """Verify tangents of moves."""
-
-        self.assertTangents(INSTR('G1 X0  Y0'), (0, 0)) # by declaration
-        self.assertTangents(INSTR('G1 X1  Y0'), (0, 0))
-        self.assertTangents(INSTR('G1 X-1 Y0'), (PI, PI))
-        self.assertTangents(INSTR('G1 X0  Y1'), (PI/2,  PI/2))
-        self.assertTangents(INSTR('G1 X0  Y-1'), (-PI/2,  -PI/2))
-        self.assertTangents(INSTR('G1 X1  Y1'), (PI/4,  PI/4))
-        self.assertTangents(INSTR('G1 X-1 Y1'), (3*PI/4,  3*PI/4))
-        self.assertTangents(INSTR('G1 X-1 Y -1'), (-3*PI/4,  -3*PI/4))
-        self.assertTangents(INSTR('G1 X1  Y-1'), (-PI/4,  -PI/4))
-
-        self.assertTangents(INSTR('G2 X2  Y0  I1 J0'), (PI/2, -PI/2))
-        self.assertTangents(INSTR('G2 X2  Y2  I1 J1'), (3*PI/4, -PI/4))
-        self.assertTangents(INSTR('G2 X0  Y-2 I0 J-1'), (0, -PI))
-
-        self.assertTangents(INSTR('G3 X2  Y0  I1 J0'), (-PI/2, PI/2))
-        self.assertTangents(INSTR('G3 X2  Y2  I1 J1'), (-PI/4, 3*PI/4))
-        self.assertTangents(INSTR('G3 X0  Y-2 I0 J-1'), (PI, 0))
-
 
     def test20(self):
         """Verify kinks of maneuvers"""

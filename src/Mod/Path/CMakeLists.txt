@@ -296,6 +296,7 @@ SET(PathTests_SRCS
     PathTests/TestPathHelix.py
     PathTests/TestPathHelpers.py
     PathTests/TestPathHelixGenerator.py
+    PathTests/TestPathLanguage.py
     PathTests/TestPathLog.py
     PathTests/TestPathOpUtil.py
     PathTests/TestPathPost.py
