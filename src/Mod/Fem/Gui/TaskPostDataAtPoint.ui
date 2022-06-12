@@ -49,12 +49,6 @@
       </item>
       <item row="2" column="0">
        <widget class="Gui::PrefQuantitySpinBox" name="centerX">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
@@ -65,12 +59,6 @@
       </item>
       <item row="2" column="1">
        <widget class="Gui::PrefQuantitySpinBox" name="centerY">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
@@ -81,12 +69,6 @@
       </item>
       <item row="2" column="2">
        <widget class="Gui::PrefQuantitySpinBox" name="centerZ">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
