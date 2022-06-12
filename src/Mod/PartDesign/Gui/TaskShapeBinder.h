@@ -38,6 +38,7 @@ class Property;
 }
 
 namespace Gui {
+class ButtonGroup;
 class ViewProvider;
 }
 
@@ -55,11 +56,6 @@ public:
 
     void accept();
 
-private Q_SLOTS:
-    void onButtonRefAdd(bool checked);
-    void onButtonRefRemove(bool checked);
-    void onBaseButton(bool checked);
-  
 protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd };
     void changeEvent(QEvent *e);
@@ -69,9 +65,14 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
+    void setupButtonGroup();
+    void setupContextMenu();
     void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onButtonToggled(QAbstractButton *button, bool checked);
     void updateUI();
+    void supportChanged(const QString&);
     void clearButtons();
+    void deleteItem();
     void exitSelectionMode();
 
     bool supportShow = false;
@@ -79,6 +80,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskShapeBinder> ui;
+    Gui::ButtonGroup *buttonGroup;
     Gui::WeakPtrT<ViewProviderShapeBinder> vp;
 };
 

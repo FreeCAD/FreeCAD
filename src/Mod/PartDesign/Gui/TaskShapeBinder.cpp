@@ -24,15 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
 # include <QMessageBox>
 #endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/Widgets.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
@@ -49,35 +51,39 @@ using namespace Gui;
 
 //**************************************************************************
 //**************************************************************************
-// Task Parameter
+// TaskShapeBinder
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// TODO Review and cleanup the file (2015-09-11, Fat-Zer)
-
-TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool /*newObj*/, QWidget* parent)
+TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool newObj, QWidget* parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
         tr("Datum shape parameters"), true, parent)
     , SelectionObserver(view)
     , ui(new Ui_TaskShapeBinder)
     , vp(view)
 {
+    std::ignore = newObj;
+
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefRemove(bool)));
-    connect(ui->buttonBase, SIGNAL(toggled(bool)),
-        this, SLOT(onBaseButton(bool)));
-
+    setupButtonGroup();
+    setupContextMenu();
     this->groupLayout()->addWidget(proxy);
 
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    updateUI();
+}
 
-    //add initial values   
+TaskShapeBinder::~TaskShapeBinder()
+{
+}
+
+void TaskShapeBinder::updateUI()
+{
+    Gui::Document* doc = vp->getDocument();
+
+    //add initial values
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
@@ -85,14 +91,16 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool /*newObj*/,
 
     if (obj) {
         ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));
-        ui->baseEdit->setReadOnly(true);
     }
+
+    // Allow to clear the Support
+    ui->baseEdit->setClearButtonEnabled(true);
+    connect(ui->baseEdit, &QLineEdit::textChanged,
+            this, &TaskShapeBinder::supportChanged);
 
     for (auto sub : subs)
         ui->listWidgetReferences->addItem(QString::fromStdString(sub));
 
-    //make sure the user sees all important things: the base feature to select edges and the 
-    //spine/auxiliary spine they already selected
     if (obj) {
         auto* svp = doc->getViewProvider(obj);
         if (svp) {
@@ -100,13 +108,124 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool /*newObj*/,
             svp->setVisible(true);
         }
     }
-
-    updateUI();
 }
 
-void TaskShapeBinder::updateUI()
+void TaskShapeBinder::setupButtonGroup()
 {
+    buttonGroup = new ButtonGroup(this);
+    buttonGroup->setExclusive(true);
 
+    buttonGroup->addButton(ui->buttonRefAdd,
+                           TaskShapeBinder::refAdd);
+    buttonGroup->addButton(ui->buttonRefRemove,
+                           TaskShapeBinder::refRemove);
+    buttonGroup->addButton(ui->buttonBase,
+                           TaskShapeBinder::refObjAdd);
+    connect(buttonGroup, qOverload<QAbstractButton *, bool>(&QButtonGroup::buttonToggled),
+            this, &TaskShapeBinder::onButtonToggled);
+}
+
+void TaskShapeBinder::setupContextMenu()
+{
+    // Create context menu
+    QAction* remove = new QAction(tr("Remove"), this);
+    remove->setShortcut(QKeySequence::Delete);
+    remove->setShortcutContext(Qt::WidgetShortcut);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    remove->setShortcutVisibleInContextMenu(true);
+#endif
+    ui->listWidgetReferences->addAction(remove);
+    connect(remove, &QAction::triggered, this, &TaskShapeBinder::deleteItem);
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+void TaskShapeBinder::supportChanged(const QString& text)
+{
+    if (!vp.expired() && text.isEmpty()) {
+        PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
+        binder->Support.setValue(nullptr, nullptr);
+        vp->highlightReferences(false);
+        vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+        ui->listWidgetReferences->clear();
+    }
+}
+
+void TaskShapeBinder::onButtonToggled(QAbstractButton *button, bool checked)
+{
+    int id = buttonGroup->id(button);
+
+    if (checked) {
+        Gui::Selection().clearSelection();
+        selectionMode = static_cast<TaskShapeBinder::selectionModes>(id);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        if (selectionMode == static_cast<TaskShapeBinder::selectionModes>(id))
+            selectionMode = TaskShapeBinder::none;
+    }
+
+    switch (id) {
+    case TaskShapeBinder::refAdd:
+    case TaskShapeBinder::refRemove:
+        if (!vp.expired())
+            vp->highlightReferences(true);
+        break;
+    case TaskShapeBinder::refObjAdd:
+        break;
+    default:
+        break;
+    }
+}
+
+void TaskShapeBinder::changeEvent(QEvent*)
+{
+}
+
+void TaskShapeBinder::deleteItem()
+{
+    if (vp.expired())
+        return;
+
+    // Delete the selected spine
+    int row = ui->listWidgetReferences->currentRow();
+    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
+    if (item) {
+        QByteArray data = item->text().toLatin1();
+        delete item;
+
+        // search inside the list of sub-elements
+        App::GeoFeature* obj = nullptr;
+        std::vector<std::string> subs;
+
+        PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
+        PartDesign::ShapeBinder::getFilteredReferences(&binder->Support, obj, subs);
+
+        std::string subname = data.constData();
+        std::vector<std::string>::iterator it = std::find(subs.begin(), subs.end(), subname);
+
+        // if something was found, delete it and update the support
+        if (it != subs.end()) {
+            subs.erase(it);
+            binder->Support.setValue(obj, subs);
+
+            vp->highlightReferences(false);
+            vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+
+            clearButtons();
+        }
+    }
+}
+
+void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
+{
+    QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
+    if (!items.empty()) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+            delete it;
+        }
+    }
 }
 
 void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -124,19 +243,16 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
             if (selectionMode == refAdd) {
-                QString sub = QString::fromStdString(msg.pSubName);
+                QString sub = QString::fromUtf8(msg.pSubName);
                 if (!sub.isEmpty())
-                    ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
+                    ui->listWidgetReferences->addItem(sub);
 
                 setObjectLabel(msg);
             }
             else if (selectionMode == refRemove) {
-                QString sub = QString::fromStdString(msg.pSubName);
+                QString sub = QString::fromUtf8(msg.pSubName);
                 if (!sub.isEmpty())
-                    removeFromListWidget(ui->listWidgetReferences, QString::fromUtf8(msg.pSubName));
-                else {
-                    ui->baseEdit->clear();
-                }
+                    removeFromListWidget(ui->listWidgetReferences, sub);
             }
             else if (selectionMode == refObjAdd) {
                 ui->listWidgetReferences->clear();
@@ -146,66 +262,13 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
             clearButtons();
 
             if (!vp.expired()) {
-                vp->highlightReferences(false, false);
+                vp->highlightReferences(false);
                 vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
             }
         }
+
         clearButtons();
         exitSelectionMode();
-    }
-}
-
-TaskShapeBinder::~TaskShapeBinder()
-{
-}
-
-void TaskShapeBinder::changeEvent(QEvent*)
-{
-}
-
-void TaskShapeBinder::onButtonRefAdd(bool checked) {
-
-    if (checked) {
-        //clearButtons(refAdd);
-        //hideObject();
-        Gui::Selection().clearSelection();
-        selectionMode = refAdd;
-        vp->highlightReferences(true, false);
-    }
-}
-
-void TaskShapeBinder::onButtonRefRemove(bool checked) {
-
-    if (checked) {
-        //clearButtons(refRemove);
-        //hideObject();
-        Gui::Selection().clearSelection();
-        selectionMode = refRemove;
-
-        if (!vp.expired())
-            vp->highlightReferences(true, false);
-    }
-}
-
-void TaskShapeBinder::onBaseButton(bool checked) {
-
-    if (checked) {
-        //clearButtons(refRemove);
-        //hideObject();
-        Gui::Selection().clearSelection();
-        selectionMode = refObjAdd;
-        //DressUpView->highlightReferences(true);
-    }
-}
-
-void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr) {
-
-    QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
-    if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
-            delete it;
-        }
     }
 }
 
@@ -215,8 +278,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
         return false;
 
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
-        (selectionMode == refAdd) || (selectionMode == refRemove)
-        || (selectionMode == refObjAdd))) {
+        (selectionMode == refAdd) || (selectionMode == refRemove) || (selectionMode == refObjAdd))) {
 
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
@@ -315,7 +377,7 @@ void TaskShapeBinder::accept()
 
 //**************************************************************************
 //**************************************************************************
-// TaskDialog
+// TaskDlgShapeBinder
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgShapeBinder::TaskDlgShapeBinder(ViewProviderShapeBinder* view, bool newObj)
@@ -333,19 +395,18 @@ TaskDlgShapeBinder::~TaskDlgShapeBinder()
 
 }
 
-//==== calls from the TaskView ===============================================================
-
-
 bool TaskDlgShapeBinder::accept()
 {
     try {
-        parameter->accept();
+        if (!vp.expired()) {
+            parameter->accept();
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        if (!vp->getObject()->isValid())
-            throw Base::RuntimeError(vp->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+            Gui::cmdAppDocument(vp->getObject(), "recompute()");
+            if (!vp->getObject()->isValid())
+                throw Base::RuntimeError(vp->getObject()->getStatusString());
+            Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
+            Gui::Command::commitCommand();
+        }
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromUtf8(e.what()));
@@ -357,10 +418,13 @@ bool TaskDlgShapeBinder::accept()
 
 bool TaskDlgShapeBinder::reject()
 {
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    if (!vp.expired()) {
+        App::Document* doc = vp->getObject()->getDocument();
+        // roll back the done things (deletes 'vp')
+        Gui::Command::abortCommand();
+        Gui::cmdGuiDocument(doc, "resetEdit()");
+        Gui::cmdAppDocument(doc, "recompute()");
+    }
     return true;
 }
 

@@ -128,7 +128,7 @@ void ViewProviderShapeBinder::unsetEdit(int ModNum) {
     PartGui::ViewProviderPart::unsetEdit(ModNum);
 }
 
-void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliary*/)
+void ViewProviderShapeBinder::highlightReferences(bool on)
 {
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
