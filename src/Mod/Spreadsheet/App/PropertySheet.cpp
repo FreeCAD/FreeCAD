@@ -1844,7 +1844,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier &path, const boost::any 
             App::CellAddress targetTo = other->getCellAddress(
                 Py::Object(seq[2].ptr()).as_string().c_str(), false);
 
-            std::string expr(href?"href(":"");
+            std::string expr(href?"hiddenref(":"");
             if(other != this) {
                 if(otherOwner->getDocument() == owner->getDocument())
                     expr += otherOwner->getNameInDocument();
