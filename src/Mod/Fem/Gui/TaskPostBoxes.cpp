@@ -883,15 +883,17 @@ std::string TaskPostDataAtPoint::ObjectVisible() {
 
 void TaskPostDataAtPoint::onChange(double x, double y, double z) {
 
+    // call centerChanged only once
+    ui->centerX->blockSignals(true);
+    ui->centerY->blockSignals(true);
+    ui->centerZ->blockSignals(true);
     ui->centerX->setValue(x);
     ui->centerY->setValue(y);
     ui->centerZ->setValue(z);
-    Base::Console().Error("on Change\n");
-    // recompute the feature to fill all fields with data at this point
-    static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->recomputeFeature();
-    // show the data ba calling on_Field_activated with the field that is currently set
-    auto Field = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
-    on_Field_activated(Field);
+    ui->centerX->blockSignals(false);
+    ui->centerY->blockSignals(false);
+    ui->centerZ->blockSignals(false);
+    centerChanged(0.0);
 }
 
 void TaskPostDataAtPoint::centerChanged(double) {
@@ -899,6 +901,12 @@ void TaskPostDataAtPoint::centerChanged(double) {
     std::string ObjName = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Label.getValue();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", ObjName.c_str(),
         ui->centerX->value().getValue(), ui->centerY->value().getValue(), ui->centerZ->value().getValue());
+
+    // recompute the feature to fill all fields with data at this point
+    static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->recomputeFeature();
+    // show the data dialog by calling on_Field_activated with the field that is currently set
+    auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
+    on_Field_activated(currentField);
 }
 
 void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
