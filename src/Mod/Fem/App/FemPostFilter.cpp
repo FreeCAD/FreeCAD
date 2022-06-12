@@ -404,6 +404,10 @@ void FemPostDataAtPointFilter::GetPointData() {
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     vtkDataArray* pdata = dset->GetPointData()->GetArray(FieldName.getValue());
+    // VTK cannot deliver data when the filer relies e.g. on a scalar clip filter
+    // whose value is set so that all data are clipped
+    if (!pdata)
+        return;
 
     int component = 0;
 
