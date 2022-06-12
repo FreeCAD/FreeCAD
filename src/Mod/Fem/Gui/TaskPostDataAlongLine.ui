@@ -52,6 +52,12 @@
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Point 1</string>
         </property>
@@ -62,45 +68,42 @@
       </item>
       <item row="2" column="1">
        <widget class="Gui::PrefQuantitySpinBox" name="point1X">
-        <property name="maximumSize">
-         <size>
-          <width>95</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item row="2" column="2">
        <widget class="Gui::PrefQuantitySpinBox" name="point1Y">
-        <property name="maximumSize">
-         <size>
-          <width>95</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item row="2" column="3">
        <widget class="Gui::PrefQuantitySpinBox" name="point1Z">
-        <property name="maximumSize">
-         <size>
-          <width>95</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Point 2</string>
         </property>
@@ -111,40 +114,31 @@
       </item>
       <item row="3" column="1">
        <widget class="Gui::PrefQuantitySpinBox" name="point2X">
-        <property name="maximumSize">
-         <size>
-          <width>95</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item row="3" column="2">
        <widget class="Gui::PrefQuantitySpinBox" name="point2Y">
-        <property name="maximumSize">
-         <size>
-          <width>95</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item row="3" column="3">
        <widget class="Gui::PrefQuantitySpinBox" name="point2Z">
-        <property name="maximumSize">
-         <size>
-          <width>95</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
