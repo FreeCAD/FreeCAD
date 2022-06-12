@@ -729,6 +729,12 @@ void TaskPostDataAlongLine::point2Changed(double) {
 void TaskPostDataAlongLine::resolutionChanged(int val) {
 
     static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Resolution.setValue(val);
+    // recompute the feature
+    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->recomputeFeature();
+    // axis data must be refreshed
+    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->GetAxisData();
+    // eventually a full recompute is necessary
+    getView()->getObject()->getDocument()->recompute();
 }
 
 void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
