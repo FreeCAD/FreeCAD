@@ -163,6 +163,9 @@
      </item>
      <item>
       <widget class="QSpinBox" name="resolution">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="maximum">
         <number>999999999</number>
        </property>
