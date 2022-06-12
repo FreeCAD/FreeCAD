@@ -67,6 +67,9 @@
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item row="1" column="2">
@@ -80,6 +83,9 @@
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item row="1" column="3">
@@ -92,6 +98,9 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -116,6 +125,9 @@
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item row="2" column="2">
@@ -129,6 +141,9 @@
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item row="2" column="3">
@@ -141,6 +156,9 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
