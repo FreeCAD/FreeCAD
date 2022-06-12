@@ -482,7 +482,19 @@ void TaskPostClip::collectImplicitFunctions() {
 
 void TaskPostClip::on_CreateButton_triggered(QAction*) {
 
+    int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
+    // if a new function was successfuly added use it
+    int indexCount = ui->FunctionBox->count();
+    if (indexCount > currentItem + 1)
+        ui->FunctionBox->setCurrentIndex(ui->FunctionBox->count() - 1);
+
+    // FIXME: when the first function ever was added, a signal must be emit
+    // that is received by TaskPostDisplay to trigger
+    // updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
+    // at it is the Field combo keeps empty and the user must reopen the task dialog to get
+    // it filled
+
     recompute();
 }
 
@@ -1376,7 +1388,19 @@ void TaskPostCut::collectImplicitFunctions() {
 
 void TaskPostCut::on_CreateButton_triggered(QAction*) {
 
+    int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
+    // if a new function was successfuly added use it
+    int indexCount = ui->FunctionBox->count();
+    if (indexCount > currentItem + 1)
+        ui->FunctionBox->setCurrentIndex(ui->FunctionBox->count() - 1);
+
+    // FIXME: when the first function ever was added, a signal must be emit
+    // that is received by TaskPostDisplay to trigger
+    // updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
+    // at it is the Field combo keeps empty and the user must reopen the task dialog to get
+    // it filled
+
     recompute();
 }
 
