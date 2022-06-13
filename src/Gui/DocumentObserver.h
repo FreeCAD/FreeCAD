@@ -148,10 +148,15 @@ public:
      */
     bool expired() const noexcept;
     /*!
+     * \brief operator *
+     * \return pointer to the document
+     */
+    Gui::Document* operator*() const noexcept;
+    /*!
      * \brief operator ->
      * \return pointer to the document
      */
-    Gui::Document* operator->() noexcept;
+    Gui::Document* operator->() const noexcept;
 
 private:
     // disable
@@ -187,10 +192,15 @@ public:
      */
     ViewProviderWeakPtrT& operator= (ViewProviderDocumentObject* p);
     /*!
+     * \brief operator *
+     * \return pointer to the document
+     */
+    ViewProviderDocumentObject* operator*() const noexcept;
+    /*!
      * \brief operator ->
      * \return pointer to the document
      */
-    ViewProviderDocumentObject* operator->() noexcept;
+    ViewProviderDocumentObject* operator->() const noexcept;
     /*!
      * \brief operator ==
      * \return true if both objects are equal, false otherwise
@@ -252,6 +262,13 @@ public:
     WeakPtrT<T>& operator= (T* p) {
         ptr = p;
         return *this;
+    }
+    /*!
+     * \brief operator *
+     * \return pointer to the view provider
+     */
+    T* operator*() const {
+        return ptr.get<T>();
     }
     /*!
      * \brief operator ->
