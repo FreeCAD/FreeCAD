@@ -33,10 +33,11 @@
 #endif
 
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
@@ -1491,9 +1492,11 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
             ) {
             // TODO FIXME only works if the data along the line object has the name DataAlongLine
             // we should get the selected data along the line object 
-            doCommand(Gui::Command::Doc, "t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
-            doCommand(Gui::Command::Doc, "sValues = App.ActiveDocument.DataAlongLine.YAxisData");
-            doCommand(Gui::Command::Doc, Plot().c_str());
+            App::DocumentObjectT objT(DataAlongLine);
+            std::string ObjName = objT.getObjectPython();
+            Gui::doCommandT(Gui::Command::Doc, "t_coords = %s.XAxisData", ObjName);
+            Gui::doCommandT(Gui::Command::Doc, "sValues = %s.YAxisData", ObjName);
+            Gui::doCommandT(Gui::Command::Doc, Plot().c_str());
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(),
