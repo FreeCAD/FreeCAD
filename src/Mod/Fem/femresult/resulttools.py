@@ -401,7 +401,7 @@ def add_principal_stress_std(res_obj):
         res_obj.NodeStressYZ
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
-        prin1, prin2, prin3, shear, psv = calculate_principal_stress([Sxx, Syy, Szz, Sxy, Sxz, Syz])
+        prin1, prin2, prin3, shear, psv = calculate_principal_stress_std((Sxx, Syy, Szz, Sxy, Sxz, Syz))
         prinstress1.append(prin1)
         prinstress2.append(prin2)
         prinstress3.append(prin3)
@@ -531,7 +531,7 @@ def add_principal_stress_reinforced(res_obj):
                 reinforce_yield
             )
 
-        prin1, prin2, prin3, shear, psv = calculate_principal_stress(
+        prin1, prin2, prin3, shear, psv = calculate_principal_stress_reinforced(
             stress_tensor
         )
 
@@ -643,7 +643,7 @@ def calculate_principal_stress_std(
     return (eigvals[0], eigvals[1], eigvals[2], maxshear)
 
 
-def calculate_principal_stress(stress_tensor):
+def calculate_principal_stress_reinforced(stress_tensor):
     #
     #   HarryvL - calculate principal stress vectors and values
     #           - for total stresses use stress_tensor[0], stress_tensor[1], stress_tensor[2]
