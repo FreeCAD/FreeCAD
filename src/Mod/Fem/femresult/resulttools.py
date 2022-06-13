@@ -401,7 +401,7 @@ def add_principal_stress_std(res_obj):
         res_obj.NodeStressYZ
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
-        prin1, prin2, prin3, shear, psv = calculate_principal_stress_std((Sxx, Syy, Szz, Sxy, Sxz, Syz))
+        prin1, prin2, prin3, shear = calculate_principal_stress_std((Sxx, Syy, Szz, Sxy, Sxz, Syz))
         prinstress1.append(prin1)
         prinstress2.append(prin2)
         prinstress3.append(prin3)
