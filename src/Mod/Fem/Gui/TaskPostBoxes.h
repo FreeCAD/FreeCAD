@@ -306,6 +306,10 @@ private Q_SLOTS:
     void centerChanged(double);
     void onChange(double x, double y, double z);
 
+private:
+    std::string toString(double val) const;
+    void showValue(double value, const char* unit);
+
 
 private:
     std::string ObjectVisible();
