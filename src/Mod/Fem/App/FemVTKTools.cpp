@@ -717,9 +717,6 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     // thus TODO they might not be exported to external file format (first I need to know how to generate them in paraview)
     // but there are needed anyway because the pipline in FreeCAD needs the principal stress values
     // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
-    resFCScalProp["PrincipalMax"] = "Major Principal Stress";
-    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";
-    resFCScalProp["PrincipalMin"] = "Minor Principal Stress";
     resFCScalProp["vonMises"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
     resFCScalProp["MohrCoulomb"] = "MohrCoulomb";
