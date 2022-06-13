@@ -2662,7 +2662,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
 
     Gui::MDIView *mdi = this->getActiveView();
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        static_cast<Gui::View3DInventor *>(mdi)->getViewer()->redraw();
+        auto viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+        viewer->getSoRenderManager()->setAntialiasing(true, 16);
+        viewer->redraw();
     }
 }
 
