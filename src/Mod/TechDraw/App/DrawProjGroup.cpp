@@ -134,7 +134,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
 
         if ((prop == &spacingX) || (prop == &spacingY)) {
-            updateViews();
+            updateChildrenEnforce();
         }
 
         if (prop == &LockPosition) {
@@ -681,20 +681,14 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         double xSpacing = spacingX.getValue();    //in mm, no scale
         double ySpacing = spacingY.getValue();    //in mm, no scale
 
-        std::vector<double> xOff;
-        std::vector<double> yOff;
         double bigRow    = 0.0;
         double bigCol    = 0.0;
         int ibbx = 0;
         for (auto& b: bboxes) {          //space based on width/height of biggest view
             if (!b.IsValid()) {
-                Base::Console().Message("DVP::getXYPos - bbox %d is not valid!\n");
+                Base::Console().Message("DVP::getXYPos - bbox %d is not valid!\n", ibbx);
                 continue;
             }
-            double xOffset =  -( (b.LengthX() / 2.0) + b.MinX );  //scaled distance to move to zero
-            double yOffset =  -( (b.LengthY() / 2.0) + b.MinY );
-            xOff.push_back(xOffset);
-            yOff.push_back(yOffset);
             if (b.LengthX() > bigCol) {
                 bigCol = b.LengthX();
             }
@@ -703,9 +697,6 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
             }
             ibbx++;
         }
-
-        double xOffFront = -( (bboxes[4].LengthX() / 2.0) + bboxes[4].MinX );
-        double yOffFront = -( (bboxes[4].LengthY() / 2.0) + bboxes[4].MinY );
 
         //if we have iso's, make sure they fit the grid.
         if (viewPtrs[0] || viewPtrs[2]  || viewPtrs[7] ||  viewPtrs[9]) {
@@ -722,18 +713,14 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         if (viewPtrs[3] &&                        // L/R  (third/first)
             bboxes[3].IsValid() &&
             bboxes[4].IsValid()) {
-            double netOffset = xOff[3] - xOffFront;
-            double xOffBig   = -(bigCol - bboxes[3].LengthX()) / 2.0;
-            position[3].x = -bigCol - xSpacing + netOffset - xOffBig;
+            position[3].x = -(xSpacing + bigCol);
             position[3].y = 0.0;
         }
 
         if (viewPtrs[5] &&                        // R/L (third/first)
             bboxes[5].IsValid() &&
             bboxes[4].IsValid()) {
-            double netOffset = xOff[5] - xOffFront;
-            double xOffBig   = -(bigCol - bboxes[5].LengthX()) / 2.0;
-            position[5].x = bigCol + xSpacing + netOffset + xOffBig;
+            position[5].x = xSpacing + bigCol;
             position[5].y = 0.0;
         }
 
@@ -741,14 +728,13 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
             bboxes[6].IsValid()) {    //"Rear"
             if (viewPtrs[5] &&
                 bboxes[5].IsValid()) {
-                double netOffset = xOff[5] - xOff[6];
-                position[6].x = position[5].x + bigCol + xSpacing - netOffset;
+                //there is a view between Front and Rear
+                position[6].x = 2.0 * (xSpacing + bigCol);
                 position[6].y = 0.0;
             } else if (viewPtrs[4] &&
                 bboxes[4].IsValid()) {
-                double netOffset = xOff[6] - xOff[5];
-                double xOffBig   = -(bigCol - bboxes[6].LengthX()) / 2.0;
-                position[6].x = bigCol + xSpacing + netOffset + xOffBig;
+                // there is no view between Front and Rear
+                position[6].x = xSpacing + bigCol;
                 position[6].y = 0.0;
             }
         }
@@ -756,59 +742,39 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         if (viewPtrs[1] &&                        // T/B (third/first)
             bboxes[1].IsValid() &&
             bboxes[4].IsValid()) {
-            double netOffset = -yOff[1] + yOffFront;
-            double yOffBig   = -(bigRow - bboxes[1].LengthY()) / 2.0;
             position[1].x = 0.0;
-            position[1].y = bigRow + ySpacing + netOffset + yOffBig;
+            position[1].y = ySpacing + bigRow;
         }
 
         if (viewPtrs[8] &&                        // B/T (third/first)
             bboxes[8].IsValid() &&
             bboxes[4].IsValid()) {
-            double netOffset = -yOff[8] + yOffFront;
-            double yOffBig   = -(bigRow - bboxes[8].LengthY()) / 2.0;
             position[8].x = 0.0;
-            position[8].y = -bigRow - ySpacing + netOffset + yOffBig;
+            position[8].y = -(ySpacing + bigRow);
         }
 
-        if (viewPtrs[0] &&
+        if (viewPtrs[0] &&                      // iso top left
             bboxes[0].IsValid()) {
-            double netOffset = xOff[0] - xOffFront;
-            double xOffBig   = -(bigCol - bboxes[0].LengthX()) / 2.0;
-            position[0].x = -bigCol - xSpacing + netOffset - xOffBig;
-            netOffset = -yOff[0] + yOffFront;
-            double yOffBig   = -(bigRow - bboxes[0].LengthY()) / 2.0;
-            position[0].y = bigRow + ySpacing + netOffset + yOffBig;
+            position[0].x = -(xSpacing + bigCol);
+            position[0].y = ySpacing + bigRow;
         }
 
-        if (viewPtrs[2] &&
+        if (viewPtrs[2] &&                      // iso top right
             bboxes[2].IsValid()) {
-            double netOffset = xOff[2] - xOffFront;
-            double xOffBig   = -(bigCol - bboxes[2].LengthX()) / 2.0;
-            position[2].x = bigCol + xSpacing + netOffset + xOffBig;
-            netOffset = -yOff[2] + yOffFront;
-            double yOffBig   = -(bigRow - bboxes[2].LengthY()) / 2.0;
-            position[2].y = bigRow + ySpacing + netOffset + yOffBig;
+            position[2].x = xSpacing + bigCol;
+            position[2].y = ySpacing + bigRow;
         }
 
-        if (viewPtrs[7] &&
+        if (viewPtrs[7] &&                      // iso bottom left
             bboxes[7].IsValid()) {
-            double netOffset = xOff[7] - xOffFront;
-            double xOffBig   = -(bigCol - bboxes[7].LengthX()) / 2.0;
-            position[7].x = - bigCol - xSpacing + netOffset - xOffBig;
-            netOffset = -yOff[7] + yOffFront;
-            double yOffBig   = -(bigRow - bboxes[7].LengthY()) / 2.0;
-            position[7].y = -bigRow - ySpacing + netOffset + yOffBig;
+            position[7].x = -(xSpacing + bigCol);
+            position[7].y = -(ySpacing + bigRow);
         }
 
-        if (viewPtrs[9] &&
+        if (viewPtrs[9] &&                      // iso bottom right
             bboxes[9].IsValid()) {
-            double netOffset = xOff[9] - xOffFront;
-            double xOffBig   = -(bigCol - bboxes[9].LengthX()) / 2.0;
-            position[9].x = bigCol + xSpacing + netOffset + xOffBig;
-            netOffset = -yOff[9] + yOffFront;
-            double yOffBig   = -(bigRow - bboxes[9].LengthY()) / 2.0;
-            position[9].y = -bigRow - ySpacing + netOffset + yOffBig;
+            position[9].x = xSpacing + bigCol;;
+            position[9].y = -(ySpacing + bigRow);
         }
 
         result.x = position[viewIndex].x;
