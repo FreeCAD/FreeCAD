@@ -295,10 +295,15 @@ public:
      */
     bool expired() const noexcept;
     /*!
+     * \brief operator *
+     * \return pointer to the document
+     */
+    App::Document* operator*() const noexcept;
+    /*!
      * \brief operator ->
      * \return pointer to the document
      */
-    App::Document* operator->() noexcept;
+    App::Document* operator->() const noexcept;
 
 private:
     // disable
@@ -334,10 +339,15 @@ public:
      */
     DocumentObjectWeakPtrT& operator= (App::DocumentObject* p);
     /*!
-     * \brief operator ->
-     * \return pointer to the document
+     * \brief operator *
+     * \return pointer to the document object
      */
-    App::DocumentObject* operator->() noexcept;
+    App::DocumentObject* operator*() const noexcept;
+    /*!
+     * \brief operator ->
+     * \return pointer to the document object
+     */
+    App::DocumentObject* operator->() const noexcept;
     /*!
      * \brief operator ==
      * \return true if both objects are equal, false otherwise
@@ -399,6 +409,13 @@ public:
     WeakPtrT<T>& operator= (T* p) {
         ptr = p;
         return *this;
+    }
+    /*!
+     * \brief operator ->
+     * \return pointer to the document object
+     */
+    T* operator*() const {
+        return ptr.get<T>();
     }
     /*!
      * \brief operator ->
