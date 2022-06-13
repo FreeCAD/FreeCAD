@@ -311,23 +311,22 @@ PyObject*  BoundBoxPy::getIntersectionPoint(PyObject *args)
 {
     PyObject *object,*object2;
     double epsilon=0.0001;
-    if (PyArg_ParseTuple(args,"O!O!|d:Need base and direction vector",
-        &(Base::VectorPy::Type), &object,&(Base::VectorPy::Type), &object2, &epsilon)) {
-        Base::Vector3d point;
-        bool ok = getBoundBoxPtr()->IntersectionPoint(
-            *(static_cast<Base::VectorPy*>(object)->getVectorPtr()),
-            *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()),
-            point, epsilon);
-        if (ok) {
-            return new VectorPy(point);
-        }
-        else {
-            PyErr_SetString(Base::PyExc_FC_GeneralError, "No intersection");
-            return nullptr;
-        }
-    }
-    else
+    if (!PyArg_ParseTuple(args,"O!O!|d;Need base and direction vector",
+        &(Base::VectorPy::Type), &object,&(Base::VectorPy::Type), &object2, &epsilon))
         return nullptr;
+
+    Base::Vector3d point;
+    bool ok = getBoundBoxPtr()->IntersectionPoint(
+        *(static_cast<Base::VectorPy*>(object)->getVectorPtr()),
+        *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()),
+        point, epsilon);
+    if (ok) {
+        return new VectorPy(point);
+    }
+    else {
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "No intersection");
+        return nullptr;
+    }
 }
 
 PyObject*  BoundBoxPy::move(PyObject *args)
@@ -344,13 +343,13 @@ PyObject*  BoundBoxPy::move(PyObject *args)
         }
 
         PyErr_Clear();
-        if (PyArg_ParseTuple(args,"O!:Need vector to move",&PyTuple_Type, &object)) {
+        if (PyArg_ParseTuple(args,"O!",&PyTuple_Type, &object)) {
             vec = getVectorFromTuple<double>(object);
             break;
         }
 
         PyErr_Clear();
-        if (PyArg_ParseTuple(args,"O!:Need vector to move",&(Base::VectorPy::Type), &object)) {
+        if (PyArg_ParseTuple(args,"O!",&(Base::VectorPy::Type), &object)) {
             vec = *(static_cast<Base::VectorPy*>(object)->getVectorPtr());
             break;
         }
@@ -382,13 +381,13 @@ PyObject*  BoundBoxPy::scale(PyObject *args)
         }
 
         PyErr_Clear();
-        if (PyArg_ParseTuple(args,"O!:Need vector to scale",&PyTuple_Type, &object)) {
+        if (PyArg_ParseTuple(args,"O!",&PyTuple_Type, &object)) {
             vec = getVectorFromTuple<double>(object);
             break;
         }
 
         PyErr_Clear();
-        if (PyArg_ParseTuple(args,"O!:Need vector to scale",&(Base::VectorPy::Type), &object)) {
+        if (PyArg_ParseTuple(args,"O!",&(Base::VectorPy::Type), &object)) {
             vec = *(static_cast<Base::VectorPy*>(object)->getVectorPtr());
             break;
         }
@@ -429,13 +428,13 @@ PyObject*  BoundBoxPy::isCutPlane(PyObject *args)
         return nullptr;
     }
 
-    if (PyArg_ParseTuple(args,"O!O!:Need base and normal vector of a plane",
+    if (!PyArg_ParseTuple(args,"O!O!;Need base and normal vector of a plane",
         &(Base::VectorPy::Type), &object,&(Base::VectorPy::Type), &object2))
-        retVal = getBoundBoxPtr()->IsCutPlane(
-            *(static_cast<Base::VectorPy*>(object)->getVectorPtr()),
-            *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()));
-    else
         return nullptr;
+
+    retVal = getBoundBoxPtr()->IsCutPlane(
+        *(static_cast<Base::VectorPy*>(object)->getVectorPtr()),
+        *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()));
 
     return Py::new_reference_to(retVal);
 }
