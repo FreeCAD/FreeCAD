@@ -593,7 +593,12 @@ bool DocumentWeakPtrT::expired() const noexcept
     return (d->_document == nullptr);
 }
 
-App::Document* DocumentWeakPtrT::operator->() noexcept
+App::Document* DocumentWeakPtrT::operator*() const noexcept
+{
+    return d->_document;
+}
+
+App::Document* DocumentWeakPtrT::operator->() const noexcept
 {
     return d->_document;
 }
@@ -686,7 +691,12 @@ DocumentObjectWeakPtrT& DocumentObjectWeakPtrT::operator= (App::DocumentObject* 
     return *this;
 }
 
-App::DocumentObject* DocumentObjectWeakPtrT::operator->() noexcept
+App::DocumentObject* DocumentObjectWeakPtrT::operator*() const noexcept
+{
+    return d->get();
+}
+
+App::DocumentObject* DocumentObjectWeakPtrT::operator->() const noexcept
 {
     return d->get();
 }
