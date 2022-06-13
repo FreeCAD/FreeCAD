@@ -160,6 +160,8 @@ protected:
         return m_view.get<T>();
     }
 
+    App::Document* getDocument() const;
+
     bool autoApply();
     void recompute();
 
@@ -201,6 +203,9 @@ public:
 
     /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
+
+protected:
+    void recompute();
 
 protected:
     Gui::ViewProviderWeakPtrT   m_view;
