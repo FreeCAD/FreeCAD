@@ -236,6 +236,27 @@ QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons(void) const {
         return QDialogButtonBox::Ok;
 }
 
+void TaskDlgPost::connectSlots()
+{
+    // Connect emitAddedFunction() with slotAddedFunction()
+    QObject* sender = nullptr;
+    for (const auto dlg : m_boxes) {
+        int indexSignal = dlg->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("emitAddedFunction()"));
+        if (indexSignal >= 0) {
+            sender = dlg;
+            break;
+        }
+    }
+
+    if (sender) {
+        for (const auto dlg : m_boxes) {
+            int indexSlot = dlg->metaObject()->indexOfSlot(QMetaObject::normalizedSignature("slotAddedFunction()"));
+            if (indexSlot >= 0) {
+                connect(sender, SIGNAL(emitAddedFunction()), dlg, SLOT(slotAddedFunction()));
+            }
+        }
+    }
+}
 
 void TaskDlgPost::appendBox(TaskPostBox* box) {
 
@@ -374,6 +395,11 @@ TaskPostDisplay::~TaskPostDisplay()
 {
 }
 
+void TaskPostDisplay::slotAddedFunction()
+{
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
+}
+
 void TaskPostDisplay::on_Representation_activated(int i) {
 
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(i);
@@ -501,18 +527,19 @@ void TaskPostClip::collectImplicitFunctions() {
 
 void TaskPostClip::on_CreateButton_triggered(QAction*) {
 
+    int numFuncs = ui->FunctionBox->count();
     int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
+
     // if a new function was successfuly added use it
     int indexCount = ui->FunctionBox->count();
     if (indexCount > currentItem + 1)
-        ui->FunctionBox->setCurrentIndex(ui->FunctionBox->count() - 1);
+        ui->FunctionBox->setCurrentIndex(indexCount - 1);
 
-    // FIXME: when the first function ever was added, a signal must be emit
-    // that is received by TaskPostDisplay to trigger
-    // updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    // at it is the Field combo keeps empty and the user must reopen the task dialog to get
-    // it filled
+    // When the first function ever was added, a signal must be emitted
+    if (numFuncs == 0) {
+        Q_EMIT emitAddedFunction();
+    }
 
     recompute();
 }
@@ -1451,18 +1478,19 @@ void TaskPostCut::collectImplicitFunctions() {
 
 void TaskPostCut::on_CreateButton_triggered(QAction*) {
 
+    int numFuncs = ui->FunctionBox->count();
     int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
+
     // if a new function was successfuly added use it
     int indexCount = ui->FunctionBox->count();
     if (indexCount > currentItem + 1)
-        ui->FunctionBox->setCurrentIndex(ui->FunctionBox->count() - 1);
+        ui->FunctionBox->setCurrentIndex(indexCount - 1);
 
-    // FIXME: when the first function ever was added, a signal must be emit
-    // that is received by TaskPostDisplay to trigger
-    // updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-    // at it is the Field combo keeps empty and the user must reopen the task dialog to get
-    // it filled
+    // When the first function ever was added, a signal must be emitted
+    if (numFuncs == 0) {
+        Q_EMIT emitAddedFunction();
+    }
 
     recompute();
 }

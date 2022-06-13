@@ -181,6 +181,7 @@ class TaskDlgPost : public Gui::TaskView::TaskDialog
 public:
     TaskDlgPost(Gui::ViewProviderDocumentObject *view);
     ~TaskDlgPost();
+    void connectSlots();
 
     void appendBox(TaskPostBox* box);
     Gui::ViewProviderDocumentObject* getView() const {
@@ -229,6 +230,7 @@ private Q_SLOTS:
     void on_Field_activated(int i);
     void on_VectorMode_activated(int i);
     void on_Transparency_valueChanged(int i);
+    void slotAddedFunction();
 
 private:
     QWidget* proxy;
@@ -263,6 +265,9 @@ private Q_SLOTS:
     void on_FunctionBox_currentIndexChanged(int idx);
     void on_InsideOut_toggled(bool val);
     void on_CutCells_toggled(bool val);
+
+Q_SIGNALS:
+    void emitAddedFunction();
 
 private:
     void collectImplicitFunctions();
@@ -392,6 +397,9 @@ public:
 private Q_SLOTS:
     void on_CreateButton_triggered(QAction*);
     void on_FunctionBox_currentIndexChanged(int idx);
+
+Q_SIGNALS:
+    void emitAddedFunction();
 
 private:
     void collectImplicitFunctions();
