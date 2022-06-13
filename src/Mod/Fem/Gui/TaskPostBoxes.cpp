@@ -663,7 +663,7 @@ void TaskPostDataAlongLine::on_SelectPoints_clicked() {
 
         // Derives from QObject and we have a parent object, so we don't
         // require a delete.
-        std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
+        std::string ObjName = getObject()->Label.getValue();
 
         FemGui::PointMarker* marker = new FemGui::PointMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
@@ -684,7 +684,7 @@ std::string TaskPostDataAlongLine::ObjectVisible() {
 
 void TaskPostDataAlongLine::on_CreatePlot_clicked() {
 
-    std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
+    std::string ObjName = getObject()->Label.getValue();
     Gui::Command::doCommand(Gui::Command::Doc, "x = App.ActiveDocument.%s.XAxisData", ObjName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc, "y = App.ActiveDocument.%s.YAxisData", ObjName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc, "title = App.ActiveDocument.%s.PlotData", ObjName.c_str());
@@ -721,12 +721,12 @@ void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2,
 
 void TaskPostDataAlongLine::point1Changed(double) {
 
-    std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
+    std::string ObjName = getObject()->Label.getValue();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", ObjName.c_str(),
         ui->point1X->value().getValue(), ui->point1Y->value().getValue(), ui->point1Z->value().getValue());
 
     // recompute the feature to fill all fields with data at this point
-    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->recomputeFeature();
+    getObject()->recomputeFeature();
     // refresh the color bar range
     auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField);
@@ -736,12 +736,12 @@ void TaskPostDataAlongLine::point1Changed(double) {
 
 void TaskPostDataAlongLine::point2Changed(double) {
 
-    std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
+    std::string ObjName = getObject()->Label.getValue();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", ObjName.c_str(),
         ui->point2X->value().getValue(), ui->point2Y->value().getValue(), ui->point2Z->value().getValue());
 
     // recompute the feature to fill all fields with data at this point
-    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->recomputeFeature();
+    getObject()->recomputeFeature();
     // refresh the color bar range
     auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(currentField);
@@ -753,7 +753,7 @@ void TaskPostDataAlongLine::resolutionChanged(int val) {
 
     static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Resolution.setValue(val);
     // recompute the feature
-    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->recomputeFeature();
+    getObject()->recomputeFeature();
     // axis data must be refreshed
     static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->GetAxisData();
     // eventually a full recompute is necessary
@@ -880,9 +880,9 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
     // update all fields
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
 
-    // the point filter object needs to be recompiled
+    // the point filter object needs to be recomputed
     // to fill all fields with data at the current point
-    static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->recomputeFeature();
+    getObject()->recomputeFeature();
 }
 
 TaskPostDataAtPoint::~TaskPostDataAtPoint() {
@@ -928,7 +928,7 @@ void TaskPostDataAtPoint::on_SelectPoint_clicked() {
 
         // Derives from QObject and we have a parent object, so we don't
         // require a delete.
-        std::string ObjName = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Label.getValue();
+        std::string ObjName = getObject()->Label.getValue();
 
         FemGui::DataMarker* marker = new FemGui::DataMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
@@ -965,12 +965,12 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z) {
 
 void TaskPostDataAtPoint::centerChanged(double) {
 
-    std::string ObjName = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Label.getValue();
+    std::string ObjName = getObject()->Label.getValue();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", ObjName.c_str(),
         ui->centerX->value().getValue(), ui->centerY->value().getValue(), ui->centerZ->value().getValue());
 
     // recompute the feature to fill all fields with data at this point
-    static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->recomputeFeature();
+    getObject()->recomputeFeature();
     // show the data dialog by calling on_Field_activated with the field that is currently set
     auto currentField = getTypedView<ViewProviderFemPostObject>()->Field.getValue();
     on_Field_activated(currentField);
