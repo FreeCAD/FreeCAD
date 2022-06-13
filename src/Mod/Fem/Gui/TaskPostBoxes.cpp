@@ -212,7 +212,8 @@ ViewProviderDataMarker::~ViewProviderDataMarker()
 // ***************************************************************************
 
 TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject* view)
-    : TaskDialog(), m_view(view)
+    : TaskDialog()
+    , m_view(view)
 {
     assert(view);
 }
@@ -289,10 +290,10 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box) {
 // ***************************************************************************
 // some task box methods
 TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& icon, const QString& title, QWidget* parent)
-    : TaskBox(icon, title, true, parent) {
-
-    m_view = view;
-    m_object = view->getObject();
+    : TaskBox(icon, title, true, parent)
+    , m_object(view->getObject())
+    , m_view(view)
+{
 }
 
 TaskPostBox::~TaskPostBox() {

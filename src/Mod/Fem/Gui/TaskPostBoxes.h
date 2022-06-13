@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TaskPostDisplay_H
 #define GUI_TASKVIEW_TaskPostDisplay_H
 
+#include <App/DocumentObserver.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -143,12 +145,20 @@ public:
     virtual bool isGuiTaskOnly() {return false;} //return true if only gui properties are manipulated
 
 protected:
-    App::DocumentObject*                getObject() {return m_object;}
+    App::DocumentObject* getObject() const {
+        return *m_object;
+    }
     template<typename T>
-    T* getTypedObject() {return static_cast<T*>(m_object);}
-    Gui::ViewProviderDocumentObject*    getView() {return m_view;}
+    T* getTypedObject() const {
+        return m_object.get<T>();
+    }
+    Gui::ViewProviderDocumentObject* getView() const {
+        return *m_view;
+    }
     template<typename T>
-    T* getTypedView() {return static_cast<T*>(m_view);}
+    T* getTypedView() const {
+        return m_view.get<T>();
+    }
 
     bool autoApply();
     void recompute();
@@ -156,8 +166,8 @@ protected:
     static void updateEnumerationList(App::PropertyEnumeration&, QComboBox* box);
 
 private:
-    App::DocumentObject*              m_object;
-    Gui::ViewProviderDocumentObject*  m_view;
+    App::DocumentObjectWeakPtrT m_object;
+    Gui::ViewProviderWeakPtrT   m_view;
 };
 
 
@@ -171,8 +181,9 @@ public:
     ~TaskDlgPost();
 
     void appendBox(TaskPostBox* box);
-    Gui::ViewProviderDocumentObject* getView() const
-    { return m_view; }
+    Gui::ViewProviderDocumentObject* getView() const {
+        return *m_view;
+    }
 
 public:
     /// is called the TaskView when the dialog is opened
@@ -192,7 +203,7 @@ public:
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
 
 protected:
-    Gui::ViewProviderDocumentObject*  m_view;
+    Gui::ViewProviderWeakPtrT   m_view;
     std::vector<TaskPostBox*>   m_boxes;
 };
 
