@@ -15,6 +15,702 @@
     </message>
   </context>
   <context>
+    <name>CmdFemConstraintBearing</name>
+    <message>
+      <location filename="../../Command.cpp" line="288"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="289"/>
+      <source>Constraint bearing</source>
+      <translation>Kısıtlama-rulman</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="290"/>
+      <source>Creates a FEM constraint for a bearing</source>
+      <translation>Rulman için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintContact</name>
+    <message>
+      <location filename="../../Command.cpp" line="329"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="330"/>
+      <source>Constraint contact</source>
+      <translation>Kısıtlama-temas</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="331"/>
+      <source>Creates a FEM constraint for contact between faces</source>
+      <translation>Yüzeyler arası temas için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../Command.cpp" line="374"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="375"/>
+      <source>Constraint displacement</source>
+      <translation>Kısıtlama-yer değiştirme</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="376"/>
+      <source>Creates a FEM constraint for a displacement acting on a geometric entity</source>
+      <translation>Geometrik bir unsur üzerinde hareket eden bir yer değiştirme için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintFixed</name>
+    <message>
+      <location filename="../../Command.cpp" line="417"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="418"/>
+      <source>Constraint fixed</source>
+      <translation>Kısıtlama-sabit</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="419"/>
+      <source>Creates a FEM constraint for a fixed geometric entity</source>
+      <translation>Sabitlenmiş bir geometrik unsur için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintFluidBoundary</name>
+    <message>
+      <location filename="../../Command.cpp" line="459"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="460"/>
+      <source>Fluid boundary condition</source>
+      <translation>Akışkan sınır koşulu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="461"/>
+      <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
+      <translation>Hesaplamalı Akışkanlar Dinamiği için yüz ögesi üzerinde akışkan sınır koşulu oluştur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintForce</name>
+    <message>
+      <location filename="../../Command.cpp" line="502"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="503"/>
+      <source>Constraint force</source>
+      <translation>Kısıt kuvveti</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="504"/>
+      <source>Creates a FEM constraint for a force acting on a geometric entity</source>
+      <translation>Geometrik bir unsur üzerine etkiyen bir kuvvet için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintGear</name>
+    <message>
+      <location filename="../../Command.cpp" line="546"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="547"/>
+      <source>Constraint gear</source>
+      <translation>Kısıtlama-dişli</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="548"/>
+      <source>Creates a FEM constraint for a gear</source>
+      <translation>Dişli için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintHeatflux</name>
+    <message>
+      <location filename="../../Command.cpp" line="587"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="588"/>
+      <source>Constraint heatflux</source>
+      <translation>Kısıtlama-ısı akısı</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="589"/>
+      <source>Creates a FEM constraint for a heatflux acting on a face</source>
+      <translation>Bir yüzeyde hareket eden ısı akışı için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintInitialTemperature</name>
+    <message>
+      <location filename="../../Command.cpp" line="632"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="633"/>
+      <source>Constraint initial temperature</source>
+      <translation>Başlangıç sıcaklığı kısıtı</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="634"/>
+      <source>Creates a FEM constraint for initial temperature acting on a body</source>
+      <translation>Bir gövde üzerinde hareket eden başlangıç sıcaklığı için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintPlaneRotation</name>
+    <message>
+      <location filename="../../Command.cpp" line="675"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="676"/>
+      <source>Constraint plane rotation</source>
+      <translation>Düzlem dönüşünü kısıtla</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="677"/>
+      <source>Creates a FEM constraint for plane rotation face</source>
+      <translation>Düzlem dönüş yüzeyi için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintPressure</name>
+    <message>
+      <location filename="../../Command.cpp" line="717"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="718"/>
+      <source>Constraint pressure</source>
+      <translation>Kısıtlama-basınç</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="719"/>
+      <source>Creates a FEM constraint for a pressure acting on a face</source>
+      <translation>Bir yüzeyde hareket eden basınç için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintPulley</name>
+    <message>
+      <location filename="../../Command.cpp" line="807"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="808"/>
+      <source>Constraint pulley</source>
+      <translation>Kasnağı kısıtla</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="809"/>
+      <source>Creates a FEM constraint for a pulley</source>
+      <translation>Kasnak için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintSpring</name>
+    <message>
+      <location filename="../../Command.cpp" line="762"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="763"/>
+      <source>Constraint spring</source>
+      <translation>Kısıtlama-yay</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="764"/>
+      <source>Creates a FEM constraint for a spring acting on a face</source>
+      <translation>Bir yüzeyde hareket eden yay için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintTemperature</name>
+    <message>
+      <location filename="../../Command.cpp" line="853"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="854"/>
+      <source>Constraint temperature</source>
+      <translation>Sıcaklığı kısıtla</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="855"/>
+      <source>Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</source>
+      <translation>Bir yüzeyde hareket eden sıcaklık/yoğunlaşmış ısı akısı için bir FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintTransform</name>
+    <message>
+      <location filename="../../Command.cpp" line="896"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="897"/>
+      <source>Constraint transform</source>
+      <translation>Dönüşümü kısıtla</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="898"/>
+      <source>Create FEM constraint for transforming a face</source>
+      <translation>Bir yüzü dönüştürmek için FEM kısıtlaması oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemCreateNodesSet</name>
+    <message>
+      <location filename="../../Command.cpp" line="1088"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1089"/>
+      <source>Nodes set</source>
+      <translation>Düğümler ayarla</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1090"/>
+      <source>Creates a FEM mesh nodes set</source>
+      <translation>Bir FEM metal örgü düğümleri dizisi oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1118"/>
+      <source>Wrong selection</source>
+      <translation>Yanlış seçim</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1119"/>
+      <source>Select a single FEM mesh or nodes set, please.</source>
+      <translation>Tek bir FEM örgüsünü veya düğüm setini seçin, lütfen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemDefineNodesSet</name>
+    <message>
+      <location filename="../../Command.cpp" line="1032"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1033"/>
+      <source>Node set by poly</source>
+      <translation>Poly tarafından ayarlanan düğüm</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1034"/>
+      <location filename="../../Command.cpp" line="1036"/>
+      <source>Create node set by Poly</source>
+      <translation>Poly tarafından çoklu küme (nodes) oluştur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostApllyChanges</name>
+    <message>
+      <location filename="../../Command.cpp" line="1752"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1753"/>
+      <source>Apply changes to pipeline</source>
+      <translation>İş hattına değişiklikleri uygula</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1754"/>
+      <source>Apply changes to parameters directly and not on recompute only...</source>
+      <translation>Değişiklikleri yalnızca yeniden hesaplamada değil, doğrudan parametrelere uygulayın...</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostClipFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="1296"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1297"/>
+      <source>Region clip filter</source>
+      <translation>Bölge alıntısı süzgeci</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1298"/>
+      <source>Define/create a clip filter which uses functions to define the cliped region</source>
+      <translation>Alıntılanmış bölgeyi tanımlamak için işlevler kullanan bir alıntı süzgeci tanımlayın/oluşturun</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1680"/>
+      <source>Wrong selection</source>
+      <translation>Yanlış seçim</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1681"/>
+      <source>Select a pipeline, please.</source>
+      <translation>Bir iş hattı seçiniz, lütfen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostCreateDataAtPointFilter</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="947"/>
+      <source>Data At Point</source>
+      <translation>Noktasal Veri</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostCutFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="1339"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1340"/>
+      <source>Function cut filter</source>
+      <translation>Kesme filtresi fonksiyonu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1341"/>
+      <source>Cut the data along an implicit function</source>
+      <translation>Verileri örtük bir fonksiyon boyunca kesin</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostDataAlongLineFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="1382"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1383"/>
+      <source>Line clip filter</source>
+      <translation>Çizgi alıntı süzgeci</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1384"/>
+      <source>Define/create a clip filter which clips a field along a line</source>
+      <translation>Bir çizgi boyunca bir alanı alıntılayan alıntı süzgeci tanımlayın/oluşturun</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostDataAtPointFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="1423"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1424"/>
+      <source>Data at point clip filter</source>
+      <translation>Noktasal veri alıntısı süzgeci</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1425"/>
+      <source>Define/create a clip filter which clips a field data at point</source>
+      <translation>Noktasal veri alanını alıntılayan bir alıntı süzgeci tanımlayın/oluşturun</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostFunctions</name>
+    <message>
+      <location filename="../../Command.cpp" line="1612"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1613"/>
+      <source>Filter functions</source>
+      <translation>Süzgeç işlevleri</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1614"/>
+      <source>Functions for use in postprocessing filter...</source>
+      <translation>İşlem sonrası filtrede kullanılacak fonksiyonlar...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1725"/>
+      <source>Plane</source>
+      <translation>Düzlem</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1730"/>
+      <source>Sphere</source>
+      <translation>Küre</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostLinearizedStressesFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="1219"/>
+      <source>Thickness [mm]</source>
+      <comment>Plot X-Axis Label</comment>
+      <translation type="unfinished">Thickness [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1220"/>
+      <source>Stress [MPa]</source>
+      <comment>Plot Y-Axis Label</comment>
+      <translation type="unfinished">Stress [MPa]</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1221"/>
+      <source>Linearized Stresses</source>
+      <comment>Plot title</comment>
+      <translation type="unfinished">Linearized Stresses</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1222"/>
+      <source>Membrane</source>
+      <comment>Plot legend item label</comment>
+      <translation type="unfinished">Membrane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1223"/>
+      <source>Membrane and Bending</source>
+      <comment>Plot legend item label</comment>
+      <translation type="unfinished">Membrane and Bending</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1224"/>
+      <source>Total</source>
+      <comment>Plot legend item label</comment>
+      <translation>Toplam</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1468"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1469"/>
+      <source>Stress linearization plot</source>
+      <translation>Gerilme doğrusallaştırma grafiği</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1470"/>
+      <source>Define/create stress linearization plots</source>
+      <translation>Gerilme doğrusallaştırma grafiklerini tanımlayın/oluşturun</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1506"/>
+      <source>Wrong selection</source>
+      <translation>Yanlış seçim</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1507"/>
+      <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
+      <translation>Bir çizgi boyunca bir STRES alanını kırpan bir Darbe filtresi seçin, lütfen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostPipelineFromResult</name>
+    <message>
+      <location filename="../../Command.cpp" line="1791"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1792"/>
+      <source>Post pipeline from result</source>
+      <translation>Sonuçtaki iş hattını yayınla</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1793"/>
+      <source>Creates a post processing pipeline from a result object</source>
+      <translation>Bir sonuç nesnesinden bir işlem sonrası oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1856"/>
+      <source>Wrong selection type</source>
+      <translation>Yanlış seçim türü</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1857"/>
+      <source>Select a result object, please.</source>
+      <translation>Bir sonuç nesnesi seçin, lütfen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostScalarClipFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="1530"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1531"/>
+      <source>Scalar clip filter</source>
+      <translation>Skaler kırpma filtresi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1532"/>
+      <source>Define/create a clip filter which clips a field with a scalar value</source>
+      <translation>Skaler değere sahip bir alanı kırpan bir kırpma filtresi tanımlayın/oluşturun</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostWarpVectorFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="1571"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1572"/>
+      <source>Warp filter</source>
+      <translation>Saptırma filtresi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1573"/>
+      <source>Warp the geometry along a vector field by a certain factor</source>
+      <translation>Geometriyi bir vektör alanı boyunca belirli bir etkenle saptırın</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="305"/>
+      <source>Make FEM constraint for bearing</source>
+      <translation>Rulman için bir FEM kısıtlaması yap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="346"/>
+      <source>Make FEM constraint contact on face</source>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması yapın</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="391"/>
+      <source>Make FEM constraint displacement on face</source>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlama yer değiştirmesi yapın</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="434"/>
+      <source>Make FEM constraint fixed geometry</source>
+      <translation>Sabit geometri FEM kısıtlaması yap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="476"/>
+      <source>Create fluid boundary condition</source>
+      <translation>Akışkan sınır koşulu oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="519"/>
+      <source>Make FEM constraint force on geometry</source>
+      <translation>Geometri üzerinde FEM kısıtlama kuvveti yapın</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="562"/>
+      <source>Make FEM constraint for gear</source>
+      <translation>Dişli için bir FEM kısıtlaması yap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="604"/>
+      <source>Make FEM constraint heatflux on face</source>
+      <translation>Yüzeydeki ısı akısı FEM kısıtlaması yap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="649"/>
+      <source>Make FEM constraint initial temperature on body</source>
+      <translation>Gövdedeki başlangıç sıcaklığı FEM kısıtlaması yap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="692"/>
+      <source>Make FEM constraint Plane Rotation face</source>
+      <translation>Düzlem Dönüş yüzeyi FEM kısıtlaması yap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="734"/>
+      <source>Make FEM constraint pressure on face</source>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlama basıncı yapın</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="779"/>
+      <source>Make FEM constraint spring on face</source>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması yayı yap</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="824"/>
+      <source>Make FEM constraint for pulley</source>
+      <translation>Kasnak için FEM kısıtlaması yapın</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="870"/>
+      <source>Make FEM constraint temperature on face</source>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması sıcaklığı yapın</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="913"/>
+      <source>Make FEM constraint transform on face</source>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması dönüşümü yapın</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1002"/>
+      <source>Place robot</source>
+      <translation>Robot yerleştir</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1103"/>
+      <source>Edit nodes set</source>
+      <translation>Düğüm noktaları kümesini düzenle</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1111"/>
+      <source>Create nodes set</source>
+      <translation>Düğüm noktaları kümesi oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1194"/>
+      <source>Create filter</source>
+      <translation>Filtre edici oluşturun</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1636"/>
+      <source>Create function</source>
+      <translation>Fonksiyon oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1839"/>
+      <source>Create pipeline from result</source>
+      <translation>Sonuçtan iş hattı oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="300"/>
+      <source>Edit Mirror</source>
+      <translation>Aynalamayı Düzenle</translation>
+    </message>
+  </context>
+  <context>
     <name>ControlWidget</name>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
@@ -66,6 +762,197 @@
       <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
       <source>Abort</source>
       <translation>İptal</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
+      <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
+      <source>Dialog</source>
+      <translation>Pencere</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
+      <source>Mesh groups detected. Please choose values for the different groups.</source>
+      <translation>Metal örgü grupları algılandı. Lütfen farklı gruplar için değerler seçin.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
+      <source>Id</source>
+      <translation>Kullanıcı kimliği</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGroupXDMFExport.ui" line="67"/>
+      <source>Label</source>
+      <translation>Etiket</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGroupXDMFExport.ui" line="72"/>
+      <source>Elements</source>
+      <translation>Elementler</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGroupXDMFExport.ui" line="77"/>
+      <source>Not Marked</source>
+      <translation>İşaretlenmedi</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGroupXDMFExport.ui" line="82"/>
+      <source>Marked</source>
+      <translation>İşaretli</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
+      <source>Select the vertices, lines and surfaces: </source>
+      <translation>Nokta, çizgi ve yüzeyleri seçin: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="43"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
+      <source>Temperature:</source>
+      <translation>Sıcaklık:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
+      <source>25</source>
+      <translation>25</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
+      <source>ºC</source>
+      <translation>ºC</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="81"/>
+      <source>Add</source>
+      <translation>Ekle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="94"/>
+      <source>Remove</source>
+      <translation>Kaldır</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
+      <source>Insert component's
+ initial temperature:</source>
+      <translation>Bileşenin başlangıç
+       sıcaklığını girin:</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="290"/>
+      <source>Displacement Magnitude</source>
+      <translation>Yer Değiştirme Miktarı</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="300"/>
+      <source>Displacement X</source>
+      <translation>Yer Değiştirme X</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="310"/>
+      <source>Displacement Y</source>
+      <translation>Yer Değiştirme Y</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="320"/>
+      <source>Displacement Z</source>
+      <translation>Yer Değiştirme Z</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="327"/>
+      <source>von Mises Stress</source>
+      <translation>von Mises Gerilmesi</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="334"/>
+      <source>Max Shear Stress</source>
+      <translation type="unfinished">Max Shear Stress</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="341"/>
+      <source>Max Principal Stress</source>
+      <translation>Maks. Asıl Gerilme</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="348"/>
+      <source>Temperature</source>
+      <translation>Sıcaklık</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="355"/>
+      <source>Mass Flow Rate</source>
+      <translation>Kütle Akış Oranı</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="362"/>
+      <source>Network Pressure</source>
+      <translation>Şebeke Basıncı</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="369"/>
+      <source>Min Principal Stress</source>
+      <translation>Min. Asıl Gerilme</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="376"/>
+      <source>Equivalent Plastic Strain</source>
+      <translation type="unfinished">Equivalent Plastic Strain</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="395"/>
+      <source>Information</source>
+      <translation>Bilgi</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="397"/>
+      <source>No histogram available.
+Please select a result type first.</source>
+      <translation type="unfinished">No histogram available.
+Please select a result type first.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="510"/>
+      <source>Histogram of {}</source>
+      <translation type="unfinished">Histogram of {}</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="511"/>
+      <source>Nodes</source>
+      <translation>Düğümler</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="632"/>
+      <source>FEM: there are no nodes in result mesh, there will be nothing to show.</source>
+      <translation type="unfinished">FEM: there are no nodes in result mesh, there will be nothing to show.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="635"/>
+      <source>Empty result mesh</source>
+      <translation type="unfinished">Empty result mesh</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="642"/>
+      <source>FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</source>
+      <translation type="unfinished">FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="645"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="649"/>
+      <source>No result object</source>
+      <translation type="unfinished">No result object</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="647"/>
+      <source>FEM: Result node numbers are not equal to FEM Mesh NodeCount.</source>
+      <translation type="unfinished">FEM: Result node numbers are not equal to FEM Mesh NodeCount.</translation>
     </message>
   </context>
   <context>
@@ -525,6 +1412,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_PostCreateFunctions</name>
+    <message>
+      <location filename="../../Command.cpp" line="1726"/>
+      <source>Create a plane function, defined by its origin and normal</source>
+      <translation>Başlangıç noktası ve dik yönüne göre tanımlanan bir düzlem işlevi oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1731"/>
+      <source>Create a sphere function, defined by its center and radius</source>
+      <translation>Merkezi ve yarıçapına göre tanımlanan bir küre işlevi oluştur</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_ResultShow</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="897"/>
@@ -639,818 +1539,6 @@
       <location filename="../../../femcommands/commands.py" line="1066"/>
       <source>Creates a FEM solver Z88</source>
       <translation type="unfinished">Creates a FEM solver Z88</translation>
-    </message>
-  </context>
-  <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="273"/>
-      <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="276"/>
-      <source>Add</source>
-      <translation>Ekle</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="283"/>
-      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="286"/>
-      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
-      <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
-      <source>Solid</source>
-      <translation>Katı</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="151"/>
-      <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="155"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="52"/>
-      <source>Add</source>
-      <translation>Ekle</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="53"/>
-      <source>Remove</source>
-      <translation>Kaldır</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintBearing</name>
-    <message>
-      <location filename="../../Command.cpp" line="288"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="289"/>
-      <source>Constraint bearing</source>
-      <translation>Kısıtlama-rulman</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="290"/>
-      <source>Creates a FEM constraint for a bearing</source>
-      <translation>Rulman için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintContact</name>
-    <message>
-      <location filename="../../Command.cpp" line="329"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="330"/>
-      <source>Constraint contact</source>
-      <translation>Kısıtlama-temas</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="331"/>
-      <source>Creates a FEM constraint for contact between faces</source>
-      <translation>Yüzeyler arası temas için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../Command.cpp" line="374"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="375"/>
-      <source>Constraint displacement</source>
-      <translation>Kısıtlama-yer değiştirme</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="376"/>
-      <source>Creates a FEM constraint for a displacement acting on a geometric entity</source>
-      <translation>Geometrik bir unsur üzerinde hareket eden bir yer değiştirme için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintFixed</name>
-    <message>
-      <location filename="../../Command.cpp" line="417"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="418"/>
-      <source>Constraint fixed</source>
-      <translation>Kısıtlama-sabit</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="419"/>
-      <source>Creates a FEM constraint for a fixed geometric entity</source>
-      <translation>Sabitlenmiş bir geometrik unsur için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintFluidBoundary</name>
-    <message>
-      <location filename="../../Command.cpp" line="459"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="460"/>
-      <source>Fluid boundary condition</source>
-      <translation>Akışkan sınır koşulu</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="461"/>
-      <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation>Hesaplamalı Akışkanlar Dinamiği için yüz ögesi üzerinde akışkan sınır koşulu oluştur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintForce</name>
-    <message>
-      <location filename="../../Command.cpp" line="502"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="503"/>
-      <source>Constraint force</source>
-      <translation>Kısıt kuvveti</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="504"/>
-      <source>Creates a FEM constraint for a force acting on a geometric entity</source>
-      <translation>Geometrik bir unsur üzerine etkiyen bir kuvvet için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintGear</name>
-    <message>
-      <location filename="../../Command.cpp" line="546"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="547"/>
-      <source>Constraint gear</source>
-      <translation>Kısıtlama-dişli</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="548"/>
-      <source>Creates a FEM constraint for a gear</source>
-      <translation>Dişli için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintHeatflux</name>
-    <message>
-      <location filename="../../Command.cpp" line="587"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="588"/>
-      <source>Constraint heatflux</source>
-      <translation>Kısıtlama-ısı akısı</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="589"/>
-      <source>Creates a FEM constraint for a heatflux acting on a face</source>
-      <translation>Bir yüzeyde hareket eden ısı akışı için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../Command.cpp" line="632"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="633"/>
-      <source>Constraint initial temperature</source>
-      <translation>Başlangıç sıcaklığı kısıtı</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="634"/>
-      <source>Creates a FEM constraint for initial temperature acting on a body</source>
-      <translation>Bir gövde üzerinde hareket eden başlangıç sıcaklığı için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintPlaneRotation</name>
-    <message>
-      <location filename="../../Command.cpp" line="675"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="676"/>
-      <source>Constraint plane rotation</source>
-      <translation>Düzlem dönüşünü kısıtla</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="677"/>
-      <source>Creates a FEM constraint for plane rotation face</source>
-      <translation>Düzlem dönüş yüzeyi için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintPressure</name>
-    <message>
-      <location filename="../../Command.cpp" line="717"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="718"/>
-      <source>Constraint pressure</source>
-      <translation>Kısıtlama-basınç</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="719"/>
-      <source>Creates a FEM constraint for a pressure acting on a face</source>
-      <translation>Bir yüzeyde hareket eden basınç için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintPulley</name>
-    <message>
-      <location filename="../../Command.cpp" line="807"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="808"/>
-      <source>Constraint pulley</source>
-      <translation>Kasnağı kısıtla</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="809"/>
-      <source>Creates a FEM constraint for a pulley</source>
-      <translation>Kasnak için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintSpring</name>
-    <message>
-      <location filename="../../Command.cpp" line="762"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="763"/>
-      <source>Constraint spring</source>
-      <translation>Kısıtlama-yay</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="764"/>
-      <source>Creates a FEM constraint for a spring acting on a face</source>
-      <translation>Bir yüzeyde hareket eden yay için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintTemperature</name>
-    <message>
-      <location filename="../../Command.cpp" line="853"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="854"/>
-      <source>Constraint temperature</source>
-      <translation>Sıcaklığı kısıtla</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="855"/>
-      <source>Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</source>
-      <translation>Bir yüzeyde hareket eden sıcaklık/yoğunlaşmış ısı akısı için bir FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemConstraintTransform</name>
-    <message>
-      <location filename="../../Command.cpp" line="896"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="897"/>
-      <source>Constraint transform</source>
-      <translation>Dönüşümü kısıtla</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="898"/>
-      <source>Create FEM constraint for transforming a face</source>
-      <translation>Bir yüzü dönüştürmek için FEM kısıtlaması oluşturur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemCreateNodesSet</name>
-    <message>
-      <location filename="../../Command.cpp" line="1088"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1089"/>
-      <source>Nodes set</source>
-      <translation>Düğümler ayarla</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1090"/>
-      <source>Creates a FEM mesh nodes set</source>
-      <translation>Bir FEM metal örgü düğümleri dizisi oluşturur</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1118"/>
-      <source>Wrong selection</source>
-      <translation>Yanlış seçim</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1119"/>
-      <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Tek bir FEM örgüsünü veya düğüm setini seçin, lütfen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemDefineNodesSet</name>
-    <message>
-      <location filename="../../Command.cpp" line="1032"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1033"/>
-      <source>Node set by poly</source>
-      <translation>Poly tarafından ayarlanan düğüm</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1034"/>
-      <location filename="../../Command.cpp" line="1036"/>
-      <source>Create node set by Poly</source>
-      <translation>Poly tarafından çoklu küme (nodes) oluştur</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostApllyChanges</name>
-    <message>
-      <location filename="../../Command.cpp" line="1737"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1738"/>
-      <source>Apply changes to pipeline</source>
-      <translation>İş hattına değişiklikleri uygula</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1739"/>
-      <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation>Değişiklikleri yalnızca yeniden hesaplamada değil, doğrudan parametrelere uygulayın...</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostClipFilter</name>
-    <message>
-      <location filename="../../Command.cpp" line="1281"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1282"/>
-      <source>Region clip filter</source>
-      <translation>Bölge alıntısı süzgeci</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1283"/>
-      <source>Define/create a clip filter which uses functions to define the cliped region</source>
-      <translation>Alıntılanmış bölgeyi tanımlamak için işlevler kullanan bir alıntı süzgeci tanımlayın/oluşturun</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1665"/>
-      <source>Wrong selection</source>
-      <translation>Yanlış seçim</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1666"/>
-      <source>Select a pipeline, please.</source>
-      <translation>Bir iş hattı seçiniz, lütfen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostCreateDataAtPointFilter</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="903"/>
-      <source>Data At Point</source>
-      <translation>Noktasal Veri</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostCutFilter</name>
-    <message>
-      <location filename="../../Command.cpp" line="1324"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1325"/>
-      <source>Function cut filter</source>
-      <translation>Kesme filtresi fonksiyonu</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1326"/>
-      <source>Cut the data along an implicit function</source>
-      <translation>Verileri örtük bir fonksiyon boyunca kesin</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostDataAlongLineFilter</name>
-    <message>
-      <location filename="../../Command.cpp" line="1367"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1368"/>
-      <source>Line clip filter</source>
-      <translation>Çizgi alıntı süzgeci</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1369"/>
-      <source>Define/create a clip filter which clips a field along a line</source>
-      <translation>Bir çizgi boyunca bir alanı alıntılayan alıntı süzgeci tanımlayın/oluşturun</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostDataAtPointFilter</name>
-    <message>
-      <location filename="../../Command.cpp" line="1408"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1409"/>
-      <source>Data at point clip filter</source>
-      <translation>Noktasal veri alıntısı süzgeci</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1410"/>
-      <source>Define/create a clip filter which clips a field data at point</source>
-      <translation>Noktasal veri alanını alıntılayan bir alıntı süzgeci tanımlayın/oluşturun</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostFunctions</name>
-    <message>
-      <location filename="../../Command.cpp" line="1597"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1598"/>
-      <source>Filter functions</source>
-      <translation>Süzgeç işlevleri</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1599"/>
-      <source>Functions for use in postprocessing filter...</source>
-      <translation>İşlem sonrası filtrede kullanılacak fonksiyonlar...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1710"/>
-      <source>Plane</source>
-      <translation>Düzlem</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1715"/>
-      <source>Sphere</source>
-      <translation>Küre</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostLinearizedStressesFilter</name>
-    <message>
-      <location filename="../../Command.cpp" line="1453"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1454"/>
-      <source>Stress linearization plot</source>
-      <translation>Gerilme doğrusallaştırma grafiği</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1455"/>
-      <source>Define/create stress linearization plots</source>
-      <translation>Gerilme doğrusallaştırma grafiklerini tanımlayın/oluşturun</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1485"/>
-      <location filename="../../Command.cpp" line="1491"/>
-      <source>Wrong selection</source>
-      <translation>Yanlış seçim</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1486"/>
-      <location filename="../../Command.cpp" line="1492"/>
-      <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation>Bir çizgi boyunca bir STRES alanını kırpan bir Darbe filtresi seçin, lütfen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostPipelineFromResult</name>
-    <message>
-      <location filename="../../Command.cpp" line="1776"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1777"/>
-      <source>Post pipeline from result</source>
-      <translation>Sonuçtaki iş hattını yayınla</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1778"/>
-      <source>Creates a post processing pipeline from a result object</source>
-      <translation>Bir sonuç nesnesinden bir işlem sonrası oluşturur</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1841"/>
-      <source>Wrong selection type</source>
-      <translation>Yanlış seçim türü</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1842"/>
-      <source>Select a result object, please.</source>
-      <translation>Bir sonuç nesnesi seçin, lütfen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostScalarClipFilter</name>
-    <message>
-      <location filename="../../Command.cpp" line="1515"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1516"/>
-      <source>Scalar clip filter</source>
-      <translation>Skaler kırpma filtresi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1517"/>
-      <source>Define/create a clip filter which clips a field with a scalar value</source>
-      <translation>Skaler değere sahip bir alanı kırpan bir kırpma filtresi tanımlayın/oluşturun</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostWarpVectorFilter</name>
-    <message>
-      <location filename="../../Command.cpp" line="1556"/>
-      <source>Fem</source>
-      <translation>Sonlu elemanlar yöntemi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1557"/>
-      <source>Warp filter</source>
-      <translation>Saptırma filtresi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1558"/>
-      <source>Warp the geometry along a vector field by a certain factor</source>
-      <translation>Geometriyi bir vektör alanı boyunca belirli bir etkenle saptırın</translation>
-    </message>
-  </context>
-  <context>
-    <name>Command</name>
-    <message>
-      <location filename="../../Command.cpp" line="305"/>
-      <source>Make FEM constraint for bearing</source>
-      <translation>Rulman için bir FEM kısıtlaması yap</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="346"/>
-      <source>Make FEM constraint contact on face</source>
-      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması yapın</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="391"/>
-      <source>Make FEM constraint displacement on face</source>
-      <translation>Bir geometrik yüzün üzerinde FEM kısıtlama yer değiştirmesi yapın</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="434"/>
-      <source>Make FEM constraint fixed geometry</source>
-      <translation>Sabit geometri FEM kısıtlaması yap</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="476"/>
-      <source>Create fluid boundary condition</source>
-      <translation>Akışkan sınır koşulu oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="519"/>
-      <source>Make FEM constraint force on geometry</source>
-      <translation>Geometri üzerinde FEM kısıtlama kuvveti yapın</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="562"/>
-      <source>Make FEM constraint for gear</source>
-      <translation>Dişli için bir FEM kısıtlaması yap</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="604"/>
-      <source>Make FEM constraint heatflux on face</source>
-      <translation>Yüzeydeki ısı akısı FEM kısıtlaması yap</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="649"/>
-      <source>Make FEM constraint initial temperature on body</source>
-      <translation>Gövdedeki başlangıç sıcaklığı FEM kısıtlaması yap</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="692"/>
-      <source>Make FEM constraint Plane Rotation face</source>
-      <translation>Düzlem Dönüş yüzeyi FEM kısıtlaması yap</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="734"/>
-      <source>Make FEM constraint pressure on face</source>
-      <translation>Bir geometrik yüzün üzerinde FEM kısıtlama basıncı yapın</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="779"/>
-      <source>Make FEM constraint spring on face</source>
-      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması yayı yap</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="824"/>
-      <source>Make FEM constraint for pulley</source>
-      <translation>Kasnak için FEM kısıtlaması yapın</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="870"/>
-      <source>Make FEM constraint temperature on face</source>
-      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması sıcaklığı yapın</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="913"/>
-      <source>Make FEM constraint transform on face</source>
-      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması dönüşümü yapın</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1002"/>
-      <source>Place robot</source>
-      <translation>Robot yerleştir</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1103"/>
-      <source>Edit nodes set</source>
-      <translation>Düğüm noktaları kümesini düzenle</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1111"/>
-      <source>Create nodes set</source>
-      <translation>Düğüm noktaları kümesi oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1193"/>
-      <source>Create filter</source>
-      <translation>Filtre edici oluşturun</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1621"/>
-      <source>Create function</source>
-      <translation>Fonksiyon oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1824"/>
-      <source>Create pipeline from result</source>
-      <translation>Sonuçtan iş hattı oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="300"/>
-      <source>Edit Mirror</source>
-      <translation>Aynalamayı Düzenle</translation>
-    </message>
-  </context>
-  <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
-      <source>Dialog</source>
-      <translation>Pencere</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
-      <source>Mesh groups detected. Please choose values for the different groups.</source>
-      <translation>Metal örgü grupları algılandı. Lütfen farklı gruplar için değerler seçin.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
-      <source>Id</source>
-      <translation>Kullanıcı kimliği</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGroupXDMFExport.ui" line="67"/>
-      <source>Label</source>
-      <translation>Etiket</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGroupXDMFExport.ui" line="72"/>
-      <source>Elements</source>
-      <translation>Elementler</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGroupXDMFExport.ui" line="77"/>
-      <source>Not Marked</source>
-      <translation>İşaretlenmedi</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGroupXDMFExport.ui" line="82"/>
-      <source>Marked</source>
-      <translation>İşaretli</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
-      <source>Select the vertices, lines and surfaces: </source>
-      <translation>Nokta, çizgi ve yüzeyleri seçin: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="43"/>
-      <source>Temperature:</source>
-      <translation>Sıcaklık:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
-      <source>25</source>
-      <translation>25</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
-      <source>ºC</source>
-      <translation>ºC</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="81"/>
-      <source>Add</source>
-      <translation>Ekle</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="94"/>
-      <source>Remove</source>
-      <translation>Kaldır</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
-      <source>Insert component's
- initial temperature:</source>
-      <translation>Bileşenin başlangıç
-       sıcaklığını girin:</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_PostCreateFunctions</name>
-    <message>
-      <location filename="../../Command.cpp" line="1711"/>
-      <source>Create a plane function, defined by its origin and normal</source>
-      <translation>Başlangıç noktası ve dik yönüne göre tanımlanan bir düzlem işlevi oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1716"/>
-      <source>Create a sphere function, defined by its center and radius</source>
-      <translation>Merkezi ve yarıçapına göre tanımlanan bir küre işlevi oluştur</translation>
     </message>
   </context>
   <context>
@@ -2330,7 +2418,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="266"/>
+      <location filename="../../TaskPostBoxes.cpp" line="267"/>
       <source>Input error</source>
       <translation>Girdi hatası</translation>
     </message>
@@ -2974,7 +3062,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="413"/>
+      <location filename="../../TaskPostBoxes.cpp" line="414"/>
       <source>Clip region, choose implicit function</source>
       <translation>Bölgeyi alıntılayın, örtülü işlevi seçin</translation>
     </message>
@@ -2982,7 +3070,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1160"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1204"/>
       <source>Function cut, choose implicit function</source>
       <translation>Kesilecek, örtük fonksiyonu seçiniz</translation>
     </message>
@@ -2990,15 +3078,21 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="540"/>
+      <location filename="../../TaskPostBoxes.cpp" line="541"/>
       <source>Data along a line options</source>
       <translation>Çizgisel veri seçenekleri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="736"/>
+      <source>Length</source>
+      <comment>X-Axis plot label</comment>
+      <translation>Uzunluk</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="750"/>
+      <location filename="../../TaskPostBoxes.cpp" line="759"/>
       <source>Data at point options</source>
       <translation>Noktasal veri seçenekleri</translation>
     </message>
@@ -3006,7 +3100,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="333"/>
+      <location filename="../../TaskPostBoxes.cpp" line="334"/>
       <source>Result display options</source>
       <translation>Sonuç ekranı seçenekleri</translation>
     </message>
@@ -3014,7 +3108,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="390"/>
+      <location filename="../../TaskPostBoxes.cpp" line="391"/>
       <source>Implicit function</source>
       <translation>Örtülü işlev</translation>
     </message>
@@ -3022,7 +3116,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="911"/>
+      <location filename="../../TaskPostBoxes.cpp" line="955"/>
       <source>Scalar clip options</source>
       <translation>Skaler kırpma seçenekleri</translation>
     </message>
@@ -3030,7 +3124,7 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1019"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1063"/>
       <source>Warp options</source>
       <translation>Saptırma seçenekleri</translation>
     </message>
@@ -3067,15 +3161,15 @@ that "MAXKOI" needs to be increased.</translation>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>FEM malzemesi</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Malzeme</translation>
     </message>
@@ -3100,9 +3194,9 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Malzeme adı</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>MetinEtiketi</translation>
     </message>
@@ -3473,6 +3567,9 @@ that "MAXKOI" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
@@ -3481,9 +3578,6 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -3498,11 +3592,11 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Merkezkaç değişkeni</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametre</translation>
     </message>
@@ -3607,8 +3701,8 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Işın kesiti değişkeni</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Kesit değişkeni</translation>
     </message>
@@ -3743,6 +3837,39 @@ that "MAXKOI" needs to be increased.</translation>
     </message>
   </context>
   <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="273"/>
+      <source>Geometry reference selector for a</source>
+      <translation type="unfinished">Geometry reference selector for a</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="276"/>
+      <source>Add</source>
+      <translation>Ekle</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="300"/>
+      <source>Selection mode</source>
+      <translation type="unfinished">Selection mode</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
+      <source>Solid</source>
+      <translation>Katı</translation>
+    </message>
+  </context>
+  <context>
     <name>GmshMesh</name>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
@@ -3842,11 +3969,11 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Kısıt düzenleme</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="77"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="77"/>
       <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="75"/>
       <location filename="../../ViewProviderFemConstraintForce.cpp" line="76"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="77"/>
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="76"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="77"/>
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="75"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="340"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="604"/>
@@ -3854,11 +3981,11 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Araç çubuğunda bir pencere zaten açık</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="78"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="78"/>
       <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="76"/>
       <location filename="../../ViewProviderFemConstraintForce.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="78"/>
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="77"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="78"/>
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="76"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="341"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="605"/>
@@ -3953,7 +4080,7 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Dönüşümü kısıtla</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="247"/>
+      <location filename="../../TaskPostBoxes.cpp" line="248"/>
       <source>Edit post processing object</source>
       <translation>İşleme sonrası nesneyi düzenle</translation>
     </message>
@@ -3995,8 +4122,8 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="227"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="150"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="681"/>
       <location filename="../../ViewProviderSolver.cpp" line="71"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="681"/>
       <source>Are you sure you want to continue?</source>
       <translation>Devam etmek istediğinizden emin misiniz?</translation>
     </message>
@@ -4060,8 +4187,8 @@ that "MAXKOI" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="130"/>
-      <source>Peeq</source>
-      <translation>Peeq</translation>
+      <source>Equivalent Plastic Strain</source>
+      <translation type="unfinished">Equivalent Plastic Strain</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="137"/>
@@ -4119,22 +4246,30 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>Kullanıcı tanımlı denklem</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="333"/>
-      <source>Calculate and plot</source>
-      <translation>Hesapla ve grafik çizdir</translation>
+      <location filename="../ui/ResultShow.ui" line="331"/>
+      <source>Runs the equation given in the field below,
+outputs the results to the Min and Max fields
+and colors the result mesh accordingly</source>
+      <translation type="unfinished">Runs the equation given in the field below,
+outputs the results to the Min and Max fields
+and colors the result mesh accordingly</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="340"/>
-      <source>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu'; font-size:8pt;"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu'; font-size:8pt;"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <location filename="../ui/ResultShow.ui" line="336"/>
+      <source>Calculate</source>
+      <translation type="unfinished">Calculate</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="355"/>
+      <source>Enter here an equation to be calculated.
+For possible variables, see the description box below.</source>
+      <translation type="unfinished">Enter here an equation to be calculated.
+For possible variables, see the description box below.</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="359"/>
+      <source>P1 - P3 # Max - Min Principal Stress</source>
+      <translation type="unfinished">P1 - P3 # Max - Min Principal Stress</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
@@ -4177,44 +4312,72 @@ p, li { white-space: pre-wrap; }
       <translation>kütle akış oranı: MF</translation>
     </message>
     <message>
-      <location filename="../ui/ResultHints.ui" line="148"/>
+      <location filename="../ui/ResultHints.ui" line="158"/>
       <source>von Mises stress: vM</source>
       <translation>von Mises gerilmesi: vM</translation>
     </message>
     <message>
-      <location filename="../ui/ResultHints.ui" line="158"/>
+      <location filename="../ui/ResultHints.ui" line="178"/>
+      <source>max shear stress: MS</source>
+      <translation type="unfinished">max shear stress: MS</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="188"/>
+      <source>max princ. stress vector: s3x, s3y, s3z</source>
+      <translation type="unfinished">max princ. stress vector: s3x, s3y, s3z</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="198"/>
+      <source>max principal stress: P1</source>
+      <translation type="unfinished">max principal stress: P1</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="208"/>
+      <source>med princ. stress vector: s2x, s2y, s2z</source>
+      <translation type="unfinished">med princ. stress vector: s2x, s2y, s2z</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="218"/>
+      <source>med principal stress: P2</source>
+      <translation type="unfinished">med principal stress: P2</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="228"/>
+      <source>min princ. stress vector: s1x, s1y, s1z</source>
+      <translation type="unfinished">min princ. stress vector: s1x, s1y, s1z</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="238"/>
+      <source>min principal stress: P3</source>
+      <translation type="unfinished">min principal stress: P3</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="148"/>
       <source>reinforcement ratio: rx, ry, rz</source>
       <translation>takviye oranı: rx, ry, rz</translation>
     </message>
     <message>
-      <location filename="../ui/ResultHints.ui" line="168"/>
-      <source>principal stresses: P1, P2, P3</source>
-      <translation>asıl gerilimler: P1, P2, P3</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultHints.ui" line="178"/>
+      <location filename="../ui/ResultHints.ui" line="248"/>
       <source>Mohr Coulomb: mc</source>
       <translation>Mohr Coulomb: mc</translation>
     </message>
     <message>
-      <location filename="../ui/ResultHints.ui" line="188"/>
+      <location filename="../ui/ResultHints.ui" line="168"/>
       <source>equivalent plastic strain: Peeq</source>
       <translation>eşdeğer kalıcı şekil değiştirme: Peeq</translation>
     </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
     <message>
-      <location filename="../ui/ResultHints.ui" line="198"/>
-      <source>min. principal stress vector: s1x, s1y, s1z</source>
-      <translation>min. asıl gerilme vektörü: s1x, s1y, s1z</translation>
+      <location filename="../../../femguiutils/selection_widgets.py" line="151"/>
+      <source>Select Solids</source>
+      <translation type="unfinished">Select Solids</translation>
     </message>
     <message>
-      <location filename="../ui/ResultHints.ui" line="208"/>
-      <source>med. principal stress vector: s2x, s2y, s2z</source>
-      <translation>orta asıl gerilme vektörü: s2x, s2y, s2z</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultHints.ui" line="218"/>
-      <source>max. principal stress vector: s3x, s3y, s3z</source>
-      <translation>maks. asıl gerilme vektörü: s3x, s3y, s3z</translation>
+      <location filename="../../../femguiutils/selection_widgets.py" line="155"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
     </message>
   </context>
   <context>
@@ -4315,8 +4478,8 @@ following referencing objects might be lost:</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="230"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="153"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="684"/>
       <location filename="../../ViewProviderSolver.cpp" line="74"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="684"/>
       <source>Object dependencies</source>
       <translation>Nesne bağımlılıkları</translation>
     </message>
@@ -5222,22 +5385,32 @@ yön olarak kullanılır</translation>
   <context>
     <name>TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="14"/>
-      <source>Form</source>
-      <translation>Şekil:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
       <translation>Ortala</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="107"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="23"/>
+      <source>x</source>
+      <translation>x</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="33"/>
+      <source>y</source>
+      <translation>y</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="43"/>
+      <source>z</source>
+      <translation>z</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="116"/>
       <source>Select Point</source>
       <translation>Nokta Seçin</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="126"/>
+      <location filename="../../TaskPostDataAtPoint.ui" line="135"/>
       <source>Field</source>
       <translation>Alan</translation>
     </message>
@@ -5667,6 +5840,19 @@ yön olarak kullanılır</translation>
     </message>
   </context>
   <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="52"/>
+      <source>Add</source>
+      <translation>Ekle</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="53"/>
+      <source>Remove</source>
+      <translation>Kaldır</translation>
+    </message>
+  </context>
+  <context>
     <name>setupFilter</name>
     <message>
       <location filename="../../Command.cpp" line="1145"/>
@@ -5675,14 +5861,14 @@ yön olarak kullanılır</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1146"/>
-      <location filename="../../Command.cpp" line="1161"/>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1162"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>The filter could not be set up.</source>
       <translation>Filtre kurulamadı.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1160"/>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1161"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>Error: no post processing object selected.</source>
       <translation type="unfinished">Error: no post processing object selected.</translation>
     </message>

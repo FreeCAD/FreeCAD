@@ -1154,7 +1154,8 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter"))
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostScalarClipFilter"))
         || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostCutFilter"))
-        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter")) )
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter"))
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostDataAlongLineFilter")) )
         ) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("setupFilter", "Error: no post processing object selected."),
@@ -1213,9 +1214,17 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 }
 
 
-std::string Plot() {
+std::string Plot() 
+{
+    auto xAxisLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Thickness [mm]", "Plot X-Axis Label").toStdString();
+    auto yAxisLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Stress [MPa]", "Plot Y-Axis Label").toStdString();
+    auto titleLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Linearized Stresses", "Plot title").toStdString();
+    auto legendEntryA = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Membrane", "Plot legend item label").toStdString();
+    auto legendEntryB = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Membrane and Bending", "Plot legend item label").toStdString();
+    auto legendEntryC = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Total", "Plot legend item label").toStdString();
 
-    return "t=t_coords[len(t_coords)-1]\n\
+    std::ostringstream oss;
+    oss << "t=t_coords[len(t_coords)-1]\n\
 for i in range(len(t_coords)):\n\
     dum = t_coords[i]\n\
     t_coords[i] = dum - t_coords[len(t_coords)-1]*0.5\n\
@@ -1241,9 +1250,10 @@ for i in range(len(sValues)):\n\
     peak.append(sValues[i])\n\
     mb.append(bending[i] + membrane[0])\n\
 import FreeCAD\n\
+from PySide import QtCore\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
-plt.figure(1)\n\
+plt.figure(\"" << titleLabel << "\")\n\
 plt.plot(t_coords, membrane, \"k--\")\n\
 plt.plot(t_coords, mb, \"b*-\")\n\
 plt.plot(t_coords, peak, \"r-x\")\n\
@@ -1262,12 +1272,17 @@ FreeCAD.Console.PrintError('Total stress min = ')\n\
 FreeCAD.Console.PrintError([str(round(peak[0],2))])\n\
 FreeCAD.Console.PrintError('Total stress max = ')\n\
 FreeCAD.Console.PrintError([str(round(peak[len(t_coords)-1],2))])\n\
-plt.legend([\"Membrane\", \"Membrane and Bending\", \"Total\"], loc = \"best\")\n\
-plt.xlabel(\"Thickness [mm] \")\n\
-plt.ylabel(\"Stress [MPa]\")\n\
-plt.title(\"Linearized Stresses\")\n\
+plt.ioff()\n\
+plt.legend([\"" << legendEntryA << "\", \"" << legendEntryB << "\", \"" << legendEntryC << "\"], loc = \"best\")\n\
+plt.xlabel(\"" << xAxisLabel << "\")\n\
+plt.ylabel(\"" << yAxisLabel << "\")\n\
+plt.title(\"" << titleLabel << "\")\n\
 plt.grid()\n\
+fig_manager = plt.get_current_fig_manager()\n\
+fig_manager.window.setParent(FreeCADGui.getMainWindow())\n\
+fig_manager.window.setWindowFlag(QtCore.Qt.Tool)\n\
 plt.show()\n";
+    return oss.str();
 }
 
 

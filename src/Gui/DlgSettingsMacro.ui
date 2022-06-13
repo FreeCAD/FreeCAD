@@ -282,7 +282,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="recentMacroListShortcutCountLabel">
        <property name="text">
-        <string>Shortcut count</string>
+        <string>Keyboard shortcut count</string>
        </property>
       </widget>
      </item>

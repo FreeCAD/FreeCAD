@@ -519,6 +519,7 @@ bool FileInfo::copyTo(const char* NewName) const
     FileInfo fi1(FileName);
     FileInfo fi2(NewName);
     Base::ifstream file(fi1, std::ios::in | std::ios::binary);
+    file.unsetf(std::ios_base::skipws);
     Base::ofstream copy(fi2, std::ios::out | std::ios::binary);
     file >> copy.rdbuf();
     return file.is_open() && copy.is_open();

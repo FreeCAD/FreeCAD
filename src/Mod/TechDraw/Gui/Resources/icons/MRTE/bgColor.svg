@@ -2,20 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="64"
    height="64"
    id="svg249"
-   inkscape:version="0.92.4 (unknown)"
-   sodipodi:docname="bgColor.svg">
+   inkscape:version="1.2-beta (1b65182ce9, 2022-04-05)"
+   sodipodi:docname="bgColor.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -25,20 +25,22 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1358"
-     inkscape:window-height="703"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
      id="namedview91"
      showgrid="true"
      inkscape:snap-global="false"
      inkscape:snap-bbox="true"
      inkscape:snap-nodes="false"
      inkscape:zoom="8.03125"
-     inkscape:cx="14.879377"
-     inkscape:cy="32"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:cx="6.2879377"
+     inkscape:cy="32.062257"
+     inkscape:window-x="1913"
+     inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg249">
+     inkscape:current-layer="svg249"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid3068"
@@ -545,7 +547,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:creator>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
@@ -591,13 +593,20 @@
       </cc:License>
     </rdf:RDF>
   </metadata>
+  <rect
+     style="fill:#ffffff;stroke:#ffffff;stroke-width:16.6634;stroke-linejoin:round;stroke-dashoffset:128.504"
+     id="rect2999"
+     width="47.063217"
+     height="46.938217"
+     x="8.4683914"
+     y="8.5308914" />
   <g
      id="layer4"
      style="display:inline"
      transform="translate(0,16)" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:74.66667175px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;"
+     style="font-style:normal;font-weight:normal;font-size:74.6667px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      x="10.270832"
      y="52.380211"
      id="text823"><tspan
@@ -605,5 +614,5 @@
        id="tspan821"
        x="10.270832"
        y="52.380211"
-       style="font-size:74.66667175px;fill:#2e3436;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;">a</tspan></text>
+       style="font-size:74.6667px;fill:#2e3436;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none">a</tspan></text>
 </svg>

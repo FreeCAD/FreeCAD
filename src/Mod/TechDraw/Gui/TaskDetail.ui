@@ -6,21 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
+    <width>300</width>
     <height>264</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>250</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Detail Anchor</string>
@@ -215,7 +203,7 @@
        </property>
       </widget>
      </item>
-    <item row="3" column="2">
+     <item row="3" column="2">
       <widget class="QComboBox" name="cbScaleType">
        <property name="toolTip">
         <string>Page: scale factor of page is used
@@ -289,7 +277,7 @@ Custom: custom scale factor is used</string>
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
   </layout>
  </widget>

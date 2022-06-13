@@ -12,126 +12,139 @@
     DisableNotify="true">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-      <UserDocu>This is a Persistence class</UserDocu>
+      <UserDocu>App.PropertyContainer class.</UserDocu>
     </Documentation>
     <Methode Name="getPropertyByName">
       <Documentation>
-        <UserDocu>
-getPropertyByName(name,checkOwner=0)
-
-Return the value of a named property. Note that the returned property may not
-always belong to this container (e.g. from a linked object).
-
-* name: name of the property
-* checkOwner:  0: just return the property
-               1: raise exception if not found or the property 
-                  does not belong to this container
-               2: return a tuple(owner,property_value)
-        </UserDocu>
+        <UserDocu>getPropertyByName(name, checkOwner=0) -> object or Tuple\n
+Returns the value of a named property. Note that the returned property may not
+always belong to this container (e.g. from a linked object).\n
+name : str\n     Name of the property.
+checkOwner : int\n    0: just return the property.
+    1: raise exception if not found or the property does not belong to this container.
+    2: return a tuple (owner, propertyValue).</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getPropertyTouchList">
       <Documentation>
-        <UserDocu>Return a list of index of touched values for list type properties.</UserDocu>
+        <UserDocu>getPropertyTouchList(name) -> tuple\n
+Returns a list of index of touched values for list type properties.\n
+name : str\n    Property name.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getTypeOfProperty">
 		  <Documentation>
-			  <UserDocu>Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>
+			  <UserDocu>getTypeOfProperty(name) -> list\n
+Returns the type of a named property. This can be a list conformed by elements in
+(Hidden, NoRecompute, NoPersist, Output, ReadOnly, Transient).\n
+name : str\n    Property name.</UserDocu>
 		  </Documentation>
 	  </Methode>
     <Methode Name="getTypeIdOfProperty">
       <Documentation>
-        <UserDocu>Returns the C++ class name of a named property.</UserDocu>
+        <UserDocu>getTypeIdOfProperty(name) -> str\n
+Returns the C++ class name of a named property.\n
+name : str\n    Property name.</UserDocu>
       </Documentation>
     </Methode>
       <Methode Name="setEditorMode">
             <Documentation>
-                <UserDocu>Set the behaviour of the property in the property editor.
-0 - default behaviour
-1 - item is ready-only
-2 - item is hidden
-                </UserDocu>
+                <UserDocu>setEditorMode(name, type) -> None\n
+Set the behaviour of the property in the property editor.\n
+name : str\n    Property name.
+type : int, sequence of str\n    Property type.
+    0: default behaviour. 1: item is ready-only. 2: item is hidden. 3: item is hidden and read-only.
+    If sequence, the available items are 'ReadOnly' and 'Hidden'.</UserDocu>
             </Documentation>
         </Methode>
       <Methode Name="getEditorMode">
             <Documentation>
-                <UserDocu>Get the behaviour of the property in the property editor.
-It returns a list of strings with the current mode. If the list is empty there are no special restrictions.
-If the list contains 'ReadOnly' then the item appears in the property editor but is disabled.
-If the list contains 'Hidden' then the item even doesn't appear in the property editor.
-                </UserDocu>
+                <UserDocu>getEditorMode(name) -> list\n
+Get the behaviour of the property in the property editor.
+It returns a list of strings with the current mode. If the list is empty there are no
+special restrictions.
+If the list contains 'ReadOnly' then the item appears in the property editor but is
+disabled.
+If the list contains 'Hidden' then the item even doesn't appear in the property editor.\n
+name : str\n    Property name.</UserDocu>
             </Documentation>
         </Methode>
       <Methode Name="getGroupOfProperty">
 		  <Documentation>
-			  <UserDocu>Return the name of the group which the property belongs to in this class. The properties sorted in different named groups for convenience.</UserDocu>
+			  <UserDocu>getGroupOfProperty(name) -> str\n
+Returns the name of the group which the property belongs to in this class.
+The properties are sorted in different named groups for convenience.\n
+name : str\n    Property name.</UserDocu>
 		  </Documentation>
 	  </Methode>
       <Methode Name="setGroupOfProperty">
 		  <Documentation>
-			  <UserDocu>Set the name of the group of a dynamic property.</UserDocu>
+			  <UserDocu>setGroupOfProperty(name, group) -> None\n
+Set the name of the group of a dynamic property.\n
+name : str\n    Property name.
+group : str\n    Group name.</UserDocu>
 		  </Documentation>
 	  </Methode>
       <Methode Name="setPropertyStatus">
             <Documentation>
-                <UserDocu>
-setPropertyStatus(name,val): Set property status
-
-name(String): property name
-
-val(String|Int|[String|Int...]): text or integer value, or list/tuple of
-values. Call getPropertyStatus() to get a list of supported text value.
-If the text start with '-' or the integer value is negative, then the
-status is cleared.
-                </UserDocu>
+                <UserDocu>setPropertyStatus(name, val) -> None\n
+Set property status.\n
+name : str\n    Property name.
+val : int, str, sequence of str or int\n    Call getPropertyStatus() to get a list of supported text value.
+    If the text start with '-' or the integer value is negative, then the status is cleared.</UserDocu>
             </Documentation>
       </Methode>
       <Methode Name="getPropertyStatus">
             <Documentation>
-                <UserDocu>
-getPropertyStatus(name=''): Get property status.
-
-name(String): property name. If name is empty, return a list of supported
-text names of the status.
-                </UserDocu>
+                <UserDocu>getPropertyStatus(name='') -> list\n
+Get property status.\n
+name : str\n    Property name. If empty, returns a list of supported text names of the status.</UserDocu>
             </Documentation>
       </Methode>
 	  <Methode Name="getDocumentationOfProperty">
 		  <Documentation>
-			  <UserDocu>Return the documentation string of the property of this class.</UserDocu>
+			  <UserDocu>getDocumentationOfProperty(name) -> str\n
+Returns the documentation string of the property of this class.\n
+name : str\n    Property name.</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="setDocumentationOfProperty">
 		  <Documentation>
-			  <UserDocu>Set the documentation string of a dynamic property of this class.</UserDocu>
+			  <UserDocu>setDocumentationOfProperty(name, docstring) -> None\n
+Set the documentation string of a dynamic property of this class.\n
+name : str\n    Property name.
+docstring : str\n    Documentation string.</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="getEnumerationsOfProperty">
 		  <Documentation>
-			  <UserDocu>Return all enumeration strings of the property of this class or None if not a PropertyEnumeration.</UserDocu>
+			  <UserDocu>getEnumerationsOfProperty(name) -> list or  None\n
+Return all enumeration strings of the property of this class or None if not a
+PropertyEnumeration.\n
+name : str\n    Property name.</UserDocu>
 		  </Documentation>
 	  </Methode>
       <Methode Name="dumpPropertyContent" Keyword="true" Const="true">
             <Documentation>
-                <UserDocu>Dumps the content of the property, both the XML representation as well as the additional datafiles  
-required, into a byte representation. It will be returned as byte array.
-dumpPropertyContent(propertyname) -- returns a byte array with full content
-dumpPropertyContent(propertyname, [Compression=1-9]) -- Sets the data compression from 0 (no) to 9 (max)
-                </UserDocu>
+                <UserDocu>dumpPropertyContent(Property, Compression=3) -> bytearray\n
+Dumps the content of the property, both the XML representation and the additional
+data files required, into a byte representation.\n
+Property : str\n    Property Name.
+Compression : int\n    Set the data compression level in the range [0, 9]. Set to 0 for no compression.</UserDocu>
             </Documentation>
       </Methode>
       <Methode Name="restorePropertyContent">
             <Documentation>
-                <UserDocu>Restore the content of given property from a byte representation as stored by \"dumpContent\".
-It could be restored from any python object implementing the buffer protocol.
-restorePropertyContent(propertyname, buffer) -- restores from the given byte array
-                </UserDocu>
+                <UserDocu>restorePropertyContent(name, obj) -> None\n
+Restore the content of the object from a byte representation as stored by `dumpPropertyContent`.
+It could be restored from any Python object implementing the buffer protocol.\n
+name : str\n    Property name.
+obj : buffer\n    Object with buffer protocol support.</UserDocu>
             </Documentation>
       </Methode>
     <Attribute Name="PropertiesList" ReadOnly="true">
       <Documentation>
-        <UserDocu>A list of all property names</UserDocu>
+        <UserDocu>A list of all property names.</UserDocu>
       </Documentation>
       <Parameter Name="PropertiesList" Type="List"/>
     </Attribute>

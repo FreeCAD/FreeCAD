@@ -1824,7 +1824,7 @@ void StdViewScreenShot::activated(int iMsg)
         Base::Reference<ParameterGrp> hExt = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                    ->GetGroup("Preferences")->GetGroup("General");
         QString ext = QString::fromLatin1(hExt->GetASCII("OffscreenImageFormat").c_str());
-        int backtype = hExt->GetInt("OffscreenImageBackground",0);
+        int backtype = hExt->GetInt("OffscreenImageBackground", 0);
 
         Base::Reference<ParameterGrp> methodGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View");
@@ -1889,14 +1889,14 @@ void StdViewScreenShot::activated(int iMsg)
 
             // which background chosen
             const char* background;
-            switch(opt->backgroundType()){
-                case 0:  background="Current"; break;
-                case 1:  background="White"; break;
-                case 2:  background="Black"; break;
-                case 3:  background="Transparent"; break;
-                default: background="Current"; break;
+            switch (opt->backgroundType()) {
+            case 0:  background = "Current"; break;
+            case 1:  background = "White"; break;
+            case 2:  background = "Black"; break;
+            case 3:  background = "Transparent"; break;
+            default: background = "Current"; break;
             }
-            hExt->SetInt("OffscreenImageBackground",opt->backgroundType());
+            hExt->SetInt("OffscreenImageBackground", opt->backgroundType());
 
             QString comment = opt->comment();
             if (!comment.isEmpty()) {
@@ -1904,17 +1904,17 @@ void StdViewScreenShot::activated(int iMsg)
                 // otherwise Python would interpret it as an invalid command.
                 // Python does the decoding for us.
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
-                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts );
+                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts);
 #else
-                QStringList lines = comment.split(QLatin1String("\n"), QString::KeepEmptyParts );
+                QStringList lines = comment.split(QLatin1String("\n"), QString::KeepEmptyParts);
 #endif
                 comment = lines.join(QLatin1String("\\n"));
-                doCommand(Gui,"Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
-                            fn.toUtf8().constData(),w,h,background,comment.toUtf8().constData());
+                doCommand(Gui, "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
+                          fn.toUtf8().constData(), w, h, background, comment.toUtf8().constData());
             }
             else {
-                doCommand(Gui,"Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
-                            fn.toUtf8().constData(),w,h,background);
+                doCommand(Gui, "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
+                          fn.toUtf8().constData(), w, h, background);
             }
 
             // When adding a watermark check if the image could be created
@@ -1924,7 +1924,7 @@ void StdViewScreenShot::activated(int iMsg)
                 if (fi.exists() && pixmap.load(fn)) {
                     QString name = qApp->applicationName();
                     std::map<std::string, std::string>& config = App::Application::Config();
-                    QString url  = QString::fromLatin1(config["MaintainerUrl"].c_str());
+                    QString url = QString::fromLatin1(config["MaintainerUrl"].c_str());
                     url = QUrl(url).host();
 
                     QPixmap appicon = Gui::BitmapFactory().pixmap(config["AppIcon"].c_str());
@@ -1932,7 +1932,7 @@ void StdViewScreenShot::activated(int iMsg)
                     QPainter painter;
                     painter.begin(&pixmap);
 
-                    painter.drawPixmap(8, h-15-appicon.height(), appicon);
+                    painter.drawPixmap(8, h - 15 - appicon.height(), appicon);
 
                     QFont font = painter.font();
                     font.setPointSize(20);
@@ -1942,12 +1942,13 @@ void StdViewScreenShot::activated(int iMsg)
                     int h = pixmap.height();
 
                     painter.setFont(font);
-                    painter.drawText(8+appicon.width(), h-24, name);
+                    painter.drawText(8 + appicon.width(), h - 24, name);
 
                     font.setPointSize(12);
-                    int u = QtTools::horizontalAdvance(fm, url);
+                    QFontMetrics fm2(font);
+                    int u = QtTools::horizontalAdvance(fm2, url);
                     painter.setFont(font);
-                    painter.drawText(8+appicon.width()+n-u, h-9, url);
+                    painter.drawText(8 + appicon.width() + n - u, h - 6, url);
 
                     painter.end();
                     pixmap.save(fn);

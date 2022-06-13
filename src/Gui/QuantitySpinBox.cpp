@@ -785,6 +785,23 @@ void QuantitySpinBox::stepBy(int steps)
     selectNumber();
 }
 
+QSize QuantitySpinBox::sizeForText(const QString& txt) const
+{
+    const QFontMetrics fm(fontMetrics());
+    int h = lineEdit()->sizeHint().height();
+    int w = QtTools::horizontalAdvance(fm, txt);
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
+                        .expandedTo(QApplication::globalStrut());
+    return size;
+}
+
 QSize QuantitySpinBox::sizeHint() const
 {
     Q_D(const QuantitySpinBox);

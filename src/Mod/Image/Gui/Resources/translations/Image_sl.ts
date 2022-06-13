@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sl" sourcelanguage="en">
   <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="128"/>
-      <source>Scale image plane</source>
-      <translation>Prilagodi velikost ravnine slike</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="129"/>
-      <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="130"/>
-      <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="155"/>
-      <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="158"/>
-      <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="183"/>
-      <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="192"/>
-      <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
-    </message>
-  </context>
-  <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="46"/>
-      <source>Scale image plane</source>
-      <translation>Prilagodi velikost ravnine slike</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="50"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Spremeni velikost ravnine slike z določitvijo razdalje med dvema točkama</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
       <location filename="../../Command.cpp" line="100"/>
@@ -112,6 +61,44 @@
       <location filename="../../Command.cpp" line="150"/>
       <source>Create ImagePlane</source>
       <translation>Ustvari slikovno ravnino</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="138"/>
+      <source>Scale image plane</source>
+      <translation>Prilagodi velikost ravnine slike</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
+      <source>Distance [mm]</source>
+      <translation>Razdalja [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
+      <source>Select first point</source>
+      <translation>Izberite prvo točko</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
+      <source>Enter distance</source>
+      <translation>Vnesite razdaljo</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="168"/>
+      <source>Select ImagePlane</source>
+      <translation>Izberite slikovno ravnino</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
+      <source>Select second point</source>
+      <translation>Izberite drugo točko</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="202"/>
+      <source>Select Image Plane and type distance</source>
+      <translation>Izberite ravnino slike in vnesite razdaljo</translation>
     </message>
   </context>
   <context>
@@ -224,6 +211,19 @@
       <location filename="../../ImageView.cpp" line="604"/>
       <source>outside image</source>
       <translation>izven slike</translation>
+    </message>
+  </context>
+  <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="56"/>
+      <source>Scale image plane</source>
+      <translation>Prilagodi velikost ravnine slike</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="60"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>Spremeni velikost ravnine slike z določitvijo razdalje med dvema točkama</translation>
     </message>
   </context>
   <context>

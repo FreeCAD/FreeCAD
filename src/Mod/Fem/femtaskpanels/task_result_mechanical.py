@@ -503,16 +503,20 @@ class _TaskPanel:
 
         if len(plt.get_fignums()) > 0:
             plt.close()
+        plt.ioff() # disable interactive mode so we have full control when plot is shown
+        plt.figure(res_title)
         plt.hist(res_values, bins=50, alpha=0.5, facecolor="blue")
         plt.xlabel(res_unit)
         plt.title(translate("FEM","Histogram of {}").format(res_title))
         plt.ylabel(translate("FEM","Nodes"))
         plt.grid(True)
         fig_manager = plt.get_current_fig_manager()
-        # we purposely don't bring the window to top to keep FreeCAD's main window accessible
-        # see https://github.com/FreeCAD/FreeCAD/issues/6959
-        fig_manager.window.setWindowState(fig_manager.window.windowState() | QtCore.Qt.WindowActive)
-        fig_manager.window.activateWindow()
+        # Lines below tells Qt that plot widget/dialog should be kept on top of its parent,
+        # its parent being defined as FC main window
+        # "Tool" type also is non modal, and dialog doesn't add a tab in the OS task bar
+        # See Qt::WindowFlags for more details
+        fig_manager.window.setParent(FreeCADGui.getMainWindow())
+        fig_manager.window.setWindowFlag(QtCore.Qt.Tool)
 
     def update_colors_stats(self, res_values, res_unit, minm, maxm):
         QApplication.setOverrideCursor(Qt.WaitCursor)

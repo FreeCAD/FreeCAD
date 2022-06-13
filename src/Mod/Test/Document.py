@@ -1551,6 +1551,14 @@ class DocumentExpressionCases(unittest.TestCase):
     # must not raise a topological error
     self.assertEqual(self.Doc.recompute(), 2)
 
+    # add test for issue #6948
+    self.Obj3 = self.Doc.addObject("App::FeatureTest", "Test")
+    self.Obj3.setExpression('Float', u'2*(5%3)')
+    self.Doc.recompute()
+    self.assertEqual(self.Obj3.Float, 4)
+    self.assertEqual(self.Obj3.evalExpression(self.Obj3.ExpressionEngine[0][1]), 4)
+
+
   def testIssue4649(self):
       class Cls():
           def __init__(self, obj):

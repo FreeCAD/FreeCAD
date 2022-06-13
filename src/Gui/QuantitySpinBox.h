@@ -121,6 +121,8 @@ public:
     virtual QValidator::State validate(QString &input, int &pos) const;
     virtual void fixup(QString &str) const;
 
+    /// This is a helper function to determine the size this widget requires to fully display the text
+    QSize sizeForText(const QString&) const;
     QSize sizeHint() const;
     QSize minimumSizeHint() const;
     bool event(QEvent *event);

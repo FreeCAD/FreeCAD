@@ -1127,7 +1127,8 @@ std::string Application::getUserMacroDir()
 std::string Application::getResourceDir()
 {
 #ifdef RESOURCEDIR
-    std::string path(RESOURCEDIR);
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(RESOURCEDIR).c_str();
     path.append("/");
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
@@ -1141,7 +1142,8 @@ std::string Application::getResourceDir()
 std::string Application::getLibraryDir()
 {
 #ifdef LIBRARYDIR
-    std::string path(LIBRARYDIR);
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(LIBRARYDIR).c_str();
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
@@ -1154,7 +1156,8 @@ std::string Application::getLibraryDir()
 std::string Application::getHelpDir()
 {
 #ifdef DOCDIR
-    std::string path(DOCDIR);
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(DOCDIR).c_str();
     path.append("/");
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())

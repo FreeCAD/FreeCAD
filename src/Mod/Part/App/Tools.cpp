@@ -613,11 +613,22 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
     double v1 = adapt.FirstVParameter();
     double v2 = adapt.LastVParameter();
 
-    // recreate a face with a clear boundary
-    u1 = std::max(-50.0, u1);
-    u2 = std::min( 50.0, u2);
-    v1 = std::max(-50.0, v1);
-    v2 = std::min( 50.0, v2);
+    auto selectRange = [](double& p1, double& p2) {
+        if (Precision::IsInfinite(p1) && Precision::IsInfinite(p2)) {
+            p1 = -50.0;
+            p2 =  50.0;
+        }
+        else if (Precision::IsInfinite(p1)) {
+            p1 = p2 - 100.0;
+        }
+        else if (Precision::IsInfinite(p2)) {
+            p2 = p1 + 100.0;
+        }
+    };
+
+    // recreate a face with a clear boundary in case it's infinite
+    selectRange(u1, u2);
+    selectRange(v1, v2);
 
     Handle(Geom_Surface) surface = BRep_Tool::Surface(face);
     BRepBuilderAPI_MakeFace mkBuilder(surface, u1, u2, v1, v2

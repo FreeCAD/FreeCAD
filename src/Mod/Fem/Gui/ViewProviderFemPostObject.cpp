@@ -561,7 +561,15 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     if (m_blockPropertyChanges)
         return;
 
-    bool ResetColorBarRange = true;
+    bool ResetColorBarRange;
+
+    // the point filter delivers a single value thus recoloring the bar is senseless
+    if (static_cast<Fem::FemPostObject*>(getObject())->getTypeId()
+         == Base::Type::fromName("Fem::FemPostDataAtPointFilter"))
+        ResetColorBarRange = false;
+    else 
+        ResetColorBarRange = true;
+
     if (prop == &Field && setupPipeline()) {
         updateProperties();
         WriteColorData(ResetColorBarRange);
