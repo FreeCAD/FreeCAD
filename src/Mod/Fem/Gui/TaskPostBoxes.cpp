@@ -1017,6 +1017,7 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     // there is no "None" for the FieldName property, thus return here
     if (FieldName == "None") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
+        ui->ValueAtPoint->clear();
         return;
     }
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
@@ -1052,25 +1053,39 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     }
 
     auto pointValue = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0];
+    showValue(pointValue, static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue());
+}
 
+void TaskPostDataAtPoint::showValue(double pointValue, const char* unitStr)
+{
+    QString value = QString::fromStdString(toString(pointValue));
+    QString unit = QString::fromUtf8(unitStr);
+
+    ui->ValueAtPoint->setText(tr("Value: %1 %2").arg(value, unit));
+
+    QString field = ui->Field->currentText();
+    QString posX = ui->centerX->text();
+    QString posY = ui->centerY->text();
+    QString posZ = ui->centerZ->text();
+
+    QString result = tr("%1 at (%2; %3; %4) is: %5 %6").arg(field, posX, posY, posZ, value, unit);
+    Base::Console().Message("%s\n", result.toUtf8().data());
+}
+
+std::string TaskPostDataAtPoint::toString(double val) const
+{
     // for display we must therefore convert large and small numbers to scientific notation
     // if pointValue is in the range [1e-2, 1e+4] -> fixed notation, else scientific
-    bool scientific = (pointValue < 1e-2) || (pointValue > 1e4);
+    bool scientific = (val < 1e-2) || (val > 1e4);
     std::ios::fmtflags flags = scientific ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
                                           : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
     std::stringstream valueStream;
     valueStream.precision(Base::UnitsApi::getDecimals());
     valueStream.setf(flags);
-    valueStream << pointValue;
+    valueStream << val;
 
-    std::string PointData = " The value at that location is " + valueStream.str()
-        + " " + static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
-    QMessageBox::information(Gui::getMainWindow(),
-        qApp->translate("CmdFemPostCreateDataAtPointFilter", "Data At Point"),
-        qApp->translate("CmdFemPostCreateDataAtPointFilter", PointData.c_str()));
-    Base::Console().Error(PointData.c_str());
+    return valueStream.str();
 }
-
 
 // ***************************************************************************
 // scalar clip filter

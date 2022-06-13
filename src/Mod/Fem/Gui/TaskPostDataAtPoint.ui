@@ -88,6 +88,10 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="ValueAtPoint">
+    </widget>
+   </item>
+   <item>
     <widget class="Line" name="line_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
