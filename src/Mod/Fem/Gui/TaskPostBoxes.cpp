@@ -701,11 +701,12 @@ std::string TaskPostDataAlongLine::ObjectVisible() {
 
 void TaskPostDataAlongLine::on_CreatePlot_clicked() {
 
-    std::string ObjName = getObject()->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc, "x = App.ActiveDocument.%s.XAxisData", ObjName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc, "y = App.ActiveDocument.%s.YAxisData", ObjName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc, "title = App.ActiveDocument.%s.PlotData", ObjName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc, Plot().c_str());
+    App::DocumentObjectT objT(getObject());
+    std::string ObjName = objT.getObjectPython();
+    Gui::doCommandT(Gui::Command::Doc, "x = %s.XAxisData", ObjName);
+    Gui::doCommandT(Gui::Command::Doc, "y = %s.YAxisData", ObjName);
+    Gui::doCommandT(Gui::Command::Doc, "title = %s.PlotData", ObjName);
+    Gui::doCommandT(Gui::Command::Doc, Plot().c_str());
     recompute();
 }
 
@@ -739,7 +740,7 @@ void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2,
 void TaskPostDataAlongLine::point1Changed(double) {
 
     try {
-        std::string ObjName = getObject()->Label.getValue();
+        std::string ObjName = getObject()->getNameInDocument();
         Gui::cmdAppDocumentArgs(getDocument(), "%s.Point1 = App.Vector(%f, %f, %f)", ObjName,
                                 ui->point1X->value().getValue(),
                                 ui->point1Y->value().getValue(),
@@ -761,7 +762,7 @@ void TaskPostDataAlongLine::point1Changed(double) {
 void TaskPostDataAlongLine::point2Changed(double) {
 
     try {
-        std::string ObjName = getObject()->Label.getValue();
+        std::string ObjName = getObject()->getNameInDocument();
         Gui::cmdAppDocumentArgs(getDocument(), "%s.Point2 = App.Vector(%f, %f, %f)", ObjName,
                                 ui->point2X->value().getValue(),
                                 ui->point2Y->value().getValue(),
@@ -999,7 +1000,7 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z) {
 void TaskPostDataAtPoint::centerChanged(double) {
 
     try {
-        std::string ObjName = getObject()->Label.getValue();
+        std::string ObjName = getObject()->getNameInDocument();
         Gui::cmdAppDocumentArgs(getDocument(), "%s.Center = App.Vector(%f, %f, %f)", ObjName,
                                 ui->centerX->value().getValue(),
                                 ui->centerY->value().getValue(),
