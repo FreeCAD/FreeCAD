@@ -97,7 +97,7 @@ void PointMarker::customEvent(QEvent*)
     const SbVec3f& pt1 = vp->pCoords->point[0];
     const SbVec3f& pt2 = vp->pCoords->point[1];
 
-    if (m_name == "DataAlongLine") {
+    if (!m_name.empty()) {
         PointsChanged(pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0], pt1[1], pt1[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", m_name.c_str(), pt2[0], pt2[1], pt2[2]);
@@ -165,7 +165,7 @@ void DataMarker::customEvent(QEvent*)
 {
     const SbVec3f& pt1 = vp->pCoords->point[0];
 
-    if (m_name == "DataAtPoint") {
+    if (!m_name.empty()) {
         PointsChanged(pt1[0], pt1[1], pt1[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0], pt1[1], pt1[2]);
     }
@@ -680,7 +680,7 @@ void TaskPostDataAlongLine::on_SelectPoints_clicked() {
 
         // Derives from QObject and we have a parent object, so we don't
         // require a delete.
-        std::string ObjName = getObject()->Label.getValue();
+        std::string ObjName = getObject()->getNameInDocument();
 
         FemGui::PointMarker* marker = new FemGui::PointMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
@@ -962,7 +962,7 @@ void TaskPostDataAtPoint::on_SelectPoint_clicked() {
 
         // Derives from QObject and we have a parent object, so we don't
         // require a delete.
-        std::string ObjName = getObject()->Label.getValue();
+        std::string ObjName = getObject()->getNameInDocument();
 
         FemGui::DataMarker* marker = new FemGui::DataMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
