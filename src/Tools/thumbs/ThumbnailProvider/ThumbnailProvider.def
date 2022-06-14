@@ -1,7 +1,0 @@
-LIBRARY	"FCStdThumbnail"
-
-EXPORTS
-	DllRegisterServer	PRIVATE
-	DllUnregisterServer PRIVATE
-	DllGetClassObject	PRIVATE
-	DllCanUnloadNow		PRIVATE
