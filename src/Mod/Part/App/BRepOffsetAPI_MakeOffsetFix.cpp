@@ -52,12 +52,7 @@ BRepOffsetAPI_MakeOffsetFix::BRepOffsetAPI_MakeOffsetFix()
 
 BRepOffsetAPI_MakeOffsetFix::BRepOffsetAPI_MakeOffsetFix(const GeomAbs_JoinType Join, const Standard_Boolean IsOpenResult)
 {
-#if OCC_VERSION_HEX >= 0x060900
     mkOffset.Init(Join, IsOpenResult);
-#else
-    (void)IsOpenResult;
-    mkOffset.Init(Join);
-#endif
 }
 
 BRepOffsetAPI_MakeOffsetFix::~BRepOffsetAPI_MakeOffsetFix()

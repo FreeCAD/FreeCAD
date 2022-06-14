@@ -21,9 +21,8 @@
    modules and extension objects.
 
    PyCXX documentation is split into <a 
-   HREF="http://cxx.sourceforge.net/PyCXX-Python3.html">Python 3</A> and 
-   <A HREF="http://cxx.sourceforge.net/PyCXX-Python2.html">Python 2</A> 
-   versions. The Python 3 documentation is the most accurate.
+   HREF="http://cxx.sourceforge.net/PyCXX-Python3.html">Python 3</A> 
+   versions.
 
    Latest <A HREF="http://cxx.sourceforge.net/README.html">PyCXX 
    README</A> file

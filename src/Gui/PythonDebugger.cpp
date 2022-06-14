@@ -566,7 +566,7 @@ void PythonDebugger::hideDebugMarker(const QString& fn)
 // http://www.koders.com/cpp/fidBA6CD8A0FE5F41F1464D74733D9A711DA257D20B.aspx?s=PyEval_SetTrace
 // http://code.google.com/p/idapython/source/browse/trunk/python.cpp
 // http://www.koders.com/cpp/fid191F7B13CF73133935A7A2E18B7BF43ACC6D1784.aspx?s=PyEval_SetTrace
-// http://stuff.mit.edu/afs/sipb/project/python/src/python2.2-2.2.2/Modules/_hotshot.c
+
 int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject * /*arg*/)
 {
     PythonDebuggerPy* self = static_cast<PythonDebuggerPy*>(obj);
