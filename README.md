@@ -99,7 +99,7 @@ To report an issue please:
 For more detail see:
 - [Wiki Page about the Bug Tracker](https://wiki.freecadweb.org/Tracker)
 - [Bug Tracker](https://tracker.freecadweb.org)
-- [Help Forum](http://forum.freecadweb.org/viewforum.php?f=3)
+- [Help Forum](https://forum.freecadweb.org/viewforum.php?f=3)
 
 
 Usage & Getting help
