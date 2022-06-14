@@ -31,7 +31,6 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
-# include <boost_bind_bind.hpp>
 #endif
 
 #include <Base/Console.h>

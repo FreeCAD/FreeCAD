@@ -53,7 +53,7 @@ requirements:
         - pivy
         - pyside2
         - smesh
-        - netgen 6.2.1808*
+        - netgen 6.2.2203*
         - doxygen
         - hdf5
         - xorg-libxt  # [linux]
@@ -76,7 +76,7 @@ requirements:
         - coin3d
         - pivy
         - smesh
-        - netgen 6.2.1808*
+        - netgen 6.2.2203*
         - xorg-libxt  # [linux]
         - freetype
         - numpy

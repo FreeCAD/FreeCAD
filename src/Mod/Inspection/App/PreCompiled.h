@@ -52,7 +52,7 @@
 #include <vector>
 
 // boost
-#include <boost_bind_bind.hpp>
+//#include <boost_bind_bind.hpp>
 
 // OCC
 #include <gp_Pnt.hxx>

@@ -26,8 +26,6 @@
 # include <QButtonGroup>
 # include <QPushButton>
 # include <sstream>
-# include <boost_bind_bind.hpp>
-
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopoDS_Edge.hxx>

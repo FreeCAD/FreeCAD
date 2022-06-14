@@ -23,9 +23,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
+/*#ifndef _PreComp_
 # include <boost_bind_bind.hpp>
-#endif
+#endif*/
 
 #include "ui_TaskSketcherMessages.h"
 #include "TaskSketcherMessages.h"

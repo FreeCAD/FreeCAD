@@ -21,7 +21,7 @@ dependencies:
   - coin3d
   - pivy
   - smesh
-  - netgen=6.2.1808*
+  - netgen=6.2.2203*
   - hdf5
   - freetype
   - pcl

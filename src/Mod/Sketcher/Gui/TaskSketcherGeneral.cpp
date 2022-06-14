@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
+/*#ifndef _PreComp_
 #include <boost_bind_bind.hpp>
 #endif
-
+*/
 #include "ui_TaskSketcherGeneral.h"
 #include "TaskSketcherGeneral.h"
 #include <Gui/Application.h>

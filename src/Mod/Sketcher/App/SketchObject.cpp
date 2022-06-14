@@ -59,7 +59,7 @@
 # include <cmath>
 # include <string>
 # include <vector>
-# include <boost_bind_bind.hpp>
+//# include <boost_bind_bind.hpp>
 //# include <QtGlobal>
 #endif
 

@@ -9,7 +9,6 @@ configure.ac    export-ignore
 Makefile.am    export-ignore
 mkinstalldirs    export-ignore
 package    export-ignore
-fc.sh    export-ignore
 UpdateResources.bat    export-ignore
 BuildVersion.bat    export-ignore
 *.sln    export-ignore

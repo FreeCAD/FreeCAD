@@ -31,7 +31,7 @@
 # include <QString>
 # include <QImage>
 # include <QPixmap>
-# include <boost_bind_bind.hpp>
+//# include <boost_bind_bind.hpp>
 #endif
 
 #include "TaskSketcherElements.h"
