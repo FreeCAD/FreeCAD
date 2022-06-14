@@ -626,6 +626,7 @@ bool ViewProviderFemPostObject::setEdit(int ModNum) {
         else {
             postDlg = new TaskDlgPost(this);
             setupTaskDialog(postDlg);
+            postDlg->connectSlots();
             Gui::Control().showDialog(postDlg);
         }
 

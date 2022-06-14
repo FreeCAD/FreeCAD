@@ -1,8 +1,12 @@
+del bin\assistant.exe
 del bin\Coin4d.dll
+del bin\designer.exe
 del bin\freetyped.dll
 del bin\libcrypto-3d.dll
 del bin\libEGLd.dll
 del bin\libGLESv2d.dll
+del bin\linguist.exe
+del bin\qdoc.exe
 del bin\Qt53DAnimationd.dll
 del bin\Qt53DCored.dll
 del bin\Qt53DExtrasd.dll
