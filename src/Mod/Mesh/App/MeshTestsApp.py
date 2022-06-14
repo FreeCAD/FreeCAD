@@ -444,7 +444,7 @@ class PivyTestCases(unittest.TestCase):
         self.assertTrue(pp != None)
         det=pp.getDetail()
         self.assertTrue(det.getTypeId() == coin.SoFaceDetail.getClassTypeId())
-        det=coin.cast(det,str(det.getTypeId().getName()))
+        det=coin.cast(det, det.getTypeId().getName().getString())
         self.assertTrue(det.getFaceIndex() == 1)
 
     def testPrimitiveCount(self):
