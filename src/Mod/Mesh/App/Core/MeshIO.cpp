@@ -2982,7 +2982,7 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
 bool MeshOutput::Save3MF(std::ostream &str) const
 {
     zipios::ZipOutputStream zip(str);
-    zip.putNextEntry("/3D/3dmodel.model");
+    zip.putNextEntry("3D/3dmodel.model");
     if (!Save3MFModel(zip))
         return false;
     zip.closeEntry();
