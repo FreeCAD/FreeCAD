@@ -1,3 +1,4 @@
+del bin\assistant.exe
 del bin\Coin4d.dll
 del bin\designer.exe
 del bin\freetyped.dll
