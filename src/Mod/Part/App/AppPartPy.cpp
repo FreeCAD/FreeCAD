@@ -1937,19 +1937,7 @@ private:
 
         try {
             if (useFontSpec) {
-#ifdef FC_OS_WIN32
-//    Windows doesn't do Utf8 by default and FreeType doesn't do wchar. 
-//    this is a hacky work around.
-//    copy fontspec to Ascii temp name
-                std::string tempFile = Base::FileInfo::getTempFileName();   //utf8/ascii
-				Base::FileInfo fiIn(fontspec);
-				fiIn.copyTo(tempFile.c_str());
-                CharList = FT2FC(unichars,pysize,tempFile.c_str(),height,track);
-				Base::FileInfo fiTemp(tempFile);
-				fiTemp.deleteFile();
-#else
                 CharList = FT2FC(unichars,pysize,fontspec,height,track);
-#endif
             }
             else {
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);

@@ -414,17 +414,11 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
 
 void InterpreterSingleton::runFile(const char*pxFileName, bool local)
 {
-#ifdef FC_OS_WIN32
-    FileInfo fi(pxFileName);
-    FILE *fp = _wfopen(fi.toStdWString().c_str(),L"r");
-#else
     FILE *fp = fopen(pxFileName,"r");
-#endif
+
     if (fp) {
         PyGILStateLocker locker;
-        //std::string encoding = PyUnicode_GetDefaultEncoding();
-        //PyUnicode_SetDefaultEncoding("utf-8");
-        //PyUnicode_SetDefaultEncoding(encoding.c_str());
+
         PyObject *module, *dict;
         module = PyImport_AddModule("__main__");
         dict = PyModule_GetDict(module);

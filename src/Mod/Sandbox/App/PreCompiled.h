@@ -27,13 +27,8 @@
 #include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define SandboxAppExport __declspec(dllexport)
-# define MeshExport       __declspec(dllimport)
-#else // for Linux
 # define SandboxAppExport
 # define MeshExport
-#endif
 
 #ifdef _PreComp_
 

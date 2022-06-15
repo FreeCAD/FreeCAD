@@ -295,13 +295,9 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
 #endif
     bool pathChanged = false;
-#ifdef FC_OS_WIN32
-    QString dot = QString::fromLatin1("\"%1/dot\"").arg(path);
-    QString unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
-#else
+
     QString dot = QString::fromLatin1("%1/dot").arg(path);
     QString unflatten = QString::fromLatin1("%1/unflatten").arg(path);
-#endif
     dotProc->setEnvironment(QProcess::systemEnvironment());
     flatProc->setEnvironment(QProcess::systemEnvironment());
     do {
@@ -330,13 +326,8 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
                 return;
             }
             pathChanged = true;
-#ifdef FC_OS_WIN32
-            dot = QString::fromLatin1("\"%1/dot\"").arg(path);
-            unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
-#else
             dot = QString::fromLatin1("%1/dot").arg(path);
             unflatten = QString::fromLatin1("%1/unflatten").arg(path);
-#endif
         }
         else {
             if (pathChanged)
@@ -409,13 +400,8 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
 #endif
 
-#ifdef FC_OS_WIN32
-    QString exe = QString::fromLatin1("\"%1/dot\"").arg(path);
-    QString unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
-#else
     QString exe = QString::fromLatin1("%1/dot").arg(path);
     QString unflatten = QString::fromLatin1("%1/unflatten").arg(path);
-#endif
 
     dotProc.setEnvironment(QProcess::systemEnvironment());
     dotProc.start(exe, args);

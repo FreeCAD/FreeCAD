@@ -27,17 +27,11 @@
 #include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define RobotExport    __declspec(dllimport)
-# define PartExport     __declspec(dllimport)
-# define PartGuiExport  __declspec(dllimport)
-# define RobotGuiExport    __declspec(dllexport)
-#else // for Linux
 # define PartExport
 # define RobotExport
 # define PartGuiExport
 # define RobotGuiExport
-#endif
+
 
 #include <Standard_math.hxx>
 
@@ -63,10 +57,6 @@
 #include <stack>
 #include <queue>
 #include <bitset>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
 
 
 // Qt Toolkit

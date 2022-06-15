@@ -117,11 +117,8 @@
 #   error "FreeCAD is not ported to this OS yet. For help see www.freecadweb.org"
 #endif
 
-#ifdef FC_OS_WIN32
-#   define PATHSEP '\\'
-#else
 #   define PATHSEP '/'
-#endif
+
 
 //**************************************************************************
 // Standard types for Windows

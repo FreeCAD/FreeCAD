@@ -2625,12 +2625,9 @@ bool Document::saveToFile(const char* filename) const
     }
     Base::FileInfo tmp(fn);
     // In case some folders in the path do not exist
-#ifdef FC_OS_WIN32
-    QString utf8Name = QString::fromUtf8(filename);
-    auto parentPath = fs::absolute(fs::path(utf8Name.toStdWString())).parent_path();
-#else
+
     auto parentPath = fs::absolute(fs::path(filename)).parent_path();
-#endif
+
     fs::create_directories(parentPath);
 
     // open extra scope to close ZipWriter properly

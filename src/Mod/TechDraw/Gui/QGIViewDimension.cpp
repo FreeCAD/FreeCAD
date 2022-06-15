@@ -22,9 +22,6 @@
 
 #include "PreCompiled.h"
 
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES            //re Windows & M_PI issues
-#endif
 #include <cmath>
 
 #ifndef _PreComp_

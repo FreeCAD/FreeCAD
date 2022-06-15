@@ -56,11 +56,6 @@
 #include <boost/bind/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
-#ifdef FC_OS_WIN32
-# define WIN32_LEAN_AND_MEAN
-# define NOMINMAX
-# include <windows.h>
-#endif
 
 // OCC
 #include <Standard_math.hxx>

@@ -27,11 +27,9 @@
 #include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define CloudAppExport __declspec(dllexport)
-#else // for Linux
+
 # define CloudAppExport
-#endif
+
 
 #ifdef _PreComp_
 

@@ -143,11 +143,6 @@ public:
 
         std::map<uint32_t, Buffer>::iterator it = self->vbomap.find(context);
         if (it != self->vbomap.end()) {
-#ifdef FC_OS_WIN32
-            const cc_glglue * glue = cc_glglue_instance((int) context);
-            PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
-#endif
-            //cc_glglue_glDeleteBuffers(glue, buffer.size(), buffer.data());
             auto &buffer = it->second;
             glDeleteBuffersARB(2, buffer.myvbo);
             self->vbomap.erase(it);
@@ -1449,10 +1444,6 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     auto res = this->vbomap.insert(std::make_pair(contextId,VBO::Buffer()));
     VBO::Buffer &buf = res.first->second;
     if (res.second) {
-#ifdef FC_OS_WIN32
-        const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
-#endif
         glGenBuffersARB(2, buf.myvbo);
         buf.vertex_array_size = 0;
         buf.index_array_size = 0;
@@ -1472,15 +1463,6 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     // TODO FINISHING THE COLOR SUPPORT !
 
     if (!buf.vboLoaded || buf.updateVbo) {
-#ifdef FC_OS_WIN32
-        const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-
-        PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
-      //PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
-        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
-        PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
-        PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
-#endif
         // We must manage buffer size increase let's clear everything and re-init to test the
         // clearing process
         glDeleteBuffersARB(2, buf.myvbo);
@@ -1696,12 +1678,6 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         free(vertex_array);
         free(index_array);
     }
-
-    // This is the VBO rendering code
-#ifdef FC_OS_WIN32
-    const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-    PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
 
     if (!buf.updateVbo) {
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);

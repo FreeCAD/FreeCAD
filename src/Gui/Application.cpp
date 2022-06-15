@@ -1706,10 +1706,6 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
         Base::Console().Error("%s\n", msg.toUtf8().constData());
         abort();                    // deliberately core dump
     }
-#ifdef FC_OS_WIN32
-    if (old_qtmsg_handler)
-        (*old_qtmsg_handler)(type, context, msg);
-#endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
     Q_UNUSED(type);
@@ -1735,10 +1731,6 @@ void messageHandlerCoin(const SoError * error, void * /*userdata*/)
             Base::Console().Error("%s\n", msg);
             break;
         }
-#ifdef FC_OS_WIN32
-    if (old_qtmsg_handler)
-        (*old_qtmsg_handler)(QtDebugMsg, QMessageLogContext(), QString::fromLatin1(msg));
-#endif
     }
     else if (error) {
         const char* msg = error->getDebugString().getString();
@@ -1876,9 +1868,6 @@ void Application::runApplication(void)
     ParameterGrp::handle hDPI = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/HighDPI");
     bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
     if (disableDpiScaling) {
-#ifdef FC_OS_WIN32
-        SetProcessDPIAware(); // call before the main event loop
-#endif
         QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
     }
     else {

@@ -665,11 +665,7 @@ void Command::printCaller(const char *file, int line) {
     if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
     std::ostringstream str;
-#ifdef FC_OS_WIN32
-    const char *_f = std::strstr(file, "\\src\\");
-#else
     const char *_f = std::strstr(file, "/src/");
-#endif
     str << "## " << (_f?_f+5:file)<<'('<<line<<')';
     Gui::Application::Instance->macroManager()->addLine(MacroManager::Cmt,str.str().c_str());
 }

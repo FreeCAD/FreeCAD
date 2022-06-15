@@ -311,12 +311,7 @@ void PP_Fetch_Error_Text()
             return;
         int line = PyFrame_GetLineNumber(frame);
         const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
-#ifdef FC_OS_WIN32
-        const char *_f = strstr(file, "\\src\\");
-#else
         const char *_f = strstr(file, "/src/");
-#endif
-        /* strcpy(PP_last_error_trace, "<unknown exception traceback>");  */
         snprintf(PP_last_error_trace,sizeof(PP_last_error_trace),"%s(%d)",(_f?_f+5:file),line);
     }
     Py_XDECREF(pystring);

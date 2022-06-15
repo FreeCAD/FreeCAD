@@ -26,11 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-# define NOMINMAX
-# endif
-#endif
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4005)
@@ -54,9 +49,6 @@
 #include <string>
 #include <vector>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
 
 // Inventor
 #include <Inventor/SoPickedPoint.h>

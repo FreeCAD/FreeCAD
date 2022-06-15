@@ -37,13 +37,6 @@
 #endif
 
 
-#ifdef FC_OS_WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#endif
-
 #ifdef _PreComp_
 
 // standard
@@ -51,12 +44,6 @@
 #include <cassert>
 #include <ctime>
 #include <csignal>
-
-#ifdef FC_OS_WIN32
-#include <direct.h>
-#include <windows.h>
-#include <crtdbg.h>
-#endif
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #include <unistd.h>

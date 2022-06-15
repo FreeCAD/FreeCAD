@@ -27,19 +27,11 @@
 #include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define SandboxAppExport __declspec(dllimport)
-# define SandboxGuiExport __declspec(dllexport)
-# define MeshExport       __declspec(dllimport)
-# define PartExport       __declspec(dllimport)
-# define AppPartExport    __declspec(dllimport)
-#else // for Linux
 # define SandboxAppExport
 # define SandboxGuiExport
 # define MeshExport
 # define PartExport
 # define AppPartExport
-#endif
 
 #ifdef _PreComp_
 
@@ -61,10 +53,6 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
 
 // Qt Toolkit
 #include <qaction.h>

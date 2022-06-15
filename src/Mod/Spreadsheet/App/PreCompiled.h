@@ -54,10 +54,6 @@
 #include <queue>
 #include <bitset>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 // Qt Toolkit
 #ifndef __QtAll__
 # include <Gui/QtAll.h>

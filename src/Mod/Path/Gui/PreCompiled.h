@@ -26,17 +26,10 @@
 #include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define PartExport    __declspec(dllimport)
-# define PathExport    __declspec(dllimport)
-# define PartGuiExport __declspec(dllexport)
-# define PathGuiExport __declspec(dllexport)
-#else // for Linux
 # define PartExport
 # define PathExport
 # define PartGuiExport
 # define PathGuiExport
-#endif
 
 #include <Standard_math.hxx>
 
@@ -61,10 +54,6 @@
 #include <stack>
 #include <queue>
 #include <bitset>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
 
 // OCC
 #include <TopExp_Explorer.hxx>

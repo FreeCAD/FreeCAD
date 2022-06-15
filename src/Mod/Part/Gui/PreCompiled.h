@@ -36,13 +36,6 @@
 # pragma warning( disable : 4273 )
 #endif
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-# define NOMINMAX
-# endif
-# include <windows.h>
-#endif
-
 #ifdef _PreComp_
 
 // standard

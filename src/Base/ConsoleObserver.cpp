@@ -270,11 +270,7 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         }
     }
     if (print_src && src && src[0]) {
-#ifdef FC_OS_WIN32
-        const char *_f = std::strrchr(src, '\\');
-#else
         const char *_f = std::strrchr(src, '/');
-#endif
         str << (_f?_f+1:src)<<"("<<line<<"): ";
     }
     return str;

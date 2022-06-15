@@ -27,17 +27,11 @@
 #include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define PathSimulatorExport __declspec(dllexport)
-# define PathExport  __declspec(dllimport)
-# define PartExport __declspec(dllimport)
-# define MeshExport __declspec(dllimport)
-#else // for Linux
 # define PathSimulatorExport
 # define PathExport
 # define PartExport
 # define MeshExport
-#endif
+
 
 #ifdef _PreComp_
 

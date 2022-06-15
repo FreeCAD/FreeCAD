@@ -26,12 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
@@ -52,12 +46,6 @@
 #include <typeinfo>
 #include <cfloat>
 #include <climits>
-
-#ifdef FC_OS_WIN32
-#include <Windows.h>
-#include <io.h>
-#include <shellapi.h>
-#endif
 
 // streams
 #include <iostream>

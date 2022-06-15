@@ -36,14 +36,6 @@
 //#undef HAVE_SHIBOKEN2
 //#undef HAVE_PYSIDE2
 
-#ifdef FC_OS_WIN32
-#undef max
-#undef min
-#ifdef _MSC_VER
-#pragma warning( disable : 4099 )
-#pragma warning( disable : 4522 )
-#endif
-#endif
 
 // class and struct used for SbkObject
 #if defined(__clang__)

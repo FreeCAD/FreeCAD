@@ -27,28 +27,17 @@
 #include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-//# define DrawingAppExport __declspec(dllimport)
-# define TechDrawExport      __declspec(dllimport)
-# define PartExport         __declspec(dllimport)
-# define TechDrawGuiExport   __declspec(dllexport)
-# define SpreadsheetExport  __declspec(dllimport)
-# define ImportExport  __declspec(dllimport)
-#else // for Linux
 # define TechDrawExport
 # define PartExport
 # define TechDrawGuiExport
 # define SpreadsheetExport
 # define ImportExport
-#endif
+
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4005)
 #endif
 
-#ifdef FC_OS_WIN32
-#   define NOMINMAX
-#endif
 
 #ifdef _PreComp_
 
@@ -67,12 +56,6 @@
 #include <stack>
 #include <queue>
 #include <bitset>
-
-#ifdef FC_OS_WIN32
-# define WIN32_LEAN_AND_MEAN
-# include <windows.h>
-# undef small
-#endif
 
 
 // Qt Toolkit

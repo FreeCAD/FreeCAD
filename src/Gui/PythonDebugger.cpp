@@ -424,12 +424,8 @@ void PythonDebugger::runFile(const QString& fn)
     try {
         RunningState state(d->running);
         QByteArray pxFileName = fn.toUtf8();
-#ifdef FC_OS_WIN32
-        Base::FileInfo fi((const char*)pxFileName);
-        FILE *fp = _wfopen(fi.toStdWString().c_str(),L"r");
-#else
         FILE *fp = fopen((const char*)pxFileName,"r");
-#endif
+
         if (!fp)
             return;
 

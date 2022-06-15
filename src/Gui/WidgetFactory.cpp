@@ -27,14 +27,6 @@
 # include <QVBoxLayout>
 #endif
 
-#ifdef FC_OS_WIN32
-#undef max
-#undef min
-#ifdef _MSC_VER
-#pragma warning( disable : 4099 )
-#pragma warning( disable : 4522 )
-#endif
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>

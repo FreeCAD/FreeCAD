@@ -36,11 +36,6 @@
 # include <boost/date_time/posix_time/posix_time.hpp>
 #endif
 
-#ifdef FC_OS_WIN32
-# include <Shlobj.h>
-# include <codecvt>
-#endif
-
 #if defined(FC_OS_BSD)
 #include <sys/param.h>
 #include <sys/sysctl.h>

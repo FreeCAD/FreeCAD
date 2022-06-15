@@ -48,10 +48,6 @@
 #include <vector>
 #include <bitset>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 
 // OpenCasCade Base
 #include <Standard_Failure.hxx>

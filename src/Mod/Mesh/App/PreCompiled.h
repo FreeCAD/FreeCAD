@@ -62,9 +62,6 @@
 #include <string>
 #include <vector>
 
-#ifdef FC_OS_WIN32
-#include <io.h>
-#endif
 
 #include <boost/algorithm/string/replace.hpp>
 

@@ -26,12 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-# define NOMINMAX
-# endif
-#endif
-
 #ifdef _PreComp_
 
 // standard
@@ -50,11 +44,6 @@
 #include <string>
 #include <vector>
 #include <bitset>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 
 // Qt Toolkit
 #ifndef __QtAll__

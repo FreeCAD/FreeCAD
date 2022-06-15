@@ -37,24 +37,9 @@
 #include <cassert>
 #include <ctime>
 #include <cfloat>
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES
-#endif // FC_OS_WIN32
 #include <cmath>
 #include <climits>
 #include <codecvt>
-
-#ifdef FC_OS_WIN32
-#include <direct.h>
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
-#include <crtdbg.h>
-#include <shellapi.h>
-#include <Rpc.h>
-#endif
 
 #if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #include <dirent.h>

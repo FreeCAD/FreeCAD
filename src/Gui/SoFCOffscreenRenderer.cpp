@@ -195,11 +195,9 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         }
         else if (file.hasExtension("EPS") || file.hasExtension("PS")) {
             // Any format which is supported by Coin only
-#ifdef FC_OS_WIN32
-            FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
-#else
+
             FILE* fd = fopen(filename, "w");
-#endif
+
             bool ok = writeToPostScript(fd);
             fclose(fd);
             if (!ok)
@@ -207,11 +205,8 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         }
         else if (file.hasExtension("RGB") || file.hasExtension("SGI")) {
             // Any format which is supported by Coin only
-#ifdef FC_OS_WIN32
-            FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
-#else
+
             FILE* fd = fopen(filename, "w");
-#endif
             bool ok = writeToRGB(fd);
             fclose(fd);
             if (!ok)

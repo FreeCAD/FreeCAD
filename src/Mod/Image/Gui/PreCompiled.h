@@ -52,10 +52,6 @@
 #include <string>
 #include <vector>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 // Inventor
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>

@@ -654,18 +654,12 @@ void CmdRaytracingRender::activated(int)
         }
 
         QStringList filter;
-#ifdef FC_OS_WIN32
-        filter << QString::fromLatin1("%1 (*.bmp *.png)").arg(QObject::tr("Rendered image"));
-#else
         filter << QString::fromLatin1("%1 (*.png)").arg(QObject::tr("Rendered image"));
-#endif
         filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Rendered image"), QString(), filter.join(QLatin1String(";;")));
         if (!fn.isEmpty()) {
             fn = QDir::toNativeSeparators(fn);
-#ifdef FC_OS_WIN32
-            fn.replace(QLatin1String("\\"), QLatin1String("\\\\"));
-#endif
+
             QByteArray utf8Name = fn.toUtf8();
             QByteArray localBit = fn.toLocal8Bit();
             QByteArray imageFile = utf8Name;
@@ -707,10 +701,7 @@ void CmdRaytracingRender::activated(int)
             str << "\"+W" << width  << "\", "
                 << "\"+H" << height << "\", "
                 << "\"+O" << imageFile.data() << "\"";
-#ifdef FC_OS_WIN32
-            // http://povray.org/documentation/view/3.6.1/603/
-            str << ", \"/EXIT\", \"/RENDER\"";
-#endif
+
             str << ", TempFile])\n"
                 << "proc.communicate()";
 

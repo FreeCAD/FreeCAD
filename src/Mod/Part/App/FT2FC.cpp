@@ -127,13 +127,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
-#ifdef FC_OS_WIN32
-    Base::FileInfo fi(FontSpec);
-    if (!fi.isReadable()) {
-        ErrorMsg << "Font file not found (Win): " << FontSpec;
-        throw std::runtime_error(ErrorMsg.str());
-    }
-#else
+
     // FT does not return an error if font file not found?
     std::ifstream is;
     is.open (FontSpec);
@@ -141,8 +135,6 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         ErrorMsg << "Font file not found: " << FontSpec;
         throw std::runtime_error(ErrorMsg.str());
     }
-#endif
-
 
     error = FT_New_Face(FTLib,FontSpec,FaceIndex, &FTFont);
     if (error) {
