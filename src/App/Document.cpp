@@ -2402,7 +2402,7 @@ private:
                     fn = str.str();
                 }
 
-                if (fi.renameFile(fn.c_str()) == false)
+                if (!fi.renameFile(fn.c_str()))
                     Base::Console().Warning("Cannot rename project file to backup file\n");
             }
             else {
@@ -2411,7 +2411,7 @@ private:
         }
 
         Base::FileInfo tmp(sourcename);
-        if (tmp.renameFile(targetname.c_str()) == false) {
+        if (!tmp.renameFile(targetname.c_str())) {
             throw Base::FileException(
                 "Cannot rename tmp save file to project file", targetname);
         }
@@ -2511,7 +2511,7 @@ private:
                             }
                         }
                         else {
-                            if (renameFileNoErase(fi, fn+".FCBak") == false) {
+                            if (!renameFileNoErase(fi, fn+".FCBak")) {
                                 fn = fn + "-";
                             }
                             else {
@@ -2555,7 +2555,7 @@ private:
         }
 
         Base::FileInfo tmp(sourcename);
-        if (tmp.renameFile(targetname.c_str()) == false) {
+        if (!tmp.renameFile(targetname.c_str())) {
             throw Base::FileException(
                 "Save interrupted: Cannot rename temporary file to project file", tmp);
         }

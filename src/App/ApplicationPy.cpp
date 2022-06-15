@@ -317,7 +317,7 @@ PyObject* Application::sCloseDocument(PyObject * /*self*/, PyObject *args)
         return nullptr;
     }
 
-    if (GetApplication().closeDocument(pstr) == false) {
+    if (!GetApplication().closeDocument(pstr)) {
         PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", pstr);
         return nullptr;
     }
@@ -333,7 +333,7 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args)
 
     Document* doc = GetApplication().getDocument(pDoc);
     if ( doc ) {
-        if ( doc->save() == false ) {
+        if (!doc->save()) {
             PyErr_Format(Base::PyExc_FC_GeneralError, "Cannot save document '%s'", pDoc);
             return nullptr;
         }
