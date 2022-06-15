@@ -449,8 +449,8 @@ void ViewProviderFemPostObject::setRangeOfColorBar(double min, double max)
 {
     try {
         if (min >= max) {
-            min = max - 10 * std::numeric_limits<float>::epsilon();
-            max = max + 10 * std::numeric_limits<float>::epsilon();
+            min = max - 10 * std::numeric_limits<double>::epsilon();
+            max = max + 10 * std::numeric_limits<double>::epsilon();
         }
         m_colorBar->setRange(min, max);
     }
@@ -465,14 +465,12 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
         return;
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
-
         m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
         m_material->transparency.setValue(0.);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();
         return;
     };
-
 
     int array = Field.getValue() - 1; //0 is none
     vtkPolyData* pd = m_currentAlgorithm->GetOutput();
@@ -483,7 +481,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
         component = 0;
 
     //build the lookuptable
-    if (ResetColorBarRange == true) {
+    if (ResetColorBarRange) {
         double range[2];
         data->GetRange(range, component);
         setRangeOfColorBar(range[0], range[1]);
@@ -591,7 +589,7 @@ bool ViewProviderFemPostObject::doubleClicked(void) {
     // check if backlight is enabled
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);
-    if (isBackLightEnabled == false)
+    if (!isBackLightEnabled)
         Base::Console().Error("Backlight is not enabled. Due to a VTK implementation problem you really should consider to enable backlight in FreeCAD display preferences if you work with VTK post processing.\n");
     // set edit
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
