@@ -297,7 +297,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             (*it)->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
-            if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
+            if (!rGrp.GetBool("UseBackgroundColorMid",false))
                 (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
             else
                 (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3), SbColor(r4, g4, b4));
