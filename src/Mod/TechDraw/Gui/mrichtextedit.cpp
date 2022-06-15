@@ -745,8 +745,8 @@ bool MRichTextEdit::hasMultipleSizes(void)
             QString asQS = QString::number(currSize,'f',2);
             foundSizes.push_back(asQS);
             auto ret = countMap.insert(std::pair<QString, int>(asQS, 1));
-            if (ret.second == false) {            //already have this size
-                ret.first->second++;              //bump count
+            if (!ret.second) {            //already have this size
+                ret.first->second++;      //bump count
             }
         }
         if (countMap.size() > 1) {
