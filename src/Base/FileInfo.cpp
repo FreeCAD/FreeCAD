@@ -556,7 +556,7 @@ bool FileInfo::createDirectories() const
 
 bool FileInfo::deleteDirectory() const
 {
-    if (isDir() == false )
+    if (!isDir())
         return false;
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
@@ -570,7 +570,7 @@ bool FileInfo::deleteDirectory() const
 
 bool FileInfo::deleteDirectoryRecursive() const
 {
-    if (isDir() == false )
+    if (!isDir())
         return false;
     std::vector<Base::FileInfo> List = getDirectoryContent();
 
