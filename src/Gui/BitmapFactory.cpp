@@ -338,9 +338,10 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
 
     QPainter p(&image);
     // tmp. disable the report window to suppress some bothering warnings
+    auto tmp = Base::Console().IsMsgTypeEnabled("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn);
     Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
     QSvgRenderer svg(contents);
-    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
+    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, tmp);
     svg.render(&p);
     p.end();
 
