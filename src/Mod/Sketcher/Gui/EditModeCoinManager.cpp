@@ -31,6 +31,7 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoTransparencyType.h>
 
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoTranslation.h>
@@ -693,6 +694,10 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditRoot->setName("Sketch_EditRoot");
     ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
     editModeScenegraphNodes.EditRoot->renderCaching = SoSeparator::OFF ;
+
+    auto transparencytype = new SoTransparencyType;
+    transparencytype->value = SoTransparencyType::Type::SORTED_OBJECT_BLEND;
+    editModeScenegraphNodes.EditRoot->addChild(transparencytype);
 
     // Create Geometry Coin nodes ++++++++++++++++++++++++++++++++++++++
     pEditModeGeometryCoinManager->createEditModeInventorNodes();
