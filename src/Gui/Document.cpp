@@ -1356,7 +1356,7 @@ unsigned int Document::getMemSize (void) const
 void Document::Save (Base::Writer &writer) const
 {
     // It's only possible to add extra information if force of XML is disabled
-    if (writer.isForceXML() == false) {
+    if (!writer.isForceXML()) {
         writer.addFile("GuiDocument.xml", this);
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
@@ -1909,7 +1909,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
             }
 
             // is already closing the document, and is not linked by other documents
-            if (d->_isClosing == false &&
+            if (!d->_isClosing &&
                 App::PropertyXLink::getDocumentInList(getDocument()).empty())
             {
                 d->_pcAppWnd->onLastWindowClosed(this);
