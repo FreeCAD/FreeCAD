@@ -98,6 +98,10 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     hGrp->Attach(this);
 
+    hGrpNavi =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+    hGrpNavi->Attach(this);
+
     //anti-aliasing settings
     bool smoothing = false;
     bool glformat = false;
@@ -145,7 +149,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"ShowFPS");
     OnChange(*hGrp,"ShowNaviCube");
-    OnChange(*hGrp,"CornerNaviCube");
+    OnChange(*hGrpNavi, "CornerNaviCube");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
@@ -178,6 +182,7 @@ View3DInventor::~View3DInventor()
             _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
     }
     hGrp->Detach(this);
+    hGrpNavi->Detach(this);
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
     //by a widget in SoQtViewer isn't reset. This widget becomes a dangling pointer and makes
@@ -369,8 +374,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"ShowNaviCube") == 0) {
         _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube",true));
     }
-    else if (strcmp(Reason,"CornerNaviCube") == 0) {
-        _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube",1));
+    else if (strcmp(Reason, "CornerNaviCube") == 0) {
+        _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube", 1));
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));

@@ -133,6 +133,7 @@ protected:
 
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
+    ParameterGrp::handle hGrpNavi;
 
 private:
     View3DInventorViewer * _viewer;
