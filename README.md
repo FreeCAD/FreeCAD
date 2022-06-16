@@ -55,13 +55,13 @@ Other options are described at the [wiki Download page](https://wiki.freecadweb.
 Build Status
 ------------
 
-| Master | 0.19 | Translation |
+| Master | 0.20 | Translation |
 |:------:|:----:|:-----------:|
-|[![Master][freecad-master-status]][gitlab-branch-master]|[![0.19][freecad-0.19-status]][gitlab-branch-0.19]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
+|[![Master][freecad-master-status]][gitlab-branch-master]|[![0.20][freecad-0.20-status]][gitlab-branch-0.20]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
 
-[freecad-0.19-status]: https://gitlab.com/freecad/FreeCAD-CI/badges/releases/FreeCAD-0-19/pipeline.svg
+[freecad-0.20-status]: https://gitlab.com/freecad/FreeCAD-CI/badges/releases/FreeCAD-0-20/pipeline.svg
 [freecad-master-status]: https://gitlab.com/freecad/FreeCAD-CI/badges/master/pipeline.svg
-[gitlab-branch-0.19]: https://gitlab.com/freecad/FreeCAD-CI/-/commits/releases/FreeCAD-0-19
+[gitlab-branch-0.20]: https://gitlab.com/freecad/FreeCAD-CI/-/commits/releases/FreeCAD-0-20
 [gitlab-branch-master]: https://gitlab.com/freecad/FreeCAD-CI/-/commits/master
 [travis-builds]: https://travis-ci.org/FreeCAD/FreeCAD/builds
 
