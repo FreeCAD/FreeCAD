@@ -77,10 +77,6 @@ void DlgSettingsNavigation::saveSettings()
 
     int index = ui->comboOrbitStyle->currentIndex();
     hGrp->SetInt("OrbitStyle", index);
-
-    index = ui->naviCubeCorner->currentIndex();
-    hGrp->SetInt("CornerNaviCube", index);
-
     index = ui->comboRotationMode->currentIndex();
     hGrp->SetInt("RotationMode", index);
 
@@ -91,6 +87,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->checkBoxUseAutoRotation->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
+    ui->naviCubeCorner->onSave();
     ui->naviCubeToNearest->onSave();
     ui->prefCubeSize->onSave();
 
@@ -117,6 +114,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxUseAutoRotation->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
+    ui->naviCubeCorner->onRestore();
     ui->naviCubeToNearest->onRestore();
     ui->prefCubeSize->onRestore();
 
@@ -129,9 +127,6 @@ void DlgSettingsNavigation::loadSettings()
     index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::Trackball));
     index = Base::clamp(index, 0, ui->comboOrbitStyle->count()-1);
     ui->comboOrbitStyle->setCurrentIndex(index);
-
-    index = hGrp->GetInt("CornerNaviCube", 1);
-    ui->naviCubeCorner->setCurrentIndex(index);
 
     index = hGrp->GetInt("RotationMode", 1);
     ui->comboRotationMode->setCurrentIndex(index);
