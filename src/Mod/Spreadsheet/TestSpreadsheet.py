@@ -1276,6 +1276,75 @@ class SpreadsheetCases(unittest.TestCase):
         with self.assertRaises(AttributeError):
             self.assertEqual(sheet.A6, "")
 
+    def testBindAcrossSheets(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet2")
+        ss2.set("B1", "B1")
+        ss2.set("B2", "B2")
+        ss2.set("C1", "C1")
+        ss2.set("C2", "C2")
+        ss2.set("D1", "D1")
+        ss2.set("D2", "D2")
+
+        ss1.setExpression('.cells.Bind.A3.C4', 'tuple(Spreadsheet2.cells, <<B1>>, <<D2>>)')
+        self.doc.recompute()
+
+        self.assertEqual(ss1.A3, ss2.B1)
+        self.assertEqual(ss1.A4, ss2.B2)
+        self.assertEqual(ss1.B3, ss2.C1)
+        self.assertEqual(ss1.B4, ss2.C2)
+        self.assertEqual(ss1.C3, ss2.D1)
+        self.assertEqual(ss1.C4, ss2.D2)
+
+        self.assertEqual(len(ss1.ExpressionEngine), 1)
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        self.doc.recompute()
+
+    def testBindHiddenRefAcrossSheets(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet2")
+        ss2.set("B1", "B1")
+        ss2.set("B2", "B2")
+        ss2.set("C1", "C1")
+        ss2.set("C2", "C2")
+        ss2.set("D1", "D1")
+        ss2.set("D2", "D2")
+
+        self.doc.recompute()
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        ss1.setExpression('.cells.BindHiddenRef.A3.C4', 'hiddenref(tuple(Spreadsheet2.cells, <<B1>>, <<D2>>))')
+        self.doc.recompute()
+
+        ss1.recompute() # True
+        self.assertEqual(ss1.A3, ss2.B1)
+
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        ss1.setExpression('.cells.BindHiddenRef.A3.C4', None)
+        self.doc.recompute()
+        self.assertEqual(len(ss1.ExpressionEngine), 0)
+
+    def testMergeCells(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss1.mergeCells('A1:B4')
+        ss1.mergeCells('C1:D4')
+        self.doc.recompute()
+        ss1.set("B1", "fail")
+        self.doc.recompute()
+        with self.assertRaises(AttributeError):
+            self.assertEqual(ss1.B1, "fail")
+
+    def testMergeCellsAndBind(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss1.mergeCells('A1:B1')
+        ss1.setExpression('.cells.Bind.A1.A1', 'tuple(.cells, <<A2>>, <<A2>>)')
+        ss1.set("A2", "test")
+        self.doc.recompute()
+        self.assertEqual(ss1.A1, ss1.A2)
+        ss1.set("B1", "fail")
+        self.doc.recompute()
+        with self.assertRaises(AttributeError):
+            self.assertEqual(ss1.B1, "fail")
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
