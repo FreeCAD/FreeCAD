@@ -178,7 +178,7 @@ void VisualInspection::saveSettings()
 void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 {
     if (item) {
-        SingleSelectionItem* sel = (SingleSelectionItem*)item;
+        SingleSelectionItem* sel = static_cast<SingleSelectionItem*>(item);
         SingleSelectionItem* cmp = sel->getCompetitiveItem();
         if (cmp && cmp->checkState(0) == Qt::Checked)
             cmp->setCheckState(0, Qt::Unchecked);
