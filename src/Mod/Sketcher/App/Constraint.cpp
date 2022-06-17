@@ -175,15 +175,15 @@ void Constraint::Restore(XMLReader &reader)
 {
     reader.readElement("Constrain");
     Name      = reader.getAttribute("Name");
-    Type      = (ConstraintType)  reader.getAttributeAsInteger("Type");
+    Type      = static_cast<ConstraintType>(reader.getAttributeAsInteger("Type"));
     Value     = reader.getAttributeAsFloat("Value");
     First     = reader.getAttributeAsInteger("First");
-    FirstPos  = (PointPos)  reader.getAttributeAsInteger("FirstPos");
+    FirstPos  = static_cast<PointPos>(reader.getAttributeAsInteger("FirstPos"));
     Second    = reader.getAttributeAsInteger("Second");
-    SecondPos = (PointPos)  reader.getAttributeAsInteger("SecondPos");
+    SecondPos = static_cast<PointPos>(reader.getAttributeAsInteger("SecondPos"));
 
     if(this->Type==InternalAlignment) {
-        AlignmentType = (InternalAlignmentType) reader.getAttributeAsInteger("InternalAlignmentType");
+        AlignmentType = static_cast<InternalAlignmentType>(reader.getAttributeAsInteger("InternalAlignmentType"));
 
         if (reader.hasAttribute("InternalAlignmentIndex"))
             InternalAlignmentIndex = reader.getAttributeAsInteger("InternalAlignmentIndex");
@@ -195,7 +195,7 @@ void Constraint::Restore(XMLReader &reader)
     // read the third geo group if present
     if (reader.hasAttribute("Third")) {
         Third    = reader.getAttributeAsInteger("Third");
-        ThirdPos = (PointPos)  reader.getAttributeAsInteger("ThirdPos");
+        ThirdPos = static_cast<PointPos>(reader.getAttributeAsInteger("ThirdPos"));
     }
 
     // Read the distance a constraint label has been moved

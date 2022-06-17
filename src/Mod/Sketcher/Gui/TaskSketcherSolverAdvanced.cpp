@@ -398,7 +398,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinishe
 void TaskSketcherSolverAdvanced::on_comboBoxDefaultSolver_currentIndexChanged(int index)
 {
     ui->comboBoxDefaultSolver->onSave();
-    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolver=(GCS::Algorithm) index;
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolver = static_cast<GCS::Algorithm>(index);
     updateDefaultMethodParameters();
 }
 
@@ -478,7 +478,7 @@ void TaskSketcherSolverAdvanced::on_comboBoxQRMethod_currentIndexChanged(int ind
 void TaskSketcherSolverAdvanced::on_comboBoxRedundantDefaultSolver_currentIndexChanged(int index)
 {
     ui->comboBoxRedundantDefaultSolver->onSave();
-    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolverRedundant=(GCS::Algorithm) index;
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolverRedundant = static_cast<GCS::Algorithm>(index);
     updateRedundantMethodParameters();
 }
 
@@ -565,14 +565,14 @@ void TaskSketcherSolverAdvanced::updateSketchObject()
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDebugMode((GCS::DebugMode) ui->comboBoxDebugMode->currentIndex());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplierRedundant(ui->checkBoxRedundantSketchSizeMultiplier->isChecked());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIterRedundant(ui->spinBoxRedundantSolverMaxIterations->value());
-    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolverRedundant=(GCS::Algorithm) ui->comboBoxRedundantDefaultSolver->currentIndex();
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolverRedundant = static_cast<GCS::Algorithm>(ui->comboBoxRedundantDefaultSolver->currentIndex());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setQRAlgorithm((GCS::QRAlgorithm) ui->comboBoxQRMethod->currentIndex());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setQRPivotThreshold(ui->lineEditQRPivotThreshold->text().toDouble());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setConvergenceRedundant(ui->lineEditRedundantConvergence->text().toDouble());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setConvergence(ui->lineEditConvergence->text().toDouble());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIter(ui->spinBoxMaxIter->value());
-    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolver=(GCS::Algorithm) ui->comboBoxDefaultSolver->currentIndex();
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolver = static_cast<GCS::Algorithm>(ui->comboBoxDefaultSolver->currentIndex());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDogLegGaussStep((GCS::DogLegGaussStep) ui->comboBoxDogLegGaussStep->currentIndex());
 
     updateDefaultMethodParameters();
