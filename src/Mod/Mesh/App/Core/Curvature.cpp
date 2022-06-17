@@ -28,7 +28,6 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#include <boost_bind_bind.hpp>
 
 //#define OPTIMIZE_CURVATURE
 #ifdef OPTIMIZE_CURVATURE

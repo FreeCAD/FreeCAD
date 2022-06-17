@@ -38,8 +38,6 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 
-#include <boost_bind_bind.hpp>
-
 
 using namespace Gui;
 using namespace DrawingGui;

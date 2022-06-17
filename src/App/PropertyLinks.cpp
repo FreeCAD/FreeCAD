@@ -26,7 +26,6 @@
 #include <QDir>
 #include <QFileInfo>
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost_bind_bind.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

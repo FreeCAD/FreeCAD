@@ -24,7 +24,6 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <boost_bind_bind.hpp>
 # include <boost_signals2.hpp>
 # include <BRep_Tool.hxx>
 # include <BRepGProp.hxx>
