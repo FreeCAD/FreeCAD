@@ -177,7 +177,7 @@ void PropertyGeomFormatList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("GeomFormat");
         const char* TypeName = reader.getAttribute("type");
-        GeomFormat *newG = (GeomFormat *)Base::Type::fromName(TypeName).createInstance();
+        GeomFormat *newG = static_cast<GeomFormat *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {

@@ -165,7 +165,7 @@ void PropertyCosmeticVertexList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("CosmeticVertex");
         const char* TypeName = reader.getAttribute("type");
-        CosmeticVertex *newG = (CosmeticVertex *)Base::Type::fromName(TypeName).createInstance();
+        CosmeticVertex *newG = static_cast<CosmeticVertex *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {

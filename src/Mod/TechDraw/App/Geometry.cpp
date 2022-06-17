@@ -255,19 +255,19 @@ void BaseGeom::Save(Base::Writer &writer) const
 void BaseGeom::Restore(Base::XMLReader &reader)
 {
     reader.readElement("GeomType");
-    geomType = (TechDraw::GeomType) reader.getAttributeAsInteger("value");
+    geomType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
     reader.readElement("ExtractType");
-    extractType = (TechDraw::ExtractionType) reader.getAttributeAsInteger("value");
+    extractType = static_cast<TechDraw::ExtractionType>(reader.getAttributeAsInteger("value"));
     reader.readElement("EdgeClass");
-    classOfEdge = (TechDraw::edgeClass) reader.getAttributeAsInteger("value");
+    classOfEdge = static_cast<TechDraw::edgeClass>(reader.getAttributeAsInteger("value"));
     reader.readElement("HLRVisible");
-    hlrVisible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    hlrVisible = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("Reversed");
-    reversed = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    reversed = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("Ref3D");
     ref3D = reader.getAttributeAsInteger("value");
     reader.readElement("Cosmetic");
-    cosmetic = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    cosmetic = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("Source");
     m_source = reader.getAttributeAsInteger("value");
     reader.readElement("SourceIndex");
@@ -1610,15 +1610,15 @@ void Vertex::Restore(Base::XMLReader &reader)
     pnt.z = reader.getAttributeAsFloat("Z");
 
     reader.readElement("Extract");
-    extractType = (ExtractionType) reader.getAttributeAsInteger("value");
+    extractType = static_cast<ExtractionType>(reader.getAttributeAsInteger("value"));
 //    reader.readElement("Visible");
 //    hlrVisible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("Ref3D");
     ref3D = reader.getAttributeAsInteger("value");
     reader.readElement("IsCenter");
-    hlrVisible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+    hlrVisible = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("Cosmetic");
-    cosmetic = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+    cosmetic = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("CosmeticLink");
     cosmeticLink = reader.getAttributeAsInteger("value");
     reader.readElement("CosmeticTag");

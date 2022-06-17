@@ -304,7 +304,7 @@ QPen QGIRichAnno::rectPen() const
         return pen;
 
     double rectWeight = Rez::guiX(vp->LineWidth.getValue());
-    Qt::PenStyle rectStyle = (Qt::PenStyle) vp->LineStyle.getValue();
+    Qt::PenStyle rectStyle = static_cast<Qt::PenStyle>(vp->LineStyle.getValue());
     App::Color temp = vp->LineColor.getValue();
     QColor rectColor = temp.asValue<QColor>();
 

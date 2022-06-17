@@ -165,7 +165,7 @@ void PropertyCosmeticEdgeList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("CosmeticEdge");
         const char* TypeName = reader.getAttribute("type");
-        CosmeticEdge *newG = (CosmeticEdge *)Base::Type::fromName(TypeName).createInstance();
+        CosmeticEdge *newG = static_cast<CosmeticEdge *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
