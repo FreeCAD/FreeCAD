@@ -120,8 +120,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         if (prop == &Scale) {
             if (!m_lockScale) {
                 updateChildrenScale();
-                // the whole group needs to be recomputed after the different children to take the spacingX/Y into account
-                updateViews();
+                updateChildrenEnforce();
             }
         }
 
@@ -1019,7 +1018,6 @@ void DrawProjGroup::updateChildrenScale(void)
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         } else {
             view->Scale.setValue(getScale());
-            view->recomputeFeature();
         }
     }
 }
