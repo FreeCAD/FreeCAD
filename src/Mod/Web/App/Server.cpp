@@ -136,7 +136,7 @@ void AppServer::incomingConnection(qintptr socket)
 
 void AppServer::readClient()
 {
-    QTcpSocket* socket = (QTcpSocket*)sender();
+    QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
     if (socket->bytesAvailable() > 0) {
         QByteArray request = socket->readAll();
         std::unique_ptr<ServerEvent> event(std::make_unique<ServerEvent>(socket, request));
@@ -155,7 +155,7 @@ void AppServer::readClient()
 
 void AppServer::discardClient()
 {
-    QTcpSocket* socket = (QTcpSocket*)sender();
+    QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
     socket->deleteLater();
 }
 
