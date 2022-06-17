@@ -93,7 +93,7 @@ PyObject *PropertyPointKernel::getPyObject()
 void PropertyPointKernel::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(PointsPy::Type))) {
-        PointsPy  *pcObject = (PointsPy*)value;
+        PointsPy  *pcObject = static_cast<PointsPy*>(value);
         setValue( *(pcObject->getPointKernelPtr()));
     }
     else {
