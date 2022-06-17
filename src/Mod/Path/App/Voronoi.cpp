@@ -180,7 +180,7 @@ long Voronoi::numVertices() const {
 void Voronoi::construct()
 {
   vd->clear();
-  construct_voronoi(vd->points.begin(), vd->points.end(), vd->segments.begin(), vd->segments.end(), (voronoi_diagram_type*)vd);
+  construct_voronoi(vd->points.begin(), vd->points.end(), vd->segments.begin(), vd->segments.end(), static_cast<voronoi_diagram_type*>(vd));
   vd->reIndex();
 }
 

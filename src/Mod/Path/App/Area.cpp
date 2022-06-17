@@ -1083,7 +1083,7 @@ void Area::showShape(const TopoDS_Shape& shape, const char* name, const char* fm
             va_end(args);
             name = buf;
         }
-        Part::Feature* pcFeature = (Part::Feature*)pcDoc->addObject("Part::Feature", name);
+        Part::Feature* pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
         pcFeature->Shape.setValue(shape);
     }
 }
