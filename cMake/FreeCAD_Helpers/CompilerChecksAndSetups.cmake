@@ -9,19 +9,7 @@ macro(CompilerChecksAndSetups)
 
     # ================================================================================
 
-    # Needed for boost1.69
-    # Avoid that Python (pyerrors.h) defines snprintf and vsnprintf
-    if (MSVC AND NOT MSVC_VERSION VERSION_LESS 1900)
-        add_definitions(-DHAVE_SNPRINTF)
-    elseif (MINGW)
-        add_definitions(-DHAVE_SNPRINTF)
-    endif()
-
-    # Allow developers to use Boost < 1.55
-    if (NOT BOOST_MIN_VERSION)
-        set(BOOST_MIN_VERSION 1.55)
-    endif()
-
+ 
     # For older cmake versions the variable 'CMAKE_CXX_COMPILER_VERSION' is missing
     if(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
         execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
@@ -46,10 +34,6 @@ macro(CompilerChecksAndSetups)
         set(CMAKE_CXX_STANDARD 20)
     elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
         set(CMAKE_CXX_STANDARD 17)
-    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+14")
-        set(CMAKE_CXX_STANDARD 14)
-    elseif (${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+11")
-        set(CMAKE_CXX_STANDARD 11)
     endif()
 
     # Log the compiler and version
@@ -93,7 +77,7 @@ macro(CompilerChecksAndSetups)
             endif()
             add_definitions(-DGL_SILENCE_DEPRECATION)
         elseif (UNIX)
-            if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.9)
+            if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
                 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
             endif()
         endif()

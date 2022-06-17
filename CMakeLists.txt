@@ -1,5 +1,5 @@
 # March 2021, the oldest we have to support : Ununtu 18.04 LTS
-cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
 
 # policy CMP0072 was introduced with CMake 3.11
 # relates to FindOpenGL module

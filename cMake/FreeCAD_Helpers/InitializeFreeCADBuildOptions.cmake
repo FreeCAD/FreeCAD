@@ -92,8 +92,7 @@ macro(InitializeFreeCADBuildOptions)
             )
 
             # It should be safe to assume we've got sed on OSX...
-            install(CODE "
-                execute_process(COMMAND
+            install(CODE "execute_process(COMMAND
                     sed -i \"\" -e s/VERSION_STRING_FROM_CMAKE/${PACKAGE_VERSION}/
                     -e s/NAME_STRING_FROM_CMAKE/${PROJECT_NAME}/
                     ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app/Contents/Info.plist)
@@ -174,9 +173,9 @@ macro(InitializeFreeCADBuildOptions)
         set(BUILD_SMESH ON )
     endif()
 
-    # for Windows the minimum required cmake version is 3.4.3 to build the Path module
-    if(WIN32 AND CMAKE_VERSION VERSION_LESS 3.4.3)
-        message(WARNING "Disable Path, requires cmake >= 3.4.3 in order to build this module")
+    # for Windows the minimum required cmake version is 3.11 to build the Path module
+    if(WIN32 AND CMAKE_VERSION VERSION_LESS 3.11)
+        message(WARNING "Disable Path, requires cmake >= 3.11 in order to build this module")
         set(BUILD_PATH OFF )
     endif()
 
