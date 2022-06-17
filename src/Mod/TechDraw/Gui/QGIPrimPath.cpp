@@ -226,7 +226,7 @@ void QGIPrimPath::setStyle(Qt::PenStyle s)
 void QGIPrimPath::setStyle(int s)
 {
 //    Base::Console().Message("QGIPP::setStyle(int: %d)\n", s);
-    m_styleCurrent = (Qt::PenStyle) s;
+    m_styleCurrent = static_cast<Qt::PenStyle>(s);
 }
 
 
@@ -260,16 +260,16 @@ Qt::PenCapStyle QGIPrimPath::prefCapStyle()
     newStyle = hGrp->GetInt("EdgeCapStyle", 32);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
     switch (newStyle) {
         case 0:
-            result = (Qt::PenCapStyle) 0x20;   //round;
+            result = static_cast<Qt::PenCapStyle>(0x20);   //round;
             break;
         case 1:
-            result = (Qt::PenCapStyle) 0x10;   //square;
+            result = static_cast<Qt::PenCapStyle>(0x10);   //square;
             break;
         case 2:
-            result = (Qt::PenCapStyle) 0x00;   //flat
+            result = static_cast<Qt::PenCapStyle>(0x00);   //flat
             break;
         default:
-            result = (Qt::PenCapStyle) 0x20;
+            result = static_cast<Qt::PenCapStyle>(0x20);
     }
     return result;
 }

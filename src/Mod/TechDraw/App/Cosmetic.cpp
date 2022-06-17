@@ -489,22 +489,22 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     std::string temp = reader.getAttribute("value");
     m_format.m_color.fromHexString(temp);
     reader.readElement("Visible");
-    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    m_format.m_visible = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("GeometryType");
-    TechDraw::GeomType gType = (TechDraw::GeomType)reader.getAttributeAsInteger("value");
+    TechDraw::GeomType gType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
 
     if (gType == TechDraw::GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);
         gen->occEdge = GeometryUtils::edgeFromGeneric(gen);
-        m_geometry = (TechDraw::BaseGeomPtr) gen;
+        m_geometry = gen;
         permaStart = gen->getStartPoint();
         permaEnd   = gen->getEndPoint();
     } else if (gType == TechDraw::GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::make_shared<TechDraw::Circle> ();
         circ->Restore(reader);
         circ->occEdge = GeometryUtils::edgeFromCircle(circ);
-        m_geometry = (TechDraw::BaseGeomPtr) circ;
+        m_geometry = circ;
         permaRadius = circ->radius;
         permaStart  = circ->center;
         permaEnd    = circ->center;
@@ -512,7 +512,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         TechDraw::AOCPtr aoc = std::make_shared<TechDraw::AOC> ();
         aoc->Restore(reader);
         aoc->occEdge = GeometryUtils::edgeFromCircleArc(aoc);
-        m_geometry = (TechDraw::BaseGeomPtr) aoc;
+        m_geometry = aoc;
         permaStart = aoc->startPnt;
         permaEnd   = aoc->endPnt;
         permaRadius = aoc->radius;
@@ -1355,7 +1355,7 @@ void CenterLine::Restore(Base::XMLReader &reader)
 
 //stored geometry
     reader.readElement("GeometryType");
-    TechDraw::GeomType gType = (TechDraw::GeomType)reader.getAttributeAsInteger("value");
+    TechDraw::GeomType gType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
     if (gType == TechDraw::GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);

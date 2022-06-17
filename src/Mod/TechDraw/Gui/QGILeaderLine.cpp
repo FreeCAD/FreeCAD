@@ -365,8 +365,8 @@ void QGILeaderLine::draw()
         setFlag(QGraphicsItem::ItemIsMovable, false);
     else
         setFlag(QGraphicsItem::ItemIsMovable, true);
-    m_lineStyle = (Qt::PenStyle) vp->LineStyle.getValue();
 
+    m_lineStyle = static_cast<Qt::PenStyle>(vp->LineStyle.getValue());
     double baseScale = featLeader->getBaseScale();
     double x = Rez::guiX(featLeader->X.getValue());
     double y = - Rez::guiX(featLeader->Y.getValue());

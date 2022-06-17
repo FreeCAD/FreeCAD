@@ -163,7 +163,7 @@ void PropertyCenterLineList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("CenterLine");
         const char* TypeName = reader.getAttribute("type");
-        CenterLine *newG = (CenterLine *)Base::Type::fromName(TypeName).createInstance();
+        CenterLine *newG = static_cast<CenterLine *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
