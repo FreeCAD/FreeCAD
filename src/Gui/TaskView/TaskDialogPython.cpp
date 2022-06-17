@@ -216,14 +216,14 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
     QString title;
     if (watcher.hasAttr(std::string("title"))) {
         Py::String name(watcher.getAttr(std::string("title")));
-        std::string s = (std::string)name;
+        std::string s = static_cast<std::string>(name);
         title = QString::fromUtf8(s.c_str());
     }
 
     QPixmap icon;
     if (watcher.hasAttr(std::string("icon"))) {
         Py::String name(watcher.getAttr(std::string("icon")));
-        std::string s = (std::string)name;
+        std::string s = static_cast<std::string>(name);
         icon = BitmapFactory().pixmap(s.c_str());
     }
 
@@ -234,7 +234,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
         CommandManager &mgr = Gui::Application::Instance->commandManager();
         for (Py::Sequence::iterator it = cmds.begin(); it != cmds.end(); ++it) {
             Py::String name(*it);
-            std::string s = (std::string)name;
+            std::string s = static_cast<std::string>(name);
             Command *c = mgr.getCommandByName(s.c_str());
             if (c)
                 c->addTo(tb);
@@ -267,7 +267,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
 
     if (watcher.hasAttr(std::string("filter"))) {
         Py::String name(watcher.getAttr(std::string("filter")));
-        std::string s = (std::string)name;
+        std::string s = static_cast<std::string>(name);
         this->setFilter(s.c_str());
     }
 }
@@ -313,7 +313,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
         loader.setLanguageChangeEnabled(true);
         QString fn, icon;
         Py::String ui(dlg.getAttr(std::string("ui")));
-        std::string path = (std::string)ui;
+        std::string path = static_cast<std::string>(ui);
         fn = QString::fromUtf8(path.c_str());
 
         QFile file(fn);

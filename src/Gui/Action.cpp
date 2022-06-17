@@ -613,7 +613,7 @@ void WorkbenchGroup::refreshWorkbenchList()
 void WorkbenchGroup::customEvent( QEvent* e )
 {
     if (e->type() == QEvent::User) {
-        auto ce = (Gui::WorkbenchActionEvent*)e;
+        auto ce = static_cast<Gui::WorkbenchActionEvent*>(e);
         ce->action()->trigger();
     }
 }

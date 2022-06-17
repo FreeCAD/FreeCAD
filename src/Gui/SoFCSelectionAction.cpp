@@ -1038,7 +1038,7 @@ SoBoxSelectionRenderActionP::updateBbox(const SoPath * path)
     this->camerasearch->setFind(SoSearchAction::TYPE);
     this->camerasearch->setInterest(SoSearchAction::LAST);
     this->camerasearch->setType(SoCamera::getClassTypeId());
-    this->camerasearch->apply((SoPath*) path);
+    this->camerasearch->apply(const_cast<SoPath*>(path));
 
     if (!this->camerasearch->getPath()) {
         // if there is no camera there is no point rendering the bbox
@@ -1051,7 +1051,7 @@ SoBoxSelectionRenderActionP::updateBbox(const SoPath * path)
         this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100, 100));
     }
     this->bboxaction->setViewportRegion(PUBLIC(this)->getViewportRegion());
-    this->bboxaction->apply((SoPath*) path);
+    this->bboxaction->apply(const_cast<SoPath*>(path));
 
     SbXfBox3f & box = this->bboxaction->getXfBoundingBox();
 
@@ -1164,7 +1164,7 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
             for (int i = 0; i < pathlist.getLength(); i++ ) {
                 SoPath * path = pathlist[i];
                 assert(path);
-                auto selection = (SoFCSelection *) path->getTail();
+                auto selection = static_cast<SoFCSelection *>(path->getTail());
                 assert(selection->getTypeId().isDerivedFrom(SoFCSelection::getClassTypeId()));
                 if (selection->selected.getValue() && selection->style.getValue() == SoFCSelection::BOX) {
                     PRIVATE(this)->basecolor->rgb.setValue(selection->colorSelection.getValue());
@@ -1219,7 +1219,7 @@ SoBoxSelectionRenderAction::apply(SoPath * path)
     SoGLRenderAction::apply(path);
     SoNode* node = path->getTail();
     if (node && node->getTypeId() == SoFCSelection::getClassTypeId()) {
-        auto selection = (SoFCSelection *) node;
+        auto selection = static_cast<SoFCSelection *>(node);
 
         // This happens when dehighlighting the current shape
         if (PRIVATE(this)->highlightPath == path) {
@@ -1305,7 +1305,7 @@ void
 SoBoxSelectionRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pathlist)
 {
     int i;
-    int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
+    int thispos = static_cast<SoFullPath *>(pathtothis)->getLength()-1;
     assert(thispos >= 0);
     PRIVATE(this)->postprocpath->truncate(0); // reset
 
@@ -1321,7 +1321,7 @@ SoBoxSelectionRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     thestate->push();
 
     for (i = 0; i < pathlist->getLength(); i++) {
-        auto path = (SoFullPath *)(*pathlist)[i];
+        auto path = static_cast<SoFullPath *>((*pathlist)[i]);
 
         for (int j = 0; j < path->getLength(); j++) {
             PRIVATE(this)->postprocpath->append(path->getNode(j));

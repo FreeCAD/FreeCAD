@@ -25,6 +25,10 @@
 #ifndef _PreComp_
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoCallbackAction.h>
+# include <Inventor/actions/SoPickAction.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/elements/SoModelMatrixElement.h>
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
@@ -83,7 +87,7 @@ SoAutoZoomTranslation::SoAutoZoomTranslation()
 
 void SoAutoZoomTranslation::GLRender(SoGLRenderAction * action)
 {
-    SoAutoZoomTranslation::doAction((SoAction *)action);
+    SoAutoZoomTranslation::doAction(static_cast<SoAction *>(action));
     inherited::GLRender(action);
 }
 
@@ -130,21 +134,21 @@ void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 
 void SoAutoZoomTranslation::callback(SoCallbackAction * action)
 {
-    SoAutoZoomTranslation::doAction((SoAction*)action);
+    SoAutoZoomTranslation::doAction(static_cast<SoAction*>(action));
 }
 
 void SoAutoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-    SoAutoZoomTranslation::doAction((SoAction*)action);
+    SoAutoZoomTranslation::doAction(static_cast<SoAction*>(action));
 }
 
 void SoAutoZoomTranslation::pick(SoPickAction * action)
 {
-    SoAutoZoomTranslation::doAction((SoAction*)action);
+    SoAutoZoomTranslation::doAction(static_cast<SoAction*>(action));
 }
 
 // Doc in superclass.
 void SoAutoZoomTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-    SoAutoZoomTranslation::doAction((SoAction*)action);
+    SoAutoZoomTranslation::doAction(static_cast<SoAction*>(action));
 }

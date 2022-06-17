@@ -896,7 +896,7 @@ PyObject *LinkView::getPyObject()
 
 void LinkView::setInvalid() {
     if (!PythonObject.is(Py::_None())){
-        auto obj = (Base::PyObjectBase*)PythonObject.ptr();
+        auto obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
         obj->setInvalid();
         obj->DecRef();
     }else
@@ -2835,7 +2835,7 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
             // we use an invisible cube sized by the bounding box obtained from
             // initDraggingPlacement() to scale the centerball dragger properly
 
-            auto * ss = (SoSurroundScale*)dragger->getPart("surroundScale", TRUE);
+            auto * ss = static_cast<SoSurroundScale*>(dragger->getPart("surroundScale", TRUE));
             ss->numNodesUpToContainer = 3;
             ss->numNodesUpToReset = 2;
 

@@ -311,7 +311,7 @@ void HttpServer::readClient()
     // This slot is called when the client sent data to the server. The
     // server looks if it was a GET request and  sends back the
     // corresponding HTML document from the ZIP file.
-    auto socket = (QTcpSocket*)sender();
+    auto socket = static_cast<QTcpSocket*>(sender());
     if (socket->canReadLine()) {
         QString httpRequestHeader = QString::fromLatin1(socket->readLine());
         QStringList lst = httpRequestHeader.simplified().split(QLatin1String(" "));
@@ -345,7 +345,7 @@ void HttpServer::readClient()
 
 void HttpServer::discardClient()
 {
-    auto socket = (QTcpSocket*)sender();
+    auto socket = static_cast<QTcpSocket*>(sender());
     socket->deleteLater();
 }
 

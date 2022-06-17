@@ -242,7 +242,7 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
 
             type += " *";
             PyObject* proxy = nullptr;
-            proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)node, 1);
+            proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), static_cast<void*>(node), 1);
             return Py::new_reference_to(Py::Object(proxy, true));
         }
     }

@@ -196,7 +196,7 @@ void SoFCSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCDocumentAction::getClassTypeId()) {
-        auto docaction = (SoFCDocumentAction*)action;
+        auto docaction = static_cast<SoFCDocumentAction*>(action);
         this->documentName = docaction->documentName;
     }
 
@@ -211,7 +211,7 @@ void SoFCSelection::doAction(SoAction *action)
     if(!useNewSelection.getValue()) {
 
         if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-            auto preaction = (SoFCEnableHighlightAction*)action;
+            auto preaction = static_cast<SoFCEnableHighlightAction*>(action);
             if (preaction->highlight) {
                 this->highlightMode = SoFCSelection::AUTO;
             }
@@ -221,7 +221,7 @@ void SoFCSelection::doAction(SoAction *action)
         }
 
         if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
-            auto selaction = (SoFCEnableSelectionAction*)action;
+            auto selaction = static_cast<SoFCEnableSelectionAction*>(action);
             if (selaction->selection) {
                 this->selectionMode = SoFCSelection::SEL_ON;
             }
@@ -234,12 +234,12 @@ void SoFCSelection::doAction(SoAction *action)
         }
 
         if (action->getTypeId() == SoFCSelectionColorAction::getClassTypeId()) {
-            auto colaction = (SoFCSelectionColorAction*)action;
+            auto colaction = static_cast<SoFCSelectionColorAction*>(action);
             this->colorSelection = colaction->selectionColor;
         }
 
         if (action->getTypeId() == SoFCHighlightColorAction::getClassTypeId()) {
-            auto colaction = (SoFCHighlightColorAction*)action;
+            auto colaction = static_cast<SoFCHighlightColorAction*>(action);
             this->colorHighlight = colaction->highlightColor;
         }
 
@@ -353,7 +353,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     }
 
     static char buf[513];
-    auto mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
     const SoEvent * event = action->getEvent();
 #ifdef NO_FRONTBUFFER
     // mouse move events for preselection
@@ -372,7 +372,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                            ,pp->getPoint()[1]
                                            ,pp->getPoint()[2])){
                         SoFCSelection::turnoffcurrent(action);
-                        SoFCSelection::currenthighlight = (SoFullPath*)action->getCurPath()->copy();
+                        SoFCSelection::currenthighlight = static_cast<SoFullPath*>(action->getCurPath()->copy());
                         SoFCSelection::currenthighlight->ref();
                         highlighted = true;
                         this->touch(); // force scene redraw
@@ -406,7 +406,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
         }
     } // key press events
     else if (event->isOfType(SoKeyboardEvent ::getClassTypeId())) {
-        auto const e = (SoKeyboardEvent  *) event;
+        auto const e = static_cast<const SoKeyboardEvent *>(event);
         if (SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::LEFT_SHIFT)     ||
             SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::RIGHT_SHIFT)     )
             bShift = true;
@@ -421,7 +421,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
             bCtrl = false;
     } // mouse press events for (de)selection
     else if (event->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-        auto const e = (SoMouseButtonEvent *) event;
+        auto const e = static_cast<const SoMouseButtonEvent *>(event);
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
             //FIXME: Shouldn't we remove the preselection for newly selected objects?
             //       Otherwise the tree signals that an object is preselected even though it is hidden. (Werner)
@@ -555,7 +555,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     }
     // key press events
     else if (event->isOfType(SoKeyboardEvent ::getClassTypeId())) {
-        SoKeyboardEvent  * const e = (SoKeyboardEvent  *) event;
+        const SoKeyboardEvent * const e = static_cast<const SoKeyboardEvent *>(event);
         if (SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::LEFT_SHIFT)     ||
             SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::RIGHT_SHIFT)     )
             bShift = true;
@@ -572,7 +572,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     // mouse press events for (de)selection (only if selection is enabled on this node)
     else if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
              selectionMode.getValue() == SoFCSelection::SEL_ON) {
-        SoMouseButtonEvent * const e = (SoMouseButtonEvent *) event;
+        const SoMouseButtonEvent * const e = static_cast<const SoMouseButtonEvent *>(event);
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
             //FIXME: Shouldn't we remove the preselection for newly selected objects?
             //       Otherwise the tree signals that an object is preselected even though it is hidden. (Werner)
@@ -830,32 +830,34 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
 void
 SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 {
-    Q_UNUSED(action);
-    Q_UNUSED(doHighlight);
+    //Base::Console().Log("SoFCSelection::redrawHighlighted() (%p) doHigh=%d \n",this,doHighlight?1:0);
 
 #ifdef NO_FRONTBUFFER
+    Q_UNUSED(action);
+    Q_UNUSED(doHighlight);
 #else
     // If we are about to highlight, and there is something else highlighted,
     // that something else needs to unhighlight.
-    if (doHighlight && currenthighlight != NULL &&
-        !(*((SoFullPath *)action->getCurPath()) == *currenthighlight)) {
+    if (doHighlight && currenthighlight &&
+        !(*(static_cast<SoFullPath *>(action->getCurPath())) == *currenthighlight)) {
 
         SoNode *tail = currenthighlight->getTail();
-        if (tail->isOfType( SoFCSelection::getClassTypeId()))
-            ((SoFCSelection *)tail)->redrawHighlighted(action, false);
+        if (tail->isOfType( SoFCSelection::getClassTypeId())) {
+            static_cast<SoFCSelection *>(tail)->redrawHighlighted(action, false);
+        }
         else {
             // Just get rid of the path. It's no longer valid for redraw.
             currenthighlight->unref();
-            currenthighlight = NULL;
+            currenthighlight = nullptr;
         }
     }
 
     SoPath *pathToRender;
     // save the path to ourself for later de-highlight
     if (doHighlight) {
-        if (currenthighlight != NULL)
+        if (currenthighlight)
             currenthighlight->unref();
-        currenthighlight = (SoFullPath *) action->getCurPath()->copy();
+        currenthighlight = static_cast<SoFullPath *>(action->getCurPath()->copy());
         currenthighlight->ref();
 
         // We will be rendering this new path to highlight it
@@ -870,7 +872,7 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
             pathToRender->ref();
 
             currenthighlight->unref();
-            currenthighlight = NULL;
+            currenthighlight = nullptr;
         }
     }
 
@@ -888,7 +890,7 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
     SoGLRenderActionElement::get(state, glAction);
 
     // If we don't have a current window, then simply return...
-    if (window == 0 /*|| context == NULL || display == NULL*/ || glAction == NULL)
+    if (!window /*|| context == NULL || display == NULL*/ || !glAction)
         return;
 
     window->makeCurrent();
@@ -928,7 +930,7 @@ SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
 bool
 SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 {
-    auto mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
     bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
     if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected()))
         return false;
@@ -940,7 +942,7 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
     auto oldId = this->uniqueId;
     this->uniqueId ^= std::hash<void*>()(ctx.get()) + 0x9e3779b9 + (oldId << 6) + (oldId >> 2);
 
-    auto mystyle = (Styles) this->style.getValue();
+    auto mystyle = static_cast<Styles>(this->style.getValue());
 
     if (mystyle == SoFCSelection::BOX) {
         if (ctx) {
@@ -987,9 +989,10 @@ SoFCSelection::turnoffcurrent(SoAction * action)
         SoFCSelection::currenthighlight->getLength()) {
         SoNode * tail = SoFCSelection::currenthighlight->getTail();
         if (tail->isOfType(SoFCSelection::getClassTypeId())) {
-            ((SoFCSelection*)tail)->highlighted = false;
-            ((SoFCSelection*)tail)->touch(); // force scene redraw
-            if (action) ((SoFCSelection*)tail)->redrawHighlighted(action, false);
+            static_cast<SoFCSelection*>(tail)->highlighted = false;
+            static_cast<SoFCSelection*>(tail)->touch(); // force scene redraw
+            if (action)
+                static_cast<SoFCSelection*>(tail)->redrawHighlighted(action, false);
         }
     }
     if (SoFCSelection::currenthighlight) {
@@ -997,7 +1000,7 @@ SoFCSelection::turnoffcurrent(SoAction * action)
         SoFCSelection::currenthighlight = nullptr;
     }
 #else
-    if (currenthighlight == NULL)
+    if (!currenthighlight)
         return;
 
     SoNode *tail = currenthighlight->getTail();
@@ -1007,12 +1010,12 @@ SoFCSelection::turnoffcurrent(SoAction * action)
         // (processing events during render abort might cause this)
         SoState *state = action->getState();
         if (state && state->getDepth() == 1)
-            ((SoFCSelection *)tail)->redrawHighlighted(action, false);
+            static_cast<SoFCSelection *>(tail)->redrawHighlighted(action, false);
     }
     else {
         // Just get rid of the path. It's no longer valid for redraw.
         currenthighlight->unref();
-        currenthighlight = NULL;
+        currenthighlight = nullptr;
     }
 #endif
 }
@@ -1022,8 +1025,8 @@ SoFCSelection::isHighlighted(SoAction *action)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    auto actionPath = (SoFullPath *) action->getCurPath();
-    return (currenthighlight != nullptr &&
+    auto actionPath = static_cast<const SoFullPath *>(action->getCurPath());
+    return (currenthighlight &&
         currenthighlight->getTail() == actionPath->getTail() && // nested SoHL!
         *currenthighlight == *actionPath);
 }

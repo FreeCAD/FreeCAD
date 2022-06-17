@@ -161,11 +161,11 @@ void SoFCBoundingBox::GLRender (SoGLRenderAction *action)
             str.setf(std::ios::fixed | std::ios::showpoint);
             str << "(" << vptr[i][0] << "," << vptr[i][1] << "," << vptr[i][2] << ")";
 
-            SoSeparator *sep   = (SoSeparator *)textSep->getChild(i);
-            SoTransform *trans = (SoTransform *)sep->getChild(0);
+            SoSeparator *sep   = static_cast<SoSeparator *>(textSep->getChild(i));
+            SoTransform *trans = static_cast<SoTransform *>(sep->getChild(0));
 
             trans->translation.setValue(vptr[i].getValue());
-            SoText2* t = (SoText2 *)sep->getChild(1);
+            SoText2* t = static_cast<SoText2 *>(sep->getChild(1));
             t->string.setValue(str.str().c_str());
         }
 
@@ -187,13 +187,13 @@ void SoFCBoundingBox::GLRender (SoGLRenderAction *action)
             str.setf(std::ios::fixed | std::ios::showpoint);
             str << (2.0f * ctr[i]);
 
-            SoSeparator *sep   = (SoSeparator *)dimSep->getChild(i);
-            SoTransform *trans = (SoTransform *)sep->getChild(0);
+            SoSeparator *sep   = static_cast<SoSeparator *>(dimSep->getChild(i));
+            SoTransform *trans = static_cast<SoTransform *>(sep->getChild(0));
 
             SbVec3f point = corner[0];
             point[i] += ctr[i];
             trans->translation.setValue(point.getValue());
-            SoText2* t = (SoText2 *)sep->getChild(1);
+            SoText2* t = static_cast<SoText2 *>(sep->getChild(1));
             t->string.setValue(str.str().c_str());
         }
 

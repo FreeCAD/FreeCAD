@@ -277,7 +277,7 @@ void DlgDisplayPropertiesImp::on_changeMaterial_activated(int index)
     for (auto It= Provider.begin(); It != Provider.end(); ++It) {
         App::Property* prop = (*It)->getPropertyByName("ShapeMaterial");
         if (prop && prop->getTypeId() == App::PropertyMaterial::getClassTypeId()) {
-            auto ShapeMaterial = (App::PropertyMaterial*)prop;
+            auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
             ShapeMaterial->setValue(mat);
         }
     }
@@ -293,8 +293,8 @@ void DlgDisplayPropertiesImp::on_changeMode_activated(const QString& s)
     for (auto It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
-            auto Display = (App::PropertyEnumeration*)prop;
-            Display->setValue((const char*)s.toLatin1());
+            auto Display = static_cast<App::PropertyEnumeration*>(prop);
+            Display->setValue(static_cast<const char*>(s.toLatin1()));
         }
     }
 }
@@ -315,7 +315,7 @@ void DlgDisplayPropertiesImp::on_buttonColor_changed()
     for (auto It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("ShapeColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
-            auto ShapeColor = (App::PropertyColor*)prop;
+            auto ShapeColor = static_cast<App::PropertyColor*>(prop);
             ShapeColor->setValue(c);
         }
     }
@@ -330,7 +330,7 @@ void DlgDisplayPropertiesImp::on_spinTransparency_valueChanged(int transparency)
     for (auto It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("Transparency");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-            auto Transparency = (App::PropertyInteger*)prop;
+            auto Transparency = static_cast<App::PropertyInteger*>(prop);
             Transparency->setValue(transparency);
         }
     }
@@ -345,8 +345,8 @@ void DlgDisplayPropertiesImp::on_spinPointSize_valueChanged(int pointsize)
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("PointSize");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            auto PointSize = (App::PropertyFloat*)prop;
-            PointSize->setValue((double)pointsize);
+            auto PointSize = static_cast<App::PropertyFloat*>(prop);
+            PointSize->setValue(static_cast<double>(pointsize));
         }
     }
 }
@@ -360,8 +360,8 @@ void DlgDisplayPropertiesImp::on_spinLineWidth_valueChanged(int linewidth)
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("LineWidth");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            auto LineWidth = (App::PropertyFloat*)prop;
-            LineWidth->setValue((double)linewidth);
+            auto LineWidth = static_cast<App::PropertyFloat*>(prop);
+            LineWidth->setValue(static_cast<double>(linewidth));
         }
     }
 }
@@ -374,7 +374,7 @@ void DlgDisplayPropertiesImp::on_buttonLineColor_changed()
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("LineColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
-            auto ShapeColor = (App::PropertyColor*)prop;
+            auto ShapeColor = static_cast<App::PropertyColor*>(prop);
             ShapeColor->setValue(c);
         }
     }
@@ -386,7 +386,7 @@ void DlgDisplayPropertiesImp::on_spinLineTransparency_valueChanged(int transpare
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("LineTransparency");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-            auto Transparency = (App::PropertyInteger*)prop;
+            auto Transparency = static_cast<App::PropertyInteger*>(prop);
             Transparency->setValue(transparency);
         }
     }

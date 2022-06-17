@@ -888,7 +888,7 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
             getView3DIventorPtr()->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), Base::asBoolean(m));
         }
         else if (PyObject_TypeCheck(o, &Base::RotationPy::Type)) {
-            Base::Rotation r = (Base::Rotation)Py::Rotation(o,false);
+            Base::Rotation r = static_cast<Base::Rotation>(Py::Rotation(o,false));
             double q0, q1, q2, q3;
             r.getValue(q0, q1, q2, q3);
             getView3DIventorPtr()->getViewer()->setCameraOrientation(SbRotation((float)q0, (float)q1, (float)q2, (float)q3), Base::asBoolean(m));
@@ -1097,7 +1097,7 @@ Py::Object View3DInventorPy::getCameraNode(const Py::Tuple& args)
         type = "So"; // seems that So prefix is missing in camera node
         type += camera->getTypeId().getName().getString();
         type += " *";
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)camera, 1);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), static_cast<void*>(camera), 1);
         camera->ref();
         return Py::Object(proxy, true);
     }
@@ -2240,7 +2240,7 @@ Py::Object View3DInventorPy::getSceneGraph(const Py::Tuple& args)
     try {
         SoNode* scene = getView3DIventorPtr()->getViewer()->getSceneGraph();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", (void*)scene, 1);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", static_cast<void*>(scene), 1);
         scene->ref();
         return Py::Object(proxy, true);
     }
@@ -2267,10 +2267,10 @@ void View3DInventorPy::eventCallbackPivy(void * ud, SoEventCallback * n)
 
     PyObject* proxy = nullptr;
     try {
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)e, 0);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), const_cast<void*>(static_cast<const void*>(e)), 0);
         // now run the method
         Py::Object event(proxy,true);
-        Py::Callable method(reinterpret_cast<PyObject*>(ud));
+        Py::Callable method(static_cast<PyObject*>(ud));
         Py::Tuple args(1);
         args.setItem(0, event);
         method.apply(args);
@@ -2300,7 +2300,7 @@ void View3DInventorPy::eventCallbackPivyEx(void * ud, SoEventCallback * n)
 
     PyObject* proxy = nullptr;
     try {
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)n, 0);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), static_cast<void*>(n), 0);
         // now run the method
         Py::Object event(proxy,true);
         Py::Callable method(reinterpret_cast<PyObject*>(ud));
@@ -2432,7 +2432,7 @@ void View3DInventorPy::draggerCallback(void * ud, SoDragger* n)
     Base::PyGILStateLocker lock;
     PyObject* proxy = nullptr;
     try {
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDragger *", (void*)n, 0);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDragger *", static_cast<void*>(n), 0);
         //call the method
         Py::Object dragger(proxy,true);
         Py::Callable method(reinterpret_cast<PyObject*>(ud));

@@ -486,7 +486,7 @@ void ReportOutput::customEvent ( QEvent* ev )
 {
     // Appends the text stored in the event to the text view
     if ( ev->type() ==  QEvent::User ) {
-        auto ce = (CustomReportEvent*)ev;
+        auto ce = static_cast<CustomReportEvent*>(ev);
         reportHl->setParagraphType(ce->messageType());
 
         bool showTimecode = getWindowParameter()->GetBool("checkShowReportTimecode", true);

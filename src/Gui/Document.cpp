@@ -619,7 +619,7 @@ void Document::setShow(const char* name)
     ViewProvider* pcProv = getViewProviderByName(name);
 
     if (pcProv && pcProv->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-        ((ViewProviderDocumentObject*)pcProv)->Visibility.setValue(true);
+        static_cast<ViewProviderDocumentObject*>(pcProv)->Visibility.setValue(true);
     }
 }
 
@@ -629,7 +629,7 @@ void Document::setHide(const char* name)
     ViewProvider* pcProv = getViewProviderByName(name);
 
     if (pcProv && pcProv->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-        ((ViewProviderDocumentObject*)pcProv)->Visibility.setValue(false);
+        static_cast<ViewProviderDocumentObject*>(pcProv)->Visibility.setValue(false);
     }
 }
 

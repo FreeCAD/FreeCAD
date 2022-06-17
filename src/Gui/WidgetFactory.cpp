@@ -72,7 +72,7 @@ void WidgetFactoryInst::destruct ()
  */
 QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) const
 {
-    auto w = (QWidget*)Produce(sName);
+    auto w = static_cast<QWidget*>(Produce(sName));
 
     // this widget class is not registered
     if (!w) {
@@ -217,7 +217,7 @@ PrefPageUiProducer::~PrefPageUiProducer()
 void* PrefPageUiProducer::Produce () const
 {
     QWidget* page = new Gui::Dialog::PreferenceUiForm(fn);
-    return (void*)page;
+    return static_cast<void*>(page);
 }
 
 // ----------------------------------------------------
@@ -476,7 +476,7 @@ void PyResource::load(const char* name)
         throw Base::ValueError("Invalid widget.");
 
     if (w->inherits("QDialog")) {
-        myDlg = (QDialog*)w;
+        myDlg = static_cast<QDialog*>(w);
     }
     else {
         myDlg = new ContainerDialog(w);
