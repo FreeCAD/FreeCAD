@@ -2278,7 +2278,7 @@ private:
             TopoDS_Shape* shape = new TopoDS_Shape();
             (*shape) = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
             PyObject* proxy = nullptr;
-            proxy = Base::Interpreter().createSWIGPointerObj("OCC.TopoDS", "TopoDS_Shape *", (void*)shape, 1);
+            proxy = Base::Interpreter().createSWIGPointerObj("OCC.TopoDS", "TopoDS_Shape *", static_cast<void*>(shape), 1);
             return Py::asObject(proxy);
         }
         catch (const Base::Exception& e) {
@@ -2295,7 +2295,7 @@ private:
         try {
             TopoShape* shape = new TopoShape();
             Base::Interpreter().convertSWIGPointerObj("OCC.TopoDS","TopoDS_Shape *", proxy, &ptr, 0);
-            TopoDS_Shape* s = reinterpret_cast<TopoDS_Shape*>(ptr);
+            TopoDS_Shape* s = static_cast<TopoDS_Shape*>(ptr);
             shape->setShape(*s);
             return Py::asObject(new TopoShapePy(shape));
         }

@@ -470,7 +470,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
         initShapeNameMap();
         for(size_t idx=0;idx<_ShapeNames.size();++idx) {
             if(!_ShapeNames[idx].empty() && boost::starts_with(type,_ShapeNames[idx]))
-                return (TopAbs_ShapeEnum)idx;
+                return static_cast<TopAbs_ShapeEnum>(idx);
         }
     }
     if(!silent) {
@@ -817,7 +817,7 @@ void TopoShape::importBrep(const char *FileName)
         BRepTools::Read(aShape,encodeFilename(FileName).c_str(),aBuilder,pi);
         pi->EndScope();
 #else
-        BRepTools::Read(aShape,(Standard_CString)FileName,aBuilder);
+        BRepTools::Read(aShape,static_cast<Standard_CString>(FileName),aBuilder);
 #endif
         this->_Shape = aShape;
     }
@@ -2184,7 +2184,7 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     if (hProfile.IsNull())
         Standard_Failure::Raise("invalid curve in profile edge");
 
-    GeomFill_Pipe mkSweep(hPath, hProfile, (GeomFill_Trihedron)fillMode);
+    GeomFill_Pipe mkSweep(hPath, hProfile, static_cast<GeomFill_Trihedron>(fillMode));
     mkSweep.GenerateParticularCase(Standard_True);
     mkSweep.Perform(tol, Standard_False, GeomAbs_C1, BSplCLib::MaxDegree(), 1000);
 

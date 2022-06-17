@@ -163,7 +163,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
 
     // Keyboard events
     if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        SoKeyboardEvent * ke = (SoKeyboardEvent *)ev;
+        const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent *>(ev);
         switch (ke->getKey()) {
             case SoKeyboardEvent::LEFT_ALT:
             case SoKeyboardEvent::RIGHT_ALT:
@@ -179,7 +179,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
 
     // switching the mouse buttons
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+        const SoMouseButtonEvent * const event = static_cast<const SoMouseButtonEvent *>(ev);
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 

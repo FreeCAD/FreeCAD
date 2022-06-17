@@ -2542,7 +2542,7 @@ CmdPartSectionCut::CmdPartSectionCut()
 
 Gui::Action* CmdPartSectionCut::createAction()
 {
-    Gui::Action* pcAction = (Gui::Action*)Gui::Command::createAction();
+    Gui::Action* pcAction = Gui::Command::createAction();
 #if 0
     pcAction->setCheckable(true);
 #endif

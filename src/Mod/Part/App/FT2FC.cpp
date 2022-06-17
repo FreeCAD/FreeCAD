@@ -214,7 +214,7 @@ struct FTDC_Ctx {
 // move_cb called for start of new contour. pt is xy of contour start.
 // p points to the context where we remember what happened previously (last point, etc)
 static int move_cb(const FT_Vector* pt, void* p) {
-   FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
    if (!dc->Edges.empty()){
        TopoDS_Wire newwire = edgesToWire(dc->Edges);
        dc->Wires.push_back(newwire);
@@ -232,7 +232,7 @@ static int move_cb(const FT_Vector* pt, void* p) {
 
 // line_cb called for line segment in the current contour: line(LastVert -- pt)
 static int line_cb(const FT_Vector* pt, void* p) {
-   FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
    gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
    gp_Pnt2d v2(pt->x, pt->y);
    if (!v1.IsEqual(v2, Precision::Confusion())) {
@@ -248,7 +248,7 @@ static int line_cb(const FT_Vector* pt, void* p) {
 // quad_cb called for quadratic (conic) BCurve segment in the current contour
 // (ie V-C-V in TTF fonts). BCurve(LastVert -- pt0 -- pt1)
 static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
-   FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
    TColgp_Array1OfPnt2d Poles(1,3);
    gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
    gp_Pnt2d c1(pt0->x, pt0->y);
@@ -275,7 +275,7 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
 // cubic_cb called for cubic BCurve segment in the current contour (ie V-C-C-V in
 // Type 1 fonts). BCurve(LastVert -- pt0 -- pt1 -- pt2)
 static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector* pt2, void* p) {
-   FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
    TColgp_Array1OfPnt2d Poles(1,4);
    gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
    gp_Pnt2d c1(pt0->x, pt0->y);
