@@ -135,7 +135,7 @@ Py::Object SMESH_HypothesisPy<T>::repr()
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setLibName(const Py::Tuple& args)
 {
-    std::string libName = (std::string)Py::String(args[0]);
+    std::string libName = static_cast<std::string>(Py::String(args[0]));
     hypothesis<SMESH_Hypothesis>()->SetLibName(libName.c_str());
     return Py::None();
 }
@@ -153,7 +153,7 @@ Py::Object SMESH_HypothesisPy<T>::getLibName(const Py::Tuple& args)
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 {
-    std::string paramName = (std::string)Py::String(args[0]);
+    std::string paramName = static_cast<std::string>(Py::String(args[0]));
     hypothesis<SMESH_Hypothesis>()->SetParameters(paramName.c_str());
     return Py::None();
 }
@@ -171,7 +171,7 @@ Py::Object SMESH_HypothesisPy<T>::setLastParameters(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    std::string paramName = (std::string)Py::String(args[0]);
+    std::string paramName = static_cast<std::string>(Py::String(args[0]));
     hypothesis<SMESH_Hypothesis>()->SetLastParameters(paramName.c_str());
     return Py::None();
 }
