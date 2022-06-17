@@ -1417,10 +1417,8 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 SbBool texture)
 {
     (void)texcoords; (void)texindices; (void)texture;
-    const SbVec3f * coords3d = nullptr;
-    SbVec3f * cur_coords3d = nullptr;
-    coords3d = vertexlist->getArrayPtr3();
-    cur_coords3d = ( SbVec3f *)coords3d;
+    const SbVec3f * coords3d = vertexlist->getArrayPtr3();
+    SbVec3f * cur_coords3d = const_cast<SbVec3f *>(coords3d);
 
     const int32_t *viptr = vertexindices;
     const int32_t *viendptr = viptr + num_indices;
@@ -1439,9 +1437,9 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     float * vertex_array = nullptr;
     GLuint * index_array = nullptr;
     SbColor  mycolor1,mycolor2,mycolor3;
-    SbVec3f *mynormal1 = (SbVec3f *)currnormal;
-    SbVec3f *mynormal2 = (SbVec3f *)currnormal;
-    SbVec3f *mynormal3 = (SbVec3f *)currnormal;
+    SbVec3f *mynormal1 = const_cast<SbVec3f *>(currnormal);
+    SbVec3f *mynormal2 = const_cast<SbVec3f *>(currnormal);
+    SbVec3f *mynormal3 = const_cast<SbVec3f *>(currnormal);
     int indice=0;
     uint32_t RGBA,R,G,B,A;
     float Rf,Gf,Bf,Af;
@@ -1543,11 +1541,11 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
             if (normals) {
                 if (nbind == PER_VERTEX || nbind == PER_FACE) {
                     currnormal = normals++;
-                    mynormal1=(SbVec3f *)currnormal;
+                    mynormal1 = const_cast<SbVec3f *>(currnormal);
                 }
                 else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
                     currnormal = &normals[*normalindices++];
-                    mynormal1 =(SbVec3f *) currnormal;
+                    mynormal1 = const_cast<SbVec3f *>(currnormal);
                 }
             }
             if (mbind == PER_VERTEX)
@@ -1558,11 +1556,11 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
             if (normals) {
                 if (nbind == PER_VERTEX) {
                     currnormal = normals++;
-                    mynormal2 = (SbVec3f *)currnormal;
+                    mynormal2 = const_cast<SbVec3f *>(currnormal);
                 }
                 else if (nbind == PER_VERTEX_INDEXED) {
                      currnormal = &normals[*normalindices++];
-                    mynormal2 = (SbVec3f *)currnormal;
+                    mynormal2 = const_cast<SbVec3f *>(currnormal);
                  }
              }
 
@@ -1573,11 +1571,11 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
             if (normals) {
                 if (nbind == PER_VERTEX) {
                     currnormal = normals++;
-                    mynormal3 =(SbVec3f *)currnormal;
+                    mynormal3 =const_cast<SbVec3f *>(currnormal);
                 }
                 else if (nbind == PER_VERTEX_INDEXED) {
                     currnormal = &normals[*normalindices++];
-                    mynormal3 = (SbVec3f *)currnormal;
+                    mynormal3 = const_cast<SbVec3f *>(currnormal);
                 }
             }
             if (nbind == PER_VERTEX_INDEXED)
