@@ -305,7 +305,7 @@ void ImpExpDxfRead::OnReadText(const double *point, const double /*height*/, con
     if (optionImportAnnotations) {
         Base::Vector3d pt(point[0] * optionScaling, point[1] * optionScaling, point[2] * optionScaling);
         if(LayerName().substr(0, 6) != "BLOCKS") {
-            App::Annotation *pcFeature = (App::Annotation *)document->addObject("App::Annotation", "Text");
+            App::Annotation *pcFeature = static_cast<App::Annotation *>(document->addObject("App::Annotation", "Text"));
             pcFeature->LabelText.setValue(Deformat(text));
             pcFeature->Position.setValue(pt);
         }
@@ -371,7 +371,7 @@ void ImpExpDxfRead::AddObject(Part::TopoShape *shape)
     layers[LayerName()] = vec;
     if (!optionGroupLayers) {
         if(LayerName().substr(0, 6) != "BLOCKS") {
-            Part::Feature *pcFeature = (Part::Feature *)document->addObject("Part::Feature", "Shape");
+            Part::Feature *pcFeature = static_cast<Part::Feature *>(document->addObject("Part::Feature", "Shape"));
             pcFeature->Shape.setValue(shape->getShape());
         }
     }
@@ -435,7 +435,7 @@ void ImpExpDxfRead::AddGraphics() const
                         builder.Add(comp, sh);
                 }
                 if (!comp.IsNull()) {
-                    Part::Feature *pcFeature = (Part::Feature *)document->addObject("Part::Feature", k.c_str());
+                    Part::Feature *pcFeature = static_cast<Part::Feature *>(document->addObject("Part::Feature", k.c_str()));
                     pcFeature->Shape.setValue(comp);
                 } 
             }
