@@ -490,12 +490,12 @@ const MeshObject& PropertyMeshKernel::getValue()const
 
 const MeshObject* PropertyMeshKernel::getValuePtr()const 
 {
-    return (MeshObject*)_meshObject;
+    return static_cast<MeshObject*>(_meshObject);
 }
 
 const Data::ComplexGeoData* PropertyMeshKernel::getComplexData() const
 {
-    return (MeshObject*)_meshObject;
+    return static_cast<MeshObject*>(_meshObject);
 }
 
 Base::BoundBox3d PropertyMeshKernel::getBoundingBox() const
@@ -514,7 +514,7 @@ unsigned int PropertyMeshKernel::getMemSize () const
 MeshObject* PropertyMeshKernel::startEditing()
 {
     aboutToSetValue();
-    return (MeshObject*)_meshObject;
+    return static_cast<MeshObject*>(_meshObject);
 }
 
 void PropertyMeshKernel::finishEditing()

@@ -1539,7 +1539,7 @@ void ViewProviderMesh::segmentMesh(const MeshCore::MeshKernel& toolMesh, const B
 
 void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
 {
-    const SoMouseButtonEvent * mbe = (SoMouseButtonEvent *)n->getEvent();
+    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(n->getEvent());
     Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
@@ -1621,7 +1621,7 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
 
 void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
 {
-    const SoMouseButtonEvent * mbe = (SoMouseButtonEvent *)n->getEvent();
+    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(n->getEvent());
     Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node

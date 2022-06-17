@@ -541,8 +541,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
             ViewProviderMeshCurvature* self = static_cast<ViewProviderMeshCurvature*>(vp);
             const SoDetail* detail = point->getDetail(point->getPath()->getTail());
             if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
-                // safe downward cast, know the type
-                SoFaceDetail * facedetail = (SoFaceDetail *)detail;
+                const SoFaceDetail * facedetail = static_cast<const SoFaceDetail *>(detail);
                 // get the curvature info of the three points of the picked facet
                 int index1 = facedetail->getPoint(0)->getCoordinateIndex();
                 int index2 = facedetail->getPoint(1)->getCoordinateIndex();
@@ -576,8 +575,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
         ViewProviderMeshCurvature* that = static_cast<ViewProviderMeshCurvature*>(vp);
         const SoDetail* detail = point->getDetail(point->getPath()->getTail());
         if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
-            // safe downward cast, know the type
-            SoFaceDetail * facedetail = (SoFaceDetail *)detail;
+            const SoFaceDetail * facedetail = static_cast<const SoFaceDetail *>(detail);
             // get the curvature info of the three points of the picked facet
             int index1 = facedetail->getPoint(0)->getCoordinateIndex();
             int index2 = facedetail->getPoint(1)->getCoordinateIndex();
@@ -594,7 +592,7 @@ std::string ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, in
     App::Property* prop = pcObject->getPropertyByName("CurvInfo");
     std::stringstream str;
     if (prop && prop->getTypeId() == Mesh::PropertyCurvatureList::getClassTypeId()) {
-        Mesh::PropertyCurvatureList* curv = (Mesh::PropertyCurvatureList*)prop;
+        Mesh::PropertyCurvatureList* curv = static_cast<Mesh::PropertyCurvatureList*>(prop);
         const Mesh::CurvatureInfo& cVal1 = (*curv)[index1];
         const Mesh::CurvatureInfo& cVal2 = (*curv)[index2];
         const Mesh::CurvatureInfo& cVal3 = (*curv)[index3];
