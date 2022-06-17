@@ -194,7 +194,7 @@ PyObject*  LinkViewPy::setChildren(PyObject *args) {
             links.setPyObject(pyObj);
         if(pyVis!=Py_None)
             vis.setPyObject(pyVis);
-        getLinkViewPtr()->setChildren(links.getValue(),vis.getValue(),(LinkView::SnapshotType)type);
+        getLinkViewPtr()->setChildren(links.getValue(),vis.getValue(),static_cast<LinkView::SnapshotType>(type));
         Py_Return;
     } PY_CATCH;
 }
@@ -304,7 +304,7 @@ PyObject* LinkViewPy::getDetailPath(PyObject* args)
         getLinkViewPtr()->linkGetDetailPath(sub,static_cast<SoFullPath*>(pPath),det);
         if(!det)
             Py_Return;
-        return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+        return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", static_cast<void*>(det), 0);
     }PY_CATCH
 }
 

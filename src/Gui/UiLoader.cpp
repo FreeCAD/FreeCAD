@@ -561,7 +561,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
             device = &file;
         }
         else if (args[0].isString()) {
-            fn = (std::string)Py::String(args[0]);
+            fn = static_cast<std::string>(Py::String(args[0]));
             file.setFileName(QString::fromUtf8(fn.c_str()));
             if (!file.open(QFile::ReadOnly))
                 throw Py::RuntimeError("Cannot open file");

@@ -331,7 +331,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
 void
 RotTransDragger::valueChangedCB(void *, SoDragger *inDragger)
 {
-    auto myself = (RotTransDragger *) inDragger;
+   auto myself = static_cast<RotTransDragger *>(inDragger);
 
    // Factor the motionMatrix into its parts
    SbMatrix motMat = myself->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
@@ -355,7 +355,7 @@ RotTransDragger::valueChangedCB(void *, SoDragger *inDragger)
 void
 RotTransDragger::fieldSensorCB(void *inDragger, SoSensor *)
 {
-    auto myself = (RotTransDragger *) inDragger;
+   auto myself = static_cast<RotTransDragger *>(inDragger);
 
    SbMatrix motMat = myself->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
    myself->workFieldsIntoTransform(motMat);
@@ -369,7 +369,7 @@ RotTransDragger::fieldSensorCB(void *inDragger, SoSensor *)
 void
 RotTransDragger::invalidateSurroundScaleCB(void *parent, SoDragger *)
 {
-    auto myParentDragger = (RotTransDragger *) parent;
+   auto myParentDragger = static_cast<RotTransDragger *>(parent);
 
    // Invalidate the surroundScale, if it exists.
    SoSurroundScale *mySS = SO_CHECK_PART(

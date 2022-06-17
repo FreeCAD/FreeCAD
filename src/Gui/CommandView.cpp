@@ -558,7 +558,7 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
 
 Action * StdCmdToggleClipPlane::createAction()
 {
-    auto pcAction = (Action*)Command::createAction();
+    Action *pcAction = Command::createAction();
     return pcAction;
 }
 

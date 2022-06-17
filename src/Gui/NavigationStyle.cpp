@@ -584,7 +584,7 @@ void NavigationStyle::viewAll()
     float aspect = cam->aspectRatio.getValue();
 
     if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        auto ocam = (SoOrthographicCamera *)cam;  // safe downward cast, knows the type
+        auto ocam = static_cast<SoOrthographicCamera *>(cam);
         if (aspect < 1.0f)
             ocam->height = cam_height / aspect;
         else
@@ -692,7 +692,8 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
         // of the word won't have any visible effect. So we just increase
         // or decrease the field-of-view values of the camera instead, to
         // "shrink" the projection size of the model / scene.
-        auto oc = (SoOrthographicCamera *)cam;
+
+        auto oc = static_cast<SoOrthographicCamera *>(cam);
         oc->height = oc->height.getValue() * multiplicator;
 
     }
@@ -1478,12 +1479,8 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
     // check for left click without selecting something
     if ((curmode == NavigationStyle::SELECTION || curmode == NavigationStyle::IDLE)
             && !processed) {
-        if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-            auto const e = (SoMouseButtonEvent *) ev;
-            if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
-                Gui::Selection().clearSelection();
-            }
-        }
+        if (SoMouseButtonEvent::isButtonReleaseEvent(ev,SoMouseButtonEvent::BUTTON1))
+            Gui::Selection().clearSelection();
     }
 
     return processed;
@@ -1526,7 +1523,7 @@ void NavigationStyle::syncWithEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        auto const event = (const SoKeyboardEvent *) ev;
+        auto const event = static_cast<const SoKeyboardEvent *>(ev);
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
         case SoKeyboardEvent::LEFT_CONTROL:
@@ -1548,7 +1545,7 @@ void NavigationStyle::syncWithEvent(const SoEvent * const ev)
 
     // Mouse Button / Spaceball Button handling
     if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        auto const event = (const SoMouseButtonEvent *) ev;
+        auto const event = static_cast<const SoMouseButtonEvent *>(ev);
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 

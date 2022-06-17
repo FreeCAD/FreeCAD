@@ -206,7 +206,7 @@ void SoFCUnifiedSelection::write(SoWriteAction * action)
         // Do not write out the fields of this class
         if (this->writeHeader(out, true, false))
             return;
-        SoGroup::doAction((SoAction *)action);
+        SoGroup::doAction(static_cast<SoAction *>(action));
         this->writeFooter(out);
     }
     else {
@@ -306,7 +306,7 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
 void SoFCUnifiedSelection::doAction(SoAction *action)
 {
     if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-        auto preaction = (SoFCEnableHighlightAction*)action;
+        auto preaction = static_cast<SoFCEnableHighlightAction*>(action);
         if (preaction->highlight) {
             this->highlightMode = SoFCUnifiedSelection::AUTO;
         }
@@ -316,7 +316,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
-        auto selaction = (SoFCEnableSelectionAction*)action;
+        auto selaction = static_cast<SoFCEnableSelectionAction*>(action);
         if (selaction->selection) {
             this->selectionMode = SoFCUnifiedSelection::ON;
         }
@@ -326,12 +326,12 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCSelectionColorAction::getClassTypeId()) {
-        auto colaction = (SoFCSelectionColorAction*)action;
+        auto colaction = static_cast<SoFCSelectionColorAction*>(action);
         this->colorSelection = colaction->selectionColor;
     }
 
     if (action->getTypeId() == SoFCHighlightColorAction::getClassTypeId()) {
-        auto colaction = (SoFCHighlightColorAction*)action;
+        auto colaction = static_cast<SoFCHighlightColorAction*>(action);
         this->colorHighlight = colaction->highlightColor;
     }
 
@@ -580,7 +580,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     auto pPath = static_cast<SoFullPath*>(pp->getPath());
     const auto &pt = pp->getPoint();
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-    auto mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
     static char buf[513];
 
     if (ctrlDown) {
@@ -700,7 +700,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         return;
     }
 
-    auto mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
     const SoEvent * event = action->getEvent();
 
     // If we don't need to pick for locate highlighting,
@@ -1038,7 +1038,7 @@ typedef struct {
 
 static void so_bbox_construct_data(void * closure)
 {
-    auto data = (SoFCBBoxRenderInfo*) closure;
+    auto data = static_cast<SoFCBBoxRenderInfo*>(closure);
     data->bboxaction = nullptr;
     data->cube = nullptr;
     data->packer = nullptr;
@@ -1046,7 +1046,7 @@ static void so_bbox_construct_data(void * closure)
 
 static void so_bbox_destruct_data(void * closure)
 {
-    auto data = (SoFCBBoxRenderInfo*) closure;
+    auto data = static_cast<SoFCBBoxRenderInfo*>(closure);
     delete data->bboxaction;
     if(data->cube)
         data->cube->unref();
@@ -1202,7 +1202,7 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
 
 bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbColor color)
 {
-    auto data = (SoFCBBoxRenderInfo*) so_bbox_storage->get();
+    auto data = static_cast<SoFCBBoxRenderInfo*>(so_bbox_storage->get());
     if (!data->bboxaction) {
         // The viewport region will be replaced every time the action is
         // used, so we can just feed it a dummy here.

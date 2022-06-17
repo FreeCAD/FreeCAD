@@ -204,7 +204,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
     try {
         // Keyboard events
         if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-            auto ke = (SoKeyboardEvent *)ev;
+            auto ke = static_cast<const SoKeyboardEvent *>(ev);
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             switch (ke->getKey()) {
             case SoKeyboardEvent::ESCAPE:

@@ -292,7 +292,7 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
         QListWidgetItem* item = ui->listBox->item(i);
         if (item->data(GroupNameRole).toString() == group) {
             ui->listBox->setCurrentItem(item);
-            auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+            auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
             tabWidget->setCurrentIndex(index);
             break;
         }
@@ -400,7 +400,7 @@ void DlgPreferencesImp::applyChanges()
     // cancel further operation in other methods (like in accept()).
     try {
         for (int i=0; i<ui->tabWidgetStack->count(); i++) {
-            auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+            auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
             for (int j=0; j<tabWidget->count(); j++) {
                 QWidget* page = tabWidget->widget(j);
                 int index = page->metaObject()->indexOfMethod("checkSettings()");
@@ -425,7 +425,7 @@ void DlgPreferencesImp::applyChanges()
     // If everything is ok (i.e., no validation problem), call method
     // saveSettings() in every subpage (DlgSetting*) object.
     for (int i=0; i<ui->tabWidgetStack->count(); i++) {
-        auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+        auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
         for (int j=0; j<tabWidget->count(); j++) {
             auto page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
             if (page)
@@ -495,7 +495,7 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
         ui->retranslateUi(this);
         // update the widgets' tabs
         for (int i=0; i<ui->tabWidgetStack->count(); i++) {
-            auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+            auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
             for (int j=0; j<tabWidget->count(); j++) {
                 QWidget* page = tabWidget->widget(j);
                 tabWidget->setTabText(j, page->windowTitle());
@@ -515,7 +515,7 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
 void DlgPreferencesImp::reload()
 {
     for (int i = 0; i < ui->tabWidgetStack->count(); i++) {
-        auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+        auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(i));
         for (int j = 0; j < tabWidget->count(); j++) {
             auto page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
             if (page)

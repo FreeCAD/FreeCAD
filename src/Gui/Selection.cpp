@@ -1489,7 +1489,7 @@ void SelectionSingleton::setVisible(VisibleState vis) {
 
             // Fall back to direct object visibility setting
         }
-        if(!filter.insert(std::make_pair(obj,(App::DocumentObject*)nullptr)).second){
+        if(!filter.insert(std::make_pair(obj,static_cast<App::DocumentObject*>(nullptr))).second){
             continue;
         }
 

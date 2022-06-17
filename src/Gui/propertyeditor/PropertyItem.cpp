@@ -1306,7 +1306,7 @@ QVariant PropertyBoolItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyBool::getClassTypeId()));
     
-    bool value = ((App::PropertyBool*)prop)->getValue();
+    bool value = static_cast<const App::PropertyBool*>(prop)->getValue();
     return QVariant(value);
 }
 
@@ -3253,7 +3253,7 @@ QVariant PropertyColorItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId()));
 
-    App::Color value = ((App::PropertyColor*)prop)->getValue();
+    App::Color value = static_cast<const App::PropertyColor*>(prop)->getValue();
     return QVariant(value.asValue<QColor>());
 }
 

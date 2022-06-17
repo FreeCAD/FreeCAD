@@ -95,7 +95,7 @@ void DlgActivateWindowImp::accept()
 
     if (item) {
         int index = ui->treeWidget->indexOfTopLevelItem(item);
-        getMainWindow()->setActiveWindow((MDIView*)windows.at(index));
+        getMainWindow()->setActiveWindow(static_cast<MDIView*>(windows.at(index)));
     }
 
     QDialog::accept();

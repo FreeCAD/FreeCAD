@@ -139,7 +139,7 @@ void TaskAppearance::on_changeMode_activated(const QString& s)
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
-            auto Display = (App::PropertyEnumeration*)prop;
+            auto Display = static_cast<App::PropertyEnumeration*>(prop);
             Display->setValue((const char*)s.toLatin1());
         }
     }
@@ -159,7 +159,7 @@ void TaskAppearance::on_spinTransparency_valueChanged(int transparency)
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("Transparency");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-            auto Transparency = (App::PropertyInteger*)prop;
+            auto Transparency = static_cast<App::PropertyInteger*>(prop);
             Transparency->setValue(transparency);
         }
     }
@@ -174,8 +174,8 @@ void TaskAppearance::on_spinPointSize_valueChanged(int pointsize)
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("PointSize");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            auto PointSize = (App::PropertyFloat*)prop;
-            PointSize->setValue((float)pointsize);
+            auto PointSize = static_cast<App::PropertyFloat*>(prop);
+            PointSize->setValue(static_cast<float>(pointsize));
         }
     }
 }
@@ -189,8 +189,8 @@ void TaskAppearance::on_spinLineWidth_valueChanged(int linewidth)
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("LineWidth");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            auto LineWidth = (App::PropertyFloat*)prop;
-            LineWidth->setValue((float)linewidth);
+            auto LineWidth = static_cast<App::PropertyFloat*>(prop);
+            LineWidth->setValue(static_cast<float>(linewidth));
         }
     }
 }

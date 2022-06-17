@@ -212,7 +212,7 @@ bool ViewProviderPythonFeatureImp::getElement(const SoDetail *det, std::string &
         // Note: As there is no ref'counting mechanism for the SoDetail class we must
         // pass '0' as the last parameter so that the Python object does not 'own'
         // the detail object.
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", const_cast<void*>(static_cast<const void*>(det)), 0);
         Py::Tuple args(1);
         args.setItem(0, Py::Object(pivy, true));
         Py::String name(Base::pyCall(py_getElement.ptr(),args.ptr()));
@@ -242,7 +242,7 @@ ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::str
     Base::PyGILStateLocker lock;
     try {
         PyObject* pivy = nullptr;
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", (void*)pp, 0);
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", const_cast<void*>(static_cast<const void*>(pp)), 0);
         Py::Tuple args(1);
         args.setItem(0, Py::Object(pivy, true));
         Py::Object ret(Base::pyCall(py_getElementPicked.ptr(),args.ptr()));
@@ -306,7 +306,7 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
     auto length = path->getLength();
     try {
         PyObject* pivy = nullptr;
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", (void*)path, 1);
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", static_cast<void*>(path), 1);
         path->ref();
         Py::Tuple args(3);
         args.setItem(0, Py::String(name));

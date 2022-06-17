@@ -300,7 +300,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // names. So, we add these names to the list, too.
         PyObject* appdoctypeobj = Base::getTypeAsObject(&App::DocumentPy::Type);
         if (PyObject_IsSubclass(type.ptr(), appdoctypeobj) == 1) {
-            auto docpy = (App::DocumentPy*)(inst.ptr());
+            auto docpy = static_cast<App::DocumentPy*>(inst.ptr());
             auto document = docpy->getDocumentPtr();
             // Make sure that the C++ object is alive
             if (document) {
@@ -316,7 +316,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // names. So, we add these names to the list, too.
         PyObject* guidoctypeobj = Base::getTypeAsObject(&Gui::DocumentPy::Type);
         if (PyObject_IsSubclass(type.ptr(), guidoctypeobj) == 1) {
-            auto docpy = (Gui::DocumentPy*)(inst.ptr());
+            auto docpy = static_cast<Gui::DocumentPy*>(inst.ptr());
             if (docpy->getDocumentPtr()) {
                 App::Document* document = docpy->getDocumentPtr()->getDocument();
                 // Make sure that the C++ object is alive
@@ -426,7 +426,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
 
 void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, CallTip>& tips) const
 {
-    auto cont = (App::PropertyContainerPy*)(obj.ptr());
+    auto cont = static_cast<App::PropertyContainerPy*>(obj.ptr());
     App::PropertyContainer* container = cont->getPropertyContainerPtr();
     // Make sure that the C++ object is alive
     if (!container)
@@ -605,7 +605,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
     }
     else if (isVisible() && watched == textEdit) {
         if (event->type() == QEvent::KeyPress) {
-            auto ke = (QKeyEvent*)event;
+            auto ke = static_cast<QKeyEvent*>(event);
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down) {
                 keyPressEvent(ke);
                 return true;
@@ -648,7 +648,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             }
         }
         else if (event->type() == QEvent::KeyRelease) {
-            auto* ke = (QKeyEvent*)event;
+            auto ke = static_cast<QKeyEvent*>(event);
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down ||
                 ke->key() == Qt::Key_PageUp || ke->key() == Qt::Key_PageDown) {
                 QList<QListWidgetItem *> items = selectedItems();

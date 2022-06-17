@@ -509,7 +509,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     }
     if(!det)
         Py_Return;
-    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", (void*)det, 0);
+    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", static_cast<void*>(det), 0);
 }
 
 PyObject *ViewProviderPy::signalChangeIcon(PyObject *args)

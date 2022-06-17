@@ -565,7 +565,7 @@ bool CompletionList::eventFilter(QObject * watched, QEvent * event)
             hide();
     } else if (isVisible() && watched == textEdit) {
         if (event->type() == QEvent::KeyPress) {
-            auto ke = (QKeyEvent*)event;
+            auto ke = static_cast<QKeyEvent*>(event);
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down) {
                 keyPressEvent(ke);
                 return true;
