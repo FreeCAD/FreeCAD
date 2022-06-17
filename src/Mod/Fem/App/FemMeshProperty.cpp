@@ -74,7 +74,7 @@ const FemMesh &PropertyFemMesh::getValue()const
 
 const Data::ComplexGeoData* PropertyFemMesh::getComplexData() const
 {
-    return (FemMesh*)_FemMesh;
+    return static_cast<FemMesh*>(_FemMesh);
 }
 
 Base::BoundBox3d PropertyFemMesh::getBoundingBox() const
