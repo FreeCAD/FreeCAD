@@ -571,7 +571,7 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject *args)
         return nullptr;
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none) && pos <= static_cast<int>(Sketcher::PointPos::mid)) { // This is the whole range of valid positions
-        if (this->getSketchObjectPtr()->delConstraintOnPoint(Index,(Sketcher::PointPos)pos)) {
+        if (this->getSketchObjectPtr()->delConstraintOnPoint(Index,static_cast<Sketcher::PointPos>(pos))) {
             std::stringstream str;
             str << "Not able to delete a constraint on point with the given index: " << Index
                 << " and position: " << pos;
@@ -1007,7 +1007,7 @@ PyObject* SketchObjectPy::movePoint(PyObject *args)
 
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
-    if (this->getSketchObjectPtr()->movePoint(GeoId,(Sketcher::PointPos)PointType,v1,(relative>0))) {
+    if (this->getSketchObjectPtr()->movePoint(GeoId,static_cast<Sketcher::PointPos>(PointType),v1,(relative>0))) {
         std::stringstream str;
         str << "Not able to move point with the id and type: (" << GeoId << ", " << PointType << ")";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1051,7 +1051,7 @@ PyObject* SketchObjectPy::getPoint(PyObject *args)
         return nullptr;
     }
 
-    return new Base::VectorPy(new Base::Vector3d(obj->getPoint(GeoId,(Sketcher::PointPos)PointType)));
+    return new Base::VectorPy(new Base::Vector3d(obj->getPoint(GeoId,static_cast<Sketcher::PointPos>(PointType))));
 }
 
 PyObject* SketchObjectPy::getAxis(PyObject *args)
@@ -1093,7 +1093,7 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
     PyErr_Clear();
     // Point, radius
     if (PyArg_ParseTuple(args, "iid|iO!", &geoId1, &posId1, &radius, &trim, &PyBool_Type, &createCorner)) {
-        if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim,
+        if (this->getSketchObjectPtr()->fillet(geoId1, static_cast<Sketcher::PointPos>(posId1), radius, trim,
               Base::asBoolean(createCorner))) {
             std::stringstream str;
             str << "Not able to fillet point with ( geoId: " << geoId1 << ", PointPos: " << posId1 << " )";
@@ -1187,7 +1187,7 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
         }
 
-        int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,(Sketcher::PointPos) refPosId) + 1;
+        int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,static_cast<Sketcher::PointPos>(refPosId)) + 1;
 
         if(ret == -1)
             throw Py::TypeError("Symmetric operation unsuccessful!");
@@ -1711,11 +1711,11 @@ void SketchObjectPy::setMissingPointOnPointConstraints(Py::List arg)
     for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
-        c.First = (long)Py::Long(t.getItem(0));
+        c.First = static_cast<long>(Py::Long(t.getItem(0)));
         c.FirstPos = checkpos(t,1);
-        c.Second = (long)Py::Long(t.getItem(2));
+        c.Second = static_cast<long>(Py::Long(t.getItem(2)));
         c.SecondPos = checkpos(t,3);
-        c.Type = (Sketcher::ConstraintType)(long)Py::Long(t.getItem(4));
+        c.Type = static_cast<Sketcher::ConstraintType>(static_cast<long>(Py::Long(t.getItem(4))));
 
         constraints.push_back(c);
     }
@@ -1752,11 +1752,11 @@ void SketchObjectPy::setMissingVerticalHorizontalConstraints(Py::List arg)
     for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
-        c.First = (long)Py::Long(t.getItem(0));
+        c.First = static_cast<long>(Py::Long(t.getItem(0)));
         c.FirstPos = checkpos(t,1);
-        c.Second = (long)Py::Long(t.getItem(2));
+        c.Second = static_cast<long>(Py::Long(t.getItem(2)));
         c.SecondPos = checkpos(t,3);
-        c.Type = (Sketcher::ConstraintType)(long)Py::Long(t.getItem(4));
+        c.Type = static_cast<Sketcher::ConstraintType>(static_cast<long>(Py::Long(t.getItem(4))));
 
         constraints.push_back(c);
     }
