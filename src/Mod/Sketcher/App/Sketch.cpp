@@ -3445,17 +3445,6 @@ bool Sketch::updateGeometry()
                 std::vector<double> knots;
                 std::vector<int> mult;
 
-                // This is the code that should be here when/if b-spline gets its full implementation in the solver.
-                /*std::vector<double *>::const_iterator it3;
-                std::vector<int>::const_iterator it4;
-
-                for( it3 = mybsp.knots.begin(), it4 = mybsp.mult.begin(); it3 != mybsp.knots.end() && it4 != mybsp.mult.end(); ++it3, ++it4) {
-                    knots.push_back(*(*it3));
-                    mult.push_back((*it4));
-                }
-
-                bsp->setKnots(knots,mult);*/
-
                 // This is the code that needs to be here to take advantage of the current OCCT reliant implementation
                 // The current B-Spline implementation relies on OCCT for pole calculation, so the knots are set by the OCCT calculated values
                 auto occtknots = bsp->getKnots();
@@ -3463,7 +3452,6 @@ bool Sketch::updateGeometry()
                 for(auto it3 = occtknots.begin() ; it3 != occtknots.end(); ++it3)
                     knots.push_back(*it3);
 
-                #if OCC_VERSION_HEX >= 0x060900
                 int index = 0;
                 for(std::vector<int>::const_iterator it5 = mybsp.knotpointGeoids.begin(); it5 != mybsp.knotpointGeoids.end(); ++it5, index++) {
                     if( *it5 != GeoEnum::GeoUndef) {
@@ -3488,7 +3476,6 @@ bool Sketch::updateGeometry()
                         }
                     }
                 }
-                #endif
 
             }
         } catch (Base::Exception &e) {

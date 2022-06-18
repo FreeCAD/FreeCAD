@@ -871,7 +871,6 @@ Py::Object TopoShapeEdgePy::getCurve() const
             curve = new BSplineCurvePy(bspline);
             break;
         }
-#if OCC_VERSION_HEX >= 0x070000
     case GeomAbs_OffsetCurve:
         {
             Standard_Real first, last;
@@ -886,7 +885,6 @@ Py::Object TopoShapeEdgePy::getCurve() const
                 throw Py::RuntimeError("Failed to convert to offset curve");
             }
         }
-#endif
     case GeomAbs_OtherCurve:
         break;
     }

@@ -185,9 +185,8 @@
 
 #include <BRepOffset_MakeOffset.hxx>
 
-#if OCC_VERSION_HEX >= 0x060600
 #include <BRepClass3d.hxx>
-#endif
+
 #if OCC_VERSION_HEX < 0x070600
 #include <Adaptor3d_HCurve.hxx>
 #include <Adaptor3d_HCurveOnSurface.hxx>
@@ -497,18 +496,12 @@
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <ShapeAnalysis_FreeBoundData.hxx>
 
-#if OCC_VERSION_HEX >= 0x060600
 # include <BOPAlgo_ArgumentAnalyzer.hxx>
 # include <BOPAlgo_ListOfCheckResult.hxx>
-#endif
-
-#if OCC_VERSION_HEX >= 0x070300
 # include <BRepAlgoAPI_Defeaturing.hxx>
-#endif
 
-#if OCC_VERSION_HEX >= 0x060800
 #include <OSD_OpenFile.hxx>
-#endif
+
 
 #endif // __OpenCascadeAll__
 

@@ -631,11 +631,7 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
     selectRange(v1, v2);
 
     Handle(Geom_Surface) surface = BRep_Tool::Surface(face);
-    BRepBuilderAPI_MakeFace mkBuilder(surface, u1, u2, v1, v2
-#if OCC_VERSION_HEX >= 0x060502
-      , Precision::Confusion()
-#endif
-    );
+    BRepBuilderAPI_MakeFace mkBuilder(surface, u1, u2, v1, v2 , Precision::Confusion() );
 
     TopoDS_Shape shape = mkBuilder.Shape();
     shape.Location(loc);

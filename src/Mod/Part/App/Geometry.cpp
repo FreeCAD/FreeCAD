@@ -2119,11 +2119,7 @@ void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
     Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
     Handle(Geom_Conic) c = Handle(Geom_Conic)::DownCast( curve->BasisCurve() );
     assert(!c.IsNull());
-#if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
-#else
-    if (newdir.Length() < Precision::Confusion())
-#endif
         return;//zero vector was passed. Keep the old orientation.
 
     try {
@@ -2703,11 +2699,7 @@ Base::Vector3d GeomEllipse::getMajorAxisDir() const
  */
 void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
 {
-#if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
-#else
-    if (newdir.Length() < Precision::Confusion())
-#endif
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = myCurve->Position();
@@ -2922,11 +2914,7 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
 {
     Handle(Geom_Ellipse) c = Handle(Geom_Ellipse)::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
-#if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
-#else
-    if (newdir.Length() < Precision::Confusion())
-#endif
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = c->Position();
@@ -3360,11 +3348,7 @@ void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
 {
     Handle(Geom_Hyperbola) c = Handle(Geom_Hyperbola)::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
-    #if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
-    #else
-    if (newdir.Length() < Precision::Confusion())
-    #endif
         return;//zero vector was passed. Keep the old orientation.
 
     try {
@@ -4220,11 +4204,7 @@ TopoDS_Shape GeomSurface::toShape() const
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
     Standard_Real u1,u2,v1,v2;
     s->Bounds(u1,u2,v1,v2);
-    BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2
-#if OCC_VERSION_HEX >= 0x060502
-      , Precision::Confusion()
-#endif
-      );
+    BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2, Precision::Confusion() );
     return mkBuilder.Shape();
 }
 
@@ -5536,13 +5516,11 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
             geoCurve.reset(new GeomBSplineCurve(adapt.BSpline()));
             break;
         }
-#if OCC_VERSION_HEX >= 0x070000
     case GeomAbs_OffsetCurve:
         {
             geoCurve.reset(new GeomOffsetCurve(adapt.OffsetCurve()));
             break;
         }
-#endif
     case GeomAbs_OtherCurve:
     default:
         break;

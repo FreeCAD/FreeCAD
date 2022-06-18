@@ -189,12 +189,10 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         // instance or do simply nothing. For now the error message is degraded to a log message.
         std::ostringstream str;
         Standard_CString msg = e.GetMessageString();
-#if OCC_VERSION_HEX >= 0x070000
+
         // Avoid name mangling
         str << e.DynamicType()->get_type_name() << " ";
-#else
-        str << typeid(e).name() << " ";
-#endif
+
         if (msg) {str << msg;}
         else     {str << "No OCCT Exception Message";}
         str << ": " << getFullName();

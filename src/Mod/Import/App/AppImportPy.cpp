@@ -340,10 +340,8 @@ private:
                 std::vector <TDF_Label> FreeLabels;
                 std::vector <int> part_id;
                 ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
-#if OCC_VERSION_HEX >= 0x070200
                 // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
-#endif
             }
 
             Base::FileInfo file(Utf8Name.c_str());
@@ -355,16 +353,12 @@ private:
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
-#if OCC_VERSION_HEX >= 0x060500
+
                 APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
-#else
-                APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
-#endif
+
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
-                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
@@ -390,7 +384,6 @@ private:
                     throw Py::Exception();
                 }
             }
-
             hApp->Close(hDoc);
         }
         catch (Standard_Failure& e) {
@@ -400,7 +393,6 @@ private:
             e.setPyException();
             throw Py::Exception();
         }
-
         return Py::None();
     }
 

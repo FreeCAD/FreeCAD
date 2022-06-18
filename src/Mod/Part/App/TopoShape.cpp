@@ -620,7 +620,6 @@ void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 
 void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
 {
-#if OCC_VERSION_HEX >= 0x070000
     // https://www.opencascade.com/doc/occt-7.0.0/refman/html/classgp___trsf.html
     // VectorialPart() already includes the scale factor
     gp_Mat m = trsf.VectorialPart();
@@ -643,29 +642,7 @@ void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
     mtrx[0][3] = p.X();
     mtrx[1][3] = p.Y();
     mtrx[2][3] = p.Z();
-#else
-    gp_Mat m = trsf._CSFDB_Getgp_Trsfmatrix();
-    gp_XYZ p = trsf._CSFDB_Getgp_Trsfloc();
-    Standard_Real scale = trsf._CSFDB_Getgp_Trsfscale();
 
-    // set Rotation matrix
-    mtrx[0][0] = scale * m._CSFDB_Getgp_Matmatrix(0,0);
-    mtrx[0][1] = scale * m._CSFDB_Getgp_Matmatrix(0,1);
-    mtrx[0][2] = scale * m._CSFDB_Getgp_Matmatrix(0,2);
-
-    mtrx[1][0] = scale * m._CSFDB_Getgp_Matmatrix(1,0);
-    mtrx[1][1] = scale * m._CSFDB_Getgp_Matmatrix(1,1);
-    mtrx[1][2] = scale * m._CSFDB_Getgp_Matmatrix(1,2);
-
-    mtrx[2][0] = scale * m._CSFDB_Getgp_Matmatrix(2,0);
-    mtrx[2][1] = scale * m._CSFDB_Getgp_Matmatrix(2,1);
-    mtrx[2][2] = scale * m._CSFDB_Getgp_Matmatrix(2,2);
-
-    // set pos vector
-    mtrx[0][3] = p._CSFDB_Getgp_XYZx();
-    mtrx[1][3] = p._CSFDB_Getgp_XYZy();
-    mtrx[2][3] = p._CSFDB_Getgp_XYZz();
-#endif
 }
 
 Base::Matrix4D TopoShape::convert(const gp_Trsf& trsf) {
@@ -1741,11 +1718,7 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
 {
     if (this->_Shape.IsNull())
         return this->_Shape;
-#if OCC_VERSION_HEX < 0x060900
-    (void)shapes;
-    (void)tolerance;
-    throw Base::RuntimeError("Multi cut is available only in OCC 6.9.0 and up.");
-#else
+
     BRepAlgoAPI_Cut mkCut;
     mkCut.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments,shapeTools;
@@ -1770,7 +1743,6 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
 
     TopoDS_Shape resShape = mkCut.Shape();
     return makeShell(resShape);
-#endif
 }
 
 TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
@@ -1787,11 +1759,7 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
 {
     if (this->_Shape.IsNull())
         return this->_Shape;
-#if OCC_VERSION_HEX < 0x060900
-    (void)shapes;
-    (void)tolerance;
-    throw Base::RuntimeError("Multi common is available only in OCC 6.9.0 and up.");
-#else
+
     BRepAlgoAPI_Common mkCommon;
     mkCommon.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments,shapeTools;
@@ -1816,7 +1784,6 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
 
     TopoDS_Shape resShape = mkCommon.Shape();
     return makeShell(resShape);
-#endif
 }
 
 TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
@@ -2109,14 +2076,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
         myPath = new BRepAdaptor_HCurve(path_adapt);
     }
 #endif
-    //else if (this->_Shape.ShapeType() == TopAbs_WIRE) {
-    //    const TopoDS_Wire& path_wire = TopoDS::Wire(this->_Shape);
-    //    BRepAdaptor_CompCurve path_adapt(path_wire);
-    //    myPath = new BRepAdaptor_HCompCurve(path_adapt);
-    //}
-    //else {
-    //    Standard_Failure::Raise("Spine shape is neither an edge nor a wire");
-    //}
+
     else {
         Standard_Failure::Raise("Spine shape is not an edge");
     }
@@ -2140,14 +2100,9 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 
         Standard_Real u1,u2,v1,v2;
         mySurface->Bounds(u1,u2,v1,v2);
-        BRepBuilderAPI_MakeFace mkBuilder(mySurface, u1, u2, v1, v2
-#if OCC_VERSION_HEX >= 0x060502
-          , Precision::Confusion()
-#endif
-        );
+        BRepBuilderAPI_MakeFace mkBuilder(mySurface, u1, u2, v1, v2 , Precision::Confusion() );
         return mkBuilder.Shape();
     }
-
     return TopoDS_Shape();
 }
 #endif
@@ -2197,11 +2152,7 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     mkSweep.Perform(tol, Standard_False, GeomAbs_C1, BSplCLib::MaxDegree(), 1000);
 
     const Handle(Geom_Surface)& surf = mkSweep.Surface();
-    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, vmin, vmax
-#if OCC_VERSION_HEX >= 0x060502
-      , Precision::Confusion()
-#endif
-    );
+    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, vmin, vmax , Precision::Confusion() );
     return mkBuilder.Face();
 }
 

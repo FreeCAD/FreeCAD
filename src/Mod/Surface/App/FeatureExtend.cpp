@@ -143,12 +143,7 @@ App::DocumentObjectExecReturn *Extend::execute(void)
     approx.Init(approxPoints, ParType, DegMin, DegMax, Continuity, Tol3d);
 
     Handle(Geom_BSplineSurface) surface(approx.Surface());
-    BRepBuilderAPI_MakeFace mkFace(surface
-#if OCC_VERSION_HEX >= 0x060502
-      , Precision::Confusion()
-#endif
-    );
-
+    BRepBuilderAPI_MakeFace mkFace(surface , Precision::Confusion());
     Shape.setValue(mkFace.Face());
 
     return StdReturn;
