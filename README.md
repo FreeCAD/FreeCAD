@@ -1,11 +1,6 @@
-<h3 align="center">
+<h6 align="center"><img src="FreeCAD-toponaming-logo.png"/></h6>
 
-![Logo](FreeCAD-toponaming-logo.png)
-
-
-### FreeCAD Topological Naming (toponaming) Branch
-
-</h3>
+<h1 align="center">FreeCAD Topological Naming (toponaming) Branch</h1>
 
 This branch is dedicated to integrating code that improves the [topological naming problem](https://wiki.freecad.org/Topological_naming_problem) in FreeCAD.
 
