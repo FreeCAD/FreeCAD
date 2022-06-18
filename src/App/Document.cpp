@@ -2617,9 +2617,9 @@ bool Document::saveToFile(const char* filename) const
     //realpath is canonical filename i.e. without symlink
 #ifdef FC_OS_WIN32
     QString utf8Name = QString::fromUtf8(filename);
-    auto realpath = fs::canonical(fs::path(utf8Name.toStdWString()));
+    auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
 #else
-    auto realpath = fs::canonical(fs::path(filename));
+    auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
 #endif
 
     // make a tmp. file where to save the project data first and then rename to
