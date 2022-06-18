@@ -42,7 +42,8 @@ TBD
 N/A
 
 </details>
-<!-->
+
+<!--
 [Website](https://www.freecadweb.org) • 
 [Documentation](https://wiki.freecadweb.org) •
 [Forum](https://forum.freecadweb.org/) •
