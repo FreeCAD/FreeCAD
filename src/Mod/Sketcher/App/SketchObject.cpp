@@ -5206,12 +5206,10 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 else {
                     controlpointgeoids[0] = currentgeoid+incrgeo+1;
                 }
-
                 incrgeo++;
             }
         }
 
-        #if OCC_VERSION_HEX >= 0x060900
         index=0;
 
         for(it=knotgeoids.begin(), itb=knotpoints.begin(); it!=knotgeoids.end() && itb!=knotpoints.end(); ++it, ++itb, index++) {
@@ -5241,21 +5239,8 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 incrgeo++;
             }
         }
-        #endif
 
         Q_UNUSED(isfirstweightconstrained);
-        // constraint the first weight to allow for seamless weight modification and proper visualization
-        /*if(!isfirstweightconstrained) {
-
-            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::Radius;
-            newConstr->First = controlpointgeoids[0];
-            newConstr->FirstPos = Sketcher::PointPos::none;
-            newConstr->setValue( round(distance_p0_p1/6)); // 1/6 is just an estimation for acceptable general visualization
-
-            icon.push_back(newConstr);
-
-        }*/
 
         this->addGeometry(igeo,true);
         this->addConstraints(icon);
@@ -5916,8 +5901,6 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     //#7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle(Geom_Curve) const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
     //#8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
 
-
-
     return true;
 }
 
@@ -6132,7 +6115,6 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
                     Base::Console().Error("Link to %s already exists in this sketch. Delete the link and try again\n",sSubElements[si].c_str());
                     return -1;
                 }
-
                 i++;
             }
 
@@ -6209,12 +6191,6 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
             // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
             if ((*it)->isDriving) {
                 App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
-                /*
-                 *           App::PropertyExpressionEngine::ExpressionInfo expr_info = psObj->getExpression(path);
-                 *
-                 *           if (expr_info.expression)*/
-                //App::Expression * expr = parse(this, const std::string& buffer);
-
                 std::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                 setExpression(Constraints.createPath(nextcid), expr);
             }

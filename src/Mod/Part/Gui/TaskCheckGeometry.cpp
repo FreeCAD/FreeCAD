@@ -39,10 +39,8 @@
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepTools_ShapeSet.hxx>
 
-# if OCC_VERSION_HEX >= 0x060600
 #  include <BOPAlgo_ArgumentAnalyzer.hxx>
 #  include <BOPAlgo_ListOfCheckResult.hxx>
-# endif
 
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
@@ -177,7 +175,6 @@ QVector<QString> buildBOPCheckResultVector()
   return results;
 }
 
-#if OCC_VERSION_HEX >= 0x060600
 QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 {
   static QVector<QString> strings = buildBOPCheckResultVector();
@@ -186,7 +183,6 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
     index = 0;
   return strings.at(index);
 }
-#endif
 
 ResultEntry::ResultEntry()
 {
@@ -425,9 +421,7 @@ void TaskCheckGeometryResults::goCheck()
 #if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     theProgress->NewScope("BOP check...");
-#if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
-#endif
 #else
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     Message_ProgressRange theRange(theProgress->Start());
@@ -647,8 +641,6 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
     bool mergeEdgeMode = group->GetBool("MergeEdgeMode", true);
     bool curveOnSurfaceMode = group->GetBool("CurveOnSurfaceMode", true);
 
-    //ArgumentAnalyser was moved at version 6.6. no back port for now.
-#if OCC_VERSION_HEX >= 0x060600
   //Reference use: src/BOPTest/BOPTest_CheckCommands.cxx
 
   //I don't why we need to make a copy, but it doesn't work without it.
@@ -661,17 +653,15 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
-#if OCC_VERSION_HEX >= 0x060900
-#if OCC_VERSION_HEX < 0x070500
-  BOPCheck.SetProgressIndicator(theProgress);
-#elif OCC_VERSION_HEX < 0x070600
-  BOPCheck.SetProgressIndicator(theScope);
-#else
-  Q_UNUSED(theScope)
-#endif // 0x070500
-#else
-  Q_UNUSED(theProgress);
-#endif
+
+  #if OCC_VERSION_HEX < 0x070500
+  	BOPCheck.SetProgressIndicator(theProgress);
+	#elif OCC_VERSION_HEX < 0x070600
+  	  BOPCheck.SetProgressIndicator(theScope);
+	#else
+  	  Q_UNUSED(theScope)
+	#endif // 0x070500
+
 //   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
   BOPCheck.SetShape1(BOPCopy);
   //all settings are false by default. so only turn on what we want.
@@ -679,17 +669,15 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.SelfInterMode() = selfInterMode;
   BOPCheck.SmallEdgeMode() = smallEdgeMode;
   BOPCheck.RebuildFaceMode() = rebuildFaceMode;
-#if OCC_VERSION_HEX >= 0x060700
   BOPCheck.ContinuityMode() = continuityMode;
-#endif
-#if OCC_VERSION_HEX >= 0x060900
+
   BOPCheck.SetParallelMode(!runSingleThreaded); //this doesn't help for speed right now(occt 6.9.1).
   BOPCheck.SetRunParallel(!runSingleThreaded); //performance boost, use all available cores
   BOPCheck.TangentMode() = tangentMode; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = mergeVertexMode;
   BOPCheck.MergeEdgeMode() = mergeEdgeMode;
   BOPCheck.CurveOnSurfaceMode() = curveOnSurfaceMode;
-#endif
+
 
 #ifdef FC_DEBUG
   Base::TimeInfo start_time;
@@ -722,13 +710,9 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   {
     const BOPAlgo_CheckResult &current = BOPResultsIt.Value();
 
-#if OCC_VERSION_HEX < 0x070000
-    const BOPCol_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
-    BOPCol_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#else
     const TopTools_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
     TopTools_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#endif
+
     for (;faultyShapes1It.More(); faultyShapes1It.Next())
     {
       const TopoDS_Shape &faultyShape = faultyShapes1It.Value();
@@ -767,9 +751,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
     }
   }
   return 1;
-#else
-  return 0;
-#endif
+
 }
 
 

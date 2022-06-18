@@ -214,12 +214,9 @@ void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
 
         // create or use the mesh on the data structure
         // Note: This DOES have an effect on shape
-#if OCC_VERSION_HEX >= 0x060600
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
         BRepMesh_IncrementalMesh(shape, deflection, Standard_False, AngDeflectionRads, Standard_True);
-#else
-        BRepMesh_IncrementalMesh(shape, deflection);
-#endif
+
         // We must reset the location here because the transformation data
         // are set in the placement property
         TopLoc_Location aLoc;

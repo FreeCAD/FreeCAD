@@ -857,11 +857,7 @@ struct WireJoiner {
         int rcount = 0;
 
         for(auto &info : edges) {
-#if OCC_VERSION_HEX >= 0x070000
             if(BRep_Tool::IsClosed(info.edge))
-#else
-            if(info.p1.SquareDistance(info.p2)<tol)
-#endif
             {
                 auto wire = BRepBuilderAPI_MakeWire(info.edge).Wire();
                 Area::showShape(wire,"closed");
@@ -1033,7 +1029,6 @@ struct WireJoiner {
             sTol.SetTolerance(edge, tol, TopAbs_VERTEX);
             mkWire.Add(edge);
         }
-
         result = mkWire.Wire();
         return result;
     }
@@ -1262,14 +1257,6 @@ int Area::project(TopoDS_Shape &shape_out,
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
         ADD_HLR_SHAPE(V)
         ADD_HLR_SHAPE(OutLineV);
-        // ADD_HLR_SHAPE(Rg1LineV);
-        // ADD_HLR_SHAPE(RgNLineV);
-        // ADD_HLR_SHAPE(IsoLineV);
-        // ADD_HLR_SHAPE(H)
-        // ADD_HLR_SHAPE(Rg1LineH);
-        // ADD_HLR_SHAPE(RgNLineH);
-        // ADD_HLR_SHAPE(OutLineH);
-        // ADD_HLR_SHAPE(IsoLineH);
     }
     catch (...) {
         AREA_ERR("error occurred while extracting edges");
@@ -1279,7 +1266,6 @@ int Area::project(TopoDS_Shape &shape_out,
     joiner.splitEdges();
     FC_TIME_LOG(t1,"WireJoiner splitEdges");
     for(const auto &v : joiner.edges) {
-        // joiner.builder.Add(joiner.comp,BRepBuilderAPI_MakeWire(v.edge).Wire());
         showShape(v.edge,"split");
     }
 
@@ -2654,9 +2640,6 @@ struct ShapeInfo{
                                 pend = myBestPt;
                                 estart = mySupport;
                                 state = 1;
-                                // AREA_TRACE((reversed?"reversed ":"")<<"edge split "<<AREA_XYZ(pprev)<<", " <<
-                                //         AREA_XYZ(myBestPt)<< ", "<<AREA_XYZ(pt)<<", "<<d1<<", "<<d2 <<", ("<<
-                                //         first<<", " << myBestParameter << ", " << last<<')');
                                 continue;
                             }
                             AREA_WARN((reversed?"reversed ":"")<<"edge split failed "<<AREA_XYZ(pprev)<<", " <<
