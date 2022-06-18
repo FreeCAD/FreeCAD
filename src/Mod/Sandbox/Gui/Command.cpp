@@ -1176,7 +1176,6 @@ CmdTestRedirectPaint::CmdTestRedirectPaint()
 
 void CmdTestRedirectPaint::activated(int)
 {
-#if 1 //QT_VERSION >= 0x050000
     QCalendarWidget* cal = new QCalendarWidget();
     cal->setWindowTitle(QString::fromLatin1("QCalendarWidget"));
     cal->show();
@@ -1187,15 +1186,6 @@ void CmdTestRedirectPaint::activated(int)
     label->setPixmap(img);
     label->show();
     label->setWindowTitle(QString::fromLatin1("QLabel"));
-#else
-    QCalendarWidget* cal = new QCalendarWidget();
-    QLabel* label = new QLabel();
-    QPainter::setRedirected(cal,label);
-    cal->setWindowTitle(QString::fromLatin1("QCalendarWidget"));
-    cal->show();
-    label->show();
-    label->setWindowTitle(QString::fromLatin1("QLabel"));
-#endif
 }
 
 //===========================================================================
@@ -1317,7 +1307,6 @@ MeshObjectRef Sierpinski(int level, float x0, float y0, float z0)
             }
         }
     }
-
     return mesh;
 }
 

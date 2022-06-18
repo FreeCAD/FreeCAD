@@ -3282,12 +3282,11 @@ void View3DInventorViewer::drawAxisCross(void)
     SbVec2s view = this->getSoRenderManager()->getSize();
     const int pixelarea =
         int(float(this->axiscrossSize)/100.0f * std::min(view[0], view[1]));
-#if 0 // middle of canvas
-    SbVec2s origin(view[0]/2 - pixelarea/2, view[1]/2 - pixelarea/2);
-#endif // middle of canvas
-#if 1 // lower right of canvas
+
+// lower right of canvas
     SbVec2s origin(view[0] - pixelarea, 0);
-#endif // lower right of canvas
+
+
     glViewport(origin[0], origin[1], pixelarea, pixelarea);
 
     // Set up the projection matrix.

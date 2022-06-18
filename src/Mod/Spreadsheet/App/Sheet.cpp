@@ -1504,22 +1504,7 @@ void Sheet::observeDocument(Document * document)
 {
     // observer is no longer required as PropertySheet is now derived from
     // PropertyLinkBase and will handle all the link related behavior
-#if 1
     (void)document;
-#else
-    ObserverMap::const_iterator it = observers.find(document->getName());
-
-    if (it != observers.end()) {
-        // An observer already exists, increase reference counter for it
-        it->second->ref();
-    }
-    else {
-        // Create a new observer
-        SheetObserver * observer = new SheetObserver(document, &cells);
-
-        observers[document->getName()] = observer;
-    }
-#endif
 }
 
 void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)

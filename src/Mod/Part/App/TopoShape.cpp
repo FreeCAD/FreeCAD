@@ -2285,7 +2285,7 @@ TopoDS_Shape TopoShape::makeTorus(Standard_Real radius1, Standard_Real radius2,
 {
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=1445
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
-#if 1
+
     // Build a torus
     gp_Circ circle;
     circle.SetRadius(radius2);
@@ -2310,15 +2310,6 @@ TopoDS_Shape TopoShape::makeTorus(Standard_Real radius1, Standard_Real radius2,
     BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)),
         Base::toRadians<double>(angle3), Standard_True);
     return mkRevol.Shape();
-#else
-    (void)isSolid;
-    BRepPrimAPI_MakeTorus mkTorus(radius1,
-                                  radius2,
-                                  Base::toRadians<double>(angle1),
-                                  Base::toRadians<double>(angle2),
-                                  Base::toRadians<double>(angle3));
-    return mkTorus.Solid();
-#endif
 }
 
 TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,

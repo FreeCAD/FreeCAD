@@ -3463,27 +3463,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
     signalBeforeRecompute(*this);
 
-#if 0
-    //////////////////////////////////////////////////////////////////////////
-    // FIXME Comment by Realthunder:
-    // the topologicalSrot() below cannot handle partial recompute, haven't got
-    // time to figure out the code yet, simply use back boost::topological_sort
-    // for now, that is, rely on getDependencyList() to do the sorting. The
-    // downside is, it didn't take advantage of the ready built InList, nor will
-    // it report for cyclic dependency.
-    //////////////////////////////////////////////////////////////////////////
-
-    // get the sorted vector of all dependent objects and go though it from the end
-    auto depObjs = getDependencyList(objs.empty()?d->objectArray:objs);
-    vector<DocumentObject*> topoSortedObjects = topologicalSort(depObjs);
-    if (topoSortedObjects.size() != depObjs.size()){
-        cerr << "App::Document::recompute(): cyclic dependency detected" << endl;
-        topoSortedObjects = d->partialTopologicalSort(depObjs);
-    }
-    std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
-#else
     auto topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,DepSort|options);
-#endif
+
     for(auto obj : topoSortedObjects)
         obj->setStatus(ObjectStatus::PendingRecompute,true);
 
@@ -4126,27 +4107,6 @@ void Document::removeObject(const char* sName)
     TransactionLocker tlock;
 
     _checkTransaction(pos->second,nullptr,__LINE__);
-
-#if 0
-    if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
-        // Preserve link group sub object global visibilities. Normally those
-        // claimed object should be hidden in global coordinate space. However,
-        // when the group is deleted, the user will naturally try to show the
-        // children, which may now in the global space. When the parent is
-        // undeleted, having its children shown in both the local and global
-        // coordinate space is very confusing. Hence, we preserve the visibility
-        // here
-        for(auto &sub : pos->second->getSubObjects()) {
-            if(sub.empty())
-                continue;
-            if(sub[sub.size()-1]!='.')
-                sub += '.';
-            auto sobj = pos->second->getSubObject(sub.c_str());
-            if(sobj && sobj->getDocument()==this && !sobj->Visibility.getValue())
-                d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
-        }
-    }
-#endif
 
     if (d->activeObject == pos->second)
         d->activeObject = nullptr;

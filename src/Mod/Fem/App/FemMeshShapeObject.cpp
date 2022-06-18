@@ -92,60 +92,12 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
 
-#if 0
-    TopoDS_Shape oshape = feat->Shape.getValue();
-    BRepBuilderAPI_Copy copy(oshape);
-    const TopoDS_Shape& shape = copy.Shape();
-    BRepTools::Clean(shape); // remove triangulation
-#else
     TopoDS_Shape shape = feat->Shape.getValue();
-#endif
 
     newMesh.getSMesh()->ShapeToMesh(shape);
-    SMESH_Gen *myGen = newMesh.getGenerator();
+    //SMESH_Gen *myGen = newMesh.getGenerator();
 
-    int hyp=0;
-#if 0
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
-    static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
-    newMesh.addHypothesis(shape, len);
-
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, myGen));
-    static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
-    newMesh.addHypothesis(shape, loc);
-
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, myGen));
-    static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
-    newMesh.addHypothesis(shape, area);
-
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, myGen));
-    static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
-    newMesh.addHypothesis(shape, segm);
-
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, myGen));
-    static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
-    newMesh.addHypothesis(shape, defl);
-
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, myGen));
-    newMesh.addHypothesis(shape, reg);
-
-    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, myGen));
-    //static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
-    //newMesh.addHypothesis(shape, sel;
-
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,myGen));
-    newMesh.addHypothesis(shape, qdp);
-
-    //SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,myGen));
-    //newMesh.addHypothesis(shape, q2d);
-
-    SMESH_HypothesisPtr h3d(new StdMeshers_Hexa_3D(hyp++,1,myGen));
-    newMesh.addHypothesis(shape, h3d);
-
-    // create mesh
-    newMesh.compute();
-#endif
-#if 1  // Surface quad mesh
+// Surface quad mesh
 #if SMESH_VERSION_MAJOR >= 9
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, myGen));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
@@ -175,98 +127,13 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,myGen));
     newMesh.addHypothesis(shape, q2d);
-#else
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
-    static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
-    newMesh.addHypothesis(shape, len);
-
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, myGen));
-    static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
-    newMesh.addHypothesis(shape, loc);
-
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, myGen));
-    static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
-    newMesh.addHypothesis(shape, area);
-
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, myGen));
-    static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
-    newMesh.addHypothesis(shape, segm);
-
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, myGen));
-    static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
-    newMesh.addHypothesis(shape, defl);
-
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, myGen));
-    newMesh.addHypothesis(shape, reg);
-
-    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, myGen));
-    //static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
-    //newMesh.addHypothesis(shape, sel;
-
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,myGen));
-    newMesh.addHypothesis(shape, qdp);
-
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,myGen));
-    newMesh.addHypothesis(shape, q2d);
-#endif
 
     // create mesh
     newMesh.compute();
 #endif
-#if 0 // NETGEN test
-    NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
-
-    //NETGENPlugin_SimpleHypothesis_2D * tet2 = new NETGENPlugin_SimpleHypothesis_2D(hyp++,1,myGen);
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetNumberOfSegments(5);
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetLocalLength(0.1);
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->LengthFromEdges();
-    //myNetGenMesher.SetParameters(tet2);
-
-    //NETGENPlugin_SimpleHypothesis_3D* tet= new NETGENPlugin_SimpleHypothesis_3D(hyp++,1,myGen);
-    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->LengthFromFaces();
-    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);
-    //myNetGenMesher.SetParameters( tet);
-
-    myNetGenMesher.Compute();
-#endif
-
-
-
-    //SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
-    //const SMDS_MeshInfo& info = data->GetMeshInfo();
-    //int numNode = info.NbNodes();
-    //int numTria = info.NbTriangles();
-    //int numQuad = info.NbQuadrangles();
-    //int numPoly = info.NbPolygons();
-    //int numVolu = info.NbVolumes();
-    //int numTetr = info.NbTetras();
-    //int numHexa = info.NbHexas();
-    //int numPyrd = info.NbPyramids();
-    //int numPris = info.NbPrisms();
-    //int numHedr = info.NbPolyhedrons();
 
     // set the value to the object
     FemMesh.setValue(newMesh);
 
-
     return App::DocumentObject::StdReturn;
 }
-
-//short FemMeshShapeObject::mustExecute(void) const
-//{
-//    return 0;
-//}
-
-//PyObject *FemMeshShapeObject::getPyObject()
-//{
-//    if (PythonObject.is(Py::_None())){
-//        // ref counter is set to 1
-//        PythonObject = Py::Object(new DocumentObjectPy(this),true);
-//    }
-//    return Py::new_reference_to(PythonObject);
-//}
-
-//void FemMeshShapeObject::onChanged(const Property* prop)
-//{
-//    App::GeoFeature::onChanged(prop);
-//}

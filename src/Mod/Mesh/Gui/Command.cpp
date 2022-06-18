@@ -1448,10 +1448,8 @@ void CmdMeshSmoothing::activated(int)
 
 bool CmdMeshSmoothing::isActive()
 {
-#if 1
     if (Gui::Control().activeDialog())
         return false;
-#endif
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
 }
@@ -1479,10 +1477,8 @@ void CmdMeshDecimating::activated(int)
 
 bool CmdMeshDecimating::isActive()
 {
-#if 1
     if (Gui::Control().activeDialog())
         return false;
-#endif
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
 }

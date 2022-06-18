@@ -34,12 +34,7 @@ using namespace Base;
 std::string QuantityPy::representation() const
 {
     std::stringstream ret;
-#if 0
-    //ret.precision(getQuantityPtr()->getFormat().precision);
-    //ret.setf(std::ios::fixed, std::ios::floatfield);
-    ret << getQuantityPtr()->getValue() << " ";
-    ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
-#else
+
     double val= getQuantityPtr()->getValue();
     Unit unit = getQuantityPtr()->getUnit();
 
@@ -48,8 +43,6 @@ std::string QuantityPy::representation() const
     ret << static_cast<std::string>(flt.repr());
     if (!unit.isEmpty())
         ret << " " << unit.getString().toUtf8().constData();
-#endif
-
     return ret.str();
 }
 
@@ -102,7 +95,6 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         PyErr_SetString(PyExc_TypeError, "Second argument must be a Unit not a Quantity");
         return -1;
     }
-
     int i1=0;
     int i2=0;
     int i3=0;
@@ -138,7 +130,6 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             PyErr_SetString(PyExc_ValueError, e.what());
             return -1;
         }
-
         return 0;
     }
 

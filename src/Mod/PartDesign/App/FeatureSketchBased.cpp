@@ -575,7 +575,6 @@ bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Fac
 
 bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face)
 {
-#if 1
     BRepBuilderAPI_MakeEdge mkEdge(line);
     TopoDS_Wire wire = ShapeAnalysis::OuterWire(face);
     BRepExtrema_DistShapeShape distss(wire, mkEdge.Shape(), Precision::Confusion());
@@ -661,7 +660,6 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
             }
         }
     }
-
     return false;
 #else
     // This is not as easy as it looks, because a distance of zero might be OK if
@@ -808,7 +806,6 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
                         }
                     }
                 }
-
                 // the new shape couldn't be found so keep the old sub-name
                 if (!success)
                     newSubValues.push_back(*it);
@@ -868,7 +865,6 @@ bool ProfileBased::isQuasiEqual(const TopoDS_Shape & s1, const TopoDS_Shape & s2
         if (!(*it).IsEqual(*jt, Precision::Confusion()))
             return false;
     }
-
     return true;
 }
 

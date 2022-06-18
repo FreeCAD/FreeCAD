@@ -214,53 +214,13 @@ void DlgExpressionInput::setExpressionInputSize(int width, int height)
 
 void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_OS_WIN)
-    if (QWidget::mouseGrabber() == this) {
-        QList<QWidget*> childs = this->findChildren<QWidget*>();
-        for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
-            QPoint pos = (*it)->mapFromGlobal(ev->globalPos());
-            if ((*it)->rect().contains(pos)) {
-                // Create new mouse event with the correct local position
-                QMouseEvent me(ev->type(), pos, ev->globalPos(), ev->button(), ev->buttons(), ev->modifiers());
-                QObject* obj = *it;
-                obj->event(&me);
-                if (me.isAccepted()) {
-                    break;
-                }
-            }
-        }
-    }
-#else
     Q_UNUSED(ev);
-#endif
 }
 
 void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_OS_WIN)
-    bool handled = false;
-    if (QWidget::mouseGrabber() == this) {
-        QList<QWidget*> childs = this->findChildren<QWidget*>();
-        for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
-            QPoint pos = (*it)->mapFromGlobal(ev->globalPos());
-            if ((*it)->rect().contains(pos)) {
-                // Create new mouse event with the correct local position
-                QMouseEvent me(ev->type(), pos, ev->globalPos(), ev->button(), ev->buttons(), ev->modifiers());
-                QObject* obj = *it;
-                obj->event(&me);
-                if (me.isAccepted()) {
-                    handled = true;
-                    break;
-                }
-            }
-        }
-    }
 
-    if (handled)
-        return;
-#else
     Q_UNUSED(ev);
-#endif
     // The 'FramelessWindowHint' is also set when the background is transparent.
     if (windowFlags() & Qt::FramelessWindowHint) {
         //we need to reject the dialog when clicked on the background. As the background is transparent

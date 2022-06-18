@@ -479,7 +479,7 @@ namespace geoff_geometry {
 	Point Intof( int NF, const CLine& s, const Circle& c, Point& otherInters) {
 		// inters of cline & circle  eg.     p1 = Intof(NEARINT, s1, c1);
 		// otherInters returns the other intersection
-#if 1
+
 		// solving	x = x0 + dx * t			x = y0 + dy * t
 		//			x = xc + R * cos(a)		y = yc + R * sin(a)		for t
 		// gives :-  t� (dx� + dy�) + 2t(dx*dx0 + dy*dy0) + (x0-xc)� + (y0-yc)� - R� = 0
@@ -499,26 +499,7 @@ namespace geoff_geometry {
 		}
 		return INVALID_POINT;
 	}
-#else
-		// geometric solution - this is similar to the peps method, and it may offer better tolerancing than above??
-		Point intof;
-		CLine normal = Normal(s, c.pc);
-		intof = s.Intof(normal);
-		double d = intof.Dist(c.pc);
 
-		if(fabs(d - c.radius) < TOLERANCE)						// tangent (near enough for non-large radius I suppose?)
-		    return intof;
-
-		if(d > c.radius + TOLERANCE)					// no intersection
-		    return INVALID_POINT;
-
-		double q = (c.radius - d) * (c.radius + d);
-		if(q < 0)												// line inside tolerance
-		    return intof;
-
-		return Along(s, -(double)NF * sqrt(q), intof);						// 2 intersections (return near/far case)
-	}
-#endif
 	Point Intof( int intMode, const Circle& c0, const Circle& c1)	{
 		// inters of 2 circles		 eg.     p1 = Intof(LEFTINT, c1, c2)
 		Point otherInters;

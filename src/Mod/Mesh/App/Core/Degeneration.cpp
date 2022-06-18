@@ -359,7 +359,6 @@ bool MeshEvalDuplicateFacets::Evaluate()
 
 std::vector<FacetIndex> MeshEvalDuplicateFacets::GetIndices() const
 {
-#if 1
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
     std::vector<FaceIterator> faces;
     faces.reserve(rFacets.size());
@@ -383,23 +382,6 @@ std::vector<FacetIndex> MeshEvalDuplicateFacets::GetIndices() const
     }
 
     return aInds;
-#else
-  std::vector<FacetIndex> aInds;
-  const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-  FacetIndex uIndex=0;
-
-  // get all facets
-  std::set<FaceIterator, MeshFacet_Less > aFaceSet;
-  for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, uIndex++)
-  {
-    std::pair<std::set<FaceIterator, MeshFacet_Less>::iterator, bool>
-        pI = aFaceSet.insert(it);
-    if (!pI.second)
-      aInds.push_back(uIndex);
-  }
-
-  return aInds;
-#endif
 }
 
 bool MeshFixDuplicateFacets::Fixup()
@@ -503,7 +485,6 @@ bool MeshFixDegeneratedFacets::Fixup()
             }
         }
     }
-
     return true;
 }
 
@@ -601,7 +582,6 @@ bool MeshRemoveNeedles::Fixup()
         topAlg.Cleanup();
         _rclMesh.RebuildNeighbours();
     }
-
     return true;
 }
 

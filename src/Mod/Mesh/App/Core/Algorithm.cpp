@@ -752,7 +752,6 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
             return false;
         }
 
-#if 1
         MeshGeomFacet triangle;
         triangle = cTria.GetTriangle(rPoints, facet);
 
@@ -779,8 +778,6 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
             for (MeshFacetArray::_TIterator it = rFaces.begin(); it != rFaces.end(); ++it)
                 it->FlipNormal();
         }
-#endif
-
         return true;
     }
 
