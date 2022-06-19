@@ -332,7 +332,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if obj.ExpandKerf > 0:
             params.update(
                 PathUtils.extraKerf(
-                    tooldiameter=(self.radius * 2), extrakerf=obj.ExpandKerf
+                    tooldiameter=(self.radius * 2), extrakerf=obj.ExpandKerf / 100.0
                 )
             )
 
