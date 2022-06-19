@@ -2,10 +2,18 @@
 
 <h1 align="center">FreeCAD Topological Naming (toponaming) Branch</h1>
 
-This branch is dedicated to integrating code that improves the [topological naming problem](https://wiki.freecad.org/Topological_naming_problem) in FreeCAD.
+### About
 
-FreeCAD toponaming git repository: https://github.com/FreeCAD/FreeCAD/tree/development/toponaming
-FreeCAD main ('master') branch: https://github.com/FreeCAD/FreeCAD/
+This branch is dedicated to integrating code that improves the [topological naming problem](https://wiki.freecad.org/Topological_naming_problem) in FreeCAD. There have been several attempts to address it over the years within FreeCAD. In reality, toponaming is an issue that no modern CAD software is fully immunse to. This is because the solutions are complex. 
+
+Thanks to an independant developer named Zheng Lee ('realthunder'), who has provided a proof of concept fix in his own branch named 'Link' branch, has gone the farthest in the effort of fixing toponaming in FreeCAD. 
+
+* FreeCAD toponaming git repository: https://github.com/FreeCAD/FreeCAD/tree/development/toponaming  
+* FreeCAD main ('master') branch: https://github.com/FreeCAD/FreeCAD/
+
+### Objective
+
+Per the FreeCAD developer meetings that occured during the pre-release of v0.20, 'toponaming' was identified as one of the main targets for merge in the v0.21/v1.0 release cycle. 
 
 ### Main developers
 
