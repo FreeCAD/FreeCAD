@@ -71,7 +71,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
     _rclFAry[ulFacetIdx].SetFlag(MeshFacet::MARKED);
     aclTestedFacet.push_back(_rclFAry.begin() + ulFacetIdx);
 
-    if ((bFound == false) && (_aclResult.size() < ulMinPoints)) {
+    if (!bFound && (_aclResult.size() < ulMinPoints)) {
         bAddPoints = true;
         bFound = ExpandRadius(ulMinPoints);
     }
@@ -90,7 +90,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
             for (std::set<FacetIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
                     bool bLF = CheckDistToFacet(rclF);
                     bFound = bFound || bLF;
                     rclF.SetFlag(MeshFacet::MARKED);
@@ -101,7 +101,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
         }
 
         // too few points inside radius found -> expand radius
-        if ((bFound == false) && (_aclResult.size() < ulMinPoints)) {
+        if (!bFound && (_aclResult.size() < ulMinPoints)) {
             nCtExpandRadius++;
             bAddPoints = true;
             bFound = ExpandRadius(ulMinPoints);
@@ -183,7 +183,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (FacetIndex ulFa
             for (std::set<FacetIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
                     bool bLF = AccumulateNeighbours(rclF, *pJ);
                     bFound = bFound || bLF;
                     rclF.SetFlag(MeshFacet::MARKED);
@@ -302,7 +302,7 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (FacetIndex ulFacet
                     }
                 }
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
                     bool bLF = CheckDistToFacet(rclF);
 
                     bFound = bFound || bLF;
