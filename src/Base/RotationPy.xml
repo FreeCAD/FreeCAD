@@ -40,7 +40,7 @@ angle2 : float
 angle3 : float\n
 Rotation(seq, angle1, angle2, angle3)
 Define from one string and three floats (Euler angles) as Euler rotation
-of a given type. Call toEulerSequence() for supported sequence types.
+of a given type. Call toEulerAngles() for supported sequence types.
 seq : str
 angle1 : float
 angle2 : float
