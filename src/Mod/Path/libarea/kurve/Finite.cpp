@@ -593,7 +593,7 @@ namespace geoff_geometry {
 
 	bool Box3d::outside(const Box3d& b) const{
 		// returns true if this box is outside b
-		if(!b.ok ||! this->ok)	// no box set
+		if(!b.ok || !this->ok)	// no box set
 		    return false;
 		if(this->max.x < b.min.x)
 		    return true;
