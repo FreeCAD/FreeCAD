@@ -31,6 +31,15 @@ from parttests.regression_tests import RegressionTests
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
 #---------------------------------------------------------------------------
+def getCoincidentVertexes(vtx1, vtx2):
+    pairs = []
+    tol = Part.Precision.confusion()
+    for i in vtx1:
+        for j in vtx2:
+            if i.Point.distanceToPoint(j.Point) < tol:
+                pairs.append((i, j))
+
+    return pairs
 
 
 class PartTestCases(unittest.TestCase):
@@ -341,3 +350,47 @@ class PartTestChFi2dAlgos(unittest.TestCase):
         result = alg.result(1.0, 1.0)
         curve = result[0].Curve
         self.assertEqual(type(curve), Part.Line)
+
+class PartTestRuledSurface(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument()
+
+    def testRuledSurfaceFromTwoObjects(self):
+        line1 = Part.makeLine(FreeCAD.Vector(-70,-30,0), FreeCAD.Vector(-50,40,0))
+        line2 = Part.makeLine(FreeCAD.Vector(-40,-30,0), FreeCAD.Vector(-40,10,0))
+        plm1 = FreeCAD.Placement()
+        plm1.Rotation = FreeCAD.Rotation(0.7071067811865476, 0.0, 0.0, 0.7071067811865475)
+        line1.Placement = plm1
+        fea1 = self.Doc.addObject("Part::Feature")
+        fea2 = self.Doc.addObject("Part::Feature")
+        fea1.Shape = line1
+        fea2.Shape = line2
+        ruled = self.Doc.addObject("Part::RuledSurface")
+        ruled.Curve1 = fea1
+        ruled.Curve2 = fea2
+
+        self.Doc.recompute()
+
+        same1 = getCoincidentVertexes(fea1.Shape.Vertexes, ruled.Shape.Vertexes)
+        same2 = getCoincidentVertexes(fea2.Shape.Vertexes, ruled.Shape.Vertexes)
+        self.assertEqual(len(same1), 2)
+        self.assertEqual(len(same2), 2)
+
+    def testRuledSurfaceFromOneObjects(self):
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+        sketch.Placement = FreeCAD.Placement(FreeCAD.Vector(0.000000, 0.000000, 0.000000), App.Rotation(0.707107, 0.000000, 0.000000, 0.707107))
+        sketch.MapMode = "Deactivated"
+
+        sketch.addGeometry(Part.LineSegment(App.Vector(-43.475811,34.364464,0),App.Vector(-65.860519,-20.078733,0)),False)
+        sketch.addGeometry(Part.LineSegment(App.Vector(14.004498,27.390331,0),App.Vector(33.577049,-27.952749,0)),False)
+
+        ruled = self.Doc.addObject('Part::RuledSurface', 'Ruled Surface')
+        ruled.Curve1 = (sketch,['Edge1'])
+        ruled.Curve2 = (sketch,['Edge2'])
+        self.Doc.recompute()
+
+        same = getCoincidentVertexes(sketch.Shape.Vertexes, ruled.Shape.Vertexes)
+        self.assertEqual(len(same), 4)
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.Doc.Name)

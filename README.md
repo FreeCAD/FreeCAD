@@ -11,7 +11,7 @@
 
 [![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Master][freecad-master-status]][gitlab-branch-master] [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad) [![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/FreeCAD/FreeCAD.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FreeCAD/FreeCAD/context:python) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/FreeCAD/FreeCAD.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FreeCAD/FreeCAD/context:cpp) [![Liberapay](https://img.shields.io/liberapay/receives/FreeCAD.svg?logo=liberapay)](https://liberapay.com/FreeCAD)
 
-![screenshot](https://wiki.freecadweb.org/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
+<img src="https://user-images.githubusercontent.com/1828501/174066870-1692005b-f8d7-43fb-a289-6d2f07f73d7f.png" width="800"/>
 
 Overview
 --------
@@ -55,13 +55,13 @@ Other options are described at the [wiki Download page](https://wiki.freecadweb.
 Build Status
 ------------
 
-| Master | 0.19 | Translation |
+| Master | 0.20 | Translation |
 |:------:|:----:|:-----------:|
-|[![Master][freecad-master-status]][gitlab-branch-master]|[![0.19][freecad-0.19-status]][gitlab-branch-0.19]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
+|[![Master][freecad-master-status]][gitlab-branch-master]|[![0.20][freecad-0.20-status]][gitlab-branch-0.20]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
 
-[freecad-0.19-status]: https://gitlab.com/freecad/FreeCAD-CI/badges/releases/FreeCAD-0-19/pipeline.svg
+[freecad-0.20-status]: https://gitlab.com/freecad/FreeCAD-CI/badges/releases/FreeCAD-0-20/pipeline.svg
 [freecad-master-status]: https://gitlab.com/freecad/FreeCAD-CI/badges/master/pipeline.svg
-[gitlab-branch-0.19]: https://gitlab.com/freecad/FreeCAD-CI/-/commits/releases/FreeCAD-0-19
+[gitlab-branch-0.20]: https://gitlab.com/freecad/FreeCAD-CI/-/commits/releases/FreeCAD-0-20
 [gitlab-branch-master]: https://gitlab.com/freecad/FreeCAD-CI/-/commits/master
 [travis-builds]: https://travis-ci.org/FreeCAD/FreeCAD/builds
 
@@ -99,7 +99,7 @@ To report an issue please:
 For more detail see:
 - [Wiki Page about the Bug Tracker](https://wiki.freecadweb.org/Tracker)
 - [Bug Tracker](https://tracker.freecadweb.org)
-- [Help Forum](http://forum.freecadweb.org/viewforum.php?f=3)
+- [Help Forum](https://forum.freecadweb.org/viewforum.php?f=3)
 
 
 Usage & Getting help
