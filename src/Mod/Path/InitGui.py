@@ -159,8 +159,13 @@ class PathWorkbench(Workbench):
 
         if PathPreferences.advancedOCLFeaturesEnabled():
             try:
-                subprocess.call(["camsim", "-v"])
-                toolcmdlist.append("Path_Camotics")
+                r = subprocess.run(
+                    ["camotics", "--version"], capture_output=True, text=True
+                ).stderr.strip()
+                major, minor, patch = r.split(".")
+                if int(major) >= 1 and int(minor) >= 2 and int(patch) >= 2:
+                    # subprocess.call(["camsim", "-v"])
+                    toolcmdlist.append("Path_Camotics")
             except FileNotFoundError:
                 pass
 
@@ -276,8 +281,8 @@ class PathWorkbench(Workbench):
 
                 msg = translate(
                     "Path",
-                    "The currently selected unit schema: \n     '{}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct gcode: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'"
-                    ).format(current_schema)
+                    "The currently selected unit schema: \n     '{}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct gcode: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
+                ).format(current_schema)
                 header = translate("Path", "Warning")
                 msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
 

@@ -206,7 +206,6 @@ class TestBuildPostList(unittest.TestCase):
         self.job.OrderOutputBy = "Operation"
 
     def test010(self):
-        # check that function returns correct hash
         postlist = PathPost.buildPostList(self.job)
 
         self.assertTrue(type(postlist) is list)

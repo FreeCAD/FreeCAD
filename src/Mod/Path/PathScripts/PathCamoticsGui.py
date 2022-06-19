@@ -20,30 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
+from threading import Thread, Lock
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathLog as PathLog
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
-# from pivy import coin
-# from itertools import cycle
-# import FreeCADGui as Gui
-import json
-
-# import tempfile
-import os
 import Mesh
-
-# import string
-# import random
-import camotics
-import PathScripts.PathPost as PathPost
-import io
-
-# import time
 import PathScripts
+import PathScripts.PathLog as PathLog
+import PathScripts.PathPost as PathPost
+import camotics
+import io
+import json
+import os
 import queue
-from threading import Thread, Lock
 import subprocess
 
 from PySide import QtCore, QtGui
@@ -216,42 +206,24 @@ class CamoticsSimulation(QtCore.QObject):
         success = True
 
         finalgcode = ""
-        if self.job.SplitOutput:
-            PathLog.track(postlist)
-            for idx, section in enumerate(postlist):
-                # split = os.path.splitext(self.filename)
-                # partname = split[0] + "_{}".format(index) + split[1]
-                partname = section[0]
-                sublist = section[1]
+        for idx, section in enumerate(postlist):
+            partname = section[0]
+            sublist = section[1]
 
-                result, gcode, name = PathPost.CommandPathPost().exportObjectsWith(
-                    sublist,
-                    partname,
-                    self.job,
-                    idx,
-                    extraargs="--no-show-editor",
-                )
-                self.filenames.append(name)
-                PathLog.track(result, gcode, name)
-
-                if result is None:
-                    success = False
-                else:
-                    finalgcode += gcode
-
-        else:
-            finalpostlist = [item for slist in postlist for item in slist]
-            PathLog.track(postlist)
             result, gcode, name = PathPost.CommandPathPost().exportObjectsWith(
-                finalpostlist,
-                "allitems",
+                sublist,
+                partname,
                 self.job,
-                0,
+                idx,
                 extraargs="--no-show-editor",
             )
             self.filenames.append(name)
-            success = result is not None
-            finalgcode = gcode
+            PathLog.track(result, gcode, name)
+
+            if result is None:
+                success = False
+            else:
+                finalgcode += gcode
 
         if not success:
             return
@@ -273,102 +245,6 @@ class CamoticsSimulation(QtCore.QObject):
     def cancel(self):
         pass
 
-    # def makeCoinMesh(self, surface):
-    #    # this doesn't work yet
-    #    sg = Gui.ActiveDocument.ActiveView.getSceneGraph();
-    #    color = coin.SoBaseColor()
-    #    color.rgb = (1, 0, 1)
-    #    coords = coin.SoTransform()
-    #    node = coin.SoSeparator()
-    #    node.addChild(color)
-    #    node.addChild(coords)
-
-    #    end = [-1]
-    #    vertices = list(zip(*[iter(surface['vertices'])] * 3))
-    #    #polygons = list(zip(*[iter(vertices)] * 3, cycle(end)))
-    #    polygons = list(zip(*[iter(range(len(vertices)))] * 3, cycle(end)))
-
-    #    print(vertices)
-    #    print(polygons)
-
-    #    data=coin.SoCoordinate3()
-    #    face=coin.SoIndexedFaceSet()
-    #    node.addChild(data)
-    #    node.addChild(face)
-
-    #    i = 0
-    #    for v in vertices:
-    #        data.point.set1Value(i, v[0], v[1], v[2])
-    #        i += 1
-    #    i = 0
-    #    for p in polygons:
-    #        try:
-    #            face.coordIndex.set1Value(i, p)
-    #            i += 1
-    #        except Exception as e:
-    #            print(e)
-    #            print(i)
-    #            print(p)
-
-    #    sg.addChild(node)
-
-    # def Activated(self):
-
-    #     s = self.SIM
-    #     print('activated')
-    #     print (s.is_running())
-
-    #     if s.is_running():
-    #         print('interrupted')
-    #         s.interrupt()
-    #         s.wait()
-    #     else:
-    #         try:
-    #             surface = s.get_surface('python')
-    #         except Exception as e:
-    #             print(e)
-    #             pp = CommandPathPost()
-    #             job = FreeCADGui.Selection.getSelectionEx()[0].Object
-
-    #             s = camotics.Simulation()
-    #             s.set_metric()
-    #             s.set_resolution('high')
-
-    #             bb = job.Stock.Shape.BoundBox
-    #             s.set_workpiece(min = (bb.XMin, bb.YMin, bb.ZMin), max = (bb.XMax, bb.YMax, bb.ZMax))
-
-    #             shapemap = {'ballend': 'Ballnose',
-    #                         'endmill': 'Cylindrical',
-    #                         'v-bit'  : 'Conical',
-    #                         'chamfer': 'Snubnose'}
-
-    #             for t in job.Tools.Group:
-    #                 s.set_tool(t.ToolNumber,
-    #                         metric = True,
-    #                         shape = shapemap.get(t.Tool.ShapeName, 'Cylindrical'),
-    #                         length = t.Tool.Length.Value,
-    #                         diameter = t.Tool.Diameter.Value)
-
-    #             gcode = job.Path.toGCode()  #temporary solution!!!!!
-    #             s.compute_path(gcode)
-    #             s.wait()
-
-    #             print(s.get_path())
-
-    #             tot = sum([step['time'] for step in s.get_path()])
-
-    #             print(tot)
-
-    #             for t in range(1, int(tot), int(tot/10)):
-    #                 print(t)
-    #                 s.start(callback, time=t)
-    #                 while s.is_running():
-    #                     time.sleep(0.1)
-
-    #                 s.wait()
-
-    #                 surface = s.get_surface('binary')
-    #                 self.addMesh(surface)
 
     def buildproject(self):  # , files=[]):
         PathLog.track()
