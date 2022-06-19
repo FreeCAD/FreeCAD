@@ -101,7 +101,7 @@ inline bool MeshSearchNeighbours::CheckDistToFacet (const MeshFacet &rclF)
   for (int i = 0; i < 3; i++)
   {
     PointIndex ulPIdx = rclF._aulPoints[i];
-    if (_rclPAry[ulPIdx].IsFlag(MeshPoint::MARKED) == false)
+    if (!_rclPAry[ulPIdx].IsFlag(MeshPoint::MARKED))
     {
       if (Base::DistanceP2(_clCenter, _rclPAry[ulPIdx]) < _fMaxDistanceP2)
       {

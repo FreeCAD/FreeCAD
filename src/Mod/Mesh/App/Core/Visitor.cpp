@@ -62,14 +62,14 @@ unsigned long MeshKernel::VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, F
 
                 if (!rclFVisitor.AllowVisit(*clNBFacet, *clCurrFacet, j, ulLevel, i))
                     continue;
-                if (clNBFacet->IsFlag(MeshFacet::VISIT) == true)
+                if (clNBFacet->IsFlag(MeshFacet::VISIT))
                     continue; // neighbour facet already visited
                 else {
                     // visit and mark
                     ulVisited++;
                     clNextLevel.push_back(j);
                     clNBFacet->SetFlag(MeshFacet::VISIT);
-                    if (rclFVisitor.Visit(*clNBFacet, *clCurrFacet, j, ulLevel) == false)
+                    if (!rclFVisitor.Visit(*clNBFacet, *clCurrFacet, j, ulLevel))
                         return ulVisited;
                 }
             }

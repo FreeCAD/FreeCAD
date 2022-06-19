@@ -271,7 +271,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(FacetIndex ulIndex, in
                             iIntsctWithEdge2++;
                     }
 
-                    if (bPushBack == true)
+                    if (bPushBack)
                         raclPoints.push_back(clIntersection);
                 }
             }

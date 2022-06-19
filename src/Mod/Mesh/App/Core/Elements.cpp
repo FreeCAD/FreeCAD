@@ -181,7 +181,7 @@ MeshFacetArray& MeshFacetArray::operator = (const MeshFacetArray &rclFAry)
 bool MeshGeomEdge::ContainedByOrIntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
 {
   // Test whether all corner points of the Edge are on one of the 6 sides of the BB
-  if ((GetBoundBox() && rclBB) == false)
+  if (!(GetBoundBox() && rclBB))
     return false;
 
   // Test whether Edge-BB is completely in BB
