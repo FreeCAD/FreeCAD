@@ -387,13 +387,10 @@ class ObjectDressup:
             extendcommand = Path.Command("G0", {"X": extendstart.x, "Y": extendstart.y})
             results.append(extendcommand)
 
-        commandname = "G0" if obj.RapidPlunge else "G1"
-        extendcommand = Path.Command(
-            commandname,
-            {
-                "Z": p1.z,
-            },
-        )
+        if obj.RapidPlunge:
+            extendcommand = Path.Command("G0", {"Z": p1.z})
+        else:
+            extendcommand = Path.Command("G1", {"Z": p1.z, "F": vertFeed})
         results.append(extendcommand)
 
         if obj.UseMachineCRC:
