@@ -284,9 +284,13 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade * geo
         Index[coinLayer].push_back(2);
     }
     else if constexpr (curvemode == CurveMode::ClosedCurve) {
-        double segment = (geo->getLastParameter() - geo->getFirstParameter()) / drawingParameters.curvedEdgeCountSegments;
+        int numSegments = drawingParameters.curvedEdgeCountSegments;
+        if constexpr (std::is_same<GeoType, Part::GeomBSplineCurve>::value)
+            numSegments *= geo->countKnots();
 
-        for (int i=0; i < drawingParameters.curvedEdgeCountSegments; i++) {
+        double segment = (geo->getLastParameter() - geo->getFirstParameter()) / numSegments;
+
+        for (int i=0; i < numSegments; i++) {
             Base::Vector3d pnt = geo->value(i*segment);
             addPoint(Coords[coinLayer], pnt);
         }
@@ -294,13 +298,16 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade * geo
         Base::Vector3d pnt = geo->value(0);
         addPoint(Coords[coinLayer], pnt);
 
-        Index[coinLayer].push_back(drawingParameters.curvedEdgeCountSegments+1);
+        Index[coinLayer].push_back(numSegments+1);
     }
     else if constexpr (curvemode == CurveMode::OpenCurve) {
+        int numSegments = drawingParameters.curvedEdgeCountSegments;
+        if constexpr (std::is_same<GeoType, Part::GeomBSplineCurve>::value)
+            numSegments *= (geo->countKnots() - 1); // one less segments than knots
 
-        double segment = (geo->getLastParameter() - geo->getFirstParameter()) / drawingParameters.curvedEdgeCountSegments;
+        double segment = (geo->getLastParameter() - geo->getFirstParameter()) / numSegments;
 
-        for (int i=0; i < drawingParameters.curvedEdgeCountSegments; i++) {
+        for (int i=0; i < numSegments; i++) {
             Base::Vector3d pnt = geo->value(geo->getFirstParameter() + i*segment);
             addPoint(Coords[coinLayer], pnt);
         }
@@ -308,7 +315,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade * geo
         Base::Vector3d pnt = geo->value(geo->getLastParameter());
             addPoint(Coords[coinLayer], pnt);
 
-        Index[coinLayer].push_back(drawingParameters.curvedEdgeCountSegments+1);
+        Index[coinLayer].push_back(numSegments+1);
 
         if constexpr (analysemode == AnalyseMode::BoundingBoxMagnitudeAndBSplineCurvature) {
             //***************************************************************************************************************
