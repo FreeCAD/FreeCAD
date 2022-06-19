@@ -649,7 +649,7 @@ void SoFCMeshObjectShape::GLRender(SoGLRenderAction *action)
         if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE) 
             ccw = false;
 
-        if (mode == false || mesh->countFacets() <= this->renderTriangleLimit) {
+        if (!mode || mesh->countFacets() <= this->renderTriangleLimit) {
             if (mbind != OVERALL) {
                 drawFaces(mesh, &mb, mbind, needNormals, ccw);
             }
@@ -1303,7 +1303,7 @@ void SoFCMeshSegmentShape::GLRender(SoGLRenderAction *action)
         if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE) 
             ccw = false;
 
-        if (mode == false || mesh->countFacets() <= this->renderTriangleLimit) {
+        if (!mode || mesh->countFacets() <= this->renderTriangleLimit) {
             if (mbind != OVERALL)
                 drawFaces(mesh, &mb, mbind, needNormals, ccw);
             else
