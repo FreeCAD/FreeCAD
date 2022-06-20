@@ -73,7 +73,7 @@ def checkWorkingDir():
 
     qm = PySide.QtGui.QMessageBox
     ret = qm.question(
-        None, "", "Toolbit working directory not set up. Do that now?", qm.Yes | qm.No
+        None, "", translate("Path_ToolBit","Toolbit working directory not set up. Do that now?"), qm.Yes | qm.No
     )
 
     if ret == qm.No:
@@ -117,7 +117,7 @@ def checkWorkingDir():
         ret = qm.question(
             None,
             "",
-            "Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?".format(
+            translate("Path_ToolBit","Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?").format(
                 workingdir, needed
             ),
             qm.Yes | qm.No,
@@ -136,7 +136,7 @@ def checkWorkingDir():
                     ret = qm.question(
                         None,
                         "",
-                        "Copy example files to new {} directory?".format(dir),
+                        translate("Path_ToolBit","Copy example files to new {} directory?").format(dir),
                         qm.Yes | qm.No,
                     )
                     if ret == qm.Yes:
