@@ -36,6 +36,7 @@
 #include <Base/Console.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartPyCXX.h>
+#include <Mod/Path/PathGlobal.h>
 #include "Path.h"
 #include "AreaParams.h"
 
@@ -48,14 +49,14 @@ namespace Path
 
 /** Store libarea algorithm configuration */
 struct PathExport CAreaParams {
-    PARAM_DECLARE(PARAM_FNAME, AREA_PARAMS_CAREA);
+    PARAM_DECLARE(PARAM_FNAME, AREA_PARAMS_CAREA)
     CAreaParams();
 };
 
 /** Store all Area configurations */
 struct PathExport AreaParams: CAreaParams {
 
-    PARAM_DECLARE(PARAM_FNAME, AREA_PARAMS_AREA);
+    PARAM_DECLARE(PARAM_FNAME, AREA_PARAMS_AREA)
 
     bool operator==(const AreaParams& other) const {
 #define AREA_COMPARE(_param) \
@@ -85,7 +86,7 @@ struct PathExport AreaStaticParams: AreaParams {
 struct PathExport CAreaConfig {
 
     /** For saving current libarea settings */
-    PARAM_DECLARE(PARAM_FNAME, AREA_PARAMS_CAREA);
+    PARAM_DECLARE(PARAM_FNAME, AREA_PARAMS_CAREA)
 
     /** The constructor automatically saves current setting and apply user defined ones
      *
@@ -168,7 +169,7 @@ protected:
 
 public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
-    PARAM_ENUM_DECLARE(AREA_PARAMS_ALL);
+    PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
 
     Area(const AreaParams* params = nullptr);
     Area(const Area& other, bool deep_copy = true);
@@ -376,7 +377,7 @@ public:
 
     static void setWireOrientation(TopoDS_Wire& wire, const gp_Dir& dir, bool ccw);
 
-    PARAM_ENUM_DECLARE(AREA_PARAMS_PATH);
+    PARAM_ENUM_DECLARE(AREA_PARAMS_PATH)
 
     static void abort(bool aborting);
     static bool aborting();
