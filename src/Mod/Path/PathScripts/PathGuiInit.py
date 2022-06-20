@@ -49,6 +49,7 @@ def Startup():
         from PathScripts import PathDressupPathBoundaryGui
         from PathScripts import PathDressupRampEntry
         from PathScripts import PathDressupTagGui
+        from PathScripts import PathDressupLeadInOut
         from PathScripts import PathDressupZCorrect
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
@@ -67,6 +68,7 @@ def Startup():
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
+        from PathScripts import PathCamoticsGui
         from PathScripts import PathSlotGui
         from PathScripts import PathStop
         from PathScripts import PathThreadMillingGui
