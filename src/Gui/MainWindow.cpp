@@ -55,6 +55,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <Base/ConsoleObserver.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -1412,14 +1413,12 @@ void MainWindow::loadWindowSettings()
     pos.setX(qMin(qMax(pos.x(),x1-this->width()+30),x2-30));
     pos.setY(qMin(qMax(pos.y(),y1-10),y2-10));
     this->move(pos);
-
-    // tmp. disable the report window to suppress some bothering warnings
-    auto tmp = Base::Console().IsMsgTypeEnabled("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn);
-    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
-    this->restoreState(config.value(QString::fromLatin1("MainWindowState")).toByteArray());
+    {
+        // tmp. disable the report window to suppress some bothering warnings
+        const Base::ILoggerBlocker blocker("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn);
+        this->restoreState(config.value(QString::fromLatin1("MainWindowState")).toByteArray());
+    }
     std::clog << "Main window restored" << std::endl;
-    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, tmp);
-
     bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
 
