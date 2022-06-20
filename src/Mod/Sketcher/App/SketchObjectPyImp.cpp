@@ -1492,7 +1492,7 @@ PyObject* SketchObjectPy::convertToNURBS(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &GeoId))
         return nullptr;
 
-    if (this->getSketchObjectPtr()->convertToNURBS(GeoId)==false) {
+    if (!this->getSketchObjectPtr()->convertToNURBS(GeoId)) {
         std::stringstream str;
         str << "Object does not support NURBS conversion: " << GeoId;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1510,7 +1510,7 @@ PyObject* SketchObjectPy::increaseBSplineDegree(PyObject *args)
     if (!PyArg_ParseTuple(args, "i|i", &GeoId, &incr))
         return nullptr;
 
-    if (this->getSketchObjectPtr()->increaseBSplineDegree(GeoId, incr)==false) {
+    if (!this->getSketchObjectPtr()->increaseBSplineDegree(GeoId, incr)) {
         std::stringstream str;
         str << "Degree increase failed for: " << GeoId;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1541,7 +1541,7 @@ PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
     if (!PyArg_ParseTuple(args, "ii|i", &GeoId, &knotIndex, &multiplicity))
         return nullptr;
 
-    if (this->getSketchObjectPtr()->modifyBSplineKnotMultiplicity(GeoId, knotIndex, multiplicity)==false) {
+    if (!this->getSketchObjectPtr()->modifyBSplineKnotMultiplicity(GeoId, knotIndex, multiplicity)) {
         std::stringstream str;
         str << "Multiplicity modification failed for: " << GeoId;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1560,7 +1560,7 @@ PyObject* SketchObjectPy::insertBSplineKnot(PyObject *args)
     if (!PyArg_ParseTuple(args, "id|i", &GeoId, &knotParam, &multiplicity))
         return nullptr;
 
-    if (this->getSketchObjectPtr()->insertBSplineKnot(GeoId, knotParam, multiplicity)==false) {
+    if (!this->getSketchObjectPtr()->insertBSplineKnot(GeoId, knotParam, multiplicity)) {
         std::stringstream str;
         str << "Knot insertion failed for: " << GeoId;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());

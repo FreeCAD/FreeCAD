@@ -780,7 +780,7 @@ bool CCurve::Offset(double leftwards_value)
 		success = false;
 	}
 
-	if(success == false)
+	if(!success)
 	{
 		if(this->IsClosed())
 		{

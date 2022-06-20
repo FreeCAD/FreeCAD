@@ -60,7 +60,7 @@ namespace PartGui {
         void setData (int column, int role, const QVariant & value)
         {
             QTreeWidgetItem::setData(column, role, value);
-            if (role == Qt::CheckStateRole && value.toBool() == true) {
+            if (role == Qt::CheckStateRole && value.toBool()) {
                 QTreeWidget* tree = this->treeWidget();
                 if (!tree)
                     return;

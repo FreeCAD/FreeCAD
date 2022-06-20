@@ -2152,7 +2152,7 @@ void StdCmdAxisCross::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
     if (view) {
-        if (view->getViewer()->hasAxisCross() == false)
+        if (!view->getViewer()->hasAxisCross())
             doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");
         else
             doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(False)");

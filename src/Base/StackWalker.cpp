@@ -1242,7 +1242,7 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
   cleanup:
     if (pSym) free( pSym );
 
-  if (bLastEntryCalled == false)
+  if (!bLastEntryCalled)
       this->OnCallstackEntry(lastEntry, csEntry);
 
   if (context == NULL)

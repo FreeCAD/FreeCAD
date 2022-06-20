@@ -18,7 +18,7 @@ namespace geoff_geometry {
 	int Intof(const Span& sp0, const Span& sp1, Point& p0, Point& p1, double t[4])
 	{
 		// returns the number of intersects (lying within spans sp0, sp1)
-		if(sp0.box.outside(sp1.box) == true)
+		if(sp0.box.outside(sp1.box))
 		    return 0;
 		if(!sp0.dir) {
 			if(!sp1.dir) {
@@ -128,7 +128,7 @@ namespace geoff_geometry {
 	bool Span::OnSpan(const Point& p, double* t)const {
 		// FAST OnSpan test - assumes that p lies ON the unbounded span
 #if _DEBUG
-		if(this->returnSpanProperties == false) {
+		if(!this->returnSpanProperties) {
 			FAILURE(L"OnSpan - properties no set, incorrect calling code");
 		}
 #endif
@@ -257,13 +257,13 @@ namespace geoff_geometry {
 	Return FALSE if no solution exists.       P Bourke method.
 		Input this 1st line
 		Input l2   2nd line
-		Output lshort shortest line between lines (if lshort.ok == false, the line intersect at a point lshort.p0)
+		Output lshort shortest line between lines (if !lshort.ok, the line intersect at a point lshort.p0)
 		Output t1 parameter at intersection on 1st Line
 		Output t2 parameter at intersection on 2nd Line
 
 	*/
 		Vector3d v13(l2.p0, this->p0);
-		if(this->ok == false || l2.ok == false)
+		if(!this->ok || !l2.ok)
 		    return false;
 
 		double d1343 = v13 * l2.v;		// dot products
@@ -314,7 +314,7 @@ namespace geoff_geometry {
 		c = Vector3d(l1, l0)
 		*/
 		//	Vector3d a = l0.v;
-		if(l0.box.outside(l1.box) == true)
+		if(l0.box.outside(l1.box))
 		    return 0;
 		Vector3d b = -l1.v;
 		Vector3d c = Vector3d(l1.p0, l0.p0);
@@ -526,7 +526,7 @@ namespace geoff_geometry {
 	// function returns true for intersection, false for no intersection
 	// method based on Möller & Trumbore(1997) (Barycentric coordinates)
 	// based on incorrect Pseudo code from "Geometric Tools for Computer Graphics" p.487
-		if(box.outside(l.box) == true)
+		if(box.outside(l.box))
 		    return false;
 
 		Vector3d line(l.v);
@@ -562,7 +562,7 @@ namespace geoff_geometry {
 	// box class
 	bool Box::outside(const Box& b)const {
 		// returns true if this box is outside b
-		if(b.ok == false || this->ok == false)	// no box set
+		if(!b.ok || !this->ok)	// no box set
 		    return false;
 		if(this->max.x < b.min.x)
 		    return true;
@@ -593,7 +593,7 @@ namespace geoff_geometry {
 
 	bool Box3d::outside(const Box3d& b) const{
 		// returns true if this box is outside b
-		if(b.ok == false || this->ok == false)	// no box set
+		if(!b.ok || !this->ok)	// no box set
 		    return false;
 		if(this->max.x < b.min.x)
 		    return true;

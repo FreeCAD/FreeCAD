@@ -804,7 +804,7 @@ inline void MeshGeomFacet::CalcNormal () const
 
 inline Base::Vector3f MeshGeomFacet::GetNormal () const
 {
-    if (_bNormalCalculated == false)
+    if (!_bNormalCalculated)
         CalcNormal();
     return _clNormal;
 }
@@ -860,7 +860,7 @@ inline float MeshGeomFacet::Area () const
 inline bool MeshGeomFacet::ContainedByOrIntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
 {
      // Test, if all corner points of the facet are on one of the 6 sides of the BB
-    if ((GetBoundBox() && rclBB) == false)
+    if (!(GetBoundBox() && rclBB))
         return false;
 
     // Test, whether Facet-BB is completely within BB

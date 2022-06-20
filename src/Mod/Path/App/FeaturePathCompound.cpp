@@ -58,7 +58,7 @@ App::DocumentObjectExecReturn *FeatureCompound::execute(void)
             const std::vector<Command*> &cmds = static_cast<Path::Feature*>(*it)->Path.getValue().getCommands();
             const Base::Placement pl = static_cast<Path::Feature*>(*it)->Placement.getValue();
             for (std::vector<Command*>::const_iterator it2= cmds.begin();it2!=cmds.end();++it2) {
-                if (UsePlacements.getValue() == true) {
+                if (UsePlacements.getValue()) {
                     result.addCommand((*it2)->transform(pl));
                 } else {
                     result.addCommand(**it2);

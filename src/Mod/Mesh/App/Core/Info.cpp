@@ -190,7 +190,7 @@ std::ostream& MeshInfo::InternalPointInfo (std::ostream& rclStream) const
                       << std::setw(8) << (*pPIter).x << ", "
                       << std::setw(8) << (*pPIter).y << ", "
                       << std::setw(8) << (*pPIter).z << ")";
-    if (pPIter->IsValid() == true)
+    if (pPIter->IsValid())
       rclStream << std::endl;
     else
       rclStream << " invalid" << std::endl;
@@ -220,7 +220,7 @@ std::ostream& MeshInfo::InternalFacetInfo (std::ostream& rclStream) const
                       << std::setw(4) << pFIter->_aulNeighbours[1] << ", "
                       << std::setw(4) << pFIter->_aulNeighbours[2] << ") ";
 
-    if (pFIter->IsValid() == true)
+    if (pFIter->IsValid())
       rclStream << std::endl;
     else
       rclStream << " invalid" << std::endl;

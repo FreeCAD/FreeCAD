@@ -238,7 +238,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 {
     char szBuf[200];
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     // Read in 50 characters from position 80 on and check for keywords like 'SOLID', 'FACET', 'NORMAL',
@@ -331,7 +331,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     int  i1=1,i2=1,i3=1,i4=1;
     MeshFacet item;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -504,7 +504,7 @@ bool MeshInput::LoadMTL (std::istream &rstrIn)
     if (!_material)
         return false;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -567,7 +567,7 @@ bool MeshInput::LoadSMF (std::istream &rstrIn)
     int  i1=1,i2=1,i3=1;
     MeshFacet item;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -621,7 +621,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     std::string line;
     MeshFacet item;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -811,7 +811,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
         unknown, ascii, binary_little_endian, binary_big_endian
     } format = unknown;
 
-    if (!inp || inp.bad() == true)
+    if (!inp || inp.bad())
         return false;
 
     std::streambuf* buf = inp.rdbuf();
@@ -1276,7 +1276,7 @@ bool MeshInput::LoadMeshNode (std::istream &rstrIn)
     unsigned int  i1=1,i2=1,i3=1;
     MeshGeomFacet clFacet;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -1329,7 +1329,7 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
     unsigned long ulVertexCt, ulFacetCt=0;
     MeshGeomFacet clFacet;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streamoff ulSize = 0;
@@ -1394,7 +1394,7 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
     uint16_t usAtt = 0;
     uint32_t ulCt = 0;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     // Header-Info ueberlesen
@@ -1402,7 +1402,7 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
 
     // Anzahl Facets
     rstrIn.read((char*)&ulCt, sizeof(ulCt));
-    if (rstrIn.bad() == true)
+    if (rstrIn.bad())
         return false;
 
     // get file size and calculate the number of facets
@@ -1487,7 +1487,7 @@ void MeshInput::LoadXML (Base::XMLReader &reader)
 /** Loads an OpenInventor file. */
 bool MeshInput::LoadInventor (std::istream &rstrIn)
 {
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     boost::regex rx_p("\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
@@ -1629,7 +1629,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
 /** Loads a Nastran file. */
 bool MeshInput::LoadNastran (std::istream &rstrIn)
 {
-    if ((!rstrIn) || (rstrIn.bad() == true))
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     boost::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
@@ -1883,7 +1883,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 /** Loads a Cadmould FE file. */
 bool MeshInput::LoadCadmouldFE (std::ifstream &rstrIn)
 {
-    if ((!rstrIn) || (rstrIn.bad() == true))
+    if (!rstrIn || rstrIn.bad())
         return false;
     assert(0);
     return false;
@@ -2209,7 +2209,7 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
     clIter.Transform(this->_transform);
     const MeshGeomFacet *pclFacet;
 
-    if (!rstrOut || rstrOut.bad() == true || _rclMesh.CountFacets() == 0)
+    if (!rstrOut || rstrOut.bad() || _rclMesh.CountFacets() == 0)
         return false;
 
     rstrOut.precision(6);
@@ -2261,7 +2261,7 @@ bool MeshOutput::SaveBinarySTL (std::ostream &rstrOut) const
     uint16_t usAtt;
     char szInfo[81];
 
-    if (!rstrOut || rstrOut.bad() == true /*|| _rclMesh.CountFacets() == 0*/)
+    if (!rstrOut || rstrOut.bad() /*|| _rclMesh.CountFacets() == 0*/)
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountFacets() + 1);
@@ -2307,7 +2307,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
@@ -2526,7 +2526,7 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
@@ -2678,7 +2678,7 @@ bool MeshOutput::SaveOFF (std::ostream &out) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
@@ -2762,7 +2762,7 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
     std::size_t v_count = rPoints.size();
     std::size_t f_count = rFacets.size();
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
     bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
         && _material->diffuseColor.size() == rPoints.size());
@@ -2822,7 +2822,7 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
     std::size_t v_count = rPoints.size();
     std::size_t f_count = rFacets.size();
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
 
     bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
@@ -2894,7 +2894,7 @@ bool MeshOutput::SaveMeshNode (std::ostream &rstrOut)
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!rstrOut || rstrOut.bad() == true)
+    if (!rstrOut || rstrOut.bad())
         return false;
 
     // vertices
@@ -3023,7 +3023,7 @@ bool MeshOutput::Save3MFModel (std::ostream &str) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!str || str.bad() == true)
+    if (!str || str.bad())
         return false;
 
     str << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -3074,7 +3074,7 @@ bool MeshOutput::Save3MFModel (std::ostream &str) const
 /** Writes an IDTF file. */
 bool MeshOutput::SaveIDTF (std::ostream &str) const
 {
-    if ((!str) || (str.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!str || str.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     const MeshPointArray& pts = _rclMesh.GetPoints();
@@ -3177,7 +3177,7 @@ list zt -1 -1 -1 1
 triplot t xt yt zt 'b'
 #triplot t xt yt zt '#k'
 */
-    if ((!str) || (str.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!str || str.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     const MeshPointArray& pts = _rclMesh.GetPoints();
@@ -3220,7 +3220,7 @@ triplot t xt yt zt 'b'
 /** Writes an OpenInventor file. */
 bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
 {
-    if ((!rstrOut) || (rstrOut.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!rstrOut || rstrOut.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
@@ -3296,7 +3296,7 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
 /** Writes an X3D file. */
 bool MeshOutput::SaveX3D (std::ostream &out) const
 {
-    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!out || out.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     // XML header info
@@ -3308,7 +3308,7 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
 /** Writes an X3D file. */
 bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
 {
-    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!out || out.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     const MeshPointArray& pts = _rclMesh.GetPoints();
@@ -3437,7 +3437,7 @@ bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
 /** Writes an X3DOM file. */
 bool MeshOutput::SaveX3DOM (std::ostream &out) const
 {
-    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!out || out.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     // See:
@@ -3483,7 +3483,7 @@ bool MeshOutput::SaveX3DOM (std::ostream &out) const
 /** Writes a Nastran file. */
 bool MeshOutput::SaveNastran (std::ostream &rstrOut) const
 {
-    if ((!rstrOut) || (rstrOut.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!rstrOut || rstrOut.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     MeshPointIterator clPIter(_rclMesh);
@@ -3541,7 +3541,7 @@ bool MeshOutput::SaveCadmouldFE (std::ostream & /*rstrOut*/) const
 /** Writes a Python module */
 bool MeshOutput::SavePython (std::ostream &str) const
 {
-    if ((!str) || (str.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!str || str.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     MeshFacetIterator clIter(_rclMesh);
@@ -3569,7 +3569,7 @@ bool MeshOutput::SavePython (std::ostream &str) const
 /** Writes a VRML file. */
 bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 {
-    if ((!rstrOut) || (rstrOut.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!rstrOut || rstrOut.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     Base::BoundBox3f clBB = _rclMesh.GetBoundBox();

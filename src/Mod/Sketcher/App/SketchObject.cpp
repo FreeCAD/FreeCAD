@@ -429,15 +429,15 @@ int SketchObject::toggleDriving(int ConstrId)
 
     bool extorconstructionpoint1 =  (vals[ConstrId]->First == GeoEnum::GeoUndef) ||
                                     (vals[ConstrId]->First < 0)                     ||
-                                    (geof1 && geof1->isGeoType(Part::GeomPoint::getClassTypeId()) && geof1->getConstruction() == true);
+                                    (geof1 && geof1->isGeoType(Part::GeomPoint::getClassTypeId()) && geof1->getConstruction());
     bool extorconstructionpoint2 =  (vals[ConstrId]->Second == GeoEnum::GeoUndef)||
                                     (vals[ConstrId]->Second < 0)                    ||
-                                    (geof2 && geof2->isGeoType(Part::GeomPoint::getClassTypeId()) && geof2->getConstruction() == true);
+                                    (geof2 && geof2->isGeoType(Part::GeomPoint::getClassTypeId()) && geof2->getConstruction());
     bool extorconstructionpoint3 =  (vals[ConstrId]->Third == GeoEnum::GeoUndef) ||
                                     (vals[ConstrId]->Third < 0)                     ||
-                                    (geof3 && geof3->isGeoType(Part::GeomPoint::getClassTypeId()) && geof3->getConstruction() == true);
+                                    (geof3 && geof3->isGeoType(Part::GeomPoint::getClassTypeId()) && geof3->getConstruction());
 
-    if (extorconstructionpoint1 && extorconstructionpoint2 && extorconstructionpoint3 && vals[ConstrId]->isDriving==false)
+    if (extorconstructionpoint1 && extorconstructionpoint2 && extorconstructionpoint3 && !vals[ConstrId]->isDriving)
         return -4;
 
     // copy the list
@@ -467,7 +467,7 @@ int SketchObject::testDrivingChange(int ConstrId, bool isdriving)
     if (!vals[ConstrId]->isDimensional())
         return -2;
 
-    if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving==true)
+    if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving)
         return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
 
     return 0;

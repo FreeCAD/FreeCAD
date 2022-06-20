@@ -971,7 +971,7 @@ void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
   if (e->button() == Qt::LeftButton)
   {
     QTextCursor cursor   = this->textCursor();
-    if (cursor.hasSelection() == false
+    if (!cursor.hasSelection()
      && cursor < this->inputBegin())
     {
       cursor.movePosition( QTextCursor::End );

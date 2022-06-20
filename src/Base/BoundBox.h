@@ -610,7 +610,7 @@ inline bool BoundBox3<_Precision>::IntersectionPoint (const Vector3<_Precision> 
             rc = IntersectPlaneWithLine(i, rcVct, rcVctDir, cVctRes);
             if (!cCmpBound.IsInBox(cVctRes))
                 rc = false;
-            if (rc == true) {
+            if (rc) {
                 // does intersection point lie in desired direction
                 // or was found the opposing side?
                 // -> scalar product of both direction vectors > 0 (angle < 90)
@@ -773,7 +773,7 @@ inline typename BoundBox3<_Precision>::SIDE BoundBox3<_Precision>::GetSideFromRa
                                                                                    Vector3<_Precision>& rcInt) const
 {
     Vector3<_Precision> cP0, cP1;
-    if (IntersectWithLine(rclPt, rclDir, cP0, cP1) == false)
+    if (!IntersectWithLine(rclPt, rclDir, cP0, cP1))
         return INVALID;
 
     Vector3<_Precision>  cOut;

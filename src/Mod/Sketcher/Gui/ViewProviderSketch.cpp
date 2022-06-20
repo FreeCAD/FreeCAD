@@ -416,7 +416,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                     sketchHandler->quit();
                 return true;
             }
-            if (isInEditMode() && (drag.DragConstraintSet.empty() == false)) {
+            if (isInEditMode() && !drag.DragConstraintSet.empty()) {
                 if (!pressed) {
                     drag.DragConstraintSet.clear();
                 }
@@ -827,7 +827,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_DragConstraint:
-                    if (drag.DragConstraintSet.empty() == false) {
+                    if (!drag.DragConstraintSet.empty()) {
                         getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Constraint"));
                         auto idset = drag.DragConstraintSet;
                         for(int id : idset) {
@@ -1249,7 +1249,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             }
             return true;
         case STATUS_SKETCH_DragConstraint:
-            if (drag.DragConstraintSet.empty() == false) {
+            if (!drag.DragConstraintSet.empty()) {
                 auto idset = drag.DragConstraintSet;
                 for(int id : idset)
                     moveConstraint(id, Base::Vector2d(x,y));
@@ -1728,7 +1728,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint * Point, const 
                     sketchHandler->applyCursor();
                 return true;
             }
-        } else if (result.ConstrIndices.empty() == false && result.ConstrIndices != preselection.PreselectConstraintSet) { // if a constraint is hit
+        } else if (!result.ConstrIndices.empty() && result.ConstrIndices != preselection.PreselectConstraintSet) { // if a constraint is hit
             bool accepted = true;
             for(std::set<int>::iterator it = result.ConstrIndices.begin(); it != result.ConstrIndices.end(); ++it) {
                 std::stringstream ss;

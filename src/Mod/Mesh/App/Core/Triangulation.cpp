@@ -481,7 +481,7 @@ QuasiDelaunayTriangulator::~QuasiDelaunayTriangulator()
 
 bool QuasiDelaunayTriangulator::Triangulate()
 {
-    if (EarClippingTriangulator::Triangulate() == false)
+    if (!EarClippingTriangulator::Triangulate())
         return false; // no valid triangulation
 
     // For each internal edge get the adjacent facets. When doing an edge swap we must update

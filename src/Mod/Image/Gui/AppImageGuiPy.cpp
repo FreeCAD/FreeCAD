@@ -75,7 +75,7 @@ private:
         // Extract image into a general RGB format recognised by the ImageView class
         int format = IB_CF_RGB24;
         unsigned char *pPixelData = nullptr;
-        if (imageq.isNull() == false) {
+        if (!imageq.isNull()) {
             pPixelData = new unsigned char[3 * (unsigned long)imageq.width() * (unsigned long)imageq.height()];
             unsigned char *pPix = pPixelData;
             for (int r = 0; r < imageq.height(); r++) {
