@@ -318,6 +318,11 @@ class AlgebraTestCase(unittest.TestCase):
         self.assertAlmostEqual(a[2], 30.0)
         self.assertTrue(r.isSame(s, 1e-12))
 
+    def testInverted(self):
+        p = FreeCAD.Placement()
+        p.Rotation.Angle = math.pi / 2
+        self.assertEqual(abs(p.inverse().Rotation.Angle), p.Rotation.Angle)
+
     def testYawPitchRoll(self):
         def getYPR1(yaw, pitch, roll):
             r = FreeCAD.Rotation()
