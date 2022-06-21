@@ -29,8 +29,8 @@ body:
       label: Version
       description: What version of FreeCAD are you running?
       options:
-        - 0.19 (Release)
-        - 0.20 (Development)
+        - 0.20 (Release)
+        - 0.21 (Development)
     validations:
       required: true
   - type: textarea

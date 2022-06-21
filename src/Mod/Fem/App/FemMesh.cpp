@@ -855,7 +855,7 @@ std::set<int> FemMesh::getEdgesOnly(void) const
                 break;
             }
         }
-        if (edgeBelongsToAFace == false)
+        if (!edgeBelongsToAFace)
             resultIDs.insert(aEdge->GetID());
     }
 
@@ -914,7 +914,7 @@ std::set<int> FemMesh::getFacesOnly(void) const
                 break;
             }
         }
-        if (faceBelongsToAVolume == false)
+        if (!faceBelongsToAVolume)
             resultIDs.insert(aFace->GetID());
     }
 
@@ -1942,7 +1942,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
                         anABAQUS_Output  << ", " << *kt;
                     }
                     else {
-                        if (first_line == true) {
+                        if (first_line) {
                             anABAQUS_Output << "," << std::endl;
                             first_line = false;
                         }
@@ -2002,7 +2002,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     anABAQUS_Output << elsetname << std::endl;
 
     // groups
-    if (groupParam == false) {
+    if (!groupParam) {
         anABAQUS_Output.close();
     }
     else {

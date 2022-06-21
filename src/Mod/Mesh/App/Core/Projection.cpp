@@ -179,8 +179,8 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
             if (tria.IntersectWithPlane(base, normal, e1, e2)) {
                 if ((*it != f1) && (*it != f2)) {
                     // inside cut line
-                    if ((isPointInsideDistance(v1, v2, e1) == false) ||
-                        (isPointInsideDistance(v1, v2, e2) == false)) {
+                    if (!isPointInsideDistance(v1, v2, e1) ||
+                        !isPointInsideDistance(v1, v2, e2)) {
                         continue;
                     }
 

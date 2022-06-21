@@ -985,7 +985,7 @@ void DefineNodesCallback(void* ud, SoEventCallback* n)
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3f vec(aNode->X(), aNode->Y(), aNode->Z());
         pt2d = proj(vec);
-        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y)) == true)
+        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y)))
             IntSet.insert(aNode->GetID());
     }
 

@@ -116,7 +116,7 @@ void Builder3D::endPoints()
 void Builder3D::addSinglePoint(float x, float y, float z,short pointSize, float color_r,float color_g,float color_b)
 {
   // addSinglePoint() not between startXXX() and endXXX() allowed
-  assert( bStartEndOpen == false );
+  assert(!bStartEndOpen);
 
   result << "Separator { ";
   result <<   "Material { ";
@@ -155,7 +155,7 @@ void Builder3D::addSinglePoint(const Base::Vector3f &vec, short pointSize, float
 void Builder3D::addText(float pos_x, float pos_y , float pos_z,const char * text, float color_r,float color_g,float color_b)
 {
   // addSinglePoint() not between startXXX() and endXXX() allowed
-  assert( bStartEndOpen == false );
+  assert(!bStartEndOpen);
 
   result << "Separator { "
          <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} "

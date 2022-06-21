@@ -510,7 +510,7 @@ void View3DInventorViewer::init()
     // Settings
     setSeekTime(0.4f);
 
-    if (isSeekValuePercentage() == false)
+    if (!isSeekValuePercentage())
         setSeekValueAsPercentage(true);
 
     setSeekDistance(100);

@@ -458,7 +458,7 @@ bool Metadata::satisfies(const Meta::Dependency& dep)
         }
         auto parsedExpression = App::Expression::parse(nullptr, dep.condition);
         auto result = parsedExpression->eval();
-        if (boost::any_cast<bool> (result->getValueAsAny()) == false)
+        if (!boost::any_cast<bool> (result->getValueAsAny()))
             return false;
     }
 

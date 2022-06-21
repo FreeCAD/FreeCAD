@@ -176,7 +176,17 @@ lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPointNormals" Const="true">
+        <Methode Name="movePoint">
+            <Documentation>
+                <UserDocu>movePoint(int, Vector)
+  This method moves the point in the mesh along the
+  given vector. This affects the geometry of the mesh.
+  Be aware that after moving point(s) the mesh can
+  have self intersections!
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getPointNormals" Const="true">
 			<Documentation>
 				<UserDocu>
 					getPointNormals()
@@ -507,7 +517,7 @@ smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
 			</Documentation>
 		</Methode>
 		<!-- End of hack -->
-		<Methode Name="nearestFacetOnRay" Const="true">
+        <Methode Name="nearestFacetOnRay" Const="true">
 			<Documentation>
 				<UserDocu>nearestFacetOnRay(tuple, tuple) -> dict
 Get the index and intersection point of the nearest facet to a ray.

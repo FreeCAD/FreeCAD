@@ -187,7 +187,7 @@ void GLImageBox::paintGL()
     drawImage();
 
     // Emit a signal for owners to draw any graphics that is needed.
-    if (_image.hasValidData() == true)
+    if (_image.hasValidData())
         drawGraphics();
 
     // flush the OpenGL graphical pipeline
@@ -203,7 +203,7 @@ void GLImageBox::paintGL()
 // Draw the image
 void GLImageBox::drawImage()
 {
-    if (_image.hasValidData() == false)
+    if (!_image.hasValidData())
         return;
 
     // Gets the size of the displayed image area using the current display settings 
@@ -275,7 +275,7 @@ void GLImageBox::drawImage()
 // (in units of image pixels)
 void GLImageBox::getDisplayedImageAreaSize(int &dx, int &dy)
 {
-    if (_image.hasValidData() == false)
+    if (!_image.hasValidData())
     {
         dx = 0;
         dy = 0;
@@ -399,7 +399,7 @@ void GLImageBox::getPixFormat(GLenum &pixFormat, GLenum &pixType)
 // Currently we don't limit it!
 void GLImageBox::limitCurrPos()
 {
-    if (_image.hasValidData() == false)
+    if (!_image.hasValidData())
         return;
 
     /*
@@ -435,7 +435,7 @@ void GLImageBox::setCurrPos(int x0, int y0)
 // Fixes a base position at the current position
 void GLImageBox::fixBasePosCurr()
 {
-    if (_image.hasValidData() == false)
+    if (!_image.hasValidData())
     {
         _base_x0 = 0;
         _base_y0 = 0;
@@ -452,7 +452,7 @@ void GLImageBox::fixBasePosCurr()
 // This function does not redraw (call redraw afterwards)
 void GLImageBox::setZoomFactor(double zoomFactor, bool useCentrePt, int ICx, int ICy)
 {
-    if ((useCentrePt == false) || (_image.hasValidData() == false))
+    if (!useCentrePt || !_image.hasValidData())
     {
         _zoomFactor = zoomFactor;
         limitZoomFactor();
@@ -478,7 +478,7 @@ void GLImageBox::setZoomFactor(double zoomFactor, bool useCentrePt, int ICx, int
 // This function redraws
 void GLImageBox::stretchToFit()
 {
-    if (_image.hasValidData() == false)
+    if (!_image.hasValidData())
         return;
 
     setToFit();
@@ -490,7 +490,7 @@ void GLImageBox::stretchToFit()
 // This function does not redraw (call redraw afterwards)
 void GLImageBox::setToFit()
 {
-    if (_image.hasValidData() == false)
+    if (!_image.hasValidData())
         return;
 
     // Compute ideal zoom factor to fit the image
@@ -512,7 +512,7 @@ void GLImageBox::setToFit()
 // This function does not redraw (call redraw afterwards)
 void GLImageBox::setNormal()
 {
-    if (_image.hasValidData() == false)
+    if (!_image.hasValidData())
         return;
 
     if (((int)(_image.getWidth()) < width()) && ((int)(_image.getHeight()) < height()))
@@ -711,7 +711,7 @@ int GLImageBox::calcNumColorMapEntries()
     GLint maxMapEntries;
     glGetIntegerv(GL_MAX_PIXEL_MAP_TABLE, &maxMapEntries);
     int NumEntries = maxMapEntries;
-    if (_image.hasValidData() == true)
+    if (_image.hasValidData())
         NumEntries = (int)std::min<double>(pow(2.0, (double)(_image.getNumSigBitsPerSample())), (double)maxMapEntries);
     return NumEntries;
 }
@@ -750,7 +750,7 @@ int GLImageBox::createColorMap(int numEntriesReq, bool Initialise)
 
     // Initialise the color map if requested
     // (All red entries come first, then green, then blue, then alpha)
-    if (Initialise == true)
+    if (Initialise)
     {
         // For each RGB channel
         int arrayIndex = 0;

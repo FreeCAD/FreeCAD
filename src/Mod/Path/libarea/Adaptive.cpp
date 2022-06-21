@@ -2630,7 +2630,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
 	if (!forceInsideOut && FindEntryPointOutside(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos, toolDir))
 	{
-		if (Orientation(engageBounds[0]) == false)
+		if (!Orientation(engageBounds[0]))
 			ReversePath(engageBounds[0]);
 		// add initial offset of cleared area to engage paths
 		Paths outsideEngage;

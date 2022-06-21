@@ -447,7 +447,7 @@ unsigned long MeshEvalDegeneratedFacets::CountEdgeTooSmall (float fMinEdgeLength
     MeshFacetIterator  clFIter(_rclMesh);
     unsigned long k = 0;
 
-    while (clFIter.EndReached() == false) {
+    while (!clFIter.EndReached()) {
         for (int i = 0; i < 3; i++) {
             if (Base::Distance(clFIter->_aclPoints[i], clFIter->_aclPoints[(i+1)%3]) < fMinEdgeLength)
                 k++;

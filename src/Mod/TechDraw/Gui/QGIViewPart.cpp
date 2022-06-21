@@ -564,7 +564,7 @@ void QGIViewPart::drawViewPart()
             item->setWidth(lineWidth);
             item->setNormalColor(edgeColor);
             item->setStyle(Qt::SolidLine);
-            if ((*itGeom)->cosmetic == true) {
+            if ((*itGeom)->cosmetic) {
                 int source = (*itGeom)->source();
                 if (source == COSMETICEDGE) {
                     std::string cTag = (*itGeom)->getCosmeticTag();

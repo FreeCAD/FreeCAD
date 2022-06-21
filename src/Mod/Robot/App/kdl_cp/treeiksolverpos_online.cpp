@@ -143,7 +143,7 @@ void TreeIkSolverPos_Online::enforceJointVelLimits()
   }
 
   // scales q_out, if one joint exceeds the maximum value
-  if ( max_exceeded == true )
+  if (max_exceeded)
   {
     Multiply(q_dot_, ( 1.0 / ( 1.0 + rel_os_max ) ), q_dot_);
   }

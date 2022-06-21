@@ -42,7 +42,6 @@
 #include "Core/Iterator.h"
 #include "MeshPoint.h"
 #include "Facet.h"
-#include "MeshPoint.h"
 #include "Segment.h"
 
 namespace Py {
@@ -138,8 +137,9 @@ public:
     unsigned long countEdges () const;
     unsigned long countSegments() const;
     bool isSolid() const;
-    MeshPoint getPoint(PointIndex) const;
-    Mesh::Facet getFacet(FacetIndex) const;
+    Base::Vector3d getPoint(PointIndex) const;
+    MeshPoint getMeshPoint(PointIndex) const;
+    Mesh::Facet getMeshFacet(FacetIndex) const;
     double getSurface() const;
     double getVolume() const;
     /** Get points from object with given accuracy */
@@ -408,8 +408,8 @@ public:
 
 private:
     void deletedFacets(const std::vector<FacetIndex>& remFacets);
-    void updateMesh(const std::vector<FacetIndex>&);
-    void updateMesh();
+    void updateMesh(const std::vector<FacetIndex>&) const;
+    void updateMesh() const;
     void swapKernel(MeshCore::MeshKernel& m, const std::vector<std::string>& g);
     void copySegments(const MeshObject&);
     void swapSegments(MeshObject&);

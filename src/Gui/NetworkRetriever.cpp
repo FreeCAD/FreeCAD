@@ -261,9 +261,9 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
     if ( !d->dir.isEmpty() )
     {
         QDir dir(d->dir);
-        if ( dir.exists( d->dir ) == false )
+        if (!dir.exists(d->dir))
         {
-            if ( dir.mkdir( d->dir ) == false)
+            if (!dir.mkdir(d->dir))
             {
                 Base::Console().Error("Directory '%s' could not be created.", (const char*)d->dir.toLatin1());
                 return true; // please, no error message
@@ -534,7 +534,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
 
         if (canStart) {
             bool ok = wget->startDownload(QString::fromLatin1(url.c_str()));
-            if ( ok == false )
+            if (!ok)
                 Base::Console().Error("The tool 'wget' couldn't be found. Please check your installation.");
             else if ( wget->isDownloading() && _pcAction )
                 _pcAction->setText(tr("Stop downloading"));

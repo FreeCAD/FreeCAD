@@ -194,7 +194,7 @@ void Trajectory::generateTrajectory(void)
                         pcRoundComp->Add(Next);
                         // end a continuous block
                     }
-                    else if (Cont == false && pcRoundComp) {
+                    else if (!Cont && pcRoundComp) {
                         // add the last one
                         pcRoundComp->Add(Next);
                         pcRoundComp->Finish();
@@ -203,7 +203,7 @@ void Trajectory::generateTrajectory(void)
 
                         // normal block
                     }
-                    else if (Cont == false && !pcRoundComp) {
+                    else if (!Cont && !pcRoundComp) {
                         KDL::Path* pcPath;
                         pcPath = new KDL::Path_Line(Last,
                             Next,

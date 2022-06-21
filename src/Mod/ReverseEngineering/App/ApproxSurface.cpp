@@ -589,7 +589,7 @@ void ParameterCorrection::CalcEigenvectors()
 bool ParameterCorrection::DoInitialParameterCorrection(double fSizeFactor)
 {
     // if directions are not given, calculate yourself
-    if (_bGetUVDir == false)
+    if (!_bGetUVDir)
         CalcEigenvectors();
     if (!GetUVParameters(fSizeFactor))
         return false;
