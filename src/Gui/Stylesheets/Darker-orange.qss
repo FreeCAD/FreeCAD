@@ -1730,7 +1730,7 @@ QCheckBox:focus {
 
 
 /*==================================================================================================
-Checkboxs inside QListWidget and QTreeView
+Checkboxes inside QListWidget and QTreeView
 ==================================================================================================*/
 QListWidget::indicator,
 QTreeView::indicator {
