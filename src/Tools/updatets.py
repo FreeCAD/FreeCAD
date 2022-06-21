@@ -210,7 +210,7 @@ def update_translation(entry):
                         file_list.write(os.path.join(root,f) + "\n")
 
         try:
-            p = subprocess.run([LUPDATE, "@files_to_translate.txt","-I","./", "-recursive", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
+            p = subprocess.run([LUPDATE, "@files_to_translate.txt","-I","./", "-recursive", "-no-sort", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
         except Exception as e:
             print(str(e))
             os.chdir(cur)
