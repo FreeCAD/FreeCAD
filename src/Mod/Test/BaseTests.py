@@ -101,6 +101,11 @@ class ConsoleTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def testILoggerBlocker(self):
+        if FreeCAD.GuiUp:
+            import QtUnitGui
+            QtUnitGui.testILoggerBlocker()
+
 class ParameterTestCase(unittest.TestCase):
     def setUp(self):
         self.TestPar = FreeCAD.ParamGet("System parameter:Test")
