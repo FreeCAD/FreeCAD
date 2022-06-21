@@ -393,6 +393,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
                 << "Sketcher_Rotate"
                 << "Sketcher_Scale"
                 << "Sketcher_Offset"
+                << "Sketcher_Pattern"
                 << "Sketcher_Symmetry"
                 << "Sketcher_CompCopy"
                 << "Sketcher_RectangularArray"

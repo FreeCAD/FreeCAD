@@ -67,6 +67,7 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
@@ -78,6 +79,7 @@
 #include "DrawSketchHandlerRotate.h"
 #include "DrawSketchHandlerScale.h"
 #include "DrawSketchHandlerOffset.h"
+#include "DrawSketchHandlerPattern.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -2022,6 +2024,65 @@ bool CmdSketcherOffset::isActive(void)
     return isCommandActive(getActiveGuiDocument(), false);
 }
 
+// Pattern tool =====================================================================
+DEF_STD_CMD_A(CmdSketcherPattern)
+
+CmdSketcherPattern::CmdSketcherPattern()
+    : Command("Sketcher_Pattern")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Honeycomb Patter");
+    sToolTipText = QT_TR_NOOP("Create a Honeycomb Patter in a closed wire.");
+    sWhatsThis = "Sketcher_Pattern";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Pattern";
+    sAccel = "Z, P";
+    eType = ForEdit;
+}
+
+void CmdSketcherPattern::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> listOfGeoIds = {};
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select elements from a single sketch."));
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string>& SubNames = selection[0].getSubNames();
+    if (!SubNames.empty()) {
+        //Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+            // only handle non-external edges
+            if (it->size() > 4 && it->substr(0, 4) == "Edge") {
+                int geoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+                if (geoId >= 0) {
+                    listOfGeoIds.push_back(geoId);
+                }
+            }
+        }
+    }
+
+    //getSelection().clearSelection();
+
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPattern(listOfGeoIds));
+}
+
+bool CmdSketcherPattern::isActive(void)
+{
+    return isCommandActive(getActiveGuiDocument(), false);
+}
 
 // ================================================================================
 
@@ -2286,6 +2347,7 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherRotate());
     rcCmdMgr.addCommand(new CmdSketcherScale());
     rcCmdMgr.addCommand(new CmdSketcherOffset());
+    rcCmdMgr.addCommand(new CmdSketcherPattern());
     rcCmdMgr.addCommand(new CmdSketcherTranslate());
     rcCmdMgr.addCommand(new CmdSketcherSymmetry());
     rcCmdMgr.addCommand(new CmdSketcherCopy());
