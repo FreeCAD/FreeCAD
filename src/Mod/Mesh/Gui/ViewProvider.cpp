@@ -57,7 +57,6 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#include <boost_bind_bind.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
@@ -108,7 +107,7 @@
 
 
 using namespace MeshGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 using Mesh::Feature;
 using MeshCore::MeshKernel;
@@ -742,19 +741,19 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     act->setCheckable(true);
     act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
                     highlightMode == HighlighMode::Component);
-    func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, bp::_1));
+    func->toggle(act, std::bind(&ViewProviderMesh::setHighlightedComponents, this, sp::_1));
 
     QAction* seg = menu->addAction(QObject::tr("Display segments"));
     seg->setCheckable(true);
     seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
                     highlightMode == HighlighMode::Segment);
-    func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, bp::_1));
+    func->toggle(seg, std::bind(&ViewProviderMesh::setHighlightedSegments, this, sp::_1));
 
     QAction* col = menu->addAction(QObject::tr("Display colors"));
     col->setVisible(canHighlightColors());
     col->setCheckable(true);
     col->setChecked(highlightMode == HighlighMode::Color);
-    func->toggle(col, boost::bind(&ViewProviderMesh::setHighlightedColors, this, bp::_1));
+    func->toggle(col, std::bind(&ViewProviderMesh::setHighlightedColors, this, sp::_1));
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -959,7 +958,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
                     Gui::TimerFunction* func = new Gui::TimerFunction();
                     func->setAutoDelete(true);
                     MeshSplit* split = new MeshSplit(self, clPoly, proj);
-                    func->setFunction(boost::bind(&MeshSplit::cutMesh, split));
+                    func->setFunction(std::bind(&MeshSplit::cutMesh, split));
                     QTimer::singleShot(0, func, SLOT(timeout()));
                 }
             }
@@ -1020,7 +1019,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
                     Gui::TimerFunction* func = new Gui::TimerFunction();
                     func->setAutoDelete(true);
                     MeshSplit* split = new MeshSplit(self, clPoly, proj);
-                    func->setFunction(boost::bind(&MeshSplit::trimMesh, split));
+                    func->setFunction(std::bind(&MeshSplit::trimMesh, split));
                     QTimer::singleShot(0, func, SLOT(timeout()));
                 }
             }
@@ -1394,7 +1393,7 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
 
     Vertex v(kernel, grid, Base::convertTo<Base::Vector3f>(pos));
     QFuture<bool> future = QtConcurrent::mapped
-        (points, boost::bind(&Vertex::visible, &v, bp::_1));
+        (points, std::bind(&Vertex::visible, &v, bp::_1));
     QFutureWatcher<bool> watcher;
     watcher.setFuture(future);
     watcher.waitForFinished();
