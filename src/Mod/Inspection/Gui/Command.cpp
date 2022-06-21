@@ -72,9 +72,9 @@ CmdInspectElement::CmdInspectElement()
   : Command("Inspection_InspectElement")
 {
     sAppModule    = "Inspection";
-    sGroup        = "Inspection";
-    sMenuText     = "Inspection...";
-    sToolTipText  = "Get distance information";
+    sGroup        = QT_TR_NOOP("Inspection");
+    sMenuText     = QT_TR_NOOP("Inspection...");
+    sToolTipText  = QT_TR_NOOP("Get distance information");
     sWhatsThis    = "Inspection_InspectElement";
     sStatusTip    = sToolTipText;
     sPixmap       = "inspect_pipette";
