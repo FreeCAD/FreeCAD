@@ -7,7 +7,7 @@
   <author email="searchbar@suzanne.soy">Suzanne Soy</author>
   <maintainer email="searchbar@suzanne.soy">Suzanne Soy</maintainer>
   <license file="LICENSE">CCOv1</license>
-  <url type="repository" branch="main">https://github.com/SuzanneSoy/SearchBar/</url>
+  <url type="repository" branch="main">https://github.com/SuzanneSoy/SearchBar</url>
   <url type="bugtracker" branch="main">https://github.com/SuzanneSoy/SearchBar/issues</url>
   <url type="documentation" branch="main">https://github.com/SuzanneSoy/SearchBar</url>
   <icon>Tango-System-search.svg</icon>
