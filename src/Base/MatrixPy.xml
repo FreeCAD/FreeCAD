@@ -179,7 +179,7 @@ Rotate around Z axis.
 angle : float\n    Angle in radians.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="multiply">
+    <Methode Name="multiply" Const="true">
       <Documentation>
         <UserDocu>multiply(matrix) -> Base.Matrix
 multiply(vector) -> Base.Vector\n
@@ -219,13 +219,13 @@ Transpose the matrix in-place.</UserDocu>
 Returns a transposed copy of this matrix.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="determinant">
+    <Methode Name="determinant" Const="true">
       <Documentation>
         <UserDocu>determinant() -> float\n
 Compute the determinant of the matrix.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isOrthogonal">
+    <Methode Name="isOrthogonal" Const="true">
       <Documentation>
         <UserDocu>isOrthogonal(tol=1e-6) -> float\n
 Checks if the matrix is orthogonal, i.e. M * M^T = k*I and returns
@@ -233,7 +233,7 @@ the multiple of the identity matrix. If it's not orthogonal 0 is returned.\n
 tol : float\n    Tolerance used to check orthogonality.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="submatrix">
+    <Methode Name="submatrix" Const="true">
       <Documentation>
         <UserDocu>submatrix(dim) -> Base.Matrix\n
 Get the leading principal submatrix of the given dimension.
@@ -242,7 +242,7 @@ corresponding identity matrix.\n
 dim : int\n    Dimension parameter must be in the range [1,4].</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="analyze">
+    <Methode Name="analyze" Const="true">
       <Documentation>
         <UserDocu>analyze() -> str\n
 Analyzes the type of transformation.</UserDocu>
