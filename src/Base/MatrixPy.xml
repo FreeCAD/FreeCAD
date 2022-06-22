@@ -202,7 +202,7 @@ vector : Base.Vector</UserDocu>
 Compute the inverse matrix in-place, if possible.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="inverse">
+    <Methode Name="inverse" Const="true">
       <Documentation><UserDocu>inverse() -> Base.Matrix\n
 Compute the inverse matrix, if possible.</UserDocu>
       </Documentation>
