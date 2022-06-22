@@ -107,7 +107,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="labelfillet">
         <property name="text">
-         <string>Fillet type:</string>
+         <string>Type:</string>
         </property>
        </widget>
       </item>
