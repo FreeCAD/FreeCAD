@@ -386,7 +386,7 @@ translate(vector)
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="translated">
+    <Methode Name="translated" Const="true">
       <Documentation>
           <UserDocu>Create a new shape with translation
 translated(vector) -> shape
@@ -402,7 +402,7 @@ Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="rotated">
+    <Methode Name="rotated" Const="true">
       <Documentation>
         <UserDocu>Create a new shape with rotation.
 rotated(base,dir,degree) -> shape
@@ -416,7 +416,7 @@ scale(factor,[base=Vector(0,0,0)])
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="scaled">
+    <Methode Name="scaled" Const="true">
       <Documentation>
           <UserDocu>Create a new shape with scale.
 scaled(factor,[base=Vector(0,0,0)]) -> shape
@@ -509,7 +509,7 @@ Returns: result of offsetting (wire or face or compound of those). Compounding
 structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeWires">
+    <Methode Name="makeWires" Const="true">
       <Documentation>
         <UserDocu>make wire(s) using the edges of this shape
 makeWires([op=None])
