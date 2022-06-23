@@ -85,7 +85,7 @@ bool QGCustomImage::load(QPixmap map)
 
 QSize QGCustomImage::imageSize(void)
 {
-    QSize result = m_px.size();
+    QSize result = m_px.size() * scale();
     return result;
 }
 

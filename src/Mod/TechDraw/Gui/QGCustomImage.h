@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMIMAGE_H
 #define DRAWINGGUI_QGCUSTOMIMAGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QByteArray>
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
