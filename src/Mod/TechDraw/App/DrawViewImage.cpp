@@ -59,7 +59,10 @@ DrawViewImage::DrawViewImage()
                                             "Embedded image file. System use only.");   // n/a to end users
     ADD_PROPERTY_TYPE(Width      ,(100), vgroup, App::Prop_None, "The width of cropped image");
     ADD_PROPERTY_TYPE(Height     ,(100), vgroup, App::Prop_None, "The height of cropped image");
+
     ScaleType.setValue("Custom");
+    Scale.setStatus(App::Property::Hidden, false);
+    Scale.setStatus(App::Property::ReadOnly, false);
 
     std::string imgFilter("Image files (*.jpg *.jpeg *.png);;All files (*)");
     ImageFile.setFilter(imgFilter);
@@ -84,11 +87,12 @@ void DrawViewImage::onChanged(const App::Property* prop)
 
 short DrawViewImage::mustExecute() const
 {
-    if (!isRestoring()) {
-        if (Height.isTouched() ||
-            Width.isTouched()) {
-            return true;
-        };
+    if (isRestoring()) {
+        return App::DocumentObject::mustExecute();
+    }
+    if (Height.isTouched() ||
+        Width.isTouched()) {
+        return 1;
     }
 
     return App::DocumentObject::mustExecute();
