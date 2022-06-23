@@ -156,7 +156,7 @@ private:
                 pcDoc = App::GetApplication().getDocument(DocName);
             }
             if (!pcDoc) {
-                pcDoc = App::GetApplication().newDocument(qUtf8Printable(newDocumentName));
+                pcDoc = App::GetApplication().newDocument(newDocumentName.toStdString().c_str());
             }
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();

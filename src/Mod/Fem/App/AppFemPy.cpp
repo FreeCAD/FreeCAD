@@ -125,7 +125,7 @@ private:
         Base::FileInfo file(EncodedName.c_str());
         // create new document and add Import feature
         QString newDocumentName = QObject::tr("Unnamed");
-        App::Document *pcDoc = App::GetApplication().newDocument(qUtf8Printable(newDocumentName));
+        App::Document *pcDoc = App::GetApplication().newDocument(newDocumentName.toStdString().c_str());
         FemMeshObject *pcFeature = static_cast<FemMeshObject *>
             (pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
         pcFeature->Label.setValue(file.fileNamePure().c_str());

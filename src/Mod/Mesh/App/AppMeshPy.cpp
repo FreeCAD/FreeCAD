@@ -175,7 +175,7 @@ private:
         PyMem_Free(Name);
         // create new document and add Import feature
         QString newDocumentName = QObject::tr("Unnamed");
-        App::Document *pcDoc = App::GetApplication().newDocument(qUtf8Printable(newDocumentName));
+        App::Document *pcDoc = App::GetApplication().newDocument(newDocumentName.toStdString().c_str());
 
         Mesh::Importer import(pcDoc);
         import.load(EncodedName);

@@ -113,7 +113,7 @@ private:
 
             reader->read(EncodedName);
             QString newDocumentName = QObject::tr("Unnamed");
-            App::Document* pcDoc = App::GetApplication().newDocument(qUtf8Printable(newDocumentName));
+            App::Document* pcDoc = App::GetApplication().newDocument(newDocumentName.toStdString().c_str());
 
             Points::Feature* pcFeature = nullptr;
             if (reader->hasProperties()) {

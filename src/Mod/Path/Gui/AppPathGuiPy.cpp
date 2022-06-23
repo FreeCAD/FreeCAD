@@ -106,7 +106,7 @@ private:
             std::ostringstream cmd;
             QString newDocumentName = QObject::tr("Unnamed");
             if (processor.empty()) {
-                App::Document *pcDoc = App::GetApplication().newDocument(qUtf8Printable(newDocumentName));
+                App::Document *pcDoc = App::GetApplication().newDocument(newDocumentName.toStdString().c_str());
                 Gui::Command::runCommand(Gui::Command::Gui,"import Path");
                 cmd << "Path.read(\"" << EncodedName << "\",\"" << pcDoc->getName() << "\")";
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.str().c_str());

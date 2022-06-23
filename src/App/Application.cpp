@@ -439,8 +439,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     QString L10nName = QObject::tr("Unnamed");
     // get a valid name anyway!
     if (!Name || Name[0] == '\0')
-        Name = qUtf8Printable(L10nName);
-//        Name = (L10nName.toStdString()).c_str();
+        Name = L10nName.toStdString().c_str();
     string name = getUniqueDocumentName(Name, tempDoc);
 
     // return the temporary document if it exists
