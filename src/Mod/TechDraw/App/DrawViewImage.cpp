@@ -34,7 +34,9 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
+#include <App/Document.h>
 
+#include "DrawUtil.h"
 #include "DrawViewImage.h"
 
 using namespace TechDraw;
@@ -53,8 +55,10 @@ DrawViewImage::DrawViewImage(void)
     static const char *vgroup = "Image";
 
     ADD_PROPERTY_TYPE(ImageFile,(""),vgroup,App::Prop_None,"The file containing this bitmap");
-    ADD_PROPERTY_TYPE(Width      ,(100),vgroup,App::Prop_None,"The width of the image view");
-    ADD_PROPERTY_TYPE(Height     ,(100),vgroup,App::Prop_None,"The height of the view");
+    ADD_PROPERTY_TYPE(ImageIncluded, (""), vgroup,App::Prop_None,
+                                            "Embedded image file. System use only.");   // n/a to end users
+    ADD_PROPERTY_TYPE(Width      ,(100),vgroup,App::Prop_None,"The width of cropped image");
+    ADD_PROPERTY_TYPE(Height     ,(100),vgroup,App::Prop_None,"The height of cropped image");
     ScaleType.setValue("Custom");
 
     std::string imgFilter("Image files (*.jpg *.jpeg *.png);;All files (*)");
@@ -67,12 +71,34 @@ DrawViewImage::~DrawViewImage()
 
 void DrawViewImage::onChanged(const App::Property* prop)
 {
-    if (prop == &ImageFile) {
-        if (!isRestoring()) {
+    App::Document* doc = getDocument();
+    if (!isRestoring()) {
+        if ((prop == &ImageFile) &&
+            (doc != nullptr) ) {
+            if (!ImageFile.isEmpty()) {
+                replaceImageIncluded(ImageFile.getValue());
+            }
+            requestPaint();
+        } else if (prop == &Scale) {
             requestPaint();
         }
     }
+
     TechDraw::DrawView::onChanged(prop);
+}
+
+short DrawViewImage::mustExecute() const
+{
+    short result = 0;
+    if (!isRestoring()) {
+        result  =  (Height.isTouched() ||
+                    Width.isTouched());
+    }
+
+    if (result) {
+        return result;
+    }
+    return App::DocumentObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *DrawViewImage::execute(void)
@@ -87,6 +113,41 @@ QRectF DrawViewImage::getRect() const
     return result;
 }
 
+void DrawViewImage::replaceImageIncluded(std::string newFileName)
+{
+    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newFileName.c_str());
+    if (ImageIncluded.isEmpty()) {
+        setupImageIncluded();
+    } else {
+        std::string tempName = ImageIncluded.getExchangeTempFile();
+        DrawUtil::copyFile(newFileName, tempName);
+        ImageIncluded.setValue(tempName.c_str());
+    }
+}
+
+void DrawViewImage::setupImageIncluded(void)
+{
+    Base::Console().Message("DVI::setupImageIncluded()\n");
+    App::Document* doc = getDocument();
+    std::string dir = doc->TransientDir.getValue();
+    std::string special = getNameInDocument();
+    special += "Image.bitmap";
+    std::string imageName = dir + "/" + special;
+
+    //setupImageIncluded is only called when ImageIncluded is empty, so
+    //just set up the empty file first
+    DrawUtil::copyFile(std::string(), imageName);
+    ImageIncluded.setValue(imageName.c_str());
+
+    if (!ImageFile.isEmpty()) {
+        Base::FileInfo fi(ImageFile.getValue());
+        if (fi.isReadable()) {
+            std::string exchName = ImageIncluded.getExchangeTempFile();
+            DrawUtil::copyFile(ImageFile.getValue(), exchName);
+            ImageIncluded.setValue(exchName.c_str(), special.c_str());
+        }
+    }
+}
 
 // Python Drawing feature ---------------------------------------------------------
 
