@@ -70,6 +70,15 @@ std::vector<std::string> ViewProviderImage::getDisplayModes(void) const
 
 void ViewProviderImage::updateData(const App::Property* prop)
 {
+    if (prop == &(getViewObject()->Width)  ||
+        prop == &(getViewObject()->Height)  ||
+        prop == &(getViewObject()->Scale) ) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->QGIView::updateView(true);
+        }
+    }
+
     ViewProviderDrawingView::updateData(prop);
 }
 

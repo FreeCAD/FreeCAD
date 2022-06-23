@@ -23,6 +23,8 @@
 #ifndef _DrawViewImage_h_
 #define _DrawViewImage_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
@@ -36,31 +38,37 @@ namespace TechDraw
 
 class TechDrawExport DrawViewImage : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewImage);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewImage);
 
 public:
     /// Constructor
     DrawViewImage(void);
     virtual ~DrawViewImage();
 
-    App::PropertyFile       ImageFile;
-    App::PropertyFloat      Width;
-    App::PropertyFloat      Height;
+    App::PropertyFile         ImageFile;
+    App::PropertyFileIncluded ImageIncluded;
+    App::PropertyFloat        Width;
+    App::PropertyFloat        Height;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
+    short mustExecute() const override;
+
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderImage";
     }
-    virtual QRectF getRect() const;
+    QRectF getRect() const override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void setupImageIncluded(void);
+    void replaceImageIncluded(std::string newFileName);
+
+    void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
 };
 
