@@ -68,15 +68,12 @@ DrawViewImage::DrawViewImage()
 void DrawViewImage::onChanged(const App::Property* prop)
 {
     App::Document* doc = getDocument();
-    if (!isRestoring()) {
-        if ((prop == &ImageFile) && doc) {
-            if (!ImageFile.isEmpty()) {
-                replaceImageIncluded(ImageFile.getValue());
-            }
-            requestPaint();
-        } else if (prop == &Scale) {
-            requestPaint();
+    if ((prop == &ImageFile) &&
+        (doc) ) {
+        if (!ImageFile.isEmpty()) {
+            replaceImageIncluded(ImageFile.getValue());
         }
+        requestPaint();
     }
 
     TechDraw::DrawView::onChanged(prop);
@@ -84,11 +81,12 @@ void DrawViewImage::onChanged(const App::Property* prop)
 
 short DrawViewImage::mustExecute() const
 {
-    if (!isRestoring()) {
-        if (Height.isTouched() ||
-            Width.isTouched()) {
-            return true;
-        };
+    if (isRestoring()) {
+        return App::DocumentObject::mustExecute();
+    }
+    if (Height.isTouched() ||
+        Width.isTouched()) {
+        return 1;
     }
 
     return App::DocumentObject::mustExecute();
@@ -120,7 +118,7 @@ void DrawViewImage::replaceImageIncluded(std::string newFileName)
 void DrawViewImage::setupImageIncluded()
 {
 //    Base::Console().Message("DVI::setupImageIncluded()\n");
-    App::Document* doc = getDocument();
+        App::Document* doc = getDocument();
     std::string dir = doc->TransientDir.getValue();
     std::string special = getNameInDocument();
     special += "Image.bitmap";
@@ -131,18 +129,14 @@ void DrawViewImage::setupImageIncluded()
     DrawUtil::copyFile(std::string(), imageName);
     ImageIncluded.setValue(imageName.c_str());
 
-    if (ImageFile.isEmpty()) {
-        return;
+    if (!ImageFile.isEmpty()) {
+        Base::FileInfo fi(ImageFile.getValue());
+        if (fi.isReadable()) {
+            std::string exchName = ImageIncluded.getExchangeTempFile();
+            DrawUtil::copyFile(ImageFile.getValue(), exchName);
+            ImageIncluded.setValue(exchName.c_str(), special.c_str());
+        }
     }
-
-    Base::FileInfo fi(ImageFile.getValue());
-    if (!fi.isReadable()) {
-        return;
-    }
-
-    std::string exchName = ImageIncluded.getExchangeTempFile();
-    DrawUtil::copyFile(ImageFile.getValue(), exchName);
-    ImageIncluded.setValue(exchName.c_str(), special.c_str());
 }
 
 // Python Drawing feature ---------------------------------------------------------
