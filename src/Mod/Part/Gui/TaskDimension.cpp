@@ -503,8 +503,9 @@ void PartGui::DimensionLinear::setupDimension()
   textSep->addChild(textTransform);
 
   SoFont *fontNode = new SoFont();
-  fontNode->name.setValue("defaultFont");
-  fontNode->size.setValue(30);
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  fontNode->name.setValue(group->GetASCII("DimensionsFontName", "defaultFont").c_str());
+  fontNode->size.setValue(group->GetUnsigned("DimensionsFontSize", 30));
   textSep->addChild(fontNode);
 
   SoText2 *textNode = new SoText2();
@@ -1288,8 +1289,9 @@ void PartGui::DimensionAngular::setupDimension()
   textSep->addChild(textTransform);
 
   SoFont *fontNode = new SoFont();
-  fontNode->name.setValue("defaultFont");
-  fontNode->size.setValue(30);
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  fontNode->name.setValue(group->GetASCII("DimensionsFontName", "defaultFont").c_str());
+  fontNode->size.setValue(group->GetUnsigned("DimensionsFontSize", 30));
   textSep->addChild(fontNode);
 
   SoText2 *textNode = new SoText2();
