@@ -975,7 +975,7 @@ void DefineNodesCallback(void* ud, SoEventCallback* n)
     if (docObj.size() != 1)
         return;
 
-    const SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(static_cast<Fem::FemMeshObject*>(docObj[0])->FemMesh.getValue().getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data = static_cast<Fem::FemMeshObject*>(docObj[0])->FemMesh.getValue().getSMesh()->GetMeshDS();
 
     SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
     Base::Vector3f pt2d;

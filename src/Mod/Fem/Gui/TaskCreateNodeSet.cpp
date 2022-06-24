@@ -162,7 +162,7 @@ void TaskCreateNodeSet::DefineNodesCallback(void* ud, SoEventCallback* n)
 
 void TaskCreateNodeSet::DefineNodes(const Base::Polygon2d& polygon, const Gui::ViewVolumeProjection& proj, bool inner)
 {
-    const SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSMesh()->GetMeshDS();
 
     SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
     Base::Vector3f pt2d;

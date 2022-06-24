@@ -126,7 +126,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
     vtkSmartPointer<vtkIdList> idlist= vtkSmartPointer<vtkIdList>::New();
 
     //Now fill the SMESH datastructure
-    SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(mesh->getSMesh());
+    SMESH_Mesh* smesh = mesh->getSMesh();
     SMESHDS_Mesh* meshds = smesh->GetMeshDS();
     meshds->ClearMesh();
 
@@ -446,8 +446,8 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstruct
 {
 
     Base::Console().Log("Start: VTK mesh builder ======================\n");
-    SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(mesh->getSMesh());
-    SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
+    const SMESH_Mesh* smesh = mesh->getSMesh();
+    const SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
 
     // nodes
     Base::Console().Log("  Start: VTK mesh builder nodes.\n");
@@ -831,8 +831,8 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
         Base::Console().Error("Result object does not correctly link to mesh");
         return;
     }
-    SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(static_cast<FemMeshObject*>(meshObj)->FemMesh.getValue().getSMesh());
-    SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
+    const SMESH_Mesh* smesh = static_cast<FemMeshObject*>(meshObj)->FemMesh.getValue().getSMesh();
+    const SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
 
     // all result object meshes are in mm therefore for e.g. length outputs like
     // displacement we must divide by 1000

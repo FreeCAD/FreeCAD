@@ -468,7 +468,7 @@ std::set<long> ViewProviderFemMesh::getHighlightNodes() const
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
 {
     if (!HighlightedNodes.empty()) {
-        SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
+        const SMESHDS_Mesh* data = static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh.getValue().getSMesh()->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
         SbVec3f* verts = pcAnoCoords->point.startEditing();
@@ -722,7 +722,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
 
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(mesh->getValue().getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data = mesh->getValue().getSMesh()->GetMeshDS();
 
     int numFaces = data->NbFaces();
     int numNodes = data->NbNodes();

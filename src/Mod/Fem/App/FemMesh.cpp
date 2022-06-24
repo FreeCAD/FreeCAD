@@ -2489,7 +2489,7 @@ Base::BoundBox3d FemMesh::getBoundBox(void) const
 {
     Base::BoundBox3d box;
 
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data = getSMesh()->GetMeshDS();
 
     SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
     for (;aNodeIter->more();) {
@@ -2533,7 +2533,7 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
 
     struct FemMeshInfo rtrn;
 
-    SMESHDS_Mesh* data =  const_cast<SMESH_Mesh*>(getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data =  getSMesh()->GetMeshDS();
     const SMDS_MeshInfo& info = data->GetMeshInfo();
     rtrn.numFaces = data->NbFaces();
     rtrn.numNode = info.NbNodes();
