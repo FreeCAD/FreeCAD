@@ -921,7 +921,7 @@ Rotation::EulerSequence Rotation::eulerSequenceFromName(const char *name)
     if (name) {
         for (unsigned i=0; i<sizeof(EulerSequenceNames)/sizeof(EulerSequenceNames[0]); ++i) {
             if (boost::iequals(name, EulerSequenceNames[i]))
-                return (EulerSequence)(i+1);
+                return static_cast<EulerSequence>(i+1);
         }
     }
     return Invalid;

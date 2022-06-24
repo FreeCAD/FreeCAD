@@ -247,14 +247,14 @@ _Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclB
 template <class _Precision>
 _Precision Vector3<_Precision>::Length () const
 {
-    return (_Precision)sqrt ((x * x) + (y * y) + (z * z));
+    return static_cast<_Precision>(sqrt ((x * x) + (y * y) + (z * z)));
 }
 
 template <class _Precision>
 _Precision Vector3<_Precision>::DistanceToLine (const Vector3<_Precision> &rclBase,
                                                 const Vector3<_Precision> &rclDirect) const
 {
-    return (_Precision) fabs((rclDirect % Vector3(*this - rclBase)).Length() / rclDirect.Length());
+    return static_cast<_Precision>(fabs((rclDirect % Vector3(*this - rclBase)).Length() / rclDirect.Length()));
 }
 
 template <class _Precision>
@@ -360,8 +360,8 @@ void Vector3<_Precision>::RotateX (_Precision f)
     Vector3 cPt (*this);
     _Precision fsin, fcos;
 
-    fsin = (_Precision)sin (f);
-    fcos = (_Precision)cos (f);
+    fsin = static_cast<_Precision>(sin(f));
+    fcos = static_cast<_Precision>(cos(f));
     y = (cPt.y * fcos) - (cPt.z * fsin);
     z = (cPt.y * fsin) + (cPt.z * fcos);
 }
@@ -372,8 +372,8 @@ void Vector3<_Precision>::RotateY (_Precision f)
     Vector3 cPt (*this);
     _Precision fsin, fcos;
 
-    fsin = (_Precision)sin (f);
-    fcos = (_Precision)cos (f);
+    fsin = static_cast<_Precision>(sin(f));
+    fcos = static_cast<_Precision>(cos(f));
     x = (cPt.z * fsin) + (cPt.x * fcos);
     z = (cPt.z * fcos) - (cPt.x * fsin);
 }
@@ -384,8 +384,8 @@ void Vector3<_Precision>::RotateZ (_Precision f)
     Vector3 cPt (*this);
     _Precision fsin, fcos;
 
-    fsin = (_Precision)sin (f);
-    fcos = (_Precision)cos (f);
+    fsin = static_cast<_Precision>(sin(f));
+    fcos = static_cast<_Precision>(cos(f));
     x = (cPt.x * fcos) - (cPt.y * fsin);
     y = (cPt.x * fsin) + (cPt.y * fcos);
 }
@@ -394,7 +394,7 @@ template <class _Precision>
 Vector3<_Precision> & Vector3<_Precision>::Normalize ()
 {
     _Precision fLen = Length ();
-    if (fLen != (_Precision)0.0 && fLen != (_Precision)1.0) {
+    if (fLen != static_cast<_Precision>(0.0) && fLen != static_cast<_Precision>(1.0)) {
         x /= fLen;
         y /= fLen;
         z /= fLen;
