@@ -19,7 +19,8 @@ body:
     id: forum_link
     attributes:
       label: Forums discussion
-      description: Please start a discussion about your issue at [the FreeCAD Forum](https://forum.freecad.org) and wait for confirmation there before creating an issue
+      description: Please start a discussion about your issue at [the FreeCAD Forum](https://forum.freecad.org) and wait for confirmation there before creating an issue.\n
+      **Note:** Bug reports without a prior forum discussion will most likely not be accepted.
       placeholder: Paste link to forum discussion here
     validations:
       required: true
