@@ -40,7 +40,6 @@
 # include <QPainter>
 # include <QPointer>
 # include <QTextStream>
-# include <boost_bind_bind.hpp>
 #endif
 
 #include <App/ComplexGeoDataPy.h>

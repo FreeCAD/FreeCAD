@@ -23,10 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
-
 #include "ui_TaskSketcherMessages.h"
 #include "TaskSketcherMessages.h"
 #include <Gui/Application.h>
@@ -36,8 +32,6 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
-
-
 
 #include <Mod/Sketcher/App/SketchObject.h>
 

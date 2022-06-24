@@ -27,7 +27,7 @@ macro(PrintFinalReport)
         message(STATUS "pybind11:            not enabled")
     endif(DEFINED pybind11_FOUND)
 
-    message(STATUS "Boost:               ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION} (${Boost_VERSION})")
+    message(STATUS "Boost:               ${Boost_VERSION}")
 
     message(STATUS "XercesC:             ${XercesC_VERSION} [${XercesC_LIBRARIES}] [${XercesC_INCLUDE_DIRS}]")
 

@@ -51,9 +51,6 @@
 #include <string>
 #include <vector>
 
-// boost
-#include <boost_bind_bind.hpp>
-
 // OCC
 #include <gp_Pnt.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
