@@ -46,7 +46,6 @@ using namespace TechDraw;
 
 QGIHighlight::QGIHighlight()
 {
-    m_refText = "";
     m_refSize = 0.0;
     setInteractive(false);
 
@@ -97,7 +96,7 @@ void QGIHighlight::makeReference()
     prepareGeometryChange();
     m_refFont.setPixelSize(QGIView::calculateFontPixelSize(m_refSize));
     m_reference->setFont(m_refFont);
-    m_reference->setPlainText(QString::fromUtf8(m_refText));
+    m_reference->setPlainText(m_refText);
     double fudge = Rez::guiX(1.0);
     QPointF newPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
     m_reference->setPos(newPos);   
@@ -126,9 +125,9 @@ void QGIHighlight::setBounds(double x1,double y1,double x2,double y2)
     m_end = QPointF(Rez::guiX(x2),Rez::guiX(-y2));
 }
 
-void QGIHighlight::setReference(char* ref)
+void QGIHighlight::setReference(const char* ref)
 {
-    m_refText = ref;
+    m_refText = QString::fromUtf8(ref);
 }
 
 void QGIHighlight::setFont(QFont f, double fsize)
