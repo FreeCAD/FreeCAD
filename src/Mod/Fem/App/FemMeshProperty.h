@@ -60,6 +60,10 @@ public:
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
     Base::BoundBox3d getBoundingBox() const;
+    /// Set the placement of the geometry
+    void setTransform(const Base::Matrix4D& rclTrf);
+    /// Get the placement of the geometry
+    Base::Matrix4D getTransform() const;
     void transformGeometry(const Base::Matrix4D &rclMat);
     //@}
 

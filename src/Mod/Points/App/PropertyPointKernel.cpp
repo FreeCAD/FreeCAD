@@ -68,6 +68,16 @@ const Data::ComplexGeoData* PropertyPointKernel::getComplexData() const
     return _cPoints;
 }
 
+void PropertyPointKernel::setTransform(const Base::Matrix4D& rclTrf)
+{
+    _cPoints->setTransform(rclTrf);
+}
+
+Base::Matrix4D PropertyPointKernel::getTransform() const
+{
+    return _cPoints->getTransform();
+}
+
 Base::BoundBox3d PropertyPointKernel::getBoundingBox() const
 {
     return _cPoints->getBoundBox();

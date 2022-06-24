@@ -82,6 +82,16 @@ Base::BoundBox3d PropertyFemMesh::getBoundingBox() const
     return _FemMesh->getBoundBox();
 }
 
+void PropertyFemMesh::setTransform(const Base::Matrix4D &rclTrf)
+{
+    _FemMesh->setTransform(rclTrf);
+}
+
+Base::Matrix4D PropertyFemMesh::getTransform() const
+{
+    return _FemMesh->getTransform();
+}
+
 void PropertyFemMesh::transformGeometry(const Base::Matrix4D &rclMat)
 {
     aboutToSetValue();
