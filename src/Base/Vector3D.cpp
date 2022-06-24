@@ -40,14 +40,6 @@ Vector3<_Precision>::Vector3 (_Precision fx, _Precision fy, _Precision fz)
 }
 
 template <class _Precision>
-Vector3<_Precision>::Vector3 (const Vector3<_Precision>& rcVct)
-  : x(rcVct.x),
-    y(rcVct.y),
-    z(rcVct.z)
-{
-}
-
-template <class _Precision>
 _Precision& Vector3<_Precision>::operator [] (unsigned short usIndex)
 {
     switch (usIndex)
@@ -153,15 +145,6 @@ template <class _Precision>
 Vector3<_Precision> Vector3<_Precision>::operator / (_Precision fDiv) const
 {
     return Vector3<_Precision>(this->x/fDiv,this->y/fDiv,this->z/fDiv);
-}
-
-template <class _Precision>
-Vector3<_Precision>& Vector3<_Precision>::operator =  (const Vector3<_Precision>& rcVct)
-{
-    x = rcVct.x;
-    y = rcVct.y;
-    z = rcVct.z;
-    return *this;
 }
 
 template <class _Precision>

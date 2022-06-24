@@ -39,7 +39,7 @@ namespace geoff_geometry {
 		if(this->m_unit != m.m_unit || this->m_mirrored != m.m_mirrored)
 		    return false;
 		for(int i = 0; i < 16; i++)
-			if(FEQ(this->e[i], m.e[i], TIGHT_TOLERANCE) == false)
+			if(!FEQ(this->e[i], m.e[i], TIGHT_TOLERANCE))
 			    return false;
 		return true;
 	}
@@ -527,7 +527,7 @@ namespace geoff_geometry {
 
 	 void Vector2d::Transform(const Matrix& m) {
 		 // transform vector
-		 if(m.m_unit == false) {
+		 if(!m.m_unit) {
 			double dxt = dx * m.e[0] + dy * m.e[1];
 			double dyt = dx * m.e[4] + dy * m.e[5];
 			dx = dxt;
@@ -538,7 +538,7 @@ namespace geoff_geometry {
 
 	 void Vector3d::Transform(const Matrix& m) {
 		 // transform vector
-		 if(m.m_unit == false) {
+		 if(!m.m_unit) {
 			double dxt = dx * m.e[0] + dy * m.e[1] + dz * m.e[2];
 			double dyt = dx * m.e[4] + dy * m.e[5] + dz * m.e[6];
 			double dzt = dx * m.e[8] + dy * m.e[9] + dz * m.e[10];
@@ -604,7 +604,8 @@ namespace geoff_geometry {
 		 // calculates a mirror transformation that mirrors 2d about plane
 
 		//Point3d p1 = this->Near(Point3d(0.,0.,0.));
-		if(tmMirrored->m_unit == false) tmMirrored->Unit();
+		if(!tmMirrored->m_unit)
+			tmMirrored->Unit();
 
 		double nx = this->normal.getx();
 		double ny = this->normal.gety();

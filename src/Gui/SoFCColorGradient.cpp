@@ -35,6 +35,7 @@
 #endif
 
 #include "SoFCColorGradient.h"
+#include "SoTextLabel.h"
 #include "DlgSettingsColorGradientImp.h"
 #include "MainWindow.h"
 #include "MDIView.h"
@@ -48,7 +49,7 @@ SO_NODE_SOURCE(SoFCColorGradient)
 /*!
   Constructor.
 */
-SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _precision(3)
+SoFCColorGradient::SoFCColorGradient() : _bbox(5.0f, -4.0f, 5.5f, 4.0f), _precision(3)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorGradient);
     coords = new SoCoordinate3;
@@ -88,15 +89,17 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
 
     int num = label.getNum();
     if (num > 1) {
-        float fStep = 8.0f / ((float)num - 1);
+        SbVec2f maxPt = _bbox.getMax();
+        SbVec2f minPt = _bbox.getMin();
+        float fStep = (maxPt[1] - minPt[1]) / ((float)num - 1);
         SoTransform* trans = new SoTransform;
-        trans->translation.setValue(_bbox.getMax()[0] + 0.1f, _bbox.getMax()[1] - 0.05f + fStep, 0.0f);
+        trans->translation.setValue(maxPt[0] + 0.1f, maxPt[1] - 0.05f + fStep, 0.0f);
         labels->addChild(trans);
 
         for (int i = 0; i < num; i++) {
             SoTransform* trans = new SoTransform;
             SoBaseColor* color = new SoBaseColor;
-            SoText2    * text2 = new SoText2;
+            SoText2    * text2 = new SoColorBarLabel;
 
             trans->translation.setValue(0, -fStep, 0);
             color->rgb.setValue(0, 0, 0);
@@ -106,23 +109,14 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
             labels->addChild(text2);
         }
     }
+
+    setModified();
 }
 
 void SoFCColorGradient::setViewportSize(const SbVec2s& size)
 {
-    // don't know why the parameter range isn't between [-1,+1]
-    float fRatio = ((float)size[0]) / ((float)size[1]);
-    float fMinX =  4.0f, fMaxX = 4.5f;
-    float fMinY = -4.0f, fMaxY = 4.0f;
-
-    if (fRatio > 1.0f) {
-        fMinX = 4.0f * fRatio;
-        fMaxX = fMinX + 0.5f;
-    }
-    else if (fRatio < 1.0f) {
-        fMinY = -4.0f / fRatio;
-        fMaxY =  4.0f / fRatio;
-    }
+    float fMinX, fMinY, fMaxX, fMaxY;
+    float boxWidth = getBounds(size, fMinX, fMinY, fMaxX, fMaxY);
 
     // search for the labels
     int num = 0;
@@ -139,7 +133,8 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
             if (labels->getChild(j)->getTypeId() == SoTransform::getClassTypeId()) {
                 if (first) {
                     first = false;
-                    static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(fMaxX + 0.1f, fMaxY - 0.05f + fStep, 0.0f);
+                    // set the labels with a small space of 0.1f besides the bar
+                    static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(fMaxX + 0.1f - boxWidth, fMaxY - 0.05f + fStep, 0.0f);
                 }
                 else {
                     static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(0, -fStep, 0.0f);
@@ -148,7 +143,8 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
         }
     }
 
-    _bbox.setBounds(fMinX, fMinY, fMaxX, fMaxY);
+    // gradient bar is shifted to the left by width of the labels to assure that labels are fully visible
+    _bbox.setBounds(fMinX - boxWidth, fMinY, fMaxX - boxWidth, fMaxY);
     modifyPoints(_bbox);
 }
 
@@ -156,16 +152,20 @@ void SoFCColorGradient::setRange(float fMin, float fMax, int prec)
 {
     _cColGrad.setRange(fMin, fMax);
 
-    // format the label the following way:
-    // if fMin is smaller than 1e-<precision> or fMax greater than 1e+4, output in scientific notation
-    // otherwise output "normal" (fixed notation)
-
     SoMFString label;
     float eps = std::pow(10.0f, static_cast<float>(-prec));
     float value_min = std::min<float>(fabs(fMin), fabs(fMax));
     float value_max = std::max<float>(fabs(fMin), fabs(fMax));
 
-    bool scientific = (value_min < eps && value_min > 0.0f) || value_max > 1e4;
+    // format the label the following way:
+    // if Min is smaller than 1e-<precision>,
+    //  or Max greater than 1e+4,
+    //  or (Max - Min) < 1e-<precision> * number of labels - 1 (assures every label shows different number)
+    // -> output in scientific notation
+    // otherwise output "normal" (fixed notation)
+    bool scientific = (value_min < eps && value_min > 0.0f)
+        || (value_max - value_min) < eps * (_cColGrad.getCountColors() - 1)
+        || value_max > 1e4;
     std::ios::fmtflags flags = scientific ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
                                           : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
 

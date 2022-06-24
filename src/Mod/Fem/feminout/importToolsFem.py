@@ -415,7 +415,7 @@ def fill_femresult_mechanical(
             if len(Peeq) > 0:
                 if len(Peeq.values()) != len(disp.values()):
                     # how is this possible? An example is needed!
-                    Console.PrintError("PEEQ seams to have exptra nodes.\n")
+                    Console.PrintError("PEEQ seems to have extra nodes.\n")
                     Pe = []
                     Pe_extra_nodes = list(Peeq.values())
                     nodes = len(disp.values())

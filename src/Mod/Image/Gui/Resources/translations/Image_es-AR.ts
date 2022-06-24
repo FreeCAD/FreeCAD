@@ -2,32 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="es-AR" sourcelanguage="en">
   <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="_CommandImageScaling.py" line="62"/>
-      <source>Scale image plane</source>
-      <translation>Escalar la imagen del plano</translation>
-    </message>
-    <message>
-      <location filename="_CommandImageScaling.py" line="66"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Escala del plano de imagen definiendo una distancia entre dos puntos</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Image</source>
       <translation>Imagen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="100"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Create image plane...</source>
       <translation>Crear plano de imagen...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Create a planar image in the 3D space</source>
       <translation>Crea una imagen plana en el espacio 3D</translation>
     </message>
@@ -35,17 +22,17 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Image</source>
       <translation>Imagen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Open...</source>
       <translation>Abrir...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
+      <location filename="../../Command.cpp" line="57"/>
       <source>Open image view</source>
       <translation>Abre vista de imagen</translation>
     </message>
@@ -53,17 +40,17 @@
   <context>
     <name>CmdImageScaling</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Image</source>
       <translation>Imagen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
       <translation>Escala...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
       <translation>Escalado de la imagen</translation>
     </message>
@@ -71,21 +58,57 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Create ImagePlane</source>
       <translation>Crea Plano de Imagen</translation>
     </message>
   </context>
   <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="138"/>
+      <source>Scale image plane</source>
+      <translation>Escalar la imagen del plano</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
+      <source>Distance [mm]</source>
+      <translation>Distancia [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
+      <source>Select first point</source>
+      <translation>Seleccione el primer punto</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
+      <source>Enter distance</source>
+      <translation>Ingresar distancia</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="168"/>
+      <source>Select ImagePlane</source>
+      <translation>Seleccionar ImagePlane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
+      <source>Select second point</source>
+      <translation>Seleccione el segundo punto</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="202"/>
+      <source>Select Image Plane and type distance</source>
+      <translation>Seleccione el plano de la imagen y escriba la distancia</translation>
+    </message>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="334"/>
       <location filename="../../OpenGLImageBox.cpp" line="392"/>
       <source>Image pixel format</source>
       <translation>Formato de pixel de imagen</translation>
     </message>
     <message>
-      <location filename="../../GLImageBox.cpp" line="335"/>
       <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Tipo de espacio de color no definido para la visualización de la imagen</translation>
@@ -132,91 +155,104 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="111"/>
+      <location filename="../../ImageView.cpp" line="107"/>
       <source>&amp;Fit image</source>
       <translation>&amp;Ajustar imagen</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="109"/>
       <source>Stretch the image to fit the view</source>
       <translation>Estira la imagen para que se ajuste a la vista</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="117"/>
+      <location filename="../../ImageView.cpp" line="113"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp;Escala 1:1</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="119"/>
+      <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>Muestra la imagen a escala 1:1</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="128"/>
+      <location filename="../../ImageView.cpp" line="124"/>
       <source>Standard</source>
       <translation>Estándar</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="146"/>
+      <location filename="../../ImageView.cpp" line="142"/>
       <source>Ready...</source>
       <translation>Listo...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="551"/>
+      <location filename="../../ImageView.cpp" line="543"/>
       <source>grey</source>
       <translation>gris</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="552"/>
-      <location filename="../../ImageView.cpp" line="555"/>
-      <location filename="../../ImageView.cpp" line="565"/>
-      <location filename="../../ImageView.cpp" line="570"/>
-      <location filename="../../ImageView.cpp" line="580"/>
-      <location filename="../../ImageView.cpp" line="585"/>
-      <location filename="../../ImageView.cpp" line="596"/>
-      <location filename="../../ImageView.cpp" line="601"/>
-      <location filename="../../ImageView.cpp" line="612"/>
-      <location filename="../../ImageView.cpp" line="617"/>
+      <location filename="../../ImageView.cpp" line="544"/>
+      <location filename="../../ImageView.cpp" line="547"/>
+      <location filename="../../ImageView.cpp" line="557"/>
+      <location filename="../../ImageView.cpp" line="562"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="577"/>
+      <location filename="../../ImageView.cpp" line="588"/>
+      <location filename="../../ImageView.cpp" line="593"/>
+      <location filename="../../ImageView.cpp" line="604"/>
+      <location filename="../../ImageView.cpp" line="609"/>
       <source>zoom</source>
       <translation>zoom</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="555"/>
-      <location filename="../../ImageView.cpp" line="565"/>
-      <location filename="../../ImageView.cpp" line="580"/>
-      <location filename="../../ImageView.cpp" line="596"/>
-      <location filename="../../ImageView.cpp" line="612"/>
+      <location filename="../../ImageView.cpp" line="547"/>
+      <location filename="../../ImageView.cpp" line="557"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="588"/>
+      <location filename="../../ImageView.cpp" line="604"/>
       <source>outside image</source>
       <translation>imagen exterior</translation>
     </message>
   </context>
   <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="56"/>
+      <source>Scale image plane</source>
+      <translation>Escalar la imagen del plano</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="60"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>Escala del plano de imagen definiendo una distancia entre dos puntos</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="113"/>
+      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Images</source>
       <translation>Imágenes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
-      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="119"/>
       <source>All files</source>
       <translation>Todos los archivos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="77"/>
+      <location filename="../../Command.cpp" line="121"/>
       <source>Choose an image file to open</source>
       <translation>Elegir un archivo de imagen para abrir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Error opening image</source>
       <translation>Error al abrir la imagen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Could not load the chosen image</source>
       <translation>No se pudo cargar la imagen seleccionada</translation>
     </message>
@@ -224,7 +260,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="32"/>
       <source>Image</source>
       <translation>Imagen</translation>
     </message>

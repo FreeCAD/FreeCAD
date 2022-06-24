@@ -561,7 +561,7 @@ void MeshKernel::DeletePoints (const std::vector<PointIndex> &raulPoints)
         MeshPoint &rclP1 = _aclPointArray[pF->_aulPoints[1]];
         MeshPoint &rclP2 = _aclPointArray[pF->_aulPoints[2]];
 
-        if ((rclP0.IsValid() == false) || (rclP1.IsValid() == false) || (rclP2.IsValid() == false)) {
+        if (!rclP0.IsValid() || !rclP1.IsValid() || !rclP2.IsValid()) {
             pF->SetInvalid();
         }
         else {
@@ -609,7 +609,7 @@ void MeshKernel::ErasePoint (PointIndex ulIndex, FacetIndex ulFacetIndex, bool b
     }
 
 
-    if (bOnlySetInvalid == false) {
+    if (!bOnlySetInvalid) {
         // completely remove point
         _aclPointArray.erase(_aclPointArray.begin() + ulIndex);
 
@@ -642,14 +642,14 @@ void MeshKernel::RemoveInvalids ()
     pPEnd  = _aclPointArray.end();
     for (pPIter = _aclPointArray.begin(); pPIter != pPEnd; ++pPIter) {
         *pDIter++ = ulDec;
-        if (pPIter->IsValid() == false)
+        if (!pPIter->IsValid())
             ulDec++;
     }
 
     // correct point indices of the facets
     pFEnd  = _aclFacetArray.end();
     for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; ++pFIter) {
-        if (pFIter->IsValid() == true) {
+        if (pFIter->IsValid()) {
             pFIter->_aulPoints[0] -= aulDecrements[pFIter->_aulPoints[0]];
             pFIter->_aulPoints[1] -= aulDecrements[pFIter->_aulPoints[1]];
             pFIter->_aulPoints[2] -= aulDecrements[pFIter->_aulPoints[2]];
@@ -664,7 +664,7 @@ void MeshKernel::RemoveInvalids ()
     MeshPointArray::_TIterator pPTemp = aclTempPt.begin();
     pPEnd = _aclPointArray.end();
     for (pPIter = _aclPointArray.begin(); pPIter != pPEnd; ++pPIter) {
-        if (pPIter->IsValid() == true)
+        if (pPIter->IsValid())
             *pPTemp++ = *pPIter;
     }
 
@@ -681,18 +681,18 @@ void MeshKernel::RemoveInvalids ()
     pFEnd  = _aclFacetArray.end();
     for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; ++pFIter, ++pDIter) {
         *pDIter = ulDec;
-        if (pFIter->IsValid() == false)
+        if (!pFIter->IsValid())
             ulDec++;
     }
 
     // correct neighbour indices of the facets
     pFEnd = _aclFacetArray.end();
     for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; ++pFIter) {
-        if (pFIter->IsValid() == true) {
+        if (pFIter->IsValid()) {
             for (int i = 0; i < 3; i++) {
                 FacetIndex k = pFIter->_aulNeighbours[i];
                 if (k != FACET_INDEX_MAX) {
-                    if (_aclFacetArray[k].IsValid() == true)
+                    if (_aclFacetArray[k].IsValid())
                         pFIter->_aulNeighbours[i] -= aulDecrements[k];
                     else
                         pFIter->_aulNeighbours[i] = FACET_INDEX_MAX;
@@ -708,7 +708,7 @@ void MeshKernel::RemoveInvalids ()
     MeshFacetArray::_TIterator pFTemp = aclFArray.begin();  
     pFEnd  = _aclFacetArray.end();
     for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; ++pFIter) {
-        if (pFIter->IsValid() == true)
+        if (pFIter->IsValid())
             *pFTemp++ = *pFIter;
     }
 
@@ -1053,7 +1053,7 @@ void MeshKernel::Smooth(int iterations, float stepsize)
     LaplaceSmoothing(*this).Smooth(iterations);
 }
 
-void MeshKernel::RecalcBoundBox ()
+void MeshKernel::RecalcBoundBox () const
 {
     _clBoundBox.SetVoid();
     for (MeshPointArray::_TConstIterator pI = _aclPointArray.begin(); pI != _aclPointArray.end(); pI++)

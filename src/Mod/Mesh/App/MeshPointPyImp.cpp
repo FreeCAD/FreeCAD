@@ -86,42 +86,6 @@ PyObject*  MeshPointPy::unbound(PyObject *args)
     Py_Return;
 }
 
-PyObject*  MeshPointPy::move(PyObject *args)
-{
-    if (!getMeshPointPtr()->isBound()) {
-        PyErr_SetString(PyExc_RuntimeError, "This object is not bounded to a mesh, so no topological operation is possible!");
-        return nullptr;
-    }
-    if (getMeshPointPtr()->Mesh->countPoints() <= getMeshPointPtr()->Index) {
-        PyErr_SetString(PyExc_IndexError, "Index out of range");
-        return nullptr;
-    }
-
-    double  x=0.0,y=0.0,z=0.0;
-    PyObject *object;
-    Base::Vector3d vec;
-
-    do {
-        if (PyArg_ParseTuple(args, "ddd", &x,&y,&z)) {
-            vec.Set(x,y,z);
-            break;
-        }
-
-        PyErr_Clear(); // set by PyArg_ParseTuple()
-        if (PyArg_ParseTuple(args,"O!",&(Base::VectorPy::Type), &object)) {
-            vec = *(static_cast<Base::VectorPy*>(object)->getVectorPtr());
-            break;
-        }
-
-        PyErr_SetString(PyExc_TypeError, "Tuple of three floats or Vector expected");
-        return nullptr;
-    }
-    while (false);
-
-    getMeshPointPtr()->Mesh->movePoint(getMeshPointPtr()->Index,vec);
-    Py_Return;
-}
-
 Py::Long MeshPointPy::getIndex() const
 {
     return Py::Long((long) getMeshPointPtr()->Index);
@@ -167,17 +131,6 @@ Py::Float MeshPointPy::getx() const
     return Py::Float(x);
 }
 
-void  MeshPointPy::setx(Py::Float arg)
-{
-    MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
-    ptr->x = (double)arg;
-
-    if (getMeshPointPtr()->isBound()) {
-        if (getMeshPointPtr()->Mesh->countPoints() > getMeshPointPtr()->Index)
-            getMeshPointPtr()->Mesh->setPoint(getMeshPointPtr()->Index,*ptr);
-    }
-}
-
 Py::Float MeshPointPy::gety() const
 {
     MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
@@ -191,17 +144,6 @@ Py::Float MeshPointPy::gety() const
     return Py::Float(y);
 }
 
-void  MeshPointPy::sety(Py::Float arg)
-{
-    MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
-    ptr->y = (double)arg;
-
-    if (getMeshPointPtr()->isBound()) {
-        if (getMeshPointPtr()->Mesh->countPoints() > getMeshPointPtr()->Index)
-            getMeshPointPtr()->Mesh->setPoint(getMeshPointPtr()->Index,*ptr);
-    }
-}
-
 Py::Float MeshPointPy::getz() const
 {
     MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
@@ -213,17 +155,6 @@ Py::Float MeshPointPy::getz() const
     }
 
     return Py::Float(z);
-}
-
-void  MeshPointPy::setz(Py::Float arg)
-{
-    MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
-    ptr->z = (double)arg;
-
-    if (getMeshPointPtr()->isBound()) {
-        if (getMeshPointPtr()->Mesh->countPoints() > getMeshPointPtr()->Index)
-            getMeshPointPtr()->Mesh->setPoint(getMeshPointPtr()->Index,*ptr);
-    }
 }
 
 PyObject *MeshPointPy::getCustomAttributes(const char* /*attr*/) const

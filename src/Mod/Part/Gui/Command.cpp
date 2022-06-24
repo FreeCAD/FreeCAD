@@ -277,7 +277,8 @@ bool hasShapesInSelection()
     bool hasShapes = false;
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docobjs.begin(); it != docobjs.end(); ++it) {
-        if (!Part::Feature::getTopoShape(*it).isNull()) {
+        // Only check for the existence of a shape but don't perform a transformation
+        if (!Part::Feature::getTopoShape(*it, nullptr, false, nullptr, nullptr, true, false, false).isNull()) {
             hasShapes = true;
             break;
         }
@@ -1302,7 +1303,7 @@ void CmdPartReverseShape::activated(int iMsg)
 
 bool CmdPartReverseShape::isActive(void)
 {
-    return PartGui::getShapesFromSelection().size() > 0;
+    return PartGui::hasShapesInSelection();
 }
 
 //===========================================================================
@@ -2107,11 +2108,11 @@ void CmdPartRuledSurface::activated(int iMsg)
             }
             if (ok && subnames1.size() <= 2) {
                 if (subnames1.size() >= 1) {
-                    curve1 = shape1.getSubShape(subnames1[0].c_str());
+                    curve1 = Part::Feature::getTopoShape(docobj1, subnames1[0].c_str(), true /*need element*/).getShape();
                     link1 = subnames1[0];
                 }
                 if (subnames1.size() == 2) {
-                    curve2 = shape1.getSubShape(subnames1[1].c_str());
+                    curve2 = Part::Feature::getTopoShape(docobj1, subnames1[1].c_str(), true /*need element*/).getShape();
                     link2 = subnames1[1];
                 }
                 if (subnames1.size() == 0) {
@@ -2131,7 +2132,7 @@ void CmdPartRuledSurface::activated(int iMsg)
                 ok = false;
             }
             if (ok && subnames2.size() == 1) {
-                curve2 = shape2.getSubShape(subnames2[0].c_str());
+                curve2 = Part::Feature::getTopoShape(docobj2, subnames2[0].c_str(), true /*need element*/).getShape();
                 link2 = subnames2[0];
             } else {
                 if (subnames2.size() == 0) {
@@ -2483,7 +2484,8 @@ void CmdBoxSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     PartGui::BoxSelection* sel = new PartGui::BoxSelection();
-    sel->start();
+    sel->setAutoDelete(true);
+    sel->start(TopAbs_FACE);
 }
 
 bool CmdBoxSelection::isActive(void)

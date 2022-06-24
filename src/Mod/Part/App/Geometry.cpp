@@ -1394,6 +1394,22 @@ bool GeomBSplineCurve::join(const Handle(Geom_BSplineCurve)& spline)
     return true;
 }
 
+void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p, Standard_Boolean periodic)
+{
+    if (p.size() < 2)
+        Standard_ConstructionError::Raise();
+
+    double tol3d = Precision::Approximation();
+    Handle(TColgp_HArray1OfPnt) pts = new TColgp_HArray1OfPnt(1, p.size());
+    for (std::size_t i=0; i<p.size(); i++) {
+        pts->SetValue(i+1, p[i]);
+    }
+
+    GeomAPI_Interpolate interpolate(pts, periodic, tol3d);
+    interpolate.Perform();
+    this->myCurve = interpolate.Curve();
+}
+
 void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p,
                                    const std::vector<gp_Vec>& t)
 {
@@ -4369,8 +4385,10 @@ unsigned int GeomBezierSurface::getMemSize (void) const
 {
     unsigned int size = sizeof(Geom_BezierSurface);
     if (!mySurface.IsNull()) {
-        size += mySurface->NbUPoles() * mySurface->NbVPoles() * sizeof(gp_Pnt);
-        size += mySurface->NbUPoles() * mySurface->NbVPoles() * sizeof(Standard_Real);
+        unsigned int poles = mySurface->NbUPoles();
+        poles *= mySurface->NbVPoles();
+        size += poles * sizeof(gp_Pnt);
+        size += poles * sizeof(Standard_Real);
     }
     return size;
 }
@@ -4448,8 +4466,10 @@ unsigned int GeomBSplineSurface::getMemSize (void) const
         size += mySurface->NbUKnots() * sizeof(Standard_Integer);
         size += mySurface->NbVKnots() * sizeof(Standard_Real);
         size += mySurface->NbVKnots() * sizeof(Standard_Integer);
-        size += mySurface->NbUPoles() * mySurface->NbVPoles() * sizeof(gp_Pnt);
-        size += mySurface->NbUPoles() * mySurface->NbVPoles() * sizeof(Standard_Real);
+        unsigned int poles = mySurface->NbUPoles();
+        poles *= mySurface->NbVPoles();
+        size += poles * sizeof(gp_Pnt);
+        size += poles * sizeof(Standard_Real);
     }
     return size;
 }
@@ -4587,6 +4607,10 @@ PyObject *GeomCone::getPyObject(void)
 
 gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
 {
+    // Will be fixed in OCC 7.7
+#if OCC_VERSION_HEX >= 0x070700
+    return GeomSurface::getDN(u, v, Nu, Nv);
+#else
     // Copied from ElSLib::ConeDN() and applied the needed fix
     auto ElSLib__ConeDN = [](const Standard_Real U,
                              const Standard_Real V,
@@ -4598,7 +4622,6 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
     {
        gp_XYZ Xdir = Pos.XDirection().XYZ();
        gp_XYZ Ydir = Pos.YDirection().XYZ();
-       gp_XYZ ZDir = Pos.Direction ().XYZ();
        Standard_Real Um = U + Nu * M_PI_2;  // M_PI * 0.5
        Xdir.Multiply(cos(Um));
        Ydir.Multiply(sin(Um));
@@ -4610,8 +4633,8 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
        }
        else if(Nv == 1) {
          Xdir.Multiply(sin(SAngle));
-         ZDir.Multiply(cos(SAngle));
-         Xdir.Add(ZDir);
+         if (Nu == 0)
+           Xdir.Add(Pos.Direction().XYZ() * cos(SAngle));
          return gp_Vec(Xdir);
        }
        return gp_Vec(0.0,0.0,0.0);
@@ -4627,6 +4650,7 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
     else {
       return ElSLib__ConeDN(u, v, s->Position(), s->RefRadius(), s->SemiAngle(), Nu, Nv);
     }
+#endif
 }
 
 // -------------------------------------------------

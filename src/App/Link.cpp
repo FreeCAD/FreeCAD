@@ -21,6 +21,7 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+#include <boost/property_map/property_map.hpp>
 
 #include <boost/range.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -460,18 +461,24 @@ void LinkBaseExtension::setOnChangeCopyObject(
     if (external == exclude && !prop)
         return;
 
-    prop = static_cast<PropertyMap*>(
-            obj->addDynamicProperty("App::PropertyMap", "_CopyOnChangeControl"));
     if (!prop) {
-        FC_ERR("Failed to setup copy on change object " << obj->getFullName());
-        return;
+        try {
+            prop = static_cast<PropertyMap*>(
+                    obj->addDynamicProperty("App::PropertyMap", "_CopyOnChangeControl"));
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
+        if (!prop) {
+            FC_ERR("Failed to setup copy on change object " << obj->getFullName());
+            return;
+        }
     }
 
     const char *key = flags.testFlag(OnChangeCopyOptions::ApplyAll) ? "*" : parent->getNameInDocument();
     if (external)
-        prop->setValue(key, exclude ? nullptr : "+");
+        prop->setValue(key, exclude ? "" : "+");
     else
-        prop->setValue(key, exclude ? "-" : nullptr);
+        prop->setValue(key, exclude ? "-" : "");
 }
 
 // The purpose of this function is to synchronize the mutated copy to the
@@ -547,7 +554,7 @@ void LinkBaseExtension::syncCopyOnChange()
     // so the last object will be the copy of the original linked object
     auto newLinked = copiedObjs.back();
 
-    // We are coping from the original linked object and we've already mutated
+    // We are copying from the original linked object and we've already mutated
     // it, so we need to copy all CopyOnChange properties from the mutated
     // object to the new copy.
     std::vector<App::Property*> propList;

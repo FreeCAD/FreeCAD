@@ -54,7 +54,7 @@ using namespace Gui;
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
-              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()), true, parent)
+              TransformedView->menuName, true, parent)
     , proxy(nullptr)
     , TransformedView(TransformedView)
     , parentTask(nullptr)
@@ -527,7 +527,7 @@ void ComboLinks::clear()
 
 App::PropertyLinkSub &ComboLinks::getLink(int index) const
 {
-    if (index < 0 || index > (ssize_t) linksInList.size()-1)
+    if (index < 0 || index > static_cast<int>(linksInList.size())-1)
         throw Base::IndexError("ComboLinks::getLink:Index out of range");
     if (linksInList[index]->getValue() && doc && !(doc->isIn(linksInList[index]->getValue())))
         throw Base::ValueError("Linked object is not in the document; it may have been deleted");

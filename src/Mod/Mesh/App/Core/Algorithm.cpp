@@ -83,7 +83,7 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     MeshFacetIterator  clFIter(_rclMesh);
     for (clFIter.Init(); clFIter.More(); clFIter.Next()) {
         if (clFIter->Foraminate(rclPt, rclDir, clRes, fMaxAngle)) {
-            if (bSol == false) {
+            if (!bSol) {
                 // first solution
                 bSol   = true;
                 clProj = clRes;
@@ -113,11 +113,11 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     std::vector<FacetIndex> aulFacets;
     MeshGridIterator clGridIter(rclGrid);
 
-    if (clGridIter.InitOnRay(rclPt, rclDir, aulFacets) == true) {
-        if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet) == false) {
+    if (clGridIter.InitOnRay(rclPt, rclDir, aulFacets)) {
+        if (!RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet)) {
             aulFacets.clear();
-            while (clGridIter.NextOnRay(aulFacets) == true) {
-                if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet) == true)
+            while (clGridIter.NextOnRay(aulFacets)) {
+                if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet))
                     return true;
             }
         }
@@ -134,11 +134,11 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     std::vector<FacetIndex> aulFacets;
     MeshGridIterator  clGridIter(rclGrid);
 
-    if (clGridIter.InitOnRay(rclPt, rclDir, fMaxSearchArea, aulFacets) == true) {
-        if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet, 1.75f) == false) {
+    if (clGridIter.InitOnRay(rclPt, rclDir, fMaxSearchArea, aulFacets)) {
+        if (!RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet, 1.75f)) {
             aulFacets.clear();
-            while (clGridIter.NextOnRay(aulFacets) == true) {
-                if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet, 1.75f) == true)
+            while (clGridIter.NextOnRay(aulFacets)) {
+                if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet, 1.75f))
                     return true;
             }
         }
@@ -158,8 +158,8 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
 
     for (std::vector<FacetIndex>::const_iterator pI = raulFacets.begin(); pI != raulFacets.end(); ++pI) {
         MeshGeomFacet rclSFacet = _rclMesh.GetFacet(*pI);
-        if (rclSFacet.Foraminate(rclPt, rclDir, clRes) == true) {
-            if (bSol == false) {// first solution
+        if (rclSFacet.Foraminate(rclPt, rclDir, clRes)) {
+            if (!bSol) {// first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = *pI;
@@ -189,8 +189,8 @@ bool MeshAlgorithm::RayNearestField (const Base::Vector3f &rclPt, const Base::Ve
     FacetIndex ulInd = 0;
 
     for (std::vector<FacetIndex>::const_iterator pF = raulFacets.begin(); pF != raulFacets.end(); ++pF) {
-        if (_rclMesh.GetFacet(*pF).Foraminate(rclPt, rclDir, clRes/*, fMaxAngle*/) == true) {
-            if (bSol == false) { // first solution
+        if (_rclMesh.GetFacet(*pF).Foraminate(rclPt, rclDir, clRes/*, fMaxAngle*/)) {
+            if (!bSol) { // first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = *pF;
@@ -352,7 +352,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<FacetIndex> &raulInd,
         for (unsigned short i = 0; i < 3; i++) {
             FacetIndex ulNB = rclFacet._aulNeighbours[i];
             if (ulNB != FACET_INDEX_MAX) {
-                if (rclFAry[ulNB].IsFlag(MeshFacet::VISIT) == true)
+                if (rclFAry[ulNB].IsFlag(MeshFacet::VISIT))
                     continue;
             }
 
@@ -1144,7 +1144,7 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
             for (int j=0; j<3; j++) {
                 clPt2d = fixedProj(clIter->_aclPoints[j]);
                 if ((clPolyBBox.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) &&
-                     rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y))) == false) {
+                     !rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)))) {
                     raulFacets.push_back(clIter.Position());
                     break;
                 }
@@ -1304,7 +1304,7 @@ void MeshAlgorithm::CheckBorderFacets (const std::vector<FacetIndex> &raclFacetI
           rclFAry[*pF].ResetFlag(MeshFacet::TMP0);
           continue;
         }
-        if (rclFAry[ulNB].IsFlag(MeshFacet::TMP0) == false)
+        if (!rclFAry[ulNB].IsFlag(MeshFacet::TMP0))
         {
           raclResultIndices.push_back(*pF);
           rclFAry[*pF].ResetFlag(MeshFacet::TMP0);
@@ -1334,7 +1334,7 @@ void MeshAlgorithm::GetBorderPoints (const std::vector<FacetIndex> &raclFacetInd
         raclResultPointsIndices.insert(rclFacet._aulPoints[(i+1)%3]);
         continue;
       }
-      if (rclFAry[ulNB].IsFlag(MeshFacet::TMP0) == false)
+      if (!rclFAry[ulNB].IsFlag(MeshFacet::TMP0))
       {
         raclResultPointsIndices.insert(rclFacet._aulPoints[i]);
         raclResultPointsIndices.insert(rclFacet._aulPoints[(i+1)%3]);
@@ -1411,7 +1411,7 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
   for (clGridIter.Init(); clGridIter.More(); clGridIter.Next())
   {
     // if Gridvoxel intersects the plane: pick up all facets for cutting
-    if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal) == true)
+    if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal))
       clGridIter.GetElements(aulFacets);
   }
 
@@ -1428,7 +1428,7 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
     const MeshGeomFacet clF(_rclMesh.GetFacet(*pF));
 
     // Cut the facet and store the cutting path
-    if (clF.IntersectWithPlane(clBase, clNormal, clE1, clE2) == true)
+    if (clF.IntersectWithPlane(clBase, clNormal, clE1, clE2))
       clTempPoly.emplace_back(clE1, clE2);
   }
 
@@ -1615,22 +1615,22 @@ void MeshAlgorithm::GetFacetsFromPlane (const MeshFacetGrid &rclGrid, const Base
     MeshGridIterator clGridIter(rclGrid);
     for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
         // add facets from grid if the plane if cut the grid-voxel
-        if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal) == true)
+        if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal))
             clGridIter.GetElements(aulFacets);
     }
 
     // testing facet against planes
     for (std::vector<FacetIndex>::iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI) {
         MeshGeomFacet clSFacet = _rclMesh.GetFacet(*pI);
-        if (clSFacet.IntersectWithPlane(clBase, clNormal) == true) {
+        if (clSFacet.IntersectWithPlane(clBase, clNormal)) {
             bool bInner = false;
-            for (int i = 0; (i < 3) && (bInner == false); i++) {
+            for (int i = 0; (i < 3) && !bInner; i++) {
                 Base::Vector3f clPt = clSFacet._aclPoints[i];
                 if ((clPt.DistanceToPlane(rclLeft, clPtNormal) <= 0.0f) && (clPt.DistanceToPlane(rclRight, clPtNormal) >= 0.0f))
                     bInner = true;
             }
 
-            if (bInner == true)
+            if (bInner)
                 rclRes.push_back(*pI);
         }
     }
@@ -1666,7 +1666,7 @@ bool MeshAlgorithm::Distance (const Base::Vector3f &rclPt, FacetIndex ulFacetIdx
   clBB.Add(rclPAry[*pulIdx]);
   clBB.Enlarge(fMaxDistance);
 
-  if (clBB.IsInBox(rclPt) == false)
+  if (!clBB.IsInBox(rclPt))
     return false;
 
   rfDistance = _rclMesh.GetFacet(ulFacetIdx).DistanceToPoint(rclPt);

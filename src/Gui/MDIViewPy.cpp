@@ -258,7 +258,7 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
 {
     const char* name;
     PyObject *resolve = Py_True;
-    if (!PyArg_ParseTuple(args.ptr(), "s|O", &name,&resolve))
+    if (!PyArg_ParseTuple(args.ptr(), "s|O!", &name, &PyBool_Type, &resolve))
         throw Py::Exception();
 
     App::DocumentObject *parent = nullptr;
@@ -269,7 +269,7 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
     if (!obj)
         return Py::None();
 
-    if (PyObject_IsTrue(resolve))
+    if (PyObject_IsTrue(resolve) ? true : false)
         return Py::asObject(obj->getPyObject());
 
     return Py::TupleN(

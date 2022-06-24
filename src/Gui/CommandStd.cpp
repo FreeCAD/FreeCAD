@@ -223,7 +223,7 @@ Action * StdCmdAbout::createAction(void)
     Action *pcAction;
 
     QString exe = qApp->applicationName();
-    pcAction = new Action(this,getMainWindow());
+    pcAction = new Action(this, getMainWindow());
     pcAction->setText(QCoreApplication::translate(
         this->className(), getMenuText()).arg(exe));
     pcAction->setToolTip(QCoreApplication::translate(

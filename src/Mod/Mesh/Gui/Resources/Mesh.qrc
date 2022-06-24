@@ -19,6 +19,7 @@
         <file>icons/Mesh_Import.svg</file>
         <file>icons/Mesh_Intersection.svg</file>
         <file>icons/Mesh_Merge.svg</file>
+        <file>icons/Mesh_Pipette.svg</file>
         <file>icons/Mesh_PolyCut.svg</file>
         <file>icons/Mesh_PolyTrim.svg</file>
         <file>icons/Mesh_RemeshGmsh.svg</file>

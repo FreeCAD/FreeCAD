@@ -66,7 +66,7 @@ BrandingText " "
 !define MUI_FINISHPAGE_SHOWREADME_FUNCTION StartFreeCAD
 !define MUI_FINISHPAGE_SHOWREADME_TEXT $(FinishPageRun)
 !define MUI_FINISHPAGE_LINK $(TEXT_FINISH_WEBSITE)
-!define MUI_FINISHPAGE_LINK_LOCATION "https://freecad.org/"
+!define MUI_FINISHPAGE_LINK_LOCATION "https://www.freecad.org/"
 #!define MUI_PAGE_CUSTOMFUNCTION_SHOW CheckDesktopShortcut
 !insertmacro MUI_PAGE_FINISH
 

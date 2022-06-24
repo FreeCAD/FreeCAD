@@ -13,71 +13,72 @@
         Delete="true">
         <Documentation>
             <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
-            <UserDocu>Class for creating a Coin3D representation of a coordinate system</UserDocu>
+            <UserDocu>Gui.AxisOrigin class.\n
+Class for creating a Coin3D representation of a coordinate system.</UserDocu>
         </Documentation>
         <Methode Name="getElementPicked" Const="true">
 			<Documentation>
-                <UserDocu>getElementPicked(pickPoint): return the picked subelement</UserDocu>
+                <UserDocu>getElementPicked(pickedPoint) -> str\n
+Returns the picked element name.\n
+pickedPoint : coin.SoPickedPoint</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="getDetailPath" Const="true">
 			<Documentation>
-                <UserDocu>
-getDetailPath(subname,path): return Coin detail and path of an subelement
-
-subelement: dot separated string reference to the sub element
-pPath: output coin path leading to the returned element detail
-                </UserDocu>
+                <UserDocu>getDetailPath(subname, path) -> coin.SoDetail or None\n
+Returns Coin detail of a subelement.
+Note: Not fully implemented. Currently only returns None.\n
+subname : str\n    String reference to the subelement.
+path: coin.SoPath\n    Output Coin path leading to the returned element detail.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Attribute Name="AxisLength">
 			<Documentation>
-                <UserDocu>Get/set the axis length</UserDocu>
+                <UserDocu>Get/set the axis length.</UserDocu>
 			</Documentation>
 			<Parameter Name="AxisLength" Type="Float" />
 		</Attribute>
 		<Attribute Name="LineWidth">
 			<Documentation>
-                <UserDocu>Get/set the axis line width for rendering</UserDocu>
+                <UserDocu>Get/set the axis line width for rendering.</UserDocu>
 			</Documentation>
 			<Parameter Name="LineWidth" Type="Float" />
 		</Attribute>
 		<Attribute Name="PointSize">
 			<Documentation>
-                <UserDocu>Get/set the origin point size for rendering</UserDocu>
+                <UserDocu>Get/set the origin point size for rendering.</UserDocu>
 			</Documentation>
 			<Parameter Name="PointSize" Type="Float" />
 		</Attribute>
 		<Attribute Name="Scale">
 			<Documentation>
-                <UserDocu>Get/set auto scaling factor, 0 to disable</UserDocu>
+                <UserDocu>Get/set auto scaling factor, 0 to disable.</UserDocu>
 			</Documentation>
 			<Parameter Name="Scale" Type="Float" />
 		</Attribute>
 		<Attribute Name="Plane">
 			<Documentation>
-                <UserDocu>Get/set axis plane size and distance to axis line</UserDocu>
+                <UserDocu>Get/set axis plane size and distance to axis line.</UserDocu>
 			</Documentation>
 			<Parameter Name="Plane" Type="Tuple" />
 		</Attribute>
 		<Attribute Name="Labels">
 			<Documentation>
-                <UserDocu>
-Get/set axis component names as a dictionary. Available keys are,
+                <UserDocu>Get/set axis component names as a dictionary.
+Available keys are:
 'O': origin
 'X': x axis
 'Y': y axis
 'Z': z axis
 'XY': xy plane
 'XZ': xz plane
-'YZ': yz plane
-                </UserDocu>
+'YZ': yz plane</UserDocu>
 			</Documentation>
 			<Parameter Name="Labels" Type="Dict" />
 		</Attribute>
 		<Attribute Name="Node" ReadOnly='true'>
 			<Documentation>
-                <UserDocu>Get the Coin3D node</UserDocu>
+                <UserDocu>Get the Coin3D node.</UserDocu>
 			</Documentation>
 			<Parameter Name="Node" Type="Object" />
 		</Attribute>

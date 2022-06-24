@@ -538,6 +538,16 @@ void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<PointIndex,
     hasSetValue();
 }
 
+void PropertyMeshKernel::setTransform(const Base::Matrix4D& rclTrf)
+{
+    _meshObject->setTransform(rclTrf);
+}
+
+Base::Matrix4D PropertyMeshKernel::getTransform() const
+{
+    return _meshObject->getTransform();
+}
+
 PyObject *PropertyMeshKernel::getPyObject()
 {
     if (!meshPyObject) {

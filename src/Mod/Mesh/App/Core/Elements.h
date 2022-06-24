@@ -121,9 +121,9 @@ public:
    */
   //@{
   void SetFlag (TFlagType tF) const
-  { const_cast<MeshPoint*>(this)->_ucFlag |= static_cast<unsigned char>(tF); }
+  { _ucFlag |= static_cast<unsigned char>(tF); }
   void ResetFlag (TFlagType tF) const
-  { const_cast<MeshPoint*>(this)->_ucFlag &= ~static_cast<unsigned char>(tF); }
+  { _ucFlag &= ~static_cast<unsigned char>(tF); }
   bool IsFlag (TFlagType tF) const
   { return (_ucFlag & static_cast<unsigned char>(tF)) == static_cast<unsigned char>(tF);  }
   void ResetInvalid () const
@@ -133,7 +133,7 @@ public:
   bool IsValid () const
   { return !IsFlag(INVALID); }
   void SetProperty(unsigned long uP) const
-  { const_cast<MeshPoint*>(this)->_ulProp = uP; }
+  { _ulProp = uP; }
   //@}
 
   // Assignment
@@ -145,8 +145,8 @@ public:
   inline bool operator < (const MeshPoint &rclPt) const;
 
 public:
-  unsigned char _ucFlag; /**< Flag member */
-  unsigned long _ulProp; /**< Free usable property */
+  mutable unsigned char _ucFlag; /**< Flag member */
+  mutable unsigned long _ulProp; /**< Free usable property */
 };
 
 /**
@@ -250,15 +250,15 @@ public:
    */
   //@{
   void SetFlag (TFlagType tF) const
-  { const_cast<MeshFacet*>(this)->_ucFlag |= static_cast<unsigned char>(tF); }
+  { _ucFlag |= static_cast<unsigned char>(tF); }
   void ResetFlag (TFlagType tF) const
-  { const_cast<MeshFacet*>(this)->_ucFlag &= ~static_cast<unsigned char>(tF); }
+  { _ucFlag &= ~static_cast<unsigned char>(tF); }
   bool IsFlag (TFlagType tF) const
   { return (_ucFlag & static_cast<unsigned char>(tF)) == static_cast<unsigned char>(tF); }
   void ResetInvalid () const
   { ResetFlag(INVALID); }
   void SetProperty(unsigned long uP) const
-  { const_cast<MeshFacet*>(this)->_ulProp = uP; }
+  { _ulProp = uP; }
   /**
    * Marks a facet as invalid. Should be used only temporary from within an algorithm
    * (e.g. deletion of several facets) but must not be set permanently.
@@ -346,8 +346,8 @@ public:
   }
 
 public:
-  unsigned char _ucFlag; /**< Flag member. */
-  unsigned long _ulProp; /**< Free usable property. */
+  mutable unsigned char _ucFlag; /**< Flag member. */
+  mutable unsigned long _ulProp; /**< Free usable property. */
   PointIndex _aulPoints[3];     /**< Indices of corner points. */
   FacetIndex _aulNeighbours[3]; /**< Indices of neighbour facets. */
 };
@@ -427,7 +427,7 @@ public:
   /**
    * Calculates the facet normal for storing internally.
    */
-  inline void CalcNormal ();
+  inline void CalcNormal () const;
   /**
    * Arrange the facet normal so the both vectors have the same orientation.
    */
@@ -552,8 +552,8 @@ public:
   bool IsCoplanar(const MeshGeomFacet &facet) const;
 
 protected:
-  Base::Vector3f  _clNormal; /**< Normal of the facet. */
-  bool  _bNormalCalculated; /**< True if the normal is already calculated. */
+  mutable Base::Vector3f  _clNormal; /**< Normal of the facet. */
+  mutable bool  _bNormalCalculated; /**< True if the normal is already calculated. */
 
 public:
   Base::Vector3f  _aclPoints[3]; /**< Geometric corner points. */
@@ -795,7 +795,7 @@ inline float MeshGeomFacet::DistancePlaneToPoint (const Base::Vector3f &rclPoint
     return float(fabs(rclPoint.DistanceToPlane(_aclPoints[0], GetNormal())));
 }
 
-inline void MeshGeomFacet::CalcNormal ()
+inline void MeshGeomFacet::CalcNormal () const
 {
     _clNormal = (_aclPoints[1] - _aclPoints[0]) % (_aclPoints[2] - _aclPoints[0]);
     _clNormal.Normalize();
@@ -804,8 +804,8 @@ inline void MeshGeomFacet::CalcNormal ()
 
 inline Base::Vector3f MeshGeomFacet::GetNormal () const
 {
-    if (_bNormalCalculated == false)
-        const_cast<MeshGeomFacet*>(this)->CalcNormal();
+    if (!_bNormalCalculated)
+        CalcNormal();
     return _clNormal;
 }
 
@@ -860,7 +860,7 @@ inline float MeshGeomFacet::Area () const
 inline bool MeshGeomFacet::ContainedByOrIntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
 {
      // Test, if all corner points of the facet are on one of the 6 sides of the BB
-    if ((GetBoundBox() && rclBB) == false)
+    if (!(GetBoundBox() && rclBB))
         return false;
 
     // Test, whether Facet-BB is completely within BB

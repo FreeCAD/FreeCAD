@@ -2,92 +2,79 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh-TW" sourcelanguage="en">
   <context>
-    <name>Sketcher_ProfilesHexagon1</name>
-    <message>
-      <location filename="Profiles.py" line="56"/>
-      <source>Creates a hexagonal profile</source>
-      <translation type="unfinished">Creates a hexagonal profile</translation>
-    </message>
-    <message>
-      <location filename="Profiles.py" line="61"/>
-      <source>Creates a hexagonal profile in the sketch</source>
-      <translation type="unfinished">Creates a hexagonal profile in the sketch</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="163"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="203"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>顯示/隱藏 B 雲形線的曲率梳形圖</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="164"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="204"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>顯示/隱藏 所有B型不規則曲線的曲率梳形圖</translation>
+      <translation>切換顯示/隱藏 所有B雲形線的曲率梳形圖</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="101"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="145"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>顯示/隱藏 B 雲形線的多項式次數</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="102"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="146"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>顯示/隱藏 所有B型不規則曲線的控制項次數</translation>
+      <translation>切換顯示/隱藏 所有B雲形線的控制項次數</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="194"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="232"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation type="unfinished">Show/hide B-spline knot multiplicity</translation>
+      <translation>顯示/隱藏 B 雲形線結點多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="195"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="233"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the knot multiplicity for all B-splines</translation>
+      <translation>切換顯示/隱藏所有B雲形線的結點多重性</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplinePoleWeight</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="225"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="261"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation type="unfinished">Show/hide B-spline control point weight</translation>
+      <translation>顯示/隱藏 B 雲形線的控制點權重</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="226"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="262"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
+      <translation>切換顯示/隱藏所有B雲形線的控制點權重</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="132"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="174"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation type="unfinished">Show/hide B-spline control polygon</translation>
+      <translation>顯示/隱藏 B 雲形線的控制多邊形</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="133"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="175"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>顯示/隱藏 所有B型不規則曲線的控制多邊形</translation>
+      <translation>切換顯示/隱藏 所有B雲形線的控制多邊形</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6936"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7037"/>
       <source>Carbon copy</source>
       <translation type="unfinished">Carbon copy</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6937"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7038"/>
       <source>Copies the geometry of another sketch</source>
       <translation>從其它草圖複製幾何圖元</translation>
     </message>
@@ -95,12 +82,12 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1586"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1645"/>
       <source>Clone</source>
       <translation>複製</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1587"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1646"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>依最後所選的點作為參考點對幾何進行含拘束連動之複製</translation>
     </message>
@@ -108,86 +95,86 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="103"/>
+      <location filename="../../CommandSketcherTools.cpp" line="106"/>
       <source>Close shape</source>
-      <translation type="unfinished">Close shape</translation>
+      <translation>封閉造型</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="104"/>
+      <location filename="../../CommandSketcherTools.cpp" line="107"/>
       <source>Produce a closed shape by tying the end point of one element with the next element's starting point</source>
-      <translation type="unfinished">Produce a closed shape by tying the end point of one element with the next element's starting point</translation>
+      <translation>藉由連結元件的終點與下一元件的起點來產生封閉造型</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompBSplineShowHideGeometryInformation</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="256"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="290"/>
       <source>Show/hide B-spline information layer</source>
-      <translation>顯示/隱藏 B型不規則曲線資訊圖層</translation>
+      <translation>顯示/隱藏 B 雲形線資訊層</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="331"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="365"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>顯示/隱藏 B 雲形線的多項式次數</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="338"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="372"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation type="unfinished">Show/hide B-spline control polygon</translation>
+      <translation>顯示/隱藏 B 雲形線的控制多邊形</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="345"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="379"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>顯示/隱藏 B 雲形線的曲率梳形圖</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="352"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="386"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation type="unfinished">Show/hide B-spline knot multiplicity</translation>
+      <translation>顯示/隱藏 B 雲形線結點多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="394"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation type="unfinished">Show/hide B-spline control point weight</translation>
+      <translation>顯示/隱藏 B 雲形線的控制點權重</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5790"/>
+      <location filename="../../CommandConstraints.cpp" line="5590"/>
       <source>Constrain arc or circle</source>
       <translation>約束弧或圓的直/半徑</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5791"/>
+      <location filename="../../CommandConstraints.cpp" line="5591"/>
       <source>Constrain an arc or a circle</source>
       <translation>約束單一圓弧或圓的直/半徑</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5896"/>
+      <location filename="../../CommandConstraints.cpp" line="5696"/>
       <source>Constrain radius</source>
       <translation>半徑拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5900"/>
+      <location filename="../../CommandConstraints.cpp" line="5700"/>
       <source>Constrain diameter</source>
       <translation>直徑拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5904"/>
+      <location filename="../../CommandConstraints.cpp" line="5704"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>自動拘束半徑/直徑</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1663"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1722"/>
       <source>Copy</source>
       <translation>複製</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1664"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1723"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>依最後所選的點作為參考點對幾何進行含拘束連動之複製</translation>
     </message>
@@ -195,22 +182,22 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2390"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2353"/>
       <source>Create arc</source>
       <translation>建立弧線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2391"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2354"/>
       <source>Create an arc in the sketcher</source>
       <translation>於草圖中建立一個弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2468"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2431"/>
       <source>Center and end points</source>
       <translation>圓心和起/終點定弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2472"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2435"/>
       <source>End points and rim point</source>
       <translation>3點定弧</translation>
     </message>
@@ -218,35 +205,35 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5026"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5113"/>
       <source>Create a B-spline</source>
-      <translation>建立B型不規則曲線</translation>
+      <translation>建立B雲形線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5027"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5114"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>在草圖中建立B型不規則曲線</translation>
+      <translation>在草圖中建立B雲形線</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5336"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5426"/>
       <source>Create circle</source>
       <translation>建立圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5337"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5427"/>
       <source>Create a circle in the sketcher</source>
       <translation>於草圖中建立一個圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5414"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5504"/>
       <source>Center and rim point</source>
       <translation>圓心及半徑定圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5418"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5508"/>
       <source>3 rim points</source>
       <translation>3點建立圓</translation>
     </message>
@@ -254,37 +241,37 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4449"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4426"/>
       <source>Create a conic</source>
       <translation>建立圓錐</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4450"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4427"/>
       <source>Create a conic in the sketch</source>
       <translation>於草圖中建立圓錐</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4555"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4532"/>
       <source>Ellipse by center, major radius, point</source>
       <translation>由圓心及長短軸來建立橢圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4559"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4536"/>
       <source>Ellipse by periapsis, apoapsis, minor radius</source>
-      <translation type="unfinished">Ellipse by periapsis, apoapsis, minor radius</translation>
+      <translation>由近心點、遠心點及最小半徑建立橢圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4563"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4540"/>
       <source>Arc of ellipse by center, major radius, endpoints</source>
       <translation>以圓心，長軸中點，起/終點建立橢圓弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4567"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4544"/>
       <source>Arc of hyperbola by center, major radius, endpoints</source>
       <translation>以中心,主要半徑及終點建立雙曲線弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4571"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4548"/>
       <source>Arc of parabola by focus, vertex, endpoints</source>
       <translation>由焦點/頂點/端點 建立拋物線弧</translation>
     </message>
@@ -292,98 +279,98 @@
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5913"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6006"/>
       <source>Fillets</source>
-      <translation type="unfinished">Fillets</translation>
+      <translation>圓角</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5914"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6007"/>
       <source>Create a fillet between two lines</source>
-      <translation type="unfinished">Create a fillet between two lines</translation>
+      <translation>在兩條線間建立圓角</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5989"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6082"/>
       <source>Sketch fillet</source>
-      <translation type="unfinished">Sketch fillet</translation>
+      <translation>草圖圓角</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5993"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6086"/>
       <source>Constraint-preserving sketch fillet</source>
-      <translation type="unfinished">Constraint-preserving sketch fillet</translation>
+      <translation>保留拘束之草圖圓角</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1096"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1051"/>
       <source>Create rectangles</source>
-      <translation type="unfinished">Create rectangles</translation>
+      <translation>建立矩形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1097"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1052"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+      <translation>於草圖中建立矩形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1180"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1135"/>
       <source>Rectangle</source>
       <translation>矩形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1184"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Centered rectangle</source>
-      <translation type="unfinished">Centered rectangle</translation>
+      <translation>矩形置中</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1188"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1143"/>
       <source>Rounded rectangle</source>
-      <translation type="unfinished">Rounded rectangle</translation>
+      <translation>圓角矩形</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7579"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7737"/>
       <source>Create regular polygon</source>
       <translation>建立正多邊形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7580"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7738"/>
       <source>Create a regular polygon in the sketcher</source>
       <translation>於草圖中建立正多邊形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7695"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7854"/>
       <source>Triangle</source>
       <translation>三角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7699"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7858"/>
       <source>Square</source>
       <translation>正方形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7703"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7862"/>
       <source>Pentagon</source>
       <translation>五角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7707"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7866"/>
       <source>Hexagon</source>
       <translation>六角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7711"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7870"/>
       <source>Heptagon</source>
       <translation>七角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7715"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7874"/>
       <source>Octagon</source>
       <translation>八角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7719"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7878"/>
       <source>Regular polygon</source>
       <translation>正多邊形</translation>
     </message>
@@ -391,48 +378,48 @@
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="899"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="924"/>
       <source>Modify knot multiplicity</source>
-      <translation type="unfinished">Modify knot multiplicity</translation>
+      <translation>修改結點多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="900"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="925"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Modifies the multiplicity of the selected knot of a B-spline</translation>
+      <translation>修改自一 B 雲形線所選定結點之多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="961"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="986"/>
       <source>Increase knot multiplicity</source>
-      <translation type="unfinished">Increase knot multiplicity</translation>
+      <translation>增加結點多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="968"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="993"/>
       <source>Decrease knot multiplicity</source>
-      <translation type="unfinished">Decrease knot multiplicity</translation>
+      <translation>減少結點多重性</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="215"/>
+      <location filename="../../CommandSketcherTools.cpp" line="218"/>
       <source>Connect edges</source>
-      <translation type="unfinished">Connect edges</translation>
+      <translation>連接邊</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="216"/>
+      <location filename="../../CommandSketcherTools.cpp" line="219"/>
       <source>Tie the end point of the element with next element's starting point</source>
-      <translation type="unfinished">Tie the end point of the element with next element's starting point</translation>
+      <translation>連結元件的終點與下一元件的起點</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5934"/>
+      <location filename="../../CommandConstraints.cpp" line="5734"/>
       <source>Constrain angle</source>
       <translation>角度拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5935"/>
+      <location filename="../../CommandConstraints.cpp" line="5735"/>
       <source>Fix the angle of a line or the angle between two lines</source>
       <translation>固定線之角度或兩線間角度</translation>
     </message>
@@ -440,25 +427,25 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1795"/>
+      <location filename="../../CommandConstraints.cpp" line="1581"/>
       <source>Constrain block</source>
-      <translation type="unfinished">Constrain block</translation>
+      <translation>定位拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1796"/>
+      <location filename="../../CommandConstraints.cpp" line="1582"/>
       <source>Block constraint: block the selected edge from moving</source>
-      <translation type="unfinished">Block constraint: block the selected edge from moving</translation>
+      <translation>定位拘束：阻止所選邊移動</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2109"/>
+      <location filename="../../CommandConstraints.cpp" line="1897"/>
       <source>Constrain coincident</source>
       <translation>共點拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2110"/>
+      <location filename="../../CommandConstraints.cpp" line="1898"/>
       <source>Create a coincident constraint on the selected item</source>
       <translation>於所選項目建立共點拘束</translation>
     </message>
@@ -466,12 +453,12 @@
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5210"/>
+      <location filename="../../CommandConstraints.cpp" line="5014"/>
       <source>Constrain diameter</source>
       <translation>直徑拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5211"/>
+      <location filename="../../CommandConstraints.cpp" line="5015"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>固定一個圓或弧的直徑</translation>
     </message>
@@ -479,12 +466,12 @@
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2315"/>
+      <location filename="../../CommandConstraints.cpp" line="2103"/>
       <source>Constrain distance</source>
       <translation>距離拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2316"/>
+      <location filename="../../CommandConstraints.cpp" line="2104"/>
       <source>Fix a length of a line or the distance between a line and a vertex</source>
       <translation>固定線長或線與頂點間距</translation>
     </message>
@@ -492,12 +479,12 @@
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2912"/>
+      <location filename="../../CommandConstraints.cpp" line="2700"/>
       <source>Constrain horizontal distance</source>
-      <translation type="unfinished">Constrain horizontal distance</translation>
+      <translation>水平距離拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2913"/>
+      <location filename="../../CommandConstraints.cpp" line="2701"/>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>固定兩點或線段的水平距離</translation>
     </message>
@@ -505,12 +492,12 @@
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3166"/>
+      <location filename="../../CommandConstraints.cpp" line="2954"/>
       <source>Constrain vertical distance</source>
-      <translation type="unfinished">Constrain vertical distance</translation>
+      <translation>垂直距離拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3167"/>
+      <location filename="../../CommandConstraints.cpp" line="2955"/>
       <source>Fix the vertical distance between two points or line ends</source>
       <translation>固定兩點或線段的垂直距離</translation>
     </message>
@@ -518,12 +505,12 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6461"/>
+      <location filename="../../CommandConstraints.cpp" line="6261"/>
       <source>Constrain equal</source>
       <translation>相等拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6462"/>
+      <location filename="../../CommandConstraints.cpp" line="6262"/>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
       <translation>於兩線/圓/弧之間建立等長拘束</translation>
     </message>
@@ -531,12 +518,12 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1098"/>
+      <location filename="../../CommandConstraints.cpp" line="883"/>
       <source>Constrain horizontally</source>
       <translation>水平拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1099"/>
+      <location filename="../../CommandConstraints.cpp" line="884"/>
       <source>Create a horizontal constraint on the selected item</source>
       <translation>於所選項目建立水平拘束</translation>
     </message>
@@ -544,40 +531,39 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7142"/>
+      <location filename="../../CommandConstraints.cpp" line="6946"/>
       <source>Constrain internal alignment</source>
-      <translation type="unfinished">Constrain internal alignment</translation>
+      <translation>內部對齊拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7143"/>
+      <location filename="../../CommandConstraints.cpp" line="6947"/>
       <source>Constrains an element to be aligned with the internal geometry of another element</source>
-      <translation>必須與另一個元素的內部幾何對其才可對元素進行拘束設定</translation>
+      <translation>拘束一個元件與另一個元件的內部幾何圖形對齊</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1570"/>
+      <location filename="../../CommandConstraints.cpp" line="1355"/>
       <source>Constrain lock</source>
       <translation>鎖定拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1571"/>
+      <location filename="../../CommandConstraints.cpp" line="1356"/>
       <source>Lock constraint: create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation type="unfinished">Lock constraint: create both a horizontal and a vertical distance constraint
-on the selected vertex</translation>
+      <translation>定位約束：同時創建水平和垂直距離約束在選定的點上</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3412"/>
+      <location filename="../../CommandConstraints.cpp" line="3200"/>
       <source>Constrain parallel</source>
       <translation>平行拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3413"/>
+      <location filename="../../CommandConstraints.cpp" line="3201"/>
       <source>Create a parallel constraint between two lines</source>
       <translation>於兩條線間建立平行拘束</translation>
     </message>
@@ -585,12 +571,12 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3562"/>
+      <location filename="../../CommandConstraints.cpp" line="3350"/>
       <source>Constrain perpendicular</source>
       <translation>垂直拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3563"/>
+      <location filename="../../CommandConstraints.cpp" line="3351"/>
       <source>Create a perpendicular constraint between two lines</source>
       <translation>於兩條線間建立垂直拘束</translation>
     </message>
@@ -598,12 +584,12 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2664"/>
+      <location filename="../../CommandConstraints.cpp" line="2452"/>
       <source>Constrain point onto object</source>
       <translation>拘束點於物件上</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2665"/>
+      <location filename="../../CommandConstraints.cpp" line="2453"/>
       <source>Fix a point onto an object</source>
       <translation>固定點於物件上</translation>
     </message>
@@ -611,68 +597,66 @@ on the selected vertex</translation>
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5486"/>
+      <location filename="../../CommandConstraints.cpp" line="5288"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>自動拘束半徑/直徑</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5487"/>
+      <location filename="../../CommandConstraints.cpp" line="5289"/>
       <source>Fix automatically diameter on circle and radius on arc/pole</source>
-      <translation type="unfinished">Fix automatically diameter on circle and radius on arc/pole</translation>
+      <translation>自動修復圓上的直徑和圓弧/極點上的半徑</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4908"/>
+      <location filename="../../CommandConstraints.cpp" line="4714"/>
       <source>Constrain radius or weight</source>
-      <translation type="unfinished">Constrain radius or weight</translation>
+      <translation>半徑或權重拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4909"/>
+      <location filename="../../CommandConstraints.cpp" line="4715"/>
       <source>Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</source>
-      <translation type="unfinished">Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</translation>
+      <translation>修正圓或弧之半徑或是修正 B 雲形線一個極點之權重</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6978"/>
+      <location filename="../../CommandConstraints.cpp" line="6778"/>
       <source>Constrain refraction (Snell's law')</source>
       <translation>折射拘束(司乃耳定律)</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6979"/>
+      <location filename="../../CommandConstraints.cpp" line="6779"/>
       <source>Create a refraction law (Snell's law) constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law) constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>建立一個以兩點作為光線方向，並以一邊做為交界面的折射拘束(司乃耳定律)</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6678"/>
+      <location filename="../../CommandConstraints.cpp" line="6478"/>
       <source>Constrain symmetrical</source>
       <translation>對稱拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6679"/>
+      <location filename="../../CommandConstraints.cpp" line="6479"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation type="unfinished">Create a symmetry constraint between two points
-with respect to a line or a third point</translation>
+      <translation>於兩個點間藉由一條線或第3點建立一個對稱拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4200"/>
+      <location filename="../../CommandConstraints.cpp" line="3994"/>
       <source>Constrain tangent</source>
       <translation>相切拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4201"/>
+      <location filename="../../CommandConstraints.cpp" line="3995"/>
       <source>Create a tangent constraint between two entities</source>
       <translation>於兩個實體間建立相切拘束</translation>
     </message>
@@ -680,38 +664,38 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1336"/>
+      <location filename="../../CommandConstraints.cpp" line="1121"/>
       <source>Constrain vertically</source>
       <translation>垂直拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1337"/>
+      <location filename="../../CommandConstraints.cpp" line="1122"/>
       <source>Create a vertical constraint on the selected item</source>
-      <translation>於所選項目建立垂直拘束</translation>
+      <translation>建立垂直拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConvertToNURBS</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="419"/>
       <source>Convert geometry to B-spline</source>
-      <translation type="unfinished">Convert geometry to B-spline</translation>
+      <translation>轉換幾何線條為 B 雲形線</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="386"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="420"/>
       <source>Converts the selected geometry to a B-spline</source>
-      <translation type="unfinished">Converts the selected geometry to a B-spline</translation>
+      <translation>將選定的幾何轉換為B雲形線</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1540"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1599"/>
       <source>Copy</source>
       <translation>複製</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1541"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1600"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>依最後所選的點作為參考點對幾何進行不含拘束連動之複製</translation>
     </message>
@@ -719,12 +703,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2363"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2325"/>
       <source>Create arc by three points</source>
       <translation>3點建立弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2364"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2326"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>由終點及弧上一點建立一個弧</translation>
     </message>
@@ -732,12 +716,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5309"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5398"/>
       <source>Create circle by three points</source>
       <translation>3點建立圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5310"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5399"/>
       <source>Create a circle by 3 perimeter points</source>
       <translation>3邊緣點建立圓</translation>
     </message>
@@ -745,12 +729,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2094"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2053"/>
       <source>Create arc by center</source>
       <translation>由中心點建立弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2095"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2054"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>由中心點及其終點建立一個弧</translation>
     </message>
@@ -758,12 +742,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3776"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3747"/>
       <source>Create an arc of ellipse</source>
       <translation>建立橢圓之弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3777"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3748"/>
       <source>Create an arc of ellipse in the sketch</source>
       <translation>於草圖建立橢圓之弧</translation>
     </message>
@@ -771,12 +755,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4119"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4093"/>
       <source>Create an arc of hyperbola</source>
       <translation>建立雙曲線弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4120"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4094"/>
       <source>Create an arc of hyperbola in the sketch</source>
       <translation>於草圖中建立雙曲線弧</translation>
     </message>
@@ -784,12 +768,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4417"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4393"/>
       <source>Create an arc of parabola</source>
       <translation>建立拋物線弧</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4418"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4394"/>
       <source>Create an arc of parabola in the sketch</source>
       <translation>於草圖中建立拋物線弧</translation>
     </message>
@@ -797,25 +781,25 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4951"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5036"/>
       <source>Create B-spline</source>
-      <translation>建立B型不規則曲線</translation>
+      <translation>建立B雲形線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4952"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5037"/>
       <source>Create a B-spline via control points in the sketch.</source>
-      <translation>由草圖中的控制點建立B型不規則曲線</translation>
+      <translation>由草圖中的控制點建立B雲形線</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2624"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2589"/>
       <source>Create circle</source>
       <translation>建立圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2625"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2590"/>
       <source>Create a circle in the sketch</source>
       <translation>於草圖中建立圓形</translation>
     </message>
@@ -823,25 +807,25 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5573"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5665"/>
       <source>Create draft line</source>
-      <translation>建立分模線</translation>
+      <translation>建立草稿線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5574"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5666"/>
       <source>Create a draft line in the sketch</source>
-      <translation>於草圖中建立分模線</translation>
+      <translation>於草圖中建立草稿線</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3449"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3417"/>
       <source>Create ellipse by 3 points</source>
       <translation>由3點建立一橢圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3450"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3418"/>
       <source>Create an ellipse by 3 points in the sketch</source>
       <translation>於草圖中由3點建立一橢圓</translation>
     </message>
@@ -849,12 +833,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3419"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3386"/>
       <source>Create ellipse by center</source>
       <translation>由中心點建立橢圓</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3420"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3387"/>
       <source>Create an ellipse by center in the sketch</source>
       <translation>於草圖中由中心點建立橢圓</translation>
     </message>
@@ -862,12 +846,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5853"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5946"/>
       <source>Create fillet</source>
       <translation>建立圓角</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5854"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5947"/>
       <source>Create a fillet between two lines or at a coincident point</source>
       <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
     </message>
@@ -875,12 +859,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7494"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7652"/>
       <source>Create heptagon</source>
       <translation>建立七角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7495"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7653"/>
       <source>Create a heptagon in the sketch</source>
       <translation>於草圖中建立七角形</translation>
     </message>
@@ -888,12 +872,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7467"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7625"/>
       <source>Create hexagon</source>
       <translation>建立六角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7468"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7626"/>
       <source>Create a hexagon in the sketch</source>
       <translation>於草圖中建立六角形</translation>
     </message>
@@ -901,12 +885,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="385"/>
+      <location filename="../../CommandCreateGeo.cpp" line="330"/>
       <source>Create line</source>
       <translation>建立線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="386"/>
+      <location filename="../../CommandCreateGeo.cpp" line="331"/>
       <source>Create a line in the sketch</source>
       <translation>於草圖中建立線</translation>
     </message>
@@ -914,25 +898,25 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1053"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1008"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>建立圓角矩形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1054"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1009"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+      <translation>於草圖中建立一個圓角矩形</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7521"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7679"/>
       <source>Create octagon</source>
       <translation>建立八角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7522"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7680"/>
       <source>Create an octagon in the sketch</source>
       <translation>於草圖中建立八角形</translation>
     </message>
@@ -940,12 +924,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7439"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7597"/>
       <source>Create pentagon</source>
       <translation>建立五角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7440"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7598"/>
       <source>Create a pentagon in the sketch</source>
       <translation>於草圖中建立五角形</translation>
     </message>
@@ -953,25 +937,25 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4995"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5081"/>
       <source>Create periodic B-spline</source>
-      <translation>建立閉合的B型不規則曲線</translation>
+      <translation>建立週期性B雲形線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4996"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5082"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation>由草圖中的控制點建立封閉的B型不規則曲線</translation>
+      <translation>由草圖中的控制點建立週期性B雲形線</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5516"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5607"/>
       <source>Create point</source>
       <translation>建立點</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5517"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5608"/>
       <source>Create a point in the sketch</source>
       <translation>於草圖中建立點</translation>
     </message>
@@ -979,25 +963,25 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5882"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5975"/>
       <source>Create corner-preserving fillet</source>
-      <translation type="unfinished">Create corner-preserving fillet</translation>
+      <translation>創建角落保留之圓角</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5883"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5976"/>
       <source>Fillet that preserves intersection point and most constraints</source>
-      <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
+      <translation>保留相交點及大多數拘束之圓角</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1851"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1808"/>
       <source>Create polyline</source>
       <translation>建立聚合線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1852"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1809"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
       <translation>於草圖中建立聚合線,「M」鍵可循環切換</translation>
     </message>
@@ -1005,12 +989,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="688"/>
+      <location filename="../../CommandCreateGeo.cpp" line="639"/>
       <source>Create rectangle</source>
-      <translation>建立矩型</translation>
+      <translation>建立矩形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="689"/>
+      <location filename="../../CommandCreateGeo.cpp" line="640"/>
       <source>Create a rectangle in the sketch</source>
       <translation>於草圖中建立矩形</translation>
     </message>
@@ -1018,25 +1002,25 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="729"/>
+      <location filename="../../CommandCreateGeo.cpp" line="680"/>
       <source>Create centered rectangle</source>
-      <translation type="unfinished">Create centered rectangle</translation>
+      <translation>建立置中矩形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="730"/>
+      <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation type="unfinished">Create a centered rectangle in the sketch</translation>
+      <translation>於草圖中建立置中矩形</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7548"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7706"/>
       <source>Create regular polygon</source>
       <translation>建立正多邊形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7549"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7707"/>
       <source>Create a regular polygon in the sketch</source>
       <translation>於草圖中建立正多邊形</translation>
     </message>
@@ -1044,12 +1028,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7349"/>
       <source>Create slot</source>
       <translation>建立跑道圖型</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7193"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7350"/>
       <source>Create a slot in the sketch</source>
       <translation>於草圖中建立跑道圖型</translation>
     </message>
@@ -1057,12 +1041,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7412"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7570"/>
       <source>Create square</source>
       <translation>建立正方形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7413"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7571"/>
       <source>Create a square in the sketch</source>
       <translation>於草圖中建立正方形</translation>
     </message>
@@ -1070,12 +1054,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5545"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5637"/>
       <source>Create text</source>
       <translation>建立文字</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5546"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5638"/>
       <source>Create text in the sketch</source>
       <translation>於草圖中建立文字</translation>
     </message>
@@ -1083,12 +1067,12 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7385"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7543"/>
       <source>Create equilateral triangle</source>
       <translation>建立正三角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7386"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7544"/>
       <source>Create an equilateral triangle in the sketch</source>
       <translation>於草圖中建立正三角形</translation>
     </message>
@@ -1096,90 +1080,90 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherDecreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="526"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
       <source>Decrease B-spline degree</source>
-      <translation type="unfinished">Decrease B-spline degree</translation>
+      <translation>減少 B 雲形線之多項式次數</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="527"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="567"/>
       <source>Decreases the degree of the B-spline</source>
-      <translation type="unfinished">Decreases the degree of the B-spline</translation>
+      <translation>增加 B 雲形線的多項式次數</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="757"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="790"/>
       <source>Decrease knot multiplicity</source>
-      <translation type="unfinished">Decrease knot multiplicity</translation>
+      <translation>減少結點多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="758"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="791"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Decreases the multiplicity of the selected knot of a B-spline</translation>
+      <translation>減少自一 B 雲形線所選定結點之多重性</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2148"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2207"/>
       <source>Delete all constraints</source>
-      <translation type="unfinished">Delete all constraints</translation>
+      <translation>刪除所有拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2208"/>
       <source>Delete all constraints in the sketch</source>
-      <translation type="unfinished">Delete all constraints in the sketch</translation>
+      <translation>刪除此草圖中所有拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2085"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2144"/>
       <source>Delete all geometry</source>
-      <translation type="unfinished">Delete all geometry</translation>
+      <translation>刪除所有幾何圖形</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2086"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2145"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
-      <translation type="unfinished">Delete all geometry and constraints in the current sketch, with the exception of external geometry</translation>
+      <translation>刪除當前草圖中的所有幾何圖形和約束，外部幾何圖形除外</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="266"/>
+      <location filename="../../Command.cpp" line="268"/>
       <source>Edit sketch</source>
       <translation>編輯草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Edit the selected sketch.</source>
-      <translation type="unfinished">Edit the selected sketch.</translation>
+      <translation>編輯選取的草圖。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6457"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6553"/>
       <source>Extend edge</source>
-      <translation>延伸圖元</translation>
+      <translation>延伸邊緣</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6458"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6554"/>
       <source>Extend an edge with respect to the picked position</source>
-      <translation>將圖元延伸到選取位置</translation>
+      <translation>相對於拾取的位置延伸一條邊</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6760"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6859"/>
       <source>External geometry</source>
-      <translation>外部幾何</translation>
+      <translation>外部幾何圖形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6761"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6860"/>
       <source>Create an edge linked to an external geometry</source>
       <translation>與外部幾何建立相連之邊</translation>
     </message>
@@ -1187,123 +1171,134 @@ with respect to a line or a third point</translation>
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="453"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="493"/>
       <source>Increase B-spline degree</source>
-      <translation type="unfinished">Increase B-spline degree</translation>
+      <translation>增加 B 雲形線之多項式次數</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="454"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="494"/>
       <source>Increases the degree of the B-spline</source>
-      <translation>增加B型不規則曲線的多項式次數</translation>
+      <translation>增加B雲形線的多項式次數</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="603"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="643"/>
       <source>Increase knot multiplicity</source>
-      <translation type="unfinished">Increase knot multiplicity</translation>
+      <translation>增加結點多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="644"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Increases the multiplicity of the selected knot of a B-spline</translation>
+      <translation>增加自一 B 雲形線所選定結點之多重性</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherInsertKnot</name>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1165"/>
+      <source>Insert knot</source>
+      <translation>插入結點</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
+      <source>Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</source>
+      <translation>在給定參數處插入結點。如果結果在參數處出現，其多重性增加一。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>Leave sketch</source>
       <translation>離開草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>Finish editing the active sketch.</source>
-      <translation type="unfinished">Finish editing the active sketch.</translation>
+      <translation>離開編輯草圖</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Map sketch to face...</source>
       <translation>將草圖定位至面...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Set the 'Support' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation type="unfinished">Set the 'Support' of a sketch.
-First select the supporting geometry, for example, a face or an edge of a solid object,
-then call this command, then choose the desired sketch.</translation>
+      <translation>設定草圖的“支撐”。
+首先選擇支撐幾何，例如，一個實體物件的面或是邊，
+然後呼叫此指令，再選擇相要的草圖。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="561"/>
+      <location filename="../../Command.cpp" line="563"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</translation>
+      <translation>部分選定的物件取決於要對映的草圖。循環相依不允許。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="864"/>
+      <location filename="../../Command.cpp" line="870"/>
       <source>Merge sketches</source>
       <translation>合併草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="865"/>
+      <location filename="../../Command.cpp" line="871"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
-      <translation type="unfinished">Create a new sketch from merging two or more selected sketches.</translation>
+      <translation>通過合併兩個或更多個選定草圖以建立新草圖。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="878"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="879"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Select at least two sketches.</source>
-      <translation type="unfinished">Select at least two sketches.</translation>
+      <translation>請至少選擇兩個草圖。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="757"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Mirror sketch</source>
       <translation>鏡射草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>Create a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
-      <translation type="unfinished">Create a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference.</translation>
+      <translation>以 X 或 Y 軸或原點作為鏡射參考，由選擇草圖來建立新的鏡射草圖。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="773"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="774"/>
+      <location filename="../../Command.cpp" line="780"/>
       <source>Select one or more sketches.</source>
-      <translation type="unfinished">Select one or more sketches.</translation>
+      <translation>請選擇一個或多個草圖。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1629"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1688"/>
       <source>Move</source>
       <translation>移動</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1630"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1689"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>以最後選擇的點為基準移動圖元</translation>
     </message>
@@ -1311,25 +1306,25 @@ as mirroring reference.</translation>
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="144"/>
       <source>Create sketch</source>
       <translation>建立草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="145"/>
       <source>Create a new sketch.</source>
-      <translation type="unfinished">Create a new sketch.</translation>
+      <translation>建立新草圖.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1945"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2004"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>矩形陣列</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1946"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2005"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>以最後選擇的點為基準建立矩形陣列</translation>
     </message>
@@ -1337,193 +1332,193 @@ as mirroring reference.</translation>
   <context>
     <name>CmdSketcherRemoveAxesAlignment</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2212"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2271"/>
       <source>Remove axes alignment</source>
-      <translation type="unfinished">Remove axes alignment</translation>
+      <translation>移除軸對齊</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2213"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2272"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
+      <translation>修改拘束以移除軸對齊，在此同時試著保留選擇間拘束的關係。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="381"/>
+      <location filename="../../Command.cpp" line="383"/>
       <source>Reorient sketch...</source>
       <translation>調整草圖方向...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="382"/>
+      <location filename="../../Command.cpp" line="384"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'Support' property, if any.</source>
-      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
-This will clear the 'Support' property, if any.</translation>
+      <translation>將選定草圖放置在全局坐標平面之一上。
+這將清除“支持”屬性（如果有的話）。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="930"/>
+      <location filename="../../CommandSketcherTools.cpp" line="951"/>
       <source>Show/hide internal geometry</source>
       <translation>顯示/隱藏內部幾何</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="931"/>
+      <location filename="../../CommandSketcherTools.cpp" line="952"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
-      <translation type="unfinished">Show all internal geometry or hide unused internal geometry</translation>
+      <translation>顯示所有幾何或隱藏未使用的內部幾何</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="671"/>
-      <location filename="../../CommandSketcherTools.cpp" line="672"/>
+      <location filename="../../CommandSketcherTools.cpp" line="684"/>
+      <location filename="../../CommandSketcherTools.cpp" line="685"/>
       <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <translation>選取有矛盾之拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="302"/>
+      <location filename="../../CommandSketcherTools.cpp" line="305"/>
       <source>Select associated constraints</source>
-      <translation type="unfinished">Select associated constraints</translation>
+      <translation>選取有關聯之拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="303"/>
+      <location filename="../../CommandSketcherTools.cpp" line="306"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
-      <translation type="unfinished">Select the constraints associated with the selected geometrical elements</translation>
+      <translation>選擇與選定幾何元件關聯的拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="723"/>
+      <location filename="../../CommandSketcherTools.cpp" line="739"/>
       <source>Select associated geometry</source>
-      <translation type="unfinished">Select associated geometry</translation>
+      <translation>選擇有關聯之幾何</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="724"/>
+      <location filename="../../CommandSketcherTools.cpp" line="740"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
-      <translation type="unfinished">Select the geometrical elements associated with the selected constraints</translation>
+      <translation>選擇與選定拘束關聯的幾何元件</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="845"/>
+      <location filename="../../CommandSketcherTools.cpp" line="860"/>
       <source>Select unconstrained DoF</source>
-      <translation type="unfinished">Select unconstrained DoF</translation>
+      <translation>選擇未拘束之 DoF (自由度)</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="846"/>
+      <location filename="../../CommandSketcherTools.cpp" line="861"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
-      <translation type="unfinished">Select geometrical elements where the solver still detects unconstrained degrees of freedom.</translation>
+      <translation>選擇幾何元件其求解器仍然可以偵測沒被拘束到的自由度。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="466"/>
+      <location filename="../../CommandSketcherTools.cpp" line="472"/>
       <source>Select horizontal axis</source>
-      <translation type="unfinished">Select horizontal axis</translation>
+      <translation>選擇水平軸</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="467"/>
+      <location filename="../../CommandSketcherTools.cpp" line="473"/>
       <source>Select the local horizontal axis of the sketch</source>
-      <translation type="unfinished">Select the local horizontal axis of the sketch</translation>
+      <translation>選擇草圖的局部水平軸</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectMalformedConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="563"/>
-      <location filename="../../CommandSketcherTools.cpp" line="564"/>
+      <location filename="../../CommandSketcherTools.cpp" line="572"/>
+      <location filename="../../CommandSketcherTools.cpp" line="573"/>
       <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <translation>選擇格式錯誤的拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="376"/>
+      <location filename="../../CommandSketcherTools.cpp" line="382"/>
       <source>Select origin</source>
-      <translation type="unfinished">Select origin</translation>
+      <translation>選取原點</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="377"/>
+      <location filename="../../CommandSketcherTools.cpp" line="383"/>
       <source>Select the local origin point of the sketch</source>
-      <translation type="unfinished">Select the local origin point of the sketch</translation>
+      <translation>選擇草圖的局部原點</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="617"/>
-      <location filename="../../CommandSketcherTools.cpp" line="618"/>
+      <location filename="../../CommandSketcherTools.cpp" line="628"/>
+      <location filename="../../CommandSketcherTools.cpp" line="629"/>
       <source>Select partially redundant constraints</source>
-      <translation type="unfinished">Select partially redundant constraints</translation>
+      <translation>選取部份冗餘拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="509"/>
-      <location filename="../../CommandSketcherTools.cpp" line="510"/>
+      <location filename="../../CommandSketcherTools.cpp" line="515"/>
+      <location filename="../../CommandSketcherTools.cpp" line="516"/>
       <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <translation>選取冗餘拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="422"/>
+      <location filename="../../CommandSketcherTools.cpp" line="428"/>
       <source>Select vertical axis</source>
-      <translation type="unfinished">Select vertical axis</translation>
+      <translation>選取垂直軸</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="423"/>
+      <location filename="../../CommandSketcherTools.cpp" line="429"/>
       <source>Select the local vertical axis of the sketch</source>
-      <translation type="unfinished">Select the local vertical axis of the sketch</translation>
+      <translation>選擇草圖的局部垂直軸</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6576"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6673"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>分割邊緣</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6577"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6674"/>
       <source>Splits an edge into two while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
+      <translation>當保留拘束時將一個邊分成二個。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Stop operation</source>
       <translation>中止作業</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
-      <translation type="unfinished">When in edit mode, stop the active operation (drawing, constraining, etc.).</translation>
+      <translation>在編輯模式下，停止活動操作（繪圖、約束等）。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSwitchVirtualSpace</name>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="93"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="94"/>
       <source>Switch virtual space</source>
       <translation>切換到虛擬草圖空間</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="94"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="95"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
       <translation>將選定的拘束或視圖切換到另一個虛擬空間</translation>
     </message>
@@ -1531,12 +1526,12 @@ This will clear the 'Support' property, if any.</translation>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1025"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1064"/>
       <source>Symmetry</source>
       <translation>對稱</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1026"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1065"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
       <translation>建立幾何對稱，並以最後一個選擇之點或線為對稱軸</translation>
     </message>
@@ -1544,25 +1539,25 @@ This will clear the 'Support' property, if any.</translation>
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7730"/>
+      <location filename="../../CommandConstraints.cpp" line="7533"/>
       <source>Activate/deactivate constraint</source>
-      <translation type="unfinished">Activate/deactivate constraint</translation>
+      <translation>啟動/關閉拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7731"/>
+      <location filename="../../CommandConstraints.cpp" line="7534"/>
       <source>Activates or deactivates the selected constraints</source>
-      <translation type="unfinished">Activates or deactivates the selected constraints</translation>
+      <translation>啟用或關閉選擇拘束</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherToggleConstruction</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="74"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="75"/>
       <source>Toggle construction geometry</source>
       <translation>幾何於建構線及一般模式切換</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="75"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="76"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
       <translation>將工具列或是所選之幾何於建構線及一般模式間切換</translation>
     </message>
@@ -1570,27 +1565,26 @@ This will clear the 'Support' property, if any.</translation>
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7603"/>
+      <location filename="../../CommandConstraints.cpp" line="7406"/>
       <source>Toggle driving/reference constraint</source>
-      <translation type="unfinished">Toggle driving/reference constraint</translation>
+      <translation>切換驅動/參考拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7604"/>
+      <location filename="../../CommandConstraints.cpp" line="7407"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
-      <translation type="unfinished">Set the toolbar, or the selected constraints,
-into driving or reference mode</translation>
+      <translation>設置工具列，或選定的拘束，進入驅動或參考模式</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6143"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6238"/>
       <source>Trim edge</source>
       <translation>修剪邊</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6144"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6239"/>
       <source>Trim an edge with respect to the picked position</source>
       <translation>依選取位置修剪邊</translation>
     </message>
@@ -1598,651 +1592,681 @@ into driving or reference mode</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="719"/>
+      <location filename="../../Command.cpp" line="725"/>
       <source>Validate sketch...</source>
       <translation>檢查草圖...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="726"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation type="unfinished">Validate a sketch by looking at missing coincidences,
-invalid constraints, degenerated geometry, etc.</translation>
+      <translation>通過查看缺失的巧合來驗證草圖，無效拘束、退化幾何等。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="734"/>
+      <location filename="../../Command.cpp" line="740"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="735"/>
+      <location filename="../../Command.cpp" line="741"/>
       <source>Select only one sketch.</source>
-      <translation type="unfinished">Select only one sketch.</translation>
+      <translation>只選擇一個草圖</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="954"/>
       <source>View section</source>
-      <translation>輪廓圖</translation>
+      <translation>查看剖面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="955"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation type="unfinished">When in edit mode, switch between section view and full view.</translation>
+      <translation>在編輯模式下，在剖面視圖和全視圖之間切換。</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="680"/>
+      <location filename="../../Command.cpp" line="685"/>
       <source>View sketch</source>
       <translation>查看草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="686"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation type="unfinished">When in edit mode, set the camera orientation perpendicular to the sketch plane.</translation>
+      <translation>當在編輯模式時，設定相機方向與草圖平面垂直。</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1199"/>
-      <location filename="../../CommandConstraints.cpp" line="1274"/>
+      <location filename="../../CommandConstraints.cpp" line="984"/>
+      <location filename="../../CommandConstraints.cpp" line="1059"/>
       <source>Add horizontal constraint</source>
-      <translation type="unfinished">Add horizontal constraint</translation>
+      <translation>添加水平約束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1208"/>
-      <location filename="../../CommandConstraints.cpp" line="1300"/>
-      <location filename="../../CommandConstraints.cpp" line="1535"/>
+      <location filename="../../CommandConstraints.cpp" line="993"/>
+      <location filename="../../CommandConstraints.cpp" line="1085"/>
+      <location filename="../../CommandConstraints.cpp" line="1320"/>
       <source>Add horizontal alignment</source>
-      <translation type="unfinished">Add horizontal alignment</translation>
+      <translation>添加水平對齊</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1436"/>
-      <location filename="../../CommandConstraints.cpp" line="1510"/>
+      <location filename="../../CommandConstraints.cpp" line="1221"/>
+      <location filename="../../CommandConstraints.cpp" line="1295"/>
       <source>Add vertical constraint</source>
-      <translation type="unfinished">Add vertical constraint</translation>
+      <translation>創建垂直約束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1444"/>
+      <location filename="../../CommandConstraints.cpp" line="1229"/>
       <source>Add vertical alignment</source>
-      <translation type="unfinished">Add vertical alignment</translation>
+      <translation>垂直對齊</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1649"/>
+      <location filename="../../CommandConstraints.cpp" line="1435"/>
       <source>Add 'Lock' constraint</source>
-      <translation type="unfinished">Add 'Lock' constraint</translation>
+      <translation>添加定位拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1690"/>
+      <location filename="../../CommandConstraints.cpp" line="1476"/>
       <source>Add relative 'Lock' constraint</source>
-      <translation type="unfinished">Add relative 'Lock' constraint</translation>
+      <translation>添加相對定位拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1735"/>
+      <location filename="../../CommandConstraints.cpp" line="1521"/>
       <source>Add fixed constraint</source>
-      <translation type="unfinished">Add fixed constraint</translation>
+      <translation>添加固定拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1877"/>
+      <location filename="../../CommandConstraints.cpp" line="1664"/>
       <source>Add 'Block' constraint</source>
-      <translation type="unfinished">Add 'Block' constraint</translation>
+      <translation>添加定位拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1921"/>
+      <location filename="../../CommandConstraints.cpp" line="1708"/>
       <source>Add block constraint</source>
-      <translation type="unfinished">Add block constraint</translation>
+      <translation>添加定位拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2067"/>
-      <location filename="../../CommandConstraints.cpp" line="2213"/>
-      <location filename="../../CommandConstraints.cpp" line="2278"/>
-      <location filename="../../CommandSketcherTools.cpp" line="146"/>
-      <location filename="../../CommandSketcherTools.cpp" line="253"/>
+      <location filename="../../CommandSketcherTools.cpp" line="149"/>
+      <location filename="../../CommandSketcherTools.cpp" line="256"/>
+      <location filename="../../CommandConstraints.cpp" line="1843"/>
+      <location filename="../../CommandConstraints.cpp" line="2001"/>
+      <location filename="../../CommandConstraints.cpp" line="2066"/>
       <source>Add coincident constraint</source>
-      <translation type="unfinished">Add coincident constraint</translation>
+      <translation>添加共點約束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2137"/>
+      <location filename="../../CommandConstraints.cpp" line="1925"/>
       <source>Swap edge tangency with ptp tangency</source>
-      <translation type="unfinished">Swap edge tangency with ptp tangency</translation>
+      <translation>以 ptp 切線交換邊切線</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2384"/>
-      <location filename="../../CommandConstraints.cpp" line="2516"/>
+      <location filename="../../CommandConstraints.cpp" line="2172"/>
+      <location filename="../../CommandConstraints.cpp" line="2304"/>
       <source>Add distance from horizontal axis constraint</source>
-      <translation type="unfinished">Add distance from horizontal axis constraint</translation>
+      <translation>添加與水平軸拘束的距離</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2392"/>
-      <location filename="../../CommandConstraints.cpp" line="2523"/>
+      <location filename="../../CommandConstraints.cpp" line="2180"/>
+      <location filename="../../CommandConstraints.cpp" line="2311"/>
       <source>Add distance from vertical axis constraint</source>
-      <translation type="unfinished">Add distance from vertical axis constraint</translation>
+      <translation>添加與垂直軸拘束的距離</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2400"/>
-      <location filename="../../CommandConstraints.cpp" line="2530"/>
+      <location filename="../../CommandConstraints.cpp" line="2188"/>
+      <location filename="../../CommandConstraints.cpp" line="2318"/>
       <source>Add point to point distance constraint</source>
-      <translation type="unfinished">Add point to point distance constraint</translation>
+      <translation>添加點到點的距離約束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2435"/>
-      <location filename="../../CommandConstraints.cpp" line="2605"/>
+      <location filename="../../CommandConstraints.cpp" line="2223"/>
+      <location filename="../../CommandConstraints.cpp" line="2393"/>
       <source>Add point to line Distance constraint</source>
-      <translation type="unfinished">Add point to line Distance constraint</translation>
+      <translation>添加點到線的距離約束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2469"/>
-      <location filename="../../CommandConstraints.cpp" line="2562"/>
+      <location filename="../../CommandConstraints.cpp" line="2257"/>
+      <location filename="../../CommandConstraints.cpp" line="2350"/>
       <source>Add length constraint</source>
-      <translation type="unfinished">Add length constraint</translation>
+      <translation>添加長度拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2751"/>
-      <location filename="../../CommandConstraints.cpp" line="2839"/>
+      <location filename="../../CommandConstraints.cpp" line="2539"/>
+      <location filename="../../CommandConstraints.cpp" line="2627"/>
       <source>Add point on object constraint</source>
-      <translation type="unfinished">Add point on object constraint</translation>
+      <translation>在物件拘束上添加點</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3013"/>
-      <location filename="../../CommandConstraints.cpp" line="3115"/>
+      <location filename="../../CommandConstraints.cpp" line="2801"/>
+      <location filename="../../CommandConstraints.cpp" line="2903"/>
       <source>Add point to point horizontal distance constraint</source>
-      <translation type="unfinished">Add point to point horizontal distance constraint</translation>
+      <translation>添加點到點的水平距離約束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3044"/>
+      <location filename="../../CommandConstraints.cpp" line="2832"/>
       <source>Add fixed x-coordinate constraint</source>
-      <translation type="unfinished">Add fixed x-coordinate constraint</translation>
+      <translation>添加固定的 x 座標拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3262"/>
-      <location filename="../../CommandConstraints.cpp" line="3364"/>
+      <location filename="../../CommandConstraints.cpp" line="3050"/>
+      <location filename="../../CommandConstraints.cpp" line="3152"/>
       <source>Add point to point vertical distance constraint</source>
-      <translation type="unfinished">Add point to point vertical distance constraint</translation>
+      <translation>添加點到點的垂直距離約束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3292"/>
+      <location filename="../../CommandConstraints.cpp" line="3080"/>
       <source>Add fixed y-coordinate constraint</source>
-      <translation type="unfinished">Add fixed y-coordinate constraint</translation>
+      <translation>添加固定的 y 座標拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3493"/>
-      <location filename="../../CommandConstraints.cpp" line="3534"/>
+      <location filename="../../CommandConstraints.cpp" line="3281"/>
+      <location filename="../../CommandConstraints.cpp" line="3322"/>
       <source>Add parallel constraint</source>
-      <translation type="unfinished">Add parallel constraint</translation>
+      <translation>添加平行拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3658"/>
-      <location filename="../../CommandConstraints.cpp" line="3726"/>
-      <location filename="../../CommandConstraints.cpp" line="3880"/>
-      <location filename="../../CommandConstraints.cpp" line="3916"/>
-      <location filename="../../CommandConstraints.cpp" line="4061"/>
-      <location filename="../../CommandConstraints.cpp" line="4095"/>
-      <location filename="../../CommandConstraints.cpp" line="4137"/>
+      <location filename="../../CommandConstraints.cpp" line="3446"/>
+      <location filename="../../CommandConstraints.cpp" line="3514"/>
+      <location filename="../../CommandConstraints.cpp" line="3668"/>
+      <location filename="../../CommandConstraints.cpp" line="3704"/>
+      <location filename="../../CommandConstraints.cpp" line="3849"/>
+      <location filename="../../CommandConstraints.cpp" line="3883"/>
+      <location filename="../../CommandConstraints.cpp" line="3931"/>
       <source>Add perpendicular constraint</source>
-      <translation type="unfinished">Add perpendicular constraint</translation>
+      <translation>添加垂直拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3763"/>
+      <location filename="../../CommandConstraints.cpp" line="3551"/>
       <source>Add perpendicularity constraint</source>
-      <translation type="unfinished">Add perpendicularity constraint</translation>
+      <translation>添加垂直度拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4236"/>
+      <location filename="../../CommandConstraints.cpp" line="4030"/>
       <source>Swap coincident+tangency with ptp tangency</source>
-      <translation type="unfinished">Swap coincident+tangency with ptp tangency</translation>
+      <translation>以 ptp 相切交換共點+相切</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4255"/>
+      <location filename="../../CommandConstraints.cpp" line="4049"/>
       <source>Swap PointOnObject+tangency with point to curve tangency</source>
-      <translation type="unfinished">Swap PointOnObject+tangency with point to curve tangency</translation>
+      <translation>以點對曲線相切交換物件上點(PoingOnObject)+相切</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4350"/>
-      <location filename="../../CommandConstraints.cpp" line="4402"/>
-      <location filename="../../CommandConstraints.cpp" line="4438"/>
-      <location filename="../../CommandConstraints.cpp" line="4605"/>
-      <location filename="../../CommandConstraints.cpp" line="4768"/>
-      <location filename="../../CommandConstraints.cpp" line="4826"/>
-      <location filename="../../CommandConstraints.cpp" line="4847"/>
-      <source>Add tangent constraint</source>
-      <translation type="unfinished">Add tangent constraint</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="4491"/>
-      <location filename="../../CommandConstraints.cpp" line="4498"/>
-      <location filename="../../CommandConstraints.cpp" line="4505"/>
-      <location filename="../../CommandConstraints.cpp" line="4529"/>
-      <location filename="../../CommandConstraints.cpp" line="4537"/>
+      <location filename="../../CommandConstraints.cpp" line="4144"/>
+      <location filename="../../CommandConstraints.cpp" line="4196"/>
+      <location filename="../../CommandConstraints.cpp" line="4232"/>
+      <location filename="../../CommandConstraints.cpp" line="4399"/>
       <location filename="../../CommandConstraints.cpp" line="4562"/>
-      <location filename="../../CommandConstraints.cpp" line="4570"/>
-      <location filename="../../CommandConstraints.cpp" line="4597"/>
-      <location filename="../../CommandConstraints.cpp" line="4689"/>
-      <location filename="../../CommandConstraints.cpp" line="4696"/>
-      <location filename="../../CommandConstraints.cpp" line="4703"/>
-      <location filename="../../CommandConstraints.cpp" line="4727"/>
-      <location filename="../../CommandConstraints.cpp" line="4734"/>
-      <location filename="../../CommandConstraints.cpp" line="4760"/>
+      <location filename="../../CommandConstraints.cpp" line="4626"/>
+      <location filename="../../CommandConstraints.cpp" line="4653"/>
+      <source>Add tangent constraint</source>
+      <translation>添加切線拘束</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4285"/>
+      <location filename="../../CommandConstraints.cpp" line="4292"/>
+      <location filename="../../CommandConstraints.cpp" line="4299"/>
+      <location filename="../../CommandConstraints.cpp" line="4323"/>
+      <location filename="../../CommandConstraints.cpp" line="4331"/>
+      <location filename="../../CommandConstraints.cpp" line="4356"/>
+      <location filename="../../CommandConstraints.cpp" line="4364"/>
+      <location filename="../../CommandConstraints.cpp" line="4391"/>
+      <location filename="../../CommandConstraints.cpp" line="4483"/>
+      <location filename="../../CommandConstraints.cpp" line="4490"/>
+      <location filename="../../CommandConstraints.cpp" line="4497"/>
+      <location filename="../../CommandConstraints.cpp" line="4521"/>
+      <location filename="../../CommandConstraints.cpp" line="4528"/>
+      <location filename="../../CommandConstraints.cpp" line="4554"/>
       <source>Add tangent constraint point</source>
-      <translation type="unfinished">Add tangent constraint point</translation>
+      <translation>添加切線拘束點</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5025"/>
-      <location filename="../../CommandConstraints.cpp" line="5060"/>
-      <location filename="../../CommandConstraints.cpp" line="5079"/>
-      <location filename="../../CommandConstraints.cpp" line="5140"/>
+      <location filename="../../CommandConstraints.cpp" line="4831"/>
+      <location filename="../../CommandConstraints.cpp" line="4866"/>
+      <location filename="../../CommandConstraints.cpp" line="4885"/>
+      <location filename="../../CommandConstraints.cpp" line="4945"/>
       <source>Add radius constraint</source>
-      <translation type="unfinished">Add radius constraint</translation>
+      <translation>添加半徑拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5317"/>
-      <location filename="../../CommandConstraints.cpp" line="5346"/>
-      <location filename="../../CommandConstraints.cpp" line="5358"/>
-      <location filename="../../CommandConstraints.cpp" line="5425"/>
+      <location filename="../../CommandConstraints.cpp" line="5121"/>
+      <location filename="../../CommandConstraints.cpp" line="5150"/>
+      <location filename="../../CommandConstraints.cpp" line="5162"/>
+      <location filename="../../CommandConstraints.cpp" line="5228"/>
       <source>Add diameter constraint</source>
-      <translation type="unfinished">Add diameter constraint</translation>
+      <translation>添加直徑拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5597"/>
-      <location filename="../../CommandConstraints.cpp" line="5636"/>
-      <location filename="../../CommandConstraints.cpp" line="5657"/>
-      <location filename="../../CommandConstraints.cpp" line="5732"/>
+      <location filename="../../CommandConstraints.cpp" line="5399"/>
+      <location filename="../../CommandConstraints.cpp" line="5438"/>
+      <location filename="../../CommandConstraints.cpp" line="5459"/>
+      <location filename="../../CommandConstraints.cpp" line="5533"/>
       <source>Add radiam constraint</source>
-      <translation type="unfinished">Add radiam constraint</translation>
+      <translation>添加半徑拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6025"/>
-      <location filename="../../CommandConstraints.cpp" line="6158"/>
-      <location filename="../../CommandConstraints.cpp" line="6188"/>
-      <location filename="../../CommandConstraints.cpp" line="6212"/>
-      <location filename="../../CommandConstraints.cpp" line="6325"/>
-      <location filename="../../CommandConstraints.cpp" line="6379"/>
+      <location filename="../../CommandConstraints.cpp" line="5825"/>
+      <location filename="../../CommandConstraints.cpp" line="5958"/>
+      <location filename="../../CommandConstraints.cpp" line="5988"/>
+      <location filename="../../CommandConstraints.cpp" line="6012"/>
+      <location filename="../../CommandConstraints.cpp" line="6125"/>
+      <location filename="../../CommandConstraints.cpp" line="6179"/>
       <source>Add angle constraint</source>
-      <translation type="unfinished">Add angle constraint</translation>
+      <translation>添加角度拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6593"/>
-      <location filename="../../CommandConstraints.cpp" line="6645"/>
+      <location filename="../../CommandConstraints.cpp" line="6393"/>
+      <location filename="../../CommandConstraints.cpp" line="6445"/>
       <source>Add equality constraint</source>
-      <translation type="unfinished">Add equality constraint</translation>
+      <translation>添加相等拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6766"/>
-      <location filename="../../CommandConstraints.cpp" line="6818"/>
-      <location filename="../../CommandConstraints.cpp" line="6834"/>
-      <location filename="../../CommandConstraints.cpp" line="6920"/>
-      <location filename="../../CommandConstraints.cpp" line="6955"/>
+      <location filename="../../CommandConstraints.cpp" line="6566"/>
+      <location filename="../../CommandConstraints.cpp" line="6618"/>
+      <location filename="../../CommandConstraints.cpp" line="6634"/>
+      <location filename="../../CommandConstraints.cpp" line="6720"/>
+      <location filename="../../CommandConstraints.cpp" line="6755"/>
       <source>Add symmetric constraint</source>
-      <translation type="unfinished">Add symmetric constraint</translation>
+      <translation>添加對稱拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7094"/>
+      <location filename="../../CommandConstraints.cpp" line="6896"/>
       <source>Add Snell's law constraint</source>
-      <translation type="unfinished">Add Snell's law constraint</translation>
+      <translation>添加司乃耳定律拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7303"/>
-      <location filename="../../CommandConstraints.cpp" line="7481"/>
+      <location filename="../../CommandConstraints.cpp" line="7106"/>
+      <location filename="../../CommandConstraints.cpp" line="7284"/>
       <source>Add internal alignment constraint</source>
-      <translation type="unfinished">Add internal alignment constraint</translation>
+      <translation>添加內部對齊拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7688"/>
+      <location filename="../../CommandConstraints.cpp" line="7491"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation type="unfinished">Toggle constraint to driving/reference</translation>
+      <translation>切換拘束以作驅動/參考</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7772"/>
+      <location filename="../../CommandConstraints.cpp" line="7575"/>
       <source>Activate/Deactivate constraint</source>
-      <translation type="unfinished">Activate/Deactivate constraint</translation>
+      <translation>啟動/關閉拘束</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="209"/>
       <source>Create a new sketch on a face</source>
-      <translation type="unfinished">Create a new sketch on a face</translation>
+      <translation>在平面上建立新的草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="239"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Create a new sketch</source>
       <translation>建立一個新的sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="489"/>
+      <location filename="../../Command.cpp" line="491"/>
       <source>Reorient sketch</source>
-      <translation type="unfinished">Reorient sketch</translation>
+      <translation>調整草圖方向</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="644"/>
+      <location filename="../../Command.cpp" line="646"/>
       <source>Attach sketch</source>
-      <translation type="unfinished">Attach sketch</translation>
+      <translation>附加草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Detach sketch</source>
-      <translation type="unfinished">Detach sketch</translation>
+      <translation>分離草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="789"/>
+      <location filename="../../Command.cpp" line="795"/>
       <source>Create a mirrored sketch for each selected sketch</source>
-      <translation type="unfinished">Create a mirrored sketch for each selected sketch</translation>
+      <translation>由每個選擇之草圖來建立鏡射草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="888"/>
+      <location filename="../../Command.cpp" line="894"/>
       <source>Merge sketches</source>
       <translation>合併草圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="137"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="138"/>
       <source>Toggle draft from/to draft</source>
-      <translation type="unfinished">Toggle draft from/to draft</translation>
+      <translation>從/到草稿切換草稿</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="320"/>
+      <location filename="../../CommandCreateGeo.cpp" line="257"/>
       <source>Add sketch line</source>
-      <translation type="unfinished">Add sketch line</translation>
+      <translation>添加草圖線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="538"/>
+      <location filename="../../CommandCreateGeo.cpp" line="480"/>
       <source>Add sketch box</source>
-      <translation type="unfinished">Add sketch box</translation>
+      <translation>添加草圖框</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="575"/>
+      <location filename="../../CommandCreateGeo.cpp" line="518"/>
       <source>Add centered sketch box</source>
-      <translation type="unfinished">Add centered sketch box</translation>
+      <translation>添加置中草圖框</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="901"/>
+      <location filename="../../CommandCreateGeo.cpp" line="847"/>
       <source>Add rounded rectangle</source>
-      <translation type="unfinished">Add rounded rectangle</translation>
+      <translation>建立圓角矩形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1561"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1512"/>
       <source>Add line to sketch wire</source>
-      <translation type="unfinished">Add line to sketch wire</translation>
+      <translation>將線添加到草圖線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1581"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1532"/>
       <source>Add arc to sketch wire</source>
-      <translation type="unfinished">Add arc to sketch wire</translation>
+      <translation>將弧添加到草圖線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2024"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2293"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1977"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2248"/>
       <source>Add sketch arc</source>
-      <translation type="unfinished">Add sketch arc</translation>
+      <translation>添加弧線草圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2562"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5240"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2520"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5322"/>
       <source>Add sketch circle</source>
-      <translation type="unfinished">Add sketch circle</translation>
+      <translation>添加圓形草圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3321"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3288"/>
       <source>Add sketch ellipse</source>
-      <translation type="unfinished">Add sketch ellipse</translation>
+      <translation>添加橢圓草圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3690"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3654"/>
       <source>Add sketch arc of ellipse</source>
-      <translation type="unfinished">Add sketch arc of ellipse</translation>
+      <translation>添加橢圓弧形草圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4028"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3995"/>
       <source>Add sketch arc of hyperbola</source>
-      <translation type="unfinished">Add sketch arc of hyperbola</translation>
+      <translation>添加雙曲線圓弧草圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4330"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4300"/>
       <source>Add sketch arc of Parabola</source>
-      <translation type="unfinished">Add sketch arc of Parabola</translation>
+      <translation>添加拋物線的圓弧草圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4653"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4628"/>
       <source>Add Pole circle</source>
-      <translation type="unfinished">Add Pole circle</translation>
+      <translation>增加極點圓圈</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5467"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5552"/>
       <source>Add sketch point</source>
-      <translation type="unfinished">Add sketch point</translation>
+      <translation>添加草圖點</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5716"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5794"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5801"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5879"/>
       <source>Create fillet</source>
       <translation>建立圓角</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6112"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6197"/>
       <source>Trim edge</source>
       <translation>修剪邊</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6388"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6473"/>
       <source>Extend edge</source>
-      <translation>延伸圖元</translation>
+      <translation>延伸邊緣</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6548"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6636"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>分割邊緣</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6723"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6799"/>
       <source>Add external geometry</source>
-      <translation type="unfinished">Add external geometry</translation>
+      <translation>添加外部幾何</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6904"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6982"/>
       <source>Add carbon copy</source>
-      <translation type="unfinished">Add carbon copy</translation>
+      <translation>添加副本</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7102"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7221"/>
       <source>Add slot</source>
-      <translation type="unfinished">Add slot</translation>
+      <translation>添加凹槽</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7312"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7464"/>
       <source>Add hexagon</source>
-      <translation type="unfinished">Add hexagon</translation>
+      <translation>建立六角形</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="445"/>
       <source>Convert to NURBS</source>
-      <translation type="unfinished">Convert to NURBS</translation>
+      <translation>轉換至 NURBS</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="479"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
       <source>Increase spline degree</source>
-      <translation type="unfinished">Increase spline degree</translation>
+      <translation>增加 B 雲形線之多項式次數</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="594"/>
       <source>Decrease spline degree</source>
-      <translation type="unfinished">Decrease spline degree</translation>
+      <translation>減少 B 雲形線之多項式次數</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="647"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="687"/>
       <source>Increase knot multiplicity</source>
-      <translation type="unfinished">Increase knot multiplicity</translation>
+      <translation>增加結點多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="801"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
       <source>Decrease knot multiplicity</source>
-      <translation type="unfinished">Decrease knot multiplicity</translation>
+      <translation>減少結點多重性</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="986"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1059"/>
+      <source>Insert knot</source>
+      <translation>插入結點</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="1027"/>
       <source>Exposing Internal Geometry</source>
-      <translation type="unfinished">Exposing Internal Geometry</translation>
+      <translation>暴露內部幾何</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1198"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1237"/>
       <source>Create symmetric geometry</source>
-      <translation type="unfinished">Create symmetric geometry</translation>
+      <translation>創建對稱幾何</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1341"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1392"/>
       <source>Copy/clone/move geometry</source>
-      <translation type="unfinished">Copy/clone/move geometry</translation>
+      <translation>拷貝/複製/移動 幾何</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1889"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1941"/>
       <source>Create copy of geometry</source>
-      <translation type="unfinished">Create copy of geometry</translation>
+      <translation>建立幾何的拷貝</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2111"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2170"/>
       <source>Delete all geometry</source>
-      <translation type="unfinished">Delete all geometry</translation>
+      <translation>刪除所有幾何圖形</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2173"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2232"/>
       <source>Delete All Constraints</source>
       <translation>刪除所有拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2298"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2357"/>
       <source>Remove Axes Alignment</source>
-      <translation type="unfinished">Remove Axes Alignment</translation>
+      <translation>移除軸對齊</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="156"/>
       <source>Toggle constraints to the other virtual space</source>
-      <translation type="unfinished">Toggle constraints to the other virtual space</translation>
+      <translation>將拘束切換到其他虛擬空間</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="753"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="975"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="1018"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="164"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="898"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1223"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1266"/>
       <source>Update constraint's virtual space</source>
-      <translation type="unfinished">Update constraint's virtual space</translation>
+      <translation>更新拘束的虛擬空間</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="575"/>
+      <location filename="../../DrawSketchHandler.cpp" line="771"/>
       <source>Add auto constraints</source>
-      <translation type="unfinished">Add auto constraints</translation>
+      <translation>添加自動拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="627"/>
       <source>Swap constraint names</source>
       <translation>調換拘束名稱</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="960"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1208"/>
       <source>Rename sketch constraint</source>
-      <translation type="unfinished">Rename sketch constraint</translation>
+      <translation>重新命名草圖拘束</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="853"/>
+      <location filename="../../ViewProviderSketch.cpp" line="747"/>
       <source>Drag Point</source>
-      <translation type="unfinished">Drag Point</translation>
+      <translation>拖曳點</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="884"/>
+      <location filename="../../ViewProviderSketch.cpp" line="779"/>
       <source>Drag Curve</source>
-      <translation type="unfinished">Drag Curve</translation>
+      <translation>拖曳曲線</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="935"/>
+      <location filename="../../ViewProviderSketch.cpp" line="831"/>
       <source>Drag Constraint</source>
-      <translation type="unfinished">Drag Constraint</translation>
+      <translation>拖動拘束</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1109"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1018"/>
       <source>Modify sketch constraints</source>
-      <translation type="unfinished">Modify sketch constraints</translation>
+      <translation>修改草圖拘束</translation>
+    </message>
+  </context>
+  <context>
+    <name>CommandGroup</name>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
     </message>
   </context>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="373"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="456"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>自動拘束錯誤: 套用共點拘束時無法解出此草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="454"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="537"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>自動拘束錯誤: 套用垂直/水平拘束時無法解出此草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="651"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="734"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>自動拘束錯誤: 套用等長拘束時無法解出此草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="705"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="788"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>自動拘束錯誤: 無拘束時無法解出此草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="742"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>自動拘束錯誤: 套用水平及垂直拘束後無法解出此草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="764"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="847"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>自動拘束錯誤: 套用共點拘束後無法解出此草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="792"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="875"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>自動拘束錯誤: 套用對稱拘束後無法解出此草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2010"/>
+      <location filename="../../../App/SketchObject.cpp" line="2008"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+      <translation>無法猜測曲線交叉點。試著添加共點拘束在你要倒圓角的點及曲線間。</translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="5756"/>
+      <location filename="../../../App/SketchObject.cpp" line="5933"/>
+      <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
+      <translation>此版本的 OCE/OCC 並不支援結點操作。你需要6.9.0版或更新的版本。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5760"/>
-      <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
-      <translation>此版本的 OCE/OCC 並不支援控制點操作。你需要6.9.0版或更新的版本。</translation>
-    </message>
-    <message>
-      <location filename="../../../App/SketchObject.cpp" line="5764"/>
+      <location filename="../../../App/SketchObject.cpp" line="5938"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
-      <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
+      <translation>B 雲形線幾何索引 (GeoID) 超出範圍。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5767"/>
+      <location filename="../../../App/SketchObject.cpp" line="5763"/>
       <source>You are requesting no change in knot multiplicity.</source>
-      <translation type="unfinished">You are requesting no change in knot multiplicity.</translation>
+      <translation>您正在要求不要改變結點多重性</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5772"/>
+      <location filename="../../../App/SketchObject.cpp" line="5768"/>
+      <location filename="../../../App/SketchObject.cpp" line="5946"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
-      <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
+      <translation>提供的幾何索引 (GeoId) 不是 B 雲形線曲線。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5779"/>
+      <location filename="../../../App/SketchObject.cpp" line="5775"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
-      <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
+      <translation>結點索引超過範圍。請注意在 OCC 表示中，第一個結點的索引為 1 而不是 0。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5786"/>
+      <location filename="../../../App/SketchObject.cpp" line="5782"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
+      <translation>結點多重性不能比 B 雲形線之多項式次數高</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5789"/>
+      <location filename="../../../App/SketchObject.cpp" line="5785"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
-      <translation type="unfinished">The multiplicity cannot be decreased beyond zero.</translation>
+      <translation>多重性不能減少到超過零。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5801"/>
+      <location filename="../../../App/SketchObject.cpp" line="5797"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
-      <translation type="unfinished">OCC is unable to decrease the multiplicity within the maximum tolerance.</translation>
+      <translation>OCC 無法在最大容差範圍內降低多重性。</translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="5941"/>
+      <source>Knot cannot have zero multiplicity.</source>
+      <translation>結點之多重性不能為零。</translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="5955"/>
+      <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
+      <translation>結點多重性不能比 B 雲形線之次數高。</translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="5958"/>
+      <source>Knot cannot be inserted outside the BSpline parameter range.</source>
+      <translation>結點不能在 B 雲形線參數範圍外面插入</translation>
     </message>
   </context>
   <context>
@@ -2256,224 +2280,225 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="135"/>
-      <location filename="../../AppSketcherGui.cpp" line="136"/>
-      <location filename="../../AppSketcherGui.cpp" line="137"/>
+      <location filename="../../AppSketcherGui.cpp" line="132"/>
+      <location filename="../../AppSketcherGui.cpp" line="133"/>
+      <location filename="../../AppSketcherGui.cpp" line="134"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>There are no modes that accept the selected set of subelements</source>
-      <translation>沒有任何模式可以接受所選的子元素集</translation>
+      <translation>沒有任何模式可以接受所選的子元件集</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="115"/>
       <source>Broken link to support subelements</source>
-      <translation>支持子元素的連接斷開</translation>
+      <translation>支持子元件的連結斷掉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="117"/>
-      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Unexpected error</source>
       <translation>未知的錯誤</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="122"/>
       <source>Face is non-planar</source>
       <translation>非平面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="123"/>
+      <location filename="../../Command.cpp" line="124"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>選取了錯誤的形狀(例: 需要直線邊線時選取了曲線邊線)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
+      <location filename="../../Command.cpp" line="165"/>
       <source>Sketch mapping</source>
       <translation>草圖投影</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="166"/>
       <source>Can't map the sketch to selected object. %1.</source>
       <translation>無法在選取的物件上產生草圖投影 %1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="592"/>
       <source>Don't attach</source>
-      <translation type="unfinished">Don't attach</translation>
+      <translation>不要附加上去</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="123"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="131"/>
-      <location filename="../../CommandConstraints.cpp" line="153"/>
-      <location filename="../../CommandConstraints.cpp" line="159"/>
-      <location filename="../../CommandConstraints.cpp" line="1126"/>
-      <location filename="../../CommandConstraints.cpp" line="1364"/>
-      <location filename="../../CommandConstraints.cpp" line="1600"/>
-      <location filename="../../CommandConstraints.cpp" line="1623"/>
-      <location filename="../../CommandConstraints.cpp" line="1627"/>
-      <location filename="../../CommandConstraints.cpp" line="1823"/>
-      <location filename="../../CommandConstraints.cpp" line="1853"/>
-      <location filename="../../CommandConstraints.cpp" line="1857"/>
-      <location filename="../../CommandConstraints.cpp" line="2180"/>
-      <location filename="../../CommandConstraints.cpp" line="2191"/>
-      <location filename="../../CommandConstraints.cpp" line="2201"/>
-      <location filename="../../CommandConstraints.cpp" line="2347"/>
-      <location filename="../../CommandConstraints.cpp" line="2358"/>
-      <location filename="../../CommandConstraints.cpp" line="2456"/>
-      <location filename="../../CommandConstraints.cpp" line="2489"/>
-      <location filename="../../CommandConstraints.cpp" line="2581"/>
-      <location filename="../../CommandConstraints.cpp" line="2726"/>
-      <location filename="../../CommandConstraints.cpp" line="2766"/>
-      <location filename="../../CommandConstraints.cpp" line="2772"/>
-      <location filename="../../CommandConstraints.cpp" line="2794"/>
-      <location filename="../../CommandConstraints.cpp" line="2805"/>
-      <location filename="../../CommandConstraints.cpp" line="2853"/>
-      <location filename="../../CommandConstraints.cpp" line="2861"/>
-      <location filename="../../CommandConstraints.cpp" line="2883"/>
-      <location filename="../../CommandConstraints.cpp" line="2944"/>
-      <location filename="../../CommandConstraints.cpp" line="2955"/>
-      <location filename="../../CommandConstraints.cpp" line="2984"/>
-      <location filename="../../CommandConstraints.cpp" line="3034"/>
-      <location filename="../../CommandConstraints.cpp" line="3063"/>
-      <location filename="../../CommandConstraints.cpp" line="3092"/>
-      <location filename="../../CommandConstraints.cpp" line="3196"/>
-      <location filename="../../CommandConstraints.cpp" line="3207"/>
-      <location filename="../../CommandConstraints.cpp" line="3232"/>
-      <location filename="../../CommandConstraints.cpp" line="3282"/>
-      <location filename="../../CommandConstraints.cpp" line="3312"/>
-      <location filename="../../CommandConstraints.cpp" line="3341"/>
-      <location filename="../../CommandConstraints.cpp" line="3442"/>
-      <location filename="../../CommandConstraints.cpp" line="3455"/>
-      <location filename="../../CommandConstraints.cpp" line="3469"/>
-      <location filename="../../CommandConstraints.cpp" line="3485"/>
-      <location filename="../../CommandConstraints.cpp" line="3523"/>
-      <location filename="../../CommandConstraints.cpp" line="3610"/>
-      <location filename="../../CommandConstraints.cpp" line="3623"/>
-      <location filename="../../CommandConstraints.cpp" line="3653"/>
-      <location filename="../../CommandConstraints.cpp" line="3706"/>
-      <location filename="../../CommandConstraints.cpp" line="3743"/>
-      <location filename="../../CommandConstraints.cpp" line="3752"/>
-      <location filename="../../CommandConstraints.cpp" line="3758"/>
-      <location filename="../../CommandConstraints.cpp" line="3782"/>
-      <location filename="../../CommandConstraints.cpp" line="3791"/>
-      <location filename="../../CommandConstraints.cpp" line="3800"/>
-      <location filename="../../CommandConstraints.cpp" line="3928"/>
-      <location filename="../../CommandConstraints.cpp" line="3963"/>
-      <location filename="../../CommandConstraints.cpp" line="3972"/>
-      <location filename="../../CommandConstraints.cpp" line="3981"/>
-      <location filename="../../CommandConstraints.cpp" line="4132"/>
-      <location filename="../../CommandConstraints.cpp" line="4302"/>
-      <location filename="../../CommandConstraints.cpp" line="4315"/>
-      <location filename="../../CommandConstraints.cpp" line="4345"/>
-      <location filename="../../CommandConstraints.cpp" line="4397"/>
-      <location filename="../../CommandConstraints.cpp" line="4418"/>
-      <location filename="../../CommandConstraints.cpp" line="4427"/>
-      <location filename="../../CommandConstraints.cpp" line="4433"/>
-      <location filename="../../CommandConstraints.cpp" line="4457"/>
-      <location filename="../../CommandConstraints.cpp" line="4463"/>
-      <location filename="../../CommandConstraints.cpp" line="4619"/>
-      <location filename="../../CommandConstraints.cpp" line="4655"/>
-      <location filename="../../CommandConstraints.cpp" line="4661"/>
-      <location filename="../../CommandConstraints.cpp" line="4806"/>
-      <location filename="../../CommandConstraints.cpp" line="4842"/>
-      <location filename="../../CommandConstraints.cpp" line="4936"/>
-      <location filename="../../CommandConstraints.cpp" line="4947"/>
-      <location filename="../../CommandConstraints.cpp" line="5008"/>
-      <location filename="../../CommandConstraints.cpp" line="5014"/>
-      <location filename="../../CommandConstraints.cpp" line="5134"/>
-      <location filename="../../CommandConstraints.cpp" line="5238"/>
-      <location filename="../../CommandConstraints.cpp" line="5249"/>
-      <location filename="../../CommandConstraints.cpp" line="5291"/>
-      <location filename="../../CommandConstraints.cpp" line="5306"/>
-      <location filename="../../CommandConstraints.cpp" line="5413"/>
-      <location filename="../../CommandConstraints.cpp" line="5419"/>
-      <location filename="../../CommandConstraints.cpp" line="5514"/>
-      <location filename="../../CommandConstraints.cpp" line="5525"/>
-      <location filename="../../CommandConstraints.cpp" line="5580"/>
-      <location filename="../../CommandConstraints.cpp" line="5586"/>
-      <location filename="../../CommandConstraints.cpp" line="5726"/>
-      <location filename="../../CommandConstraints.cpp" line="5975"/>
-      <location filename="../../CommandConstraints.cpp" line="5987"/>
-      <location filename="../../CommandConstraints.cpp" line="6018"/>
-      <location filename="../../CommandConstraints.cpp" line="6080"/>
-      <location filename="../../CommandConstraints.cpp" line="6176"/>
-      <location filename="../../CommandConstraints.cpp" line="6232"/>
-      <location filename="../../CommandConstraints.cpp" line="6372"/>
-      <location filename="../../CommandConstraints.cpp" line="6489"/>
-      <location filename="../../CommandConstraints.cpp" line="6502"/>
-      <location filename="../../CommandConstraints.cpp" line="6518"/>
-      <location filename="../../CommandConstraints.cpp" line="6523"/>
-      <location filename="../../CommandConstraints.cpp" line="6542"/>
-      <location filename="../../CommandConstraints.cpp" line="6572"/>
-      <location filename="../../CommandConstraints.cpp" line="6587"/>
-      <location filename="../../CommandConstraints.cpp" line="6639"/>
-      <location filename="../../CommandConstraints.cpp" line="6721"/>
-      <location filename="../../CommandConstraints.cpp" line="6734"/>
-      <location filename="../../CommandConstraints.cpp" line="6759"/>
-      <location filename="../../CommandConstraints.cpp" line="6781"/>
-      <location filename="../../CommandConstraints.cpp" line="6811"/>
-      <location filename="../../CommandConstraints.cpp" line="6848"/>
-      <location filename="../../CommandConstraints.cpp" line="6871"/>
-      <location filename="../../CommandConstraints.cpp" line="6913"/>
-      <location filename="../../CommandConstraints.cpp" line="6929"/>
-      <location filename="../../CommandConstraints.cpp" line="7056"/>
-      <location filename="../../CommandConstraints.cpp" line="7062"/>
-      <location filename="../../CommandConstraints.cpp" line="7161"/>
-      <location filename="../../CommandConstraints.cpp" line="7174"/>
-      <location filename="../../CommandConstraints.cpp" line="7195"/>
-      <location filename="../../CommandConstraints.cpp" line="7218"/>
-      <location filename="../../CommandConstraints.cpp" line="7240"/>
-      <location filename="../../CommandConstraints.cpp" line="7248"/>
-      <location filename="../../CommandConstraints.cpp" line="7254"/>
-      <location filename="../../CommandConstraints.cpp" line="7410"/>
-      <location filename="../../CommandConstraints.cpp" line="7418"/>
-      <location filename="../../CommandConstraints.cpp" line="7426"/>
-      <location filename="../../CommandConstraints.cpp" line="7432"/>
-      <location filename="../../CommandConstraints.cpp" line="7581"/>
-      <location filename="../../CommandConstraints.cpp" line="7642"/>
-      <location filename="../../CommandConstraints.cpp" line="7650"/>
-      <location filename="../../CommandConstraints.cpp" line="7682"/>
-      <location filename="../../CommandConstraints.cpp" line="7755"/>
-      <location filename="../../CommandConstraints.cpp" line="7766"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="431"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="502"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="640"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="703"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="794"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="843"/>
-      <location filename="../../CommandSketcherTools.cpp" line="127"/>
-      <location filename="../../CommandSketcherTools.cpp" line="135"/>
-      <location filename="../../CommandSketcherTools.cpp" line="177"/>
-      <location filename="../../CommandSketcherTools.cpp" line="238"/>
-      <location filename="../../CommandSketcherTools.cpp" line="246"/>
-      <location filename="../../CommandSketcherTools.cpp" line="325"/>
-      <location filename="../../CommandSketcherTools.cpp" line="953"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1048"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1056"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1161"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1170"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1409"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1418"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandSketcherTools.cpp" line="130"/>
+      <location filename="../../CommandSketcherTools.cpp" line="138"/>
+      <location filename="../../CommandSketcherTools.cpp" line="180"/>
+      <location filename="../../CommandSketcherTools.cpp" line="241"/>
+      <location filename="../../CommandSketcherTools.cpp" line="249"/>
+      <location filename="../../CommandSketcherTools.cpp" line="328"/>
+      <location filename="../../CommandSketcherTools.cpp" line="975"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1087"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1095"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1200"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1209"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1468"/>
       <location filename="../../CommandSketcherTools.cpp" line="1477"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1964"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1973"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2035"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2231"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2240"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="123"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="146"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1536"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2023"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2032"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2094"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2290"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2299"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2344"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="827"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="868"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
+      <location filename="../../CommandConstraints.cpp" line="156"/>
+      <location filename="../../CommandConstraints.cpp" line="162"/>
+      <location filename="../../CommandConstraints.cpp" line="911"/>
+      <location filename="../../CommandConstraints.cpp" line="1149"/>
+      <location filename="../../CommandConstraints.cpp" line="1386"/>
+      <location filename="../../CommandConstraints.cpp" line="1409"/>
+      <location filename="../../CommandConstraints.cpp" line="1413"/>
+      <location filename="../../CommandConstraints.cpp" line="1610"/>
+      <location filename="../../CommandConstraints.cpp" line="1640"/>
+      <location filename="../../CommandConstraints.cpp" line="1644"/>
+      <location filename="../../CommandConstraints.cpp" line="1968"/>
+      <location filename="../../CommandConstraints.cpp" line="1979"/>
+      <location filename="../../CommandConstraints.cpp" line="1989"/>
+      <location filename="../../CommandConstraints.cpp" line="2135"/>
+      <location filename="../../CommandConstraints.cpp" line="2146"/>
+      <location filename="../../CommandConstraints.cpp" line="2244"/>
+      <location filename="../../CommandConstraints.cpp" line="2277"/>
+      <location filename="../../CommandConstraints.cpp" line="2369"/>
+      <location filename="../../CommandConstraints.cpp" line="2514"/>
+      <location filename="../../CommandConstraints.cpp" line="2554"/>
+      <location filename="../../CommandConstraints.cpp" line="2560"/>
+      <location filename="../../CommandConstraints.cpp" line="2582"/>
+      <location filename="../../CommandConstraints.cpp" line="2593"/>
+      <location filename="../../CommandConstraints.cpp" line="2641"/>
+      <location filename="../../CommandConstraints.cpp" line="2649"/>
+      <location filename="../../CommandConstraints.cpp" line="2671"/>
+      <location filename="../../CommandConstraints.cpp" line="2732"/>
+      <location filename="../../CommandConstraints.cpp" line="2743"/>
+      <location filename="../../CommandConstraints.cpp" line="2772"/>
+      <location filename="../../CommandConstraints.cpp" line="2822"/>
+      <location filename="../../CommandConstraints.cpp" line="2851"/>
+      <location filename="../../CommandConstraints.cpp" line="2880"/>
+      <location filename="../../CommandConstraints.cpp" line="2984"/>
+      <location filename="../../CommandConstraints.cpp" line="2995"/>
+      <location filename="../../CommandConstraints.cpp" line="3020"/>
+      <location filename="../../CommandConstraints.cpp" line="3070"/>
+      <location filename="../../CommandConstraints.cpp" line="3100"/>
+      <location filename="../../CommandConstraints.cpp" line="3129"/>
+      <location filename="../../CommandConstraints.cpp" line="3230"/>
+      <location filename="../../CommandConstraints.cpp" line="3243"/>
+      <location filename="../../CommandConstraints.cpp" line="3257"/>
+      <location filename="../../CommandConstraints.cpp" line="3273"/>
+      <location filename="../../CommandConstraints.cpp" line="3311"/>
+      <location filename="../../CommandConstraints.cpp" line="3398"/>
+      <location filename="../../CommandConstraints.cpp" line="3411"/>
+      <location filename="../../CommandConstraints.cpp" line="3441"/>
+      <location filename="../../CommandConstraints.cpp" line="3494"/>
+      <location filename="../../CommandConstraints.cpp" line="3531"/>
+      <location filename="../../CommandConstraints.cpp" line="3540"/>
+      <location filename="../../CommandConstraints.cpp" line="3546"/>
+      <location filename="../../CommandConstraints.cpp" line="3570"/>
+      <location filename="../../CommandConstraints.cpp" line="3579"/>
+      <location filename="../../CommandConstraints.cpp" line="3588"/>
+      <location filename="../../CommandConstraints.cpp" line="3716"/>
+      <location filename="../../CommandConstraints.cpp" line="3751"/>
+      <location filename="../../CommandConstraints.cpp" line="3760"/>
+      <location filename="../../CommandConstraints.cpp" line="3769"/>
+      <location filename="../../CommandConstraints.cpp" line="3926"/>
+      <location filename="../../CommandConstraints.cpp" line="4096"/>
+      <location filename="../../CommandConstraints.cpp" line="4109"/>
+      <location filename="../../CommandConstraints.cpp" line="4139"/>
+      <location filename="../../CommandConstraints.cpp" line="4191"/>
+      <location filename="../../CommandConstraints.cpp" line="4212"/>
+      <location filename="../../CommandConstraints.cpp" line="4221"/>
+      <location filename="../../CommandConstraints.cpp" line="4227"/>
+      <location filename="../../CommandConstraints.cpp" line="4251"/>
+      <location filename="../../CommandConstraints.cpp" line="4257"/>
+      <location filename="../../CommandConstraints.cpp" line="4413"/>
+      <location filename="../../CommandConstraints.cpp" line="4449"/>
+      <location filename="../../CommandConstraints.cpp" line="4455"/>
+      <location filename="../../CommandConstraints.cpp" line="4606"/>
+      <location filename="../../CommandConstraints.cpp" line="4648"/>
+      <location filename="../../CommandConstraints.cpp" line="4742"/>
+      <location filename="../../CommandConstraints.cpp" line="4753"/>
+      <location filename="../../CommandConstraints.cpp" line="4814"/>
+      <location filename="../../CommandConstraints.cpp" line="4820"/>
+      <location filename="../../CommandConstraints.cpp" line="4939"/>
+      <location filename="../../CommandConstraints.cpp" line="5042"/>
+      <location filename="../../CommandConstraints.cpp" line="5053"/>
+      <location filename="../../CommandConstraints.cpp" line="5095"/>
+      <location filename="../../CommandConstraints.cpp" line="5110"/>
+      <location filename="../../CommandConstraints.cpp" line="5216"/>
+      <location filename="../../CommandConstraints.cpp" line="5222"/>
+      <location filename="../../CommandConstraints.cpp" line="5316"/>
+      <location filename="../../CommandConstraints.cpp" line="5327"/>
+      <location filename="../../CommandConstraints.cpp" line="5382"/>
+      <location filename="../../CommandConstraints.cpp" line="5388"/>
+      <location filename="../../CommandConstraints.cpp" line="5527"/>
+      <location filename="../../CommandConstraints.cpp" line="5775"/>
+      <location filename="../../CommandConstraints.cpp" line="5787"/>
+      <location filename="../../CommandConstraints.cpp" line="5818"/>
+      <location filename="../../CommandConstraints.cpp" line="5880"/>
+      <location filename="../../CommandConstraints.cpp" line="5976"/>
+      <location filename="../../CommandConstraints.cpp" line="6032"/>
+      <location filename="../../CommandConstraints.cpp" line="6172"/>
+      <location filename="../../CommandConstraints.cpp" line="6289"/>
+      <location filename="../../CommandConstraints.cpp" line="6302"/>
+      <location filename="../../CommandConstraints.cpp" line="6318"/>
+      <location filename="../../CommandConstraints.cpp" line="6323"/>
+      <location filename="../../CommandConstraints.cpp" line="6342"/>
+      <location filename="../../CommandConstraints.cpp" line="6372"/>
+      <location filename="../../CommandConstraints.cpp" line="6387"/>
+      <location filename="../../CommandConstraints.cpp" line="6439"/>
+      <location filename="../../CommandConstraints.cpp" line="6521"/>
+      <location filename="../../CommandConstraints.cpp" line="6534"/>
+      <location filename="../../CommandConstraints.cpp" line="6559"/>
+      <location filename="../../CommandConstraints.cpp" line="6581"/>
+      <location filename="../../CommandConstraints.cpp" line="6611"/>
+      <location filename="../../CommandConstraints.cpp" line="6648"/>
+      <location filename="../../CommandConstraints.cpp" line="6671"/>
+      <location filename="../../CommandConstraints.cpp" line="6713"/>
+      <location filename="../../CommandConstraints.cpp" line="6729"/>
+      <location filename="../../CommandConstraints.cpp" line="6856"/>
+      <location filename="../../CommandConstraints.cpp" line="6862"/>
+      <location filename="../../CommandConstraints.cpp" line="6964"/>
+      <location filename="../../CommandConstraints.cpp" line="6977"/>
+      <location filename="../../CommandConstraints.cpp" line="6998"/>
+      <location filename="../../CommandConstraints.cpp" line="7021"/>
+      <location filename="../../CommandConstraints.cpp" line="7043"/>
+      <location filename="../../CommandConstraints.cpp" line="7051"/>
+      <location filename="../../CommandConstraints.cpp" line="7057"/>
+      <location filename="../../CommandConstraints.cpp" line="7213"/>
+      <location filename="../../CommandConstraints.cpp" line="7221"/>
+      <location filename="../../CommandConstraints.cpp" line="7229"/>
+      <location filename="../../CommandConstraints.cpp" line="7235"/>
+      <location filename="../../CommandConstraints.cpp" line="7384"/>
+      <location filename="../../CommandConstraints.cpp" line="7445"/>
+      <location filename="../../CommandConstraints.cpp" line="7453"/>
+      <location filename="../../CommandConstraints.cpp" line="7485"/>
+      <location filename="../../CommandConstraints.cpp" line="7558"/>
+      <location filename="../../CommandConstraints.cpp" line="7569"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="132"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="125"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="133"/>
       <source>Select edge(s) from the sketch.</source>
       <translation>由草圖選取邊</translation>
     </message>
@@ -2488,336 +2513,327 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>因草圖中含有相衝突之拘束,因此無法允許編輯數據</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="218"/>
+      <location filename="../../EditDatumDialog.cpp" line="219"/>
       <source>Dimensional constraint</source>
       <translation>尺度拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="154"/>
+      <location filename="../../CommandConstraints.cpp" line="157"/>
       <source>Cannot add a constraint between two external geometries.</source>
-      <translation type="unfinished">Cannot add a constraint between two external geometries.</translation>
+      <translation>於兩個外部幾何間無法建立拘束.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="160"/>
-      <source>Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <location filename="../../CommandConstraints.cpp" line="163"/>
+      <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
+      <translation>無法在兩個固定幾何之間添加拘束。固定幾何包括外部幾何、區塊幾何和特殊點例如 B 雲形線之結點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="700"/>
+      <location filename="../../CommandConstraints.cpp" line="486"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation type="unfinished">Sketcher Constraint Substitution</translation>
+      <translation>草圖拘束替換</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="706"/>
+      <location filename="../../CommandConstraints.cpp" line="492"/>
       <source>Keep notifying me of constraint substitutions</source>
-      <translation type="unfinished">Keep notifying me of constraint substitutions</translation>
+      <translation>繼續通知我拘束替換</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="747"/>
-      <location filename="../../CommandConstraints.cpp" line="758"/>
-      <location filename="../../CommandConstraints.cpp" line="770"/>
-      <source>Only sketch and its support is allowed to select</source>
-      <translation>僅能選取草圖及其所依附之面</translation>
+      <location filename="../../CommandConstraints.cpp" line="533"/>
+      <location filename="../../CommandConstraints.cpp" line="544"/>
+      <location filename="../../CommandConstraints.cpp" line="556"/>
+      <source>Only sketch and its support are allowed to be selected.</source>
+      <translation>只允許選擇草圖及其支撐。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="779"/>
-      <source>One of the selected has to be on the sketch</source>
-      <translation>所選中已有於草圖上者</translation>
+      <location filename="../../CommandConstraints.cpp" line="565"/>
+      <source>One of the selected has to be on the sketch.</source>
+      <translation>被選擇之一必須在草圖上。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1127"/>
-      <location filename="../../CommandConstraints.cpp" line="1365"/>
+      <location filename="../../CommandConstraints.cpp" line="912"/>
+      <location filename="../../CommandConstraints.cpp" line="1150"/>
       <source>Select an edge from the sketch.</source>
       <translation>於草圖中選擇邊</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1152"/>
-      <location filename="../../CommandConstraints.cpp" line="1166"/>
-      <location filename="../../CommandConstraints.cpp" line="1172"/>
-      <location filename="../../CommandConstraints.cpp" line="1191"/>
-      <location filename="../../CommandConstraints.cpp" line="1219"/>
-      <location filename="../../CommandConstraints.cpp" line="1247"/>
-      <location filename="../../CommandConstraints.cpp" line="1261"/>
-      <location filename="../../CommandConstraints.cpp" line="1267"/>
-      <location filename="../../CommandConstraints.cpp" line="1390"/>
-      <location filename="../../CommandConstraints.cpp" line="1404"/>
-      <location filename="../../CommandConstraints.cpp" line="1410"/>
-      <location filename="../../CommandConstraints.cpp" line="1428"/>
-      <location filename="../../CommandConstraints.cpp" line="1454"/>
-      <location filename="../../CommandConstraints.cpp" line="1483"/>
-      <location filename="../../CommandConstraints.cpp" line="1492"/>
-      <location filename="../../CommandConstraints.cpp" line="1503"/>
-      <location filename="../../CommandSketcherTools.cpp" line="167"/>
-      <location filename="../../CommandSketcherTools.cpp" line="270"/>
+      <location filename="../../CommandSketcherTools.cpp" line="170"/>
+      <location filename="../../CommandSketcherTools.cpp" line="273"/>
+      <location filename="../../CommandConstraints.cpp" line="937"/>
+      <location filename="../../CommandConstraints.cpp" line="951"/>
+      <location filename="../../CommandConstraints.cpp" line="957"/>
+      <location filename="../../CommandConstraints.cpp" line="976"/>
+      <location filename="../../CommandConstraints.cpp" line="1004"/>
+      <location filename="../../CommandConstraints.cpp" line="1032"/>
+      <location filename="../../CommandConstraints.cpp" line="1046"/>
+      <location filename="../../CommandConstraints.cpp" line="1052"/>
+      <location filename="../../CommandConstraints.cpp" line="1175"/>
+      <location filename="../../CommandConstraints.cpp" line="1189"/>
+      <location filename="../../CommandConstraints.cpp" line="1195"/>
+      <location filename="../../CommandConstraints.cpp" line="1213"/>
+      <location filename="../../CommandConstraints.cpp" line="1239"/>
+      <location filename="../../CommandConstraints.cpp" line="1268"/>
+      <location filename="../../CommandConstraints.cpp" line="1277"/>
+      <location filename="../../CommandConstraints.cpp" line="1288"/>
       <source>Impossible constraint</source>
       <translation>無法拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1153"/>
-      <location filename="../../CommandConstraints.cpp" line="1248"/>
-      <location filename="../../CommandConstraints.cpp" line="1391"/>
-      <location filename="../../CommandConstraints.cpp" line="1484"/>
-      <source>The selected edge is not a line segment</source>
-      <translation>所選之邊非為線段</translation>
+      <location filename="../../CommandConstraints.cpp" line="938"/>
+      <location filename="../../CommandConstraints.cpp" line="1033"/>
+      <location filename="../../CommandConstraints.cpp" line="1176"/>
+      <location filename="../../CommandConstraints.cpp" line="1269"/>
+      <source>The selected edge is not a line segment.</source>
+      <translation>所選之邊非為線段.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1161"/>
-      <location filename="../../CommandConstraints.cpp" line="1256"/>
-      <location filename="../../CommandConstraints.cpp" line="1399"/>
-      <location filename="../../CommandConstraints.cpp" line="1497"/>
-      <location filename="../../CommandConstraints.cpp" line="1867"/>
-      <location filename="../../CommandConstraints.cpp" line="1915"/>
+      <location filename="../../CommandConstraints.cpp" line="946"/>
+      <location filename="../../CommandConstraints.cpp" line="1041"/>
+      <location filename="../../CommandConstraints.cpp" line="1184"/>
+      <location filename="../../CommandConstraints.cpp" line="1282"/>
+      <location filename="../../CommandConstraints.cpp" line="1654"/>
+      <location filename="../../CommandConstraints.cpp" line="1702"/>
       <source>Double constraint</source>
       <translation>雙重拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1162"/>
-      <location filename="../../CommandConstraints.cpp" line="1257"/>
-      <location filename="../../CommandConstraints.cpp" line="1405"/>
-      <location filename="../../CommandConstraints.cpp" line="1493"/>
+      <location filename="../../CommandConstraints.cpp" line="947"/>
+      <location filename="../../CommandConstraints.cpp" line="1042"/>
+      <location filename="../../CommandConstraints.cpp" line="1190"/>
+      <location filename="../../CommandConstraints.cpp" line="1278"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>選取的邊線已經有水平拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1167"/>
-      <location filename="../../CommandConstraints.cpp" line="1262"/>
-      <location filename="../../CommandConstraints.cpp" line="1400"/>
-      <location filename="../../CommandConstraints.cpp" line="1498"/>
+      <location filename="../../CommandConstraints.cpp" line="952"/>
+      <location filename="../../CommandConstraints.cpp" line="1047"/>
+      <location filename="../../CommandConstraints.cpp" line="1185"/>
+      <location filename="../../CommandConstraints.cpp" line="1283"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>選取的邊線已經有垂直拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1173"/>
-      <location filename="../../CommandConstraints.cpp" line="1268"/>
-      <location filename="../../CommandConstraints.cpp" line="1411"/>
-      <location filename="../../CommandConstraints.cpp" line="1504"/>
-      <location filename="../../CommandConstraints.cpp" line="1868"/>
-      <location filename="../../CommandConstraints.cpp" line="1916"/>
+      <location filename="../../CommandConstraints.cpp" line="958"/>
+      <location filename="../../CommandConstraints.cpp" line="1053"/>
+      <location filename="../../CommandConstraints.cpp" line="1196"/>
+      <location filename="../../CommandConstraints.cpp" line="1289"/>
+      <location filename="../../CommandConstraints.cpp" line="1655"/>
+      <location filename="../../CommandConstraints.cpp" line="1703"/>
       <source>The selected edge already has a Block constraint!</source>
       <translation>所選邊線已套用定位拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1192"/>
+      <location filename="../../CommandConstraints.cpp" line="977"/>
       <source>The selected item(s) can't accept a horizontal constraint!</source>
       <translation>所選項目無法使用水平拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1220"/>
-      <source>There are more than one fixed point selected. Select a maximum of one fixed point!</source>
-      <translation>選取超過一個固定點. 請選取最多一個固定點!</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1429"/>
-      <source>The selected item(s) can't accept a vertical constraint!</source>
-      <translation>所選項目無法使用垂直拘束!</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1455"/>
+      <location filename="../../CommandConstraints.cpp" line="1005"/>
+      <location filename="../../CommandConstraints.cpp" line="1240"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>選取超過一個固定點. 請選取最多一個固定點!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1601"/>
-      <location filename="../../CommandConstraints.cpp" line="1824"/>
+      <location filename="../../CommandConstraints.cpp" line="1214"/>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>所選項目無法使用垂直拘束!</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1387"/>
+      <location filename="../../CommandConstraints.cpp" line="1611"/>
+      <location filename="../../CommandConstraints.cpp" line="2136"/>
       <source>Select vertices from the sketch.</source>
       <translation>從草圖中選取頂點</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1624"/>
+      <location filename="../../CommandConstraints.cpp" line="1410"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>從草圖中選取一個非原點之頂點</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1628"/>
+      <location filename="../../CommandConstraints.cpp" line="1414"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
       <translation>從草圖中只選擇端點。 最後選擇的頂點可能是原點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1835"/>
+      <location filename="../../CommandConstraints.cpp" line="1622"/>
       <source>Wrong solver status</source>
       <translation>求解器狀態錯誤</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1836"/>
+      <location filename="../../CommandConstraints.cpp" line="1623"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation type="unfinished">A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
+      <translation>如果草圖中的求解器無法解出或存在冗餘、衝突的約束，則不能再添加定位約束。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1854"/>
+      <location filename="../../CommandConstraints.cpp" line="1641"/>
       <source>Select one edge from the sketch.</source>
       <translation>從草圖中選取一邊線</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1858"/>
+      <location filename="../../CommandConstraints.cpp" line="1645"/>
       <source>Select only edges from the sketch.</source>
       <translation>僅有邊線能從草圖中被選取</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1886"/>
-      <location filename="../../CommandConstraints.cpp" line="1931"/>
-      <location filename="../../CommandConstraints.cpp" line="3682"/>
-      <location filename="../../CommandConstraints.cpp" line="4161"/>
-      <location filename="../../CommandConstraints.cpp" line="4374"/>
-      <location filename="../../CommandConstraints.cpp" line="4871"/>
-      <location filename="../../CommandConstraints.cpp" line="7124"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="833"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="861"/>
+      <location filename="../../CommandConstraints.cpp" line="1673"/>
+      <location filename="../../CommandConstraints.cpp" line="1718"/>
+      <location filename="../../CommandConstraints.cpp" line="3470"/>
+      <location filename="../../CommandConstraints.cpp" line="3955"/>
+      <location filename="../../CommandConstraints.cpp" line="4168"/>
+      <location filename="../../CommandConstraints.cpp" line="4677"/>
+      <location filename="../../CommandConstraints.cpp" line="6926"/>
       <source>Error</source>
       <translation>錯誤</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2152"/>
+      <location filename="../../CommandConstraints.cpp" line="1940"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>已被取代為終點對終點相切</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2181"/>
+      <location filename="../../CommandConstraints.cpp" line="1969"/>
       <source>Select two or more points from the sketch.</source>
       <translation>從草圖中選取二個或更多點</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2192"/>
-      <location filename="../../CommandConstraints.cpp" line="2202"/>
-      <source>Select two or more vertexes from the sketch.</source>
+      <location filename="../../CommandConstraints.cpp" line="1980"/>
+      <location filename="../../CommandConstraints.cpp" line="1990"/>
+      <source>Select two or more vertices from the sketch.</source>
       <translation>從草圖中選取兩個或更多頂點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2348"/>
-      <source>Select vertexes from the sketch.</source>
-      <translation>由草圖中選取頂點。</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2359"/>
-      <location filename="../../CommandConstraints.cpp" line="2490"/>
+      <location filename="../../CommandConstraints.cpp" line="2147"/>
+      <location filename="../../CommandConstraints.cpp" line="2278"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>由草圖中選取一條線或一個點,以及一條線或兩個點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2457"/>
+      <location filename="../../CommandConstraints.cpp" line="2245"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>無法於軸上增加長度拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2582"/>
-      <source>This constraint does not make sense for non-linear curves</source>
-      <translation>此拘束條件在非線性曲線上並不合理</translation>
+      <location filename="../../CommandConstraints.cpp" line="2370"/>
+      <source>This constraint does not make sense for non-linear curves.</source>
+      <translation>此拘束條件在非線性曲線上並不合理.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2699"/>
+      <location filename="../../CommandConstraints.cpp" line="2487"/>
       <source>Endpoint to edge tangency was applied instead.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied instead.</translation>
+      <translation>改為應用端點到邊相切。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2727"/>
-      <location filename="../../CommandConstraints.cpp" line="2945"/>
-      <location filename="../../CommandConstraints.cpp" line="3197"/>
-      <location filename="../../CommandConstraints.cpp" line="4937"/>
-      <location filename="../../CommandConstraints.cpp" line="5239"/>
-      <location filename="../../CommandConstraints.cpp" line="5515"/>
-      <location filename="../../CommandConstraints.cpp" line="5976"/>
+      <location filename="../../CommandConstraints.cpp" line="2515"/>
+      <location filename="../../CommandConstraints.cpp" line="2733"/>
+      <location filename="../../CommandConstraints.cpp" line="2985"/>
+      <location filename="../../CommandConstraints.cpp" line="4743"/>
+      <location filename="../../CommandConstraints.cpp" line="5043"/>
+      <location filename="../../CommandConstraints.cpp" line="5317"/>
+      <location filename="../../CommandConstraints.cpp" line="5776"/>
       <source>Select the right things from the sketch.</source>
       <translation>從草圖中選取正確的圖元</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2767"/>
-      <location filename="../../CommandConstraints.cpp" line="2854"/>
+      <location filename="../../CommandConstraints.cpp" line="2555"/>
+      <location filename="../../CommandConstraints.cpp" line="2642"/>
       <source>Point on B-spline edge currently unsupported.</source>
-      <translation>目前並未支援端點到B型不規則曲線的共點拘束</translation>
+      <translation>目前並未支援端點到B雲形線的共點拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2773"/>
-      <location filename="../../CommandConstraints.cpp" line="2862"/>
-      <location filename="../../CommandConstraints.cpp" line="3654"/>
-      <location filename="../../CommandConstraints.cpp" line="3759"/>
-      <location filename="../../CommandConstraints.cpp" line="3801"/>
-      <location filename="../../CommandConstraints.cpp" line="3982"/>
-      <location filename="../../CommandConstraints.cpp" line="4133"/>
-      <location filename="../../CommandConstraints.cpp" line="4346"/>
-      <location filename="../../CommandConstraints.cpp" line="4434"/>
-      <location filename="../../CommandConstraints.cpp" line="4464"/>
-      <location filename="../../CommandConstraints.cpp" line="4662"/>
-      <location filename="../../CommandConstraints.cpp" line="4843"/>
-      <location filename="../../CommandConstraints.cpp" line="5292"/>
-      <location filename="../../CommandConstraints.cpp" line="5420"/>
-      <location filename="../../CommandConstraints.cpp" line="6019"/>
-      <location filename="../../CommandConstraints.cpp" line="6081"/>
-      <location filename="../../CommandConstraints.cpp" line="6373"/>
-      <location filename="../../CommandConstraints.cpp" line="7063"/>
-      <source>Select an edge that is not a B-spline weight</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight</translation>
+      <location filename="../../CommandConstraints.cpp" line="2561"/>
+      <location filename="../../CommandConstraints.cpp" line="2650"/>
+      <location filename="../../CommandConstraints.cpp" line="3442"/>
+      <location filename="../../CommandConstraints.cpp" line="3547"/>
+      <location filename="../../CommandConstraints.cpp" line="3589"/>
+      <location filename="../../CommandConstraints.cpp" line="3770"/>
+      <location filename="../../CommandConstraints.cpp" line="3927"/>
+      <location filename="../../CommandConstraints.cpp" line="4140"/>
+      <location filename="../../CommandConstraints.cpp" line="4228"/>
+      <location filename="../../CommandConstraints.cpp" line="4258"/>
+      <location filename="../../CommandConstraints.cpp" line="4456"/>
+      <location filename="../../CommandConstraints.cpp" line="4649"/>
+      <location filename="../../CommandConstraints.cpp" line="5096"/>
+      <location filename="../../CommandConstraints.cpp" line="5819"/>
+      <location filename="../../CommandConstraints.cpp" line="5881"/>
+      <location filename="../../CommandConstraints.cpp" line="6173"/>
+      <location filename="../../CommandConstraints.cpp" line="6863"/>
+      <source>Select an edge that is not a B-spline weight.</source>
+      <translation>選擇不是 B 雲形線權重的邊</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2795"/>
+      <location filename="../../CommandConstraints.cpp" line="2583"/>
       <source>None of the selected points were constrained onto the respective curves, because they are parts of the same element, because they are both external geometry, or because the edge is not eligible.</source>
-      <translation type="unfinished">None of the selected points were constrained onto the respective curves, because they are parts of the same element, because they are both external geometry, or because the edge is not eligible.</translation>
+      <translation>沒有任何被選擇點被拘束在其個別的曲線上，因為它們是同一個元件的一部份，因為它們都是外部幾何，或是因為其邊不符合條件。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2806"/>
+      <location filename="../../CommandConstraints.cpp" line="2594"/>
       <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
       <translation>選取一點及數條曲線，或是一條曲線及數個點。您已選取 %1 條曲線及 %2 個點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2884"/>
+      <location filename="../../CommandConstraints.cpp" line="2672"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
-      <translation>於個別的曲線上無所選的點被拘束，可能因為他們是在同一元素上的一部分，或是他們都是外部幾何。</translation>
+      <translation>沒有任何被選擇點被拘束在其個別的曲線上，要麼因為它們都是同一元件的一部份，或是因為他們都是外部幾何。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2956"/>
-      <location filename="../../CommandConstraints.cpp" line="3064"/>
-      <location filename="../../CommandConstraints.cpp" line="3208"/>
-      <location filename="../../CommandConstraints.cpp" line="3313"/>
+      <location filename="../../CommandConstraints.cpp" line="2744"/>
+      <location filename="../../CommandConstraints.cpp" line="2852"/>
+      <location filename="../../CommandConstraints.cpp" line="2996"/>
+      <location filename="../../CommandConstraints.cpp" line="3101"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>於草圖中選取一條線或最多兩個點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2985"/>
+      <location filename="../../CommandConstraints.cpp" line="2773"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>無法於軸上增加水平長度拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3035"/>
+      <location filename="../../CommandConstraints.cpp" line="2823"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>在原點上無法加入固定X軸拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3093"/>
-      <location filename="../../CommandConstraints.cpp" line="3342"/>
-      <source>This constraint only makes sense on a line segment or a pair of points</source>
-      <translation>此拘束僅在線段或一對點上才有意義</translation>
+      <location filename="../../CommandConstraints.cpp" line="2881"/>
+      <location filename="../../CommandConstraints.cpp" line="3130"/>
+      <source>This constraint only makes sense on a line segment or a pair of points.</source>
+      <translation>此拘束只針對線段或是一對點有意義。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3233"/>
+      <location filename="../../CommandConstraints.cpp" line="3021"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>無法於軸上增加垂直長度拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3283"/>
+      <location filename="../../CommandConstraints.cpp" line="3071"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>在原點上無法加入固定Y軸拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3443"/>
+      <location filename="../../CommandConstraints.cpp" line="3231"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>由草圖中選取兩條或以上線條。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3456"/>
-      <location filename="../../CommandConstraints.cpp" line="6503"/>
+      <location filename="../../CommandConstraints.cpp" line="3244"/>
+      <location filename="../../CommandConstraints.cpp" line="6303"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>由草圖中選取至少兩條線。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3470"/>
-      <source>Select a valid line</source>
-      <translation>選取有效線條</translation>
+      <location filename="../../CommandConstraints.cpp" line="3258"/>
+      <source>Select a valid line.</source>
+      <translation>選擇一條有效的線。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3486"/>
-      <location filename="../../CommandConstraints.cpp" line="3524"/>
-      <source>The selected edge is not a valid line</source>
-      <translation>所選之邊非為有效線段</translation>
+      <location filename="../../CommandConstraints.cpp" line="3274"/>
+      <location filename="../../CommandConstraints.cpp" line="3312"/>
+      <source>The selected edge is not a valid line.</source>
+      <translation>所選之邊非為有效線段.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3588"/>
+      <location filename="../../CommandConstraints.cpp" line="3376"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2825,55 +2841,55 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>此拘束尚有許多方式可以使用，可用的組合有：兩條曲線、兩個端點、兩條曲線及一個點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3608"/>
+      <location filename="../../CommandConstraints.cpp" line="3396"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>從草圖中選取一些幾何。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3621"/>
+      <location filename="../../CommandConstraints.cpp" line="3409"/>
       <source>Wrong number of selected objects!</source>
-      <comment>perpendicular constraint</comment>
+      <comment>perpendicular constraint.</comment>
       <translation>選取之物件數量有誤!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3698"/>
-      <location filename="../../CommandConstraints.cpp" line="4389"/>
+      <location filename="../../CommandConstraints.cpp" line="3486"/>
+      <location filename="../../CommandConstraints.cpp" line="4183"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
       <translation>三個物件時至少需有2條曲線及1個點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3707"/>
-      <location filename="../../CommandConstraints.cpp" line="3744"/>
+      <location filename="../../CommandConstraints.cpp" line="3495"/>
+      <location filename="../../CommandConstraints.cpp" line="3532"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>無法於未連接點上建立垂直拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3753"/>
-      <location filename="../../CommandConstraints.cpp" line="3792"/>
-      <location filename="../../CommandConstraints.cpp" line="3973"/>
+      <location filename="../../CommandConstraints.cpp" line="3541"/>
+      <location filename="../../CommandConstraints.cpp" line="3580"/>
+      <location filename="../../CommandConstraints.cpp" line="3761"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
-      <translation>B型不規則曲線的邊線目前並不支援垂直拘束</translation>
+      <translation>B雲形線的邊線目前並不支援垂直拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3783"/>
-      <location filename="../../CommandConstraints.cpp" line="3964"/>
+      <location filename="../../CommandConstraints.cpp" line="3571"/>
+      <location filename="../../CommandConstraints.cpp" line="3752"/>
       <source>One of the selected edges should be a line.</source>
       <translation>所選之邊中需有一條線。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4246"/>
+      <location filename="../../CommandConstraints.cpp" line="4040"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>已套用點對點相切拘束，共點拘束已被刪除</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4267"/>
+      <location filename="../../CommandConstraints.cpp" line="4061"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied. The point on object constraint was deleted.</translation>
+      <translation>終點到邊已套用相切(拘束)。因此點到物件之拘束被刪除。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4281"/>
+      <location filename="../../CommandConstraints.cpp" line="4075"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2883,481 +2899,716 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 可接受的組合：二條曲線; 一個終止點及一條曲線；二個終主點；二條曲線及一點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4300"/>
+      <location filename="../../CommandConstraints.cpp" line="4094"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>從草圖中選取一些幾何。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4313"/>
+      <location filename="../../CommandConstraints.cpp" line="4107"/>
       <source>Wrong number of selected objects!</source>
       <comment>tangent constraint</comment>
       <translation>選取之物件數量有誤!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4398"/>
-      <location filename="../../CommandConstraints.cpp" line="4419"/>
-      <location filename="../../CommandConstraints.cpp" line="4807"/>
+      <location filename="../../CommandConstraints.cpp" line="4192"/>
+      <location filename="../../CommandConstraints.cpp" line="4213"/>
+      <location filename="../../CommandConstraints.cpp" line="4607"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>無法於未連接點上建立相切拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4428"/>
-      <location filename="../../CommandConstraints.cpp" line="4458"/>
-      <location filename="../../CommandConstraints.cpp" line="4656"/>
+      <location filename="../../CommandConstraints.cpp" line="4222"/>
+      <location filename="../../CommandConstraints.cpp" line="4252"/>
+      <location filename="../../CommandConstraints.cpp" line="4450"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
-      <translation>B型不規則曲線的邊線目前並不支援相切拘束</translation>
+      <translation>切線到 B 雲形線之邊緣目前並不支援</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4948"/>
-      <location filename="../../CommandConstraints.cpp" line="5009"/>
-      <location filename="../../CommandConstraints.cpp" line="5250"/>
-      <location filename="../../CommandConstraints.cpp" line="5307"/>
-      <location filename="../../CommandConstraints.cpp" line="5526"/>
-      <location filename="../../CommandConstraints.cpp" line="5581"/>
+      <location filename="../../CommandConstraints.cpp" line="4754"/>
+      <location filename="../../CommandConstraints.cpp" line="4815"/>
+      <location filename="../../CommandConstraints.cpp" line="5054"/>
+      <location filename="../../CommandConstraints.cpp" line="5111"/>
+      <location filename="../../CommandConstraints.cpp" line="5328"/>
+      <location filename="../../CommandConstraints.cpp" line="5383"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>從草圖中選取一個或多個弧或圓。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5015"/>
-      <location filename="../../CommandConstraints.cpp" line="5587"/>
+      <location filename="../../CommandConstraints.cpp" line="4821"/>
+      <location filename="../../CommandConstraints.cpp" line="5389"/>
       <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation type="unfinished">Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</translation>
+      <translation>從草圖中僅選擇一個或多個 B 雲形線極點或僅選擇一個或多個圓弧或圓，但不要混合。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5135"/>
-      <location filename="../../CommandConstraints.cpp" line="5414"/>
-      <location filename="../../CommandConstraints.cpp" line="5727"/>
+      <location filename="../../CommandConstraints.cpp" line="4940"/>
+      <location filename="../../CommandConstraints.cpp" line="5217"/>
+      <location filename="../../CommandConstraints.cpp" line="5528"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>拘束僅能用在圓弧或圓上</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5988"/>
-      <location filename="../../CommandConstraints.cpp" line="6233"/>
+      <location filename="../../CommandConstraints.cpp" line="5223"/>
+      <source>Select an edge that is not a B-spline weight</source>
+      <translation>選擇不是 B 雲形線權重的邊</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5788"/>
+      <location filename="../../CommandConstraints.cpp" line="6033"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>從草圖中選取一或兩條線條，或選取兩個邊及一個點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6144"/>
-      <location filename="../../CommandConstraints.cpp" line="6311"/>
+      <location filename="../../CommandConstraints.cpp" line="5944"/>
+      <location filename="../../CommandConstraints.cpp" line="6111"/>
       <source>Parallel lines</source>
       <translation>平行線</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6145"/>
-      <location filename="../../CommandConstraints.cpp" line="6312"/>
+      <location filename="../../CommandConstraints.cpp" line="5945"/>
+      <location filename="../../CommandConstraints.cpp" line="6112"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>無法於兩條平行線間建立角度拘束。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6177"/>
+      <location filename="../../CommandConstraints.cpp" line="5977"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>無法於軸上建立角度拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6490"/>
+      <location filename="../../CommandConstraints.cpp" line="6290"/>
       <source>Select two edges from the sketch.</source>
       <translation>由草圖中選取兩個邊。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6519"/>
-      <location filename="../../CommandConstraints.cpp" line="7219"/>
-      <source>Select two or more compatible edges</source>
-      <translation>選擇兩個或更多相容之邊</translation>
+      <location filename="../../CommandConstraints.cpp" line="6319"/>
+      <location filename="../../CommandConstraints.cpp" line="7022"/>
+      <source>Select two or more compatible edges.</source>
+      <translation>選擇兩個或更多相容之邊.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6524"/>
-      <source>Sketch axes cannot be used in equality constraints</source>
-      <translation>草圖中心線無法使用相等拘束</translation>
+      <location filename="../../CommandConstraints.cpp" line="6324"/>
+      <source>Sketch axes cannot be used in equality constraints.</source>
+      <translation>草圖軸不能用在同等拘束。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6543"/>
+      <location filename="../../CommandConstraints.cpp" line="6343"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation>不支援B型不規則曲線的等長拘束。</translation>
+      <translation>不支援B雲形線的等長拘束。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6573"/>
-      <location filename="../../CommandConstraints.cpp" line="6588"/>
-      <location filename="../../CommandConstraints.cpp" line="6640"/>
-      <source>Select two or more edges of similar type</source>
-      <translation>選取兩個或更多相似類型之邊</translation>
+      <location filename="../../CommandConstraints.cpp" line="6373"/>
+      <location filename="../../CommandConstraints.cpp" line="6388"/>
+      <location filename="../../CommandConstraints.cpp" line="6440"/>
+      <source>Select two or more edges of similar type.</source>
+      <translation>選取兩個或更多相似類型之邊.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6722"/>
-      <location filename="../../CommandConstraints.cpp" line="6735"/>
-      <location filename="../../CommandConstraints.cpp" line="6782"/>
-      <location filename="../../CommandConstraints.cpp" line="6849"/>
-      <location filename="../../CommandConstraints.cpp" line="6930"/>
+      <location filename="../../CommandConstraints.cpp" line="6522"/>
+      <location filename="../../CommandConstraints.cpp" line="6535"/>
+      <location filename="../../CommandConstraints.cpp" line="6582"/>
+      <location filename="../../CommandConstraints.cpp" line="6649"/>
+      <location filename="../../CommandConstraints.cpp" line="6730"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
       <translation>請從草圖中選取兩個點及對稱線,兩個點及對稱點或一條線擊對稱點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6760"/>
-      <location filename="../../CommandConstraints.cpp" line="6914"/>
+      <location filename="../../CommandConstraints.cpp" line="6560"/>
+      <location filename="../../CommandConstraints.cpp" line="6714"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint between a line and its end points.</translation>
+      <translation>無法在一條線及其端點間添加對稱拘束。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6812"/>
-      <location filename="../../CommandConstraints.cpp" line="6872"/>
+      <location filename="../../CommandConstraints.cpp" line="6612"/>
+      <location filename="../../CommandConstraints.cpp" line="6672"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>無法於線及其終點建立對稱拘束!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6992"/>
+      <location filename="../../CommandConstraints.cpp" line="6792"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</translation>
+      <translation>選取線段之兩個端點做為光線，以及一個邊緣做為邊界，先選的點會編號為n1，後選的點則編號為n2，基準值設定為n2/n1。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7008"/>
+      <location filename="../../CommandConstraints.cpp" line="6808"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>選取之物件並非來自於草圖之幾何。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7018"/>
+      <location filename="../../CommandConstraints.cpp" line="6818"/>
       <source>Number of selected objects is not 3 (is %1).</source>
       <translation>選取之物件數量非為3 (而是 %1).</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7040"/>
+      <location filename="../../CommandConstraints.cpp" line="6840"/>
       <source>Cannot create constraint with external geometry only.</source>
-      <translation type="unfinished">Cannot create constraint with external geometry only.</translation>
+      <translation>僅用外部幾何無法建立拘束.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7047"/>
+      <location filename="../../CommandConstraints.cpp" line="6847"/>
       <source>Incompatible geometry is selected.</source>
-      <translation type="unfinished">Incompatible geometry is selected.</translation>
+      <translation>選取了不相容的幾何.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7057"/>
+      <location filename="../../CommandConstraints.cpp" line="6857"/>
       <source>SnellsLaw on B-spline edge is currently unsupported.</source>
-      <translation type="unfinished">SnellsLaw on B-spline edge is currently unsupported.</translation>
+      <translation>B雲形線邊緣上的司乃耳定律目前不支援。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7162"/>
-      <location filename="../../CommandConstraints.cpp" line="7175"/>
+      <location filename="../../CommandConstraints.cpp" line="6965"/>
+      <location filename="../../CommandConstraints.cpp" line="6978"/>
       <source>Select at least one ellipse and one edge from the sketch.</source>
       <translation>至少由草圖中選取一個橢圓及一個邊。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7196"/>
-      <source>Sketch axes cannot be used in internal alignment constraint</source>
-      <translation>草圖軸無法做為內部對齊拘束</translation>
+      <location filename="../../CommandConstraints.cpp" line="6999"/>
+      <source>Sketch axes cannot be used in internal alignment constraint.</source>
+      <translation>草圖軸無法做為內部對齊拘束.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7241"/>
+      <location filename="../../CommandConstraints.cpp" line="7044"/>
       <source>You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</translation>
+      <translation>你不能在二個橢圓上，使用內部對齊拘束。請選擇單一個橢圓。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7249"/>
-      <location filename="../../CommandConstraints.cpp" line="7427"/>
+      <location filename="../../CommandConstraints.cpp" line="7052"/>
+      <location filename="../../CommandConstraints.cpp" line="7230"/>
       <source>Maximum 2 points are supported.</source>
       <translation>最多支援2點。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7255"/>
-      <location filename="../../CommandConstraints.cpp" line="7433"/>
+      <location filename="../../CommandConstraints.cpp" line="7058"/>
+      <location filename="../../CommandConstraints.cpp" line="7236"/>
       <source>Maximum 2 lines are supported.</source>
       <translation>最多支援2線段</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7293"/>
-      <location filename="../../CommandConstraints.cpp" line="7471"/>
+      <location filename="../../CommandConstraints.cpp" line="7096"/>
+      <location filename="../../CommandConstraints.cpp" line="7274"/>
       <source>Nothing to constrain</source>
       <translation>沒有要加以拘束的圖元</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7294"/>
-      <location filename="../../CommandConstraints.cpp" line="7472"/>
+      <location filename="../../CommandConstraints.cpp" line="7097"/>
+      <location filename="../../CommandConstraints.cpp" line="7275"/>
       <source>Currently all internal geometrical elements of the ellipse are already exposed.</source>
-      <translation type="unfinished">Currently all internal geometrical elements of the ellipse are already exposed.</translation>
+      <translation>目前橢圓的所有內部幾何元件都已經暴露出來。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7384"/>
-      <location filename="../../CommandConstraints.cpp" line="7395"/>
-      <location filename="../../CommandConstraints.cpp" line="7562"/>
-      <location filename="../../CommandConstraints.cpp" line="7573"/>
+      <location filename="../../CommandConstraints.cpp" line="7187"/>
+      <location filename="../../CommandConstraints.cpp" line="7198"/>
+      <location filename="../../CommandConstraints.cpp" line="7365"/>
+      <location filename="../../CommandConstraints.cpp" line="7376"/>
       <source>Extra elements</source>
-      <translation>額外的元素</translation>
+      <translation>額外元件</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7385"/>
-      <location filename="../../CommandConstraints.cpp" line="7396"/>
-      <location filename="../../CommandConstraints.cpp" line="7563"/>
+      <location filename="../../CommandConstraints.cpp" line="7188"/>
+      <location filename="../../CommandConstraints.cpp" line="7199"/>
+      <location filename="../../CommandConstraints.cpp" line="7366"/>
       <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
-      <translation>超過設定橢圓所許之元素，這些會被忽略。</translation>
+      <translation>提供了比給定橢圓更多的元件。這些會被忽略。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7411"/>
+      <location filename="../../CommandConstraints.cpp" line="7214"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
       <translation>你不能在二個橢圓弧間，使用內部對齊拘束。請選擇單一個橢圓弧。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7419"/>
+      <location filename="../../CommandConstraints.cpp" line="7222"/>
       <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
       <translation>你不能在二個橢圓弧間，使用內部對齊拘束。請選擇單一個橢圓或橢圓弧。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7574"/>
+      <location filename="../../CommandConstraints.cpp" line="7377"/>
       <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
-      <translation>超過設定橢圓之弧所須之元素，這些會被忽略。</translation>
+      <translation>提供了比給定橢圓弧更多的元件。這些會被忽略。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7582"/>
+      <location filename="../../CommandConstraints.cpp" line="7385"/>
       <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-      <translation>目前內部幾何僅支援橢圓或橢圓之弧，最後一個選定的元素必須是橢圓或橢圓之弧。</translation>
+      <translation>目前內部幾何僅支援橢圓或橢圓之弧，最後一個選定的元件必須是橢圓或橢圓之弧。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7643"/>
-      <location filename="../../CommandConstraints.cpp" line="7651"/>
-      <location filename="../../CommandConstraints.cpp" line="7683"/>
-      <location filename="../../CommandConstraints.cpp" line="7756"/>
-      <location filename="../../CommandConstraints.cpp" line="7767"/>
+      <location filename="../../CommandConstraints.cpp" line="7446"/>
+      <location filename="../../CommandConstraints.cpp" line="7454"/>
+      <location filename="../../CommandConstraints.cpp" line="7486"/>
+      <location filename="../../CommandConstraints.cpp" line="7559"/>
+      <location filename="../../CommandConstraints.cpp" line="7570"/>
       <source>Select constraints from the sketch.</source>
-      <translation type="unfinished">Select constraints from the sketch.</translation>
+      <translation>從草圖中選取拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="148"/>
       <source>Select constraint(s) from the sketch.</source>
       <translation>從草圖中選取拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5805"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="682"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4739"/>
+      <source>B-Spline Degree</source>
+      <translation>B 雲形線多項式次數</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="4740"/>
+      <source>Define B-Spline Degree, between 1 and %1:</source>
+      <translation>定義 B 雲形線多項式次數，介於  1 及 %1 之間：</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="718"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1077"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5890"/>
       <source>CAD Kernel Error</source>
       <translation>CAD核心錯誤</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="432"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="472"/>
       <source>None of the selected elements is an edge.</source>
-      <translation>所選元素中並無邊線。</translation>
+      <translation>所選元件中並無邊線。</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="503"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="581"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="543"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="621"/>
       <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
-      <translation>所選對像中至少有一個不是B樣不規則曲線，因此被忽略</translation>
+      <translation>所選物件中至少有一個不是B雲形線故被忽略</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="618"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="772"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="658"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="805"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1180"/>
       <source>Wrong OCE/OCC version</source>
       <translation>錯誤的 OCE/OCC 版本</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="619"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="773"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="659"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="806"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1181"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
-      <translation>此版本的 OCE/OCC 並不支援控制點操作。你需要6.9.0版或更新的版本。</translation>
+      <translation>此版本的 OCE/OCC 並不支援結點操作。你需要6.9.0版或更新的版本。</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="641"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="795"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="681"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="828"/>
       <source>The selection comprises more than one item. Please select just one knot.</source>
-      <translation>該選擇包括不止一個項目。請選擇單一個控制點</translation>
+      <translation>該選擇包括不止一個項目。請選擇單一個結點</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="691"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="727"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1085"/>
       <source>Input Error</source>
       <translation>輸入錯誤</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="704"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="844"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="737"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="869"/>
       <source>None of the selected elements is a knot of a B-spline</source>
-      <translation>被選取的元素都不是B型不規則曲線的控制點</translation>
+      <translation>被選取的元件都不是B雲形線的結點</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="128"/>
-      <location filename="../../CommandSketcherTools.cpp" line="136"/>
-      <location filename="../../CommandSketcherTools.cpp" line="239"/>
-      <location filename="../../CommandSketcherTools.cpp" line="247"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1202"/>
+      <source>Selection is empty</source>
+      <translation>選擇為空。</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1203"/>
+      <source>Nothing is selected. Please select a b-spline.</source>
+      <translation>沒有選取任何物件。請選取 B 雲形線。</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1217"/>
+      <source>Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</source>
+      <translation>請選擇一條 B 雲形線曲線來插入結點(不是其上的結點)。如果曲線還不是 B 雲形線，請先將其轉換為 B 雲形線。</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="131"/>
+      <location filename="../../CommandSketcherTools.cpp" line="139"/>
+      <location filename="../../CommandSketcherTools.cpp" line="242"/>
+      <location filename="../../CommandSketcherTools.cpp" line="250"/>
       <source>Select at least two edges from the sketch.</source>
       <translation>由草圖中選取至少兩個邊。</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="168"/>
-      <location filename="../../CommandSketcherTools.cpp" line="271"/>
+      <location filename="../../CommandSketcherTools.cpp" line="171"/>
+      <location filename="../../CommandSketcherTools.cpp" line="274"/>
       <source>One selected edge is not connectable</source>
       <translation>其中一個選取的邊無法連接</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="178"/>
+      <location filename="../../CommandSketcherTools.cpp" line="181"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
       <translation>僅由兩條線要產生封閉造型是不可能的。</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="326"/>
-      <location filename="../../CommandSketcherTools.cpp" line="954"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1049"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1057"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1410"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1419"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1965"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1974"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2232"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2241"/>
+      <location filename="../../CommandSketcherTools.cpp" line="329"/>
+      <location filename="../../CommandSketcherTools.cpp" line="976"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1088"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1096"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1469"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1478"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2024"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2033"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2291"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2300"/>
       <source>Select elements from a single sketch.</source>
-      <translation>由單一草圖中選擇元素。</translation>
+      <translation>由單一草圖中選擇元件。</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="826"/>
+      <location filename="../../CommandSketcherTools.cpp" line="837"/>
       <source>No constraint selected</source>
       <translation>尚未選擇拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="827"/>
+      <location filename="../../CommandSketcherTools.cpp" line="838"/>
       <source>At least one constraint must be selected</source>
       <translation>至少需選取一個拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1162"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1201"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
-      <translation>一個對稱的結構需要至少兩個幾何元素，後一個幾何元素會被作為對稱結構之參考。</translation>
+      <translation>一個對稱的結構需要至少兩個幾何元件，後一個幾何元件會被作為對稱結構之參考。</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1171"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1210"/>
       <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
-      <translation>產生對稱結構最後一個選擇之元素作為參考必須是點或線</translation>
+      <translation>產生對稱結構最後一個選擇之元件作為參考必須是點或線</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1478"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2036"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1537"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2095"/>
       <source>A copy requires at least one selected non-external geometric element</source>
-      <translation>複製功能須至少選取一個非內部幾何之元素</translation>
+      <translation>複製功能須至少選取一個非內部幾何之元件</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2099"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2158"/>
       <source>Delete All Geometry</source>
       <translation>刪除所有圖元</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2100"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2159"/>
       <source>Are you really sure you want to delete all geometry and constraints?</source>
-      <translation type="unfinished">Are you really sure you want to delete all geometry and constraints?</translation>
+      <translation>你確定要刪除所有幾何圖形及拘束嗎?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2161"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2220"/>
       <source>Delete All Constraints</source>
       <translation>刪除所有拘束</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2162"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2221"/>
       <source>Are you really sure you want to delete all the constraints?</source>
       <translation>確定要刪除所有拘束嗎?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2286"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2345"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
-      <translation type="unfinished">Removal of axes alignment requires at least one selected non-external geometric element</translation>
+      <translation>移除軸對齊需要至少選擇一個非外部幾何元件</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6806"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6905"/>
       <source>Carbon copy would cause a circular dependency.</source>
-      <translation>輪廓複製將導致循環參照</translation>
+      <translation>副本將導致循環相依</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6809"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6908"/>
       <source>This object is in another document.</source>
       <translation>此物件存在於其他檔案中</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6812"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6911"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
       <translation>此物件屬於另一個實體。按下不放 Ctrl 鍵以允許交互參照</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6815"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6914"/>
       <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
       <translation>此物件屬於另一個實體，並且包含外部幾何。交互參照不被允許</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6818"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6917"/>
       <source>This object belongs to another part.</source>
       <translation>此物件屬於另一零件</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6821"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6920"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation>所選草圖與此草圖並不平行。按下不放 Ctrl+Alt 以允許非平行草圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6824"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6923"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>所選草圖的XY軸與此草圖的方向不同。按住Ctrl + Alt 以忽略它</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6827"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6926"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>所選草圖的原點與此草圖的原點不對齊。 按住Ctrl + Alt以忽略它</translation>
     </message>
   </context>
   <context>
+    <name>SketcherGui::ConstraintMultiFilterDialog</name>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="23"/>
+      <source>Multiple filter selection</source>
+      <translation>多重篩選器選擇</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="29"/>
+      <source>Check the filters to aggregate:</source>
+      <translation>檢查要總計的過濾器：</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="52"/>
+      <source>All</source>
+      <translation>所有</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="57"/>
+      <source>Geometric</source>
+      <translation>幾何</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="62"/>
+      <source>Datums</source>
+      <translation>基準面</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="67"/>
+      <source>Named</source>
+      <translation>命名</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="72"/>
+      <source>Reference</source>
+      <translation>參考</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="77"/>
+      <source>Coincident</source>
+      <translation type="unfinished">Coincident</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="82"/>
+      <source>Point on Object</source>
+      <translation>物件上的點</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="87"/>
+      <source>Vertical</source>
+      <translation>垂直</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="92"/>
+      <source>Horizontal</source>
+      <translation>水平的</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="97"/>
+      <source>Parallel</source>
+      <translation>平行</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="102"/>
+      <source>Perpendicular</source>
+      <translation type="unfinished">Perpendicular</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="107"/>
+      <source>Tangent</source>
+      <translation>切線</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="112"/>
+      <source>Equality</source>
+      <translation>相等</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="117"/>
+      <source>Symmetric</source>
+      <translation type="unfinished">Symmetric</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="122"/>
+      <source>Block</source>
+      <translation>區塊</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="127"/>
+      <source>Horizontal Distance</source>
+      <translation>水平距離</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="132"/>
+      <source>Vertical Distance</source>
+      <translation>垂直距離</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="137"/>
+      <source>Distance</source>
+      <translation>距離</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="142"/>
+      <source>Radius</source>
+      <translation>半徑</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="147"/>
+      <source>Weight</source>
+      <translation>權重</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="152"/>
+      <source>Diameter</source>
+      <translation>直徑</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="157"/>
+      <source>Angle</source>
+      <translation>角度</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="162"/>
+      <source>Snell's Law</source>
+      <translation>司乃耳定律</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="167"/>
+      <source>Internal Alignment</source>
+      <translation>內部對齊</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="186"/>
+      <source>Shows all the constraints in the list</source>
+      <translation>顯示清單中的所有拘束</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="189"/>
+      <source>Check All</source>
+      <translation>勾選全部</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="202"/>
+      <source>Hides all the constraints in the list</source>
+      <translation>隱藏清單中的所有拘束</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintMultiFilterDialog.ui" line="205"/>
+      <source>Uncheck All</source>
+      <translation>全部取消勾選</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ConstraintSettingsDialog</name>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="23"/>
+      <source>Constraint widget settings</source>
+      <translation>拘束小工具設定</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="35"/>
+      <source>List control</source>
+      <translation>控制清單</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="47"/>
+      <source>Extended information will be added to the list</source>
+      <translation>延伸資訊將會添加到清單中</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="50"/>
+      <source>Extended information</source>
+      <translation>延伸資訊</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="72"/>
+      <source>Internal alignments will be hidden</source>
+      <translation>內部對齊將會被隱藏</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="75"/>
+      <source>Hide internal alignment</source>
+      <translation>隱藏內部對齊</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="100"/>
+      <source>3D view control</source>
+      <translation>3D 視角控制</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="112"/>
+      <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
+      <translation>拘束可視化追蹤過濾選擇器以便隱藏被過濾的拘束</translation>
+    </message>
+    <message>
+      <location filename="../../ConstraintSettingsDialog.ui" line="115"/>
+      <source>Show only filtered constraints</source>
+      <translation>只顯示過濾後之拘束</translation>
+    </message>
+  </context>
+  <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="481"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="494"/>
       <source>Change value</source>
       <translation>變更值</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="485"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="498"/>
       <source>Toggle to/from reference</source>
       <translation>於參考及一般模式間切換</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="488"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Deactivate</source>
       <translation>停用</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="488"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Activate</source>
       <translation>啟用</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="492"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="505"/>
       <source>Show constraints</source>
       <translation>顯示拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="494"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="507"/>
       <source>Hide constraints</source>
       <translation>隱藏拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="500"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="513"/>
       <source>Rename</source>
       <translation>重新命名</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="507"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="520"/>
       <source>Center sketch</source>
       <translation>將所選草圖置於視窗中央</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="510"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="523"/>
       <source>Delete</source>
       <translation>刪除</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="514"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="527"/>
       <source>Swap constraint names</source>
       <translation>調換拘束名稱</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="604"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
       <source>Unnamed constraint</source>
       <translation>未命名之拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="605"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="619"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>僅有命名之拘束其名稱可以被調換</translation>
     </message>
@@ -3365,74 +3616,74 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="96"/>
+      <location filename="../../EditDatumDialog.cpp" line="97"/>
       <source>Insert angle</source>
       <translation>輸入角度</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="98"/>
+      <location filename="../../EditDatumDialog.cpp" line="99"/>
       <source>Angle:</source>
       <translation>角度：</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="102"/>
+      <location filename="../../EditDatumDialog.cpp" line="103"/>
       <source>Insert radius</source>
       <translation>輸入半徑</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="104"/>
+      <location filename="../../EditDatumDialog.cpp" line="105"/>
       <source>Radius:</source>
       <translation>半徑：</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="108"/>
+      <location filename="../../EditDatumDialog.cpp" line="109"/>
       <source>Insert diameter</source>
       <translation>插入直徑</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="110"/>
+      <location filename="../../EditDatumDialog.cpp" line="111"/>
       <source>Diameter:</source>
       <translation type="unfinished">Diameter:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="114"/>
-      <source>Insert weight</source>
-      <translation type="unfinished">Insert weight</translation>
-    </message>
-    <message>
       <location filename="../../EditDatumDialog.cpp" line="115"/>
-      <source>Weight:</source>
-      <translation type="unfinished">Weight:</translation>
+      <source>Insert weight</source>
+      <translation>插入權重</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="119"/>
+      <location filename="../../EditDatumDialog.cpp" line="116"/>
+      <source>Weight:</source>
+      <translation>權重：</translation>
+    </message>
+    <message>
+      <location filename="../../EditDatumDialog.cpp" line="120"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>折射率比例</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="120"/>
+      <location filename="../../EditDatumDialog.cpp" line="121"/>
       <source>Ratio n2/n1:</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>比例 n2/n1：</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="125"/>
+      <location filename="../../EditDatumDialog.cpp" line="126"/>
       <source>Insert length</source>
       <translation>輸入長度</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="127"/>
+      <location filename="../../EditDatumDialog.cpp" line="128"/>
       <source>Length:</source>
       <translation>長度：</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7074"/>
+      <location filename="../../CommandConstraints.cpp" line="6874"/>
       <source>Refractive index ratio</source>
       <translation>折射率比例</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7075"/>
+      <location filename="../../CommandConstraints.cpp" line="6875"/>
       <source>Ratio n2/n1:</source>
       <translation>比例 n2/n1：</translation>
     </message>
@@ -3440,7 +3691,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="185"/>
+      <location filename="../../TaskSketcherElements.cpp" line="186"/>
       <source>Delete</source>
       <translation>刪除</translation>
     </message>
@@ -3448,22 +3699,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6615"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6712"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>此連結將導致循環參照。</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6618"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6715"/>
       <source>This object is in another document.</source>
       <translation>此物件存在於其他檔案中</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6621"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6718"/>
       <source>This object belongs to another body, can't link.</source>
       <translation>此物件屬於另一實體。無法建立連結。</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6624"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6721"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>此物件屬於另一零件。無法建立連結。</translation>
     </message>
@@ -3613,8 +3864,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained
 with respect to the others using construction lines</source>
-      <translation type="unfinished">If selected, each element in the array is constrained
-with respect to the others using construction lines</translation>
+      <translation>若選擇時，每個於陣列中的元件會與其它使用相對應建構線進行拘束</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="100"/>
@@ -3704,7 +3954,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="37"/>
       <source>Show section 'Advanced solver control' in task dialog</source>
-      <translation>在任務對話框中顯示 ’進階求解器控制'</translation>
+      <translation>在任務對話框中顯示 ’進階求解器控制'部份</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="53"/>
@@ -3726,12 +3976,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="115"/>
       <source>New constraints that would be redundant will automatically be removed</source>
-      <translation type="unfinished">New constraints that would be redundant will automatically be removed</translation>
+      <translation>新拘束若是多餘的話會被自動刪除</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="118"/>
       <source>Auto remove redundants</source>
-      <translation type="unfinished">Auto remove redundants</translation>
+      <translation>自動移除冗餘</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="134"/>
@@ -3764,161 +4014,161 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="20"/>
       <source>Working colors</source>
-      <translation type="unfinished">Working colors</translation>
+      <translation>工作顏色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="34"/>
-      <source>Coordinate text</source>
-      <translation type="unfinished">Coordinate text</translation>
+      <source>Creating line</source>
+      <translation>建立直線</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
       <source>Color used while new sketch elements are created</source>
-      <translation>建立新草圖元素時使用的顏色</translation>
+      <translation>建立新草圖元件時使用的顏色</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="61"/>
-      <source>Color of crosshair cursor.
-(The one you get when creating a new sketch element.)</source>
-      <translation>十字游標之色彩。
-(當你在草圖中建立新圖元時的十字線色彩)</translation>
+      <location filename="../../SketcherSettingsColors.ui" line="80"/>
+      <source>Coordinate text</source>
+      <translation>座標文字</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="88"/>
-      <source>Creating line</source>
-      <translation type="unfinished">Creating line</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="95"/>
+      <location filename="../../SketcherSettingsColors.ui" line="87"/>
       <source>Text color of the coordinates</source>
       <translation>座標軸文字之色彩</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="115"/>
+      <location filename="../../SketcherSettingsColors.ui" line="107"/>
       <source>Cursor crosshair</source>
-      <translation type="unfinished">Cursor crosshair</translation>
+      <translation>十字游標</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="114"/>
+      <source>Color of crosshair cursor.
+(The one you get when creating a new sketch element.)</source>
+      <translation>十字游標之色彩。
+(當你在草圖中建立新元件時的十字線色彩)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="140"/>
       <source>Geometric element colors</source>
-      <translation type="unfinished">Geometric element colors</translation>
+      <translation>幾何元件顏色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="154"/>
-      <source>Internal alignment edge</source>
-      <translation type="unfinished">Internal alignment edge</translation>
+      <source>Constrained</source>
+      <translation>已被拘束</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="167"/>
       <source>Unconstrained</source>
-      <translation type="unfinished">Unconstrained</translation>
+      <translation>未被拘束</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="180"/>
-      <source>Color of edges being edited</source>
-      <translation>已修改的邊線色彩</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="200"/>
-      <location filename="../../SketcherSettingsColors.ui" line="784"/>
+      <location filename="../../SketcherSettingsColors.ui" line="187"/>
+      <location filename="../../SketcherSettingsColors.ui" line="737"/>
       <source>Edge</source>
       <translation>邊</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="213"/>
-      <source>Color of vertices being edited</source>
-      <translation>已修改的頂點色彩</translation>
+      <location filename="../../SketcherSettingsColors.ui" line="200"/>
+      <source>Color of fully constrained edge color in edit mode</source>
+      <translation>編輯模式下完全拘束邊線顏色之色彩</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="233"/>
-      <location filename="../../SketcherSettingsColors.ui" line="771"/>
+      <location filename="../../SketcherSettingsColors.ui" line="226"/>
+      <source>Color of edges being edited</source>
+      <translation>已修改的邊線色彩</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="246"/>
+      <location filename="../../SketcherSettingsColors.ui" line="777"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="246"/>
-      <source>Color of fully constrained construction edge color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained construction edge color in edit mode</translation>
+      <location filename="../../SketcherSettingsColors.ui" line="259"/>
+      <source>Color of fully constrained vertex color in edit mode</source>
+      <translation>編輯模式下完全拘束端點顏色之色彩</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="266"/>
+      <location filename="../../SketcherSettingsColors.ui" line="285"/>
+      <source>Color of vertices being edited</source>
+      <translation>已修改的頂點色彩</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="305"/>
       <source>Construction geometry</source>
       <translation>構造幾何</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="279"/>
-      <source>Color of edges of internal alignment geometry</source>
-      <translation type="unfinished">Color of edges of internal alignment geometry</translation>
+      <location filename="../../SketcherSettingsColors.ui" line="318"/>
+      <source>Color of fully constrained construction edge color in edit mode</source>
+      <translation>編輯模式下完全拘束構造邊緣顏色之色彩</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="305"/>
+      <location filename="../../SketcherSettingsColors.ui" line="344"/>
       <source>Color of construction geometry in edit mode</source>
       <translation>編輯模式中，建構線之色彩</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="331"/>
-      <source>Color of fully constrained edge color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained edge color in edit mode</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="357"/>
-      <source>Color of fully constrained internal alignment edge color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained internal alignment edge color in edit mode</translation>
+      <location filename="../../SketcherSettingsColors.ui" line="370"/>
+      <source>Internal alignment edge</source>
+      <translation>內部對齊邊緣</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="383"/>
+      <source>Color of fully constrained internal alignment edge color in edit mode</source>
+      <translation>編輯模式下完全拘束內部對齊邊緣顏色之色彩</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="409"/>
+      <source>Color of edges of internal alignment geometry</source>
+      <translation>內部對齊幾何之邊緣色彩</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="429"/>
+      <source>External geometry</source>
+      <translation>外部幾何圖形</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="442"/>
       <source>Color of external geometry in edit mode</source>
       <translation>編輯模式中，外部幾何之色彩</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="403"/>
-      <source>External geometry</source>
-      <translation>外部幾何</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="416"/>
-      <source>Color of fully constrained vertex color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained vertex color in edit mode</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="442"/>
-      <source>Constrained</source>
-      <translation type="unfinished">Constrained</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="466"/>
-      <source>Invalid Sketch</source>
-      <translation type="unfinished">Invalid Sketch</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="479"/>
+      <location filename="../../SketcherSettingsColors.ui" line="472"/>
       <source>Fully constrained Sketch</source>
-      <translation type="unfinished">Fully constrained Sketch</translation>
+      <translation>完全拘束之草圖</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="492"/>
+      <location filename="../../SketcherSettingsColors.ui" line="485"/>
       <source>Color of fully constrained geometry in edit mode</source>
       <translation>編輯模式中，完全拘束圖元之色彩</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="518"/>
+      <source>Invalid Sketch</source>
+      <translation>錯誤之草圖</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="531"/>
       <source>Color of geometry indicating an invalid sketch</source>
-      <translation type="unfinished">Color of geometry indicating an invalid sketch</translation>
+      <translation>標示無效草圖之幾何圖色彩</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="556"/>
       <source>Constraint colors</source>
-      <translation type="unfinished">Constraint colors</translation>
+      <translation>拘束色彩</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="570"/>
       <source>Constraint symbols</source>
-      <translation type="unfinished">Constraint symbols</translation>
+      <translation>拘束符號</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="577"/>
       <source>Color of driving constraints in edit mode</source>
-      <translation type="unfinished">Color of driving constraints in edit mode</translation>
+      <translation>編輯模式下驅動拘束之色彩</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="597"/>
@@ -3928,7 +4178,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="604"/>
       <source>Color of dimensional driving constraints</source>
-      <translation type="unfinished">Color of dimensional driving constraints</translation>
+      <translation>尺寸驅動拘束之色彩</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="624"/>
@@ -3943,17 +4193,17 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="651"/>
       <source>Expression dependent constraint</source>
-      <translation type="unfinished">Expression dependent constraint</translation>
+      <translation>相依拘束表達式</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="658"/>
       <source>Color of expression dependent constraints in edit mode</source>
-      <translation type="unfinished">Color of expression dependent constraints in edit mode</translation>
+      <translation>編輯模式下相依拘束表示式之色彩</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="678"/>
       <source>Deactivated constraint</source>
-      <translation type="unfinished">Deactivated constraint</translation>
+      <translation>停用拘束</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="685"/>
@@ -3963,17 +4213,17 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="723"/>
       <source>Colors outside Sketcher</source>
-      <translation type="unfinished">Colors outside Sketcher</translation>
+      <translation>草圖外的顏色</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="731"/>
-      <source>Color of vertices</source>
-      <translation>頂點色彩</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="751"/>
+      <location filename="../../SketcherSettingsColors.ui" line="744"/>
       <source>Color of edges</source>
       <translation>邊線色彩</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="784"/>
+      <source>Color of vertices</source>
+      <translation>頂點色彩</translation>
     </message>
   </context>
   <context>
@@ -3996,7 +4246,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
       <source>Font size used for labels and constraints.</source>
-      <translation type="unfinished">Font size used for labels and constraints.</translation>
+      <translation>拘束及標籤的文字大小.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="45"/>
@@ -4006,12 +4256,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="73"/>
       <source>View scale ratio</source>
-      <translation type="unfinished">View scale ratio</translation>
+      <translation>檢視縮放比例</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
       <source>The 3D view is scaled based on this factor.</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor.</translation>
+      <translation>3D 視圖是基於此係數縮放。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="114"/>
@@ -4021,22 +4271,22 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="124"/>
       <source>Line pattern used for grid lines.</source>
-      <translation type="unfinished">Line pattern used for grid lines.</translation>
+      <translation>用來當格線的線條樣式。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
       <source>Segments per geometry</source>
-      <translation type="unfinished">Segments per geometry</translation>
+      <translation>每個幾何圖形的段</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
       <source>The number of polygons used for geometry approximation.</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+      <translation>用於幾何近似的多邊形數量。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
       <source>A dialog will pop up to input a value for new dimensional constraints.</source>
-      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+      <translation>一個對話框將會彈出以輸入新尺寸拘束的值。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
@@ -4046,7 +4296,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+      <translation>目前草圖創建工具在創建後仍將保持在啟用狀態.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
@@ -4056,7 +4306,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
       <source>The current constraint creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+      <translation>目前的拘束創建工具將會在創建後保持活動狀態。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
@@ -4077,17 +4327,17 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+      <translation>如果勾選，則顯示名稱在尺寸拘束上(如果存在的話)。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show dimensional constraint name with format</source>
-      <translation type="unfinished">Show dimensional constraint name with format</translation>
+      <translation>以格式顯示尺寸拘束名稱</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
@@ -4096,16 +4346,15 @@ Defaults to: %N = %V
 
 %N - name parameter
 %V - dimension value</source>
-      <translation type="unfinished">The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
-
-%N - name parameter
-%V - dimension value</translation>
+      <translation>尺寸拘束字串格式表示式：
+預設：%N = %V
+%N - 名稱參數
+%V - 尺寸值</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
       <source>DimensionalStringFormat</source>
-      <translation type="unfinished">DimensionalStringFormat</translation>
+      <translation>尺寸字串格式</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
@@ -4115,7 +4364,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
-      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
+      <translation>開啟草圖時，隱藏所有相依的特徵。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
@@ -4125,7 +4374,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+      <translation>開啟草圖時，顯示外部幾何連接的來源。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="334"/>
@@ -4135,17 +4384,17 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
-      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+      <translation>打開草圖時，顯示草圖附加的物件。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="353"/>
       <source>Show objects that the sketch is attached to</source>
-      <translation type="unfinished">Show objects that the sketch is attached to</translation>
+      <translation>顯示草圖附加到的物件</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
-      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
+      <translation>關閉草圖時，將相機移回草圖開啟前的位置。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="372"/>
@@ -4156,35 +4405,35 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
-Works only when "Restore camera position after editing" is enabled.</translation>
+      <translation>當進入編輯模式時，強迫相機正交視角。
+僅在啟用“編輯後恢復相機位置”時有效。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+      <translation>當進入編輯時強迫相機正交視角</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>默認情況下以剖面視圖模式打開草圖。
+然後物件僅在草圖平面後面可見。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
       <source>Open sketch in Section View mode</source>
-      <translation type="unfinished">Open sketch in Section View mode</translation>
+      <translation>在剖面顯示模式開啟草圖</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="434"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
-      <translation type="unfinished">Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</translation>
+      <translation>注意：這些設置是預設應用在新的草圖。每個草圖的行為被單獨記住，作為“視圖”選項卡上的屬性。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+      <translation>將可見度自動化套用至所有開啟中文件的草圖。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="456"/>
@@ -4205,353 +4454,336 @@ Then objects are only visible behind the sketch plane.</translation>
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="139"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="142"/>
       <source>No missing coincidences</source>
       <translation>無未一致處</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="140"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="143"/>
       <source>No missing coincidences found</source>
       <translation>未發現未一致處</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="145"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="148"/>
       <source>Missing coincidences</source>
       <translation>未一致</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="146"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="149"/>
       <source>%1 missing coincidences found</source>
       <translation>發現未一致處%1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="182"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="194"/>
       <source>No invalid constraints</source>
       <translation>無錯誤之拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="183"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="195"/>
       <source>No invalid constraints found</source>
       <translation>未發現錯誤之拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="187"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="199"/>
       <source>Invalid constraints</source>
       <translation>錯誤之拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="188"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="200"/>
       <source>Invalid constraints found</source>
       <translation>發現錯誤之拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="219"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="230"/>
       <location filename="../../TaskSketcherValidation.cpp" line="237"/>
       <location filename="../../TaskSketcherValidation.cpp" line="248"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="255"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="269"/>
       <source>Reversed external geometry</source>
       <translation>反向之外部幾何</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="220"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="238"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
-
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
-
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+      <translation>發現 %1 反向之弧於外部幾何中，其端點包含於3d視圖中。
+其端點具有 %2 之拘束設定，此拘束設定已列於報告檢視中(選單檢視 -&gt; 檢視 -&gt; 報告檢視)。
+點擊「互換拘束中之端點」鈕來重新配置端點，但僅可於較FreeCAD v0.15版舊所建立的草圖可以使用。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="231"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="249"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
       <translation>發現 %1 反向之弧於外部幾何中，其端點包含於3d視圖中，但其端點並未發現有任何拘束設定。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="238"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="256"/>
       <source>No reversed external-geometry arcs were found.</source>
       <translation>無反向外部幾何之弧。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="249"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="270"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
       <translation>%1 個改變被用來與反向弧之端點拘束相連結。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="262"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="276"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="286"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="303"/>
       <source>Constraint orientation locking</source>
       <translation>已鎖定拘束之方向</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="263"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="287"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</translation>
+      <translation>已開啟定向鎖定並對%1個拘束重新計算，這些拘束已被列於報告檢視(選單檢視 -&gt; 檢視 -&gt; 報告檢視)。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="277"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+      <translation>已對%1個拘束關閉定向鎖定，這些拘束已被列於報告檢視(選單檢視 -&gt; 檢視 -&gt; 報告檢視)。請注意，未來所有的拘束都仍預設不鎖定。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="289"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="301"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="319"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="332"/>
       <source>Delete constraints to external geom.</source>
       <translation>刪除外部幾何之拘束。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="290"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="320"/>
       <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-      <translation>您可以刪除所有與外部幾何有關的拘束，這對於修復連結至外部幾何而損壞或改變之草圖。您確定要刪除這些拘束嗎?</translation>
+      <translation>您即將刪除所有處理外部幾何的拘束。這對於修復與外部幾何圖形的連結斷掉/更改的草圖很有用。您確定要刪除拘束嗎？</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="302"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="333"/>
       <source>All constraints that deal with external geometry were deleted.</source>
       <translation>所有與外部幾何有關的拘束都將被刪除。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="359"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="397"/>
       <source>No degenerated geometry</source>
-      <translation type="unfinished">No degenerated geometry</translation>
+      <translation>沒有退化幾何</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="360"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="398"/>
       <source>No degenerated geometry found</source>
-      <translation type="unfinished">No degenerated geometry found</translation>
+      <translation>找不到退化幾何</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="364"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="402"/>
       <source>Degenerated geometry</source>
-      <translation type="unfinished">Degenerated geometry</translation>
+      <translation>退化幾何</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="365"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="403"/>
       <source>%1 degenerated geometry found</source>
-      <translation type="unfinished">%1 degenerated geometry found</translation>
+      <translation>找到 %1 退化幾何</translation>
     </message>
   </context>
   <context>
-    <name>SketcherGui::TaskSketcherConstrains</name>
+    <name>SketcherGui::TaskSketcherConstraints</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="26"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="26"/>
       <source>Form</source>
       <translation>格式</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="34"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Filter:</source>
       <translation>篩選：</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="45"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="57"/>
       <source>All</source>
       <translation>所有</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="62"/>
       <source>Geometric</source>
-      <translation type="unfinished">Geometric</translation>
+      <translation>幾何</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="55"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="67"/>
       <source>Datums</source>
       <translation>基準面</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="60"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="72"/>
       <source>Named</source>
       <translation>命名</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="65"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="77"/>
       <source>Reference</source>
       <translation>參考</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="70"/>
-      <source>Horizontal</source>
-      <translation>水平的</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="75"/>
-      <source>Vertical</source>
-      <translation>垂直</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="80"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="82"/>
       <source>Coincident</source>
       <translation type="unfinished">Coincident</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="85"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Point on Object</source>
-      <translation type="unfinished">Point on Object</translation>
+      <translation>物件上的點</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="90"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="92"/>
+      <source>Vertical</source>
+      <translation>垂直</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="97"/>
+      <source>Horizontal</source>
+      <translation>水平的</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="102"/>
       <source>Parallel</source>
       <translation>平行</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="95"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="107"/>
       <source>Perpendicular</source>
       <translation type="unfinished">Perpendicular</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="100"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="112"/>
       <source>Tangent</source>
       <translation>切線</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="105"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="117"/>
       <source>Equality</source>
-      <translation type="unfinished">Equality</translation>
+      <translation>相等</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="110"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="122"/>
       <source>Symmetric</source>
       <translation type="unfinished">Symmetric</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="115"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="127"/>
       <source>Block</source>
       <translation>區塊</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="120"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="132"/>
+      <source>Horizontal Distance</source>
+      <translation>水平距離</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="137"/>
+      <source>Vertical Distance</source>
+      <translation>垂直距離</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="142"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="125"/>
-      <source>Horizontal Distance</source>
-      <translation type="unfinished">Horizontal Distance</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="130"/>
-      <source>Vertical Distance</source>
-      <translation type="unfinished">Vertical Distance</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="135"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="147"/>
       <source>Radius</source>
       <translation>半徑</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="140"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="152"/>
       <source>Weight</source>
-      <translation type="unfinished">Weight</translation>
+      <translation>權重</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="145"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="157"/>
       <source>Diameter</source>
       <translation>直徑</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="150"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="162"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="155"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="167"/>
       <source>Snell's Law</source>
-      <translation type="unfinished">Snell's Law</translation>
+      <translation>司乃耳定律</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="160"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="172"/>
       <source>Internal Alignment</source>
-      <translation type="unfinished">Internal Alignment</translation>
+      <translation>內部對齊</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="195"/>
-      <source>View</source>
-      <translation>檢視</translation>
+      <location filename="../../TaskSketcherConstraints.ui" line="177"/>
+      <source>Multiple Filters</source>
+      <translation>多重篩選器</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="213"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="182"/>
+      <source>Selection Filter</source>
+      <translation>選擇篩選器</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="187"/>
+      <source>Associated Constraint Filter</source>
+      <translation>關聯拘束篩選器</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="207"/>
+      <source>Click to select multiple filters</source>
+      <translation>點擊以選擇多重篩選器</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="210"/>
+      <source>Select Multiple</source>
+      <translation>選擇多個</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="223"/>
+      <source>Settings</source>
+      <translation>設定</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.ui" line="247"/>
       <source>Shows all the constraints in the list</source>
-      <translation type="unfinished">Shows all the constraints in the list</translation>
+      <translation>顯示清單中的所有拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="216"/>
-      <source>Show All</source>
-      <translation>顯示全部</translation>
+      <location filename="../../TaskSketcherConstraints.ui" line="250"/>
+      <source>Show Listed</source>
+      <translation>顯示清單</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="235"/>
+      <location filename="../../TaskSketcherConstraints.ui" line="263"/>
       <source>Hides all the constraints in the list</source>
-      <translation type="unfinished">Hides all the constraints in the list</translation>
+      <translation>隱藏清單中的所有拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="238"/>
-      <source>Hide All</source>
-      <translation type="unfinished">Hide All</translation>
+      <location filename="../../TaskSketcherConstraints.ui" line="266"/>
+      <source>Hide Listed</source>
+      <translation>隱藏清單</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="244"/>
-      <source>Controls visualisation in the 3D view</source>
-      <translation type="unfinished">Controls visualisation in the 3D view</translation>
+      <location filename="../../TaskSketcherConstraints.ui" line="279"/>
+      <source>Restricts 3D visibility to the listed elements</source>
+      <translation>限制列出元件的 3D 可見性</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="247"/>
-      <source>Automation</source>
-      <translation type="unfinished">Automation</translation>
+      <location filename="../../TaskSketcherConstraints.ui" line="282"/>
+      <source>Restrict Visibility</source>
+      <translation>限制可視性</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="265"/>
-      <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
-      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="268"/>
-      <source>Track filter selection</source>
-      <translation type="unfinished">Track filter selection</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="295"/>
-      <source>Controls widget list behaviour</source>
-      <translation type="unfinished">Controls widget list behaviour</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="298"/>
-      <source>List</source>
-      <translation>清單</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="316"/>
-      <source>Extended information will be added to the list</source>
-      <translation type="unfinished">Extended information will be added to the list</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="319"/>
-      <source>Extended information</source>
-      <translation type="unfinished">Extended information</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="347"/>
-      <source>Internal alignments will be hidden</source>
-      <translation type="unfinished">Internal alignments will be hidden</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="350"/>
-      <source>Hide internal alignment</source>
-      <translation type="unfinished">Hide internal alignment</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="626"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="640"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="775"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="969"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="985"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="1041"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="920"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1217"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1233"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1289"/>
       <source>Error</source>
       <translation>錯誤</translation>
     </message>
@@ -4559,176 +4791,177 @@ However, no constraints linking to the endpoints were found.</source>
   <context>
     <name>SketcherGui::TaskSketcherElements</name>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="14"/>
+      <location filename="../../TaskSketcherElements.ui" line="20"/>
       <source>Form</source>
       <translation>格式</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="22"/>
+      <location filename="../../TaskSketcherElements.ui" line="28"/>
       <source>Type:</source>
       <translation>類型：</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="42"/>
+      <location filename="../../TaskSketcherElements.ui" line="48"/>
       <source>Edge</source>
       <translation>邊</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="47"/>
+      <location filename="../../TaskSketcherElements.ui" line="53"/>
       <source>Starting Point</source>
       <translation>起點</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="52"/>
+      <location filename="../../TaskSketcherElements.ui" line="58"/>
       <source>End Point</source>
       <translation>終點</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="57"/>
+      <location filename="../../TaskSketcherElements.ui" line="63"/>
       <source>Center Point</source>
       <translation>中心點</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="69"/>
+      <location filename="../../TaskSketcherElements.ui" line="75"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>模式：</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="89"/>
+      <location filename="../../TaskSketcherElements.ui" line="95"/>
       <source>All</source>
       <translation>所有</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="94"/>
+      <location filename="../../TaskSketcherElements.ui" line="100"/>
       <source>Normal</source>
       <translation>垂直</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="99"/>
-      <location filename="../../TaskSketcherElements.cpp" line="753"/>
-      <location filename="../../TaskSketcherElements.cpp" line="757"/>
-      <location filename="../../TaskSketcherElements.cpp" line="761"/>
-      <location filename="../../TaskSketcherElements.cpp" line="765"/>
-      <location filename="../../TaskSketcherElements.cpp" line="769"/>
-      <location filename="../../TaskSketcherElements.cpp" line="773"/>
-      <location filename="../../TaskSketcherElements.cpp" line="777"/>
-      <location filename="../../TaskSketcherElements.cpp" line="781"/>
-      <location filename="../../TaskSketcherElements.cpp" line="785"/>
+      <location filename="../../TaskSketcherElements.ui" line="105"/>
+      <location filename="../../TaskSketcherElements.cpp" line="760"/>
+      <location filename="../../TaskSketcherElements.cpp" line="764"/>
+      <location filename="../../TaskSketcherElements.cpp" line="768"/>
+      <location filename="../../TaskSketcherElements.cpp" line="772"/>
+      <location filename="../../TaskSketcherElements.cpp" line="776"/>
+      <location filename="../../TaskSketcherElements.cpp" line="780"/>
+      <location filename="../../TaskSketcherElements.cpp" line="784"/>
+      <location filename="../../TaskSketcherElements.cpp" line="788"/>
+      <location filename="../../TaskSketcherElements.cpp" line="792"/>
+      <location filename="../../TaskSketcherElements.cpp" line="796"/>
       <source>Construction</source>
       <translation>建構</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="104"/>
+      <location filename="../../TaskSketcherElements.ui" line="110"/>
       <source>External</source>
-      <translation type="unfinished">External</translation>
+      <translation>外部</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="133"/>
+      <location filename="../../TaskSketcherElements.ui" line="139"/>
       <source>Extended naming containing info about element mode</source>
-      <translation type="unfinished">Extended naming containing info about element mode</translation>
+      <translation>延伸命名包含元件模型的資訊</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="136"/>
+      <location filename="../../TaskSketcherElements.ui" line="142"/>
       <source>Extended naming</source>
-      <translation type="unfinished">Extended naming</translation>
+      <translation>延伸命名</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="146"/>
+      <location filename="../../TaskSketcherElements.ui" line="152"/>
       <source>Only the type 'Edge' will be available for the list</source>
-      <translation type="unfinished">Only the type 'Edge' will be available for the list</translation>
+      <translation>只有"邊緣(Edge)"型別才可用於清單</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.ui" line="149"/>
+      <location filename="../../TaskSketcherElements.ui" line="155"/>
       <source>Auto-switch to Edge</source>
       <translation>自動切換至邊</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="259"/>
+      <location filename="../../TaskSketcherElements.cpp" line="261"/>
       <source>Elements</source>
-      <translation>元素</translation>
+      <translation>元件</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="280"/>
+      <location filename="../../TaskSketcherElements.cpp" line="282"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: 多重選取&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: 切換至下一個可以型別&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="749"/>
-      <location filename="../../TaskSketcherElements.cpp" line="750"/>
-      <location filename="../../TaskSketcherElements.cpp" line="855"/>
-      <location filename="../../TaskSketcherElements.cpp" line="856"/>
+      <location filename="../../TaskSketcherElements.cpp" line="759"/>
+      <location filename="../../TaskSketcherElements.cpp" line="761"/>
+      <location filename="../../TaskSketcherElements.cpp" line="866"/>
+      <location filename="../../TaskSketcherElements.cpp" line="867"/>
       <source>Point</source>
       <translation>點</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="752"/>
-      <location filename="../../TaskSketcherElements.cpp" line="754"/>
-      <location filename="../../TaskSketcherElements.cpp" line="858"/>
-      <location filename="../../TaskSketcherElements.cpp" line="859"/>
+      <location filename="../../TaskSketcherElements.cpp" line="763"/>
+      <location filename="../../TaskSketcherElements.cpp" line="765"/>
+      <location filename="../../TaskSketcherElements.cpp" line="869"/>
+      <location filename="../../TaskSketcherElements.cpp" line="870"/>
       <source>Line</source>
       <translation>線</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="756"/>
-      <location filename="../../TaskSketcherElements.cpp" line="758"/>
-      <location filename="../../TaskSketcherElements.cpp" line="861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="862"/>
+      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="769"/>
+      <location filename="../../TaskSketcherElements.cpp" line="872"/>
+      <location filename="../../TaskSketcherElements.cpp" line="873"/>
       <source>Arc</source>
       <translation>弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="760"/>
-      <location filename="../../TaskSketcherElements.cpp" line="762"/>
-      <location filename="../../TaskSketcherElements.cpp" line="864"/>
-      <location filename="../../TaskSketcherElements.cpp" line="865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="771"/>
+      <location filename="../../TaskSketcherElements.cpp" line="773"/>
+      <location filename="../../TaskSketcherElements.cpp" line="875"/>
+      <location filename="../../TaskSketcherElements.cpp" line="876"/>
       <source>Circle</source>
       <translation>圓</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="764"/>
-      <location filename="../../TaskSketcherElements.cpp" line="766"/>
-      <location filename="../../TaskSketcherElements.cpp" line="867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="775"/>
+      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="878"/>
+      <location filename="../../TaskSketcherElements.cpp" line="879"/>
       <source>Ellipse</source>
       <translation>橢圓</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="768"/>
-      <location filename="../../TaskSketcherElements.cpp" line="770"/>
-      <location filename="../../TaskSketcherElements.cpp" line="870"/>
-      <location filename="../../TaskSketcherElements.cpp" line="871"/>
+      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="781"/>
+      <location filename="../../TaskSketcherElements.cpp" line="881"/>
+      <location filename="../../TaskSketcherElements.cpp" line="882"/>
       <source>Elliptical Arc</source>
       <translation>橢圓弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="772"/>
-      <location filename="../../TaskSketcherElements.cpp" line="774"/>
-      <location filename="../../TaskSketcherElements.cpp" line="873"/>
-      <location filename="../../TaskSketcherElements.cpp" line="874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
+      <location filename="../../TaskSketcherElements.cpp" line="785"/>
+      <location filename="../../TaskSketcherElements.cpp" line="884"/>
+      <location filename="../../TaskSketcherElements.cpp" line="885"/>
       <source>Hyperbolic Arc</source>
       <translation>雙曲線弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="776"/>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
-      <location filename="../../TaskSketcherElements.cpp" line="876"/>
-      <location filename="../../TaskSketcherElements.cpp" line="877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="787"/>
+      <location filename="../../TaskSketcherElements.cpp" line="789"/>
+      <location filename="../../TaskSketcherElements.cpp" line="887"/>
+      <location filename="../../TaskSketcherElements.cpp" line="888"/>
       <source>Parabolic Arc</source>
-      <translation type="unfinished">Parabolic Arc</translation>
+      <translation>拋物線弧形</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="780"/>
-      <location filename="../../TaskSketcherElements.cpp" line="782"/>
-      <location filename="../../TaskSketcherElements.cpp" line="879"/>
-      <location filename="../../TaskSketcherElements.cpp" line="880"/>
+      <location filename="../../TaskSketcherElements.cpp" line="791"/>
+      <location filename="../../TaskSketcherElements.cpp" line="793"/>
+      <location filename="../../TaskSketcherElements.cpp" line="890"/>
+      <location filename="../../TaskSketcherElements.cpp" line="891"/>
       <source>BSpline</source>
-      <translation>BSpline</translation>
+      <translation>BSpline(B 雲形線)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="784"/>
-      <location filename="../../TaskSketcherElements.cpp" line="786"/>
-      <location filename="../../TaskSketcherElements.cpp" line="882"/>
-      <location filename="../../TaskSketcherElements.cpp" line="883"/>
+      <location filename="../../TaskSketcherElements.cpp" line="795"/>
+      <location filename="../../TaskSketcherElements.cpp" line="797"/>
+      <location filename="../../TaskSketcherElements.cpp" line="893"/>
+      <location filename="../../TaskSketcherElements.cpp" line="894"/>
       <source>Other</source>
       <translation>其他</translation>
     </message>
@@ -4743,7 +4976,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="23"/>
       <source>A grid will be shown</source>
-      <translation type="unfinished">A grid will be shown</translation>
+      <translation>將顯示一個網格</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="26"/>
@@ -4758,14 +4991,14 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="51"/>
       <source>Distance between two subsequent grid lines</source>
-      <translation type="unfinished">Distance between two subsequent grid lines</translation>
+      <translation>兩條連續網格線的距離</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="87"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
-      <translation type="unfinished">New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid size to a grid line to snap.</translation>
+      <translation>新的點將會對映到最近的網格線。
+必須將點設置為距離要捕捉的網格線小於網格大小的五分之一。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="91"/>
@@ -4775,7 +5008,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="107"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
-      <translation type="unfinished">Sketcher proposes automatically sensible constraints.</translation>
+      <translation>草圖工具提出了自動合理的拘束。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="110"/>
@@ -4785,22 +5018,22 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="126"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
-      <translation type="unfinished">Sketcher tries not to propose redundant auto constraints</translation>
+      <translation>草圖嘗試不要提出冗餘自動拘束。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="129"/>
       <source>Avoid redundant auto constraints</source>
-      <translation type="unfinished">Avoid redundant auto constraints</translation>
+      <translation>避免多餘的自動拘束</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="145"/>
       <source>Rendering order (global):</source>
-      <translation type="unfinished">Rendering order (global):</translation>
+      <translation>算繪順序(整體)：</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="164"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
-      <translation type="unfinished">To change, drag and drop a geometry type to top or bottom</translation>
+      <translation>要更改，請將幾何類型拖曳到頂部或底部</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.cpp" line="193"/>
@@ -4833,76 +5066,155 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
+      <source>Open and non-manifold vertexes</source>
+      <translation>開放和非流形頂點</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="38"/>
+      <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
+This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
+      <translation>標示可能導致錯誤的開放與非流形頂點如果草圖被用來產生固體。
+這純粹基於草圖的拓撲形狀，而不是其幾何/拘束集合。</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="42"/>
+      <source>Highlight troublesome vertexes</source>
+      <translation>突出顯示有麻煩的頂點</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="52"/>
+      <source>Fixes found missing coincidences by adding extra coincident constrains</source>
+      <translation>通過添加額外的重合拘束來修正發現缺少的重合</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="55"/>
       <source>Missing coincidences</source>
       <translation>未一致</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="26"/>
+      <location filename="../../TaskSketcherValidation.ui" line="61"/>
       <source>Tolerance:</source>
       <translation>公差：</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="36"/>
-      <source>Ignore construction geometry</source>
-      <translation type="unfinished">Ignore construction geometry</translation>
+      <location filename="../../TaskSketcherValidation.ui" line="68"/>
+      <source>Defines the X/Y tolerance inside which missing coincidences are searched.</source>
+      <translation>定義 X/Y 誤差在其中缺少的重合將被搜尋。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="46"/>
-      <location filename="../../TaskSketcherValidation.ui" line="76"/>
-      <location filename="../../TaskSketcherValidation.ui" line="106"/>
-      <location filename="../../TaskSketcherValidation.ui" line="129"/>
+      <location filename="../../TaskSketcherValidation.ui" line="75"/>
+      <source>If checked, construction geometries are ignored in the search</source>
+      <translation>若勾選的話會在搜索中忽略建構幾何</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="78"/>
+      <source>Ignore construction geometry</source>
+      <translation>忽略建構幾何</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="88"/>
+      <source>Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</source>
+      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="92"/>
+      <location filename="../../TaskSketcherValidation.ui" line="118"/>
+      <location filename="../../TaskSketcherValidation.ui" line="157"/>
+      <location filename="../../TaskSketcherValidation.ui" line="186"/>
       <source>Find</source>
       <translation>發現</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="53"/>
-      <location filename="../../TaskSketcherValidation.ui" line="83"/>
-      <location filename="../../TaskSketcherValidation.ui" line="113"/>
+      <location filename="../../TaskSketcherValidation.ui" line="99"/>
+      <location filename="../../TaskSketcherValidation.ui" line="128"/>
+      <location filename="../../TaskSketcherValidation.ui" line="167"/>
       <source>Fix</source>
       <translation>修正</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="60"/>
-      <source>Highlight open vertexes</source>
-      <translation>標示未封閉頂點</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherValidation.ui" line="70"/>
+      <location filename="../../TaskSketcherValidation.ui" line="109"/>
       <source>Invalid constraints</source>
       <translation>錯誤之拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="90"/>
+      <location filename="../../TaskSketcherValidation.ui" line="115"/>
+      <source>Finds invalid/malformed constrains in the sketch</source>
+      <translation>在草圖中尋找無效/格式錯誤的拘束</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="125"/>
+      <source>Tries to fix found invalid constraints</source>
+      <translation>嘗試修復發現的無效拘束</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="135"/>
+      <source>Deletes constraints referring to external geometry</source>
+      <translation>刪除參考外部幾何的拘束</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="138"/>
       <source>Delete constraints to external geom.</source>
       <translation>刪除外部幾何之拘束。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="100"/>
+      <location filename="../../TaskSketcherValidation.ui" line="148"/>
       <source>Degenerated geometry</source>
-      <translation type="unfinished">Degenerated geometry</translation>
+      <translation>退化幾何</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="123"/>
+      <location filename="../../TaskSketcherValidation.ui" line="154"/>
+      <source>Finds degenerated geometries in the sketch</source>
+      <translation>在草圖中尋找退化幾何</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="164"/>
+      <source>Tries to fix found degenerated geometries</source>
+      <translation>嘗試修復找到的退化幾何</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="177"/>
       <source>Reversed external geometry</source>
       <translation>反向之外部幾何</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="136"/>
+      <location filename="../../TaskSketcherValidation.ui" line="183"/>
+      <source>Finds reversed external geometries</source>
+      <translation>尋找反向之外部幾何</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="193"/>
+      <source>Fixes found reversed external geometries by swapping their endpoints</source>
+      <translation>通過交換其端點來修正找到的反向外部幾何</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="196"/>
       <source>Swap endpoints in constraints</source>
       <translation>互換拘束中的端點</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="146"/>
+      <location filename="../../TaskSketcherValidation.ui" line="206"/>
       <source>Constraint orientation locking</source>
       <translation>已鎖定拘束之方向</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="152"/>
+      <location filename="../../TaskSketcherValidation.ui" line="212"/>
+      <source>Enables/updates constraint orientation locking</source>
+      <translation>啟用/更新拘束方向鎖定</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="215"/>
       <source>Enable/Update</source>
       <translation>啟用/更新</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="159"/>
+      <location filename="../../TaskSketcherValidation.ui" line="222"/>
+      <source>Disables constraint orientation locking</source>
+      <translation>禁用方向鎖定拘束</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="225"/>
       <source>Disable</source>
       <translation>停用</translation>
     </message>
@@ -4910,208 +5222,191 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6291"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2647"/>
       <source>Edit sketch</source>
       <translation>編輯草圖</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6305"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2663"/>
       <source>A dialog is already open in the task panel</source>
       <translation>於工作面板已開啟對話窗</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6306"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2664"/>
       <source>Do you want to close this dialog?</source>
       <translation>您確定要關閉此對話窗嗎?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6320"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2678"/>
       <source>Invalid sketch</source>
       <translation>錯誤之草圖</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6321"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2679"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>您要開啟草圖驗證工具嗎?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6322"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2680"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>此為無效且不能編輯之草圖</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6537"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2799"/>
       <source>Please remove the following constraint:</source>
       <translation>請移除下列拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6538"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2800"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>請移除下列至少一個拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6544"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2806"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>請移除下列多餘拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2807"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>請移除下列多餘拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6551"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2813"/>
       <source>The following constraint is partially redundant:</source>
-      <translation type="unfinished">The following constraint is partially redundant:</translation>
+      <translation>以下拘束為部份冗餘：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2814"/>
       <source>The following constraints are partially redundant:</source>
-      <translation type="unfinished">The following constraints are partially redundant:</translation>
+      <translation>以下拘束為部份冗餘：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6558"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2820"/>
       <source>Please remove the following malformed constraint:</source>
-      <translation type="unfinished">Please remove the following malformed constraint:</translation>
+      <translation>請移除下列格式錯誤拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2821"/>
       <source>Please remove the following malformed constraints:</source>
-      <translation type="unfinished">Please remove the following malformed constraints:</translation>
+      <translation>請移除下列格式錯誤拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6594"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2879"/>
       <source>Empty sketch</source>
       <translation>空白草圖</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6601"/>
-      <source>Over-constrained sketch</source>
-      <translation type="unfinished">Over-constrained sketch</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="2883"/>
+      <source>Over-constrained: </source>
+      <translation>過度拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6609"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6616"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6624"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6633"/>
-      <source>(click to select)</source>
-      <translation>(按一下可選擇)</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="2889"/>
+      <source>Malformed constraints: </source>
+      <translation>格式錯誤的拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6608"/>
-      <source>Sketch contains malformed constraints</source>
-      <translation type="unfinished">Sketch contains malformed constraints</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="2895"/>
+      <source>Redundant constraints:</source>
+      <translation>冗餘拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
-      <source>Sketch contains conflicting constraints</source>
-      <translation type="unfinished">Sketch contains conflicting constraints</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="2901"/>
+      <source>Partially redundant:</source>
+      <translation>部份冗餘：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
-      <source>Sketch contains redundant constraints</source>
-      <translation type="unfinished">Sketch contains redundant constraints</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="2907"/>
+      <source>Solver failed to converge</source>
+      <translation>求解器無法收斂</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6632"/>
-      <source>Sketch contains partially redundant constraints</source>
-      <translation type="unfinished">Sketch contains partially redundant constraints</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="2912"/>
+      <source>Under constrained:</source>
+      <translation>在拘束下：</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../ViewProviderSketch.cpp" line="2914"/>
+      <source>%n DoF(s)</source>
+      <translation type="unfinished">
+        <numerusform>%n DoF(s)</numerusform>
+      </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6644"/>
-      <source>Fully constrained sketch</source>
-      <translation>完全拘束之草圖</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6651"/>
-      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6654"/>
-      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6659"/>
-      <source>Solved in %1 sec</source>
-      <translation>於%1秒求解完成</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6662"/>
-      <source>Unsolved (%1 sec)</source>
-      <translation>未求解完成(%1秒)</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="2917"/>
+      <source>Fully constrained</source>
+      <translation>完全拘束</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="347"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="381"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="383"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>顯示/隱藏 所有B型不規則曲線的曲率梳形圖</translation>
+      <translation>切換顯示/隱藏 所有B雲形線的曲率梳形圖</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="970"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="972"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="995"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="997"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Decreases the multiplicity of the selected knot of a B-spline</translation>
+      <translation>減少自一 B 雲形線所選定結點之多重性</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="333"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="335"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="367"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="369"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>顯示/隱藏 所有B型不規則曲線的控制項次數</translation>
+      <translation>切換顯示/隱藏 所有B雲形線的控制項次數</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="963"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="965"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="988"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="990"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation type="unfinished">Increases the multiplicity of the selected knot of a B-spline</translation>
+      <translation>增加自一 B 雲形線所選定結點之多重性</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="354"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="356"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="388"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="390"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the knot multiplicity for all B-splines</translation>
+      <translation>切換顯示/隱藏所有B雲形線的結點多重性</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplinePoleWeight</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="362"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="364"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="396"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="398"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
+      <translation>切換顯示/隱藏所有B雲形線的控制點權重</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="340"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="342"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="374"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="376"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>顯示/隱藏 所有B型不規則曲線的控制多邊形</translation>
+      <translation>切換顯示/隱藏 所有B雲形線的控制多邊形</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1737"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1738"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1796"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1797"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>依最後所選的點作為參考點對幾何進行含拘束連動之複製</translation>
     </message>
@@ -5119,17 +5414,17 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1736"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1795"/>
       <source>Clone</source>
       <translation>複製</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1740"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1799"/>
       <source>Copy</source>
       <translation>複製</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1744"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1803"/>
       <source>Move</source>
       <translation>移動</translation>
     </message>
@@ -5137,8 +5432,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5901"/>
-      <location filename="../../CommandConstraints.cpp" line="5902"/>
+      <location filename="../../CommandConstraints.cpp" line="5701"/>
+      <location filename="../../CommandConstraints.cpp" line="5702"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>固定一個圓或弧的直徑</translation>
     </message>
@@ -5146,16 +5441,16 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5906"/>
+      <location filename="../../CommandConstraints.cpp" line="5706"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+      <translation>固定一個圓或弧的半徑/直徑</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5897"/>
-      <location filename="../../CommandConstraints.cpp" line="5898"/>
+      <location filename="../../CommandConstraints.cpp" line="5697"/>
+      <location filename="../../CommandConstraints.cpp" line="5698"/>
       <source>Fix the radius of a circle or an arc</source>
       <translation>固定圓或弧之半徑</translation>
     </message>
@@ -5163,16 +5458,16 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_ConstraintRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5905"/>
+      <location filename="../../CommandConstraints.cpp" line="5705"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+      <translation>固定一個圓或弧的半徑/直徑</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1741"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1742"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1800"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1801"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>依最後所選的點作為參考點對幾何進行不含拘束連動之複製</translation>
     </message>
@@ -5180,8 +5475,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2473"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2474"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2436"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2437"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>由終點及弧上一點建立一個弧</translation>
     </message>
@@ -5189,8 +5484,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5419"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5420"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5509"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5510"/>
       <source>Create a circle by 3 rim points</source>
       <translation>由3圓弧點建立一個圓</translation>
     </message>
@@ -5198,8 +5493,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2469"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2470"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2432"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2433"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>由中心點及其終點建立一個弧</translation>
     </message>
@@ -5207,49 +5502,49 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4564"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4565"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4541"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4542"/>
       <source>Create an arc of ellipse by its center, major radius, and endpoints</source>
-      <translation type="unfinished">Create an arc of ellipse by its center, major radius, and endpoints</translation>
+      <translation>由中心點、主半徑及終點來建立橢圓之弧</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4568"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4569"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4545"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4546"/>
       <source>Create an arc of hyperbola by its center, major radius, and endpoints</source>
-      <translation type="unfinished">Create an arc of hyperbola by its center, major radius, and endpoints</translation>
+      <translation>以中心點，主要半徑及終點建立雙曲線弧</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4572"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4573"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4549"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4550"/>
       <source>Create an arc of parabola by its focus, vertex, and endpoints</source>
-      <translation type="unfinished">Create an arc of parabola by its focus, vertex, and endpoints</translation>
+      <translation>通過焦點、頂點和端點創建拋物線弧</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5111"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5198"/>
       <source>B-spline by control points</source>
-      <translation type="unfinished">B-spline by control points</translation>
+      <translation>以控制點建立 B 雲形線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5112"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5113"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5199"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5200"/>
       <source>Create a B-spline by control points</source>
-      <translation type="unfinished">Create a B-spline by control points</translation>
+      <translation>以控制點建立 B 雲形線</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5415"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5416"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5505"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5506"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>由中心點及一個圓弧點建立一個圓</translation>
     </message>
@@ -5257,8 +5552,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4560"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4561"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4537"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4538"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>由近心點、遠心點及次半徑建立橢圓</translation>
     </message>
@@ -5266,8 +5561,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4556"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4557"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4533"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4534"/>
       <source>Create an ellipse by center, major radius and point</source>
       <translation>由中心點、主半徑及終點來建立橢圓</translation>
     </message>
@@ -5275,17 +5570,17 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5990"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5991"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6083"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6084"/>
       <source>Creates a radius between two lines</source>
-      <translation type="unfinished">Creates a radius between two lines</translation>
+      <translation>在兩條線間建立半徑</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7712"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7713"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7871"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7872"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>以中心點及一角來建立七角形</translation>
     </message>
@@ -5293,8 +5588,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7708"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7709"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7867"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7868"/>
       <source>Create a hexagon by its center and by one corner</source>
       <translation>以中心點及一角來建立六角形</translation>
     </message>
@@ -5302,31 +5597,31 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1189"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1144"/>
       <source>Create a rounded rectangle</source>
-      <translation type="unfinished">Create a rounded rectangle</translation>
+      <translation>建立一個圓角矩形</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7716"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7717"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7875"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7876"/>
       <source>Create an octagon by its center and by one corner</source>
       <translation>以中心點及一角來建立八角形</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7720"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7721"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7879"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7880"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation type="unfinished">Create a regular polygon by its center and by one corner</translation>
+      <translation>以中心點及一角來建立正多邊形</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7704"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7705"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7863"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7864"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>以中心點及一角來建立五角形</translation>
     </message>
@@ -5334,33 +5629,33 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5994"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5995"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6087"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6088"/>
       <source>Fillet that preserves constraints and intersection point</source>
-      <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
+      <translation>保留拘束與交叉點的圓角</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1181"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1136"/>
       <source>Create a rectangle</source>
-      <translation type="unfinished">Create a rectangle</translation>
+      <translation>建立矩形</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateRectangle_Center</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1185"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1140"/>
       <source>Create a centered rectangle</source>
-      <translation type="unfinished">Create a centered rectangle</translation>
+      <translation>建立置中矩形</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7700"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7701"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7859"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7860"/>
       <source>Create a square by its center and by one corner</source>
       <translation>以中心點及一角來建立正方形</translation>
     </message>
@@ -5368,8 +5663,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7696"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7697"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7855"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7856"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
       <translation>以中心點及一角來建立正三角形</translation>
     </message>
@@ -5377,78 +5672,77 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_Create_Periodic_BSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5115"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5202"/>
       <source>Periodic B-spline by control points</source>
-      <translation type="unfinished">Periodic B-spline by control points</translation>
+      <translation>由控制點建立週期性B雲形線</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5116"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5117"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5203"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5204"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation type="unfinished">Create a periodic B-spline by control points</translation>
+      <translation>由控制點建立週期性B雲形線</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="533"/>
+      <location filename="../../Command.cpp" line="535"/>
       <source>No sketch found</source>
       <translation>未發現草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="534"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>The document doesn't have a sketch</source>
       <translation>此檔案無草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="543"/>
+      <location filename="../../Command.cpp" line="545"/>
       <source>Select sketch</source>
       <translation>選擇草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="544"/>
+      <location filename="../../Command.cpp" line="546"/>
       <source>Select a sketch from the list</source>
       <translation>從清單中選擇草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
+      <location filename="../../Command.cpp" line="600"/>
       <source> (incompatible with selection)</source>
       <translation>（與選擇不相容）</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="600"/>
+      <location filename="../../Command.cpp" line="602"/>
       <source> (current)</source>
       <translation>(目前)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="607"/>
+      <location filename="../../Command.cpp" line="609"/>
       <source> (suggested)</source>
       <translation>（建議）</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="613"/>
+      <location filename="../../Command.cpp" line="615"/>
       <source>Sketch attachment</source>
       <translation>草圖附加</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="615"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
-      <translation type="unfinished">Current attachment mode is incompatible with the new selection.
-Select the method to attach this sketch to selected objects.</translation>
+      <translation>目前附加模式不相容於新的選擇，請選擇要如何將此草圖附加至所選物件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="621"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>選擇要如何將此草圖附加到所選物件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="656"/>
+      <location filename="../../Command.cpp" line="660"/>
       <source>Map sketch</source>
       <translation>對應草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="657"/>
+      <location filename="../../Command.cpp" line="661"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>無法將此草圖對應到：%1</translation>
@@ -5457,8 +5751,8 @@ Select the method to attach this sketch to selected objects.</translation>
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1745"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1746"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1804"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1805"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>以最後選擇的點為基準移動圖元</translation>
     </message>
@@ -5466,25 +5760,38 @@ Select the method to attach this sketch to selected objects.</translation>
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="180"/>
+      <location filename="../../Command.cpp" line="181"/>
       <source>Sketch attachment</source>
       <translation>草圖附加</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="181"/>
+      <location filename="../../Command.cpp" line="182"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>選擇要如何將此草圖附加到所選物件</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_ProfilesHexagon1</name>
+    <message>
+      <location filename="../../../Profiles.py" line="53"/>
+      <source>Creates a hexagonal profile</source>
+      <translation>建立一個六角形的輪廊</translation>
+    </message>
+    <message>
+      <location filename="../../../Profiles.py" line="58"/>
+      <source>Creates a hexagonal profile in the sketch</source>
+      <translation>於草圖中建立六角形</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="395"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Sketch has support</source>
       <translation>草圖具有支撐</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="398"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
       <translation>草圖具有支撐面無法調整方向。
@@ -5499,42 +5806,42 @@ Do you want to detach it from the support?</source>
       <translation>格式</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="20"/>
-      <source>Undefined degrees of freedom</source>
-      <translation>未定義自由度</translation>
+      <location filename="../../TaskSketcherMessages.ui" line="22"/>
+      <source>DOF</source>
+      <translation>自由度</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="30"/>
-      <source>Not solved yet</source>
-      <translation>未解完</translation>
+      <location filename="../../TaskSketcherMessages.ui" line="29"/>
+      <source>Link</source>
+      <translation>連結</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="40"/>
+      <location filename="../../TaskSketcherMessages.ui" line="51"/>
       <source>New constraints that would be redundant will automatically be removed</source>
-      <translation type="unfinished">New constraints that would be redundant will automatically be removed</translation>
+      <translation>新拘束若是多餘的話會被自動刪除</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="43"/>
+      <location filename="../../TaskSketcherMessages.ui" line="54"/>
       <source>Auto remove redundants</source>
-      <translation type="unfinished">Auto remove redundants</translation>
+      <translation>自動移除冗餘</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="61"/>
+      <location filename="../../TaskSketcherMessages.ui" line="72"/>
       <source>Executes a recomputation of active document after every sketch action</source>
-      <translation type="unfinished">Executes a recomputation of active document after every sketch action</translation>
+      <translation>在活躍文件的每個草圖動作後執行重新計算</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="64"/>
+      <location filename="../../TaskSketcherMessages.ui" line="75"/>
       <source>Auto update</source>
-      <translation type="unfinished">Auto update</translation>
+      <translation>自動更新</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="80"/>
+      <location filename="../../TaskSketcherMessages.ui" line="91"/>
       <source>Forces recomputation of active document</source>
-      <translation type="unfinished">Forces recomputation of active document</translation>
+      <translation>將活躍文件強制進行重新計算</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="83"/>
+      <location filename="../../TaskSketcherMessages.ui" line="94"/>
       <source>Update</source>
       <translation>更新</translation>
     </message>
@@ -5554,16 +5861,16 @@ Do you want to detach it from the support?</source>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="25"/>
       <source>Default solver:</source>
-      <translation type="unfinished">Default solver:</translation>
+      <translation>預設求解器：</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="32"/>
       <source>Solver is used for solving the geometry.
 LevenbergMarquardt and DogLeg are trust region optimization algorithms.
 BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</source>
-      <translation type="unfinished">Solver is used for solving the geometry.
-LevenbergMarquardt and DogLeg are trust region optimization algorithms.
-BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translation>
+      <translation>求解器是用來求解幾何。
+萊文伯格-馬夸特(LevenbergMarquardt) 和狗腿(DogLeg)是信任區域最佳化演算法。
+BFGS 求解器使用 Broyden–Fletcher–Goldfarb–Shanno 演算法。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="47"/>
@@ -5581,7 +5888,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="57"/>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="403"/>
       <source>DogLeg</source>
-      <translation>DogLeg</translation>
+      <translation>狗腿(DogLeg)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="69"/>
@@ -5596,7 +5903,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="79"/>
       <source>Step type used in the DogLeg algorithm</source>
-      <translation type="unfinished">Step type used in the DogLeg algorithm</translation>
+      <translation>狗腿(DogLeg)演算法中使用的階層類型</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="92"/>
@@ -5621,12 +5928,12 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="117"/>
       <source>Maximum iterations:</source>
-      <translation type="unfinished">Maximum iterations:</translation>
+      <translation>最大迭代次數：</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="124"/>
       <source>Maximum iterations to find convergence before solver is stopped</source>
-      <translation type="unfinished">Maximum iterations to find convergence before solver is stopped</translation>
+      <translation>在求解器停止之前找到收斂的最大迭代次數</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
@@ -5641,7 +5948,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="166"/>
       <source>Maximum iterations will be multiplied by number of parameters</source>
-      <translation type="unfinished">Maximum iterations will be multiplied by number of parameters</translation>
+      <translation>最大迭代次數將乘以參數的值</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="189"/>
@@ -5657,8 +5964,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="199"/>
       <source>Threshold for squared error that is used
 to determine whether a solution converges or not</source>
-      <translation type="unfinished">Threshold for squared error that is used
-to determine whether a solution converges or not</translation>
+      <translation>平方誤差閾值被用來確定解法收斂與否</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="226"/>
@@ -5683,16 +5989,16 @@ to determine whether a solution converges or not</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>QR algorithm:</source>
-      <translation type="unfinished">QR algorithm:</translation>
+      <translation>QR 演算法：</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>
       <source>During diagnosing the QR rank of matrix is calculated.
 Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
 Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</source>
-      <translation type="unfinished">During diagnosing the QR rank of matrix is calculated.
-Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
-Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</translation>
+      <translation>在診斷過程中計算矩陣的 QR 秩。
+Eigen Dense QR 是具有全軸元的密集矩陣 QR；通常較慢
+Eigen Sparse QR 算法針對稀疏矩陣進行了優化；通常更快</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="323"/>
@@ -5712,7 +6018,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="347"/>
       <source>During a QR, values under the pivot threshold are treated as zero</source>
-      <translation type="unfinished">During a QR, values under the pivot threshold are treated as zero</translation>
+      <translation>在 QR 期間，低於樞軸閾的值被視為零</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>
@@ -5727,12 +6033,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>
       <source>Redundant solver:</source>
-      <translation type="unfinished">Redundant solver:</translation>
+      <translation>多餘拘束求解器：</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
       <source>Solver used to determine whether a group is redundant or conflicting</source>
-      <translation type="unfinished">Solver used to determine whether a group is redundant or conflicting</translation>
+      <translation>用來判別一個群組是冗餘或衝突之求解器</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="415"/>
@@ -5742,12 +6048,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="418"/>
       <source>Redundant max. iterations:</source>
-      <translation type="unfinished">Redundant max. iterations:</translation>
+      <translation>最大冗餘迭代：</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="425"/>
       <source>Same as 'Maximum iterations', but for redundant solving</source>
-      <translation type="unfinished">Same as 'Maximum iterations', but for redundant solving</translation>
+      <translation>與“最大迭代次數”相同，但用於冗餘求解</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
@@ -5757,12 +6063,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="454"/>
       <source>Redundant sketch size multiplier:</source>
-      <translation type="unfinished">Redundant sketch size multiplier:</translation>
+      <translation>冗餘草圖大小乘數：</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="461"/>
       <source>Same as 'Sketch size multiplier', but for redundant solving</source>
-      <translation type="unfinished">Same as 'Sketch size multiplier', but for redundant solving</translation>
+      <translation>與“草圖大小乘數”相同，但用於冗餘求解</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="484"/>
@@ -5772,12 +6078,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="487"/>
       <source>Redundant convergence</source>
-      <translation type="unfinished">Redundant convergence</translation>
+      <translation>冗餘收斂</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="494"/>
       <source>Same as 'Convergence', but for redundant solving</source>
-      <translation type="unfinished">Same as 'Convergence', but for redundant solving</translation>
+      <translation>與“收斂”相同，但用於冗餘求解</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="497"/>
@@ -5787,32 +6093,32 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="517"/>
       <source>Redundant param1</source>
-      <translation type="unfinished">Redundant param1</translation>
+      <translation>冗餘參數1</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="541"/>
       <source>Redundant param2</source>
-      <translation type="unfinished">Redundant param2</translation>
+      <translation>冗餘參數2</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="565"/>
       <source>Redundant param3</source>
-      <translation type="unfinished">Redundant param3</translation>
+      <translation>冗餘參數3</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="589"/>
       <source>Degree of verbosity of the debug output to the console</source>
-      <translation>錯誤訊息顯示程度</translation>
+      <translation>除錯輸出到終端的詳細程度</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="592"/>
       <source>Console debug mode:</source>
-      <translation type="unfinished">Console debug mode:</translation>
+      <translation>終端除錯模式：</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="599"/>
       <source>Verbosity of console output</source>
-      <translation type="unfinished">Verbosity of console output</translation>
+      <translation>終端輸出的詳細程度</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="612"/>
@@ -5846,147 +6152,44 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     </message>
   </context>
   <context>
+    <name>ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="2863"/>
+      <source>and %1 more</source>
+      <translation>還有 %1 個</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
-      <location filename="../../Command.cpp" line="265"/>
-      <location filename="../../Command.cpp" line="295"/>
-      <location filename="../../Command.cpp" line="339"/>
-      <location filename="../../Command.cpp" line="380"/>
-      <location filename="../../Command.cpp" line="507"/>
-      <location filename="../../Command.cpp" line="679"/>
-      <location filename="../../Command.cpp" line="718"/>
-      <location filename="../../Command.cpp" line="756"/>
-      <location filename="../../Command.cpp" line="863"/>
-      <location filename="../../Command.cpp" line="947"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="73"/>
-      <location filename="../../CommandConstraints.cpp" line="1097"/>
-      <location filename="../../CommandConstraints.cpp" line="1335"/>
-      <location filename="../../CommandConstraints.cpp" line="1569"/>
-      <location filename="../../CommandConstraints.cpp" line="1794"/>
-      <location filename="../../CommandConstraints.cpp" line="2108"/>
-      <location filename="../../CommandConstraints.cpp" line="2314"/>
-      <location filename="../../CommandConstraints.cpp" line="2663"/>
-      <location filename="../../CommandConstraints.cpp" line="2911"/>
-      <location filename="../../CommandConstraints.cpp" line="3165"/>
-      <location filename="../../CommandConstraints.cpp" line="3411"/>
-      <location filename="../../CommandConstraints.cpp" line="3561"/>
-      <location filename="../../CommandConstraints.cpp" line="4199"/>
-      <location filename="../../CommandConstraints.cpp" line="4907"/>
-      <location filename="../../CommandConstraints.cpp" line="5209"/>
-      <location filename="../../CommandConstraints.cpp" line="5485"/>
-      <location filename="../../CommandConstraints.cpp" line="5789"/>
-      <location filename="../../CommandConstraints.cpp" line="5933"/>
-      <location filename="../../CommandConstraints.cpp" line="6460"/>
-      <location filename="../../CommandConstraints.cpp" line="6677"/>
-      <location filename="../../CommandConstraints.cpp" line="6977"/>
-      <location filename="../../CommandConstraints.cpp" line="7141"/>
-      <location filename="../../CommandConstraints.cpp" line="7602"/>
-      <location filename="../../CommandConstraints.cpp" line="7729"/>
-      <location filename="../../CommandCreateGeo.cpp" line="384"/>
-      <location filename="../../CommandCreateGeo.cpp" line="687"/>
-      <location filename="../../CommandCreateGeo.cpp" line="728"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1052"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1095"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1850"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2093"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2362"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2389"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2623"/>
-      <location filename="../../CommandCreateGeo.cpp" line="3418"/>
-      <location filename="../../CommandCreateGeo.cpp" line="3448"/>
-      <location filename="../../CommandCreateGeo.cpp" line="3775"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4118"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4416"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4448"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4950"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4994"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5025"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5308"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5335"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5515"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5544"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5572"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5852"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5881"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5912"/>
-      <location filename="../../CommandCreateGeo.cpp" line="6142"/>
-      <location filename="../../CommandCreateGeo.cpp" line="6456"/>
-      <location filename="../../CommandCreateGeo.cpp" line="6575"/>
-      <location filename="../../CommandCreateGeo.cpp" line="6759"/>
-      <location filename="../../CommandCreateGeo.cpp" line="6935"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7191"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7384"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7411"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7438"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7466"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7493"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7520"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7547"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7578"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="100"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="131"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="162"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="193"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="224"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="255"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="384"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="452"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="525"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="602"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="756"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="898"/>
-      <location filename="../../CommandSketcherTools.cpp" line="102"/>
-      <location filename="../../CommandSketcherTools.cpp" line="214"/>
-      <location filename="../../CommandSketcherTools.cpp" line="301"/>
-      <location filename="../../CommandSketcherTools.cpp" line="375"/>
-      <location filename="../../CommandSketcherTools.cpp" line="421"/>
-      <location filename="../../CommandSketcherTools.cpp" line="465"/>
-      <location filename="../../CommandSketcherTools.cpp" line="508"/>
-      <location filename="../../CommandSketcherTools.cpp" line="562"/>
-      <location filename="../../CommandSketcherTools.cpp" line="616"/>
-      <location filename="../../CommandSketcherTools.cpp" line="670"/>
-      <location filename="../../CommandSketcherTools.cpp" line="722"/>
-      <location filename="../../CommandSketcherTools.cpp" line="844"/>
-      <location filename="../../CommandSketcherTools.cpp" line="929"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1024"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1539"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1585"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1628"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1662"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2084"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2147"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2211"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="92"/>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher geometries</source>
       <translation>草圖幾何</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher constraints</source>
       <translation>草圖拘束</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher tools</source>
       <translation>草圖工具</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher B-spline tools</source>
-      <translation type="unfinished">Sketcher B-spline tools</translation>
+      <translation>B 雲形線之草圖工具</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Sketcher virtual space</source>
-      <translation type="unfinished">Sketcher virtual space</translation>
+      <translation>虛擬草圖空間</translation>
     </message>
   </context>
 </TS>

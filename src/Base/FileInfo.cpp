@@ -181,11 +181,18 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
         buf += "/fileXXXXXX";
     }
 
+    std::vector<char> vec;
+    std::copy(buf.begin(), buf.end(), std::back_inserter(vec));
+    vec.push_back('\0');
+
     /* coverity[secure_temp] mkstemp uses 0600 as the mode and is safe */
-    int id = mkstemp(const_cast<char*>(buf.c_str()));
+    int id = mkstemp(vec.data());
     if (id > -1) {
         FILE* file = fdopen(id, "w");
         fclose(file);
+        vec.pop_back(); // remove '\0'
+        std::string str(vec.begin(), vec.end());
+        buf.swap(str);
         unlink(buf.c_str());
     }
     return buf;
@@ -275,16 +282,12 @@ std::string FileInfo::fileNamePure () const
 std::wstring FileInfo::toStdWString() const
 {
     // As FileName is UTF-8 is encoded we have to convert it
-    // for Windows because the path names are UCS-2 encoded.
+    // for Windows because the path names are UTF-16 encoded.
 #ifdef FC_OS_WIN32
     return ConvertToWideString(FileName);
 #else
-    // FIXME: For MacOS the path names are UCS-4 encoded.
-    // For the moment we cannot handle path names containing
-    // non-ASCII characters.
-    // For Linux the paths names are encoded in UTF-8 so we actually
-    // don't need this method therefore.
-    return std::wstring();
+    // On other platforms it's discouraged to use wchar_t for file names
+    throw Base::FileException("Cannot use FileInfo::toStdWString() on this platform");
 #endif
 }
 
@@ -516,6 +519,7 @@ bool FileInfo::copyTo(const char* NewName) const
     FileInfo fi1(FileName);
     FileInfo fi2(NewName);
     Base::ifstream file(fi1, std::ios::in | std::ios::binary);
+    file.unsetf(std::ios_base::skipws);
     Base::ofstream copy(fi2, std::ios::out | std::ios::binary);
     file >> copy.rdbuf();
     return file.is_open() && copy.is_open();
@@ -552,7 +556,7 @@ bool FileInfo::createDirectories() const
 
 bool FileInfo::deleteDirectory() const
 {
-    if (isDir() == false )
+    if (!isDir())
         return false;
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
@@ -566,7 +570,7 @@ bool FileInfo::deleteDirectory() const
 
 bool FileInfo::deleteDirectoryRecursive() const
 {
-    if (isDir() == false )
+    if (!isDir())
         return false;
     std::vector<Base::FileInfo> List = getDirectoryContent();
 

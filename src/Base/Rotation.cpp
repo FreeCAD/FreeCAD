@@ -341,6 +341,7 @@ Rotation Rotation::inverse() const
     rot._axis[0] = -this->_axis[0];
     rot._axis[1] = -this->_axis[1];
     rot._axis[2] = -this->_axis[2];
+    rot._angle = this->_angle;
     return rot;
 }
 

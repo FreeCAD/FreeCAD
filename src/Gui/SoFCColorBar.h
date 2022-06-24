@@ -112,17 +112,33 @@ public:
   virtual const char* getColorBarName() const = 0;
 
 protected:
+  /** Computes the dimensions of the color bar and labels in coordinates with
+   * respect to the defined height of the camera.
+   * Returns the width of the bounding box
+   */
+  float getBounds(const SbVec2s& size, float& fMinX, float&fMinY, float& fMaxX, float& fMaxY);
+  /** Returns the width of the color bar and labels
+   *
+   * Computes the occupied width of the color bar and its labels.
+   * It therefore determines the bounding box.
+   */
+  float getBoundingWidth(const SbVec2s& size);
   /**
    * Sets the current viewer size to recalculate the new position.
    *
    * This method must be implemented in subclasses.
    */
   virtual void setViewportSize( const SbVec2s& size ) = 0;
+  /**
+   * Mark the object as modified.
+   */
+  void setModified();
 
   SoFCColorBarBase ();
   virtual ~SoFCColorBarBase ();
 
 private:
+  float _boxWidth;
   SbVec2s _windowSize;
 };
 
@@ -199,7 +215,6 @@ private:
   static void eventCallback(void * userdata, SoEventCallback * node);
 
 private:
-  float _fMaxX, _fMinX, _fMaxY, _fMinY;
   QElapsedTimer _timer;
 
   SoSwitch* pColorMode;

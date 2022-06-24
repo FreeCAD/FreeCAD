@@ -33,7 +33,7 @@
 #include "Window.h"
 #include "PythonWrapper.h"
 
-// inclusion of the generated files (generated out of AreaPy.xml)
+// inclusion of the generated files (generated out of CommandPy.xml)
 #include "CommandPy.h"
 #include "CommandPy.cpp"
 
@@ -86,26 +86,26 @@ PyObject* CommandPy::listAll(PyObject *args)
 PyObject* CommandPy::listByShortcut(PyObject *args)
 {
     char* shortcut_to_find;
-    bool bIsRegularExp = false;
-    if (!PyArg_ParseTuple(args, "s|b", &shortcut_to_find, &bIsRegularExp))
+    PyObject* bIsRegularExp = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O!", &shortcut_to_find, &PyBool_Type, &bIsRegularExp))
         return nullptr;
 
     std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
     std::vector <std::string> matches;
-    for (Command* c : cmds){
+    for (Command* c : cmds) {
         Action* action = c->getAction();
-        if (action){
+        if (action) {
             QString spc = QString::fromLatin1(" ");
-            if(bIsRegularExp){
+            if (PyObject_IsTrue(bIsRegularExp) ? true : false) {
                QRegExp re = QRegExp(QString::fromLatin1(shortcut_to_find));
                re.setCaseSensitivity(Qt::CaseInsensitive);
-               if (!re.isValid()){
+               if (!re.isValid()) {
                    std::stringstream str;
                    str << "Invalid regular expression:" << ' ' << shortcut_to_find;
                    throw Py::RuntimeError(str.str());
                }
 
-               if (re.indexIn(action->shortcut().toString().remove(spc).toUpper()) != -1){
+               if (re.indexIn(action->shortcut().toString().remove(spc).toUpper()) != -1) {
                    matches.push_back(c->getName());
                }
             }
@@ -261,7 +261,8 @@ PyObject* CommandPy::getInfo(PyObject *args)
     Command* cmd = this->getCommandPtr();
     if (cmd) {
         Action* action = cmd->getAction();
-        PyObject* pyList = PyList_New(6);
+        PyObject* pyDict = PyDict_New();
+        const char* cmdName = cmd->getName();
         const char* menuTxt = cmd->getMenuText();
         const char* tooltipTxt = cmd->getToolTipText();
         const char* whatsThisTxt = cmd->getWhatsThis();
@@ -271,19 +272,21 @@ PyObject* CommandPy::getInfo(PyObject *args)
         if (action)
             shortcutTxt = action->shortcut().toString().toStdString();
 
+        PyObject* strCmdName = PyUnicode_FromString(cmdName);
         PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
         PyObject* strTooltipTxt = PyUnicode_FromString(tooltipTxt ? tooltipTxt : "");
         PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
         PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
         PyObject* strPixMapTxt = PyUnicode_FromString(pixMapTxt ? pixMapTxt : "");
         PyObject* strShortcutTxt = PyUnicode_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
-        PyList_SetItem(pyList, 0, strMenuTxt);
-        PyList_SetItem(pyList, 1, strTooltipTxt);
-        PyList_SetItem(pyList, 2, strWhatsThisTxt);
-        PyList_SetItem(pyList, 3, strStatustipTxt);
-        PyList_SetItem(pyList, 4, strPixMapTxt);
-        PyList_SetItem(pyList, 5, strShortcutTxt);
-        return pyList;
+        PyDict_SetItemString(pyDict, "name", strCmdName);
+        PyDict_SetItemString(pyDict, "menuText", strMenuTxt);
+        PyDict_SetItemString(pyDict, "toolTip", strTooltipTxt);
+        PyDict_SetItemString(pyDict, "whatsThis", strWhatsThisTxt);
+        PyDict_SetItemString(pyDict, "statusTip", strStatustipTxt);
+        PyDict_SetItemString(pyDict, "pixmap", strPixMapTxt);
+        PyDict_SetItemString(pyDict, "shortcut", strShortcutTxt);
+        return pyDict;
     }
     else {
         PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
@@ -322,16 +325,18 @@ PyObject* CommandPy::getAction(PyObject *args)
 }
 
 
-PyObject* CommandPy::createCustomCommand(PyObject* args)
+PyObject* CommandPy::createCustomCommand(PyObject* args, PyObject* kw)
 {
-    const char* macroFile = nullptr;
+    const char* macroFile;
     const char* menuTxt = nullptr;
     const char* tooltipTxt = nullptr;
     const char* whatsthisTxt = nullptr;
     const char* statustipTxt = nullptr;
     const char* pixmapTxt = nullptr;
     const char* shortcutTxt = nullptr;
-    if (!PyArg_ParseTuple(args, "s|zzzzzz", &macroFile, &menuTxt, &tooltipTxt, &whatsthisTxt, &statustipTxt, &pixmapTxt, &shortcutTxt))
+    static char* kwlist[] = {"macroFile", "menuText", "toolTip", "whatsThis","statusTip", "pixmap", "shortcut", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kw, "s|zzzzzz", kwlist, &macroFile, &menuTxt,
+            &tooltipTxt, &whatsthisTxt, &statustipTxt, &pixmapTxt, &shortcutTxt))
         return nullptr;
 
     auto name = Application::Instance->commandManager().newMacroName();
@@ -400,13 +405,10 @@ PyObject* CommandPy::findCustomCommand(PyObject* args)
         return false;
         });
 
-    if (action != macros.end()) {
+    if (action != macros.end())
         return PyUnicode_FromString((*action)->getName());
-    }
-    else {
-        Py_INCREF(Py_None);
-        return Py_None;
-    }
+    else
+        Py_Return;
 }
 
 PyObject *CommandPy::getCustomAttributes(const char* /*attr*/) const

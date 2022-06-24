@@ -57,39 +57,7 @@
 
 using namespace MeshCore;
 
-char *upper(char * string)
-{
-    int i;
-    int l;
-
-    if (string != nullptr) {
-        l = std::strlen(string);
-        for (i=0; i<l; i++)
-            string[i] = toupper(string[i]);
-    }
-
-    return string;
-}
-
-char *ltrim (char *psz)
-{
-    int i, sl;
-
-    if (psz) {
-        for (i = 0; (psz[i] == 0x20) || (psz[i] == 0x09); i++);
-        sl = std::strlen (psz + i);
-        memmove (psz, psz + i, sl);
-        psz[sl] = 0;
-    }
-    return psz;
-}
-
-std::string& upper(std::string& str)
-{
-    for (std::string::iterator it = str.begin(); it != str.end(); ++it)
-        *it = toupper(*it);
-    return str;
-}
+namespace MeshCore {
 
 std::string& ltrim(std::string& str)
 {
@@ -120,8 +88,6 @@ int numDigits(int number)
 struct NODE {float x, y, z;};
 struct TRIA {int iV[3];};
 struct QUAD {int iV[4];};
-
-namespace MeshCore {
 
 struct Color_Less
 {
@@ -155,6 +121,35 @@ std::vector<std::string> MeshInput::supportedMeshFormats()
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
     return fmt;
+}
+
+MeshIO::Format MeshInput::getFormat(const char* FileName)
+{
+     Base::FileInfo fi(FileName);
+     if (fi.hasExtension("bms")) {
+         return MeshIO::Format::BMS;
+     }
+     else if (fi.hasExtension("ply")) {
+         return MeshIO::Format::PLY;
+     }
+     else if (fi.hasExtension("stl")) {
+         return MeshIO::Format::STL;
+     }
+     else if (fi.hasExtension("ast")) {
+         return MeshIO::Format::ASTL;
+     }
+     else if (fi.hasExtension("obj")) {
+         return MeshIO::Format::OBJ;
+     }
+     else if (fi.hasExtension("off")) {
+         return MeshIO::Format::OFF;
+     }
+     else if (fi.hasExtension("smf")) {
+         return MeshIO::Format::SMF;
+     }
+     else {
+         throw Base::FileException("File extension not supported",FileName);
+     }
 }
 
 bool MeshInput::LoadAny(const char* FileName)
@@ -219,6 +214,8 @@ bool  MeshInput::LoadFormat(std::istream &str, MeshIO::Format fmt)
         return LoadAsciiSTL(str);
     case MeshIO::BSTL:
         return LoadBinarySTL(str);
+    case MeshIO::STL:
+        return LoadSTL(str);
     case MeshIO::OBJ:
         return LoadOBJ(str);
     case MeshIO::SMF:
@@ -241,7 +238,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 {
     char szBuf[200];
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     // Read in 50 characters from position 80 on and check for keywords like 'SOLID', 'FACET', 'NORMAL',
@@ -262,7 +259,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
     if (!rstrIn.read(szBuf, ulBytes))
         return (ulCt==0);
     szBuf[ulBytes] = 0;
-    upper(szBuf);
+    boost::algorithm::to_upper(szBuf);
 
     try {
         if ((strstr(szBuf, "SOLID") == nullptr)  && (strstr(szBuf, "FACET") == nullptr)    && (strstr(szBuf, "NORMAL") == nullptr) &&
@@ -300,7 +297,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 /** Loads an OBJ file. */
 bool MeshInput::LoadOBJ (std::istream &rstrIn)
 {
-    boost::regex rx_m("^mtllib\\s+([\\x21-\\x7E]+)\\s*$");
+    boost::regex rx_m("^mtllib\\s+(.+)\\s*$");
     boost::regex rx_u("^usemtl\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
@@ -334,7 +331,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     int  i1=1,i2=1,i3=1,i4=1;
     MeshFacet item;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -507,7 +504,7 @@ bool MeshInput::LoadMTL (std::istream &rstrIn)
     if (!_material)
         return false;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -570,7 +567,7 @@ bool MeshInput::LoadSMF (std::istream &rstrIn)
     int  i1=1,i2=1,i3=1;
     MeshFacet item;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -624,7 +621,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     std::string line;
     MeshFacet item;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -814,7 +811,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
         unknown, ascii, binary_little_endian, binary_big_endian
     } format = unknown;
 
-    if (!inp || inp.bad() == true)
+    if (!inp || inp.bad())
         return false;
 
     std::streambuf* buf = inp.rdbuf();
@@ -1279,7 +1276,7 @@ bool MeshInput::LoadMeshNode (std::istream &rstrIn)
     unsigned int  i1=1,i2=1,i3=1;
     MeshGeomFacet clFacet;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streambuf* buf = rstrIn.rdbuf();
@@ -1332,7 +1329,7 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
     unsigned long ulVertexCt, ulFacetCt=0;
     MeshGeomFacet clFacet;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     std::streamoff ulSize = 0;
@@ -1343,8 +1340,7 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
 
     // count facets
     while (std::getline(rstrIn, line)) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = toupper(*it);
+        boost::algorithm::to_upper(line);
         if (line.find("ENDFACET") != std::string::npos)
             ulFacetCt++;
         // prevent from reading EOF (as I don't know how to reread the file then)
@@ -1366,8 +1362,7 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
 
     ulVertexCt = 0;
     while (std::getline(rstrIn, line)) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = toupper(*it);
+        boost::algorithm::to_upper(line);
         if (boost::regex_match(line.c_str(), what, rx_f)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
@@ -1399,7 +1394,7 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
     uint16_t usAtt = 0;
     uint32_t ulCt = 0;
 
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     // Header-Info ueberlesen
@@ -1407,7 +1402,7 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
 
     // Anzahl Facets
     rstrIn.read((char*)&ulCt, sizeof(ulCt));
-    if (rstrIn.bad() == true)
+    if (rstrIn.bad())
         return false;
 
     // get file size and calculate the number of facets
@@ -1492,7 +1487,7 @@ void MeshInput::LoadXML (Base::XMLReader &reader)
 /** Loads an OpenInventor file. */
 bool MeshInput::LoadInventor (std::istream &rstrIn)
 {
-    if (!rstrIn || rstrIn.bad() == true)
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     boost::regex rx_p("\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
@@ -1527,8 +1522,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
     bool points = false;
     bool facets = false;
     while (std::getline(rstrIn, line) && !facets) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = toupper(*it);
+        boost::algorithm::to_upper(line);
 
         // read the normals if they are defined
         if (!normals && line.find("NORMAL {") != std::string::npos) {
@@ -1540,8 +1534,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
             // This is a special case to support also file formats directly written by
             // Inventor 2.1 classes.
             std::getline(rstrIn, line);
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-                *it = toupper(*it);
+            boost::algorithm::to_upper(line);
             std::string::size_type pos = line.find("VECTOR [");
             if (pos != std::string::npos)
                 line = line.substr(pos+8); // 8 = length of 'VECTOR ['
@@ -1567,8 +1560,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
             // This is a special case to support also file formats directly written by
             // Inventor 2.1 classes.
             std::getline(rstrIn, line);
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-                *it = toupper(*it);
+            boost::algorithm::to_upper(line);
             std::string::size_type pos = line.find("POINT [");
             if (pos != std::string::npos)
                 line = line.substr(pos+7); // 7 = length of 'POINT ['
@@ -1595,8 +1587,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
             // Furthermore we must check whether more than one triple is given per line, which
             // is handled in the while-loop.
             std::getline(rstrIn, line);
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-                *it = toupper(*it);
+            boost::algorithm::to_upper(line);
             std::string::size_type pos = line.find("COORDINDEX [");
             if (pos != std::string::npos)
                 line = line.substr(pos+12); // 12 = length of 'COORDINDEX ['
@@ -1638,7 +1629,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
 /** Loads a Nastran file. */
 bool MeshInput::LoadNastran (std::istream &rstrIn)
 {
-    if ((!rstrIn) || (rstrIn.bad() == true))
+    if (!rstrIn || rstrIn.bad())
         return false;
 
     boost::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
@@ -1660,7 +1651,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
     int badElementCounter = 0;
 
     while (std::getline(rstrIn, line)) {
-        upper(ltrim(line));
+        boost::algorithm::to_upper(ltrim(line));
         if (line.empty()) {
             // Skip all the following tests
         }
@@ -1892,7 +1883,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 /** Loads a Cadmould FE file. */
 bool MeshInput::LoadCadmouldFE (std::ifstream &rstrIn)
 {
-    if ((!rstrIn) || (rstrIn.bad() == true))
+    if (!rstrIn || rstrIn.bad())
         return false;
     assert(0);
     return false;
@@ -2218,7 +2209,7 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
     clIter.Transform(this->_transform);
     const MeshGeomFacet *pclFacet;
 
-    if (!rstrOut || rstrOut.bad() == true || _rclMesh.CountFacets() == 0)
+    if (!rstrOut || rstrOut.bad() || _rclMesh.CountFacets() == 0)
         return false;
 
     rstrOut.precision(6);
@@ -2270,7 +2261,7 @@ bool MeshOutput::SaveBinarySTL (std::ostream &rstrOut) const
     uint16_t usAtt;
     char szInfo[81];
 
-    if (!rstrOut || rstrOut.bad() == true /*|| _rclMesh.CountFacets() == 0*/)
+    if (!rstrOut || rstrOut.bad() /*|| _rclMesh.CountFacets() == 0*/)
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountFacets() + 1);
@@ -2316,7 +2307,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
@@ -2535,7 +2526,7 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
@@ -2687,7 +2678,7 @@ bool MeshOutput::SaveOFF (std::ostream &out) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
@@ -2771,7 +2762,7 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
     std::size_t v_count = rPoints.size();
     std::size_t f_count = rFacets.size();
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
     bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
         && _material->diffuseColor.size() == rPoints.size());
@@ -2831,7 +2822,7 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
     std::size_t v_count = rPoints.size();
     std::size_t f_count = rFacets.size();
-    if (!out || out.bad() == true)
+    if (!out || out.bad())
         return false;
 
     bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
@@ -2903,7 +2894,7 @@ bool MeshOutput::SaveMeshNode (std::ostream &rstrOut)
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!rstrOut || rstrOut.bad() == true)
+    if (!rstrOut || rstrOut.bad())
         return false;
 
     // vertices
@@ -2991,7 +2982,7 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
 bool MeshOutput::Save3MF(std::ostream &str) const
 {
     zipios::ZipOutputStream zip(str);
-    zip.putNextEntry("/3D/3dmodel.model");
+    zip.putNextEntry("3D/3dmodel.model");
     if (!Save3MFModel(zip))
         return false;
     zip.closeEntry();
@@ -3032,7 +3023,7 @@ bool MeshOutput::Save3MFModel (std::ostream &str) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!str || str.bad() == true)
+    if (!str || str.bad())
         return false;
 
     str << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -3083,7 +3074,7 @@ bool MeshOutput::Save3MFModel (std::ostream &str) const
 /** Writes an IDTF file. */
 bool MeshOutput::SaveIDTF (std::ostream &str) const
 {
-    if ((!str) || (str.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!str || str.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     const MeshPointArray& pts = _rclMesh.GetPoints();
@@ -3186,7 +3177,7 @@ list zt -1 -1 -1 1
 triplot t xt yt zt 'b'
 #triplot t xt yt zt '#k'
 */
-    if ((!str) || (str.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!str || str.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     const MeshPointArray& pts = _rclMesh.GetPoints();
@@ -3229,7 +3220,7 @@ triplot t xt yt zt 'b'
 /** Writes an OpenInventor file. */
 bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
 {
-    if ((!rstrOut) || (rstrOut.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!rstrOut || rstrOut.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
@@ -3305,7 +3296,7 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
 /** Writes an X3D file. */
 bool MeshOutput::SaveX3D (std::ostream &out) const
 {
-    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!out || out.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     // XML header info
@@ -3317,7 +3308,7 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
 /** Writes an X3D file. */
 bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
 {
-    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!out || out.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     const MeshPointArray& pts = _rclMesh.GetPoints();
@@ -3446,7 +3437,7 @@ bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
 /** Writes an X3DOM file. */
 bool MeshOutput::SaveX3DOM (std::ostream &out) const
 {
-    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!out || out.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     // See:
@@ -3492,7 +3483,7 @@ bool MeshOutput::SaveX3DOM (std::ostream &out) const
 /** Writes a Nastran file. */
 bool MeshOutput::SaveNastran (std::ostream &rstrOut) const
 {
-    if ((!rstrOut) || (rstrOut.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!rstrOut || rstrOut.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     MeshPointIterator clPIter(_rclMesh);
@@ -3550,7 +3541,7 @@ bool MeshOutput::SaveCadmouldFE (std::ostream & /*rstrOut*/) const
 /** Writes a Python module */
 bool MeshOutput::SavePython (std::ostream &str) const
 {
-    if ((!str) || (str.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!str || str.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     MeshFacetIterator clIter(_rclMesh);
@@ -3578,7 +3569,7 @@ bool MeshOutput::SavePython (std::ostream &str) const
 /** Writes a VRML file. */
 bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 {
-    if ((!rstrOut) || (rstrOut.bad() == true) || (_rclMesh.CountFacets() == 0))
+    if (!rstrOut || rstrOut.bad() || (_rclMesh.CountFacets() == 0))
         return false;
 
     Base::BoundBox3f clBB = _rclMesh.GetBoundBox();

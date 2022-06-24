@@ -47,8 +47,6 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QTextStream>
-
-# include <boost_bind_bind.hpp>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -134,7 +132,7 @@ void ViewProviderSketch::ParameterObserver::updateGridSize(const std::string & s
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
-    Client.GridSize.setValue(Base::Quantity::parse(QString::fromLatin1(hGrp->GetGroup("GridSize")->GetASCII("Hist0", "10.0").c_str())).getValue());
+    Client.GridSize.setValue(Base::Quantity::parse(QString::fromLatin1(hGrp->GetGroup("GridSize")->GetASCII("GridSize", "10.0").c_str())).getValue());
 }
 
 void ViewProviderSketch::ParameterObserver::updateEscapeKeyBehaviour(const std::string & string, App::Property * property)
@@ -416,7 +414,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                     sketchHandler->quit();
                 return true;
             }
-            if (isInEditMode() && (drag.DragConstraintSet.empty() == false)) {
+            if (isInEditMode() && !drag.DragConstraintSet.empty()) {
                 if (!pressed) {
                     drag.DragConstraintSet.clear();
                 }
@@ -827,7 +825,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_DragConstraint:
-                    if (drag.DragConstraintSet.empty() == false) {
+                    if (!drag.DragConstraintSet.empty()) {
                         getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Constraint"));
                         auto idset = drag.DragConstraintSet;
                         for(int id : idset) {
@@ -1249,7 +1247,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             }
             return true;
         case STATUS_SKETCH_DragConstraint:
-            if (drag.DragConstraintSet.empty() == false) {
+            if (!drag.DragConstraintSet.empty()) {
                 auto idset = drag.DragConstraintSet;
                 for(int id : idset)
                     moveConstraint(id, Base::Vector2d(x,y));
@@ -1728,7 +1726,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint * Point, const 
                     sketchHandler->applyCursor();
                 return true;
             }
-        } else if (result.ConstrIndices.empty() == false && result.ConstrIndices != preselection.PreselectConstraintSet) { // if a constraint is hit
+        } else if (!result.ConstrIndices.empty() && result.ConstrIndices != preselection.PreselectConstraintSet) { // if a constraint is hit
             bool accepted = true;
             for(std::set<int>::iterator it = result.ConstrIndices.begin(); it != result.ConstrIndices.end(); ++it) {
                 std::stringstream ss;
@@ -2911,7 +2909,7 @@ void ViewProviderSketch::UpdateSolverInformation()
         signalSetUp(QString::fromUtf8("under_constrained"),
             tr("Under constrained:"),
             QString::fromUtf8("#dofs"),
-            QString::fromUtf8("%1 %2").arg(dofs).arg(tr("DoF")));
+            tr("%n DoF(s)","",dofs));
     }
     else {
         signalSetUp(QString::fromUtf8("fully_constrained"), tr("Fully constrained"), QString(), QString());
@@ -3106,7 +3104,7 @@ void ViewProviderSketch::deleteSelected()
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        Base::Console().Warning("Delete: Selection not restricted to one sketch and its subelements");
+        Base::Console().Warning("Delete: Selection not restricted to one sketch and its subelements\n");
         return;
     }
 

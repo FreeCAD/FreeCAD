@@ -40,7 +40,7 @@ using namespace Base;
 std::string PlacementPy::representation() const
 {
     double A,B,C;
-    PlacementPy::PointerType ptr = reinterpret_cast<PlacementPy::PointerType>(_pcTwinPointer);
+    PlacementPy::PointerType ptr = getPlacementPtr();
     std::stringstream str;
     ptr->getRotation().getYawPitchRoll(A,B,C);
 
@@ -234,7 +234,7 @@ PyObject* PlacementPy::pow(PyObject* args)
     PyObject* shorten = Py_True;
     if (!PyArg_ParseTuple(args, "d|O!", &t, &(PyBool_Type), &shorten))
         return nullptr;
-    Base::Placement ret = getPlacementPtr()->pow(t, PyObject_IsTrue(shorten));
+    Base::Placement ret = getPlacementPtr()->pow(t, PyObject_IsTrue(shorten) ? true : false);
     return new PlacementPy(new Placement(ret));
 }
 
@@ -247,7 +247,7 @@ PyObject* PlacementPy::sclerp(PyObject* args)
     if (!PyArg_ParseTuple(args, "O!d|O!", &(PlacementPy::Type), &pyplm2, &t, &(PyBool_Type), &shorten))
         return nullptr;
     Base::Placement plm2 = static_cast<Base::PlacementPy*>(pyplm2)->value();
-    Base::Placement ret = Base::Placement::sclerp(*getPlacementPtr(), plm2, t, PyObject_IsTrue(shorten));
+    Base::Placement ret = Base::Placement::sclerp(*getPlacementPtr(), plm2, t, PyObject_IsTrue(shorten) ? true : false);
     return new PlacementPy(new Placement(ret));
 }
 

@@ -62,7 +62,7 @@ namespace geoff_geometry {
 	// *********************************************************************************************************
 	wostream& operator << (wostream& op, Point& p){
 		// for debug - print point to file
-		if(p.ok == false)
+		if(!p.ok)
 			op << L" ok=\"false\"";
 		else
 			op << L" x=\"" << p.x << L"\" y=\"" << p.y << L"\"";
@@ -71,7 +71,7 @@ namespace geoff_geometry {
 
 	wostream& operator <<(wostream& op, CLine& cl){
 		// for debug - print cline to file
-		if(cl.ok == false)
+		if(!cl.ok)
 			op << L"(CLine UNSET)";
 		else
 			op << L"sp=" << cl.p << L" v=" << cl.v;
@@ -80,7 +80,7 @@ namespace geoff_geometry {
 
 	wostream& operator <<(wostream& op, Plane& pl){
 		// for debug - print plane to file stream
-		if(pl.ok == false)
+		if(!pl.ok)
 			op << L"(Plane UNSET)";
 		else
 			op << L"d=" << pl.d << L" normal=" << pl.normal;
@@ -89,7 +89,7 @@ namespace geoff_geometry {
 
 	ostream& operator << (ostream& op, Point3d& p){
 		// for debug - print point to file
-//		if(p.ok == false)
+//		if(!p.ok)
 //			op << "ok=\"false\"";
 //		else
 			op << "x=\"" << p.x << "\" y=\"" << p.y << "\" z=" << p.z << "\"";
@@ -111,7 +111,7 @@ namespace geoff_geometry {
 
 	wostream& operator <<(wostream& op, Circle& c){
 		// for debug - print circle to file
-		if(c.ok == false)
+		if(!c.ok)
 			op << L"ok=\"false\"";
 		else
 			op << L" x=\"" << c.pc.x << L"\" y=\"" << c.pc.y << L"\" radius=\"" << c.radius << L"\"";
@@ -390,7 +390,8 @@ namespace geoff_geometry {
 	Circle Circle::Transform(Matrix& m) { // transform
 		Point p0 = this->pc;
 		double scale;
-		if(m.GetScale(scale) == false) FAILURE(getMessage(L"Differential Scale not allowed for this method"));
+		if(!m.GetScale(scale))
+			FAILURE(getMessage(L"Differential Scale not allowed for this method"));
 		return Circle(p0.Transform(m), radius * scale);
 	}
 
@@ -802,7 +803,8 @@ namespace geoff_geometry {
 	Plane::Plane(const Point3d& p0, const Vector3d& v, bool normalise) {
 		// constructor plane from point & vector
 		normal = v;
-		if(normalise == true) normal.normalise();
+		if (normalise)
+			normal.normalise();
 		ok = (normal != NULL_VECTOR);
 		d = -(normal * Vector3d(p0));
 	}

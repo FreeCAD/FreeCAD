@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TaskPostDisplay_H
 #define GUI_TASKVIEW_TaskPostDisplay_H
 
+#include <App/DocumentObserver.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -76,6 +78,7 @@ private:
     std::string ObjectInvisible();
 };
 
+
 class FemGuiExport ViewProviderPointMarker : public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER(FemGui::ViewProviderPointMarker);
@@ -88,6 +91,7 @@ protected:
     SoCoordinate3    * pCoords;
     friend class PointMarker;
 };
+
 
 class ViewProviderDataMarker;
 class DataMarker : public QObject
@@ -113,6 +117,7 @@ private:
     std::string m_name;
     std::string ObjectInvisible();
 };
+
 
 class FemGuiExport ViewProviderDataMarker : public Gui::ViewProviderDocumentObject
 {
@@ -140,12 +145,22 @@ public:
     virtual bool isGuiTaskOnly() {return false;} //return true if only gui properties are manipulated
 
 protected:
-    App::DocumentObject*                getObject() {return m_object;}
+    App::DocumentObject* getObject() const {
+        return *m_object;
+    }
     template<typename T>
-    T* getTypedObject() {return static_cast<T*>(m_object);}
-    Gui::ViewProviderDocumentObject*    getView() {return m_view;}
+    T* getTypedObject() const {
+        return m_object.get<T>();
+    }
+    Gui::ViewProviderDocumentObject* getView() const {
+        return *m_view;
+    }
     template<typename T>
-    T* getTypedView() {return static_cast<T*>(m_view);}
+    T* getTypedView() const {
+        return m_view.get<T>();
+    }
+
+    App::Document* getDocument() const;
 
     bool autoApply();
     void recompute();
@@ -153,9 +168,10 @@ protected:
     static void updateEnumerationList(App::PropertyEnumeration&, QComboBox* box);
 
 private:
-    App::DocumentObject*              m_object;
-    Gui::ViewProviderDocumentObject*  m_view;
+    App::DocumentObjectWeakPtrT m_object;
+    Gui::ViewProviderWeakPtrT   m_view;
 };
+
 
 /// simulation dialog for the TaskView
 class TaskDlgPost : public Gui::TaskView::TaskDialog
@@ -165,10 +181,12 @@ class TaskDlgPost : public Gui::TaskView::TaskDialog
 public:
     TaskDlgPost(Gui::ViewProviderDocumentObject *view);
     ~TaskDlgPost();
+    void connectSlots();
 
     void appendBox(TaskPostBox* box);
-    Gui::ViewProviderDocumentObject* getView() const
-    { return m_view; }
+    Gui::ViewProviderDocumentObject* getView() const {
+        return *m_view;
+    }
 
 public:
     /// is called the TaskView when the dialog is opened
@@ -188,9 +206,13 @@ public:
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
 
 protected:
-    Gui::ViewProviderDocumentObject*  m_view;
+    void recompute();
+
+protected:
+    Gui::ViewProviderWeakPtrT   m_view;
     std::vector<TaskPostBox*>   m_boxes;
 };
+
 
 class TaskPostDisplay : public TaskPostBox
 {
@@ -208,11 +230,13 @@ private Q_SLOTS:
     void on_Field_activated(int i);
     void on_VectorMode_activated(int i);
     void on_Transparency_valueChanged(int i);
+    void slotAddedFunction();
 
 private:
     QWidget* proxy;
-    Ui_TaskPostDisplay* ui;
+    std::unique_ptr<Ui_TaskPostDisplay> ui;
 };
+
 
 class TaskPostFunction : public TaskPostBox {
 
@@ -224,6 +248,7 @@ public:
 
     virtual void applyPythonCode();
 };
+
 
 class TaskPostClip : public TaskPostBox {
 
@@ -241,14 +266,18 @@ private Q_SLOTS:
     void on_InsideOut_toggled(bool val);
     void on_CutCells_toggled(bool val);
 
+Q_SIGNALS:
+    void emitAddedFunction();
+
 private:
     void collectImplicitFunctions();
 
   //App::PropertyLink* m_functionProperty;
     QWidget* proxy;
-    Ui_TaskPostClip* ui;
+    std::unique_ptr<Ui_TaskPostClip> ui;
     FunctionWidget* fwidget;
 };
+
 
 class TaskPostDataAlongLine: public TaskPostBox {
 
@@ -277,8 +306,9 @@ private:
     std::string Plot();
     std::string ObjectVisible();
     QWidget* proxy;
-    Ui_TaskPostDataAlongLine* ui;
+    std::unique_ptr<Ui_TaskPostDataAlongLine> ui;
 };
+
 
 class TaskPostDataAtPoint: public TaskPostBox {
 
@@ -297,12 +327,17 @@ private Q_SLOTS:
     void centerChanged(double);
     void onChange(double x, double y, double z);
 
+private:
+    std::string toString(double val) const;
+    void showValue(double value, const char* unit);
+
 
 private:
     std::string ObjectVisible();
     QWidget* proxy;
-    Ui_TaskPostDataAtPoint* ui;
+    std::unique_ptr<Ui_TaskPostDataAtPoint> ui;
 };
+
 
 class TaskPostScalarClip : public TaskPostBox {
 
@@ -322,8 +357,9 @@ private Q_SLOTS:
 
 private:
     QWidget* proxy;
-    Ui_TaskPostScalarClip* ui;
+    std::unique_ptr<Ui_TaskPostScalarClip> ui;
 };
+
 
 class TaskPostWarpVector : public TaskPostBox {
 
@@ -344,9 +380,8 @@ private Q_SLOTS:
 
 private:
     QWidget* proxy;
-    Ui_TaskPostWarpVector* ui;
+    std::unique_ptr<Ui_TaskPostWarpVector> ui;
 };
-
 
 
 class TaskPostCut : public TaskPostBox {
@@ -363,12 +398,15 @@ private Q_SLOTS:
     void on_CreateButton_triggered(QAction*);
     void on_FunctionBox_currentIndexChanged(int idx);
 
+Q_SIGNALS:
+    void emitAddedFunction();
+
 private:
     void collectImplicitFunctions();
 
   //App::PropertyLink* m_functionProperty;
     QWidget* proxy;
-    Ui_TaskPostCut* ui;
+    std::unique_ptr<Ui_TaskPostCut> ui;
     FunctionWidget* fwidget;
 };
 

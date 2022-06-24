@@ -71,7 +71,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
     _rclFAry[ulFacetIdx].SetFlag(MeshFacet::MARKED);
     aclTestedFacet.push_back(_rclFAry.begin() + ulFacetIdx);
 
-    if ((bFound == false) && (_aclResult.size() < ulMinPoints)) {
+    if (!bFound && (_aclResult.size() < ulMinPoints)) {
         bAddPoints = true;
         bFound = ExpandRadius(ulMinPoints);
     }
@@ -79,7 +79,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
     int nCtExpandRadius = 0; 
     // search neighbours, add not marked facets, test distance, add outer points
     MeshFacetArray::_TConstIterator f_beg = _rclFAry.begin();
-    while ((bFound == true) && (nCtExpandRadius < 10)) {
+    while (bFound && (nCtExpandRadius < 10)) {
         bFound = false;
 
         std::set<PointIndex> aclTmp;
@@ -90,7 +90,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
             for (std::set<FacetIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
                     bool bLF = CheckDistToFacet(rclF);
                     bFound = bFound || bLF;
                     rclF.SetFlag(MeshFacet::MARKED);
@@ -101,7 +101,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
         }
 
         // too few points inside radius found -> expand radius
-        if ((bFound == false) && (_aclResult.size() < ulMinPoints)) {
+        if (!bFound && (_aclResult.size() < ulMinPoints)) {
             nCtExpandRadius++;
             bAddPoints = true;
             bFound = ExpandRadius(ulMinPoints);
@@ -124,7 +124,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (FacetIndex ulFacetIdx, 
     for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
         raclResultPoints[i] = _rclPAry[*pI];
 
-    if (bAddPoints == true) {
+    if (bAddPoints) {
         // sort points, remove points lying furthest from center
         std::sort(raclResultPoints.begin(), raclResultPoints.end(), CDistRad(_clCenter));
         raclResultPoints.erase(raclResultPoints.begin() + ulMinPoints, raclResultPoints.end());
@@ -172,7 +172,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (FacetIndex ulFa
 
     // search neighbours, add not marked facets, test distance, add outer points
     MeshFacetArray::_TConstIterator f_beg = _rclFAry.begin();
-    while (bFound == true) {
+    while (bFound) {
         bFound = false;
 
         std::set<PointIndex> aclTmp;
@@ -183,7 +183,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (FacetIndex ulFa
             for (std::set<FacetIndex>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
                     bool bLF = AccumulateNeighbours(rclF, *pJ);
                     bFound = bFound || bLF;
                     rclF.SetFlag(MeshFacet::MARKED);
@@ -204,7 +204,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (FacetIndex ulFa
 
     // facet points
     for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI) {
-        if (InnerPoint(_rclPAry[*pI]) == true)
+        if (InnerPoint(_rclPAry[*pI]))
             raclResultPoints.push_back(_rclPAry[*pI]);
     }
 
@@ -232,12 +232,12 @@ bool MeshSearchNeighbours::AccumulateNeighbours (const MeshFacet &rclF, FacetInd
     else {  // add points inner radius
         bFound = TriangleCutsSphere(rclF);
 
-        if (bFound == true) {
+        if (bFound) {
             std::vector<Base::Vector3f> &rclT = _aclSampledFacets[ulFIdx];
             std::vector<Base::Vector3f> clTmp;
             clTmp.reserve(rclT.size());
             for (std::vector<Base::Vector3f>::iterator pI = rclT.begin(); pI != rclT.end(); ++pI) {
-                if (InnerPoint(*pI) == true)
+                if (InnerPoint(*pI))
                     clTmp.push_back(*pI);
             }
             _aclPointsResult.insert(_aclPointsResult.end(), clTmp.begin(), clTmp.end());
@@ -284,7 +284,7 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (FacetIndex ulFacet
 
     // search neighbours, add not marked facets, test distance, add outer points
     MeshFacetArray::_TConstIterator f_beg = _rclFAry.begin();
-    while (bFound == true) {
+    while (bFound) {
         bFound = false;
 
         std::set<PointIndex> aclTmp;
@@ -302,7 +302,7 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (FacetIndex ulFacet
                     }
                 }
 
-                if (rclF.IsFlag(MeshFacet::MARKED) == false) {
+                if (!rclF.IsFlag(MeshFacet::MARKED)) {
                     bool bLF = CheckDistToFacet(rclF);
 
                     bFound = bFound || bLF;

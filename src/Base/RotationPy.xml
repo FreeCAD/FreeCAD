@@ -16,157 +16,175 @@
 		<Documentation>
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
 			<DeveloperDocu>This is the Rotation export class</DeveloperDocu>
-			<UserDocu>
-				A Rotation using a quaternion.
-				The Rotation object can be created by:
-				-- an empty parameter list
-				-- a Rotation object
-				-- a Vector (axis) and a float (angle)
-				-- two Vectors (rotation from/to vector)
-				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
-                -- one string and three floats (Euler angles) as euler rotation 
-                   of a given type. Call toEulerSequence() for supported sequence types.
-				-- four floats (Quaternion) where the quaternion is specified as:
-				   q=xi+yj+zk+w, i.e. the last parameter is the real part
-				-- three vectors that define rotated axes directions + an optional
-				   3-characher string of capital letters 'X', 'Y', 'Z' that sets the
-				   order of importance of the axes (e.g., 'ZXY' means z direction is
-				   followed strictly, x is used but corrected if necessary, y is ignored).
-			</UserDocu>
+			<UserDocu>Base.Rotation class.\n
+A Rotation using a quaternion.\n
+The following constructors are supported:\n
+Rotation()
+Empty constructor.\n
+Rotation(rotation)
+Copy constructor.\n
+Rotation(Axis, Radian)
+Rotation(Axis, Degree)
+Define from an axis and an angle (in radians or degrees according to the keyword).
+Axis : Base.Vector
+Radian : float
+Degree : float\n
+Rotation(vector_start, vector_end)
+Define from two vectors (rotation from/to vector).
+vector_start : Base.Vector
+vector_end : Base.Vector\n
+Rotation(angle1, angle2, angle3)
+Define from three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention.
+angle1 : float
+angle2 : float
+angle3 : float\n
+Rotation(seq, angle1, angle2, angle3)
+Define from one string and three floats (Euler angles) as Euler rotation
+of a given type. Call toEulerAngles() for supported sequence types.
+seq : str
+angle1 : float
+angle2 : float
+angle3 : float\n
+Rotation(x, y, z, w)
+Define from four floats (quaternion) where the quaternion is specified as:
+q = xi+yj+zk+w, i.e. the last parameter is the real part.
+x : float
+y : float
+z : float
+w : float\n
+Rotation(dir1, dir2, dir3, seq)
+Define from three vectors that define rotated axes directions plus an optional
+3-characher string of capital letters 'X', 'Y', 'Z' that sets the order of 
+importance of the axes (e.g., 'ZXY' means z direction is followed strictly,
+x is used but corrected if necessary, y is ignored).
+dir1 : Base.Vector
+dir2 : Base.Vector
+dir3 : Base.Vector
+seq : str\n
+Rotation(matrix)
+Define from a matrix rotation in the 4D representation.
+matrix : Base.Matrix\n
+Rotation(*coef)
+Define from 16 or 9 elements which represent the rotation in the 4D matrix
+representation or in the 3D matrix representation, respectively.
+coef : sequence of float</UserDocu>
 		</Documentation>
 		<Methode Name="invert">
 			<Documentation>
-				<UserDocu>
-                    invert() -> None
-                    Sets the rotation to its inverse
-				</UserDocu>
+				<UserDocu>invert() -> None\n
+Sets the rotation to its inverse.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="inverted">
             <Documentation>
-                <UserDocu>
-                    inverted() -> Rotation
-                    Returns the inverse of the rotation
-                </UserDocu>
+                <UserDocu>inverted() -> Base.Rotation\n
+Returns the inverse of the rotation.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="isSame">
             <Documentation>
-                <UserDocu>
-                    isSame(Rotation, [tolerance=0])
-                    Checks if the two quaternions perform the same rotation.
-                    Optionally, a tolerance value greater than zero can be passed.
-                </UserDocu>
+                <UserDocu>isSame(rotation, tol=0) -> bool\n
+Checks if `rotation` perform the same transformation as this rotation.\n
+rotation : Base.Rotation
+tol : float\n    Tolerance used to compare both rotations.
+    If tol is negative or zero, no tolerance is used.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="multiply" Const="true">
 			<Documentation>
-				<UserDocu>
-					multiply(Rotation)
-					Multiply this quaternion with another quaternion
-				</UserDocu>
+				<UserDocu>multiply(rotation) -> Base.Rotation\n
+Right multiply this rotation with another rotation.\n
+rotation : Base.Rotation\n    Rotation by which to multiply this rotation.</UserDocu>
 			</Documentation>
 		</Methode>
                 <Methode Name="multVec" Const="true">
 			<Documentation>
-				<UserDocu>
-					multVec(Vector) -> Vector
-					Compute the transformed vector using the rotation
-				</UserDocu>
+				<UserDocu>multVec(vector) -> Base.Vector\n
+Compute the transformed vector using the rotation.\n
+vector : Base.Vector\n    Vector to be transformed.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="slerp" Const="true">
 			<Documentation>
-				<UserDocu>
-					slerp(Rotation, Float) -> Rotation
-					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
-				</UserDocu>
+				<UserDocu>slerp(rotation2, t) -> Base.Rotation\n
+Spherical Linear Interpolation (SLERP) of this rotation and `rotation2`.\n
+t : float\n    Parameter of the path. t=0 returns this rotation, t=1 returns `rotation2`.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="setYawPitchRoll">
             <Documentation>
-                <UserDocu>
-                    setYawPitchRoll(angle1, angle2, angle3)
-                    Set the Euler angles of this rotation
-                    as yaw-pitch-roll in XY'Z'' convention.
-
-                    NOTE: The angles are in degree
-                </UserDocu>
+                <UserDocu>setYawPitchRoll(angle1, angle2, angle3) -> None\n
+Set the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.\n
+angle1 : float\n    Angle around yaw axis in degrees.
+angle2 : float\n    Angle around pitch axis in degrees.
+angle3 : float\n    Angle around roll axis in degrees.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getYawPitchRoll" Const="true">
 			<Documentation>
-				<UserDocu>
-                    getYawPitchRoll() -> list
-					Get the Euler angles of this rotation
-					as yaw-pitch-roll in XY'Z'' convention
-                    NOTE: The angles are in degree
-                </UserDocu>
+				<UserDocu>getYawPitchRoll() -> tuple\n
+Get the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.
+The angles are given in degrees.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="setEulerAngles">
             <Documentation>
-                <UserDocu>
-                setEulerAngles(seq, angle1, angle2, angle3)
-                Set the Euler angles in a given sequence for this rotation.
-                'seq' is the Euler sequence name. You get all possible values with toEulerAngles()
-                </UserDocu>
+                <UserDocu>setEulerAngles(seq, angle1, angle2, angle3) -> None\n
+Set the Euler angles in a given sequence for this rotation.
+The angles must be given in degrees.\n
+seq : str\n    Euler sequence name. All possible values given by toEulerAngles().
+angle1 : float
+angle2 : float
+angle3 : float </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toEulerAngles" Const="true">
 			<Documentation>
-				<UserDocu>
-					toEulerAngles(seq='') -> list
-                    Get the Euler angles in a given sequence for this rotation.
-                    Call this function without arguments to output all possible values of 'seq'.
-				</UserDocu>
+				<UserDocu>toEulerAngles(seq) -> list\n
+Get the Euler angles in a given sequence for this rotation.\n
+seq : str\n    Euler sequence name. If not given, the function returns
+    all possible values of `seq`. Optional.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="toMatrix" Const="true">
 			<Documentation>
-				<UserDocu>
-					toMatrix()
-					convert the rotation to a matrix representation
-				</UserDocu>
+				<UserDocu>toMatrix() -> Base.Matrix\n
+Convert the rotation to a 4D matrix representation.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="isNull" Const="true">
 			<Documentation>
-				<UserDocu>
-					isNull() -> Bool
-                    returns True if all Q values are zero
-				</UserDocu>
+				<UserDocu>isNull() -> bool\n
+Returns True if all values in the quaternion representation are zero.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="isIdentity" Const="true">
             <Documentation>
-                <UserDocu>
-                    isIdentity() -> Bool
-                    returns True if the rotation equals the unity matrix
-                </UserDocu>
+                <UserDocu>isIdentity() -> bool\n
+Returns True if the rotation equals the 4D identity matrix.</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Q" ReadOnly="false">
 			<Documentation>
-				<UserDocu>The rotation elements (as quaternion)</UserDocu>
+				<UserDocu>The rotation elements (as quaternion).</UserDocu>
 			</Documentation>
 			<Parameter Name="Q" Type="Tuple" />
 		</Attribute>
 		<Attribute Name="Axis" ReadOnly="false">
 			<Documentation>
-				<UserDocu>The rotation axis of the quaternion</UserDocu>
+				<UserDocu>The rotation axis of the quaternion.</UserDocu>
 			</Documentation>
 			<Parameter Name="Axis" Type="Object" />
 		</Attribute>
 		<Attribute Name="RawAxis" ReadOnly="true">
 			<Documentation>
-				<UserDocu>The rotation axis without normalization</UserDocu>
+				<UserDocu>The rotation axis without normalization.</UserDocu>
 			</Documentation>
 			<Parameter Name="RawAxis" Type="Object" />
 		</Attribute>
 		<Attribute Name="Angle" ReadOnly="false">
 			<Documentation>
-				<UserDocu>The rotation angle of the quaternion</UserDocu>
+				<UserDocu>The rotation angle of the quaternion.</UserDocu>
 			</Documentation>
 			<Parameter Name="Angle" Type="Float" />
 		</Attribute>

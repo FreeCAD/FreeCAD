@@ -32,6 +32,7 @@
 #include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoText2.h>
+#include <FCGlobal.h>
 
 
 namespace Gui {
@@ -54,8 +55,25 @@ public:
     SoSFFloat frameSize;
 
 protected:
-    virtual ~SoTextLabel() {};
+    virtual ~SoTextLabel() {}
     virtual void GLRender(SoGLRenderAction *action);
+};
+
+/**
+ * A text label for the color bar.
+ * @author Werner Mayer
+ */
+class GuiExport SoColorBarLabel : public SoText2 {
+    typedef SoText2 inherited;
+
+    SO_NODE_HEADER(SoColorBarLabel);
+
+public:
+    static void initClass();
+    SoColorBarLabel();
+
+protected:
+    void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
 };
 
 class GuiExport SoStringLabel : public SoNode {

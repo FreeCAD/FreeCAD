@@ -43,7 +43,6 @@
 # include <QItemSelection>
 # include <QItemSelectionModel>
 # include <QTimer>
-# include <boost_bind_bind.hpp>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoLineDetail.h>
 #endif
@@ -263,6 +262,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
+        ui->parameterName->setTitle(tr("Chamfer Parameter"));
         ui->labelRadius->setText(tr("Length:"));
         ui->filletType->setItemText(0, tr("Constant Length"));
         ui->filletType->setItemText(1, tr("Variable Length"));
@@ -272,6 +272,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
         model->setHeaderData(2, Qt::Horizontal, tr("End length"), Qt::DisplayRole);
     }
     else {
+        ui->parameterName->setTitle(tr("Fillet Parameter"));
         model->setHeaderData(0, Qt::Horizontal, tr("Edges to fillet"), Qt::DisplayRole);
         model->setHeaderData(1, Qt::Horizontal, tr("Start radius"), Qt::DisplayRole);
         model->setHeaderData(2, Qt::Horizontal, tr("End radius"), Qt::DisplayRole);

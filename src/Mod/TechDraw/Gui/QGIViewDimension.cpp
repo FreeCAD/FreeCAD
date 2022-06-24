@@ -595,6 +595,19 @@ void QGIViewDimension::setNormalColorAll()
     aHead2->setFillColor(qc);
 }
 
+//QGIViewDimension does not behave the same as other QGIView derived classes
+//and so mouse events need to be ignored.  Only the QGIDatumLabel mouse events are relevant.
+void QGIViewDimension::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+//    Base::Console().Message("QGIVD::mousePressEvent() - %s\n",getViewName());
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void QGIViewDimension::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
 void QGIViewDimension::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIVDim::mouseReleaseEvent() - %s\n",getViewName());

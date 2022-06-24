@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ShapeFix_SplitToolPy"
+      PythonName="Part.ShapeFix.SplitTool"
+      Twin="ShapeFix_SplitTool"
+      TwinPointer="ShapeFix_SplitTool"
+      Include="ShapeFix_SplitTool.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Tool for splitting and cutting edges</UserDocu>
+    </Documentation>
+    <Methode Name="splitEdge">
+      <Documentation>
+        <UserDocu>Split edge on two new edges using new vertex</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="cutEdge">
+      <Documentation>
+        <UserDocu>Cut edge by parameters pend and cut</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

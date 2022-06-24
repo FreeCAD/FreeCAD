@@ -2721,7 +2721,6 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     if badobjects:
         print("dxf: ", len(badobjects), " objects were not imported")
     del doc
-    del blockshapes
 
 
 def warn(dxfobject, num=None):

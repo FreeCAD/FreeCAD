@@ -1176,7 +1176,14 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
         /*emit*/ mainWindowClosed();
         d->activityTimer->stop();
-        saveWindowSettings();
+
+        // https://forum.freecadweb.org/viewtopic.php?f=8&t=67748
+        // When the session manager jumps in it can happen that the closeEvent()
+        // function is triggered twice and for the second call the main window might be
+        // invisible. In this case the window settings shouldn't be saved.
+        if (isVisible())
+            saveWindowSettings();
+
         delete d->assistant;
         d->assistant = nullptr;
 
@@ -1518,7 +1525,15 @@ QPixmap MainWindow::splashImage() const
 
     // now try the icon paths
     if (splash_image.isNull()) {
-        splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
+        if (qApp->devicePixelRatio() > 1.0) {
+            // For HiDPI screens, we have a double-resolution version of the splash image
+            splash_path += "2x";
+            splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
+            splash_image.setDevicePixelRatio(2.0);
+        }
+        else {
+            splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
+        }
     }
 
     // include application name and version number
@@ -1552,14 +1567,14 @@ QPixmap MainWindow::splashImage() const
         }
 
         QFont fontExe = painter.font();
-        fontExe.setPointSize(20);
+        fontExe.setPointSizeF(20.0);
         QFontMetrics metricExe(fontExe);
         int l = QtTools::horizontalAdvance(metricExe, title);
         int w = splash_image.width();
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
-        fontVer.setPointSize(12);
+        fontVer.setPointSizeF(12.0);
         QFontMetrics metricVer(fontVer);
         int v = QtTools::horizontalAdvance(metricVer, version);
 

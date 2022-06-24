@@ -27,6 +27,7 @@
 
 #include "Gui/ViewProviderGeometryObject.h"
 #include <Base/BoundBox.h>
+#include <QCoreApplication>
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -39,6 +40,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject, PartGui::ViewProviderAttachExtension
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderDatum)
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum);
 
 public:
@@ -90,6 +92,7 @@ public:
     // TODO remove this attribute (2015-09-08, Fat-Zer)
     QString datumType;
     QString datumText;
+    QString datumMenuText;
 
     /**
      * Computes appropriate bounding box for the given list of objects to be passed to setExtents ()

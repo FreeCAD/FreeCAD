@@ -510,7 +510,7 @@ void View3DInventorViewer::init()
     // Settings
     setSeekTime(0.4f);
 
-    if (isSeekValuePercentage() == false)
+    if (!isSeekValuePercentage())
         setSeekValueAsPercentage(true);
 
     setSeekDistance(100);
@@ -1445,18 +1445,13 @@ bool View3DInventorViewer::hasAxisCross(void)
 
 void View3DInventorViewer::setNavigationType(Base::Type t)
 {
-    if (t.isBad())
-        return;
-
     if (this->navigation && this->navigation->getTypeId() == t)
         return; // nothing to do
 
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(t.createInstance());
-    if (!base)
-        return;
-
-    if (!base->getTypeId().isDerivedFrom(NavigationStyle::getClassTypeId())) {
-        delete base;
+    Base::Type type = Base::Type::getTypeIfDerivedFrom(t.getName(), NavigationStyle::getClassTypeId());
+    NavigationStyle* ns = static_cast<NavigationStyle*>(type.createInstance());
+    // createInstance could return a null pointer
+    if (!ns) {
 #if FC_DEBUG
         SoDebugError::postWarning("View3DInventorViewer::setNavigationType",
                                   "Navigation object must be of type NavigationStyle.");
@@ -1464,7 +1459,6 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
         return;
     }
 
-    NavigationStyle* ns = static_cast<NavigationStyle*>(base);
     if (this->navigation) {
         ns->operator = (*this->navigation);
         delete this->navigation;

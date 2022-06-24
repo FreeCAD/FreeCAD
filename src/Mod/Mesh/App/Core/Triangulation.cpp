@@ -481,7 +481,7 @@ QuasiDelaunayTriangulator::~QuasiDelaunayTriangulator()
 
 bool QuasiDelaunayTriangulator::Triangulate()
 {
-    if (EarClippingTriangulator::Triangulate() == false)
+    if (!EarClippingTriangulator::Triangulate())
         return false; // no valid triangulation
 
     // For each internal edge get the adjacent facets. When doing an edge swap we must update
@@ -606,10 +606,16 @@ struct Vertex2d_Less
     bool operator()(const Base::Vector3f& p, const Base::Vector3f& q) const
     {
         if (fabs(p.x - q.x) < MeshDefinitions::_fMinPointDistanceD1) {
-        if (fabs(p.y - q.y) < MeshDefinitions::_fMinPointDistanceD1) {
-        return false;
-    } else return p.y < q.y;
-        } else return p.x < q.x;
+            if (fabs(p.y - q.y) < MeshDefinitions::_fMinPointDistanceD1) {
+                return false;
+            }
+            else {
+                return p.y < q.y;
+            }
+        }
+        else {
+            return p.x < q.x;
+        }
     }
 };
 struct Vertex2d_EqualTo

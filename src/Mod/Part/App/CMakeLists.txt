@@ -95,12 +95,19 @@ generate_from_xml(PrecisionPy)
 
 # make sure to create the directory at configure time
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ChFi2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/HLRBRep)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeFix)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
 
 generate_from_xml(BRepFeat/MakePrismPy)
+
+generate_from_xml(ChFi2d/ChFi2d_AnaFilletAlgoPy)
+generate_from_xml(ChFi2d/ChFi2d_FilletAlgoPy)
+generate_from_xml(ChFi2d/ChFi2d_ChamferAPIPy)
+generate_from_xml(ChFi2d/ChFi2d_FilletAPIPy)
 
 generate_from_xml(Geom2d/ArcOfCircle2dPy)
 generate_from_xml(Geom2d/ArcOfConic2dPy)
@@ -128,6 +135,24 @@ generate_from_xml(HLRBRep/HLRBRep_AlgoPy)
 generate_from_xml(HLRBRep/HLRToShapePy)
 generate_from_xml(HLRBRep/HLRBRep_PolyAlgoPy)
 generate_from_xml(HLRBRep/PolyHLRToShapePy)
+
+generate_from_xml(ShapeFix/ShapeFix_RootPy)
+generate_from_xml(ShapeFix/ShapeFix_EdgePy)
+generate_from_xml(ShapeFix/ShapeFix_FacePy)
+generate_from_xml(ShapeFix/ShapeFix_ShapePy)
+generate_from_xml(ShapeFix/ShapeFix_ShellPy)
+generate_from_xml(ShapeFix/ShapeFix_SolidPy)
+generate_from_xml(ShapeFix/ShapeFix_WirePy)
+generate_from_xml(ShapeFix/ShapeFix_WireframePy)
+generate_from_xml(ShapeFix/ShapeFix_WireVertexPy)
+generate_from_xml(ShapeFix/ShapeFix_EdgeConnectPy)
+generate_from_xml(ShapeFix/ShapeFix_FaceConnectPy)
+generate_from_xml(ShapeFix/ShapeFix_FixSmallFacePy)
+generate_from_xml(ShapeFix/ShapeFix_FixSmallSolidPy)
+generate_from_xml(ShapeFix/ShapeFix_FreeBoundsPy)
+generate_from_xml(ShapeFix/ShapeFix_ShapeTolerancePy)
+generate_from_xml(ShapeFix/ShapeFix_SplitCommonVertexPy)
+generate_from_xml(ShapeFix/ShapeFix_SplitToolPy)
 
 generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
 
@@ -332,6 +357,19 @@ SET(BRepFeatPy_SRCS
 )
 SOURCE_GROUP("BRepFeat" FILES ${BRepFeatPy_SRCS})
 
+# ChFi2d wrappers
+SET(ChFi2dPy_SRCS
+    ChFi2d/ChFi2d_AnaFilletAlgoPy.xml
+    ChFi2d/ChFi2d_AnaFilletAlgoPyImp.cpp
+    ChFi2d/ChFi2d_FilletAlgoPy.xml
+    ChFi2d/ChFi2d_FilletAlgoPyImp.cpp
+    ChFi2d/ChFi2d_ChamferAPIPy.xml
+    ChFi2d/ChFi2d_ChamferAPIPyImp.cpp
+    ChFi2d/ChFi2d_FilletAPIPy.xml
+    ChFi2d/ChFi2d_FilletAPIPyImp.cpp
+)
+SOURCE_GROUP("ChFi2d" FILES ${ChFi2dPy_SRCS})
+
 # Geom2d wrappers
 SET(Geom2dPy_SRCS
     Geom2d/ArcOfCircle2dPy.xml
@@ -398,6 +436,46 @@ SET(HLRBRepPy_SRCS
 )
 SOURCE_GROUP("HLRBRep" FILES ${HLRBRepPy_SRCS})
 
+# ShapeFix wrappers
+SET(ShapeFixPy_SRCS
+    ShapeFix/ShapeFix_RootPy.xml
+    ShapeFix/ShapeFix_RootPyImp.cpp
+    ShapeFix/ShapeFix_EdgePy.xml
+    ShapeFix/ShapeFix_EdgePyImp.cpp
+    ShapeFix/ShapeFix_FacePy.xml
+    ShapeFix/ShapeFix_FacePyImp.cpp
+    ShapeFix/ShapeFix_ShapePy.xml
+    ShapeFix/ShapeFix_ShapePyImp.cpp
+    ShapeFix/ShapeFix_ShellPy.xml
+    ShapeFix/ShapeFix_ShellPyImp.cpp
+    ShapeFix/ShapeFix_SolidPy.xml
+    ShapeFix/ShapeFix_SolidPyImp.cpp
+    ShapeFix/ShapeFix_WirePy.xml
+    ShapeFix/ShapeFix_WirePyImp.cpp
+    ShapeFix/ShapeFix_WireframePy.xml
+    ShapeFix/ShapeFix_WireframePyImp.cpp
+    ShapeFix/ShapeFix_WireVertexPy.xml
+    ShapeFix/ShapeFix_WireVertexPyImp.cpp
+    ShapeFix/ShapeFix_EdgeConnectPy.xml
+    ShapeFix/ShapeFix_EdgeConnectPyImp.cpp
+    ShapeFix/ShapeFix_FaceConnectPy.xml
+    ShapeFix/ShapeFix_FaceConnectPyImp.cpp
+    ShapeFix/ShapeFix_FixSmallFacePy.xml
+    ShapeFix/ShapeFix_FixSmallFacePyImp.cpp
+    ShapeFix/ShapeFix_FixSmallSolidPy.xml
+    ShapeFix/ShapeFix_FixSmallSolidPyImp.cpp
+    ShapeFix/ShapeFix_FreeBoundsPy.xml
+    ShapeFix/ShapeFix_FreeBoundsPyImp.cpp
+    ShapeFix/ShapeFix_ShapeTolerancePy.xml
+    ShapeFix/ShapeFix_ShapeTolerancePyImp.cpp
+    ShapeFix/ShapeFix_SplitCommonVertexPy.xml
+    ShapeFix/ShapeFix_SplitCommonVertexPyImp.cpp
+    ShapeFix/ShapeFix_SplitToolPy.xml
+    ShapeFix/ShapeFix_SplitToolPyImp.cpp
+)
+
+SOURCE_GROUP("ShapeFix" FILES ${ShapeFixPy_SRCS})
+
 # ShapeUpgrade wrappers
 SET(ShapeUpgradePy_SRCS
     ShapeUpgrade/UnifySameDomainPy.xml
@@ -411,9 +489,11 @@ SET(Part_SRCS
     ${Properties_SRCS}
     ${Python_SRCS}
     ${BRepFeatPy_SRCS}
+    ${ChFi2dPy_SRCS}
     ${Geom2dPy_SRCS}
     ${GeomPlatePy_SRCS}
     ${HLRBRepPy_SRCS}
+    ${ShapeFixPy_SRCS}
     ${ShapeUpgradePy_SRCS}
     Attacher.cpp
     Attacher.h

@@ -271,7 +271,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(FacetIndex ulIndex, in
                             iIntsctWithEdge2++;
                     }
 
-                    if (bPushBack == true)
+                    if (bPushBack)
                         raclPoints.push_back(clIntersection);
                 }
             }
@@ -723,9 +723,9 @@ void MeshTrimming::TrimFacets(const std::vector<FacetIndex>& raulFacets, std::ve
     Base::SequencerLauncher seq("trimming facets...", raulFacets.size());
     for (std::vector<FacetIndex>::const_iterator it=raulFacets.begin(); it!=raulFacets.end(); ++it) {
         clIntsct.clear();
-        if (IsPolygonPointInFacet(*it, clP) == false) {
+        if (!IsPolygonPointInFacet(*it, clP)) {
             // facet must be trimmed
-            if (PolygonContainsCompleteFacet(myInner, *it) == false) {
+            if (!PolygonContainsCompleteFacet(myInner, *it)) {
                 // generate new facets
                 if (GetIntersectionPointsOfPolygonAndFacet(*it, iSide, clIntsct))
                     CreateFacets(*it, iSide, clIntsct, myTriangles);

@@ -25,6 +25,7 @@
 # include <cassert>
 # include <gp_Pln.hxx>
 # include <gp_Lin.hxx>
+# include <gp_Quaternion.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -613,11 +614,22 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
     double v1 = adapt.FirstVParameter();
     double v2 = adapt.LastVParameter();
 
-    // recreate a face with a clear boundary
-    u1 = std::max(-50.0, u1);
-    u2 = std::min( 50.0, u2);
-    v1 = std::max(-50.0, v1);
-    v2 = std::min( 50.0, v2);
+    auto selectRange = [](double& p1, double& p2) {
+        if (Precision::IsInfinite(p1) && Precision::IsInfinite(p2)) {
+            p1 = -50.0;
+            p2 =  50.0;
+        }
+        else if (Precision::IsInfinite(p1)) {
+            p1 = p2 - 100.0;
+        }
+        else if (Precision::IsInfinite(p2)) {
+            p2 = p1 + 100.0;
+        }
+    };
+
+    // recreate a face with a clear boundary in case it's infinite
+    selectRange(u1, u2);
+    selectRange(v1, v2);
 
     Handle(Geom_Surface) surface = BRep_Tool::Surface(face);
     BRepBuilderAPI_MakeFace mkBuilder(surface, u1, u2, v1, v2
@@ -712,4 +724,17 @@ void Part::Tools::getNormal(const TopoDS_Face& face, double u, double v,
 
     if (face.Orientation() == TopAbs_REVERSED)
         dir.Reverse();
+}
+
+TopLoc_Location Part::Tools::fromPlacement(const Base::Placement& plm)
+{
+    Base::Rotation r = plm.getRotation();
+    double q1, q2, q3, q4;
+    r.getValue(q1, q2, q3, q4);
+    Base::Vector3d t = plm.getPosition();
+
+    gp_Trsf trf;
+    trf.SetTranslation(gp_Vec(t.x, t.y, t.z));
+    trf.SetRotation(gp_Quaternion(q1, q2, q3, q4));
+    return {trf};
 }

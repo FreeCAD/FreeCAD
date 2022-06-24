@@ -100,7 +100,7 @@ public:
     /** Forces a recalculation of the bounding box. This method should be called after
      * the removal of points.or after a transformation of the data structure.
      */
-    void RecalcBoundBox ();
+    void RecalcBoundBox () const;
 
     /** Returns the point at the given index. This method is rather slow and should be
      * called occasionally only. For fast access the MeshPointIterator interfsce should
@@ -124,6 +124,9 @@ public:
     /** Returns the point indices of the given facet index. */
     inline void GetFacetPoints (FacetIndex ulFaIndex, PointIndex &rclP0,
                                 PointIndex &rclP1, PointIndex &rclP2) const;
+    /** Returns the point indices of the given facet index. */
+    inline void SetFacetPoints (FacetIndex ulFaIndex, PointIndex rclP0,
+                                PointIndex rclP1, PointIndex rclP2);
     /** Returns the point indices of the given facet indices. */
     std::vector<PointIndex> GetFacetPoints(const std::vector<FacetIndex>&) const;
     /** Returns the facet indices that share the given point indices. */
@@ -446,7 +449,7 @@ protected:
 
     MeshPointArray   _aclPointArray; /**< Holds the array of geometric points. */
     MeshFacetArray   _aclFacetArray; /**< Holds the array of facets. */
-    Base::BoundBox3f _clBoundBox;    /**< The current calculated bounding box. */
+    mutable Base::BoundBox3f _clBoundBox;    /**< The current calculated bounding box. */
     bool            _bValid; /**< Current state of validality. */
 
     // friends
@@ -555,9 +558,19 @@ inline void MeshKernel::GetFacetPoints (FacetIndex ulFaIndex, PointIndex &rclP0,
 {
     assert(ulFaIndex < _aclFacetArray.size());
     const MeshFacet& rclFacet = _aclFacetArray[ulFaIndex];
-    rclP0 = rclFacet._aulPoints[0];  
-    rclP1 = rclFacet._aulPoints[1];  
-    rclP2 = rclFacet._aulPoints[2];  
+    rclP0 = rclFacet._aulPoints[0];
+    rclP1 = rclFacet._aulPoints[1];
+    rclP2 = rclFacet._aulPoints[2];
+}
+
+inline void MeshKernel::SetFacetPoints (FacetIndex ulFaIndex, PointIndex rclP0,
+                                        PointIndex rclP1, PointIndex rclP2)
+{
+    assert(ulFaIndex < _aclFacetArray.size());
+    MeshFacet& rclFacet = _aclFacetArray[ulFaIndex];
+    rclFacet._aulPoints[0] = rclP0;
+    rclFacet._aulPoints[1] = rclP1;
+    rclFacet._aulPoints[2] = rclP2;
 }
 
 

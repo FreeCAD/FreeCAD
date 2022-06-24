@@ -374,12 +374,12 @@ PyObject*  DocumentObjectPy::evalExpression(PyObject *self, PyObject * args)
 
 PyObject*  DocumentObjectPy::recompute(PyObject *args)
 {
-    PyObject *recursive=Py_False;
-    if (!PyArg_ParseTuple(args, "|O",&recursive))
+    PyObject *recursive = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &recursive))
         return nullptr;
 
     try {
-        bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive));
+        bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive) ? true : false);
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
     }
     catch (const Base::Exception& e) {
@@ -417,28 +417,41 @@ PyObject*  DocumentObjectPy::getStatusString(PyObject *args)
 
 PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
 {
+    enum class ReturnType {
+        PyObject = 0,
+        DocObject = 1,
+        DocAndPyObject = 2,
+        Placement = 3,
+        Matrix = 4,
+        LinkAndPlacement = 5,
+        LinkAndMatrix = 6
+    };
+
     PyObject *obj;
     short retType = 0;
-    PyObject *pyMat = Py_None;
+    PyObject *pyMat = nullptr;
     PyObject *doTransform = Py_True;
     short depth = 0;
-    static char *kwlist[] = {"subname","retType","matrix","transform","depth", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|hOOh", kwlist,
-                &obj,&retType,&pyMat,&doTransform,&depth))
+
+    static char *kwlist[] = {"subname", "retType", "matrix", "transform", "depth", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|hO!O!h", kwlist,
+                                     &obj, &retType, &Base::MatrixPy::Type, &pyMat, &PyBool_Type, &doTransform, &depth))
         return nullptr;
 
-    if (retType<0 || retType>6) {
-        PyErr_SetString(PyExc_TypeError, "invalid retType, can only be integer 0~6");
+    if (retType < 0 || retType > 6) {
+        PyErr_SetString(PyExc_ValueError, "invalid retType, can only be integer 0~6");
         return nullptr;
     }
 
+    ReturnType retEnum = ReturnType(retType);
     std::vector<std::string> subs;
-    bool single=true;
+    bool single = true;
+
     if (PyUnicode_Check(obj)) {
         subs.push_back(PyUnicode_AsUTF8(obj));
     }
     else if (PySequence_Check(obj)) {
-        single=false;
+        single = false;
         Py::Sequence shapeSeq(obj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
             PyObject* item = (*it).ptr();
@@ -456,7 +469,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         return nullptr;
     }
 
-    bool transform = PyObject_IsTrue(doTransform);
+    bool transform = PyObject_IsTrue(doTransform) ? true : false;
 
     struct SubInfo {
         App::DocumentObject *sobj;
@@ -467,11 +480,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     };
 
     Base::Matrix4D mat;
-    if(pyMat!=Py_None) {
-        if(!PyObject_TypeCheck(pyMat,&Base::MatrixPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "expect argument 'matrix' to be of type Base.Matrix");
-            return nullptr;
-        }
+    if (pyMat) {
         mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
     }
 
@@ -481,70 +490,59 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
             ret.emplace_back(mat);
             auto &info = ret.back();
             PyObject *pyObj = nullptr;
-            info.sobj = getDocumentObjectPtr()->getSubObject(
-                    sub.c_str(),retType!=0&&retType!=2?nullptr:&pyObj,&info.mat,transform,depth);
-            if(pyObj)
-                info.pyObj = Py::Object(pyObj,true);
-            if(info.sobj) 
-                info.obj = Py::Object(info.sobj->getPyObject(),true);
+
+            info.sobj = getDocumentObjectPtr()->getSubObject(sub.c_str(),
+                                                             retEnum != ReturnType::PyObject &&
+                                                             retEnum != ReturnType::DocAndPyObject ? nullptr : &pyObj,
+                                                             &info.mat, transform, depth);
+            if (pyObj)
+                info.pyObj = Py::asObject(pyObj);
+            if (info.sobj)
+                info.obj = Py::asObject(info.sobj->getPyObject());
         }
-        if(ret.empty())
+
+        if (ret.empty())
             Py_Return;
 
-        if(single) {
-            if(retType==0)
-                return Py::new_reference_to(ret[0].pyObj);
-            else if(retType==1 && pyMat==Py_None)
-                return Py::new_reference_to(ret[0].obj);
-            else if(!ret[0].sobj)
-                Py_Return;
-            else if(retType==3)
-                return Py::new_reference_to(Py::Placement(Base::Placement(ret[0].mat)));
-            else if(retType==4)
-                return Py::new_reference_to(Py::Matrix(ret[0].mat));
-            else if(retType==5 || retType==6) {
-                ret[0].sobj->getLinkedObject(true,&ret[0].mat,false);
-                if(retType==5)
-                    return Py::new_reference_to(Py::Placement(Base::Placement(ret[0].mat)));
+        auto getReturnValue = [retEnum, pyMat](SubInfo& ret) -> Py::Object {
+            if (retEnum == ReturnType::PyObject)
+                return ret.pyObj;
+            else if (retEnum == ReturnType::DocObject && !pyMat)
+                return ret.obj;
+            else if (!ret.sobj)
+                return Py::None();
+            else if (retEnum == ReturnType::Placement)
+                return Py::Placement(Base::Placement(ret.mat));
+            else if (retEnum == ReturnType::Matrix)
+                return Py::Matrix(ret.mat);
+            else if (retEnum == ReturnType::LinkAndPlacement || retEnum == ReturnType::LinkAndMatrix) {
+                ret.sobj->getLinkedObject(true, &ret.mat, false);
+                if (retEnum == ReturnType::LinkAndPlacement)
+                    return Py::Placement(Base::Placement(ret.mat));
                 else
-                    return Py::new_reference_to(Py::Matrix(ret[0].mat));
+                    return Py::Matrix(ret.mat);
             }
-            Py::Tuple rret(retType==1?2:3);
-            rret.setItem(0,ret[0].obj);
-            rret.setItem(1,Py::asObject(new Base::MatrixPy(ret[0].mat)));
-            if(retType!=1)
-                rret.setItem(2,ret[0].pyObj);
-            return Py::new_reference_to(rret);
+            else {
+                Py::Tuple rret(retEnum == ReturnType::DocObject ? 2 : 3);
+                rret.setItem(0, ret.obj);
+                rret.setItem(1, Py::asObject(new Base::MatrixPy(ret.mat)));
+                if (retEnum != ReturnType::DocObject)
+                    rret.setItem(2, ret.pyObj);
+                return rret;
+            }
+        };
+
+        if (single) {
+            return Py::new_reference_to(getReturnValue(ret[0]));
         }
+
         Py::Tuple tuple(ret.size());
-        for(size_t i=0;i<ret.size();++i) {
-            if(retType==0)
-                tuple.setItem(i,ret[i].pyObj);
-            else if(retType==1 && pyMat==Py_None)
-                tuple.setItem(i,ret[i].obj);
-            else if(!ret[i].sobj)
-                tuple.setItem(i, Py::Object());
-            else if(retType==3)
-                tuple.setItem(i,Py::Placement(Base::Placement(ret[0].mat)));
-            else if(retType==4)
-                tuple.setItem(i,Py::Matrix(ret[0].mat));
-            else if(retType==5 || retType==6) {
-                ret[i].sobj->getLinkedObject(true,&ret[i].mat,false);
-                if(retType==5)
-                    tuple.setItem(i,Py::Placement(Base::Placement(ret[i].mat)));
-                else
-                    tuple.setItem(i,Py::Matrix(ret[i].mat));
-            } else {
-                Py::Tuple rret(retType==1?2:3);
-                rret.setItem(0,ret[i].obj);
-                rret.setItem(1,Py::asObject(new Base::MatrixPy(ret[i].mat)));
-                if(retType!=1)
-                    rret.setItem(2,ret[i].pyObj);
-                tuple.setItem(i,rret);
-            }
+        for(size_t i=0; i<ret.size(); ++i) {
+            tuple.setItem(i, getReturnValue(ret[i]));
         }
         return Py::new_reference_to(tuple);
-    }PY_CATCH
+    }
+    PY_CATCH
 }
 
 PyObject*  DocumentObjectPy::getSubObjectList(PyObject *args) {
@@ -580,8 +578,8 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
     PyObject *transform = Py_True;
     short depth = 0;
     static char *kwlist[] = {"recursive","matrix","transform","depth", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|OOOh", kwlist,
-                &recursive,&pyMat,&transform,&depth))
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|O!OO!h", kwlist,
+                &PyBool_Type,&recursive,&pyMat,&PyBool_Type,&transform,&depth))
         return nullptr;
 
     Base::Matrix4D _mat;
@@ -597,7 +595,7 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
 
     PY_TRY {
         auto linked = getDocumentObjectPtr()->getLinkedObject(
-                PyObject_IsTrue(recursive), mat, PyObject_IsTrue(transform),depth);
+                PyObject_IsTrue(recursive) ? true : false, mat, PyObject_IsTrue(transform) ? true : false, depth);
         if(!linked)
             linked = getDocumentObjectPtr();
         auto pyObj = Py::Object(linked->getPyObject(),true);
@@ -625,10 +623,10 @@ PyObject*  DocumentObjectPy::setElementVisible(PyObject *args)
 {
     char *element = nullptr;
     PyObject *visible = Py_True;
-    if (!PyArg_ParseTuple(args, "s|O", &element,&visible))
+    if (!PyArg_ParseTuple(args, "s|O!", &element, &PyBool_Type, &visible))
         return nullptr;
     PY_TRY {
-        return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element,PyObject_IsTrue(visible)));
+        return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element,PyObject_IsTrue(visible) ? true : false));
     } PY_CATCH;
 }
 
@@ -832,13 +830,13 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
     const char *subname;
     PyObject *append = Py_False;
     int type = 0;
-    if (!PyArg_ParseTuple(args, "s|Oi",&subname,&append,&type))
+    if (!PyArg_ParseTuple(args, "s|O!i",&subname,&PyBool_Type,&append,&type))
         return nullptr;
 
     PY_TRY {
         std::pair<std::string,std::string> elementName;
         auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
-                PyObject_IsTrue(append),(GeoFeature::ElementNameType)type);
+                PyObject_IsTrue(append) ? true : false,(GeoFeature::ElementNameType)type);
         Py::Tuple ret(3);
         ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
         ret.setItem(1,Py::String(elementName.first));
@@ -868,7 +866,7 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
         std::set<App::DocumentObject *> visited;
         return Py::new_reference_to(Py::Boolean(
                     getDocumentObjectPtr()->adjustRelativeLinks(inList,
-                        PyObject_IsTrue(recursive)?&visited:nullptr)));
+                        PyObject_IsTrue(recursive) ? &visited : nullptr)));
     }PY_CATCH
 }
 

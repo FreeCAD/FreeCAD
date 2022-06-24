@@ -43,7 +43,6 @@
 #include <Gui/CommandT.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
-#include <boost_bind_bind.hpp>
 #include "../App/Utils.h"
 #include "../App/Cell.h"
 #include <App/Range.h>
@@ -249,28 +248,56 @@ void SheetTableView::cellProperties()
 
 std::vector<Range> SheetTableView::selectedRanges() const
 {
-    QModelIndexList list = selectionModel()->selectedIndexes();
     std::vector<Range> result;
 
-    // Insert selected cells into set. This variable should ideally be a hash_set
-    // but that is not part of standard stl.
-    std::set<std::pair<int, int> > cells;
-    for (QModelIndexList::const_iterator it = list.begin(); it != list.end(); ++it)
-        cells.insert(std::make_pair<int,int>((*it).row(), (*it).column()));
-
-    // Create rectangular cells from the unordered collection of selected cells
-    std::map<std::pair<int, int>, std::pair<int, int> > rectangles;
-    createRectangles(cells, rectangles);
-
-    std::map<std::pair<int, int>, std::pair<int, int> >::const_iterator i = rectangles.begin();
-    for (; i != rectangles.end(); ++i) {
-        std::pair<int, int> ul = (*i).first;
-        std::pair<int, int> size = (*i).second;
-
-        result.emplace_back(ul.first, ul.second,
-                                                   ul.first + size.first - 1, ul.second + size.second - 1);
+    if (!sheet->getCells()->hasSpan()) {
+        for (const auto &sel : selectionModel()->selection())
+            result.emplace_back(sel.top(), sel.left(), sel.bottom(), sel.right());
+    } else {
+        // If there is spanning cell, QItemSelection returned by
+        // QTableView::selection() does not merge selected indices into ranges.
+        // So we have to do it by ourselves. Qt records selection in the order
+        // of column first and then row.
+        //
+        // Note that there will always be ambiguous cases with the available
+        // information, where multiple user selected ranges are merged
+        // together. For example, consecutive single column selections that
+        // form a rectangle will be merged together, but single row selections
+        // will not be merged.
+        for (const auto &sel : selectionModel()->selection()) {
+            if (!result.empty() && sel.bottom() == sel.top() && sel.right() == sel.left()) {
+                auto &last = result.back();
+                if (last.colCount() == 1
+                        && last.from().col() == sel.left()
+                        && sel.top() == last.to().row() + 1)
+                {
+                    // This is the case of rectangle selection. We keep
+                    // accumulating the last column, and try to merge the
+                    // column to previous range whenever possible.
+                    last = Range(last.from(), CellAddress(sel.top(), sel.left()));
+                    if (result.size() > 1) {
+                        auto &secondLast = result[result.size()-2];
+                        if (secondLast.to().col() + 1 == last.to().col()
+                                && secondLast.from().row() == last.from().row()
+                                && secondLast.rowCount() == last.rowCount()) {
+                            secondLast = Range(secondLast.from(), last.to());
+                            result.pop_back();
+                        }
+                    }
+                    continue;
+                }
+                else if (last.rowCount() == 1
+                        && last.from().row() == sel.top()
+                        && last.to().col() + 1 == sel.left())
+                {
+                    // This is the case of single row selection
+                    last = Range(last.from(), CellAddress(sel.top(), sel.left()));
+                    continue;
+                }
+            }
+            result.emplace_back(sel.top(), sel.left(), sel.bottom(), sel.right());
+        }
     }
-
     return result;
 }
 
@@ -769,7 +796,7 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
     {
         // End should take you to the last occupied cell in the current column
         // Ctrl-End takes you to the last cell in the sheet
-        auto usedCells = sheet->getCells()->getUsedCells();
+        auto usedCells = sheet->getCells()->getNonEmptyCells();
         for (const auto& cell : usedCells) {
             if (modifiers == Qt::NoModifier) {
                 if (cell.col() == targetColumn)
@@ -984,9 +1011,9 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *)
 
 QString SheetTableView::toHtml() const
 {
-    std::set<App::CellAddress> cells = sheet->getCells()->getUsedCells();
-    int rowCount = 1;
-    int colCount = 1;
+    auto cells = sheet->getCells()->getNonEmptyCells();
+    int rowCount = 0;
+    int colCount = 0;
     for (const auto& it : cells) {
         rowCount = std::max(rowCount, it.row());
         colCount = std::max(colCount, it.col());

@@ -28,6 +28,7 @@
 #include <Gui/Window.h>
 #include <Mod/Web/WebGlobal.h>
 #include <QLineEdit>
+#include <QPointer>
 
 #if defined(QTWEBENGINE)
 #include <QWebEngineView>
@@ -124,9 +125,10 @@ protected Q_SLOTS:
     void onViewSource(const QUrl &url);
     void onOpenLinkInExternalBrowser(const QUrl& url);
     void onOpenLinkInNewWindow(const QUrl&);
+    void onUpdateBrowserActions();
 
 private:
-    WebView* view;
+    QPointer<WebView> view;
     bool isLoading;
     UrlWidget *urlWgt;
 #ifdef QTWEBENGINE

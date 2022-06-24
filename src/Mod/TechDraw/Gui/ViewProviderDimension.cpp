@@ -174,7 +174,19 @@ void ViewProviderDimension::updateData(const App::Property* p)
             sPixmap = "TechDraw_3PtAngleDimension";
         }
     }
-    ViewProviderDrawingView::updateData(p);
+
+    //Dimension handles X,Y updates differently that other QGIView
+    //call QGIViewDimension::updateView
+    if (p == &(getViewObject()->X)  ||
+        p == &(getViewObject()->Y) ){
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
+
+    //Skip QGIView X,Y processing - do not call ViewProviderDrawingView
+    Gui::ViewProviderDocumentObject::updateData(p);
 }
 
 void ViewProviderDimension::onChanged(const App::Property* p)

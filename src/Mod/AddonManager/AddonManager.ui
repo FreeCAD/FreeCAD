@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <widget class="QWidget" name="contentPlaceholder">
+    <widget class="QWidget" name="contentPlaceholder" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -86,7 +86,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>labelStatusInfo</string>
+        <string notr="true">labelStatusInfo</string>
        </property>
       </widget>
      </item>

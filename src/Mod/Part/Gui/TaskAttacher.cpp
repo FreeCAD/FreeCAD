@@ -31,7 +31,6 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
-# include <boost_bind_bind.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -380,7 +379,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
             if ((refs[r] == selObj) && (refnames[r] == subname))
                 return;
 
-        if (autoNext && iActiveRef > 0 && iActiveRef == (ssize_t) refnames.size()){
+        if (autoNext && iActiveRef > 0 && iActiveRef == static_cast<int>(refnames.size())){
             if (refs[iActiveRef-1] == selObj
                 && refnames[iActiveRef-1].length() != 0 && subname.length() == 0){
                 //A whole object was selected by clicking it twice. Fill it
@@ -390,7 +389,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
                 iActiveRef--;
             }
         }
-        if (iActiveRef < (ssize_t) refs.size()) {
+        if (iActiveRef < static_cast<int>(refs.size())) {
             refs[iActiveRef] = selObj;
             refnames[iActiveRef] = subname;
         } else {

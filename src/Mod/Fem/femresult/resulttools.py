@@ -209,7 +209,7 @@ def get_stats(res_obj, result_type):
 #  - Prin2 - Principal stress 2
 #  - Prin3 - Principal stress 3
 #  - MaxSear - maximum shear stress
-#  - Peeq - peeq strain
+#  - Peeq - Equivalent plastic strain
 #  - Temp - Temperature
 #  - MFlow - MassFlowRate
 #  - NPress - NetworkPressure

@@ -2065,10 +2065,9 @@ PyObject *PropertyBool::getPyObject()
 
 void PropertyBool::setPyObject(PyObject *value)
 {
-    if (PyBool_Check(value))
-        setValue(PyObject_IsTrue(value)!=0);
-    else if(PyLong_Check(value))
-        setValue(PyLong_AsLong(value)!=0);
+    if (PyBool_Check(value) || PyLong_Check(value)) {
+        setValue(PyObject_IsTrue(value) ? true : false);
+    }
     else {
         std::string error = std::string("type must be bool, not ");
         error += value->ob_type->tp_name;

@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEW_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItemGroup>
@@ -77,7 +79,6 @@ public:
     enum {Type = QGraphicsItem::UserType + 101};
     int type() const override { return Type;}
     virtual QRectF boundingRect() const override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
@@ -144,6 +145,9 @@ public:
 
     // Mouse handling
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
     boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
 
 public Q_SLOTS:
@@ -153,8 +157,6 @@ protected:
     QGIView* getQGIVByName(std::string name);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    // Mouse handling
-/*    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;*/
     // Preselection events:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
@@ -191,8 +193,8 @@ protected:
     QPen m_decorPen;
     double m_lockWidth;
     double m_lockHeight;
+    int m_dragState;
 
-//    std::vector<QGraphicsItem*> m_randomItems;
 };
 
 } // namespace

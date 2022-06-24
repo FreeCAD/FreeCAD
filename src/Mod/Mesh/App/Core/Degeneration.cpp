@@ -301,13 +301,18 @@ struct MeshFacet_Less
         if (y1 > y2)
         { tmp = y1; y1 = y2; y2 = tmp; }
 
-        if      (x0 < y0)
+        if (x0 < y0)
             return true;
-        else if (x0 > y0)  return false;
-        else if (x1 < y1)  return true;
-        else if (x1 > y1)  return false;
-        else if (x2 < y2)  return true;
-        else               return false;
+        else if (x0 > y0)
+            return false;
+        else if (x1 < y1)
+            return true;
+        else if (x1 > y1)
+            return false;
+        else if (x2 < y2)
+            return true;
+        else
+            return false;
     }
 };
 
@@ -460,7 +465,7 @@ unsigned long MeshEvalDegeneratedFacets::CountEdgeTooSmall (float fMinEdgeLength
     MeshFacetIterator  clFIter(_rclMesh);
     unsigned long k = 0;
 
-    while (clFIter.EndReached() == false) {
+    while (!clFIter.EndReached()) {
         for (int i = 0; i < 3; i++) {
             if (Base::Distance(clFIter->_aclPoints[i], clFIter->_aclPoints[(i+1)%3]) < fMinEdgeLength)
                 k++;
@@ -1104,12 +1109,8 @@ bool MeshFixRangePoint::Fixup()
         // 'DeleteFacets' will segfault. But setting all point indices to 0 works.
         std::vector<PointIndex> invalid = eval.GetIndices();
         if (!invalid.empty()) {
-            const MeshFacetArray& rFaces = _rclMesh.GetFacets();
             for (std::vector<PointIndex>::iterator it = invalid.begin(); it != invalid.end(); ++it) {
-                MeshFacet& face = const_cast<MeshFacet&>(rFaces[*it]);
-                face._aulPoints[0] = 0;
-                face._aulPoints[1] = 0;
-                face._aulPoints[2] = 0;
+                _rclMesh.SetFacetPoints(*it, 0, 0, 0);
             }
 
             _rclMesh.DeleteFacets(invalid);

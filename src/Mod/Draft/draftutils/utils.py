@@ -172,9 +172,9 @@ def get_param_type(param):
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "template", "snapModes",
                    "FontFile", "ClonePrefix", "overrideUnit",
-                   "labeltype") or "inCommandShortcut" in param:
+                   "labeltype", "gridSpacing") or "inCommandShortcut" in param:
         return "string"
-    elif param in ("textheight", "tolerance", "gridSpacing",
+    elif param in ("textheight", "tolerance",
                    "arrowsize", "extlines", "dimspacing",
                    "dimovershoot", "extovershoot", "HatchPatternSize"):
         return "float"

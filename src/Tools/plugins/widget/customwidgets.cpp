@@ -1143,12 +1143,64 @@ void QuantitySpinBox::stepBy(int steps)
 
 QSize QuantitySpinBox::sizeHint() const
 {
-    return QAbstractSpinBox::sizeHint();
+    ensurePolished();
+
+    const QFontMetrics fm(fontMetrics());
+    int frameWidth = lineEdit()->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+    int iconHeight = fm.height() - frameWidth;
+    int h = lineEdit()->sizeHint().height();
+    int w = 0;
+
+    QString s = QLatin1String("000000000000000000");
+    QString fixedContent = QLatin1String(" ");
+    s += fixedContent;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    w = fm.horizontalAdvance(s);
+#else
+    w = fm.width(s);
+#endif
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
+                        .expandedTo(QApplication::globalStrut());
+    return size;
 }
 
 QSize QuantitySpinBox::minimumSizeHint() const
 {
-    return QAbstractSpinBox::minimumSizeHint();
+    ensurePolished();
+
+    const QFontMetrics fm(fontMetrics());
+    int frameWidth = lineEdit()->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+    int iconHeight = fm.height() - frameWidth;
+    int h = lineEdit()->minimumSizeHint().height();
+    int w = 0;
+
+    QString s = QLatin1String("000000000000000000");
+    QString fixedContent = QLatin1String(" ");
+    s += fixedContent;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    w = fm.horizontalAdvance(s);
+#else
+    w = fm.width(s);
+#endif
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
+                        .expandedTo(QApplication::globalStrut());
+    return size;
 }
 
 void QuantitySpinBox::showEvent(QShowEvent * event)

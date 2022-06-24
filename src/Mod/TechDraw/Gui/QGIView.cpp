@@ -81,13 +81,18 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
+#define NODRAG 0
+#define DRAGSTARTED 1
+#define DRAGGING 2
+
 const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_locked(false),
-     m_innerView(false)
+     m_innerView(false),
+     m_dragState(NODRAG)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -200,22 +205,6 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                         newPos.setX(item->pos().x());
                     } else if(alignMode == QString::fromLatin1("Horizontal")) {
                         newPos.setY(item->pos().y());
-                    } else if(alignMode == QString::fromLatin1("45slash")) {
-                         //this logic is wrong since the constrained movement direction is not necessarily 45*
-//                         Base::Console().Message("QGIV::itemChange - oblique BL-TR\n");
-//                        double dist = ( (newPos.x() - item->pos().x()) +
-//                                        (item->pos().y() - newPos.y()) ) / 2.0;
-
-//                        newPos.setX( item->pos().x() + dist);
-//                        newPos.setY( item->pos().y() - dist );
-                    } else if(alignMode == QString::fromLatin1("45backslash")) {
-                         //this logic is wrong since the constrained movement direction is not necessarily 45*
-//                         Base::Console().Message("QGIV::itemChange - oblique TL-BR\n");
-//                        double dist = ( (newPos.x() - item->pos().x()) +
-//                                        (newPos.y() - item->pos().y()) ) / 2.0;
-
-//                        newPos.setX( item->pos().x() + dist);
-//                        newPos.setY( item->pos().y() + dist );
                     }
                 }
             }
@@ -244,30 +233,39 @@ void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIV::mousePressEvent() - %s\n",getViewName());
     signalSelectPoint(this, event->pos());
+    if (m_dragState == NODRAG) {
+        m_dragState = DRAGSTARTED;
+    }
 
     QGraphicsItem::mousePressEvent(event);
 }
 
-//void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-//{
-//    QGraphicsItem::mouseMoveEvent(event);
-//}
+void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (m_dragState == DRAGSTARTED) {
+        m_dragState = DRAGGING;
+    }
+    QGraphicsItem::mouseMoveEvent(event);
+}
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     //TODO: this should be done in itemChange - item position has changed
-    //TODO: and should check for dragging
 //    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n",getViewName());
 //    if(scene() && this == scene()->mouseGrabberItem()) {
-    if(!m_locked) {
-        if (!isInnerView()) {
-            double tempX = x(),
-                   tempY = getY();
-            getViewObject()->setPosition(Rez::appX(tempX),Rez::appX(tempY));
-        } else {
-            getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getYInClip(y())));
+    if (m_dragState == DRAGGING) {
+        if(!m_locked) {
+            if (!isInnerView()) {
+                double tempX = x(),
+                       tempY = getY();
+                getViewObject()->setPosition(Rez::appX(tempX),Rez::appX(tempY));
+            } else {
+                getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getYInClip(y())));
+            }
         }
     }
+    m_dragState = NODRAG;
+
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -345,6 +343,8 @@ void QGIView::updateView(bool update)
 {
 //    Base::Console().Message("QGIV::updateView() - %s\n",getViewObject()->getNameInDocument());
     (void) update;
+
+    //allow/prevent dragging
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
@@ -420,23 +420,13 @@ void QGIView::toggleCache(bool state)
 void QGIView::draw()
 {
 //    Base::Console().Message("QGIV::draw()\n");
-    double x, y;
+    double xFeat, yFeat;
     if (getViewObject() != nullptr) {
-        x = Rez::guiX(getViewObject()->X.getValue());
-        y = Rez::guiX(getViewObject()->Y.getValue());
-        if (getFrameState()) {
-            //+/- space for label if DPGI
-            TechDraw::DrawProjGroupItem* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
-            if (dpgi != nullptr) {
-                double vertLabelSpace = Rez::guiX(Preferences::labelFontSizeMM());
-                if (y > 0) {
-                    y += vertLabelSpace;
-                } else if (y < 0) {
-                    y -= vertLabelSpace;
-                }
-            }
+        xFeat = Rez::guiX(getViewObject()->X.getValue());
+        yFeat = Rez::guiX(getViewObject()->Y.getValue());
+        if (!getViewObject()->LockPosition.getValue()) {
+            setPosition(xFeat, yFeat);
         }
-        setPosition(x, y);
     }
     if (isVisible()) {
         drawBorder();
@@ -453,7 +443,6 @@ void QGIView::drawCaption()
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-//    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
     m_font.setPixelSize(PreferencesGui::labelFontSizePX());
     m_caption->setFont(m_font);
     QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
@@ -466,7 +455,6 @@ void QGIView::drawCaption()
     if (getFrameState() || vp->KeepLabel.getValue()) {            //place below label if label visible
         m_caption->setY(displayArea.bottom() + labelHeight);
     } else {
-//        m_caption->setY(displayArea.bottom() + labelCaptionFudge * getPrefFontSize());
         m_caption->setY(displayArea.bottom() + labelCaptionFudge * Preferences::labelFontSizeMM());
     }
     m_caption->show();
@@ -496,7 +484,6 @@ void QGIView::drawBorder()
 
     m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-//    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
     m_font.setPixelSize(PreferencesGui::labelFontSizePX());
 
     m_label->setFont(m_font);

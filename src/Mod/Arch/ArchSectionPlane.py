@@ -583,20 +583,15 @@ def getSVG(source,
     if windows:
         sh = []
         for w in windows:
-            wlo = w.getLinkedObject()  # To support Link of Windows(Doors)
-            if not hasattr(wlo.Proxy,"sshapes"):
-                wlo.Proxy.execute(wlo)
-            if hasattr(wlo.Proxy,"sshapes"):
-                if wlo.Proxy.sshapes and (w.Name in cutwindows):
-                    c = Part.makeCompound(wlo.Proxy.sshapes)
-                    c.Placement = w.Placement
-                    sh.append(c)
-            # buggy for now...
-            #if hasattr(w.Proxy,"vshapes"):
-            #    if w.Proxy.vshapes:
-            #        c = Part.makeCompound(w.Proxy.vshapes)
-            #        c.Placement = w.Placement
-            #        sh.append(c)
+            if w.Name in cutwindows:
+                wlo = w.getLinkedObject()  # To support Link of Windows(Doors)
+                if hasattr(wlo, "SymbolPlan") and wlo.SymbolPlan:
+                    if not hasattr(wlo.Proxy, "sshapes"):
+                        wlo.Proxy.execute(wlo)
+                    if hasattr(wlo.Proxy, "sshapes") and wlo.Proxy.sshapes:
+                        c = Part.makeCompound(wlo.Proxy.sshapes)
+                        c.Placement = w.Placement
+                        sh.append(c)
         if sh:
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'

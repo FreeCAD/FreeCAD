@@ -100,7 +100,7 @@ inline bool MeshSearchNeighbourFacetsVisitor::Visit (const MeshFacet &rclFacet, 
 {
     (void)rclFrom;
     if (ulLevel > _ulCurrentLevel) {
-        if (_bFacetsFoundInCurrentLevel == false)
+        if (!_bFacetsFoundInCurrentLevel)
             return false;
         _ulCurrentLevel = ulLevel;
         _bFacetsFoundInCurrentLevel = false;

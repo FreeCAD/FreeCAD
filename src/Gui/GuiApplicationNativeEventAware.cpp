@@ -293,10 +293,10 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
 
     for (i = 0; i < 6; ++i) {
         if (motionDataArray[i] != 0) {
-            if (enabled[i] == false)
+            if (!enabled[i])
                 motionDataArray[i] = 0;
             else {
-                if (reversed[i] == true)
+                if (reversed[i])
                     motionDataArray[i] = - motionDataArray[i];
                 motionDataArray[i] = (int)((float)(motionDataArray[i]) * sensitivity[i] * generalSensitivity);
             }

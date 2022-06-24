@@ -927,7 +927,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
             auto check = Application::Instance->commandManager().checkAcceleratorForConflicts(qPrintable(accel_tmp));
             if (check) {
                 recentFiles[index]->setShortcut(QKeySequence());
-                auto msg = QStringLiteral("Recent macros : shortcut %1 disabled because conflicting with %2")
+                auto msg = QStringLiteral("Recent macros : keyboard shortcut %1 disabled because conflicting with %2")
                                                             .arg(accel_tmp).arg(QLatin1String(check->getName()));
                 Base::Console().Warning("%s\n", qPrintable(msg));
             }
@@ -936,7 +936,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
                 recentFiles[index]->setShortcut(accel);
             }
         }
-        recentFiles[index]->setStatusTip(tr("Run macro %1 (Shift+click to edit) shortcut: %2").arg(files[index]).arg(accel));
+        recentFiles[index]->setStatusTip(tr("Run macro %1 (Shift+click to edit) keyboard shortcut: %2").arg(files[index]).arg(accel));
         recentFiles[index]->setVisible(true);
     }
 

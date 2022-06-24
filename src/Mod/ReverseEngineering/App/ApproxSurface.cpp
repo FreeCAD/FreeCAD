@@ -30,7 +30,6 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#include <boost_bind_bind.hpp>
 
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Base/Sequencer.h>
@@ -589,7 +588,7 @@ void ParameterCorrection::CalcEigenvectors()
 bool ParameterCorrection::DoInitialParameterCorrection(double fSizeFactor)
 {
     // if directions are not given, calculate yourself
-    if (_bGetUVDir == false)
+    if (!_bGetUVDir)
         CalcEigenvectors();
     if (!GetUVParameters(fSizeFactor))
         return false;

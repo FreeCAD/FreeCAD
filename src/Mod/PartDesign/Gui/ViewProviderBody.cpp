@@ -227,11 +227,22 @@ void ViewProviderBody::updateData(const App::Property* prop)
                 static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
             }
         }
+
+        if (tip)
+            copyColorsfromTip(tip);
     }
 
     PartGui::ViewProviderPart::updateData(prop);
 }
 
+void ViewProviderBody::copyColorsfromTip(App::DocumentObject* tip) {
+    // update DiffuseColor
+    Gui::ViewProvider* vptip = Gui::Application::Instance->getViewProvider(tip);
+    if (vptip && vptip->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+        auto colors = static_cast<PartGui::ViewProviderPartExt*>(vptip)->DiffuseColor.getValues();
+        this->DiffuseColor.setValues(colors);
+    }
+}
 
 void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop ) {
 

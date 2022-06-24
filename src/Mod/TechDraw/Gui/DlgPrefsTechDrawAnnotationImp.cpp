@@ -144,7 +144,7 @@ int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow(void) const
 void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
 {
     if (index == -1) { // there is no valid index yet
-        ui->pcbLineGroup->setToolTip(QString::fromStdString("Please select a Line Group"));
+        ui->pcbLineGroup->setToolTip(QObject::tr("Please select a Line Group"));
         return;
     }
     // get the definition the the selected LineGroup (includes the name)
@@ -154,13 +154,13 @@ void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
     while (std::getline(ss, lgRecord, ',')) {
         lgNames.push_back(lgRecord);
     }
-    // format the tooltip
-    std::stringstream TooltipText;
-    TooltipText << lgNames.at(0).substr(1) << " defines these line widths:\n"
-        << "thin: " << lgNames.at(1) << "\n"
-        << "graphic: " << lgNames.at(2) << "\n"
-        << "thick: " << lgNames.at(3);
-    ui->pcbLineGroup->setToolTip(QString::fromStdString(TooltipText.str()));
+    ui->pcbLineGroup->setToolTip(
+        QObject::tr("%1 defines these line widths:\n thin: %2\n graphic: %3\n "
+                    "thick: %4")
+            .arg(QString::fromStdString(lgNames.at(0).substr(1)),
+                 QString::fromStdString(lgNames.at(1)),
+                 QString::fromStdString(lgNames.at(2)),
+                 QString::fromStdString(lgNames.at(3))));
 }
 
 #include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAnnotationImp.cpp>

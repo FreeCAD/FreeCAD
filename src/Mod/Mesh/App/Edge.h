@@ -54,7 +54,7 @@ public:
     int Index;
     MeshCore::PointIndex PIndex[2];
     MeshCore::FacetIndex NIndex[2];
-    Base::Reference<MeshObject> Mesh;
+    Base::Reference<const MeshObject> Mesh;
 };
 
 } // namespace Mesh

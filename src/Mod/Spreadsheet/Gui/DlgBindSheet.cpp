@@ -21,7 +21,7 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
-#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string.hpp>
 #include <QMessageBox>
 #include "DlgBindSheet.h"
 #include <Base/Tools.h>
@@ -40,10 +40,13 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
     : QDialog(parent), sheet(sheet), range(ranges.front()), ui(new Ui::DlgBindSheet)
 {
     ui->setupUi(this);
+    // remove the automatic help button in dialog title since we don't use it
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     std::string toStart,toEnd;
     ExpressionPtr pStart, pEnd;
-    PropertySheet::BindingType type = sheet->getCellBinding(range,&pStart,&pEnd);
+    App::ObjectIdentifier bindingTarget;
+    PropertySheet::BindingType type = sheet->getCellBinding(range,&pStart,&pEnd,&bindingTarget);
     if(type == PropertySheet::BindingNone) {
         if(ranges.size()>1) {
             toStart = ranges.back().from().toString();
@@ -55,6 +58,7 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
             target.setCol(target.col() + range.to().col() - range.from().col());
             toEnd = target.toString();
         }
+        ui->btnDiscard->setDisabled(true);
     } else {
         ui->lineEditFromStart->setReadOnly(true);
         ui->lineEditFromEnd->setReadOnly(true);
@@ -88,6 +92,7 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
     ui->comboBox->addItem(QString::fromLatin1(". (%1)").arg(
                 QString::fromUtf8(sheet->Label.getValue())), QByteArray(""));
 
+    App::DocumentObject *target = bindingTarget.getDocumentObject();
     for(auto obj : sheet->getDocument()->getObjectsOfType<Sheet>()) {
         if(obj == sheet)
             continue;
@@ -99,6 +104,8 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
         else
             label = QLatin1String(obj->getNameInDocument());
         ui->comboBox->addItem(label, QByteArray(obj->getNameInDocument()));
+        if (obj == target)
+            ui->comboBox->setCurrentIndex(ui->comboBox->count()-1);
     }
     for(auto doc : GetApplication().getDocuments()) {
         if(doc == sheet->getDocument())
@@ -115,6 +122,8 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
             else
                 label = QLatin1String(fullname.c_str());
             ui->comboBox->addItem(label, QByteArray(fullname.c_str()));
+            if (obj == target)
+                ui->comboBox->setCurrentIndex(ui->comboBox->count()-1);
         }
     }
 
@@ -146,38 +155,71 @@ void DlgBindSheet::accept()
                 FC_THROWM(Base::RuntimeError, "Cannot find Spreadsheet '" << ref << "'");
         }
 
+        auto checkAddress = [](std::string &addr, CellAddress &cell, bool quote) {
+            std::string copy(addr);
+            boost::to_upper(copy);
+            cell = App::stringToAddress(copy.c_str(), true);
+            if (!cell.isValid()) {
+                std::string msg("Invalid cell: ");
+                msg += addr;
+                throw Base::ValueError(msg.c_str());
+            }
+            if (quote)
+                addr = std::string("<<") + copy + ">>";
+            else
+                addr = copy;
+        };
+
+        CellAddress fromCellStart, fromCellEnd, toCellStart, toCellEnd;
         std::string fromStart(ui->lineEditFromStart->text().trimmed().toLatin1().constData());
         std::string fromEnd(ui->lineEditFromEnd->text().trimmed().toLatin1().constData());
+        checkAddress(fromStart, fromCellStart, false);
+        checkAddress(fromEnd, fromCellEnd, false);
 
         std::string toStart(ui->lineEditToStart->text().trimmed().toLatin1().constData());
         if(boost::starts_with(toStart,"=")) 
             toStart.erase(toStart.begin());
         else
-            toStart = std::string("<<") + toStart + ">>";
+            checkAddress(toStart, toCellStart, true);
 
         std::string toEnd(ui->lineEditToEnd->text().trimmed().toLatin1().constData());
         if(boost::starts_with(toEnd,"=")) 
             toEnd.erase(toEnd.begin());
-        else
-            toEnd = std::string("<<") + toEnd + ">>";
+        else {
+            checkAddress(toEnd, toCellEnd, true);
+            if (toCellStart.isValid()) {
+                App::Range fromRange(fromCellStart, fromCellEnd, true);
+                App::Range toRange(toCellStart, toCellEnd, true);
+                if (fromRange.size() != toRange.size()) {
+                    auto res = QMessageBox::warning(this, tr("Bind cells"),
+                            tr("Source and target cell count mismatch. Partial binding may still work.\n\n"
+                               "Do you want to continue?"), QMessageBox::Yes|QMessageBox::No);
+                    if (res == QMessageBox::No)
+                        return;
+                }
+            }
+        }
 
         Gui::Command::openCommand("Bind cells");
         commandActive = true;
 
-        if(ui->checkBoxHREF->isChecked())
+        if(ui->checkBoxHREF->isChecked()) {
+            Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.Bind.%s.%s', None)", fromStart, fromEnd);
             Gui::cmdAppObjectArgs(sheet,
                     "setExpression('.cells.BindHiddenRef.%s.%s', 'hiddenref(tuple(%s.cells, %s, %s))')",
                     fromStart, fromEnd, ref, toStart, toEnd);
-        else
+        } else {
+            Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.BindHiddenRef.%s.%s', None)", fromStart, fromEnd);
             Gui::cmdAppObjectArgs(sheet,
                     "setExpression('.cells.Bind.%s.%s', 'tuple(%s.cells, %s, %s)')",
                     fromStart, fromEnd, ref, toStart, toEnd);
+        }
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
         QDialog::accept();
     } catch(Base::Exception &e) {
         e.ReportException();
-        QMessageBox::critical(this, tr("Bind cells"), QString::fromUtf8(e.what()));
+        QMessageBox::critical(this, tr("Bind Spreadsheet Cells"), tr("Error: \n") + QString::fromUtf8(e.what()));
         if(commandActive)
             Gui::Command::abortCommand();
     }
@@ -189,6 +231,7 @@ void DlgBindSheet::onDiscard() {
         std::string fromEnd(ui->lineEditFromEnd->text().trimmed().toLatin1().constData());
         Gui::Command::openCommand("Unbind cells");
         Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.Bind.%s.%s', None)", fromStart, fromEnd);
+        Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.BindHiddenRef.%s.%s', None)", fromStart, fromEnd);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
         reject();

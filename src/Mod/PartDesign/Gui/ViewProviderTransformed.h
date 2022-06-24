@@ -51,6 +51,8 @@ public:
 
     // The feature name of the subclass
     std::string featureName;
+    // Name of menu dialog
+    QString menuName;
 
     virtual Gui::ViewProvider *startEditing(int ModNum=0) override;
 

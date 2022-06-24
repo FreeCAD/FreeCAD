@@ -39,7 +39,6 @@
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-#include <boost_bind_bind.hpp>
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
@@ -464,6 +463,25 @@ QVariant SheetModel::headerData(int section, Qt::Orientation orientation, int ro
     return QVariant();
 }
 
+void SheetModel::setCellData(QModelIndex index, QString str)
+{
+    try {
+        CellAddress address(index.row(), index.column());
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit cell"));
+        // Because of possible complication of recursively escaped
+        // characters, let's take a shortcut and bypass the command
+        // interface for now.
+
+        sheet->setContent(address, str.toUtf8().constData());
+        Gui::Command::commitCommand();
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+        Gui::Command::abortCommand();
+    }
+}
+
 bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
     if (role == Qt::DisplayRole) {
@@ -472,32 +490,19 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
     else if (role == Qt::EditRole) {
         CellAddress address(index.row(), index.column());
 
-        try {
-            QString str = value.toString();
+        QString str = value.toString();
 
-            // Check to see if this is already the value in the cell, and skip the update if so
-            auto cell = sheet->getCell(address);
-            if (cell) {
-                std::string oldContent;
-                cell->getStringContent(oldContent);
-                if (str == QString::fromStdString(oldContent))
-                    return true;
-            }
-
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit cell"));
-            // Because of possible complication of recursively escaped
-            // characters, let's take a shortcut and bypass the command
-            // interface for now.
-
-            sheet->setContent(address, str.toUtf8().constData());
-            Gui::Command::commitCommand();
-            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        // Check to see if this is already the value in the cell, and skip the update if so
+        auto cell = sheet->getCell(address);
+        if (cell) {
+            std::string oldContent;
+            cell->getStringContent(oldContent);
+            if (str == QString::fromStdString(oldContent))
+                return true;
         }
-        catch (const Base::Exception& e) {
-            e.ReportException();
-            Gui::Command::abortCommand();
-            return false;
-        }
+
+        QMetaObject::invokeMethod(this, "setCellData", Qt::QueuedConnection,
+                                  Q_ARG(QModelIndex, index), Q_ARG(QString, str));
     }
     return true;
 }

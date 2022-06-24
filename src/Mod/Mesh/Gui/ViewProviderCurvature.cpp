@@ -447,7 +447,7 @@ public:
 
     static void run(void * data, SoSensor * sensor)
     {
-        Annotation* self = reinterpret_cast<Annotation*>(data);
+        Annotation* self = static_cast<Annotation*>(data);
         self->show();
         delete self;
         delete sensor;
@@ -497,7 +497,7 @@ private:
 
 void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback * n)
 {
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
     const SoEvent* ev = n->getEvent();
     if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
         const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ev);

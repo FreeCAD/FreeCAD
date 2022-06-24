@@ -174,7 +174,7 @@ MemDebug::~MemDebug()
 */
 int MemDebug::sReportHook(int   nRptType,char *szMsg,int  *retVal)
 {
-   char *RptTypes[] = { "Warning", "Error", "Assert" };
+   const char *RptTypes[] = { "Warning", "Error", "Assert" };
 
    if ( ( nRptType > 0 ) || ( strstr( szMsg, "HEAP CORRUPTION DETECTED" ) ) )
       fprintf( logFile, "%s: %s", RptTypes[nRptType], szMsg );
@@ -199,8 +199,8 @@ int __cdecl MemDebug::sAllocHook(
    int      nLine
    )
 {
-  char *operation[] = { "       :", "Alloc  :", "Realloc:", "Free   :" };
-   char *blockType[] = { "Free", "Normal", "CRT", "Ignore", "Client" };
+   const char *operation[] = { "       :", "Alloc  :", "Realloc:", "Free   :" };
+   const char *blockType[] = { "Free", "Normal", "CRT", "Ignore", "Client" };
 
    if ( nBlockUse == _CRT_BLOCK )   // Ignore internal C runtime library allocations
       return( 7 ); // (True = 7, False = 0)

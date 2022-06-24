@@ -270,7 +270,7 @@ void TaskLeaderLine::setUiPrimary()
         ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
     }
 
-    ui->pbTracker->setText(QString::fromUtf8("Pick points"));
+    ui->pbTracker->setText(tr("Pick points"));
     if (m_haveMdi) {
         ui->pbTracker->setEnabled(true);
         ui->pbCancelEdit->setEnabled(true);
@@ -319,7 +319,7 @@ void TaskLeaderLine::setUiEdit()
         ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue());
         connect(ui->cboxEndSym, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
 
-        ui->pbTracker->setText(QString::fromUtf8("Edit points"));
+        ui->pbTracker->setText(tr("Edit points"));
         if (m_haveMdi) {
             ui->pbTracker->setEnabled(true);
             ui->pbCancelEdit->setEnabled(true);
@@ -515,7 +515,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
             m_tracker->terminateDrawing();
         }
         m_pbTrackerState = TRACKERPICK;
-        ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
+        ui->pbTracker->setText(tr("Pick Points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
@@ -527,7 +527,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
             m_qgLine->closeEdit();
         }
         m_pbTrackerState = TRACKERPICK;
-        ui->pbTracker->setText(QString::fromUtf8("Edit Points"));
+        ui->pbTracker->setText(tr("Edit Points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
@@ -547,7 +547,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
         QString msg = tr("Pick a starting point for leader line");
         getMainWindow()->statusBar()->show();
         Gui::getMainWindow()->showMessage(msg,3000);
-        ui->pbTracker->setText(QString::fromUtf8("Save Points"));
+        ui->pbTracker->setText(tr("Save Points"));
         ui->pbTracker->setEnabled(true);
         ui->pbCancelEdit->setEnabled(true);
         m_pbTrackerState = TRACKERSAVE;
@@ -574,7 +574,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
                 QString msg = tr("Click and drag markers to adjust leader line");
                 getMainWindow()->statusBar()->show();
                 Gui::getMainWindow()->showMessage(msg,3000);
-                ui->pbTracker->setText(QString::fromUtf8("Save changes"));
+                ui->pbTracker->setText(tr("Save changes"));
                 ui->pbTracker->setEnabled(true);
                 ui->pbCancelEdit->setEnabled(true);
                 m_pbTrackerState = TRACKERSAVE;
@@ -591,7 +591,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
             QString msg = tr("Pick a starting point for leader line");
             getMainWindow()->statusBar()->show();
             Gui::getMainWindow()->showMessage(msg,3000);
-            ui->pbTracker->setText(QString::fromUtf8("Save changes"));
+            ui->pbTracker->setText(tr("Save changes"));
             ui->pbTracker->setEnabled(true);
             ui->pbCancelEdit->setEnabled(true);
             m_pbTrackerState = TRACKERSAVE;
@@ -685,7 +685,7 @@ void TaskLeaderLine::onCancelEditClicked(bool b)
     }
 
     m_pbTrackerState = TRACKEREDIT;
-    ui->pbTracker->setText(QString::fromUtf8("Edit points"));
+    ui->pbTracker->setText(tr("Edit points"));
     ui->pbCancelEdit->setEnabled(false);
     enableTaskButtons(true);
 
@@ -737,7 +737,7 @@ void TaskLeaderLine::onPointEditComplete(void)
     m_inProgressLock = false;
 
     m_pbTrackerState = TRACKEREDIT;
-    ui->pbTracker->setText(QString::fromUtf8("Edit points"));
+    ui->pbTracker->setText(tr("Edit points"));
     ui->pbTracker->setEnabled(true);
     ui->pbCancelEdit->setEnabled(true);
     enableTaskButtons(true);
@@ -754,7 +754,7 @@ void TaskLeaderLine::abandonEditSession(void)
     Gui::getMainWindow()->showMessage(msg,4000);
 
     m_pbTrackerState = TRACKEREDIT;
-    ui->pbTracker->setText(QString::fromUtf8("Edit points"));
+    ui->pbTracker->setText(tr("Edit points"));
     enableTaskButtons(true);
     ui->pbTracker->setEnabled(true);
     ui->pbCancelEdit->setEnabled(false);

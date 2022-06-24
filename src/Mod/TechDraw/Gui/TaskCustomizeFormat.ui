@@ -7,41 +7,29 @@
     <x>0</x>
     <y>0</y>
     <width>489</width>
-    <height>601</height>
+    <height>533</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>250</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Format Symbols</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="label_GDT">
+     <property name="text">
+      <string>GD&amp;T</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="grid_GDT">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_GDT">
-       <property name="text">
-        <string>GD&amp;T</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="pbA01">
        <property name="toolTip">
         <string>Straightness</string>
        </property>
        <property name="text">
-        <string>⏤</string>
+        <string notr="true">⏤</string>
        </property>
       </widget>
      </item>
@@ -51,7 +39,7 @@
         <string>Flatness</string>
        </property>
        <property name="text">
-        <string>⏥</string>
+        <string notr="true">⏥</string>
        </property>
       </widget>
      </item>
@@ -61,7 +49,7 @@
         <string>Circularity</string>
        </property>
        <property name="text">
-        <string>○</string>
+        <string notr="true">○</string>
        </property>
       </widget>
      </item>
@@ -71,7 +59,7 @@
         <string>Cylindricity</string>
        </property>
        <property name="text">
-        <string>⌭</string>
+        <string notr="true">⌭</string>
        </property>
       </widget>
      </item>
@@ -81,7 +69,7 @@
         <string>Parallelism</string>
        </property>
        <property name="text">
-        <string>∥</string>
+        <string notr="true">∥</string>
        </property>
       </widget>
      </item>
@@ -91,7 +79,7 @@
         <string>Perpendicularity</string>
        </property>
        <property name="text">
-        <string>⟂</string>
+        <string notr="true">⟂</string>
        </property>
       </widget>
      </item>
@@ -101,7 +89,7 @@
         <string>Angularity</string>
        </property>
        <property name="text">
-        <string>∠</string>
+        <string notr="true">∠</string>
        </property>
       </widget>
      </item>
@@ -116,7 +104,7 @@
         <string>Profile of a line</string>
        </property>
        <property name="text">
-        <string>⌒</string>
+        <string notr="true">⌒</string>
        </property>
       </widget>
      </item>
@@ -126,7 +114,7 @@
         <string>Profile of a surface</string>
        </property>
        <property name="text">
-        <string>⌓</string>
+        <string notr="true">⌓</string>
        </property>
       </widget>
      </item>
@@ -136,7 +124,7 @@
         <string>Circular runout</string>
        </property>
        <property name="text">
-        <string>↗</string>
+        <string notr="true">↗</string>
        </property>
       </widget>
      </item>
@@ -146,7 +134,7 @@
         <string>Total runout</string>
        </property>
        <property name="text">
-        <string>⌰</string>
+        <string notr="true">⌰</string>
        </property>
       </widget>
      </item>
@@ -156,7 +144,7 @@
         <string>Position</string>
        </property>
        <property name="text">
-        <string>⌖</string>
+        <string notr="true">⌖</string>
        </property>
       </widget>
      </item>
@@ -166,7 +154,7 @@
         <string>Concentricity</string>
        </property>
        <property name="text">
-        <string>◎</string>
+        <string notr="true">◎</string>
        </property>
       </widget>
      </item>
@@ -176,7 +164,7 @@
         <string>Symmetry</string>
        </property>
        <property name="text">
-        <string>⌯</string>
+        <string notr="true">⌯</string>
        </property>
       </widget>
      </item>
@@ -202,7 +190,7 @@
         <string>derived geometry element</string>
        </property>
        <property name="text">
-        <string>Ⓐ</string>
+        <string notr="true">Ⓐ</string>
        </property>
       </widget>
      </item>
@@ -217,7 +205,7 @@
         <string>Minimax (Tschebyschew)</string>
        </property>
        <property name="text">
-        <string>Ⓒ</string>
+        <string notr="true">Ⓒ</string>
        </property>
       </widget>
      </item>
@@ -232,11 +220,11 @@
         <string>Hull condition</string>
        </property>
        <property name="text">
-        <string>Ⓔ</string>
+        <string notr="true">Ⓔ</string>
        </property>
       </widget>
      </item>
-    <item row="0" column="3">
+     <item row="0" column="3">
       <widget class="QPushButton" name="pbB04">
        <property name="font">
         <font>
@@ -247,7 +235,7 @@
         <string>Free state</string>
        </property>
        <property name="text">
-        <string>Ⓕ</string>
+        <string notr="true">Ⓕ</string>
        </property>
       </widget>
      </item>
@@ -262,7 +250,7 @@
         <string>Least square geometry element</string>
        </property>
        <property name="text">
-        <string>Ⓖ</string>
+        <string notr="true">Ⓖ</string>
        </property>
       </widget>
      </item>
@@ -277,7 +265,7 @@
         <string>Least material condition (LMC)</string>
        </property>
        <property name="text">
-        <string>Ⓛ</string>
+        <string notr="true">Ⓛ</string>
        </property>
       </widget>
      </item>
@@ -292,7 +280,7 @@
         <string>Maximum material condition (MMC)</string>
        </property>
        <property name="text">
-        <string>Ⓜ</string>
+        <string notr="true">Ⓜ</string>
        </property>
       </widget>
      </item>
@@ -307,7 +295,7 @@
         <string>least inscribed geometry element</string>
        </property>
        <property name="text">
-        <string>Ⓝ</string>
+        <string notr="true">Ⓝ</string>
        </property>
       </widget>
      </item>
@@ -322,7 +310,7 @@
         <string>Projected tolerance zone</string>
        </property>
        <property name="text">
-        <string>Ⓟ</string>
+        <string notr="true">Ⓟ</string>
        </property>
       </widget>
      </item>
@@ -337,7 +325,7 @@
         <string>Reciprocity condition</string>
        </property>
        <property name="text">
-        <string>Ⓡ</string>
+        <string notr="true">Ⓡ</string>
        </property>
       </widget>
      </item>
@@ -352,7 +340,7 @@
         <string>Regardless of feature size (RFS)</string>
        </property>
        <property name="text">
-        <string>Ⓢ</string>
+        <string notr="true">Ⓢ</string>
        </property>
       </widget>
      </item>
@@ -367,7 +355,7 @@
         <string>Tangent plane</string>
        </property>
        <property name="text">
-        <string>Ⓣ</string>
+        <string notr="true">Ⓣ</string>
        </property>
       </widget>
      </item>
@@ -382,7 +370,7 @@
         <string>Unequal Bilateral</string>
        </property>
        <property name="text">
-        <string>Ⓤ</string>
+        <string notr="true">Ⓤ</string>
        </property>
       </widget>
      </item>
@@ -397,11 +385,11 @@
         <string>most inscribed geometry element</string>
        </property>
        <property name="text">
-        <string>Ⓧ</string>
+        <string notr="true">Ⓧ</string>
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_4">
@@ -418,7 +406,7 @@
         <string>Radius</string>
        </property>
        <property name="text">
-        <string>R</string>
+        <string notr="true">R</string>
        </property>
       </widget>
      </item>
@@ -428,7 +416,7 @@
         <string>Diameter</string>
        </property>
        <property name="text">
-        <string>⌀</string>
+        <string notr="true">⌀</string>
        </property>
       </widget>
      </item>
@@ -438,7 +426,7 @@
         <string>Radius of sphere</string>
        </property>
        <property name="text">
-        <string>SR</string>
+        <string notr="true">SR</string>
        </property>
       </widget>
      </item>
@@ -448,7 +436,7 @@
         <string>Diameter of sphere</string>
        </property>
        <property name="text">
-        <string>S⌀</string>
+        <string notr="true">S⌀</string>
        </property>
       </widget>
      </item>
@@ -458,7 +446,7 @@
         <string>Square</string>
        </property>
        <property name="text">
-        <string>□</string>
+        <string notr="true">□</string>
        </property>
       </widget>
      </item>
@@ -479,7 +467,7 @@
         <string>Degree</string>
        </property>
        <property name="text">
-        <string>°</string>
+        <string notr="true">°</string>
        </property>
       </widget>
      </item>
@@ -489,17 +477,17 @@
         <string>(Arc) Minute</string>
        </property>
        <property name="text">
-        <string>′</string>
+        <string notr="true">′</string>
        </property>
       </widget>
      </item>
-    <item row="0" column="2">
+     <item row="0" column="2">
       <widget class="QPushButton" name="pbD03">
        <property name="toolTip">
         <string>(Arc) Second</string>
        </property>
        <property name="text">
-        <string>″</string>
+        <string notr="true">″</string>
        </property>
       </widget>
      </item>
@@ -509,11 +497,11 @@
         <string>(Arc) Tertie</string>
        </property>
        <property name="text">
-        <string>‴</string>
+        <string notr="true">‴</string>
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label">
@@ -533,7 +521,7 @@
         <string>Taper</string>
        </property>
        <property name="text">
-        <string>⌲</string>
+        <string notr="true">⌲</string>
        </property>
       </widget>
      </item>
@@ -543,7 +531,7 @@
         <string>Slope</string>
        </property>
        <property name="text">
-        <string>⌳</string>
+        <string notr="true">⌳</string>
        </property>
       </widget>
      </item>
@@ -553,7 +541,7 @@
         <string>Counterbore</string>
        </property>
        <property name="text">
-        <string>⌴</string>
+        <string notr="true">⌴</string>
        </property>
       </widget>
      </item>
@@ -563,7 +551,7 @@
         <string>Countersink</string>
        </property>
        <property name="text">
-        <string>⌵</string>
+        <string notr="true">⌵</string>
        </property>
       </widget>
      </item>
@@ -573,7 +561,7 @@
         <string>Plus - Minus</string>
        </property>
        <property name="text">
-        <string>±</string>
+        <string notr="true">±</string>
        </property>
       </widget>
      </item>
@@ -583,7 +571,7 @@
         <string>Centerline</string>
        </property>
        <property name="text">
-        <string>℄</string>
+        <string notr="true">℄</string>
        </property>
       </widget>
      </item>
@@ -593,7 +581,7 @@
         <string>Left/right arrow</string>
        </property>
        <property name="text">
-        <string>↔</string>
+        <string notr="true">↔</string>
        </property>
       </widget>
      </item>
@@ -603,7 +591,7 @@
         <string>Downward arrow</string>
        </property>
        <property name="text">
-        <string>↧</string>
+        <string notr="true">↧</string>
        </property>
       </widget>
      </item>
@@ -613,7 +601,7 @@
         <string>Multiplication sign</string>
        </property>
        <property name="text">
-        <string>×</string>
+        <string notr="true">×</string>
        </property>
       </widget>
      </item>
@@ -634,7 +622,7 @@
         <string>Capital delta</string>
        </property>
        <property name="text">
-        <string>Δ</string>
+        <string notr="true">Δ</string>
        </property>
       </widget>
      </item>
@@ -644,7 +632,7 @@
         <string>Capital sigma</string>
        </property>
        <property name="text">
-        <string>Σ</string>
+        <string notr="true">Σ</string>
        </property>
       </widget>
      </item>
@@ -654,7 +642,7 @@
         <string>Capital omega</string>
        </property>
        <property name="text">
-        <string>Ω</string>
+        <string notr="true">Ω</string>
        </property>
       </widget>
      </item>
@@ -664,7 +652,7 @@
         <string>Small mu</string>
        </property>
        <property name="text">
-        <string>μ</string>
+        <string notr="true">μ</string>
        </property>
       </widget>
      </item>
@@ -674,17 +662,17 @@
         <string>Small sigma</string>
        </property>
        <property name="text">
-        <string>σ</string>
+        <string notr="true">σ</string>
        </property>
       </widget>
      </item>
-    <item row="1" column="0">
+     <item row="1" column="0">
       <widget class="QPushButton" name="pbF06">
        <property name="toolTip">
         <string>Small phi</string>
        </property>
        <property name="text">
-        <string>φ</string>
+        <string notr="true">φ</string>
        </property>
       </widget>
      </item>
@@ -694,11 +682,11 @@
         <string>Small omega</string>
        </property>
        <property name="text">
-        <string>⍵</string>
+        <string notr="true">⍵</string>
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <layout class="QGridLayout" name="grid_Format">
@@ -712,7 +700,7 @@
      <item row="0" column="1">
       <widget class="QLineEdit" name="leFormat"/>
      </item>
-    <item row="1" column="0">
+     <item row="1" column="0">
       <widget class="QLabel" name="lbPreview">
        <property name="text">
         <string>Preview:</string>
@@ -726,7 +714,7 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
   </layout>
  </widget>

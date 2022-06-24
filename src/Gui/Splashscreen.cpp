@@ -704,6 +704,9 @@ void AboutDialog::on_copyButton_clicked()
     char *appimage = getenv("APPIMAGE");
     if (appimage)
         str << " AppImage";
+    char* snap = getenv("SNAP_REVISION");
+    if (snap)
+        str << " Snap " << snap;
     str << '\n';
 
 #if defined(_DEBUG) || defined(DEBUG)
@@ -725,6 +728,7 @@ void AboutDialog::on_copyButton_clicked()
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
     str << "Coin " << COIN_VERSION << ", ";
+    str << "Vtk " << FC_VTK_VERSION << ", ";
 #if defined(HAVE_OCC_VERSION)
     str << "OCC "
         << OCC_VERSION_MAJOR << "."

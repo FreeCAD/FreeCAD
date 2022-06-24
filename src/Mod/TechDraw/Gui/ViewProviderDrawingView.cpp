@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost_bind_bind.hpp>
 #include <boost_signals2.hpp>
 #include <boost/signals2/connection.hpp>
 #endif
@@ -82,12 +81,6 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
     } else {
         Base::Console().Warning("VPDV::attach has no Feature!\n");
     }
-//    TechDraw::DrawView* view = static_cast<TechDraw::DrawView*>(pcFeat);
-//    TechDraw::DrawPage* page = view->findParentPage();
-//    TechDraw::DrawPage* page = feature->findParentPage();
-//    Base::Console().Message("VPDV::attach(%X) - parent: %X\n", 
-//            pcFeat, page);
-//            pcFeat->getNameInDocument(), page->getNameInDocument());
 }
 
 void ViewProviderDrawingView::setDisplayMode(const char* ModeName)
@@ -214,12 +207,12 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    if (prop == &(getViewObject()->Rotation) ||
-        prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y) ) {
+    //only move the view on X,Y change
+    if (prop == &(getViewObject()->X)  ||
+        prop == &(getViewObject()->Y) ){
         QGIView* qgiv = getQView();
         if (qgiv) {
-            qgiv->updateView(true);
+            qgiv->QGIView::updateView(true);
         }
     }
 
@@ -257,8 +250,36 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
-//   Base::Console().Message("VPDV::onGuiRepaint(%s)\n", dv->getNameInDocument());
-    if (dv == getViewObject()) {
+//    Base::Console().Message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
+    std::vector<TechDraw::DrawPage*> pages = getViewObject()->findAllParentPages();
+    if (pages.size() > 1) {
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
+        if (guiDoc == nullptr) {
+            return;
+        }
+        for (auto& p : pages) {
+            std::vector<App::DocumentObject*> views = p->Views.getValues();
+            for (auto& v: views) {
+                if (v == getViewObject()) {
+                    //view v belongs to this page p
+                    Gui::ViewProvider* vp = guiDoc->getViewProvider(p);
+                    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+                    if (vpPage != nullptr) {
+                        if (vpPage->getMDIViewPage() != nullptr) {
+                            if (vpPage->getMDIViewPage()->getQGVPage()) {
+                                QGIView* qView = dynamic_cast<QGIView *>(vpPage->getMDIViewPage()->
+                                                           getQGVPage()->findQViewForDocObj(v));
+                                if (qView != nullptr) {
+                                    qView->updateView(true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else if (dv == getViewObject()) {
+        //original logic for 1 view on 1 page
         if (!dv->isRemoving() &&
             !dv->isRestoring()) {
             QGIView* qgiv = getQView();

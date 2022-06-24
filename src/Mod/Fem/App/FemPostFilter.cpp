@@ -111,6 +111,8 @@ vtkDataObject* FemPostFilter::getInputData() {
 }
 
 
+// ***************************************************************************
+// clip filter
 PROPERTY_SOURCE(Fem::FemPostClipFilter, Fem::FemPostFilter)
 
 FemPostClipFilter::FemPostClipFilter(void) : FemPostFilter() {
@@ -183,6 +185,9 @@ DocumentObjectExecReturn* FemPostClipFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
+
+// ***************************************************************************
+// data along a line
 PROPERTY_SOURCE(Fem::FemPostDataAlongLineFilter, Fem::FemPostFilter)
 
 FemPostDataAlongLineFilter::FemPostDataAlongLineFilter(void) : FemPostFilter() {
@@ -195,8 +200,8 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter(void) : FemPostFilter() {
     ADD_PROPERTY_TYPE(PlotData, (""), "DataAlongLine", App::Prop_None, "Field used for plotting");
 
     PlotData.setStatus(App::Property::ReadOnly, true);
-    XAxisData.setStatus(App::Property::ReadOnly, true);
-    YAxisData.setStatus(App::Property::ReadOnly, true);
+    XAxisData.setStatus(App::Property::Output, true);
+    YAxisData.setStatus(App::Property::Output, true);
 
     FilterPipeline clip;
 
@@ -236,6 +241,23 @@ DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
+void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+// transforms properties that had been changed
+{
+    // property Point1 had the App::PropertyVector and was changed to App::PropertyVectorDistance
+    if (prop == &Point1 && strcmp(TypeName, "App::PropertyVector") == 0) {
+        App::PropertyVector Point1Property;
+        // restore the PropertyFloat to be able to set its value
+        Point1Property.Restore(reader);
+        Point1.setValue(Point1Property.getValue());
+    }
+    // property Point2 had the App::PropertyVector and was changed to App::PropertyVectorDistance
+    else if (prop == &Point2 && strcmp(TypeName, "App::PropertyVector") == 0) {
+        App::PropertyVector Point2Property;
+        Point2Property.Restore(reader);
+        Point2.setValue(Point2Property.getValue());
+    }
+}
 
 void FemPostDataAlongLineFilter::onChanged(const Property* prop) {
     if (prop == &Point1) {
@@ -274,6 +296,10 @@ void FemPostDataAlongLineFilter::GetAxisData() {
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     vtkDataArray* pdata = dset->GetPointData()->GetArray(PlotData.getValue());
+    // VTK cannot deliver data when the filer relies e.g. on a scalar clip filter
+    // whose value is set so that all data are clipped
+    if (!pdata)
+        return;
     vtkDataArray* tcoords = dset->GetPointData()->GetTCoords("Texture Coordinates");
 
     vtkIdType component = 0;
@@ -306,17 +332,20 @@ void FemPostDataAlongLineFilter::GetAxisData() {
     XAxisData.setValues(coords);
 }
 
+
+// ***************************************************************************
+// data point filter
 PROPERTY_SOURCE(Fem::FemPostDataAtPointFilter, Fem::FemPostFilter)
 
 FemPostDataAtPointFilter::FemPostDataAtPointFilter(void) : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Center, (Base::Vector3d(0.0, 0.0, 1.0)), "DataAtPoint", App::Prop_None, "The center used to define the center of the point");
-    ADD_PROPERTY_TYPE(Radius, (0), "DataAtPoint", App::Prop_None, "The point 2 used to define end point of line");
+    ADD_PROPERTY_TYPE(Center, (Base::Vector3d(0.0, 0.0, 0.0)), "DataAtPoint", App::Prop_None, "Center of the point");
+    ADD_PROPERTY_TYPE(Radius, (0), "DataAtPoint", App::Prop_None, "Radius around the point (unused)");
     ADD_PROPERTY_TYPE(PointData, (0), "DataAtPoint", App::Prop_None, "Point data values used for plotting");
     ADD_PROPERTY_TYPE(FieldName, (""), "DataAtPoint", App::Prop_None, "Field used for plotting");
-    ADD_PROPERTY_TYPE(Unit, (""), "DataAtPoint", App::Prop_None, "Unit used for Field");
+    ADD_PROPERTY_TYPE(Unit, (""), "DataAtPoint", App::Prop_None, "Unit used for the field");
 
-    PointData.setStatus(App::Property::ReadOnly, true);
+    PointData.setStatus(App::Property::Output, true);
     FieldName.setStatus(App::Property::ReadOnly, true);
     Unit.setStatus(App::Property::ReadOnly, true);
 
@@ -355,25 +384,21 @@ DocumentObjectExecReturn* FemPostDataAtPointFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
-
 void FemPostDataAtPointFilter::onChanged(const Property* prop) {
     if (prop == &Center) {
         const Base::Vector3d& vec = Center.getValue();
         m_point->SetCenter(vec.x, vec.y, vec.z);
     }
-    else if (prop == &FieldName) {
-        GetPointData();
-    }
+    GetPointData();
     Fem::FemPostFilter::onChanged(prop);
 }
 
 short int FemPostDataAtPointFilter::mustExecute(void) const {
 
-    if (Center.isTouched()) {
-
+    if (Center.isTouched())
         return 1;
-    }
-    else return App::DocumentObject::mustExecute();
+    else
+        return App::DocumentObject::mustExecute();
 }
 
 void FemPostDataAtPointFilter::GetPointData() {
@@ -383,6 +408,10 @@ void FemPostDataAtPointFilter::GetPointData() {
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     vtkDataArray* pdata = dset->GetPointData()->GetArray(FieldName.getValue());
+    // VTK cannot deliver data when the filer relies e.g. on a scalar clip filter
+    // whose value is set so that all data are clipped
+    if (!pdata)
+        return;
 
     int component = 0;
 
@@ -402,6 +431,9 @@ void FemPostDataAtPointFilter::GetPointData() {
     PointData.setValues(values);
 }
 
+
+// ***************************************************************************
+// scalar clip filter
 PROPERTY_SOURCE(Fem::FemPostScalarClipFilter, Fem::FemPostFilter)
 
 FemPostScalarClipFilter::FemPostScalarClipFilter(void) : FemPostFilter() {
@@ -457,7 +489,6 @@ DocumentObjectExecReturn* FemPostScalarClipFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
-
 void FemPostScalarClipFilter::onChanged(const Property* prop) {
 
     if (prop == &Value) {
@@ -495,6 +526,10 @@ void FemPostScalarClipFilter::setConstraintForField() {
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
 
     vtkDataArray* pdata = dset->GetPointData()->GetArray(Scalars.getValueAsString());
+    // VTK cannot deliver data when the filer relies e.g. on a cut clip filter
+    // whose value is set so that all data are cut
+    if (!pdata)
+        return;
     double p[2];
     pdata->GetRange(p);
     m_constraints.LowerBound = p[0];
@@ -503,6 +538,8 @@ void FemPostScalarClipFilter::setConstraintForField() {
 }
 
 
+// ***************************************************************************
+// warp vector filter
 PROPERTY_SOURCE(Fem::FemPostWarpVectorFilter, Fem::FemPostFilter)
 
 FemPostWarpVectorFilter::FemPostWarpVectorFilter(void) : FemPostFilter() {
@@ -521,7 +558,6 @@ FemPostWarpVectorFilter::FemPostWarpVectorFilter(void) : FemPostFilter() {
 FemPostWarpVectorFilter::~FemPostWarpVectorFilter() {
 
 }
-
 
 DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
 
@@ -556,7 +592,6 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
-
 void FemPostWarpVectorFilter::onChanged(const Property* prop) {
 
     if (prop == &Factor) {
@@ -581,6 +616,8 @@ short int FemPostWarpVectorFilter::mustExecute(void) const {
 }
 
 
+// ***************************************************************************
+// cut filter
 PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
 
 FemPostCutFilter::FemPostCutFilter(void) : FemPostFilter() {

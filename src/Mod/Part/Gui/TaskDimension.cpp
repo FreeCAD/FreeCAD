@@ -26,8 +26,6 @@
 # include <QButtonGroup>
 # include <QPushButton>
 # include <sstream>
-# include <boost_bind_bind.hpp>
-
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopoDS_Edge.hxx>
@@ -63,6 +61,7 @@
 # include <Inventor/engines/SoComposeRotationFromTo.h>
 # include <Inventor/engines/SoComposeRotation.h>
 # include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoPickStyle.h>
 #endif
 
 #include <Base/Console.h>
@@ -408,6 +407,11 @@ SbBool PartGui::DimensionLinear::affectsState() const
 
 void PartGui::DimensionLinear::setupDimension()
 {
+  //make unpickable
+  SoPickStyle* ps = static_cast<SoPickStyle*>(getPart("pickStyle", true));
+  if (ps)
+      ps->style = SoPickStyle::UNPICKABLE;
+
   //transformation
   SoTransform *trans = static_cast<SoTransform *>(getPart("transformation", true));
   trans->translation.connectFrom(&point1);
@@ -1395,10 +1399,10 @@ PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* 
   for (uint index = 0; index < buttonCountIn; ++index)
   {
     ButtonIconPairType tempPair;
-
+    QString text = QObject::tr("Selection ");
     std::ostringstream stream;
-    stream << "Selection " << ((index < 10) ? "0" : "") <<  index + 1;
-    QString buttonText = QObject::tr(stream.str().c_str());
+    stream << text.toStdString() << ((index < 10) ? "0" : "") <<  index + 1;
+    QString buttonText = QString::fromStdString(stream.str());
     QPushButton *button = new QPushButton(buttonText, this);
     button->setCheckable(true);
     button->setEnabled(false);

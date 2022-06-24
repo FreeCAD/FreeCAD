@@ -50,6 +50,8 @@ import FemGui
 
 import femresult.resulttools as resulttools
 
+translate = FreeCAD.Qt.translate
+
 
 class _TaskPanel:
     """
@@ -285,7 +287,7 @@ class _TaskPanel:
 
     def abs_displacement_selected(self, state):
         if len(self.result_obj.DisplacementLengths) > 0:
-            self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm")
+            self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm", translate("FEM","Displacement Magnitude"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -295,7 +297,7 @@ class _TaskPanel:
             res_disp_u1 = self.get_scalar_disp_list(
                 self.result_obj.DisplacementVectors, 0
             )
-            self.result_selected("U1", res_disp_u1, "mm")
+            self.result_selected("U1", res_disp_u1, "mm", translate("FEM","Displacement X"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -305,7 +307,7 @@ class _TaskPanel:
             res_disp_u2 = self.get_scalar_disp_list(
                 self.result_obj.DisplacementVectors, 1
             )
-            self.result_selected("U2", res_disp_u2, "mm")
+            self.result_selected("U2", res_disp_u2, "mm", translate("FEM","Displacement Y"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -315,63 +317,63 @@ class _TaskPanel:
             res_disp_u3 = self.get_scalar_disp_list(
                 self.result_obj.DisplacementVectors, 2
             )
-            self.result_selected("U3", res_disp_u3, "mm")
+            self.result_selected("U3", res_disp_u3, "mm", translate("FEM","Displacement Z"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def vm_stress_selected(self, state):
         if len(self.result_obj.vonMises) > 0:
-            self.result_selected("Sabs", self.result_obj.vonMises, "MPa")
+            self.result_selected("Sabs", self.result_obj.vonMises, "MPa", translate("FEM","von Mises Stress"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def max_shear_selected(self, state):
         if len(self.result_obj.MaxShear) > 0:
-            self.result_selected("MaxShear", self.result_obj.MaxShear, "MPa")
+            self.result_selected("MaxShear", self.result_obj.MaxShear, "MPa", translate("FEM","Max Shear Stress"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def max_prin_selected(self, state):
         if len(self.result_obj.PrincipalMax) > 0:
-            self.result_selected("MaxPrin", self.result_obj.PrincipalMax, "MPa")
+            self.result_selected("MaxPrin", self.result_obj.PrincipalMax, "MPa", translate("FEM","Max Principal Stress"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def temperature_selected(self, state):
         if len(self.result_obj.Temperature) > 0:
-            self.result_selected("Temp", self.result_obj.Temperature, "K")
+            self.result_selected("Temp", self.result_obj.Temperature, "K", translate("FEM","Temperature"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def massflowrate_selected(self, state):
         if len(self.result_obj.MassFlowRate) > 0:
-            self.result_selected("MFlow", self.result_obj.MassFlowRate, "kg/s")
+            self.result_selected("MFlow", self.result_obj.MassFlowRate, "kg/s", translate("FEM","Mass Flow Rate"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def networkpressure_selected(self, state):
         if len(self.result_obj.NetworkPressure) > 0:
-            self.result_selected("NPress", self.result_obj.NetworkPressure, "MPa")
+            self.result_selected("NPress", self.result_obj.NetworkPressure, "MPa", translate("FEM","Network Pressure"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def min_prin_selected(self, state):
         if len(self.result_obj.PrincipalMin) > 0:
-            self.result_selected("MinPrin", self.result_obj.PrincipalMin, "MPa")
+            self.result_selected("MinPrin", self.result_obj.PrincipalMin, "MPa", translate("FEM","Min Principal Stress"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def peeq_selected(self, state):
         if len(self.result_obj.Peeq) > 0:
-            self.result_selected("Peeq", self.result_obj.Peeq, "")
+            self.result_selected("Peeq", self.result_obj.Peeq, "", translate("FEM","Equivalent Plastic Strain"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -380,11 +382,19 @@ class _TaskPanel:
         if len(plt.get_fignums()) > 0:
             plt.show()
         else:
-            QtGui.QMessageBox.information(
-                None,
-                self.result_obj.Label + " - Information",
-                "No histogram available.\nPlease select a result type first."
-            )
+            # if the plot was closed and subsequently the Histogram button was pressed again
+            # we have valid settings, but must restore the dialog to refill the plot content
+            # see https://github.com/FreeCAD/FreeCAD/issues/6975
+            if FreeCAD.FEM_dialog["results_type"] != "None":
+                self.restore_result_dialog()
+            if len(plt.get_fignums()) > 0:
+                plt.show()
+            else:
+                QtGui.QMessageBox.information(
+                    None,
+                    self.result_obj.Label + " - " + translate("FEM","Information"),
+                    translate("FEM","No histogram available.\nPlease select a result type first.")
+                )
 
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
@@ -397,6 +407,7 @@ class _TaskPanel:
         P1 = np.array(self.result_obj.PrincipalMax)
         P2 = np.array(self.result_obj.PrincipalMed)
         P3 = np.array(self.result_obj.PrincipalMin)
+        MS = np.array(self.result_obj.MaxShear)
         vM = np.array(self.result_obj.vonMises)
         Peeq = np.array(self.result_obj.Peeq)
         T = np.array(self.result_obj.Temperature)
@@ -457,7 +468,7 @@ class _TaskPanel:
             "x", "y", "z", "T", "vM", "Peeq", "P1", "P2", "P3",
             "sxx", "syy", "szz", "sxy", "sxz", "syz",
             "exx", "eyy", "ezz", "exy", "exz", "eyz",
-            "MF", "NP", "rx", "ry", "rz", "mc",
+            "MS", "MF", "NP", "rx", "ry", "rz", "mc",
             "s1x", "s1y", "s1z", "s2x", "s2y", "s2z", "s3x", "s3y", "s3z"
         ]
         tokrules.names = {}
@@ -485,20 +496,27 @@ class _TaskPanel:
         scalar_list = list(d[axis])
         return scalar_list
 
-    def result_selected(self, res_type, res_values, res_unit):
+    def result_selected(self, res_type, res_values, res_unit, res_title):
         FreeCAD.FEM_dialog["results_type"] = res_type
         (minm, maxm) = self.get_result_stats(res_type)
         self.update_colors_stats(res_values, res_unit, minm, maxm)
 
         if len(plt.get_fignums()) > 0:
             plt.close()
+        plt.ioff() # disable interactive mode so we have full control when plot is shown
+        plt.figure(res_title)
         plt.hist(res_values, bins=50, alpha=0.5, facecolor="blue")
         plt.xlabel(res_unit)
-        plt.title("Histogram of {}".format(res_type))
-        plt.ylabel("Nodes")
+        plt.title(translate("FEM","Histogram of {}").format(res_title))
+        plt.ylabel(translate("FEM","Nodes"))
         plt.grid(True)
         fig_manager = plt.get_current_fig_manager()
-        fig_manager.window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)    # stay ontop
+        # Lines below tells Qt that plot widget/dialog should be kept on top of its parent,
+        # its parent being defined as FC main window
+        # "Tool" type also is non modal, and dialog doesn't add a tab in the OS task bar
+        # See Qt::WindowFlags for more details
+        fig_manager.window.setParent(FreeCADGui.getMainWindow())
+        fig_manager.window.setWindowFlag(QtCore.Qt.Tool)
 
     def update_colors_stats(self, res_values, res_unit, minm, maxm):
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -611,26 +629,24 @@ class _TaskPanel:
         self.disable_empty_result_buttons()
         if self.mesh_obj.FemMesh.NodeCount == 0:
                 error_message = (
-                    "FEM: there are no nodes in result mesh.  "
-                    "This means, there will be nothing to show.\n"
+                    translate("FEM","FEM: there are no nodes in result mesh, there will be nothing to show.") + "\n"
                 )
                 FreeCAD.Console.PrintError(error_message)
-                QtGui.QMessageBox.critical(None, "Empty result mesh", error_message)
+                QtGui.QMessageBox.critical(None, translate("FEM","Empty result mesh"), error_message)
         elif (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
             self.suitable_results = True
             hide_parts_constraints()
         else:
             if not self.mesh_obj.FemMesh.VolumeCount:
                 error_message = (
-                    "FEM: Graphical bending stress output "
-                    "for beam or shell FEM Meshes not yet supported.\n"
+                    translate("FEM","FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.") + "\n"
                 )
                 FreeCAD.Console.PrintError(error_message)
-                QtGui.QMessageBox.critical(None, "No result object", error_message)
+                QtGui.QMessageBox.critical(None, translate("FEM","No result object"), error_message)
             else:
-                error_message = "FEM: Result node numbers are not equal to FEM Mesh NodeCount.\n"
+                error_message = translate("FEM","FEM: Result node numbers are not equal to FEM Mesh NodeCount.") + "\n"
                 FreeCAD.Console.PrintError(error_message)
-                QtGui.QMessageBox.critical(None, "No result object", error_message)
+                QtGui.QMessageBox.critical(None, translate("FEM","No result object"), error_message)
 
     def reset_mesh_color(self):
         self.mesh_obj.ViewObject.NodeColor = {}

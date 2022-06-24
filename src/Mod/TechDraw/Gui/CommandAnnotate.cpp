@@ -1509,11 +1509,9 @@ std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
         }
     }
     if (dvp == nullptr) {
-        std::stringstream edgeMsg;
-        edgeMsg << "No Part View in Selection";
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr(edgeMsg.str().c_str()));
-            return selectedSubs;
+      QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                           QObject::tr("No Part View in Selection"));
+      return selectedSubs;
     }
     
     for (auto& s: subNames) {
@@ -1523,10 +1521,10 @@ std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
     }
 
     if (selectedSubs.empty()) {
-        std::stringstream edgeMsg;
-        edgeMsg << "No " << subType << " in Selection";
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                            QObject::tr(edgeMsg.str().c_str()));
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong Selection"),
+                             QObject::tr("No %1 in Selection")
+                                 .arg(QString::fromStdString(subType)));
         return selectedSubs;
     }
 

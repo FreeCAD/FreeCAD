@@ -67,7 +67,6 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     // get quantity
     if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
         *self = static_cast<Base::QuantityPy*>(object)->getQuantityPtr()->getUnit();
         return 0;
     }
@@ -75,7 +74,6 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     // get unit
     if (PyArg_ParseTuple(args,"O!",&(Base::UnitPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
         *self = *(static_cast<Base::UnitPy*>(object)->getUnitPtr());
         return 0;
     }

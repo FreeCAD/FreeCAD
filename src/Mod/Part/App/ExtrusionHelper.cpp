@@ -252,13 +252,13 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                 std::vector<bool>::iterator isInnerWireIterator = isInnerWire.begin();
                 std::vector<bool>::iterator isInnerWireIteratorLoop;
                 for (auto itOuter = shells.begin(); itOuter != shells.end(); ++itOuter) {
-                    if (*isInnerWireIterator == true) {
+                    if (*isInnerWireIterator) {
                         ++isInnerWireIterator;
                         continue;
                     }
                     isInnerWireIteratorLoop = isInnerWire.begin();
                     for (auto itInner = shells.begin(); itInner != shells.end(); ++itInner) {
-                        if (itOuter == itInner || *isInnerWireIteratorLoop == false) {
+                        if (itOuter == itInner || !*isInnerWireIteratorLoop) {
                             ++isInnerWireIteratorLoop;
                             continue;
                         }
@@ -330,7 +330,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
     // if nothing happens, a prism can be cancelled from the checklist
     for (auto itOuter = prisms.begin(); itOuter != prisms.end(); ++itOuter) {
         ++outer;
-        if (*toCheckIterator == false) {
+        if (!*toCheckIterator) {
             ++isInnerWireIterator;
             ++toCheckIterator;
             continue;
@@ -338,7 +338,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
         auto toCheckIteratorInner = checklist.begin();
         bool saveIsInnerWireIterator = *isInnerWireIterator;
         for (auto itInner = prisms.begin(); itInner != prisms.end(); ++itInner) {
-            if (itOuter == itInner || *toCheckIteratorInner == false) {
+            if (itOuter == itInner || !*toCheckIteratorInner) {
                 ++toCheckIteratorInner;
                 continue;
             }

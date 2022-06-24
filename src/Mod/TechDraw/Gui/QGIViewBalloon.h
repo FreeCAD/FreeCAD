@@ -163,6 +163,10 @@ public Q_SLOTS:
     void updateBalloon(bool obtuse = false);
 
 protected:
+    virtual void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
+    virtual void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
+    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+
     void draw() override;
     void drawBalloon(bool dragged = false);
     virtual QVariant itemChange( GraphicsItemChange change,

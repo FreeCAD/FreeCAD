@@ -565,7 +565,7 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
     SbBool mode = Gui::SoFCInteractiveElement::get(state);
 
     unsigned int num = this->coordIndex.getNum()/4;
-    if (mode == false || num <= this->renderTriangleLimit) {
+    if (!mode || num <= this->renderTriangleLimit) {
 #ifdef RENDER_GLARRAYS
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);

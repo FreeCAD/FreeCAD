@@ -1228,6 +1228,123 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(ss2.get("A3"), 4)
         self.assertEqual(ss2.get("A4"), 4)
 
+    def testIssue6844(self):
+        body = self.doc.addObject("App::FeaturePython", "Body")
+        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.Configuration = ["Item1", "Item2", "Item3"]
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.addProperty("App::PropertyString", "A2")
+        sheet.A2 = "Item2"
+        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.body = ["Item1", "Item2", "Item3"]
+
+        sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
+        sheet.setExpression(".cells.Bind.B1.ZZ1", "tuple(.cells; <<B>> + str(hiddenref(Body.Configuration) + 2); <<ZZ>> + str(hiddenref(Body.Configuration) + 2))")
+
+        self.doc.recompute()
+        self.doc.UndoMode = 0
+        self.doc.removeObject("Body")
+        sheet.clearAll()
+
+    def testIssue6840(self):
+        body = self.doc.addObject("App::FeaturePython", "Body")
+        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.Configuration = ["Item1", "Item2", "Item3"]
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.addProperty("App::PropertyString", "A2")
+        sheet.A2 = "Item2"
+        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.body = ["Item1", "Item2", "Item3"]
+
+        sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
+        sheet.setExpression(".cells.Bind.B1.ZZ1", "tuple(.cells; <<B>> + str(hiddenref(Body.Configuration) + 2); <<ZZ>> + str(hiddenref(Body.Configuration) + 2))")
+
+        self.doc.recompute()
+        self.doc.clearDocument()
+
+    def testFixPR6843(self):
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.set("A5", "a")
+        sheet.set("A6", "b")
+        self.doc.recompute()
+        sheet.insertRows("6", 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A5, "a")
+        self.assertEqual(sheet.A7, "b")
+        with self.assertRaises(AttributeError):
+            self.assertEqual(sheet.A6, "")
+
+    def testBindAcrossSheets(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet2")
+        ss2.set("B1", "B1")
+        ss2.set("B2", "B2")
+        ss2.set("C1", "C1")
+        ss2.set("C2", "C2")
+        ss2.set("D1", "D1")
+        ss2.set("D2", "D2")
+
+        ss1.setExpression('.cells.Bind.A3.C4', 'tuple(Spreadsheet2.cells, <<B1>>, <<D2>>)')
+        self.doc.recompute()
+
+        self.assertEqual(ss1.A3, ss2.B1)
+        self.assertEqual(ss1.A4, ss2.B2)
+        self.assertEqual(ss1.B3, ss2.C1)
+        self.assertEqual(ss1.B4, ss2.C2)
+        self.assertEqual(ss1.C3, ss2.D1)
+        self.assertEqual(ss1.C4, ss2.D2)
+
+        self.assertEqual(len(ss1.ExpressionEngine), 1)
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        self.doc.recompute()
+
+    def testBindHiddenRefAcrossSheets(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet2")
+        ss2.set("B1", "B1")
+        ss2.set("B2", "B2")
+        ss2.set("C1", "C1")
+        ss2.set("C2", "C2")
+        ss2.set("D1", "D1")
+        ss2.set("D2", "D2")
+
+        self.doc.recompute()
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        ss1.setExpression('.cells.BindHiddenRef.A3.C4', 'hiddenref(tuple(Spreadsheet2.cells, <<B1>>, <<D2>>))')
+        self.doc.recompute()
+
+        ss1.recompute() # True
+        self.assertEqual(ss1.A3, ss2.B1)
+
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        ss1.setExpression('.cells.BindHiddenRef.A3.C4', None)
+        self.doc.recompute()
+        self.assertEqual(len(ss1.ExpressionEngine), 0)
+
+    def testMergeCells(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss1.mergeCells('A1:B4')
+        ss1.mergeCells('C1:D4')
+        self.doc.recompute()
+        ss1.set("B1", "fail")
+        self.doc.recompute()
+        with self.assertRaises(AttributeError):
+            self.assertEqual(ss1.B1, "fail")
+
+    def testMergeCellsAndBind(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss1.mergeCells('A1:B1')
+        ss1.setExpression('.cells.Bind.A1.A1', 'tuple(.cells, <<A2>>, <<A2>>)')
+        ss1.set("A2", "test")
+        self.doc.recompute()
+        self.assertEqual(ss1.A1, ss1.A2)
+        ss1.set("B1", "fail")
+        self.doc.recompute()
+        with self.assertRaises(AttributeError):
+            self.assertEqual(ss1.B1, "fail")
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)

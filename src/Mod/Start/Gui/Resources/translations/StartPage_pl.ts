@@ -397,7 +397,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="437"/>
       <source>Box background color</source>
-      <translation>Kolor tła dla zaznaczenia</translation>
+      <translation>Kolor tła dla okienek</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="450"/>
@@ -417,7 +417,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="509"/>
       <source>Background text color</source>
-      <translation>Kolor tła dla tekstu</translation>
+      <translation>Kolor tekstu w tle</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="516"/>
@@ -452,7 +452,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="572"/>
       <source>Use gradient for New File icon</source>
-      <translation>Użyj gradientu dla ikonki Nowy plik</translation>
+      <translation>Użyj gradientu dla okienka Utwórz nowy ...</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
@@ -477,7 +477,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
       <source>Switch workbench after loading</source>
-      <translation>Uaktywnij Środowisko pracy po uruchomieniu programu</translation>
+      <translation>Po uruchomieniu uaktywnij środowisko pracy</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="640"/>
@@ -487,7 +487,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation>Zamknij i zmień przy otwieraniu pliku</translation>
+      <translation>Zamknij i uaktywnij przy otwieraniu pliku</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>

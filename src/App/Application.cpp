@@ -1129,13 +1129,13 @@ std::string Application::getUserMacroDir()
 std::string Application::getResourceDir()
 {
 #ifdef RESOURCEDIR
-    std::string path(RESOURCEDIR);
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(RESOURCEDIR).c_str();
     path.append("/");
-    QDir dir(QString::fromUtf8(RESOURCEDIR));
+    QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
-    else
-        return mConfig["AppHomePath"] + path;
+    return mConfig["AppHomePath"] + path;
 #else
     return mConfig["AppHomePath"];
 #endif
@@ -1144,7 +1144,11 @@ std::string Application::getResourceDir()
 std::string Application::getLibraryDir()
 {
 #ifdef LIBRARYDIR
-    std::string path(LIBRARYDIR);
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(LIBRARYDIR).c_str();
+    QDir dir(QString::fromStdString(path));
+    if (dir.isAbsolute())
+        return path;
     return mConfig["AppHomePath"] + path;
 #else
     return mConfig["AppHomePath"] + "lib";
@@ -1154,13 +1158,13 @@ std::string Application::getLibraryDir()
 std::string Application::getHelpDir()
 {
 #ifdef DOCDIR
-    std::string path(DOCDIR);
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(DOCDIR).c_str();
     path.append("/");
-    QDir dir(QString::fromUtf8(DOCDIR));
+    QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
-    else
-        return mConfig["AppHomePath"] + path;
+    return mConfig["AppHomePath"] + path;
 #else
     return mConfig["DocPath"];
 #endif
@@ -2161,7 +2165,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("log-file", value<string>(), "Unlike --write-log this allows logging to an arbitrary file")
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
     ("system-cfg,s", value<string>(),"System config file to load/save system settings")
-    ("run-test,t",   value<string>()   ,"Test case - or 0 for all")
+    ("run-test,t", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
@@ -2394,6 +2398,9 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         string testCase = vm["run-test"].as<string>();
         if ( "0" == testCase) {
             testCase = "TestApp.All";
+        }
+        else if (testCase.empty()) {
+            testCase = "TestApp.PrintAll";
         }
         mConfig["TestCase"] = testCase;
         mConfig["RunMode"] = "Internal";

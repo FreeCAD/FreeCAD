@@ -27,7 +27,6 @@
 # include <QTreeWidget>
 # include <TopoDS_Shape.hxx>
 # include <TopExp_Explorer.hxx>
-# include <boost_bind_bind.hpp>
 #endif
 
 #include "DlgBooleanOperation.h"
@@ -60,7 +59,7 @@ namespace PartGui {
         void setData (int column, int role, const QVariant & value)
         {
             QTreeWidgetItem::setData(column, role, value);
-            if (role == Qt::CheckStateRole && value.toBool() == true) {
+            if (role == Qt::CheckStateRole && value.toBool()) {
                 QTreeWidget* tree = this->treeWidget();
                 if (!tree)
                     return;

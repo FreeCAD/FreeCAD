@@ -31,7 +31,6 @@
 # include <QString>
 # include <QImage>
 # include <QPixmap>
-# include <boost_bind_bind.hpp>
 #endif
 
 #include "TaskSketcherElements.h"
@@ -519,7 +518,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
         ElementItem * ite=static_cast<ElementItem*>(ui->listWidgetElements->item(i));
 
-        if(multipleselection==false && multipleconsecutiveselection==false && ite!=itf) {
+        if(!multipleselection && !multipleconsecutiveselection && ite != itf) {
             ite->isLineSelected=false;
             ite->isStartingPointSelected=false;
             ite->isEndPointSelected=false;

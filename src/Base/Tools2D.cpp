@@ -363,7 +363,7 @@ void Polygon2d::Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rc
   bool bInner = Contains(rclPolygon[0]);
 
   Polygon2d clResultPolygon;
-  if (bInner == true)  // add first point if inner trim-polygon
+  if (bInner)  // add first point if inner trim-polygon
     clResultPolygon.Add(rclPolygon[0]);
 
   // for each polygon segment
@@ -384,7 +384,7 @@ void Polygon2d::Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rc
       Line2d clToTrimLine(At(i), clTrimPt2);
 
       Vector2d clV;
-      if (clLine.IntersectAndContain(clToTrimLine, clV) == true)
+      if (clLine.IntersectAndContain(clToTrimLine, clV))
       {
         // save line parameter of intersection point
         double fDist = (clV - clPt0).Length();
@@ -398,7 +398,7 @@ void Polygon2d::Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rc
       {
         // intersection point
         Vector2d clPtIS = clLine.FromPos(*pF);
-        if (bInner == true)
+        if (bInner)
         {
           clResultPolygon.Add(clPtIS);
           rclResultPolygonList.push_back(clResultPolygon);
@@ -412,12 +412,12 @@ void Polygon2d::Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rc
         }
       }
 
-      if (bInner == true) // add line end point if inside
+      if (bInner) // add line end point if inside
         clResultPolygon.Add(clPt1);
     }
     else
     {  // no intersections, add line (means second point of it) if inside trim-polygon
-      if (bInner == true)
+      if (bInner)
         clResultPolygon.Add(clPt1);
     }
   }

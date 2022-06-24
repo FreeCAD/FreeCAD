@@ -483,7 +483,7 @@ def handle():
             img = os.path.join(FreeCAD.getResourceDir(),"Mod",wn,"Resources","icons",wn+"Workbench.svg")
             if not os.path.exists(img):
                 w = FreeCADGui.listWorkbenches()[wb]
-                if hasattr(w,"Icon"):
+                if hasattr(w,"Icon") and w.Icon:
                     xpm = w.Icon
                     if "XPM" in xpm:
                         xpm = xpm.replace("\n        ","\n") # some XPMs have some indent that QT doesn't like

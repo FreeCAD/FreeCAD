@@ -11,37 +11,46 @@
       FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Jürgen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-      <UserDocu>This class does the whole placement and position handling</UserDocu>
+      <UserDocu>App.GeoFeature class.\n
+Base class of all geometric document objects.
+This class does the whole placement and position handling.
+With the method `getPropertyOfGeometry` is possible to obtain
+the main geometric property in general form, without reference
+to any particular property name.</UserDocu>
     </Documentation>
     <Methode Name="getPaths">
       <Documentation>
-        <UserDocu>returns all possible paths to the root of the document</UserDocu>
+        <UserDocu>getPaths()\n
+Returns all possible paths to the root of the document.
+Note: Not implemented.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getGlobalPlacement">
       <Documentation>
-        <UserDocu>Returns the placement of the object in the global coordinate space, respecting all stacked relationships. 
-                  Note: This function is not available during recompute, as there the placements of parents can change 
-                  after the execution of this object, rendering the result wrong.</UserDocu>
+        <UserDocu>getGlobalPlacement() -> Base.Placement\n
+Returns the placement of the object in the global coordinate space, respecting all stacked
+relationships.
+Note: This function is not available during recompute, as there the placements of parents
+can change after the execution of this object, rendering the result wrong.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getPropertyNameOfGeometry">
       <Documentation>
-        <UserDocu>Returns the property name of the actual geometry or None.
-For example for a part object it returns the value Shape,
-for a mesh the value Mesh and so on.
+        <UserDocu>getPropertyNameOfGeometry() -> str or None\n
+Returns the property name of the actual geometry.
+For example for a Part feature it returns the value 'Shape', for a mesh feature the value
+'Mesh' and so on.
 If an object has no such property then None is returned.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getPropertyOfGeometry">
       <Documentation>
-        <UserDocu>Returns the property of the actual geometry or None.
-For example for a part object it returns its Shape property,
-for a mesh its Mesh property and so on.
+        <UserDocu>getPropertyOfGeometry() -> object or None\n
+Returns the property of the actual geometry.
+For example for a Part feature it returns its Shape property, for a Mesh feature its
+Mesh property and so on.
 If an object has no such property then None is returned.
-Unlike to getPropertyNameOfGeometry this function returns the geometry,
-not its name.
-</UserDocu>
+Unlike to getPropertyNameOfGeometry this function returns the geometry, not its name.</UserDocu>
       </Documentation>
     </Methode>
     <CustomAttributes />

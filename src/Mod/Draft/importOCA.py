@@ -332,8 +332,6 @@ def parse(filename, doc):
                      float(c[2])/255,
                      float(c[3])/255)
 
-    del color
-
 
 def decodeName(name):
     """Decode encoded name.

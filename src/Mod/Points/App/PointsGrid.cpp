@@ -203,7 +203,7 @@ unsigned long PointsGrid::InSide (const Base::BoundBox3d &rclBB, std::vector<uns
     }
   }
 
-  if (bDelDoubles == true)
+  if (bDelDoubles)
   {
     // remove duplicate mentions
     std::sort(raulElements.begin(), raulElements.end());
@@ -237,7 +237,7 @@ unsigned long PointsGrid::InSide (const Base::BoundBox3d &rclBB, std::vector<uns
     }
   }
 
-  if (bDelDoubles == true)
+  if (bDelDoubles)
   {
     // remove duplicate mentions
     std::sort(raulElements.begin(), raulElements.end());
@@ -469,7 +469,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
   raclInd.clear();
   Base::BoundBox3d  clBB = GetBoundBox();
 
-  if (clBB.IsInBox(rclPt) == true)
+  if (clBB.IsInBox(rclPt))
   { // Point lies within
     unsigned long ulX, ulY, ulZ;
     Position(rclPt, ulX, ulY, ulZ);
@@ -678,7 +678,7 @@ bool PointsGrid::Verify() const
     for ( std::vector<unsigned long>::iterator itP = aulElements.begin(); itP != aulElements.end(); ++itP )
     {
       const Base::Vector3d& cP = _pclPoints->getPoint(*itP);
-      if ( it.GetBoundBox().IsInBox( cP ) == false )
+      if (!it.GetBoundBox().IsInBox(cP))
         return false; // point doesn't lie inside the grid element
     }
   }
@@ -757,7 +757,7 @@ bool PointsGridIterator::InitOnRay (const Base::Vector3d &rclPt, const Base::Vec
   _bValidRay = false;
 
   // point lies within global BB
-  if ((_rclGrid.GetBoundBox().IsInBox(rclPt)) == true)
+  if (_rclGrid.GetBoundBox().IsInBox(rclPt))
   {  // determine the voxel by the starting point
     _rclGrid.Position(rclPt, _ulX, _ulY, _ulZ);
     raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
@@ -766,7 +766,7 @@ bool PointsGridIterator::InitOnRay (const Base::Vector3d &rclPt, const Base::Vec
   else
   { // StartPoint outside
     Base::Vector3d cP0, cP1;
-    if (_rclGrid.GetBoundBox().IntersectWithLine(rclPt, rclDir, cP0, cP1) == true)
+    if (_rclGrid.GetBoundBox().IntersectWithLine(rclPt, rclDir, cP0, cP1))
     {  // determine the next point
       if ((cP0 - rclPt).Length() < (cP1 - rclPt).Length())
         _rclGrid.Position(cP0, _ulX, _ulY, _ulZ);
@@ -783,7 +783,7 @@ bool PointsGridIterator::InitOnRay (const Base::Vector3d &rclPt, const Base::Vec
 
 bool PointsGridIterator::NextOnRay (std::vector<unsigned long> &raulElements)
 {
-  if (_bValidRay == false)
+  if (!_bValidRay)
     return false;  // not initialized or beam exited
 
   raulElements.clear();
@@ -821,7 +821,7 @@ bool PointsGridIterator::NextOnRay (std::vector<unsigned long> &raulElements)
       _bValidRay = false; // grid element already visited => result from GetSideFromRay invalid
   }
 
-  if ((_bValidRay == true) && (_rclGrid.CheckPos(_ulX, _ulY, _ulZ) == true))
+  if (_bValidRay && _rclGrid.CheckPos(_ulX, _ulY, _ulZ))
   {
     GridElement pos(_ulX, _ulY, _ulZ); _cSearchPositions.insert(pos);
     raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());

@@ -274,8 +274,8 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
     if (!file.is_open())
         return false;
 
-    std::set<CellAddress> usedCells = cells.getUsedCells();
-    std::set<CellAddress>::const_iterator i = usedCells.begin();
+    auto usedCells = cells.getNonEmptyCells();
+    auto i = usedCells.begin();
 
     while (i != usedCells.end()) {
         Property * prop = getProperty(*i);
@@ -824,18 +824,22 @@ void Sheet::recomputeCell(CellAddress p)
         cellSpanChanged(p);
 }
 
-PropertySheet::BindingType Sheet::getCellBinding(Range &range,
-        ExpressionPtr *pStart, ExpressionPtr *pEnd) const 
+PropertySheet::BindingType
+Sheet::getCellBinding(Range &range,
+                      ExpressionPtr *pStart,
+                      ExpressionPtr *pEnd,
+                      App::ObjectIdentifier *pTarget) const 
 {
+    range.normalize();
     do {
         CellAddress addr = *range;
-        for(auto &r : boundRanges) {
+        for(const auto &r : boundRanges) {
             if(addr.row()>=r.from().row()
                     && addr.row()<=r.to().row()
                     && addr.col()>=r.from().col()
                     && addr.col()<=r.to().col())
             {
-                auto res = cells.getBinding(r,pStart,pEnd);
+                auto res = cells.getBinding(r,pStart,pEnd,pTarget);
                 if(res != PropertySheet::BindingNone) {
                     range = r;
                     return res;
@@ -846,25 +850,30 @@ PropertySheet::BindingType Sheet::getCellBinding(Range &range,
     return PropertySheet::BindingNone;
 }
 
-static inline unsigned _getBorder(
-        const std::vector<App::Range> &ranges, const App::CellAddress &address)
+static inline unsigned _getBorder(const Sheet *sheet,
+                                  const std::vector<App::Range> &ranges,
+                                  const App::CellAddress &address)
 {
     unsigned flags = 0;
+    int rows, cols;
+    sheet->getSpans(address, rows, cols);
+    --rows;
+    --cols;
     for(auto &range : ranges) {
         auto from = range.from();
         auto to = range.to();
         if(address.row() < from.row()
-                || address.row() > to.row()
+                || address.row() + rows > to.row()
                 || address.col() < from.col()
-                || address.col() > to.col())
+                || address.col() + cols > to.col())
             continue;
         if(address.row() == from.row())
             flags |= Sheet::BorderTop;
-        if(address.row() == to.row())
+        if(address.row() == to.row() || address.row() + rows == to.row())
             flags |= Sheet::BorderBottom;
         if(address.col() == from.col())
             flags |= Sheet::BorderLeft;
-        if(address.col() == to.col())
+        if(address.col() == to.col() || address.col() + cols == to.col())
             flags |= Sheet::BorderRight;
         if(flags == Sheet::BorderAll)
             break;
@@ -873,7 +882,7 @@ static inline unsigned _getBorder(
 }
 
 unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
-    return _getBorder(boundRanges, address);
+    return _getBorder(this, boundRanges, address);
 }
 
 void Sheet::updateBindings()
@@ -882,20 +891,20 @@ void Sheet::updateBindings()
     std::set<Range> newRangeSet;
     std::set<Range> rangeSet;
     boundRanges.clear();
-    for(auto &v : ExpressionEngine.getExpressions()) {
+    for(const auto &v : ExpressionEngine.getExpressions()) {
         CellAddress from,to;
         if(!cells.isBindingPath(v.first,&from,&to))
             continue;
-        App::Range range(from,to);
+        App::Range range(from,to,true);
         if(!oldRangeSet.erase(range))
             newRangeSet.insert(range);
         rangeSet.insert(range);
     }
     boundRanges.reserve(rangeSet.size());
     boundRanges.insert(boundRanges.end(),rangeSet.begin(),rangeSet.end());
-    for(auto &range : oldRangeSet)
+    for(const auto &range : oldRangeSet)
         rangeUpdated(range);
-    for(auto &range : newRangeSet)
+    for(const auto &range : newRangeSet)
         rangeUpdated(range);
 }
 
@@ -1080,21 +1089,19 @@ short Sheet::mustExecute(void) const
 
 void Sheet::clear(CellAddress address, bool /*all*/)
 {
-    Cell * cell = getCell(address);
-    if (!cell)
-        return;
+    if (auto cell = getCell(address)) {
+        // Remove alias, if defined
+        std::string aliasStr;
+        if (cell->getAlias(aliasStr))
+            this->removeDynamicProperty(aliasStr.c_str());
+        cells.clear(address);
+    }
+
     std::string addr = address.toString();
-    Property * prop = props.getDynamicPropertyByName(addr.c_str());
-
-    // Remove alias, if defined
-    std::string aliasStr;
-    if (cell->getAlias(aliasStr))
-        this->removeDynamicProperty(aliasStr.c_str());
-
-    cells.clear(address);
-
-    propAddress.erase(prop);
-    this->removeDynamicProperty(addr.c_str());
+    if (auto prop = props.getDynamicPropertyByName(addr.c_str())) {
+        propAddress.erase(prop);
+        this->removeDynamicProperty(addr.c_str());
+    }
 }
 
 /**
@@ -1184,12 +1191,8 @@ int Sheet::getRowHeight(int row) const
 std::vector<std::string> Sheet::getUsedCells() const
 {
     std::vector<std::string> usedCells;
-
-    // Insert int usedSet
-    std::set<CellAddress> usedSet = cells.getUsedCells();
-
-    for (std::set<CellAddress>::const_iterator i = usedSet.begin(); i != usedSet.end(); ++i)
-        usedCells.push_back(i->toString());
+    for (const auto &addr : cells.getUsedCells())
+        usedCells.push_back(addr.toString());
 
     return usedCells;
 }
@@ -1599,7 +1602,7 @@ unsigned Sheet::getCopyOrCutBorder(CellAddress address, bool copy) const
 {
     if(hasCopyRange != copy)
         return 0;
-    return _getBorder(copyCutRanges, address);
+    return _getBorder(this, copyCutRanges, address);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

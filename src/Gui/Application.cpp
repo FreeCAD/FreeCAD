@@ -77,6 +77,7 @@
 #include "MDIViewPy.h"
 #include "SoFCDB.h"
 #include "Selection.h"
+#include "SoFCOffscreenRenderer.h"
 #include "SplitView3DInventor.h"
 #include "TaskView/TaskView.h"
 #include "TaskView/TaskDialogPython.h"
@@ -457,6 +458,10 @@ Application::Application(bool GUIenabled)
         Py_DECREF(descr);
     }
 
+    SoQtOffscreenRendererPy::init_type();
+    Base::Interpreter().addType(SoQtOffscreenRendererPy::type_object(),
+        module,"SoQtOffscreenRenderer");
+
     App::Application::Config()["COIN_VERSION"] = COIN_VERSION;
 
     // Python console binding
@@ -546,7 +551,7 @@ void Application::open(const char* FileName, const char* Module)
     // in case of an automatically created empty document at startup
     App::Document* act = App::GetApplication().getActiveDocument();
     Gui::Document* gui = this->getDocument(act);
-    if (act && act->countObjects() == 0 && gui && gui->isModified() == false){
+    if (act && act->countObjects() == 0 && gui && !gui->isModified()){
         Command::doCommand(Command::App, "App.closeDocument('%s')", act->getName());
         qApp->processEvents(); // an update is needed otherwise the new view isn't shown
     }
@@ -2410,7 +2415,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     // appear incorrect due to an outdated cache.
     // See https://doc.qt.io/qt-5/qstyle.html#unpolish-1
     // See https://forum.freecadweb.org/viewtopic.php?f=17&t=50783
-    if (d->startingUp == false) {
+    if (!d->startingUp) {
         if (mdi->style())
             mdi->style()->unpolish(qApp);
     }

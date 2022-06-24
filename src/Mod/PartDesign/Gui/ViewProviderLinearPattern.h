@@ -30,10 +30,12 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderLinearPattern : public ViewProviderTransformed
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderLinearPattern)
     PROPERTY_HEADER(PartDesignGui::ViewProviderLinearPattern);
 public:
     ViewProviderLinearPattern()
         { featureName = std::string("LinearPattern");
+          menuName = tr("LinearPattern parameters");
           sPixmap = "PartDesign_LinearPattern.svg"; }
 
 protected:

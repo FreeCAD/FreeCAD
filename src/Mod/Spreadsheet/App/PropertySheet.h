@@ -113,7 +113,9 @@ public:
 
     bool isValidAlias(const std::string &candidate);
 
-    std::set<App::CellAddress> getUsedCells() const;
+    std::vector<App::CellAddress> getUsedCells() const;
+
+    std::vector<App::CellAddress> getNonEmptyCells() const;
 
     Sheet * sheet() const { return owner; }
 
@@ -150,6 +152,8 @@ public:
     void splitCell(App::CellAddress address);
 
     void getSpans(App::CellAddress address, int &rows, int &cols) const;
+
+    bool hasSpan() const;
 
     App::CellAddress getAnchor(App::CellAddress address) const;
 
@@ -198,7 +202,9 @@ public:
         BindingHiddenRef,
     };
     BindingType getBinding(const App::Range &range,
-            App::ExpressionPtr *pStart=nullptr, App::ExpressionPtr *pEnd=nullptr) const;
+                           App::ExpressionPtr *pStart=nullptr,
+                           App::ExpressionPtr *pEnd=nullptr,
+                           App::ObjectIdentifier *pTarget=nullptr) const;
 
 protected:
     virtual void hasSetValue() override;

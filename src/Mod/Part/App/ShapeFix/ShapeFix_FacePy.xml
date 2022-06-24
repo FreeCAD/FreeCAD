@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_FacePy"
+      PythonName="Part.ShapeFix.Face"
+      Twin="ShapeFix_Face"
+      TwinPointer="ShapeFix_Face"
+      Include="ShapeFix_Face.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Class for fixing operations on faces</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Initializes by face</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixWireTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing wires</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearModes">
+      <Documentation>
+        <UserDocu>Sets all modes to default</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="add">
+      <Documentation>
+        <UserDocu>Add a wire to current face using BRep_Builder.
+Wire is added without taking into account orientation of face
+(as if face were FORWARD)
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixOrientation">
+      <Documentation>
+          <UserDocu>
+Fixes orientation of wires on the face
+It tries to make all wires lie outside all others (according
+to orientation) by reversing orientation of some of them.
+If face lying on sphere or torus has single wire and
+AddNaturalBoundMode is True, that wire is not reversed in
+any case (supposing that natural bound will be added).
+Returns True if wires were reversed
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixAddNaturalBound">
+      <Documentation>
+          <UserDocu>
+Adds natural boundary on face if it is missing.
+Two cases are supported:
+ - face has no wires
+ - face lies on geometrically double-closed surface
+(sphere or torus) and none of wires is left-oriented
+Returns True if natural boundary was added
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixMissingSeam">
+      <Documentation>
+          <UserDocu>
+Detects and fixes the special case when face on a closed
+surface is given by two wires closed in 3d but with gap in 2d.
+In that case it creates a new wire from the two, and adds a
+missing seam edge
+Returns True if missing seam was added
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSmallAreaWire">
+      <Documentation>
+          <UserDocu>
+Detects wires with small area (that is less than
+100*Precision.PConfusion(). Removes these wires if they are internal.
+Returns True if at least one small wire removed, False nothing is done.
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixLoopWire">
+      <Documentation>
+          <UserDocu>
+Detects if wire has a loop and fixes this situation by splitting on the few parts.
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixIntersectingWires">
+      <Documentation>
+          <UserDocu>
+Detects and fixes the special case when face has more than one wire
+and this wires have intersection point
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixWiresTwoCoincidentEdges">
+      <Documentation>
+          <UserDocu>
+If wire contains two coincidence edges it must be removed
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixPeriodicDegenerated">
+      <Documentation>
+          <UserDocu>
+Fixes topology for a specific case when face is composed
+by a single wire belting a periodic surface. In that case
+a degenerated edge is reconstructed in the degenerated pole
+of the surface. Initial wire gets consistent orientation.
+Must be used in couple and before FixMissingSeam routine
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perform">
+      <Documentation>
+        <UserDocu>Iterates on subshapes and performs fixes</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="face">
+      <Documentation>
+        <UserDocu>Returns a face which corresponds to the current state</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="result">
+      <Documentation>
+        <UserDocu>Returns resulting shape (Face or Shell if split)
+To be used instead of face() if FixMissingSeam involved
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="FixWireMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of ShapeFix_Wire</UserDocu>
+      </Documentation>
+      <Parameter Name="FixWireMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixOrientationMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of orientation
+If True, wires oriented to border limited square
+</UserDocu>
+      </Documentation>
+      <Parameter Name="FixOrientationMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixAddNaturalBoundMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>If true, natural boundary is added on faces that miss them.
+Default is False for faces with single wire (they are
+handled by FixOrientation in that case) and True for others.
+</UserDocu>
+      </Documentation>
+      <Parameter Name="FixAddNaturalBoundMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixMissingSeamMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>If True, tries to insert seam if missing</UserDocu>
+      </Documentation>
+      <Parameter Name="FixMissingSeamMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixSmallAreaWireMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>If True, drops small wires</UserDocu>
+      </Documentation>
+      <Parameter Name="FixSmallAreaWireMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="RemoveSmallAreaFaceMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>If True, drops small wires</UserDocu>
+      </Documentation>
+      <Parameter Name="RemoveSmallAreaFaceMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixIntersectingWiresMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of intersecting wires</UserDocu>
+      </Documentation>
+      <Parameter Name="FixIntersectingWiresMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixLoopWiresMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of loop wires</UserDocu>
+      </Documentation>
+      <Parameter Name="FixLoopWiresMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixSplitFaceMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of split face</UserDocu>
+      </Documentation>
+      <Parameter Name="FixSplitFaceMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="AutoCorrectPrecisionMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying auto-corrected precision</UserDocu>
+      </Documentation>
+      <Parameter Name="AutoCorrectPrecisionMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixPeriodicDegeneratedMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying periodic degeneration</UserDocu>
+      </Documentation>
+      <Parameter Name="FixPeriodicDegeneratedMode" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

@@ -130,7 +130,7 @@ install(CODE
     # The top-level CMakeLists.txt should prevent multiple package manager
     # prefixes from being set, so the lib path will resolve correctly...
     execute_process(
-        COMMAND python2.7
+        COMMAND python3
         ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py
         ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${ICU_PREFIX}/lib/ /usr/local/opt ${CONFIG_NGLIB} ${Qt5Core_DIR}/../../.. ${XCTEST_PATH} ${WEBKIT_FRAMEWORK_DIR}
     )"

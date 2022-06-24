@@ -41,13 +41,12 @@
 # include <QMessageBox>
 # include <QTextStream>
 
-# include <boost_bind_bind.hpp>
-
 # include <cmath>
 #endif
 
 #include <App/Document.h>
 #include <App/PropertyUnits.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -269,7 +268,7 @@ bool ViewProviderFemPostFunction::findScaleFactor(double& scale) const
     if (bbox.hasVolume()) {
         float dx, dy, dz;
         bbox.getSize(dx, dy, dz);
-        // we want the manipulator to have 20 % if the max size of the object
+        // we want the manipulator to have 20 % of the max size of the object
         scale = 0.2 * std::max(std::max(dx, dy), dz);
         return true;
     }
@@ -500,13 +499,28 @@ PlaneWidget::PlaneWidget() {
     ui = new Ui_PlaneWidget();
     ui->setupUi(this);
 
+    QSize size = ui->originX->sizeForText(QStringLiteral("000000000000"));
+    ui->originX->setMinimumWidth(size.width());
+    ui->originY->setMinimumWidth(size.width());
+    ui->originZ->setMinimumWidth(size.width());
+    ui->normalX->setMinimumWidth(size.width());
+    ui->originY->setMinimumWidth(size.width());
+    ui->originZ->setMinimumWidth(size.width());
+
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->originX->setDecimals(UserDecimals);
+    ui->originY->setDecimals(UserDecimals);
+    ui->originZ->setDecimals(UserDecimals);
+    ui->normalX->setDecimals(UserDecimals);
+    ui->normalY->setDecimals(UserDecimals);
+    ui->normalZ->setDecimals(UserDecimals);
+
     connect(ui->originX, SIGNAL(valueChanged(double)), this, SLOT(originChanged(double)));
     connect(ui->originY, SIGNAL(valueChanged(double)), this, SLOT(originChanged(double)));
     connect(ui->originZ, SIGNAL(valueChanged(double)), this, SLOT(originChanged(double)));
     connect(ui->normalX, SIGNAL(valueChanged(double)), this, SLOT(normalChanged(double)));
     connect(ui->normalY, SIGNAL(valueChanged(double)), this, SLOT(normalChanged(double)));
     connect(ui->normalZ, SIGNAL(valueChanged(double)), this, SLOT(normalChanged(double)));
-
 }
 
 PlaneWidget::~PlaneWidget() {
@@ -520,6 +534,13 @@ void PlaneWidget::applyPythonCode() {
 void PlaneWidget::setViewProvider(ViewProviderFemPostFunction* view) {
 
     FemGui::FunctionWidget::setViewProvider(view);
+    const Base::Unit unit = static_cast<Fem::FemPostPlaneFunction*>(getObject())->Origin.getUnit();
+    setBlockObjectUpdates(true);
+    ui->originX->setUnit(unit);
+    ui->originY->setUnit(unit);
+    ui->originZ->setUnit(unit);
+    setBlockObjectUpdates(false);
+    // The normal vector is unitless. It uses nevertheless Gui::PrefQuantitySpinBox to keep dialog uniform.
     onChange(static_cast<Fem::FemPostPlaneFunction*>(getObject())->Normal);
     onChange(static_cast<Fem::FemPostPlaneFunction*>(getObject())->Origin);
 }
@@ -545,7 +566,8 @@ void PlaneWidget::onChange(const App::Property& p) {
 void PlaneWidget::normalChanged(double) {
 
     if (!blockObjectUpdates()) {
-        Base::Vector3d vec(ui->normalX->value(), ui->normalY->value(), ui->normalZ->value());
+        Base::Vector3d vec(ui->normalX->value().getValue(), ui->normalY->value().getValue(),
+            ui->normalZ->value().getValue());
         static_cast<Fem::FemPostPlaneFunction*>(getObject())->Normal.setValue(vec);
     }
 }
@@ -553,7 +575,8 @@ void PlaneWidget::normalChanged(double) {
 void PlaneWidget::originChanged(double) {
 
     if (!blockObjectUpdates()) {
-        Base::Vector3d vec(ui->originX->value(), ui->originY->value(), ui->originZ->value());
+        Base::Vector3d vec(ui->originX->value().getValue(), ui->originY->value().getValue(),
+            ui->originZ->value().getValue());
         static_cast<Fem::FemPostPlaneFunction*>(getObject())->Origin.setValue(vec);
     }
 }
@@ -616,7 +639,6 @@ SoTransformManip* ViewProviderFemPostSphereFunction::setupManipulator() {
     return manip;
 }
 
-
 void ViewProviderFemPostSphereFunction::draggerUpdate(SoDragger* m) {
 
     Fem::FemPostSphereFunction* func = static_cast<Fem::FemPostSphereFunction*>(getObject());
@@ -658,6 +680,17 @@ SphereWidget::SphereWidget() {
     ui = new Ui_SphereWidget();
     ui->setupUi(this);
 
+    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    ui->centerX->setMinimumWidth(size.width());
+    ui->centerY->setMinimumWidth(size.width());
+    ui->centerZ->setMinimumWidth(size.width());
+    ui->radius->setMinimumWidth(size.width());
+
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->centerX->setDecimals(UserDecimals);
+    ui->centerY->setDecimals(UserDecimals);
+    ui->centerZ->setDecimals(UserDecimals);
+
     connect(ui->centerX, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
     connect(ui->centerY, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
     connect(ui->centerZ, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
@@ -675,6 +708,14 @@ void SphereWidget::applyPythonCode() {
 void SphereWidget::setViewProvider(ViewProviderFemPostFunction* view) {
 
     FemGui::FunctionWidget::setViewProvider(view);
+    setBlockObjectUpdates(true);
+    Base::Unit unit = static_cast<Fem::FemPostSphereFunction*>(getObject())->Center.getUnit();
+    ui->centerX->setUnit(unit);
+    ui->centerY->setUnit(unit);
+    ui->centerZ->setUnit(unit);
+    unit = static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius.getUnit();
+    ui->radius->setUnit(unit);
+    setBlockObjectUpdates(false);
     onChange(static_cast<Fem::FemPostSphereFunction*>(getObject())->Center);
     onChange(static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius);
 }
@@ -698,7 +739,8 @@ void SphereWidget::onChange(const App::Property& p) {
 void SphereWidget::centerChanged(double) {
 
     if (!blockObjectUpdates()) {
-        Base::Vector3d vec(ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
+        Base::Vector3d vec(ui->centerX->value().getValue(), ui->centerY->value().getValue(),
+            ui->centerZ->value().getValue());
         static_cast<Fem::FemPostSphereFunction*>(getObject())->Center.setValue(vec);
     }
 }
@@ -706,7 +748,7 @@ void SphereWidget::centerChanged(double) {
 void SphereWidget::radiusChanged(double) {
 
     if (!blockObjectUpdates()) {
-        static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius.setValue(ui->radius->value());
+        static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius.setValue(ui->radius->value().getValue());
     }
 }
 

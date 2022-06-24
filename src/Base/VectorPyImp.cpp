@@ -32,8 +32,6 @@
 // inclusion of the generated files (generated out of VectorPy.xml)
 #include "GeometryPyCXX.h"
 #include "VectorPy.h"
-#include "MatrixPy.h"
-#include "RotationPy.h"
 #include "VectorPy.cpp"
 
 using namespace Base;
@@ -41,7 +39,7 @@ using namespace Base;
 // returns a string which represent the object e.g. when printed in python
 std::string VectorPy::representation() const
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     Py::Float x(ptr->x);
     Py::Float y(ptr->y);
     Py::Float z(ptr->z);
@@ -66,14 +64,13 @@ int VectorPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     double  x=0.0,y=0.0,z=0.0;
     PyObject *object;
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     if (PyArg_ParseTuple(args, "|ddd", &x,&y,&z)) {
         ptr->Set(x,y,z);
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args,"O!",&(Base::VectorPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
         *ptr = *(static_cast<Base::VectorPy*>(object)->getVectorPtr());
         return 0;
     }
@@ -157,7 +154,7 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
             return new VectorPy(a * b);
         }
         else {
-            PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
             return nullptr;
         }
     }
@@ -286,8 +283,8 @@ PyObject*  VectorPy::add(PyObject *args)
 
     VectorPy* vec = static_cast<VectorPy*>(obj);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType vect_ptr = reinterpret_cast<VectorPy::PointerType>(vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType vect_ptr = vec->getVectorPtr();
 
     Base::Vector3d v = (*this_ptr) + (*vect_ptr);
     return new VectorPy(v);
@@ -301,8 +298,8 @@ PyObject*  VectorPy::sub(PyObject *args)
 
     VectorPy* vec = static_cast<VectorPy*>(obj);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType vect_ptr = reinterpret_cast<VectorPy::PointerType>(vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType vect_ptr = vec->getVectorPtr();
 
     Base::Vector3d v = (*this_ptr) - (*vect_ptr);
     return new VectorPy(v);
@@ -313,7 +310,7 @@ PyObject*  VectorPy::negative(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
     Base::Vector3d v = -(*this_ptr);
     return new VectorPy(v);
 }
@@ -358,8 +355,8 @@ PyObject*  VectorPy::isEqual(PyObject *args)
 
     VectorPy* vec = static_cast<VectorPy*>(obj);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType vect_ptr = reinterpret_cast<VectorPy::PointerType>(vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType vect_ptr = vec->getVectorPtr();
 
     Py::Boolean eq((*this_ptr).IsEqual(*vect_ptr, tolerance));
     return Py::new_reference_to(eq);
@@ -370,7 +367,7 @@ PyObject*  VectorPy::scale(PyObject *args)
     double factorX, factorY, factorZ;
     if (!PyArg_ParseTuple(args, "ddd", &factorX, &factorY, &factorZ))
         return nullptr;
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     ptr->Scale(factorX, factorY, factorZ);
 
     return Py::new_reference_to(this);
@@ -381,7 +378,7 @@ PyObject*  VectorPy::multiply(PyObject *args)
     double factor;
     if (!PyArg_ParseTuple(args, "d", &factor))
         return nullptr;
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     ptr->Scale(factor, factor, factor);
 
     return Py::new_reference_to(this);
@@ -395,8 +392,8 @@ PyObject*  VectorPy::dot(PyObject *args)
 
     VectorPy* vec = static_cast<VectorPy*>(obj);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType vect_ptr = reinterpret_cast<VectorPy::PointerType>(vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType vect_ptr = vec->getVectorPtr();
 
     Py::Float mult((*this_ptr) * (*vect_ptr));
     return Py::new_reference_to(mult);
@@ -410,8 +407,8 @@ PyObject*  VectorPy::cross(PyObject *args)
 
     VectorPy* vec = static_cast<VectorPy*>(obj);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType vect_ptr = reinterpret_cast<VectorPy::PointerType>(vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType vect_ptr = vec->getVectorPtr();
 
     Base::Vector3d v = (*this_ptr) % (*vect_ptr);
     return new VectorPy(v);
@@ -434,9 +431,9 @@ PyObject*  VectorPy::isOnLineSegment(PyObject *args)
     VectorPy* start_vec = static_cast<VectorPy*>(start);
     VectorPy* end_vec = static_cast<VectorPy*>(end);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType start_ptr = reinterpret_cast<VectorPy::PointerType>(start_vec->_pcTwinPointer);
-    VectorPy::PointerType end_ptr = reinterpret_cast<VectorPy::PointerType>(end_vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType start_ptr = start_vec->getVectorPtr();
+    VectorPy::PointerType end_ptr = end_vec->getVectorPtr();
 
     Py::Boolean result = this_ptr->IsOnLineSegment(*start_ptr, *end_ptr);
 
@@ -451,8 +448,8 @@ PyObject*  VectorPy::getAngle(PyObject *args)
 
     VectorPy* vec = static_cast<VectorPy*>(obj);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType vect_ptr = reinterpret_cast<VectorPy::PointerType>(vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType vect_ptr = vec->getVectorPtr();
 
     Py::Float angle(this_ptr->GetAngle(*vect_ptr));
     return Py::new_reference_to(angle);
@@ -462,7 +459,7 @@ PyObject*  VectorPy::normalize(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     if (ptr->Length() < Vector3d::epsilon()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot normalize null vector");
         return nullptr;
@@ -490,9 +487,9 @@ PyObject*  VectorPy::projectToLine(PyObject *args)
     VectorPy* base_vec = static_cast<VectorPy*>(base);
     VectorPy* line_vec = static_cast<VectorPy*>(line);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
-    VectorPy::PointerType line_ptr = reinterpret_cast<VectorPy::PointerType>(line_vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType base_ptr = base_vec->getVectorPtr();
+    VectorPy::PointerType line_ptr = line_vec->getVectorPtr();
 
     this_ptr->ProjectToLine(*base_ptr, *line_ptr);
 
@@ -516,9 +513,9 @@ PyObject*  VectorPy::projectToPlane(PyObject *args)
     VectorPy* base_vec = static_cast<VectorPy*>(base);
     VectorPy* line_vec = static_cast<VectorPy*>(line);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
-    VectorPy::PointerType line_ptr = reinterpret_cast<VectorPy::PointerType>(line_vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType base_ptr = base_vec->getVectorPtr();
+    VectorPy::PointerType line_ptr = line_vec->getVectorPtr();
 
     this_ptr->ProjectToPlane(*base_ptr, *line_ptr);
 
@@ -532,8 +529,8 @@ PyObject*  VectorPy::distanceToPoint(PyObject *args)
         return nullptr;
 
     VectorPy* base_vec = static_cast<VectorPy*>(pnt);
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType base_ptr = base_vec->getVectorPtr();
 
     Py::Float dist(Base::Distance(*this_ptr, *base_ptr));
     return Py::new_reference_to(dist);
@@ -556,9 +553,9 @@ PyObject*  VectorPy::distanceToLine(PyObject *args)
     VectorPy* base_vec = static_cast<VectorPy*>(base);
     VectorPy* line_vec = static_cast<VectorPy*>(line);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
-    VectorPy::PointerType line_ptr = reinterpret_cast<VectorPy::PointerType>(line_vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType base_ptr = base_vec->getVectorPtr();
+    VectorPy::PointerType line_ptr = line_vec->getVectorPtr();
 
     Py::Float dist(this_ptr->DistanceToLine(*base_ptr, *line_ptr));
     return Py::new_reference_to(dist);
@@ -581,9 +578,9 @@ PyObject*  VectorPy::distanceToLineSegment(PyObject *args)
     VectorPy* base_vec = static_cast<VectorPy*>(base);
     VectorPy* line_vec = static_cast<VectorPy*>(line);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
-    VectorPy::PointerType line_ptr = reinterpret_cast<VectorPy::PointerType>(line_vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType base_ptr = base_vec->getVectorPtr();
+    VectorPy::PointerType line_ptr = line_vec->getVectorPtr();
 
     Vector3d v = this_ptr->DistanceToLineSegment(*base_ptr, *line_ptr);
     return new VectorPy(v);
@@ -606,9 +603,9 @@ PyObject*  VectorPy::distanceToPlane(PyObject *args)
     VectorPy* base_vec = static_cast<VectorPy*>(base);
     VectorPy* line_vec = static_cast<VectorPy*>(line);
 
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
-    VectorPy::PointerType line_ptr = reinterpret_cast<VectorPy::PointerType>(line_vec->_pcTwinPointer);
+    VectorPy::PointerType this_ptr = getVectorPtr();
+    VectorPy::PointerType base_ptr = base_vec->getVectorPtr();
+    VectorPy::PointerType line_ptr = line_vec->getVectorPtr();
 
     Py::Float dist(this_ptr->DistanceToPlane(*base_ptr, *line_ptr));
     return Py::new_reference_to(dist);
@@ -616,13 +613,13 @@ PyObject*  VectorPy::distanceToPlane(PyObject *args)
 
 Py::Float VectorPy::getLength() const
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     return Py::Float(ptr->Length());
 }
 
 void  VectorPy::setLength(Py::Float arg)
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     double len = ptr->Length();
     if (len < Vector3d::epsilon()) {
         throw Py::RuntimeError(std::string("Cannot set length of null vector"));
@@ -636,37 +633,37 @@ void  VectorPy::setLength(Py::Float arg)
 
 Py::Float VectorPy::getx() const
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     return Py::Float(ptr->x);
 }
 
 void  VectorPy::setx(Py::Float arg)
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     ptr->x = static_cast<double>(arg);
 }
 
 Py::Float VectorPy::gety() const
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     return Py::Float(ptr->y);
 }
 
 void  VectorPy::sety(Py::Float arg)
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     ptr->y = static_cast<double>(arg);
 }
 
 Py::Float VectorPy::getz() const
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     return Py::Float(ptr->z);
 }
 
 void  VectorPy::setz(Py::Float arg)
 {
-    VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType ptr = getVectorPtr();
     ptr->z = static_cast<double>(arg);
 }
 

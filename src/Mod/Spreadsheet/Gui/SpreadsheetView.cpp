@@ -43,7 +43,6 @@
 #include <App/PropertyStandard.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
-#include <boost_bind_bind.hpp>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>

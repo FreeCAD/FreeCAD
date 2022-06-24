@@ -111,7 +111,8 @@ def InitApplications():
     AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
     HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
     HomeMod = os.path.realpath(HomeMod)
-    MacroDir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
+    MacroStd = App.getUserMacroDir(False)
+    MacroDir = App.getUserMacroDir(True)
     MacroMod = os.path.realpath(MacroDir+"/Mod")
     SystemWideMacroDir = FreeCAD.getHomePath()+'Macro'
     SystemWideMacroDir = os.path.realpath(SystemWideMacroDir)
@@ -278,6 +279,7 @@ def InitApplications():
     for i in path:
         Log("   " + i + "\n")
     # add MacroDir to path (RFE #0000504)
+    sys.path.append(MacroStd)
     sys.path.append(MacroDir)
     # add SystemWideMacroDir to path
     sys.path.append(SystemWideMacroDir)
@@ -921,6 +923,17 @@ class ScaleType(IntEnum):
     Uniform = 3
 
 App.ScaleType = ScaleType
+
+class PropertyType(IntEnum):
+    Prop_None = 0
+    Prop_ReadOnly = 1
+    Prop_Transient = 2
+    Prop_Hidden = 4
+    Prop_Output = 8
+    Prop_NoRecompute = 16
+    Prop_NoPersist = 32
+
+App.PropertyType = PropertyType
 
 # clean up namespace
 del(InitApplications)

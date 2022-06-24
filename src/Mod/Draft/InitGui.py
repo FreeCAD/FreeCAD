@@ -137,6 +137,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
                 FreeCADGui.draftToolBar.loadedPreferences = True
 
+        FreeCADGui.getMainWindow().mainWindowClosed.connect(self.Deactivated)
+
         FreeCAD.Console.PrintLog('Loading Draft workbench, done.\n')
 
     def Activated(self):

@@ -160,7 +160,7 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<Eleme
     }
   }
 
-  if (bDelDoubles == true)
+  if (bDelDoubles)
   {
     // remove duplicate mentions
     std::sort(raulElements.begin(), raulElements.end());
@@ -195,7 +195,7 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<Eleme
     }
   }
 
-  if (bDelDoubles == true)
+  if (bDelDoubles)
   {
     // remove duplicate mentions
     std::sort(raulElements.begin(), raulElements.end());
@@ -455,7 +455,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<Ele
   raclInd.clear();
   Base::BoundBox3f  clBB = GetBoundBox();
 
-  if (clBB.IsInBox(rclPt) == true)
+  if (clBB.IsInBox(rclPt))
   { // Point lies within
     unsigned long ulX, ulY, ulZ;
     Position(rclPt, ulX, ulY, ulZ);
@@ -753,7 +753,7 @@ bool MeshFacetGrid::Verify() const
     for ( std::vector<ElementIndex>::iterator itF = aulElements.begin(); itF != aulElements.end(); ++itF )
     {
       cF.Set( *itF );
-      if ( cF->IntersectBoundingBox( it.GetBoundBox() ) == false )
+      if (!cF->IntersectBoundingBox(it.GetBoundBox()))
         return false; // no intersection between facet although the facet is in grid
     }
   }
@@ -785,7 +785,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
   float fMinDist    = FLOAT_MAX;
   Base::BoundBox3f  clBB = GetBoundBox();
 
-  if (clBB.IsInBox(rclPt) == true)
+  if (clBB.IsInBox(rclPt))
   { // Point lies within
     unsigned long ulX, ulY, ulZ;
     Position(rclPt, ulX, ulY, ulZ);
@@ -912,7 +912,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
   {
     float fDist;
 
-    if (clFTool.Distance(rclPt, *pI, fMinDist, fDist) == true)
+    if (clFTool.Distance(rclPt, *pI, fMinDist, fDist))
     {
       fMinDist   = fDist;
       ulFacetInd = *pI;
@@ -1095,7 +1095,7 @@ bool MeshPointGrid::Verify() const
     for ( std::vector<ElementIndex>::iterator itP = aulElements.begin(); itP != aulElements.end(); ++itP )
     {
       cP.Set( *itP );
-      if ( it.GetBoundBox().IsInBox( *cP ) == false )
+      if (!it.GetBoundBox().IsInBox(*cP))
         return false; // point doesn't lie inside the grid element
     }
   }
@@ -1176,7 +1176,7 @@ bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vecto
   _bValidRay = false;
 
   // point lies within global BB
-  if ((_rclGrid.GetBoundBox().IsInBox(rclPt)) == true)
+  if (_rclGrid.GetBoundBox().IsInBox(rclPt))
   {  // Determine the voxel by the starting point
     _rclGrid.Position(rclPt, _ulX, _ulY, _ulZ);
     raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
@@ -1185,7 +1185,7 @@ bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vecto
   else
   { // Start point outside
     Base::Vector3f cP0, cP1;
-    if (_rclGrid.GetBoundBox().IntersectWithLine(rclPt, rclDir, cP0, cP1) == true)
+    if (_rclGrid.GetBoundBox().IntersectWithLine(rclPt, rclDir, cP0, cP1))
     {  // determine the next point
       if ((cP0 - rclPt).Length() < (cP1 - rclPt).Length())
         _rclGrid.Position(cP0, _ulX, _ulY, _ulZ);
@@ -1202,7 +1202,7 @@ bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vecto
 
 bool MeshGridIterator::NextOnRay (std::vector<ElementIndex> &raulElements)
 {
-  if (_bValidRay == false)
+  if (!_bValidRay)
     return false;  // not initialized or beam exited
 
   raulElements.clear();
@@ -1240,7 +1240,7 @@ bool MeshGridIterator::NextOnRay (std::vector<ElementIndex> &raulElements)
       _bValidRay = false; // grid element already visited => result from GetSideFromRay invalid
   }
 
-  if ((_bValidRay == true) && (_rclGrid.CheckPos(_ulX, _ulY, _ulZ) == true))
+  if (_bValidRay && _rclGrid.CheckPos(_ulX, _ulY, _ulZ))
   {
     GridElement pos(_ulX, _ulY, _ulZ); _cSearchPositions.insert(pos);
     raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
