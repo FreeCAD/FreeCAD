@@ -352,26 +352,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SheetTableView.cpp" line="276"/>
-        <location filename="../../SheetTableView.cpp" line="308"/>
+        <location filename="../../SheetTableView.cpp" line="323"/>
+        <location filename="../../SheetTableView.cpp" line="355"/>
         <source>Insert rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SheetTableView.cpp" line="327"/>
-        <location filename="../../SheetTableView.cpp" line="400"/>
+        <location filename="../../SheetTableView.cpp" line="374"/>
+        <location filename="../../SheetTableView.cpp" line="447"/>
         <source>Remove rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SheetTableView.cpp" line="348"/>
-        <location filename="../../SheetTableView.cpp" line="381"/>
+        <location filename="../../SheetTableView.cpp" line="395"/>
+        <location filename="../../SheetTableView.cpp" line="428"/>
         <source>Insert columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../SpreadsheetView.cpp" line="167"/>
-        <location filename="../../SheetTableView.cpp" line="557"/>
+        <location filename="../../SheetTableView.cpp" line="604"/>
         <source>Clear cell(s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -700,7 +700,7 @@ switch the design configuration. The property will be created if not exist.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SheetTableView.cpp" line="677"/>
+        <location filename="../../SheetTableView.cpp" line="724"/>
         <source>Copy &amp; Paste failed</source>
         <translation type="unfinished"></translation>
     </message>

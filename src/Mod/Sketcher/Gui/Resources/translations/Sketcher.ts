@@ -2326,11 +2326,6 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-        <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
-        <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
-        <location filename="../../CommandAlterGeometry.cpp" line="124"/>
-        <location filename="../../CommandAlterGeometry.cpp" line="132"/>
         <location filename="../../CommandSketcherTools.cpp" line="130"/>
         <location filename="../../CommandSketcherTools.cpp" line="138"/>
         <location filename="../../CommandSketcherTools.cpp" line="180"/>
@@ -2351,6 +2346,11 @@ invalid constraints, degenerated geometry, etc.</source>
         <location filename="../../CommandSketcherTools.cpp" line="2290"/>
         <location filename="../../CommandSketcherTools.cpp" line="2299"/>
         <location filename="../../CommandSketcherTools.cpp" line="2344"/>
+        <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+        <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
+        <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
+        <location filename="../../CommandAlterGeometry.cpp" line="124"/>
+        <location filename="../../CommandAlterGeometry.cpp" line="132"/>
         <location filename="../../CommandSketcherBSpline.cpp" line="471"/>
         <location filename="../../CommandSketcherBSpline.cpp" line="542"/>
         <location filename="../../CommandSketcherBSpline.cpp" line="620"/>
@@ -6140,31 +6140,41 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <name>Workbench</name>
     <message>
         <location filename="../../Workbench.cpp" line="38"/>
-        <source>Sketcher</source>
+        <source>P&amp;rofiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="39"/>
-        <source>Sketcher geometries</source>
+        <source>S&amp;ketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="40"/>
-        <source>Sketcher constraints</source>
+        <source>Sketcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="41"/>
-        <source>Sketcher tools</source>
+        <source>Sketcher geometries</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="42"/>
-        <source>Sketcher B-spline tools</source>
+        <source>Sketcher constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="43"/>
+        <source>Sketcher tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Workbench.cpp" line="44"/>
+        <source>Sketcher B-spline tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Workbench.cpp" line="45"/>
         <source>Sketcher virtual space</source>
         <translation type="unfinished"></translation>
     </message>
