@@ -239,15 +239,15 @@ namespace Gui {
         {
             if (out) {
                 Base::PyGILStateLocker lock;
-                old = PySys_GetObject(const_cast<char*>(std_out));
-                PySys_SetObject(const_cast<char*>(std_out), out);
+                old = PySys_GetObject(std_out);
+                PySys_SetObject(std_out, out);
             }
         }
         ~PythonRedirector()
         {
             if (out) {
                 Base::PyGILStateLocker lock;
-                PySys_SetObject(const_cast<char*>(std_out), old);
+                PySys_SetObject(std_out, old);
                 Py_DECREF(out);
             }
         }

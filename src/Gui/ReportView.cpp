@@ -345,14 +345,14 @@ public:
     {
         if (!default_stdout) {
             Base::PyGILStateLocker lock;
-            default_stdout = PySys_GetObject(const_cast<char*>("stdout"));
+            default_stdout = PySys_GetObject("stdout");
             replace_stdout = new OutputStdout();
             redirected_stdout = false;
         }
 
         if (!default_stderr) {
             Base::PyGILStateLocker lock;
-            default_stderr = PySys_GetObject(const_cast<char*>("stderr"));
+            default_stderr = PySys_GetObject("stderr");
             replace_stderr = new OutputStderr();
             redirected_stderr = false;
         }
@@ -712,12 +712,12 @@ void ReportOutput::onToggleRedirectPythonStdout()
     if (d->redirected_stdout) {
         d->redirected_stdout = false;
         Base::PyGILStateLocker lock;
-        PySys_SetObject(const_cast<char*>("stdout"), d->default_stdout);
+        PySys_SetObject("stdout", d->default_stdout);
     }
     else {
         d->redirected_stdout = true;
         Base::PyGILStateLocker lock;
-        PySys_SetObject(const_cast<char*>("stdout"), d->replace_stdout);
+        PySys_SetObject("stdout", d->replace_stdout);
     }
 
     getWindowParameter()->SetBool("RedirectPythonOutput", d->redirected_stdout);
@@ -728,12 +728,12 @@ void ReportOutput::onToggleRedirectPythonStderr()
     if (d->redirected_stderr) {
         d->redirected_stderr = false;
         Base::PyGILStateLocker lock;
-        PySys_SetObject(const_cast<char*>("stderr"), d->default_stderr);
+        PySys_SetObject("stderr", d->default_stderr);
     }
     else {
         d->redirected_stderr = true;
         Base::PyGILStateLocker lock;
-        PySys_SetObject(const_cast<char*>("stderr"), d->replace_stderr);
+        PySys_SetObject("stderr", d->replace_stderr);
     }
 
     getWindowParameter()->SetBool("RedirectPythonErrors", d->redirected_stderr);

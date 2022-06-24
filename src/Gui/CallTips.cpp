@@ -292,7 +292,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // If we have an instance of PyObjectBase then determine whether it's valid or not
         if (PyObject_IsInstance(inst.ptr(), typeobj) == 1) {
             Base::PyObjectBase* baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
-            const_cast<CallTipsList*>(this)->validObject = baseobj->isValid();
+            validObject = baseobj->isValid();
         }
         else {
             // PyObject_IsInstance might set an exception
