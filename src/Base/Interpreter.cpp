@@ -513,8 +513,7 @@ void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const ch
     // This function is responsible for adding inherited slots from a type's base class.
     if (PyType_Ready(Type) < 0)
         return;
-    union PyType_Object pyType = {Type};
-    PyModule_AddObject(Module, Name, pyType.o);
+    PyModule_AddObject(Module, Name, Base::getTypeAsObject(Type));
 }
 
 void InterpreterSingleton::addPythonPath(const char* Path)

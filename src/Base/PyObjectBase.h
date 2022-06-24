@@ -47,6 +47,7 @@
 #endif
 #define slots
 #include <bitset>
+#include <cstring>
 
 #include "Exception.h"
 #ifndef PYCXX_PYTHON_2TO3
@@ -90,15 +91,6 @@
 #define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC PyInit_##name(void)
 #define PyMOD_Return(name) return name
 
-/**
- * Union to convert from PyTypeObject to PyObject pointer.
- */
-union PyType_Object {
-    PyTypeObject *t;
-    PyObject *o;
-};
-
-
 
 /*------------------------------
  * Basic defines
@@ -120,6 +112,14 @@ inline void Assert(int expr, char *msg)         // C++ assert
       fprintf(stderr, "%s\n", msg);
       exit(-1);
     };
+}
+
+inline PyObject* getTypeAsObject(PyTypeObject* type) {
+    // See https://en.cppreference.com/w/cpp/string/byte/memcpy
+    // and https://en.cppreference.com/w/cpp/language/reinterpret_cast
+    PyObject* obj;
+    std::memcpy(&obj, &type, sizeof type);
+    return obj;
 }
 
 }

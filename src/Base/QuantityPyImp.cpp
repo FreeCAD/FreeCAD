@@ -595,8 +595,7 @@ Py::Object QuantityPy::getUnit() const
 
 void QuantityPy::setUnit(Py::Object arg)
 {
-    union PyType_Object pyType = {&(Base::UnitPy::Type)};
-    Py::Type UnitType(pyType.o);
+    Py::Type UnitType(Base::getTypeAsObject(&Base::UnitPy::Type));
     if(!arg.isType(UnitType))
         throw Py::AttributeError("Not yet implemented");
 

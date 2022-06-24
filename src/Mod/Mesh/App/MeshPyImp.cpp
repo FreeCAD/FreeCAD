@@ -375,8 +375,7 @@ PyObject*  MeshPy::crossSections(PyObject *args)
         return nullptr;
 
     Py::Sequence list(obj);
-    union PyType_Object pyType = {&(Base::VectorPy::Type)};
-    Py::Type vType(pyType.o);
+    Py::Type vType(Base::getTypeAsObject(&Base::VectorPy::Type));
 
     std::vector<MeshObject::TPlane> csPlanes;
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -655,11 +654,8 @@ PyObject*  MeshPy::addFacets(PyObject *args)
     PyObject *list;
     if (PyArg_ParseTuple(args, "O!", &PyList_Type, &list)) {
         Py::List list_f(list);
-        union PyType_Object pyVType = {&(Base::VectorPy::Type)};
-        Py::Type vVType(pyVType.o);
-
-        union PyType_Object pyFType = {&(Mesh::FacetPy::Type)};
-        Py::Type vFType(pyFType.o);
+        Py::Type vVType(Base::getTypeAsObject(&Base::VectorPy::Type));
+        Py::Type vFType(Base::getTypeAsObject(&Mesh::FacetPy::Type));
 
         std::vector<MeshCore::MeshGeomFacet> facets;
         MeshCore::MeshGeomFacet facet;
@@ -724,8 +720,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
         Py::Tuple tuple(list);
         Py::List list_v(tuple.getItem(0));
         std::vector<Base::Vector3f> vertices;
-        union PyType_Object pyVertType = {&(Base::VectorPy::Type)};
-        Py::Type vType(pyVertType.o);
+        Py::Type vType(Base::getTypeAsObject(&Base::VectorPy::Type));
         for (Py::List::iterator it = list_v.begin(); it != list_v.end(); ++it) {
             if ((*it).isType(vType)) {
                 Base::Vector3d v = static_cast<Base::VectorPy*>((*it).ptr())->value();

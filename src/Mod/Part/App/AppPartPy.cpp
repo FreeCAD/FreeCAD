@@ -1593,8 +1593,8 @@ private:
         double angle=360;
         PyObject *pPnt=nullptr, *pDir=nullptr, *pCrv;
         Handle(Geom_Curve) curve;
-        union PyType_Object defaultType = {&Part::TopoShapeSolidPy::Type};
-        PyObject* type = defaultType.o;
+        PyObject* defaultType = Base::getTypeAsObject(&Part::TopoShapeSolidPy::Type);
+        PyObject* type = defaultType;
 
         do {
             if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(GeometryPy::Type), &pCrv,
@@ -1667,19 +1667,19 @@ private:
                 d.SetCoord(vec.x, vec.y, vec.z);
             }
 
-            union PyType_Object shellType = {&Part::TopoShapeShellPy::Type};
-            union PyType_Object faceType = {&Part::TopoShapeFacePy::Type};
+            PyObject* shellType = Base::getTypeAsObject(&Part::TopoShapeShellPy::Type);
+            PyObject* faceType = Base::getTypeAsObject(&Part::TopoShapeFacePy::Type);
 
             BRepPrimAPI_MakeRevolution mkRev(gp_Ax2(p,d),curve, vmin, vmax, angle*(M_PI/180));
-            if (type == defaultType.o) {
+            if (type == defaultType) {
                 TopoDS_Shape shape = mkRev.Solid();
                 return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
             }
-            else if (type == shellType.o) {
+            else if (type == shellType) {
                 TopoDS_Shape shape = mkRev.Shell();
                 return Py::asObject(new TopoShapeShellPy(new TopoShape(shape)));
             }
-            else if (type == faceType.o) {
+            else if (type == faceType) {
                 TopoDS_Shape shape = mkRev.Face();
                 return Py::asObject(new TopoShapeFacePy(new TopoShape(shape)));
             }

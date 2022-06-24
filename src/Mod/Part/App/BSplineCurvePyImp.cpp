@@ -99,8 +99,7 @@ PyObject*  BSplineCurvePy::__reduce__(PyObject *args)
     Py::Tuple tuple(2);
 
     // type object to create an instance
-    union PyType_Object pyType = {&BSplineCurvePy::Type};
-    Py::Object type(pyType.o);
+    Py::Object type(Base::getTypeAsObject(&BSplineCurvePy::Type));
     tuple.setItem(0, type);
 
     // create an argument tuple to create a copy

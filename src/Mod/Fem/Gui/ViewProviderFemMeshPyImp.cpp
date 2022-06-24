@@ -228,8 +228,7 @@ void  ViewProviderFemMeshPy::setNodeDisplacement(Py::Dict arg)
         this->getViewProviderFemMeshPtr()->resetColorByNodeId();
     else {
         std::map<long, Base::Vector3d> NodeDispMap;
-        union PyType_Object pyType = { &(Base::VectorPy::Type) };
-        Py::Type vType(pyType.o);
+        Py::Type vType(Base::getTypeAsObject(&Base::VectorPy::Type));
 
         for (Py::Dict::iterator it = arg.begin(); it != arg.end(); ++it) {
             Py::Long id((*it).first);
