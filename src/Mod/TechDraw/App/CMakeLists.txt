@@ -36,7 +36,6 @@ set(TechDrawLIBS
     Measure
     Part
     Spreadsheet
-    Drawing
     Import
 )
 
