@@ -99,8 +99,7 @@ PyObject*  BSplineCurvePy::__reduce__(PyObject *args)
     Py::Tuple tuple(2);
 
     // type object to create an instance
-    union PyType_Object pyType = {&BSplineCurvePy::Type};
-    Py::Object type(pyType.o);
+    Py::Object type(Base::getTypeAsObject(&BSplineCurvePy::Type));
     tuple.setItem(0, type);
 
     // create an argument tuple to create a copy
@@ -1124,10 +1123,10 @@ PyObject* BSplineCurvePy::buildFromPoles(PyObject *args)
         if (poles.Length() <= degree)
             degree = poles.Length()-1;
 
-        if (PyObject_IsTrue(periodic)) {
+        if (PyObject_IsTrue(periodic) ? true : false) {
             int mult;
             int len;
-            if (PyObject_IsTrue(interpolate)) {
+            if (PyObject_IsTrue(interpolate) ? true : false) {
                 mult = degree;
                 len = poles.Length() - mult + 2;
             }
@@ -1231,7 +1230,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             else {
                 if (knots != Py_None) { number_of_knots = PyObject_Length(knots); }
                 else { //guess number of knots
-                    if (PyObject_IsTrue(periodic)) {
+                    if (PyObject_IsTrue(periodic) ? true : false) {
                         if (number_of_poles < degree) {degree = number_of_poles+1;}
                         number_of_knots = number_of_poles+1;
                     }
@@ -1306,8 +1305,8 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             }
         }
         // check if the number of poles matches the sum of mults
-        if ((PyObject_IsTrue(periodic) && sum_of_mults != number_of_poles) ||
-                (PyObject_Not(periodic) && sum_of_mults - degree -1 != number_of_poles)) {
+        if (((PyObject_IsTrue(periodic) ? true : false) && sum_of_mults != number_of_poles) ||
+                ((PyObject_Not(periodic) ? true : false) && sum_of_mults - degree -1 != number_of_poles)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
             return(nullptr);
         }

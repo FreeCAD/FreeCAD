@@ -54,6 +54,7 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskDetail.h>
 
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -116,7 +117,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
     ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
     m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->m_scene;
+    m_scene = m_mdi->getQGSPage();
     m_view = m_mdi->getQGVPage();
 
     createDetail();
@@ -202,7 +203,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
     ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
     m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->m_scene;
+    m_scene = m_mdi->getQGSPage();
     m_view = m_mdi->getQGVPage();
 
     saveDetailState();

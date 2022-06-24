@@ -410,11 +410,11 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
 Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
 {
     PyObject *updateLinks = Py_True;
-    if (!PyArg_ParseTuple(args.ptr(), "|O", &updateLinks)) {
+    if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &updateLinks)) {
         throw Py::Exception();
     }
     try {
-        _viewer->resetEditingRoot(PyObject_IsTrue(updateLinks));
+        _viewer->resetEditingRoot(PyObject_IsTrue(updateLinks) ? true : false);
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -473,7 +473,7 @@ Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)
     PyObject* m=Py_False;
     if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m))
         throw Py::Exception();
-    _viewer->setEnabledNaviCube(PyObject_IsTrue(m));
+    _viewer->setEnabledNaviCube(PyObject_IsTrue(m) ? true : false);
     return Py::None();
 }
 

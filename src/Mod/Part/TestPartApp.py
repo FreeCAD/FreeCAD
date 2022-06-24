@@ -394,3 +394,353 @@ class PartTestRuledSurface(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
+
+class PartTestShapeFix(unittest.TestCase):
+    def testShapeFix_Root(self):
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Root([])
+
+        fix = Part.ShapeFix.Root()
+        print (fix)
+
+        fix.Precision = 0.0
+        self.assertEqual(fix.Precision, 0.0)
+
+        fix.MinTolerance = 0.0
+        self.assertEqual(fix.MinTolerance, 0.0)
+
+        fix.MaxTolerance = 0.5
+        self.assertEqual(fix.MaxTolerance, 0.5)
+
+        self.assertEqual(fix.limitTolerance(0.25), 0.25)
+
+    def testShapeFix_Shape(self):
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Shape([])
+
+        fix = Part.ShapeFix.Shape(face)
+        fix.init(face)
+        print (fix)
+        fix.shape()
+        fix.fixSolidTool()
+        fix.fixShellTool()
+        fix.fixFaceTool()
+        fix.fixWireTool()
+        fix.fixEdgeTool()
+
+        fix.FixSolidMode = True
+        self.assertEqual(fix.FixSolidMode, True)
+
+        fix.FixFreeShellMode = True
+        self.assertEqual(fix.FixFreeShellMode, True)
+
+        fix.FixFreeFaceMode = True
+        self.assertEqual(fix.FixFreeFaceMode, True)
+
+        fix.FixFreeWireMode = True
+        self.assertEqual(fix.FixFreeWireMode, True)
+
+        fix.FixSameParameterMode = True
+        self.assertEqual(fix.FixSameParameterMode, True)
+
+        fix.FixVertexPositionMode = True
+        self.assertEqual(fix.FixVertexPositionMode, True)
+
+        fix.FixVertexTolMode = True
+        self.assertEqual(fix.FixVertexTolMode, True)
+
+        fix.perform()
+
+    def testShapeFix_Edge(self):
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Edge([])
+
+        wirefix = Part.ShapeFix.Wire(face.OuterWire, face, 1e-7)
+        fix = wirefix.fixEdgeTool()
+        print (fix)
+
+        fix.fixRemovePCurve(face.Edge1, face)
+        fix.fixRemovePCurve(face.Edge1, face.Surface, face.Placement)
+        with self.assertRaises(TypeError):
+            fix.fixRemovePCurve(face)
+
+        fix.fixRemoveCurve3d(face.Edge1)
+        fix.fixAddCurve3d(face.Edge1)
+
+        fix.fixAddPCurve(face.Edge1, face, False)
+        fix.fixAddPCurve(face.Edge1, face.Surface, face.Placement, False)
+        with self.assertRaises(TypeError):
+            fix.fixAddPCurve(face)
+
+        fix.fixVertexTolerance(face.Edge1)
+        fix.fixVertexTolerance(face.Edge1, face)
+
+        fix.fixReversed2d(face.Edge1, face)
+        fix.fixReversed2d(face.Edge1, face.Surface, face.Placement)
+        with self.assertRaises(TypeError):
+            fix.fixReversed2d(face)
+
+        fix.fixSameParameter(face.Edge1)
+        fix.fixSameParameter(face.Edge1, face)
+        with self.assertRaises(TypeError):
+            fix.fixSameParameter(face)
+
+    def testShapeFix_Face(self):
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+
+        Part.ShapeFix.Face()
+        Part.ShapeFix.Face(surface, 0.00001, True)
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Face([])
+
+        fix = Part.ShapeFix.Face(face)
+        print (fix)
+
+        fix.fixOrientation()
+        fix.fixAddNaturalBound()
+        fix.fixMissingSeam()
+        fix.fixSmallAreaWire(True)
+        fix.fixLoopWire()
+        fix.fixIntersectingWires()
+        fix.fixWiresTwoCoincidentEdges()
+        fix.fixPeriodicDegenerated()
+        fix.perform()
+
+        fix.add(face.OuterWire)
+        current = fix.face()
+        result = fix.result()
+        fix.fixWireTool()
+
+        fix.FixWireMode = True
+        self.assertEqual(fix.FixWireMode, True)
+
+        fix.FixOrientationMode = True
+        self.assertEqual(fix.FixOrientationMode, True)
+
+        fix.FixAddNaturalBoundMode = True
+        self.assertEqual(fix.FixAddNaturalBoundMode, True)
+
+        fix.FixMissingSeamMode = True
+        self.assertEqual(fix.FixMissingSeamMode, True)
+
+        fix.FixSmallAreaWireMode = True
+        self.assertEqual(fix.FixSmallAreaWireMode, True)
+
+        fix.RemoveSmallAreaFaceMode = True
+        self.assertEqual(fix.RemoveSmallAreaFaceMode, True)
+
+        fix.FixIntersectingWiresMode = True
+        self.assertEqual(fix.FixIntersectingWiresMode, True)
+
+        fix.FixLoopWiresMode = True
+        self.assertEqual(fix.FixLoopWiresMode, True)
+
+        fix.FixSplitFaceMode = True
+        self.assertEqual(fix.FixSplitFaceMode, True)
+
+        fix.AutoCorrectPrecisionMode = True
+        self.assertEqual(fix.AutoCorrectPrecisionMode, True)
+
+        fix.FixPeriodicDegeneratedMode = True
+        self.assertEqual(fix.FixPeriodicDegeneratedMode, True)
+
+        fix.clearModes()
+
+    def testShapeFix_Shell(self):
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+        shell = Part.Shell([face])
+
+        Part.ShapeFix.Shell()
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Face([])
+
+        fix = Part.ShapeFix.Shell(shell)
+        fix.init(shell)
+        print (fix)
+        fix.perform()
+        fix.shell()
+        fix.shape()
+        fix.fixFaceTool()
+
+        fix.setNonManifoldFlag(True)
+        fix.fixFaceOrientation(shell)
+
+        self.assertEqual(len(fix.errorFaces().Faces), 0)
+
+        self.assertEqual(fix.numberOfShells(), 1)
+
+        fix.FixFaceMode = True
+        self.assertEqual(fix.FixFaceMode, True)
+
+        fix.FixOrientationMode = True
+        self.assertEqual(fix.FixOrientationMode, True)
+
+    def testShapeFix_Solid(self):
+        box = Part.makeBox(1, 1, 1)
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Solid([])
+
+        fix = Part.ShapeFix.Solid()
+        fix.init(box)
+        print (fix)
+
+        fix.perform()
+        fix.solid()
+        fix.shape()
+        fix.fixShellTool()
+        fix.solidFromShell(box.Shells[0])
+
+        fix.FixShellMode = True
+        self.assertEqual(fix.FixShellMode, True)
+
+        fix.FixShellOrientationMode = True
+        self.assertEqual(fix.FixShellOrientationMode, True)
+
+        fix.CreateOpenSolidMode = True
+        self.assertEqual(fix.CreateOpenSolidMode, True)
+
+    def testShapeFix_Wire(self):
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Wire([])
+
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+        Part.ShapeFix.Wire(face.OuterWire, face, 1e-7)
+        fix = Part.ShapeFix.Wire()
+        fix.init(face.OuterWire, face, 1e-7)
+        fix.load(face.OuterWire)
+        fix.setSurface(surface)
+        fix.setSurface(surface, face.Placement)
+        fix.setFace(face)
+        fix.setMaxTailAngle(math.pi)
+        fix.setMaxTailWidth(10.0)
+        fix.fixEdgeTool()
+
+        self.assertEqual(fix.isLoaded(), True)
+        self.assertEqual(fix.isReady(), True)
+        self.assertEqual(fix.numberOfEdges(), 4)
+
+        print (fix)
+        fix.clearModes()
+        fix.clearStatuses()
+
+        fix.wire()
+        fix.wireAPIMake()
+        fix.face()
+
+        fix.ModifyTopologyMode = True
+        self.assertEqual(fix.ModifyTopologyMode, True)
+
+        fix.ModifyGeometryMode = True
+        self.assertEqual(fix.ModifyGeometryMode, True)
+
+        fix.ModifyRemoveLoopMode = True
+        self.assertEqual(fix.ModifyRemoveLoopMode, True)
+
+        fix.ClosedWireMode = True
+        self.assertEqual(fix.ClosedWireMode, True)
+
+        fix.PreferencePCurveMode = True
+        self.assertEqual(fix.PreferencePCurveMode, True)
+
+        fix.FixGapsByRangesMode = True
+        self.assertEqual(fix.FixGapsByRangesMode, True)
+
+        fix.FixReorderMode = True
+        self.assertEqual(fix.FixReorderMode, True)
+
+        fix.FixSmallMode = True
+        self.assertEqual(fix.FixSmallMode, True)
+
+        fix.FixConnectedMode = True
+        self.assertEqual(fix.FixConnectedMode, True)
+
+        fix.FixEdgeCurvesMode = True
+        self.assertEqual(fix.FixEdgeCurvesMode, True)
+
+        fix.FixDegeneratedMode = True
+        self.assertEqual(fix.FixDegeneratedMode, True)
+
+        fix.FixSelfIntersectionMode = True
+        self.assertEqual(fix.FixSelfIntersectionMode, True)
+
+        fix.FixLackingMode = True
+        self.assertEqual(fix.FixLackingMode, True)
+
+        fix.FixGaps3dMode = True
+        self.assertEqual(fix.FixGaps3dMode, True)
+
+        fix.FixGaps2dMode = True
+        self.assertEqual(fix.FixGaps2dMode, True)
+
+        fix.FixReversed2dMode = True
+        self.assertEqual(fix.FixReversed2dMode, True)
+
+        fix.FixRemovePCurveMode = True
+        self.assertEqual(fix.FixRemovePCurveMode, True)
+
+        fix.FixAddPCurveMode = True
+        self.assertEqual(fix.FixAddPCurveMode, True)
+
+        fix.FixRemoveCurve3dMode = True
+        self.assertEqual(fix.FixRemoveCurve3dMode, True)
+
+        fix.FixAddCurve3dMode = True
+        self.assertEqual(fix.FixAddCurve3dMode, True)
+
+        fix.FixSeamMode = True
+        self.assertEqual(fix.FixSeamMode, True)
+
+        fix.FixShiftedMode = True
+        self.assertEqual(fix.FixShiftedMode, True)
+
+        fix.FixSameParameterMode = True
+        self.assertEqual(fix.FixSameParameterMode, True)
+
+        fix.FixVertexToleranceMode = True
+        self.assertEqual(fix.FixVertexToleranceMode, True)
+
+        fix.FixNotchedEdgesMode = True
+        self.assertEqual(fix.FixNotchedEdgesMode, True)
+
+        fix.FixSelfIntersectingEdgeMode = True
+        self.assertEqual(fix.FixSelfIntersectingEdgeMode, True)
+
+        fix.FixIntersectingEdgesMode = True
+        self.assertEqual(fix.FixIntersectingEdgesMode, True)
+
+        fix.FixNonAdjacentIntersectingEdgesMode = True
+        self.assertEqual(fix.FixNonAdjacentIntersectingEdgesMode, True)
+
+        fix.FixTailMode = True
+        self.assertEqual(fix.FixTailMode, True)
+
+        fix.perform()
+        fix.fixReorder()
+        fix.fixSmall(True)
+        fix.fixSmall(1, True, 1e-7)
+        fix.fixConnected()
+        fix.fixConnected(1, True)
+        fix.fixEdgeCurves()
+        fix.fixDegenerated()
+        fix.fixDegenerated(1)
+        fix.fixSelfIntersection()
+        fix.fixLacking()
+        fix.fixLacking(1, False)
+        fix.fixClosed()
+        fix.fixGaps3d()
+        fix.fixGaps2d()
+        fix.fixSeam(1)
+        fix.fixShifted()
+        fix.fixNotchedEdges()
+        fix.fixGap3d(1, False)
+        fix.fixGap2d(1, False)
+        fix.fixTails()

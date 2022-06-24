@@ -58,6 +58,8 @@
 # include <Interface_Static.hxx>
 # include <NCollection_List.hxx>
 # include <Precision.hxx>
+# include <ShapeFix.hxx>
+# include <ShapeBuild_ReShape.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <Standard_ConstructionError.hxx>
 # include <Standard_DomainError.hxx>
@@ -303,6 +305,94 @@ public:
     virtual ~HLRBRepModule() {}
 };
 
+class ShapeFixModule : public Py::ExtensionModule<ShapeFixModule>
+{
+public:
+    ShapeFixModule() : Py::ExtensionModule<ShapeFixModule>("ShapeFix")
+    {
+        add_varargs_method("sameParameter",&ShapeFixModule::sameParameter,
+            "sameParameter(shape, enforce, prec=0.0)"
+        );
+        add_varargs_method("encodeRegularity",&ShapeFixModule::encodeRegularity,
+            "encodeRegularity(shape, tolerance = 1e-10)\n"
+        );
+        add_varargs_method("removeSmallEdges",&ShapeFixModule::removeSmallEdges,
+            "removeSmallEdges(shape, tolerance, ReShapeContext)\n"
+            "Removes edges which are less than given tolerance from shape"
+        );
+        add_varargs_method("fixVertexPosition",&ShapeFixModule::fixVertexPosition,
+            "fixVertexPosition(shape, tolerance, ReShapeContext)\n"
+            "Fix position of the vertices having tolerance more tnan specified one"
+        );
+        add_varargs_method("leastEdgeSize",&ShapeFixModule::leastEdgeSize,
+            "leastEdgeSize(shape)\n"
+            "Calculate size of least edge"
+        );
+        initialize("This is a module working with the ShapeFix framework."); // register with Python
+    }
+
+    virtual ~ShapeFixModule() {}
+
+private:
+    Py::Object sameParameter(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        PyObject* enforce;
+        double prec = 0.0;
+        if (!PyArg_ParseTuple(args.ptr(), "O!O!|d", &TopoShapePy::Type, &shape, &PyBool_Type, &enforce, &prec))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        bool ok = ShapeFix::SameParameter(sh, PyObject_IsTrue(enforce) ? Standard_True : Standard_False, prec);
+        return Py::Boolean(ok);
+    }
+    Py::Object encodeRegularity(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        double tolang = 1.0e-10;
+        if (!PyArg_ParseTuple(args.ptr(), "O!|d", &TopoShapePy::Type, &shape, &tolang))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        ShapeFix::EncodeRegularity(sh, tolang);
+        return Py::None();
+    }
+    Py::Object removeSmallEdges(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        double tol;
+        if (!PyArg_ParseTuple(args.ptr(), "O!d", &TopoShapePy::Type, &shape, &tol))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        Handle(ShapeBuild_ReShape) reshape = new ShapeBuild_ReShape();
+        TopoShape res = ShapeFix::RemoveSmallEdges(sh, tol, reshape);
+        return Py::asObject(res.getPyObject());
+    }
+    Py::Object fixVertexPosition(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        double tol;
+        if (!PyArg_ParseTuple(args.ptr(), "O!d", &TopoShapePy::Type, &shape, &tol))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        Handle(ShapeBuild_ReShape) reshape = new ShapeBuild_ReShape();
+        bool ok = ShapeFix::FixVertexPosition(sh, tol, reshape);
+        return Py::Boolean(ok);
+    }
+    Py::Object leastEdgeSize(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &TopoShapePy::Type, &shape))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        double len = ShapeFix::LeastEdgeSize(sh);
+        return Py::Float(len);
+    }
+};
+
 class ShapeUpgradeModule : public Py::ExtensionModule<ShapeUpgradeModule>
 {
 public:
@@ -332,6 +422,7 @@ class Module : public Py::ExtensionModule<Module>
     Geom2dModule geom2d;
     GeomPlateModule geomPlate;
     HLRBRepModule HLRBRep;
+    ShapeFixModule shapeFix;
     ShapeUpgradeModule shapeUpgrade;
     ChFi2dModule chFi2d;
 public:
@@ -559,6 +650,7 @@ public:
         PyModule_AddObject(m_module, "Geom2d", geom2d.module().ptr());
         PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
         PyModule_AddObject(m_module, "HLRBRep", HLRBRep.module().ptr());
+        PyModule_AddObject(m_module, "ShapeFix", shapeFix.module().ptr());
         PyModule_AddObject(m_module, "ShapeUpgrade", shapeUpgrade.module().ptr());
         PyModule_AddObject(m_module, "ChFi2d", chFi2d.module().ptr());
     }
@@ -1260,7 +1352,7 @@ private:
                 Standard_Failure::Raise("Cannot create polygon because less than two vertices are given");
 
             // if the polygon should be closed
-            if (PyObject_IsTrue(pclosed)) {
+            if (PyObject_IsTrue(pclosed) ? true : false) {
                 if (!mkPoly.FirstVertex().IsSame(mkPoly.LastVertex())) {
                     mkPoly.Add(mkPoly.FirstVertex());
                 }
@@ -1491,8 +1583,8 @@ private:
         double angle=360;
         PyObject *pPnt=nullptr, *pDir=nullptr, *pCrv;
         Handle(Geom_Curve) curve;
-        union PyType_Object defaultType = {&Part::TopoShapeSolidPy::Type};
-        PyObject* type = defaultType.o;
+        PyObject* defaultType = Base::getTypeAsObject(&Part::TopoShapeSolidPy::Type);
+        PyObject* type = defaultType;
 
         do {
             if (PyArg_ParseTuple(args.ptr(), "O!|dddO!O!O!", &(GeometryPy::Type), &pCrv,
@@ -1565,19 +1657,19 @@ private:
                 d.SetCoord(vec.x, vec.y, vec.z);
             }
 
-            union PyType_Object shellType = {&Part::TopoShapeShellPy::Type};
-            union PyType_Object faceType = {&Part::TopoShapeFacePy::Type};
+            PyObject* shellType = Base::getTypeAsObject(&Part::TopoShapeShellPy::Type);
+            PyObject* faceType = Base::getTypeAsObject(&Part::TopoShapeFacePy::Type);
 
             BRepPrimAPI_MakeRevolution mkRev(gp_Ax2(p,d),curve, vmin, vmax, angle*(M_PI/180));
-            if (type == defaultType.o) {
+            if (type == defaultType) {
                 TopoDS_Shape shape = mkRev.Solid();
                 return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
             }
-            else if (type == shellType.o) {
+            else if (type == shellType) {
                 TopoDS_Shape shape = mkRev.Shell();
                 return Py::asObject(new TopoShapeShellPy(new TopoShape(shape)));
             }
-            else if (type == faceType.o) {
+            else if (type == faceType) {
                 TopoDS_Shape shape = mkRev.Face();
                 return Py::asObject(new TopoShapeFacePy(new TopoShape(shape)));
             }
@@ -2185,9 +2277,10 @@ private:
         short retType = 0;
         static char* kwd_list[] = {"obj", "subname", "mat", 
             "needSubElement","transform","retType","noElementMap","refine",nullptr};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!OOhOO", kwd_list,
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
                 &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat, 
-                &needSubElement,&transform,&retType,&noElementMap,&refine))
+                &PyBool_Type,&needSubElement,&PyBool_Type,&transform,&retType,
+                &PyBool_Type,&noElementMap,&PyBool_Type,&refine))
             throw Py::Exception();
 
         App::DocumentObject *obj = 
@@ -2196,9 +2289,10 @@ private:
         Base::Matrix4D mat;
         if(pyMat)
             mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
-        auto shape = Feature::getTopoShape(obj,subname,PyObject_IsTrue(needSubElement),
-                &mat,&subObj,retType==2,PyObject_IsTrue(transform),PyObject_IsTrue(noElementMap));
-        if(PyObject_IsTrue(refine)) {
+        auto shape = Feature::getTopoShape(obj,subname,PyObject_IsTrue(needSubElement) ? true : false,
+                &mat,&subObj,retType==2,PyObject_IsTrue(transform) ? true : false,
+                PyObject_IsTrue(noElementMap) ? true : false);
+        if (PyObject_IsTrue(refine) ? true : false) {
             // shape = TopoShape(0,shape.Hasher).makERefine(shape);
             BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
             shape.setShape(mkRefine.Shape());

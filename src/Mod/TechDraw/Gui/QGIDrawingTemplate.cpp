@@ -47,7 +47,7 @@
 
 using namespace TechDrawGui;
 
-QGIDrawingTemplate::QGIDrawingTemplate(QGraphicsScene *scene) : QGITemplate(scene),
+QGIDrawingTemplate::QGIDrawingTemplate(QGSPage* scene) : QGITemplate(scene),
                                                                                     pathItem(nullptr)
 {
     pathItem = new QGraphicsPathItem;

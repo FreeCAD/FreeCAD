@@ -47,8 +47,6 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QTextStream>
-
-# include <boost_bind_bind.hpp>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......

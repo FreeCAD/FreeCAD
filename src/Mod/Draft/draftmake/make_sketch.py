@@ -185,9 +185,15 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
             return(edge)
 
 
-    axis = App.Vector(0,0,1).cross(normal)
-    angle = DraftVecUtils.angle(normal, App.Vector(0,0,1))*App.Units.Radian
+    axis = App.Vector(0, 0, 1).cross(normal)
+    angle = DraftVecUtils.angle(normal, App.Vector(0, 0, 1)) * App.Units.Radian
     rotation = App.Rotation(axis, angle)
+
+    point = shapes_list[0].Vertexes[0].Point
+    base = App.Vector(normal)
+    base.Length = point.dot(base.normalize()) # See https://forum.freecadweb.org/viewtopic.php?f=22&t=69304#p601149
+
+    nobj.Placement = App.Placement(base, rotation)
 
     for obj in objects_list:
         ok = False
@@ -374,7 +380,6 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
                     "Failed to delete object {}: {}".format(obj.Label,ex))+"\n")
 
 
-    nobj.Placement.Rotation = rotation
     nobj.addConstraint(constraints)
 
     return nobj

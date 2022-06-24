@@ -508,6 +508,10 @@ public:
 
     /** @name Modification */
     //@{
+    /// Set the placement of the geometry
+    virtual void setTransform(const Base::Matrix4D& rclTrf) = 0;
+    /// Get the placement of the geometry
+    virtual Base::Matrix4D getTransform() const = 0;
     /// Applies a transformation on the real geometric data type
     virtual void transformGeometry(const Base::Matrix4D &rclMat) = 0;
     /// Retrieve bounding box information

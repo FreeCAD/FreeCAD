@@ -41,6 +41,7 @@ namespace TechDrawGui {
 
 class MDIViewPage;
 class QGVPage;
+class QGSPage;
 
 class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject
 {
@@ -97,7 +98,9 @@ public:
     void toggleFrameState(void);
     void setTemplateMarkers(bool state);
     QGVPage *getGraphicsView() { return m_graphicsView; }
+    QGSPage* getGraphicsScene() { return m_graphicsScene; }
     void setGraphicsView(QGVPage* gv);
+    void setGraphicsScene(QGSPage* gs);
     virtual bool canDelete(App::DocumentObject* obj) const override;
     void  setGrid(void);
 
@@ -109,6 +112,7 @@ private:
     bool m_docReady;
     std::string m_pageName;
     QGVPage* m_graphicsView;
+    QGSPage* m_graphicsScene;
 };
 
 } // namespace TechDrawGui

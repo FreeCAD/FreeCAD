@@ -46,6 +46,8 @@ public:
     /// get the points (only const possible!)
     const PointKernel &getValue() const;
     const Data::ComplexGeoData* getComplexData() const;
+    void setTransform(const Base::Matrix4D& rclTrf);
+    Base::Matrix4D getTransform() const;
     //@}
 
     /** @name Getting basic geometric entities */

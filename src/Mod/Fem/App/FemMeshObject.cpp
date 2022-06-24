@@ -68,7 +68,7 @@ void FemMeshObject::onChanged(const Property* prop)
 
     // if the placement has changed apply the change to the mesh data as well
     if (prop == &this->Placement) {
-        const_cast<Fem::FemMesh&>(this->FemMesh.getValue()).setTransform(this->Placement.getValue().toMatrix());
+        this->FemMesh.setTransform(this->Placement.getValue().toMatrix());
     }
 
 }

@@ -2039,17 +2039,17 @@ into its X, Y, and Z components.</source>
 <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-        <location filename="../../Command.cpp" line="2504"/>
+        <location filename="../../Command.cpp" line="2505"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2505"/>
+        <location filename="../../Command.cpp" line="2506"/>
         <source>Create projection on surface...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2506"/>
+        <location filename="../../Command.cpp" line="2507"/>
         <source>Project edges, wires, or faces of one object
 onto a face of another object.
 The camera view determines the direction
@@ -2150,12 +2150,12 @@ of projection.</source>
 <context>
     <name>CmdPartSectionCut</name>
     <message>
-        <location filename="../../Command.cpp" line="2538"/>
+        <location filename="../../Command.cpp" line="2539"/>
         <source>Persistent section cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2539"/>
+        <location filename="../../Command.cpp" line="2540"/>
         <source>Creates a persistent section cut of visible part objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2432,28 +2432,28 @@ of projection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="242"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="261"/>
         <source>Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="283"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="302"/>
         <source>Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="335"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="387"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="354"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="406"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="450"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="469"/>
         <source>Shell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="502"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="521"/>
         <source>Solid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4695,70 +4695,80 @@ only created cuts will be visible</source>
 <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="210"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="220"/>
+        <source>Unsupported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskShapeBuilder.cpp" line="220"/>
+        <source>Box selection for shells is not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../TaskShapeBuilder.cpp" line="229"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="257"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="298"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="350"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="402"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="465"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="248"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="317"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="369"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="421"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="484"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="210"/>
         <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="248"/>
         <source>Select two vertices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="257"/>
-        <location filename="../../TaskShapeBuilder.cpp" line="350"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="369"/>
         <source>Select one or more edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="298"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="317"/>
         <source>Select three or more vertices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="402"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="421"/>
         <source>Select two or more faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="465"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="484"/>
         <source>Select only one part object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="517"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="536"/>
         <source>Select two vertices to create an edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="524"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="543"/>
         <source>Select adjacent edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="531"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="550"/>
         <source>Select a list of vertices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="538"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="557"/>
         <source>Select a closed set of edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="545"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="564"/>
         <source>Select adjacent faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="552"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="571"/>
         <source>All shape types can be selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5448,7 +5458,12 @@ by dragging a selection rectangle in the 3D view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskShapeBuilder.ui" line="114"/>
+        <location filename="../../TaskShapeBuilder.ui" line="101"/>
+        <source>Box selection...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskShapeBuilder.ui" line="121"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5735,10 +5750,10 @@ It will create a &apos;Compound Filter&apos; for each shape.</source>
 <context>
     <name>Part_SplitFeatures</name>
     <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
         <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
         <location filename="../../../BOPTools/SplitFeatures.py" line="302"/>
         <location filename="../../../BOPTools/SplitFeatures.py" line="496"/>
-        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5848,8 +5863,8 @@ A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</sour
     <message>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-        <location filename="../../ViewProviderPrimitive.cpp" line="66"/>
         <location filename="../../ViewProvider.cpp" line="50"/>
+        <location filename="../../ViewProviderPrimitive.cpp" line="66"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5934,20 +5949,20 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="86"/>
         <location filename="../../TaskAttacher.cpp" line="82"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="86"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="88"/>
         <location filename="../../TaskAttacher.cpp" line="85"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="88"/>
         <source>Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="89"/>
         <location filename="../../TaskAttacher.cpp" line="88"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="89"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>

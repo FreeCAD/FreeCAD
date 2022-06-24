@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost_bind_bind.hpp>
 #include <boost_signals2.hpp>
 #include <boost/signals2/connection.hpp>
 #endif
@@ -40,6 +39,7 @@
 #include "ViewProviderDrawingView.h"
 #include "MDIViewPage.h"
 #include "QGIView.h"
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "ViewProviderPage.h"
 
@@ -172,9 +172,9 @@ QGIView* ViewProviderDrawingView::getQView(void)
                 ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
                 if (dvp) {
                     if (dvp->getMDIViewPage()) {
-                        if (dvp->getMDIViewPage()->getQGVPage()) {
+                        if (dvp->getMDIViewPage()->getQGSPage()) {
                             qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
-                                                   getQGVPage()->findQViewForDocObj(getViewObject()));
+                                                   getQGSPage()->findQViewForDocObj(getViewObject()));
                         }
                     }
                 }
@@ -267,9 +267,9 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
                     ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
                     if (vpPage != nullptr) {
                         if (vpPage->getMDIViewPage() != nullptr) {
-                            if (vpPage->getMDIViewPage()->getQGVPage()) {
+                            if (vpPage->getMDIViewPage()->getQGSPage()) {
                                 QGIView* qView = dynamic_cast<QGIView *>(vpPage->getMDIViewPage()->
-                                                           getQGVPage()->findQViewForDocObj(v));
+                                                           getQGSPage()->findQViewForDocObj(v));
                                 if (qView != nullptr) {
                                     qView->updateView(true);
                                 }

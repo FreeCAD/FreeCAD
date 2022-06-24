@@ -36,8 +36,6 @@
 #include <QEventLoop>
 #include <QFuture>
 #include <QFutureWatcher>
-
-#include <boost_bind_bind.hpp>
 #endif
 
 #include <App/Application.h>

@@ -1394,6 +1394,22 @@ bool GeomBSplineCurve::join(const Handle(Geom_BSplineCurve)& spline)
     return true;
 }
 
+void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p, Standard_Boolean periodic)
+{
+    if (p.size() < 2)
+        Standard_ConstructionError::Raise();
+
+    double tol3d = Precision::Approximation();
+    Handle(TColgp_HArray1OfPnt) pts = new TColgp_HArray1OfPnt(1, p.size());
+    for (std::size_t i=0; i<p.size(); i++) {
+        pts->SetValue(i+1, p[i]);
+    }
+
+    GeomAPI_Interpolate interpolate(pts, periodic, tol3d);
+    interpolate.Perform();
+    this->myCurve = interpolate.Curve();
+}
+
 void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p,
                                    const std::vector<gp_Vec>& t)
 {

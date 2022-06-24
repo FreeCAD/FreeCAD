@@ -34,7 +34,6 @@
 # include <QPainter>
 # include <QPixmapCache>
 # include <QStringListModel>
-# include <boost_bind_bind.hpp>
 #endif
 
 #include "TaskSketcherConstraints.h"

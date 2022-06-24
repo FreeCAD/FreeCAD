@@ -498,8 +498,7 @@ void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const ch
     // This function is responsible for adding inherited slots from a type's base class.
     if (PyType_Ready(Type) < 0)
         return;
-    union PyType_Object pyType = {Type};
-    PyModule_AddObject(Module, Name, pyType.o);
+    PyModule_AddObject(Module, Name, Base::getTypeAsObject(Type));
 }
 
 void InterpreterSingleton::addPythonPath(const char* Path)
@@ -810,7 +809,12 @@ int getSWIGVersionFromModule(const std::string& module)
 }
 
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
-namespace Swig_python { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
+namespace Swig_python {
+extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own);
+extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags);
+extern void cleanupSWIG_T(const char* TypeName);
+extern int getSWIGPointerTypeObj_T(const char* TypeName, PyTypeObject** ptr);
+}
 #endif
 
 PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const char* TypeName, void* Pointer, int own)
@@ -835,10 +839,6 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
     throw Base::RuntimeError("No SWIG wrapped library loaded");
 }
 
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
-namespace Swig_python { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
-#endif
-
 bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char* TypeName, PyObject* obj, void** ptr, int flags)
 {
     int result = 0;
@@ -861,10 +861,6 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     throw Base::RuntimeError("No SWIG wrapped library loaded");
 }
 
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
-namespace Swig_python { extern void cleanupSWIG_T(const char* TypeName); }
-#endif
-
 void InterpreterSingleton::cleanupSWIG(const char* TypeName)
 {
     PyGILStateLocker locker;
@@ -873,4 +869,24 @@ void InterpreterSingleton::cleanupSWIG(const char* TypeName)
 #else
     (void)TypeName;
 #endif
+}
+
+PyTypeObject* InterpreterSingleton::getSWIGPointerTypeObj(const char* Module, const char* TypeName)
+{
+    int result = 0;
+    PyTypeObject* proxy = nullptr;
+    PyGILStateLocker locker;
+    (void)Module;
+#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+    result = Swig_python::getSWIGPointerTypeObj_T(TypeName, &proxy);
+#else
+    (void)TypeName;
+    result = -1; // indicates error
+#endif
+
+    if (result == 0)
+        return proxy;
+
+    // none of the SWIG's succeeded
+    throw Base::RuntimeError("No SWIG wrapped library loaded");
 }

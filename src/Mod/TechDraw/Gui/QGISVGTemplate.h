@@ -39,13 +39,14 @@ class DrawSVGTemplate;
 
 namespace TechDrawGui
 {
+class QGSPage;
 
 class TechDrawGuiExport QGISVGTemplate : public QGITemplate
 {
     Q_OBJECT
 
 public:
-    QGISVGTemplate(QGraphicsScene *scene);
+    QGISVGTemplate(QGSPage* scene);
     virtual ~QGISVGTemplate();
 
     enum {Type = QGraphicsItem::UserType + 153};

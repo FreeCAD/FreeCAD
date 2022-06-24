@@ -53,6 +53,7 @@
 #include "Rez.h"
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "QGCustomLabel.h"
 #include "QGCustomBorder.h"
@@ -628,9 +629,24 @@ QGVPage* QGIView::getGraphicsView(TechDraw::DrawView* dv)
     return graphicsView;
 }
 
+QGSPage* QGIView::getGraphicsScene(TechDraw::DrawView* dv)
+{
+    QGSPage* graphicsScene = nullptr;
+    Gui::ViewProvider* vp = getViewProvider(dv);
+    ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
+    if (vpdv != nullptr) {
+        MDIViewPage* mdi = vpdv->getMDIViewPage();
+        if (mdi != nullptr) {
+            graphicsScene = mdi->getQGSPage();
+        }
+    }
+    return graphicsScene;
+}
+
 MDIViewPage* QGIView::getMDIViewPage(void) const
 {
-    return MDIViewPage::getFromScene(scene());
+    QGSPage* qgsp = static_cast<QGSPage*>(scene());
+    return MDIViewPage::getFromScene(qgsp);
 }
 
 //remove a child of this from scene while keeping scene indexes valid

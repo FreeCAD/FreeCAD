@@ -53,7 +53,6 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost_bind_bind.hpp>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -542,14 +541,12 @@ void Feature::onChanged(const App::Property* prop)
 {
     // if the placement has changed apply the change to the point data as well
     if (prop == &this->Placement) {
-        TopoShape& shape = const_cast<TopoShape&>(this->Shape.getShape());
-        shape.setTransform(this->Placement.getValue().toMatrix());
+        this->Shape.setTransform(this->Placement.getValue().toMatrix());
     }
     // if the point data has changed check and adjust the transformation as well
     else if (prop == &this->Shape) {
         if (this->isRecomputing()) {
-            TopoShape& shape = const_cast<TopoShape&>(this->Shape.getShape());
-            shape.setTransform(this->Placement.getValue().toMatrix());
+            this->Shape.setTransform(this->Placement.getValue().toMatrix());
         }
         else {
             Base::Placement p;

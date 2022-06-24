@@ -65,6 +65,8 @@ directories = [
         {"tsname":"Drawing", "workingdir":"./src/Mod/Drawing/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"Fem", "workingdir":"./src/Mod/Fem/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"Image", "workingdir":"./src/Mod/Image/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Inspection", "workingdir":"./src/Mod/Inspection/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Material", "workingdir":"./src/Mod/Material/", "tsdir":"Resources/translations"},
         {"tsname":"Mesh", "workingdir":"./src/Mod/Mesh/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"MeshPart", "workingdir":"./src/Mod/MeshPart/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"OpenSCAD", "workingdir":"./src/Mod/OpenSCAD/", "tsdir":"Resources/translations"},
@@ -209,7 +211,7 @@ def update_translation(entry):
                         file_list.write(os.path.join(root,f) + "\n")
 
         try:
-            p = subprocess.run([LUPDATE, "@files_to_translate.txt","-I","./", "-recursive", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
+            p = subprocess.run([LUPDATE, "@files_to_translate.txt","-I","./", "-recursive", "-no-sort", "-ts", f"{tsBasename}.ts"], capture_output=True, timeout=60)
         except Exception as e:
             print(str(e))
             os.chdir(cur)

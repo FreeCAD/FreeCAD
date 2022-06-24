@@ -466,6 +466,7 @@
 #include <ShapeAnalysis_ShapeTolerance.hxx>
 #include <ShapeConstruct_Curve.hxx>
 #include <ShapeExtend_Explorer.hxx>
+#include <ShapeFix.hxx>
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>

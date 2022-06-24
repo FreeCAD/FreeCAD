@@ -51,6 +51,7 @@ int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int
 
     swig_type_info * swig_type = nullptr;
     swig_type = SWIG_TypeQuery(TypeName);
+
     if (!swig_type)
         throw Base::RuntimeError("Cannot find type information for requested type");
 
@@ -100,4 +101,31 @@ void cleanupSWIG_T(const char* TypeName)
 
     // Run garbage collector
     PyGC_Collect();
+}
+
+int getSWIGPointerTypeObj_T(const char* TypeName, PyTypeObject** ptr)
+{
+    swig_module_info *module = SWIG_GetModule(nullptr);
+    if (!module)
+        return 1;
+
+    swig_type_info * swig_type = nullptr;
+    SwigPyClientData* clientData = nullptr;
+    PyTypeObject* pyType = nullptr;
+    swig_type = SWIG_TypeQuery(TypeName);
+    if (swig_type)
+        clientData = static_cast<SwigPyClientData*>(swig_type->clientdata);
+
+    if (clientData)
+        pyType = reinterpret_cast<PyTypeObject*>(clientData->newargs);
+
+    if (!pyType) {
+        std::stringstream str;
+        str << "SWIG: Cannot find type information for requested type: " << TypeName;
+        throw Base::RuntimeError(str.str());
+    }
+
+    *ptr = pyType;
+
+    return 0;
 }

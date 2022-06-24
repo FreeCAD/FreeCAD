@@ -96,8 +96,7 @@ PyObject*  VectorPy::__reduce__(PyObject *args)
 
     Py::Tuple tuple(2);
 
-    union PyType_Object pyType = {&VectorPy::Type};
-    Py::Object type(pyType.o);
+    Py::Object type(Base::getTypeAsObject(&Base::VectorPy::Type));
     tuple.setItem(0, type);
 
     Base::Vector3d v = this->value();

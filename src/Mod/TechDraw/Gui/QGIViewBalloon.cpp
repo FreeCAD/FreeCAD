@@ -578,7 +578,6 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         return;
     }
 
-    
     QGIView* qgivParent = nullptr;
     QPointF viewPos;
     Gui::ViewProvider* objVp = QGIView::getViewProvider(balloonParent);

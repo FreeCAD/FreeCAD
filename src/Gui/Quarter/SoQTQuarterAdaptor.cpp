@@ -203,7 +203,7 @@ QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getWidget() const
 
 QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getGLWidget() const
 {
-    return const_cast<QWidget*>(viewport());
+    return viewport();
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)

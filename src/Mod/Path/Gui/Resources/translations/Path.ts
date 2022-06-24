@@ -3995,7 +3995,7 @@
 <context>
     <name>Path</name>
     <message>
-        <location filename="../../../InitGui.py" line="273"/>
+        <location filename="../../../InitGui.py" line="285"/>
         <source>The currently selected unit schema: 
      &apos;{}&apos;
  Does not use &apos;minutes&apos; for velocity values. 
@@ -4010,23 +4010,23 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="275"/>
+        <location filename="../../../InitGui.py" line="287"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="277"/>
+        <location filename="../../../InitGui.py" line="289"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="279"/>
+        <location filename="../../../InitGui.py" line="291"/>
         <source>Don&apos;t Show This Anymore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../PathScripts/PathUtilsGui.py" line="93"/>
-        <location filename="../../../PathScripts/PathPost.py" line="421"/>
+        <location filename="../../../PathScripts/PathPost.py" line="546"/>
         <source>Choose a Path Job</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4191,6 +4191,21 @@ For example:
     <message>
         <location filename="../../../PathScripts/PathToolBitGui.py" line="200"/>
         <source>Invalid Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathCamoticsGui.py" line="73"/>
+        <source>Drag Slider to Simulate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathCamoticsGui.py" line="83"/>
+        <source>Save Project As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathCamoticsGui.py" line="85"/>
+        <source>Camotics Project (*.camotics)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5015,7 +5030,7 @@ Aborting op creation</source>
 <context>
     <name>Path_3dTools</name>
     <message>
-        <location filename="../../../InitGui.py" line="171"/>
+        <location filename="../../../InitGui.py" line="183"/>
         <source>3D Operations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5566,7 +5581,7 @@ Aborting op creation</source>
 <context>
     <name>Path_EngraveTools</name>
     <message>
-        <location filename="../../../InitGui.py" line="147"/>
+        <location filename="../../../InitGui.py" line="148"/>
         <source>Engraving Operations</source>
         <extracomment>int = field(default=None)</extracomment>
         <translation type="unfinished"></translation>
@@ -5972,12 +5987,12 @@ Aborting op creation</source>
 <context>
     <name>Path_Post</name>
     <message>
-        <location filename="../../../PathScripts/PathPost.py" line="184"/>
+        <location filename="../../../PathScripts/PathPost.py" line="457"/>
         <source>Post Process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathPost.py" line="186"/>
+        <location filename="../../../PathScripts/PathPost.py" line="459"/>
         <source>Post Process the selected Job</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7427,6 +7442,7 @@ Aborting op creation</source>
     <name>TaskPathSimulator</name>
     <message>
         <location filename="../panels/TaskPathSimulator.ui" line="14"/>
+        <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
         <source>Path Simulator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7508,6 +7524,21 @@ Aborting op creation</source>
     <message>
         <location filename="../panels/TaskPathSimulator.ui" line="300"/>
         <source>* Note: Volumetric simulation, inaccuracies are inherent.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/TaskPathCamoticsSim.ui" line="29"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
+        <source>Launch Camotics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
+        <source>Make Camotics File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7708,60 +7739,60 @@ Aborting op creation</source>
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../../InitGui.py" line="178"/>
+        <location filename="../../../InitGui.py" line="190"/>
         <source>Project Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="179"/>
+        <location filename="../../../InitGui.py" line="191"/>
         <source>Tool Commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="181"/>
+        <location filename="../../../InitGui.py" line="193"/>
         <source>New Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="185"/>
-        <location filename="../../../InitGui.py" line="222"/>
+        <location filename="../../../InitGui.py" line="197"/>
+        <location filename="../../../InitGui.py" line="234"/>
         <source>Path Modification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="189"/>
+        <location filename="../../../InitGui.py" line="201"/>
         <source>Helpful Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="193"/>
-        <location filename="../../../InitGui.py" line="207"/>
-        <location filename="../../../InitGui.py" line="214"/>
-        <location filename="../../../InitGui.py" line="221"/>
-        <location filename="../../../InitGui.py" line="229"/>
-        <location filename="../../../InitGui.py" line="235"/>
-        <location filename="../../../InitGui.py" line="237"/>
-        <location filename="../../../InitGui.py" line="240"/>
+        <location filename="../../../InitGui.py" line="205"/>
+        <location filename="../../../InitGui.py" line="219"/>
+        <location filename="../../../InitGui.py" line="226"/>
+        <location filename="../../../InitGui.py" line="233"/>
+        <location filename="../../../InitGui.py" line="241"/>
+        <location filename="../../../InitGui.py" line="247"/>
+        <location filename="../../../InitGui.py" line="249"/>
+        <location filename="../../../InitGui.py" line="252"/>
         <source>&amp;Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="208"/>
+        <location filename="../../../InitGui.py" line="220"/>
         <source>Path Dressup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="215"/>
+        <location filename="../../../InitGui.py" line="227"/>
         <source>Supplemental Commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="230"/>
+        <location filename="../../../InitGui.py" line="242"/>
         <source>Specialty Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="241"/>
+        <location filename="../../../InitGui.py" line="253"/>
         <source>Utils</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8423,6 +8454,19 @@ Aborting op creation</source>
     <message>
         <location filename="../../../PathScripts/PathWaterline.py" line="138"/>
         <source>Multi-pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Path_Camotics</name>
+    <message>
+        <location filename="../../../PathScripts/PathCamoticsGui.py" line="316"/>
+        <source>Camotics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathCamoticsGui.py" line="318"/>
+        <source>Simulate using Camotics</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

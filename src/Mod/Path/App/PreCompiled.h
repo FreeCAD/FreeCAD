@@ -60,11 +60,7 @@
 // Boost
 #include <boost/config.hpp>
 #include <boost/version.hpp>
-#if defined(BOOST_MSVC) && (BOOST_VERSION == 105500)
-// for fixing issue https://svn.boost.org/trac/boost/ticket/9332
-#   include "boost_fix/intrusive/detail/memory_util.hpp"
-#   include "boost_fix/container/detail/memory_util.hpp"
-#endif
+
 #include <boost/geometry.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>

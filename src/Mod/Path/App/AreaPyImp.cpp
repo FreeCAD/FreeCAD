@@ -36,11 +36,12 @@
 static PyObject * areaAbort(PyObject *, PyObject *args, PyObject *kwd) {
     static char *kwlist[] = {"aborting", nullptr};
     PyObject *pObj = Py_True;
-    if (!PyArg_ParseTupleAndKeywords(args,kwd,"|O",kwlist,&pObj))
+    if (!PyArg_ParseTupleAndKeywords(args,kwd,"|O!",kwlist,&PyBool_Type,&pObj))
         return nullptr;
-    Area::abort(PyObject_IsTrue(pObj));
-    Py_INCREF(Py_None);
-    return Py_None;
+
+    Area::abort(PyObject_IsTrue(pObj) ? true : false);
+
+    Py_Return;
 }
 
 static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
@@ -93,10 +94,10 @@ static PyObject* areaGetParams(PyObject *, PyObject *args) {
 static PyObject * areaGetParamsDesc(PyObject *, PyObject *args, PyObject *kwd) {
     PyObject *pcObj = Py_False;
     static char *kwlist[] = {"as_string", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|O",kwlist,&pcObj))
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|O!",kwlist,&PyBool_Type,&pcObj))
         return nullptr;
 
-    if(PyObject_IsTrue(pcObj)) 
+    if (PyObject_IsTrue(pcObj) ? true : false)
         return PyUnicode_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
 
     PyObject *dict = PyDict_New();
@@ -237,11 +238,11 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
     PyObject *pcObj = Py_False;
     short index=-1;
     static char *kwlist[] = {"index","rebuild", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO",kwlist,&index,&pcObj))
+    if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO!",kwlist,&index,&PyBool_Type,&pcObj))
         return nullptr;
 
     PY_TRY {
-        if(PyObject_IsTrue(pcObj))
+        if (PyObject_IsTrue(pcObj) ? true : false)
             getAreaPtr()->clean();
         return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
     } PY_CATCH_OCC

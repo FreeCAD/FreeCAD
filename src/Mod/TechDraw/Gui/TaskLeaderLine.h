@@ -29,7 +29,6 @@
 
 #include "QGTracker.h"
 
-
 //TODO: make this a proper enum
 #define TRACKERPICK 0
 #define TRACKEREDIT 1
@@ -47,6 +46,7 @@ class DrawLeaderLine;
 
 namespace TechDrawGui
 {
+class QGSPage;
 class QGVPage;
 class QGIView;
 class QGIPrimPath;
@@ -129,7 +129,7 @@ private:
     QGTracker* m_tracker;
     
     MDIViewPage* m_mdi;
-    QGraphicsScene* m_scene;
+    QGSPage* m_scene;
     QGVPage* m_view;
     ViewProviderLeader* m_lineVP;
     TechDraw::DrawView* m_baseFeat;

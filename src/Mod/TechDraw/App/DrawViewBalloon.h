@@ -62,7 +62,9 @@ public:
     short mustExecute() const override;
 
     DrawViewPart* getViewPart() const;
-    QPointF origin;
+    QPointF origin;                  //WF never used??
+    QPointF getOrigin();
+    void setOrigin(QPointF p);
 
     //virtual PyObject *getPyObject(void);
 

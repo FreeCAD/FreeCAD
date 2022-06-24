@@ -64,7 +64,7 @@ public:
       : _var(var), _saveVal(var)
     { var = tmpVal; }
 
-    ~Temporary( void )
+    ~Temporary( )
     { _var = _saveVal; }
 
 private:
@@ -241,11 +241,11 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         //Py::Object type = obj.type();
         Py::Object type(PyObject_Type(obj.ptr()), true);
         Py::Object inst = obj; // the object instance
-        union PyType_Object typeobj = {&Base::PyObjectBase::Type};
-        union PyType_Object typedoc = {&App::DocumentObjectPy::Type};
-        union PyType_Object basetype = {&PyBaseObject_Type};
+        PyObject* typeobj = Base::getTypeAsObject(&Base::PyObjectBase::Type);
+        PyObject* typedoc = Base::getTypeAsObject(&App::DocumentObjectPy::Type);
+        PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
 
-        if (PyObject_IsSubclass(type.ptr(), typedoc.o) == 1) {
+        if (PyObject_IsSubclass(type.ptr(), typedoc) == 1) {
             // From the template Python object we don't query its type object because there we keep
             // a list of additional methods that we won't see otherwise. But to get the correct doc
             // strings we query the type's dict in the class itself.
@@ -255,14 +255,14 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
                 obj = type;
             }
         }
-        else if (PyObject_IsSubclass(type.ptr(), typeobj.o) == 1) {
+        else if (PyObject_IsSubclass(type.ptr(), typeobj) == 1) {
             obj = type;
         }
-        else if (PyObject_IsInstance(obj.ptr(), basetype.o) == 1) {
+        else if (PyObject_IsInstance(obj.ptr(), basetype) == 1) {
             // New style class which can be a module, type, list, tuple, int, float, ...
             // Make sure it's not a type object
-            union PyType_Object typetype = {&PyType_Type};
-            if (PyObject_IsInstance(obj.ptr(), typetype.o) != 1) {
+            PyObject* typetype = Base::getTypeAsObject(&PyType_Type);
+            if (PyObject_IsInstance(obj.ptr(), typetype) != 1) {
                 // For wrapped objects with PySide2 use the object, not its type
                 // as otherwise attributes added at runtime won't be listed (e.g. MainWindowPy)
                 QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
@@ -276,9 +276,9 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         }
 
         // If we have an instance of PyObjectBase then determine whether it's valid or not
-        if (PyObject_IsInstance(inst.ptr(), typeobj.o) == 1) {
+        if (PyObject_IsInstance(inst.ptr(), typeobj) == 1) {
             Base::PyObjectBase* baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
-            const_cast<CallTipsList*>(this)->validObject = baseobj->isValid();
+            validObject = baseobj->isValid();
         }
         else {
             // PyObject_IsInstance might set an exception
@@ -289,8 +289,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         // If we derive from PropertyContainerPy we can search for the properties in the
         // C++ twin class.
-        union PyType_Object proptypeobj = {&App::PropertyContainerPy::Type};
-        if (PyObject_IsSubclass(type.ptr(), proptypeobj.o) == 1) {
+        PyObject* proptypeobj = Base::getTypeAsObject(&App::PropertyContainerPy::Type);
+        if (PyObject_IsSubclass(type.ptr(), proptypeobj) == 1) {
             // These are the attributes of the instance itself which are NOT accessible by
             // its type object
             extractTipsFromProperties(inst, tips);
@@ -298,8 +298,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         // If we derive from App::DocumentPy we have direct access to the objects by their internal
         // names. So, we add these names to the list, too.
-        union PyType_Object appdoctypeobj = {&App::DocumentPy::Type};
-        if (PyObject_IsSubclass(type.ptr(), appdoctypeobj.o) == 1) {
+        PyObject* appdoctypeobj = Base::getTypeAsObject(&App::DocumentPy::Type);
+        if (PyObject_IsSubclass(type.ptr(), appdoctypeobj) == 1) {
             App::DocumentPy* docpy = (App::DocumentPy*)(inst.ptr());
             App::Document* document = docpy->getDocumentPtr();
             // Make sure that the C++ object is alive
@@ -314,8 +314,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         // If we derive from Gui::DocumentPy we have direct access to the objects by their internal
         // names. So, we add these names to the list, too.
-        union PyType_Object guidoctypeobj = {&Gui::DocumentPy::Type};
-        if (PyObject_IsSubclass(type.ptr(), guidoctypeobj.o) == 1) {
+        PyObject* guidoctypeobj = Base::getTypeAsObject(&Gui::DocumentPy::Type);
+        if (PyObject_IsSubclass(type.ptr(), guidoctypeobj) == 1) {
             Gui::DocumentPy* docpy = (Gui::DocumentPy*)(inst.ptr());
             if (docpy->getDocumentPtr()) {
                 App::Document* document = docpy->getDocumentPtr()->getDocument();
@@ -369,8 +369,8 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             tip.name = str;
 
             if (attr.isCallable()) {
-                union PyType_Object basetype = {&PyBaseObject_Type};
-                if (PyObject_IsSubclass(attr.ptr(), basetype.o) == 1) {
+                PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
+                if (PyObject_IsSubclass(attr.ptr(), basetype) == 1) {
                     tip.type = CallTip::Class;
                 }
                 else {

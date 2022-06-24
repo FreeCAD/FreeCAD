@@ -1457,10 +1457,10 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
                 occvknots.SetValue(i,(double)(i-1)/(occvknots.Length()-1));
             }
         }
-        if ((PyObject_IsTrue(uperiodic) && sum_of_umults != lu) ||
-            (PyObject_Not(uperiodic) && sum_of_umults - udegree -1 != lu) ||
-            (PyObject_IsTrue(vperiodic) && sum_of_vmults != lv) ||
-            (PyObject_Not(vperiodic) && sum_of_vmults - vdegree -1 != lv)) {
+        if (((PyObject_IsTrue(uperiodic) ? true : false) && sum_of_umults != lu) ||
+            ((PyObject_Not(uperiodic) ? true : false) && sum_of_umults - udegree -1 != lu) ||
+            ((PyObject_IsTrue(vperiodic) ? true : false) && sum_of_vmults != lv) ||
+            ((PyObject_Not(vperiodic) ? true : false) && sum_of_vmults - vdegree -1 != lv)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
         }
         // check multiplicity of inner knots
@@ -1538,7 +1538,7 @@ PyObject* BSplineSurfacePy::buildFromNSections(PyObject *args)
         }
 
         GeomFill_NSections fillOp(curveSeq);
-        if (PyObject_IsTrue(refSurf)) {
+        if (PyObject_IsTrue(refSurf) ? true : false) {
             Handle(Geom_BSplineSurface) ref = Handle(Geom_BSplineSurface)::DownCast
                 (getGeometryPtr()->handle());
             fillOp.SetSurface(ref);

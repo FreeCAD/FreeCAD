@@ -137,6 +137,16 @@ Base::BoundBox3d PropertyPartShape::getBoundingBox() const
     return box;
 }
 
+void PropertyPartShape::setTransform(const Base::Matrix4D &rclTrf)
+{
+    _Shape.setTransform(rclTrf);
+}
+
+Base::Matrix4D PropertyPartShape::getTransform() const
+{
+    return _Shape.getTransform();
+}
+
 void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 {
     aboutToSetValue();

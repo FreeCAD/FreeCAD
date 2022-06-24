@@ -212,13 +212,13 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
     PyObject* view=nullptr;
     PyObject *attach=Py_False;
     static char *kwlist[] = {"type","name","objProxy","viewProxy","attach","viewType",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args,kwd,"s|sOOOs",
-                kwlist, &sType,&sName,&obj,&view,&attach,&sViewType))
+    if (!PyArg_ParseTupleAndKeywords(args,kwd,"s|sOOO!s",
+                kwlist, &sType,&sName,&obj,&view,&PyBool_Type,&attach,&sViewType))
         return nullptr;
 
     DocumentObject *pcFtr = nullptr;
 
-    if (!obj || !PyObject_IsTrue(attach)) {
+    if (!obj || (PyObject_IsTrue(attach) ? false : true)) {
         pcFtr = getDocumentPtr()->addObject(sType,sName,true,sViewType);
     }
     else {
@@ -248,7 +248,7 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
             }
             pyftr.setAttr("Proxy", pyobj);
 
-            if (PyObject_IsTrue(attach)) {
+            if (PyObject_IsTrue(attach) ? true : false) {
                 getDocumentPtr()->addObject(pcFtr,sName);
 
                 try {
@@ -307,7 +307,7 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
     PyObject *obj, *rec=Py_False, *retAll=Py_False;
-    if (!PyArg_ParseTuple(args, "O|OO",&obj,&rec,&retAll))
+    if (!PyArg_ParseTuple(args, "O|O!O!",&obj,&PyBool_Type,&rec,&PyBool_Type,&retAll))
         return nullptr;
 
     std::vector<App::DocumentObject*> objs;
@@ -333,7 +333,7 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
     }
 
     PY_TRY {
-        auto ret = getDocumentPtr()->copyObject(objs, PyObject_IsTrue(rec), PyObject_IsTrue(retAll));
+        auto ret = getDocumentPtr()->copyObject(objs, PyObject_IsTrue(rec) ? true : false, PyObject_IsTrue(retAll) ? true : false);
         if (ret.size()==1 && single)
             return ret[0]->getPyObject();
 
@@ -525,10 +525,10 @@ PyObject*  DocumentPy::recompute(PyObject * args)
         }
 
         int options = 0;
-        if (PyObject_IsTrue(checkCycle))
+        if (PyObject_IsTrue(checkCycle) ? true : false)
             options = Document::DepNoCycle;
 
-        int objectCount = getDocumentPtr()->recompute(objs, PyObject_IsTrue(force), nullptr, options);
+        int objectCount = getDocumentPtr()->recompute(objs, PyObject_IsTrue(force) ? true : false, nullptr, options);
 
         // Document::recompute() hides possibly raised Python exceptions by its features
         // So, check if an error is set and return null if yes
@@ -901,10 +901,10 @@ Py::List DocumentPy::getOutList(void) const
 
 PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
     PyObject *sort = Py_True;
-    if (!PyArg_ParseTuple(args, "|O", &sort))
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &sort))
         return nullptr;
     PY_TRY {
-        auto docs = getDocumentPtr()->getDependentDocuments(PyObject_IsTrue(sort));
+        auto docs = getDocumentPtr()->getDependentDocuments(PyObject_IsTrue(sort) ? true : false);
         Py::List ret;
         for (auto doc : docs)
             ret.append(Py::Object(doc->getPyObject(), true));

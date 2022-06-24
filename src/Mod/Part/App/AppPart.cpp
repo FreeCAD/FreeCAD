@@ -99,7 +99,24 @@
 #include "Mod/Part/App/PlanePy.h"
 #include "Mod/Part/App/PointPy.h"
 #include <Mod/Part/App/PrecisionPy.h>
-#include "Mod/Part/App/RectangularTrimmedSurfacePy.h"
+#include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_RootPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_EdgePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_EdgeConnectPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_FacePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_FaceConnectPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_FixSmallFacePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_FixSmallSolidPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_FreeBoundsPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_ShapePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_ShapeTolerancePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_ShellPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_SolidPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_SplitCommonVertexPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_SplitToolPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_WirePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_WireframePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_WireVertexPy.h>
 #include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
 #include "Mod/Part/App/SpherePy.h"
 #include "Mod/Part/App/SurfaceOfExtrusionPy.h"
@@ -336,6 +353,26 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::BuildPlateSurfacePy::Type, geomPlate, "BuildPlateSurface");
     Base::Interpreter().addType(&Part::CurveConstraintPy::Type, geomPlate, "CurveConstraint");
     Base::Interpreter().addType(&Part::PointConstraintPy::Type, geomPlate, "PointConstraint");
+
+    // ShapeFix sub-module
+    PyObject* shapeFix(module.getAttr("ShapeFix").ptr());
+    Base::Interpreter().addType(&Part::ShapeFix_RootPy::Type, shapeFix, "Root");
+    Base::Interpreter().addType(&Part::ShapeFix_EdgePy::Type, shapeFix, "Edge");
+    Base::Interpreter().addType(&Part::ShapeFix_FacePy::Type, shapeFix, "Face");
+    Base::Interpreter().addType(&Part::ShapeFix_ShapePy::Type, shapeFix, "Shape");
+    Base::Interpreter().addType(&Part::ShapeFix_ShellPy::Type, shapeFix, "Shell");
+    Base::Interpreter().addType(&Part::ShapeFix_SolidPy::Type, shapeFix, "Solid");
+    Base::Interpreter().addType(&Part::ShapeFix_WirePy::Type, shapeFix, "Wire");
+    Base::Interpreter().addType(&Part::ShapeFix_WireframePy::Type, shapeFix, "Wireframe");
+    Base::Interpreter().addType(&Part::ShapeFix_WireVertexPy::Type, shapeFix, "WireVertex");
+    Base::Interpreter().addType(&Part::ShapeFix_EdgeConnectPy::Type, shapeFix, "EdgeConnect");
+    Base::Interpreter().addType(&Part::ShapeFix_FaceConnectPy::Type, shapeFix, "FaceConnect");
+    Base::Interpreter().addType(&Part::ShapeFix_FixSmallFacePy::Type, shapeFix, "FixSmallFace");
+    Base::Interpreter().addType(&Part::ShapeFix_FixSmallSolidPy::Type, shapeFix, "FixSmallSolid");
+    Base::Interpreter().addType(&Part::ShapeFix_FreeBoundsPy::Type, shapeFix, "FreeBounds");
+    Base::Interpreter().addType(&Part::ShapeFix_ShapeTolerancePy::Type, shapeFix, "ShapeTolerance");
+    Base::Interpreter().addType(&Part::ShapeFix_SplitCommonVertexPy::Type, shapeFix, "SplitCommonVertex");
+    Base::Interpreter().addType(&Part::ShapeFix_SplitToolPy::Type, shapeFix, "SplitTool");
 
     // ShapeUpgrade sub-module
     PyObject* shapeUpgrade(module.getAttr("ShapeUpgrade").ptr());

@@ -404,8 +404,9 @@ private:
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
         static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",nullptr};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOi", 
-                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode))
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
+                    kwd_list,"utf-8",&Name,&DocName,&PyBool_Type,&importHidden,&PyBool_Type,&merge,
+                    &PyBool_Type,&useLinkGroup,&mode))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -517,12 +518,12 @@ private:
             }
 
             FC_DURATION_PLUS(d1,t);
-            if(merge!=Py_None)
-                ocaf.setMerge(PyObject_IsTrue(merge));
-            if(importHidden!=Py_None)
-                ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden));
-            if(useLinkGroup!=Py_None)
-                ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup));
+            if (merge != Py_None)
+                ocaf.setMerge(PyObject_IsTrue(merge) ? true : false);
+            if (importHidden != Py_None)
+                ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden) ? true : false);
+            if (useLinkGroup != Py_None)
+                ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup) ? true : false);
             ocaf.setMode(mode);
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
@@ -567,8 +568,8 @@ private:
         PyObject *legacy = Py_None;
         PyObject *keepPlacement = Py_None;
         static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",nullptr};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|OOO",
-                    kwd_list,&object,"utf-8",&Name,&exportHidden,&legacy,&keepPlacement))
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!",
+                    kwd_list,&object,"utf-8",&Name,&PyBool_Type,&exportHidden,&PyBool_Type,&legacy,&PyBool_Type,&keepPlacement))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -588,18 +589,18 @@ private:
                     objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
             }
 
-            if(legacy == Py_None) {
+            if (legacy == Py_None) {
                 auto hGrp = App::GetApplication().GetParameterGroupByPath(
                         "User parameter:BaseApp/Preferences/Mod/Import");
-                legacy = hGrp->GetBool("ExportLegacy",false)?Py_True:Py_False;
+                legacy = hGrp->GetBool("ExportLegacy",false) ? Py_True : Py_False;
             }
 
             Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);
-            if(!PyObject_IsTrue(legacy) || !ocaf.canFallback(objs)) {
-                if(exportHidden!=Py_None)
-                    ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
-                if(keepPlacement!=Py_None)
-                    ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement));
+            if ((PyObject_IsTrue(legacy) ? false : true) || !ocaf.canFallback(objs)) {
+                if (exportHidden != Py_None)
+                    ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden) ? true : false);
+                if (keepPlacement != Py_None)
+                    ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement) ? true : false);
                 ocaf.exportObjects(objs);
             }
             else {

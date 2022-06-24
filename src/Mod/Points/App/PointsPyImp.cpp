@@ -142,8 +142,7 @@ PyObject* PointsPy::addPoints(PyObject * args)
 
     try {
         Py::Sequence list(obj);
-        union PyType_Object pyType = {&(Base::VectorPy::Type)};
-        Py::Type vType(pyType.o);
+        Py::Type vType(Base::getTypeAsObject(&Base::VectorPy::Type));
 
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if ((*it).isType(vType)) {

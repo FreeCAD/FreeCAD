@@ -25,6 +25,7 @@
 # include <cassert>
 # include <gp_Pln.hxx>
 # include <gp_Lin.hxx>
+# include <gp_Quaternion.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -723,4 +724,17 @@ void Part::Tools::getNormal(const TopoDS_Face& face, double u, double v,
 
     if (face.Orientation() == TopAbs_REVERSED)
         dir.Reverse();
+}
+
+TopLoc_Location Part::Tools::fromPlacement(const Base::Placement& plm)
+{
+    Base::Rotation r = plm.getRotation();
+    double q1, q2, q3, q4;
+    r.getValue(q1, q2, q3, q4);
+    Base::Vector3d t = plm.getPosition();
+
+    gp_Trsf trf;
+    trf.SetTranslation(gp_Vec(t.x, t.y, t.z));
+    trf.SetRotation(gp_Quaternion(q1, q2, q3, q4));
+    return {trf};
 }

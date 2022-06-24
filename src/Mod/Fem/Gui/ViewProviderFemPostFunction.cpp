@@ -41,8 +41,6 @@
 # include <QMessageBox>
 # include <QTextStream>
 
-# include <boost_bind_bind.hpp>
-
 # include <cmath>
 #endif
 

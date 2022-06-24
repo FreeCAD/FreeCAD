@@ -893,9 +893,9 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
             return true;
     }
 
-    if (   (!smev.isRelease(1) && this->button1down)
-        || (!smev.isRelease(2) && this->button2down)
-        || (!smev.isRelease(3) && this->button3down)) {
+    if (   (smev.isRelease(1) && !this->button1down)
+        || (smev.isRelease(2) && !this->button2down)
+        || (smev.isRelease(3) && !this->button3down)) {
         //a button release event cane, but we didn't see the corresponding down
         //event. Discard it. This discarding is relied upon in some hacks to
         //overcome buggy synthetic mouse input coming from Qt when doing

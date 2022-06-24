@@ -59,6 +59,10 @@ public:
 
     /** @name Modification */
     //@{
+    /// Set the placement of the geometry
+    void setTransform(const Base::Matrix4D& rclTrf);
+    /// Get the placement of the geometry
+    Base::Matrix4D getTransform() const;
     /// Transform the real shape data
     void transformGeometry(const Base::Matrix4D &rclMat);
     //@}

@@ -36,7 +36,6 @@
 # include <QKeyEvent>
 # include <QMessageBox>
 # include <QtConcurrentMap>
-# include <boost_bind_bind.hpp>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>

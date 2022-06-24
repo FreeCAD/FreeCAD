@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost_bind_bind.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <boost_graph_reverse_graph.hpp>
 #include <memory>
