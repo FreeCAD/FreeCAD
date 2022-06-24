@@ -48,7 +48,7 @@ PyException::PyException(const Py::Object &obj) {
     // WARNING: we are assuming that python type object will never be
     // destroyed, so we don't keep reference here to save book-keeping in
     // our copy constructor and destructor
-    _exceptionType = (PyObject*)obj.ptr()->ob_type;
+    _exceptionType = reinterpret_cast<PyObject*>(obj.ptr()->ob_type);
     _errorType = obj.ptr()->ob_type->tp_name;
 }
 

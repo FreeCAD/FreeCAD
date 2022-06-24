@@ -393,7 +393,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
         // Note: We must return the type object here,
         // so that our own types feel as really Python objects
         Py_INCREF(Py_TYPE(this));
-        return (PyObject *)(Py_TYPE(this));
+        return reinterpret_cast<PyObject *>(Py_TYPE(this));
     }
     else if (streq(attr, "__members__")) {
         // Use __dict__ instead as __members__ is deprecated
