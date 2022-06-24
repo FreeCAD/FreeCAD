@@ -1038,7 +1038,7 @@ Py::Tuple TopoShapeFacePy::getParameterRange(void) const
 Py::Object TopoShapeFacePy::getWire(void) const
 {
     try {
-        Py::Object sys_out(PySys_GetObject(const_cast<char*>("stdout")));
+        Py::Object sys_out(PySys_GetObject("stdout"));
         Py::Callable write(sys_out.getAttr("write"));
         Py::Tuple arg(1);
         arg.setItem(0, Py::String("Warning: Wire is deprecated, please use OuterWire\n"));
