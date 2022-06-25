@@ -387,13 +387,10 @@ class ObjectDressup:
             extendcommand = Path.Command("G0", {"X": extendstart.x, "Y": extendstart.y})
             results.append(extendcommand)
 
-        commandname = "G0" if obj.RapidPlunge else "G1"
-        extendcommand = Path.Command(
-            commandname,
-            {
-                "Z": p1.z,
-            },
-        )
+        if obj.RapidPlunge:
+            extendcommand = Path.Command("G0", {"Z": p1.z})
+        else:
+            extendcommand = Path.Command("G1", {"Z": p1.z, "F": vertFeed})
         results.append(extendcommand)
 
         if obj.UseMachineCRC:
@@ -414,8 +411,10 @@ class ObjectDressup:
                 {
                     "X": p0.x,
                     "Y": p0.y,
+                    "Z": p0.z,
                     "I": offsetvector.x,
                     "J": offsetvector.y,
+                    "K": offsetvector.z,
                     "F": horizFeed,
                 },
             )  # add G2/G3 move
@@ -518,7 +517,15 @@ class ObjectDressup:
         if obj.StyleOff == "Arc":
             arcmove = Path.Command(
                 arcdir,
-                {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed},
+                {
+                    "X": leadend.x,
+                    "Y": leadend.y,
+                    "Z": leadend.z,
+                    "I": IJ.x,
+                    "J": IJ.y,
+                    "K": IJ.z,
+                    "F": horizFeed,
+                },
             )  # add G2/G3 move
             results.append(arcmove)
             if obj.ExtendLeadOut != 0:
