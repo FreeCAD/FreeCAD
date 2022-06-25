@@ -665,13 +665,17 @@ Hole::Hole()
     HoleCutType.setEnums(HoleCutType_None_Enums);
 
     ADD_PROPERTY_TYPE(HoleCutCustomValues, (false), "Hole", App::Prop_None, "Custom cut values");
+    HoleCutCustomValues.setReadOnly(true);
 
     ADD_PROPERTY_TYPE(HoleCutDiameter, (0.0), "Hole", App::Prop_None, "Head cut diameter");
+    HoleCutDiameter.setReadOnly(true);
 
-    ADD_PROPERTY_TYPE(HoleCutDepth, (0.0), "Hole", App::Prop_None, "Head cut deth");
+    ADD_PROPERTY_TYPE(HoleCutDepth, (0.0), "Hole", App::Prop_None, "Head cut depth");
+    HoleCutDepth.setReadOnly(true);
 
     ADD_PROPERTY_TYPE(HoleCutCountersinkAngle, (90.0), "Hole", App::Prop_None, "Head cut countersink angle");
     HoleCutCountersinkAngle.setConstraints(&floatAngle);
+    HoleCutCountersinkAngle.setReadOnly(true);
 
     ADD_PROPERTY_TYPE(DepthType, (0L), "Hole", App::Prop_None, "Type");
     DepthType.setEnums(DepthTypeEnums);
