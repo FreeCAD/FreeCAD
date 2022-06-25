@@ -1097,15 +1097,11 @@ void PcdReader::read(const std::string& filename)
             }
         }
         else if (types[rgba] == "F") {
-            union RGBA {
-                uint32_t u;
-                float f;
-            };
-
-            union RGBA v;
+            static_assert(sizeof(float) == sizeof(uint32_t), "float and uint32_t have different sizes");
             for (std::size_t i=0; i<numPoints; i++) {
-                v.f = static_cast<float>(data(i,rgba));
-                uint32_t packed = v.u;
+                float f = static_cast<float>(data(i,rgba));
+                uint32_t packed;
+                std::memcpy(&packed, &f, sizeof(packed));
                 uint32_t a = (packed >> 24) & 0xff;
                 uint32_t r = (packed >> 16) & 0xff;
                 uint32_t g = (packed >> 8) & 0xff;

@@ -321,8 +321,24 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
     const unsigned char M_EOI   = 0xd9;
     const unsigned char M_COM   = 0xfe;
 
-    union Byte {
-        char c; unsigned char u;
+    class Byte {
+        char c{};
+        unsigned char u{};
+    public:
+        void setc(char v) {
+            c = v;
+            std::memcpy(&u, &c, sizeof(u));
+        }
+        void setu(unsigned char v) {
+            u = v;
+            std::memcpy(&c, &u, sizeof(c));
+        }
+        char getc() const {
+            return c;
+        }
+        unsigned char getu() const {
+            return u;
+        }
     };
 
     if (comment.empty() || ba.length() < 2)
@@ -330,21 +346,21 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
 
     // first marker
     Byte a,b;
-    a.c = ba[0];
-    b.c = ba[1];
-    if (a.u == 0xff && b.u == M_SOI) {
+    a.setc(ba[0]);
+    b.setc(ba[1]);
+    if (a.getu() == 0xff && b.getu() == M_SOI) {
         int index = 2;
         int len = ba.length();
         while (index < len) {
             // next marker
-            a.c = ba[index++];
-            while (a.u != 0xff && index < len) {
-                a.c = ba[index++];
+            a.setc(ba[index++]);
+            while (a.getu() != 0xff && index < len) {
+                a.setc(ba[index++]);
             }
             do {
-                b.c = ba[index++];
-            } while (b.u == 0xff && index < len);
-            switch (b.u) {
+                b.setc(ba[index++]);
+            } while (b.getu() == 0xff && index < len);
+            switch (b.getu()) {
                 case M_SOF0:
                 case M_SOF1:
                 case M_SOF2:
@@ -361,11 +377,11 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
                 case M_EOI:
                     {
                         Byte a, b;
-                        a.u = 0xff;
-                        b.u = M_COM;
+                        a.setu(0xff);
+                        b.setu(M_COM);
                         index -= 2; // insert comment before marker
-                        ba.insert(index++, a.c);
-                        ba.insert(index++, b.c);
+                        ba.insert(index++, a.getc());
+                        ba.insert(index++, b.getc());
                         int val = comment.size() + 2;
                         ba.insert(index++,(val >> 8) & 0xff);
                         ba.insert(index++,val & 0xff);
@@ -376,9 +392,9 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
                 default:
                     {
                         Byte a, b;
-                        a.c = ba[index++];
-                        b.c = ba[index++];
-                        int off = ((unsigned int)a.u << 8) + (unsigned int)b.u;
+                        a.setc(ba[index++]);
+                        b.setc(ba[index++]);
+                        int off = ((unsigned int)a.getu() << 8) + (unsigned int)b.getu();
                         index += off;
                         index -= 2; // next marker
                     }   break;
@@ -464,7 +480,7 @@ SoQtOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   Returns the viewerport region.
 */
 const SbViewportRegion &
-SoQtOffscreenRenderer::getViewportRegion(void) const
+SoQtOffscreenRenderer::getViewportRegion() const
 {
     return PRIVATE(this)->viewport;
 }
@@ -486,7 +502,7 @@ SoQtOffscreenRenderer::setBackgroundColor(const SbColor4f & color)
   Returns the background color.
 */
 const SbColor4f &
-SoQtOffscreenRenderer::getBackgroundColor(void) const
+SoQtOffscreenRenderer::getBackgroundColor() const
 {
     return PRIVATE(this)->backgroundcolor;
 }
@@ -510,7 +526,7 @@ SoQtOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
   Returns the rendering action currently used.
 */
 SoGLRenderAction *
-SoQtOffscreenRenderer::getGLRenderAction(void) const
+SoQtOffscreenRenderer::getGLRenderAction() const
 {
     return PRIVATE(this)->renderaction;
 }
@@ -522,7 +538,7 @@ SoQtOffscreenRenderer::setNumPasses(const int num)
 }
 
 int
-SoQtOffscreenRenderer::getNumPasses(void) const
+SoQtOffscreenRenderer::getNumPasses() const
 {
     return PRIVATE(this)->numSamples;
 }
