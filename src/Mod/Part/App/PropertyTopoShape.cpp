@@ -43,9 +43,7 @@
 # include <gp_GTrsf.hxx>
 # include <gp_Trsf.hxx>
 
-#if OCC_VERSION_HEX >= 0x060800
 # include <OSD_OpenFile.hxx>
-#endif
 
 #endif // _PreComp_
 
@@ -248,11 +246,8 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
 static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, const Standard_CString File)
 {
   std::ofstream os;
-#if OCC_VERSION_HEX >= 0x060800
   OSD_OpenStream(os, File, std::ios::out);
-#else
-  os.open(File, std::ios::out);
-#endif
+
   if (!os.rdbuf()->is_open())
       return Standard_False;
 

@@ -5204,12 +5204,10 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 else {
                     controlpointgeoids[0] = currentgeoid+incrgeo+1;
                 }
-
                 incrgeo++;
             }
         }
 
-        #if OCC_VERSION_HEX >= 0x060900
         index=0;
 
         for(it=knotgeoids.begin(), itb=knotpoints.begin(); it!=knotgeoids.end() && itb!=knotpoints.end(); ++it, ++itb, index++) {
@@ -5239,21 +5237,8 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 incrgeo++;
             }
         }
-        #endif
 
         Q_UNUSED(isfirstweightconstrained);
-        // constraint the first weight to allow for seamless weight modification and proper visualization
-        /*if(!isfirstweightconstrained) {
-
-            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::Radius;
-            newConstr->First = controlpointgeoids[0];
-            newConstr->FirstPos = Sketcher::PointPos::none;
-            newConstr->setValue( round(distance_p0_p1/6)); // 1/6 is just an estimation for acceptable general visualization
-
-            icon.push_back(newConstr);
-
-        }*/
 
         this->addGeometry(igeo,true);
         this->addConstraints(icon);
@@ -5750,10 +5735,6 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
-    #if OCC_VERSION_HEX < 0x060900
-        THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher."))
-    #endif
-
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."))
 
@@ -5926,10 +5907,6 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 {
     Base::StateLocker lock(managedoperation, true); // TODO: Check if this is still valid: no need to check input data validity as this is an sketchobject managed operation.
-
-    #if OCC_VERSION_HEX < 0x060900
-        THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher."))
-    #endif
 
     // handling unacceptable cases
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
@@ -6634,11 +6611,7 @@ void SketchObject::rebuildExternalGeometry(void)
     gp_Trsf mov;
     mov.SetValues(invMat[0][0],invMat[0][1],invMat[0][2],invMat[0][3],
                   invMat[1][0],invMat[1][1],invMat[1][2],invMat[1][3],
-                  invMat[2][0],invMat[2][1],invMat[2][2],invMat[2][3]
-#if OCC_VERSION_HEX < 0x060800
-                  , 0.00001, 0.00001
-#endif
-                  ); //precision was removed in OCCT CR0025194
+                  invMat[2][0],invMat[2][1],invMat[2][2],invMat[2][3]);
 
     gp_Ax3 sketchAx3(gp_Pnt(Pos.x,Pos.y,Pos.z),
                      gp_Dir(dN.x,dN.y,dN.z),
@@ -7727,32 +7700,6 @@ double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, d
     }
     else
         throw Base::ValueError("Null geometry in calculateAngleViaPoint");
-
-/*
-    // OCC-based calculation. It is faster, but it was removed due to problems
-    // with reversed geometry (clockwise arcs). More info in "Sketch: how to
-    // handle reversed external arcs?" forum thread
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=9130&sid=1b994fa1236db5ac2371eeb9a53de23f
-
-    const Part::GeomCurve &g1 = *(dynamic_cast<const Part::GeomCurve*>(this->getGeometry(GeoId1)));
-    const Part::GeomCurve &g2 = *(dynamic_cast<const Part::GeomCurve*>(this->getGeometry(GeoId2)));
-    Base::Vector3d p(px, py, 0.0);
-
-    double u1 = 0.0;
-    double u2 = 0.0;
-    if (! g1.closestParameterToBasicCurve(p, u1) ) throw Base::ValueError("SketchObject::calculateAngleViaPoint: closestParameter(curve1) failed!");
-    if (! g2.closestParameterToBasicCurve(p, u2) ) throw Base::ValueError("SketchObject::calculateAngleViaPoint: closestParameter(curve2) failed!");
-
-    gp_Dir tan1, tan2;
-    if (! g1.tangent(u1,tan1) ) throw Base::ValueError("SketchObject::calculateAngleViaPoint: tangent1 failed!");
-    if (! g2.tangent(u2,tan2) ) throw Base::ValueError("SketchObject::calculateAngleViaPoint: tangent2 failed!");
-
-    assert(abs(tan1.Z())<0.0001);
-    assert(abs(tan2.Z())<0.0001);
-
-    double ang = atan2(-tan2.X()*tan1.Y()+tan2.Y()*tan1.X(), tan2.X()*tan1.X() + tan2.Y()*tan1.Y());
-    return ang;
-*/
 }
 
 void SketchObject::constraintsRenamed(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renamed)

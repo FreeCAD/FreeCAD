@@ -437,18 +437,6 @@ bool CmdPartDefeaturing::isActive(void)
 }
 
 
-// {
-//     if (getActiveGuiDocument())
-// #if OCC_VERSION_HEX < 0x060900
-//         return false;
-// #else
-//         return true;
-// #endif
-//     else
-//         return false;
-// }
-
-
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 void CreateSimplePartCommands(void)

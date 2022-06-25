@@ -176,10 +176,8 @@
 # include <BRepAlgo_Fuse.hxx>
 #endif
 
-#if OCC_VERSION_HEX >= 0x060600
 # include <BOPAlgo_ArgumentAnalyzer.hxx>
 # include <BOPAlgo_ListOfCheckResult.hxx>
-#endif
 
 #if OCC_VERSION_HEX >= 0x070300
 # include <BRepAlgoAPI_Defeaturing.hxx>
@@ -239,10 +237,6 @@ const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError et)
         return "Curve projection failed";
     case BRepBuilderAPI_ParametersOutOfRange:
         return "Parameters out of range";
-#if OCC_VERSION_HEX < 0x060500
-    case BRepBuilderAPI_SurfaceNotC2:
-        return "Surface not C2-continuous";
-#endif
     default:
         return "Unknown creation error";
     }
@@ -627,16 +621,11 @@ void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 {
     trsf.SetValues(mtrx[0][0],mtrx[0][1],mtrx[0][2],mtrx[0][3],
                    mtrx[1][0],mtrx[1][1],mtrx[1][2],mtrx[1][3],
-                   mtrx[2][0],mtrx[2][1],mtrx[2][2],mtrx[2][3]
-#if OCC_VERSION_HEX < 0x060800
-                  , 0.00001,0.00001
-#endif
-                ); //precision was removed in OCCT CR0025194
+                   mtrx[2][0],mtrx[2][1],mtrx[2][2],mtrx[2][3]);
 }
 
 void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
 {
-#if OCC_VERSION_HEX >= 0x070000
     // https://www.opencascade.com/doc/occt-7.0.0/refman/html/classgp___trsf.html
     // VectorialPart() already includes the scale factor
     gp_Mat m = trsf.VectorialPart();
@@ -659,29 +648,6 @@ void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
     mtrx[0][3] = p.X();
     mtrx[1][3] = p.Y();
     mtrx[2][3] = p.Z();
-#else
-    gp_Mat m = trsf._CSFDB_Getgp_Trsfmatrix();
-    gp_XYZ p = trsf._CSFDB_Getgp_Trsfloc();
-    Standard_Real scale = trsf._CSFDB_Getgp_Trsfscale();
-
-    // set Rotation matrix
-    mtrx[0][0] = scale * m._CSFDB_Getgp_Matmatrix(0,0);
-    mtrx[0][1] = scale * m._CSFDB_Getgp_Matmatrix(0,1);
-    mtrx[0][2] = scale * m._CSFDB_Getgp_Matmatrix(0,2);
-
-    mtrx[1][0] = scale * m._CSFDB_Getgp_Matmatrix(1,0);
-    mtrx[1][1] = scale * m._CSFDB_Getgp_Matmatrix(1,1);
-    mtrx[1][2] = scale * m._CSFDB_Getgp_Matmatrix(1,2);
-
-    mtrx[2][0] = scale * m._CSFDB_Getgp_Matmatrix(2,0);
-    mtrx[2][1] = scale * m._CSFDB_Getgp_Matmatrix(2,1);
-    mtrx[2][2] = scale * m._CSFDB_Getgp_Matmatrix(2,2);
-
-    // set pos vector
-    mtrx[0][3] = p._CSFDB_Getgp_XYZx();
-    mtrx[1][3] = p._CSFDB_Getgp_XYZy();
-    mtrx[2][3] = p._CSFDB_Getgp_XYZz();
-#endif
 }
 
 Base::Matrix4D TopoShape::convert(const gp_Trsf& trsf) {
@@ -872,7 +838,7 @@ void TopoShape::importBrep(const char *FileName)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX >= 0x060300 && OCC_VERSION_HEX < 0x070500
+#if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading BREP file...");
         pi->Show();
@@ -894,7 +860,7 @@ void TopoShape::importBrep(std::istream& str, int indicator)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX >= 0x060300 && OCC_VERSION_HEX < 0x070500
+#if OCC_VERSION_HEX < 0x070500
         if (indicator) {
             Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
             pi->NewScope(100, "Reading BREP file...");
@@ -1095,18 +1061,11 @@ void TopoShape::dump(std::ostream& out) const
 void TopoShape::exportStl(const char *filename, double deflection) const
 {
     StlAPI_Writer writer;
-#if OCC_VERSION_HEX < 0x060801
-    if (deflection > 0) {
-        writer.RelativeMode() = false;
-        writer.SetDeflection(deflection);
-    }
-#else
     BRepMesh_IncrementalMesh aMesh(this->_Shape, deflection,
                                    /*isRelative*/ Standard_False,
                                    /*theAngDeflection*/
                                    defaultAngularDeflection(deflection),
                                    /*isInParallel*/ true);
-#endif
     writer.Write(this->_Shape,encodeFilename(filename).c_str());
 }
 
@@ -1652,31 +1611,23 @@ bool TopoShape::analyze(bool runBopCheck, std::ostream& str) const
             return false; // errors detected
         }
         else if (runBopCheck) {
-            // Copied from TaskCheckGeometryResults::goBOPSingleCheck
-#if OCC_VERSION_HEX >= 0x060600
+
             TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(this->_Shape).Shape();
             BOPAlgo_ArgumentAnalyzer BOPCheck;
-          //   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
             BOPCheck.SetShape1(BOPCopy);
             //all settings are false by default. so only turn on what we want.
             BOPCheck.ArgumentTypeMode() = true;
             BOPCheck.SelfInterMode() = true;
             BOPCheck.SmallEdgeMode() = true;
             BOPCheck.RebuildFaceMode() = true;
-#if OCC_VERSION_HEX >= 0x060700
             BOPCheck.ContinuityMode() = true;
-#endif
-#if OCC_VERSION_HEX >= 0x060900
             BOPCheck.SetParallelMode(true); //this doesn't help for speed right now(occt 6.9.1).
             BOPCheck.SetRunParallel(true); //performance boost, use all available cores
             BOPCheck.TangentMode() = true; //these 4 new tests add about 5% processing time.
             BOPCheck.MergeVertexMode() = true;
             BOPCheck.CurveOnSurfaceMode() = true;
             BOPCheck.MergeEdgeMode() = true;
-#endif
-
             BOPCheck.Perform();
-
             if (!BOPCheck.HasFaulty())
                 return true;
 
@@ -1688,25 +1639,17 @@ bool TopoShape::analyze(bool runBopCheck, std::ostream& str) const
             for (; BOPResultsIt.More(); BOPResultsIt.Next()) {
                 const BOPAlgo_CheckResult &current = BOPResultsIt.Value();
 
-#if OCC_VERSION_HEX < 0x070000
-                const BOPCol_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
-                BOPCol_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#else
                 const TopTools_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
                 TopTools_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#endif
                 for (;faultyShapes1It.More(); faultyShapes1It.Next()) {
                     const TopoDS_Shape &faultyShape = faultyShapes1It.Value();
                     str << "Error in " << shapeEnumToString[faultyShape.ShapeType()] << ": ";
                     str << bopEnumToString[current.GetCheckStatus()] << std::endl;
                 }
             }
-
             return false;
-#endif // 0x060600
         }
     }
-
     return true;
 }
 

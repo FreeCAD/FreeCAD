@@ -494,11 +494,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
             BRepAdaptor_Surface adapt(upToFace, Standard_False);
             // use the placement of the adapter, not of the upToFace
             loc = TopLoc_Location(adapt.Trsf());
-            BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
-#if OCC_VERSION_HEX >= 0x060502
-                , Precision::Confusion()
-#endif
-            );
+            BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface(), Precision::Confusion());
             if (!mkFace.IsDone())
                 throw Base::ValueError("SketchBased: Up To Face: Failed to create unlimited face");
             upToFace = TopoDS::Face(mkFace.Shape());
@@ -687,12 +683,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
         if (intersector.IsDone()) {
             for (int i = 1; i <= intersector.NbExt(); i++) {
 
-
-#if OCC_VERSION_HEX >= 0x060500
                 if (intersector.SquareDistance(i) < Precision::Confusion()) {
-#else
-                if (intersector.Value(i) < Precision::Confusion()) {
-#endif
                     if (intersector.IsParallel()) {
                         // A line that is coincident with the axis produces three intersections
                         // 1 with the line itself and 2 with the adjacent edges

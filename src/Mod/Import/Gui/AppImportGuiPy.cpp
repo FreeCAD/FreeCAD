@@ -71,11 +71,7 @@
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
 
-#if OCC_VERSION_HEX >= 0x060500
 # include <TDataXtd_Shape.hxx>
-# else
-# include <TDataStd_Shape.hxx>
-# endif
 #if OCC_VERSION_HEX >= 0x070500
 # include <Message_ProgressRange.hxx>
 # include <RWGltf_CafWriter.hxx>
@@ -644,11 +640,8 @@ private:
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
-#if OCC_VERSION_HEX >= 0x060500
                 APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
-#else
-                APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
-#endif
+
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 

@@ -1172,11 +1172,7 @@ private:
                 aPlane = new Geom_Plane(p, d);
             }
 
-            BRepBuilderAPI_MakeFace Face(aPlane, 0.0, length, 0.0, width
-#if OCC_VERSION_HEX >= 0x060502
-              , Precision::Confusion()
-#endif
-            );
+            BRepBuilderAPI_MakeFace Face(aPlane, 0.0, length, 0.0, width, Precision::Confusion() );
             return Py::asObject(new TopoShapeFacePy(new TopoShape((Face.Face()))));
         }
         catch (Standard_DomainError&) {

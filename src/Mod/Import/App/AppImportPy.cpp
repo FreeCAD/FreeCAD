@@ -356,12 +356,7 @@ private:
                 // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
-                // edit STEP header
-#if OCC_VERSION_HEX >= 0x060500
                 APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
-#else
-                APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
-#endif
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 

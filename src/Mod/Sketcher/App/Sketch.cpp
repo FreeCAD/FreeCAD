@@ -3463,7 +3463,6 @@ bool Sketch::updateGeometry()
                 for(auto it3 = occtknots.begin() ; it3 != occtknots.end(); ++it3)
                     knots.push_back(*it3);
 
-                #if OCC_VERSION_HEX >= 0x060900
                 int index = 0;
                 for(std::vector<int>::const_iterator it5 = mybsp.knotpointGeoids.begin(); it5 != mybsp.knotpointGeoids.end(); ++it5, index++) {
                     if( *it5 != GeoEnum::GeoUndef) {
@@ -3488,8 +3487,6 @@ bool Sketch::updateGeometry()
                         }
                     }
                 }
-                #endif
-
             }
         } catch (Base::Exception &e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",

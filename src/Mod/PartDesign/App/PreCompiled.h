@@ -98,9 +98,7 @@
 # include <TopoDS.hxx>
 # include <Precision.hxx>
 
-#if OCC_VERSION_HEX >= 0x060800
 # include <OSD_OpenFile.hxx>
-#endif
 
 #endif // _PreComp_
 #endif
