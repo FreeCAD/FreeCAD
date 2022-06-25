@@ -2568,8 +2568,8 @@ public:
     // Also supports aborting the selection mode by pressing (releasing) the Escape key. 
     static void selectionCallback(void * ud, SoEventCallback * n)
     {
-        SelectionCallbackHandler* selectionHandler = reinterpret_cast<SelectionCallbackHandler*>(ud);
-        Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+        SelectionCallbackHandler* selectionHandler = static_cast<SelectionCallbackHandler*>(ud);
+        Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
         const SoEvent* ev = n->getEvent();
         if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
 
@@ -2873,7 +2873,7 @@ static std::vector<std::string> getBoxSelection(
 static void doSelect(void* ud, SoEventCallback * cb)
 {
     bool selectElement = ud ? true : false;
-    Gui::View3DInventorViewer* viewer = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
 
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);

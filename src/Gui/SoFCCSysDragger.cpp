@@ -214,7 +214,7 @@ void TDragger::finishCB(void *, SoDragger *d)
 
 void TDragger::fieldSensorCB(void *f, SoSensor *)
 {
-  TDragger *sudoThis = reinterpret_cast<TDragger *>(f);
+  TDragger *sudoThis = static_cast<TDragger *>(f);
 
   SbMatrix matrix = sudoThis->getMotionMatrix();
   sudoThis->workFieldsIntoTransform(matrix);
@@ -486,7 +486,7 @@ void RDragger::finishCB(void *, SoDragger *d)
 
 void RDragger::fieldSensorCB(void *f, SoSensor *)
 {
-  RDragger *sudoThis = reinterpret_cast<RDragger *>(f);
+  RDragger *sudoThis = static_cast<RDragger *>(f);
 
   SbMatrix matrix = sudoThis->getMotionMatrix();
   sudoThis->workFieldsIntoTransform(matrix);
@@ -868,7 +868,7 @@ SbBool SoFCCSysDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
 void SoFCCSysDragger::translationSensorCB(void *f, SoSensor *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(f);
+    SoFCCSysDragger *sudoThis = static_cast<SoFCCSysDragger *>(f);
 
     SbMatrix matrix = sudoThis->getMotionMatrix();
     sudoThis->workFieldsIntoTransform(matrix);
@@ -877,7 +877,7 @@ void SoFCCSysDragger::translationSensorCB(void *f, SoSensor *)
 
 void SoFCCSysDragger::rotationSensorCB(void *f, SoSensor *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(f);
+    SoFCCSysDragger *sudoThis = static_cast<SoFCCSysDragger *>(f);
 
     SbMatrix matrix = sudoThis->getMotionMatrix();
     sudoThis->workFieldsIntoTransform(matrix);
@@ -935,7 +935,7 @@ void SoFCCSysDragger::setUpAutoScale(SoCamera *cameraIn)
 
 void SoFCCSysDragger::cameraCB(void *data, SoSensor *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
+    SoFCCSysDragger *sudoThis = static_cast<SoFCCSysDragger *>(data);
     if (!sudoThis->idleSensor.isScheduled())
         sudoThis->idleSensor.schedule();
 }
@@ -980,7 +980,7 @@ void SoFCCSysDragger::handleEvent(SoHandleEventAction * action)
 
 void SoFCCSysDragger::idleCB(void *data, SoSensor *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
+    SoFCCSysDragger *sudoThis = static_cast<SoFCCSysDragger *>(data);
     SoField* field = sudoThis->cameraSensor.getAttachedField();
     if (field)
     {
@@ -1003,7 +1003,7 @@ void SoFCCSysDragger::idleCB(void *data, SoSensor *)
 
 void SoFCCSysDragger::finishDragCB(void *data, SoDragger *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
+    SoFCCSysDragger *sudoThis = static_cast<SoFCCSysDragger *>(data);
 
     // note: when creating a second view of the document and then closing
     // the first viewer it deletes the camera. However, the attached field

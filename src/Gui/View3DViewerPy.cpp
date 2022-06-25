@@ -390,7 +390,7 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
         if(pynode!=Py_None) {
             void* ptr = nullptr;
             Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", pynode, &ptr, 0);
-            node = reinterpret_cast<SoNode*>(ptr);
+            node = static_cast<SoNode*>(ptr);
         }
         _viewer->setupEditingRoot(node,mat);
         return Py::None();

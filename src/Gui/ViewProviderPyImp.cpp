@@ -317,7 +317,7 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
     }
 
     PY_TRY {
-        SoNode* node = reinterpret_cast<SoNode*>(ptr);
+        SoNode* node = static_cast<SoNode*>(ptr);
         getViewProviderPtr()->addDisplayMaskMode(node,mode);
         Py_Return;
     }
@@ -478,7 +478,7 @@ PyObject* ViewProviderPy::getElementPicked(PyObject* args)
 
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
-    SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
+    SoPickedPoint *pp = static_cast<SoPickedPoint*>(ptr);
     if(!pp)
         throw Base::TypeError("type must be coin.SoPickedPoint");
 
@@ -499,7 +499,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
 
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
-    SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
+    SoPath *pPath = static_cast<SoPath*>(ptr);
     if(!pPath)
         throw Base::TypeError("'path' must be a coin.SoPath");
     SoDetail *det = nullptr;

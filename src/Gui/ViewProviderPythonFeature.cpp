@@ -497,7 +497,7 @@ bool ViewProviderPythonFeatureImp::getDetail(const char* name, SoDetail *&det) c
         Py::Object pydet(Base::pyCall(py_getDetail.ptr(),args.ptr()));
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pydet.ptr(), &ptr, 0);
-        SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
+        SoDetail* detail = static_cast<SoDetail*>(ptr);
         det = detail ? detail->copy() : nullptr;
         return true;
     }
@@ -538,7 +538,7 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
             return Accepted;
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
-        SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
+        SoDetail* detail = static_cast<SoDetail*>(ptr);
         det = detail ? detail->copy() : nullptr;
         if(det)
             return Accepted;

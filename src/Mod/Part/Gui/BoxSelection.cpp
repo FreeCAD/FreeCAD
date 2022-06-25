@@ -107,7 +107,7 @@ bool BoxSelection::isAutoDelete() const
 
 void BoxSelection::selectionCallback(void * ud, SoEventCallback * cb)
 {
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
     SoNode* root = view->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);

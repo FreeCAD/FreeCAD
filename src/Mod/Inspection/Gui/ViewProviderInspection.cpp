@@ -443,7 +443,7 @@ private:
 
 void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
 {
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
     const SoEvent* ev = n->getEvent();
     if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
         const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ev);

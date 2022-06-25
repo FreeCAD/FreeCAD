@@ -477,7 +477,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToC
 void NavigationStyleP::viewAnimationCB(void * data, SoSensor * sensor)
 {
     Q_UNUSED(sensor);
-    NavigationStyle* that = reinterpret_cast<NavigationStyle*>(data);
+    NavigationStyle* that = static_cast<NavigationStyle*>(data);
     if (PRIVATE(that)->animationsteps > 0) {
         // here the camera rotates from the current rotation to a given
         // rotation (e.g. the standard views). To get this movement animated

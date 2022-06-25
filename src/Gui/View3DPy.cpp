@@ -1324,7 +1324,7 @@ Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    SoNode* node = reinterpret_cast<SoNode*>(ptr);
+    SoNode* node = static_cast<SoNode*>(ptr);
     return Py::String(SoFCDB::writeNodesToString(node));
 }
 
@@ -2342,7 +2342,7 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
         throw Py::RuntimeError(e.what());
     }
 
-    SoType* eventId = reinterpret_cast<SoType*>(ptr);
+    SoType* eventId = static_cast<SoType*>(ptr);
     if (eventId->isBad() || !eventId->isDerivedFrom(SoEvent::getClassTypeId())) {
         std::string s;
         std::ostringstream s_out;
@@ -2384,7 +2384,7 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
         throw Py::RuntimeError(e.what());
     }
 
-    SoType* eventId = reinterpret_cast<SoType*>(ptr);
+    SoType* eventId = static_cast<SoType*>(ptr);
     if (eventId->isBad() || !eventId->isDerivedFrom(SoEvent::getClassTypeId())) {
         std::string s;
         std::ostringstream s_out;
@@ -2475,7 +2475,7 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
     catch (const Base::Exception&) {
         throw Py::TypeError("The first argument must be of type SoDragger");
     }
-    SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
+    SoDragger* drag = static_cast<SoDragger*>(ptr);
 
     //Check if method is callable
     if (PyCallable_Check(method) == 0) {
@@ -2528,7 +2528,7 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
         throw Py::TypeError("The first argument must be of type SoDragger");
     }
 
-    SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
+    SoDragger* drag = static_cast<SoDragger*>(ptr);
     try {
         if (strcmp(type, "addFinishCallback") == 0) {
             drag->removeFinishCallback(draggerCallback, method);

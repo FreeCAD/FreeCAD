@@ -659,7 +659,7 @@ void DlgPrimitives::connectSignalMapper(QWidget *sender, const char *signal, QSi
 void DlgPrimitives::pickCallback(void * ud, SoEventCallback * n)
 {
     const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Picker* pick = reinterpret_cast<Picker*>(ud);
+    Picker* pick = static_cast<Picker*>(ud);
     if (pick->exitCode >= 0)
         pick->loop.exit(pick->exitCode);
 
@@ -1953,7 +1953,7 @@ void Location::on_viewPositionButton_clicked()
 void Location::pickCallback(void * ud, SoEventCallback * n)
 {
     const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
@@ -1963,7 +1963,7 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
             if (point) {
                 SbVec3f pnt = point->getPoint();
                 SbVec3f nor = point->getNormal();
-                Location* dlg = reinterpret_cast<Location*>(ud);
+                Location* dlg = static_cast<Location*>(ud);
                 dlg->ui->XPositionQSB->setValue(pnt[0]);
                 dlg->ui->YPositionQSB->setValue(pnt[1]);
                 dlg->ui->ZPositionQSB->setValue(pnt[2]);
@@ -1979,7 +1979,7 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
             n->setHandled();
             view->setEditing(false);
             view->setRedirectToSceneGraph(false);
-            Location* dlg = reinterpret_cast<Location*>(ud);
+            Location* dlg = static_cast<Location*>(ud);
             dlg->activeView = nullptr;
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback,ud);
             SoNode* root = view->getSceneGraph();

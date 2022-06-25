@@ -226,7 +226,7 @@ void ViewProviderDragger::dragFinishCallback(void *data, SoDragger *d)
 {
     // This is called when a manipulator has done manipulating
 
-    ViewProviderDragger* sudoThis = reinterpret_cast<ViewProviderDragger *>(data);
+    ViewProviderDragger* sudoThis = static_cast<ViewProviderDragger *>(data);
     SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger *>(d);
     updatePlacementFromDragger(sudoThis, dragger);
 

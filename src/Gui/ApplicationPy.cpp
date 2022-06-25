@@ -1640,7 +1640,7 @@ PyObject* Application::sCoinRemoveAllChildren(PyObject * /*self*/, PyObject *arg
     PY_TRY {
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoGroup", pynode, &ptr, 0);
-        coinRemoveAllChildren(reinterpret_cast<SoGroup*>(ptr));
+        coinRemoveAllChildren(static_cast<SoGroup*>(ptr));
         Py_Return;
     }
     PY_CATCH;

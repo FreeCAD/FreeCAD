@@ -245,7 +245,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     ViewProviderGeometryObject::attach(pcObj);
 
     // Move 'coords' before the switch
-    //pcRoot->insertChild(pcCoords,pcRoot->findChild(reinterpret_cast<const SoNode*>(pcModeSwitch)));
+    //pcRoot->insertChild(pcCoords,pcRoot->findChild(static_cast<const SoNode*>(pcModeSwitch)));
 
     // Annotation sets
     SoGroup* pcAnotRoot = new SoAnnotation();

@@ -206,7 +206,7 @@ void ViewProviderMirror::dragFinishCallback(void *, SoDragger *)
 
 void ViewProviderMirror::dragMotionCallback(void *data, SoDragger *drag)
 {
-    ViewProviderMirror* that = reinterpret_cast<ViewProviderMirror*>(data);
+    ViewProviderMirror* that = static_cast<ViewProviderMirror*>(data);
     const SbMatrix& mat = drag->getMotionMatrix();
     // the new axis of the plane
     SbRotation rot(mat);

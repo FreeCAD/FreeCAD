@@ -822,8 +822,8 @@ void TaskPostDataAlongLine::resolutionChanged(int val) {
 void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
 {
     const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    PointMarker* pm = reinterpret_cast<PointMarker*>(ud);
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    PointMarker* pm = static_cast<PointMarker*>(ud);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
@@ -1047,8 +1047,8 @@ void TaskPostDataAtPoint::centerChanged(double) {
 void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
 {
     const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    DataMarker* pm = reinterpret_cast<DataMarker*>(ud);
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    DataMarker* pm = static_cast<DataMarker*>(ud);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();

@@ -1290,14 +1290,14 @@ void View3DInventorViewer::setGLWidgetCB(void* userdata, SoAction* action)
     // Coin error in SoNode::GLRenderS(): GL error: 'GL_STACK_UNDERFLOW', nodetype:
     // Separator (set envvar COIN_GLERROR_DEBUGGING=1 and re-run to get more information)
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-        QWidget* gl = reinterpret_cast<QWidget*>(userdata);
+        QWidget* gl = static_cast<QWidget*>(userdata);
         SoGLWidgetElement::set(action->getState(), qobject_cast<QtGLWidget*>(gl));
     }
 }
 
 void View3DInventorViewer::handleEventCB(void* ud, SoEventCallback* n)
 {
-    View3DInventorViewer* that = reinterpret_cast<View3DInventorViewer*>(ud);
+    View3DInventorViewer* that = static_cast<View3DInventorViewer*>(ud);
     SoGLRenderAction* glra = that->getSoRenderManager()->getGLRenderAction();
     SoAction* action = n->getAction();
     SoGLRenderActionElement::set(action->getState(), glra);

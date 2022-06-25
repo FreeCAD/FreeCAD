@@ -80,7 +80,6 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!success) {
         PyErr_Clear(); // set by PyArg_ParseTuple()
         if (PyArg_ParseTuple(args,"O!",&(Base::VectorPy::Type), &object)) {
-            // Note: must be static_cast, not reinterpret_cast
             Base::Vector3d* ptr = static_cast<Base::VectorPy*>(object)->getVectorPtr();
             x = ptr->x;
             y = ptr->y;
@@ -121,7 +120,7 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             TopoShape* ptr = static_cast<TopoShapePy*>(object)->getTopoShapePtr();
             TopoDS_Shape shape = ptr->getShape();
             if (!shape.IsNull() && shape.ShapeType() == TopAbs_VERTEX) {
-                TopoShapeVertexPy::PointerType vert = reinterpret_cast<TopoShapeVertexPy::PointerType>(_pcTwinPointer);
+                TopoShapeVertexPy::PointerType vert = getTopoShapePtr();
                 vert->setShape(ptr->getShape());
                 return 0;
             }
@@ -132,7 +131,7 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
     }
 
-    TopoShapeVertexPy::PointerType ptr = reinterpret_cast<TopoShapeVertexPy::PointerType>(_pcTwinPointer);
+    TopoShapeVertexPy::PointerType ptr = getTopoShapePtr();
     BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(x,y,z));
     TopoDS_Shape s = aBuilder.Vertex();
     ptr->setShape(s);

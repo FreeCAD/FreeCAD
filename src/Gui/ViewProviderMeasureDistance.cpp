@@ -315,8 +315,8 @@ ViewProviderPointMarker::~ViewProviderPointMarker()
 
 void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCallback * n)
 {
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    PointMarker *pm = reinterpret_cast<PointMarker*>(ud);
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    PointMarker *pm = static_cast<PointMarker*>(ud);
     const SoEvent* ev = n->getEvent();
     if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
         const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);

@@ -219,7 +219,7 @@ public:
     }
     static void selectionCallback(void* ud, SoEventCallback* cb)
     {
-        Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+        Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
         SoNode* root = view->getSceneGraph();
         static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
@@ -242,7 +242,7 @@ public:
                 polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
         }
 
-        FaceColors* self = reinterpret_cast<FaceColors*>(ud);
+        FaceColors* self = static_cast<FaceColors*>(ud);
         self->d->view = nullptr;
         if (self->d->obj && self->d->obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             cb->setHandled();

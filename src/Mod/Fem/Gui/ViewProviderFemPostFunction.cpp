@@ -297,9 +297,9 @@ void ViewProviderFemPostFunction::dragStartCallback(void* data, SoDragger*)
 {
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
-    reinterpret_cast<ViewProviderFemPostFunction*>(data)->m_isDragging = true;
+    static_cast<ViewProviderFemPostFunction*>(data)->m_isDragging = true;
 
-    ViewProviderFemPostFunction* that = reinterpret_cast<ViewProviderFemPostFunction*>(data);
+    ViewProviderFemPostFunction* that = static_cast<ViewProviderFemPostFunction*>(data);
     that->m_autoRecompute = FemSettings().getPostAutoRecompute();
 }
 
@@ -308,16 +308,16 @@ void ViewProviderFemPostFunction::dragFinishCallback(void* data, SoDragger*)
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();
 
-    ViewProviderFemPostFunction* that = reinterpret_cast<ViewProviderFemPostFunction*>(data);
+    ViewProviderFemPostFunction* that = static_cast<ViewProviderFemPostFunction*>(data);
     if (that->m_autoRecompute)
         that->getObject()->getDocument()->recompute();
 
-    reinterpret_cast<ViewProviderFemPostFunction*>(data)->m_isDragging = false;
+    static_cast<ViewProviderFemPostFunction*>(data)->m_isDragging = false;
 }
 
 void ViewProviderFemPostFunction::dragMotionCallback(void* data, SoDragger* drag)
 {
-    ViewProviderFemPostFunction* that = reinterpret_cast<ViewProviderFemPostFunction*>(data);
+    ViewProviderFemPostFunction* that = static_cast<ViewProviderFemPostFunction*>(data);
     that->draggerUpdate(drag);
 
     if (that->m_autoRecompute)

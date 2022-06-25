@@ -951,7 +951,7 @@ void DefineNodesCallback(void* ud, SoEventCallback* n)
     Gui::WaitCursor wc;
 
     // When this callback function is invoked we must in either case leave the edit mode
-    Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
     view->setEditing(false);
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineNodesCallback, ud);
     n->setHandled();

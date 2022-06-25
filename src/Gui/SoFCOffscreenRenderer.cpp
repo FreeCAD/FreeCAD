@@ -881,7 +881,7 @@ Py::Object SoQtOffscreenRendererPy::render(const Py::Tuple& args)
     try {
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = reinterpret_cast<SoNode*>(ptr);
+        SoNode* node = static_cast<SoNode*>(ptr);
         bool ok = false;
         if (node) {
             ok = renderer.render(node);

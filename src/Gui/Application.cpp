@@ -268,7 +268,7 @@ FreeCADGui_exportSubgraph(PyObject * /*self*/, PyObject *args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = reinterpret_cast<SoNode*>(ptr);
+        SoNode* node = static_cast<SoNode*>(ptr);
         if (node) {
             std::string formatStr(format);
             std::string buffer;

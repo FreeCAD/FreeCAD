@@ -197,8 +197,8 @@ void highlight(const HighlightMode& high)
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 {
     const SoEvent * ev = node->getEvent();
-    Gui::View3DInventorViewer* viewer = reinterpret_cast<Gui::View3DInventorViewer*>(node->getUserData());
-    ViewProvider *self = reinterpret_cast<ViewProvider*>(ud);
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventorViewer*>(node->getUserData());
+    ViewProvider *self = static_cast<ViewProvider*>(ud);
     assert(self);
 
     try {

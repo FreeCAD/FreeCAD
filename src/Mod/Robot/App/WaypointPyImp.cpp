@@ -43,7 +43,6 @@ using namespace Base;
 std::string WaypointPy::representation(void) const
 {
     double A,B,C;
-    //PlacementPy::PointerType ptr = reinterpret_cast<PlacementPy::PointerType>(_pcTwinPointer);
     std::stringstream str;
     getWaypointPtr()->EndPos.getRotation().getYawPitchRoll(A,B,C);
     str.precision(5);

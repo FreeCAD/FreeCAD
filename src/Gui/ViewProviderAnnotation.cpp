@@ -424,7 +424,7 @@ void ViewProviderAnnotationLabel::dragFinishCallback(void *, SoDragger *)
 
 void ViewProviderAnnotationLabel::dragMotionCallback(void *data, SoDragger *drag)
 {
-    ViewProviderAnnotationLabel* that = reinterpret_cast<ViewProviderAnnotationLabel*>(data);
+    ViewProviderAnnotationLabel* that = static_cast<ViewProviderAnnotationLabel*>(data);
     const SbMatrix& mat = drag->getMotionMatrix();
     App::DocumentObject* obj = that->getObject();
     if (obj && obj->getTypeId() == App::AnnotationLabel::getClassTypeId()) {
