@@ -163,7 +163,7 @@ std::vector<std::string> Writer::getErrors() const
 std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
 {
     // always check isForceXML() before requesting a file!
-    assert(isForceXML()==false);
+    assert(!isForceXML());
 
     FileEntry temp;
     temp.FileName = getUniqueFileName(Name);
