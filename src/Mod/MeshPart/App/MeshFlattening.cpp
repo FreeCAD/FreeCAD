@@ -196,15 +196,9 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     // extract xyz poles, knots, weights, degree
     const Handle(Geom_Surface) &_surface = BRep_Tool::Surface(face);
     const Handle(Geom_BSplineSurface) &_bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
-#if OCC_VERSION_HEX < 0x070000
-    TColStd_Array1OfReal _uknots(1, _bspline->NbUPoles() + _bspline->UDegree() + 1);
-    TColStd_Array1OfReal _vknots(1, _bspline->NbVPoles() + _bspline->VDegree() + 1);
-    _bspline->UKnotSequence(_uknots);
-    _bspline->VKnotSequence(_vknots);
-#else
+
     const TColStd_Array1OfReal &_uknots = _bspline->UKnotSequence();
     const TColStd_Array1OfReal &_vknots = _bspline->VKnotSequence();
-#endif
 
     Eigen::VectorXd weights;
     weights.resize(_bspline->NbUPoles() * _bspline->NbVPoles());

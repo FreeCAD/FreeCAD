@@ -73,11 +73,7 @@
 # include <TopoDS_Iterator.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
-#if OCC_VERSION_HEX >= 0x060500
 # include <TDataXtd_Shape.hxx>
-# else
-# include <TDataStd_Shape.hxx>
-# endif
 #endif
 
 #include <Base/Console.h>

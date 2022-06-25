@@ -152,10 +152,8 @@
 #include <ShapeFix_Face.hxx>
 #include <ShapeFix_Wireframe.hxx>
 
-#if OCC_VERSION_HEX >= 0x060600
 # include <BOPAlgo_ArgumentAnalyzer.hxx>
 # include <BOPAlgo_ListOfCheckResult.hxx>
-#endif
 
 // Boost
 #include <boost_signals2.hpp>

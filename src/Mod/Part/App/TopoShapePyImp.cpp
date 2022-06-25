@@ -38,9 +38,7 @@
 # include <BRepProj_Projection.hxx>
 # include <BRepTools.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
-#if OCC_VERSION_HEX >= 0x060801
 # include <BRepExtrema_ShapeProximity.hxx>
-#endif
 # include <BRepExtrema_SupportType.hxx>
 # include <BRepBndLib.hxx>
 # include <BRep_Tool.hxx>
@@ -182,14 +180,9 @@ PyObject* TopoShapePy::copy(PyObject *args)
     }
 
     if (!shape.IsNull()) {
-#if OCC_VERSION_HEX >= 0x070000
         BRepBuilderAPI_Copy c(shape,
                               PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False,
                               PyObject_IsTrue(copyMesh) ? Standard_True : Standard_False);
-#else
-        BRepBuilderAPI_Copy c(shape,
-                              PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False);
-#endif
         static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(c.Shape());
     }
     return cpy;
@@ -2488,10 +2481,8 @@ PyObject* _getSupportIndex(const char* suppStr, TopoShape* ts, TopoDS_Shape supp
 
 PyObject* TopoShapePy::proximity(PyObject *args)
 {
-#if OCC_VERSION_HEX >= 0x060801
-#if OCC_VERSION_HEX >= 0x060901
     typedef BRepExtrema_MapOfIntegerPackedMapOfInteger BRepExtrema_OverlappedSubShapes;
-#endif
+
     PyObject* ps2;
     Standard_Real tol = Precision::Confusion();
     if (!PyArg_ParseTuple(args, "O!|d",&(TopoShapePy::Type), &ps2, &tol))
@@ -2577,11 +2568,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
     tuple.setItem(0, overlappssindex1);
     tuple.setItem(1, overlappssindex2);
     return Py::new_reference_to(tuple); //face indexes
-#else
-    (void)args;
-    PyErr_SetString(PyExc_NotImplementedError, "proximity requires OCCT >= 6.8.1");
-    return 0;
-#endif
+
 }
 
 PyObject* TopoShapePy::distToShape(PyObject *args)
