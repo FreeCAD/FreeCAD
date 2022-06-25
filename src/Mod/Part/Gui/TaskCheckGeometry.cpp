@@ -655,13 +655,13 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
 
-  #if OCC_VERSION_HEX < 0x070500
-  	  BOPCheck.SetProgressIndicator(theProgress);
-  #elif OCC_VERSION_HEX < 0x070600
-  	  BOPCheck.SetProgressIndicator(theScope);
-  #else
-  	  Q_UNUSED(theScope)
-  #endif // 0x070500
+#if OCC_VERSION_HEX < 0x070500
+  BOPCheck.SetProgressIndicator(theProgress);
+#elif OCC_VERSION_HEX < 0x070600
+  BOPCheck.SetProgressIndicator(theScope);
+#else
+  Q_UNUSED(theScope)
+#endif // 0x070500
 
 
   BOPCheck.SetShape1(BOPCopy);

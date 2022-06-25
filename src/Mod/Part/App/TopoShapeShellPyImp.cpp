@@ -179,7 +179,7 @@ PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
         return nullptr;
     ShapeAnalysis_Shell as;
     as.LoadShells(getTopoShapePtr()->getShape());
-    as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True);
+    as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
 
     TopoDS_Compound comp = as.BadEdges();
     return new TopoShapeCompoundPy(new TopoShape(comp));
