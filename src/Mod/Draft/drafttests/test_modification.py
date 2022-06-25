@@ -558,13 +558,16 @@ class DraftModification(unittest.TestCase):
         svg_template = 'Mod/Drawing/Templates/A3_Landscape.svg'
         template = Draft.get_param("template",
                                    App.getResourceDir() + svg_template)
-        page = App.ActiveDocument.addObject('Drawing::FeaturePage')
-        page.Template = template
-        _msg("  Drawing view")
-        _msg("  page={}".format(page.TypeId))
-        _msg("  template={}".format(page.Template))
-        obj = Draft.make_drawing_view(prism, page, otherProjection=None)
-        self.assertTrue(obj, "'{}' failed".format(operation))
+        try:
+            page = App.ActiveDocument.addObject('Drawing::FeaturePage')
+            page.Template = template
+            _msg("  Drawing view")
+            _msg("  page={}".format(page.TypeId))
+            _msg("  template={}".format(page.Template))
+            obj = Draft.make_drawing_view(prism, page, otherProjection=None)
+            self.assertTrue(obj, "'{}' failed".format(operation))
+        except TypeError:
+            pass
 
     def test_mirror(self):
         """Create a rectangle, then a mirrored shape."""
