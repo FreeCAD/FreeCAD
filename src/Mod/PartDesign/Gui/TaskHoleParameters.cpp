@@ -368,6 +368,15 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     if (HoleCutTypeString == "None" || HoleCutTypeString == "Counterbore"
         || HoleCutTypeString == "Countersink") {
         ui->HoleCutCustomValues->setEnabled(false);
+        if (HoleCutTypeString == "None") {
+            ui->HoleCutDiameter->setEnabled(false);
+            ui->HoleCutDepth->setEnabled(false);
+            ui->HoleCutCountersinkAngle->setEnabled(false);
+        }
+        if (HoleCutTypeString == "Counterbore")
+            ui->HoleCutCountersinkAngle->setEnabled(false);
+        if (HoleCutTypeString == "Countersink")
+            ui->HoleCutCountersinkAngle->setEnabled(true);
     }
     else { // screw definition
         // we can have the case that we have no normed values
@@ -379,6 +388,7 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
                 ui->HoleCutCountersinkAngle->setEnabled(true);
         }
         else {
+            ui->HoleCutCustomValues->setEnabled(true);
             ui->HoleCutDiameter->setEnabled(false);
             ui->HoleCutDepth->setEnabled(false);
             ui->HoleCutCountersinkAngle->setEnabled(false);
