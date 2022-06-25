@@ -342,6 +342,12 @@ protected:
         FeatureT::onDocumentRestored();
     }
 
+public:
+    FeaturePythonT(const FeaturePythonT&) = delete;
+    FeaturePythonT(FeaturePythonT&&) = delete;
+    FeaturePythonT& operator= (const FeaturePythonT&) = delete;
+    FeaturePythonT& operator= (FeaturePythonT&&) = delete;
+
 private:
     FeaturePythonImp* imp;
     PropertyPythonObject Proxy;

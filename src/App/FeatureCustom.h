@@ -85,6 +85,11 @@ protected:
     virtual void onSettingDocument() {
         FeatureT::onSettingDocument();
     }
+
+    FeatureCustomT(const FeatureCustomT&) = delete;
+    FeatureCustomT(FeatureCustomT&&) = delete;
+    FeatureCustomT& operator= (const FeatureCustomT&) = delete;
+    FeatureCustomT& operator= (FeatureCustomT&&) = delete;
 };
 
 } //namespace App

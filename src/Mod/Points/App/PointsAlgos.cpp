@@ -311,6 +311,12 @@ protected:
     }
 
 private:
+    DataStreambuf(const DataStreambuf&) = delete;
+    DataStreambuf(DataStreambuf&&) = delete;
+    DataStreambuf& operator=(const DataStreambuf&) = delete;
+    DataStreambuf& operator=(DataStreambuf&&) = delete;
+
+private:
     const std::vector<char>& _buffer;
     int _beg, _end, _cur;
 };

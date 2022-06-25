@@ -47,6 +47,11 @@ public:
     }
     virtual ~ViewProviderExtensionPythonT() {
     }
+
+    ViewProviderExtensionPythonT(const ViewProviderExtensionPythonT&) = delete;
+    ViewProviderExtensionPythonT(ViewProviderExtensionPythonT&&) = delete;
+    ViewProviderExtensionPythonT& operator= (const ViewProviderExtensionPythonT&) = delete;
+    ViewProviderExtensionPythonT& operator= (ViewProviderExtensionPythonT&&) = delete;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderExtension> ViewProviderExtensionPython;

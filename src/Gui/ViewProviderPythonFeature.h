@@ -608,6 +608,12 @@ protected:
         viewerMode = mode;
     }
 
+public:
+    ViewProviderPythonFeatureT(const ViewProviderPythonFeatureT&) = delete;
+    ViewProviderPythonFeatureT(ViewProviderPythonFeatureT&&) = delete;
+    ViewProviderPythonFeatureT& operator= (const ViewProviderPythonFeatureT&) = delete;
+    ViewProviderPythonFeatureT& operator= (ViewProviderPythonFeatureT&&) = delete;
+
 private:
     ViewProviderPythonFeatureImp* imp;
     App::PropertyPythonObject Proxy;

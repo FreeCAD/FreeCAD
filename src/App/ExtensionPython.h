@@ -48,6 +48,11 @@ public:
     }
     virtual ~ExtensionPythonT() {
     }
+
+    ExtensionPythonT(const ExtensionPythonT&) = delete;
+    ExtensionPythonT(ExtensionPythonT&&) = delete;
+    ExtensionPythonT& operator= (const ExtensionPythonT&) = delete;
+    ExtensionPythonT& operator= (ExtensionPythonT&&) = delete;
 };
 
 typedef ExtensionPythonT<App::Extension> ExtensionPython;

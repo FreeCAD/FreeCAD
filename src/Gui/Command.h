@@ -905,10 +905,16 @@ private:
 {\
 public:\
     X();\
+    virtual ~X(){}\
     virtual const char* className() const\
     { return #X; }\
 protected: \
     virtual void activated(int iMsg);\
+private:\
+    X(const X&) = delete;\
+    X(X&&) = delete;\
+    X& operator= (const X&) = delete;\
+    X& operator= (X&&) = delete;\
 };
 
 /** The Command Macro Standard + isActive()
@@ -926,6 +932,11 @@ public:\
 protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
+private:\
+    X(const X&) = delete;\
+    X(X&&) = delete;\
+    X& operator= (const X&) = delete;\
+    X& operator= (X&&) = delete;\
 };
 
 /** The Command Macro Standard + createAction()
@@ -943,6 +954,11 @@ public:\
 protected: \
     virtual void activated(int iMsg);\
     virtual Gui::Action * createAction(void);\
+private:\
+    X(const X&) = delete;\
+    X(X&&) = delete;\
+    X& operator= (const X&) = delete;\
+    X& operator= (X&&) = delete;\
 };
 
 /** The Command Macro Standard + isActive() + createAction()
@@ -961,6 +977,11 @@ protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
     virtual Gui::Action * createAction(void);\
+private:\
+    X(const X&) = delete;\
+    X(X&&) = delete;\
+    X& operator= (const X&) = delete;\
+    X& operator= (X&&) = delete;\
 };
 
 /** The Command Macro Standard + isActive() + updateAction()
@@ -979,6 +1000,11 @@ public:\
 protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
+private:\
+    X(const X&) = delete;\
+    X(X&&) = delete;\
+    X& operator= (const X&) = delete;\
+    X& operator= (X&&) = delete;\
 };
 
 /** The Command Macro Standard + isActive() + createAction()
@@ -999,6 +1025,11 @@ protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
     virtual Gui::Action * createAction(void);\
+private:\
+    X(const X&) = delete;\
+    X(X&&) = delete;\
+    X& operator= (const X&) = delete;\
+    X& operator= (X&&) = delete;\
 };
 
 /** The Command Macro Standard + isActive() + createAction()
@@ -1020,6 +1051,11 @@ protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
     virtual Gui::Action * createAction(void);\
+private:\
+    X(const X&) = delete;\
+    X(X&&) = delete;\
+    X& operator= (const X&) = delete;\
+    X& operator= (X&&) = delete;\
 };
 
 /** The Command Macro view
@@ -1042,6 +1078,11 @@ protected: \
         Gui::MDIView* view = Gui::getMainWindow()->activeWindow();\
         return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());\
     }\
+private:\
+    X(const X&) = delete;\
+    X(X&&) = delete;\
+    X& operator= (const X&) = delete;\
+    X& operator= (X&&) = delete;\
 };
 
 #endif // GUI_COMMAND_H
