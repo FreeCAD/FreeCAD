@@ -70,8 +70,12 @@ class QGIRichAnno;
 class QGITile;
 class QGVNavStyle;
 
+#ifdef FC_OS_WIN32
 class TechDrawGuiExport QGVPage : public QGraphicsView
-//        , public ParameterGrp::ObserverType
+#else // for Linux
+class TechDrawGuiExport QGVPage : public QGraphicsView, public ParameterGrp::ObserverType
+#endif
+
 {
     Q_OBJECT
 
@@ -81,9 +85,10 @@ public:
     QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent = nullptr);
     virtual ~QGVPage();
 
-    /// Observer message from the ParameterGrp
-//    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
-
+#ifndef FC_OS_WIN32
+    // Observer message from the ParameterGrp
+    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
+#endif
 
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter *p, const QRectF &rect) override;
@@ -176,8 +181,10 @@ private:
 
     QGVNavStyle* m_navStyle;
 
-    /// handle to the viewer parameter group
-//    ParameterGrp::handle hGrp;
+#ifndef FC_OS_WIN32
+    // handle to the viewer parameter group
+    ParameterGrp::handle hGrp;
+#endif
 
 };
 
