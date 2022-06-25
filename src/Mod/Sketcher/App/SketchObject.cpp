@@ -7940,6 +7940,7 @@ bool SketchObject::getInternalTypeState(const Constraint * cstr, Sketcher::Inter
 
         switch(cstr->AlignmentType){
             case Undef:
+            case NumInternalAlignmentType:
                 internaltypestate = InternalType::None;
                 break;
             case EllipseMajorDiameter:
