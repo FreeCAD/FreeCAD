@@ -70,7 +70,8 @@ class QGIRichAnno;
 class QGITile;
 class QGVNavStyle;
 
-class TechDrawGuiExport QGVPage : public QGraphicsView, public ParameterGrp::ObserverType
+class TechDrawGuiExport QGVPage : public QGraphicsView
+//        , public ParameterGrp::ObserverType
 {
     Q_OBJECT
 
@@ -81,7 +82,7 @@ public:
     virtual ~QGVPage();
 
     /// Observer message from the ParameterGrp
-    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
+//    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
 
 
     void setRenderer(RendererType type = Native);
@@ -176,7 +177,7 @@ private:
     QGVNavStyle* m_navStyle;
 
     /// handle to the viewer parameter group
-    ParameterGrp::handle hGrp;
+//    ParameterGrp::handle hGrp;
 
 };
 

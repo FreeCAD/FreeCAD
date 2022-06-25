@@ -198,8 +198,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     resetCachedContent();
 
     // attach parameter Observer
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrp->Attach(this);
+//    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+//    hGrp->Attach(this);
 
     initNavigationStyle();
 }
@@ -261,27 +261,27 @@ void QGVPage::setNavigationStyle(std::string navParm)
     m_navStyle->setViewer(this);
 }
 
-void QGVPage::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
-{
-    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    if (strcmp(Reason,"NavigationStyle") == 0) {
-        std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
-        setNavigationStyle(model);
-    } else if (strcmp(Reason,"InvertZoom") == 0) {
-        m_invertZoom = rGrp.GetBool("InvertZoom", true);
-    } else if (strcmp(Reason,"ZoomStep") == 0) {
-        m_zoomIncrement = rGrp.GetFloat("ZoomStep", 0.0f);
-    } else if (strcmp(Reason,"ZoomAtCursor") == 0) {
-        m_atCursor = rGrp.GetBool("ZoomAtCursor", true);
-        if (m_atCursor) {
-            setResizeAnchor(AnchorUnderMouse);
-            setTransformationAnchor(AnchorUnderMouse);
-        } else {
-            setResizeAnchor(AnchorViewCenter);
-            setTransformationAnchor(AnchorViewCenter);
-        }
-    }
-}
+//void QGVPage::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
+//{
+//    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+//    if (strcmp(Reason,"NavigationStyle") == 0) {
+//        std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
+//        setNavigationStyle(model);
+//    } else if (strcmp(Reason,"InvertZoom") == 0) {
+//        m_invertZoom = rGrp.GetBool("InvertZoom", true);
+//    } else if (strcmp(Reason,"ZoomStep") == 0) {
+//        m_zoomIncrement = rGrp.GetFloat("ZoomStep", 0.0f);
+//    } else if (strcmp(Reason,"ZoomAtCursor") == 0) {
+//        m_atCursor = rGrp.GetBool("ZoomAtCursor", true);
+//        if (m_atCursor) {
+//            setResizeAnchor(AnchorUnderMouse);
+//            setTransformationAnchor(AnchorUnderMouse);
+//        } else {
+//            setResizeAnchor(AnchorViewCenter);
+//            setTransformationAnchor(AnchorViewCenter);
+//        }
+//    }
+//}
 
 void QGVPage::startBalloonPlacing(void)
 {
