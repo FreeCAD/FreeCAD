@@ -264,16 +264,18 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
         ui->parameterName->setTitle(tr("Chamfer Parameter"));
+        ui->labelfillet->setText(tr("Chamfer type"));
         ui->labelRadius->setText(tr("Length:"));
-        ui->filletType->setItemText(0, tr("Constant Length"));
-        ui->filletType->setItemText(1, tr("Variable Length"));
+        ui->filletType->setItemText(0, tr("Equal distance"));
+        ui->filletType->setItemText(1, tr("Two distances"));
 
         model->setHeaderData(0, Qt::Horizontal, tr("Edges to chamfer"), Qt::DisplayRole);
-        model->setHeaderData(1, Qt::Horizontal, tr("Start length"), Qt::DisplayRole);
-        model->setHeaderData(2, Qt::Horizontal, tr("End length"), Qt::DisplayRole);
+        model->setHeaderData(1, Qt::Horizontal, tr("Size"), Qt::DisplayRole);
+        model->setHeaderData(2, Qt::Horizontal, tr("Size2"), Qt::DisplayRole);
     }
     else {
         ui->parameterName->setTitle(tr("Fillet Parameter"));
+        ui->labelfillet->setText(tr("Fillet type"));
         model->setHeaderData(0, Qt::Horizontal, tr("Edges to fillet"), Qt::DisplayRole);
         model->setHeaderData(1, Qt::Horizontal, tr("Start radius"), Qt::DisplayRole);
         model->setHeaderData(2, Qt::Horizontal, tr("End radius"), Qt::DisplayRole);
