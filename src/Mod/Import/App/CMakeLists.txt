@@ -39,10 +39,10 @@ SET(Import_SRCS
     StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
-    ImpExpDxf.cpp
-    ImpExpDxf.h
-    dxf.cpp
-    dxf.h
+    dxf/ImpExpDxf.cpp
+    dxf/ImpExpDxf.h
+    dxf/dxf.cpp
+    dxf/dxf.h
 )
 
 SET(SCL_Resources

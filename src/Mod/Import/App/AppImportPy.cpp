@@ -78,7 +78,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PartFeaturePy.h>
 
-#include "ImpExpDxf.h"
+#include "dxf/ImpExpDxf.h"
 
 namespace Import {
 

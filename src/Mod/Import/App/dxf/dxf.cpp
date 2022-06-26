@@ -3,7 +3,7 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
-#include "PreCompiled.h"
+#include "../PreCompiled.h"
 
 //required by windows for M_PI definition
 #define _USE_MATH_DEFINES
