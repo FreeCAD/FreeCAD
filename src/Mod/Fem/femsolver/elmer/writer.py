@@ -694,6 +694,10 @@ class Writer(object):
             youngsModulus *= 1e3
         return youngsModulus
 
+    def _isMaterialFlow(self, body):
+        m = self._getBodyMaterial(body).Material
+        return "KinematicViscosity" in m
+
     def _handleFlow(self):
         activeIn = []
         for equation in self.solver.Group:
@@ -704,7 +708,8 @@ class Writer(object):
                     activeIn = self._getAllBodies()
                 solverSection = self._getFlowSolver(equation)
                 for body in activeIn:
-                    self._addSolver(body, solverSection)
+                    if self._isMaterialFlow(body):
+                        self._addSolver(body, solverSection)
         if activeIn:
             self._handleFlowConstants()
             self._handleFlowBndConditions()
