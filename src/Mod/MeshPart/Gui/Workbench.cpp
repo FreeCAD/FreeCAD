@@ -32,10 +32,6 @@
 
 using namespace MeshPartGui;
 
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "MeshPart");
-#endif
-
 /// @namespace MeshPartGui @class Workbench
 TYPESYSTEM_SOURCE(MeshPartGui::Workbench, Gui::StdWorkbench)
 

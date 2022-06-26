@@ -104,24 +104,6 @@ void PythonThread::run()
     QMutexLocker mutex_lock(&mutex);
     Base::PyGILStateLocker locker;
     try {
-#if 0
-        PyObject *module, *dict;
-        module = PyImport_AddModule("__main__");
-        dict = PyModule_GetDict(module);
-        PyObject* dict_copy = PyDict_Copy(dict);
-
-        std::string buf;
-        buf = std::string(
-            "import Sandbox\n"
-            "doc=App.ActiveDocument\n"
-            "dp=Sandbox.DocumentProtector(doc)\n"
-            "dp.addObject(\"Mesh::Ellipsoid\",\"Mesh\")\n"
-            "dp.recompute()\n");
-        PyObject *presult = PyRun_String(buf.c_str(), Py_file_input, dict_copy, dict_copy);
-        Py_DECREF(dict_copy);
-        msleep(10);
-#else
-
         Base::Interpreter().runString(
             "import Sandbox, Mesh, MeshGui\n"
             "doc=App.ActiveDocument\n"
@@ -129,7 +111,6 @@ void PythonThread::run()
             "dp.addObject(\"Mesh::Ellipsoid\",\"Mesh\")\n"
             "dp.recompute()\n");
         msleep(10);
-#endif
     }
     catch (const Base::PyException& e) {
         Base::Console().Error(e.what());

@@ -782,39 +782,3 @@ bool ConstraintDelaunayTriangulator::Triangulate()
 
     return succeeded;
 }
-
-// -------------------------------------------------------------
-
-#if 0
-Triangulator::Triangulator(const MeshKernel& k, bool flat) : _kernel(k)
-{
-}
-
-Triangulator::~Triangulator()
-{
-}
-
-bool Triangulator::Triangulate()
-{
-    return false;
-}
-
-MeshGeomFacet Triangulator::GetTriangle(const MeshPointArray&,
-                                        const MeshFacet& facet) const
-{
-    return MeshGeomFacet();
-}
-
-void Triangulator::PostProcessing(const std::vector<Base::Vector3f>&)
-{
-}
-
-void Triangulator::Discard()
-{
-    AbstractPolygonTriangulator::Discard();
-}
-
-void Triangulator::Reset()
-{
-}
-#endif

@@ -65,26 +65,11 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
 
     pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal> ());
     if (mySac == SACMODEL_CONE || mySac == SACMODEL_CYLINDER) {
-#if 0
-        // Create search tree
-        pcl::search::KdTree<pcl::PointXYZ>::Ptr tree;
-        tree.reset (new pcl::search::KdTree<PointXYZ> (false));
-        tree->setInputCloud (cloud);
-
-        // Normal estimation
-        int ksearch = 10;
-        pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> n;
-        n.setInputCloud (cloud);
-        n.setSearchMethod (tree);
-        n.setKSearch (ksearch);
-        n.compute (*normals);
-#else
         normals->reserve(myNormals.size());
         for (std::vector<Base::Vector3d>::const_iterator it = myNormals.begin(); it != myNormals.end(); ++it) {
             if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
                 normals->push_back(pcl::Normal(it->x, it->y, it->z));
         }
-#endif
     }
 
     // created RandomSampleConsensus object and compute the appropriated model
@@ -124,7 +109,6 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
     ransac.setDistanceThreshold (.01);
     ransac.computeModel();
     ransac.getInliers(model);
-    //ransac.getModel (model);
     Eigen::VectorXf model_p_coefficients;
     ransac.getModelCoefficients (model_p_coefficients);
     for (int i=0; i<model_p_coefficients.size(); i++)

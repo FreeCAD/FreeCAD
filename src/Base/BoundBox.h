@@ -824,24 +824,6 @@ inline typename BoundBox3<_Precision>::SIDE BoundBox3<_Precision>::GetSideFromRa
 template <class _Precision>
 inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_Precision> &rclPt) const
 {
-#if 0
-    // Get the nearest point of the bb, point MUST be inside the bb!
-    _Precision fMinDist = std::numeric_limits<_Precision>::max();
-    Vector3<_Precision> cBase, cNormal, clRet;
-
-    for (int i = 0; i < 6; i++) {
-        Vector3<_Precision> clTemp = rclPt;
-        CalcPlane(i, cBase, cNormal);
-        clTemp.ProjectToPlane(cBase, cNormal);
-        _Precision fDist = (clTemp - rclPt).Length();
-        if (fDist < fMinDist) {
-            fMinDist = fDist;
-            clRet = clTemp;
-        }
-    }
-
-    return clRet;
-#else
     Vector3<_Precision> closest = rclPt;
 
     Vector3<_Precision> center = GetCenter();
@@ -867,7 +849,6 @@ inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_P
     closest.z = std::min<_Precision>(std::max<_Precision>(closest.z, MinZ), MaxZ);
 
     return closest;
-#endif
 }
 
 template <class _Precision>

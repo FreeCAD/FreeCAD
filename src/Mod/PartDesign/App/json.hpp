@@ -3803,9 +3803,6 @@ constexpr const auto& from_json = detail::static_const<detail::from_json_fn>::va
 } // namespace
 } // namespace nlohmann
 
-// #include <nlohmann/detail/conversions/to_json.hpp>
-
-
 #include <algorithm> // copy
 #include <iterator> // begin, end
 #include <string> // string
@@ -3815,18 +3812,10 @@ constexpr const auto& from_json = detail::static_const<detail::from_json_fn>::va
 #include <valarray> // valarray
 #include <vector> // vector
 
-// #include <nlohmann/detail/iterators/iteration_proxy.hpp>
-
-
 #include <cstddef> // size_t
 #include <iterator> // input_iterator_tag
 #include <string> // string, to_string
 #include <tuple> // tuple_size, get, tuple_element
-
-// #include <nlohmann/detail/meta/type_traits.hpp>
-
-// #include <nlohmann/detail/value_t.hpp>
-
 
 namespace nlohmann
 {
@@ -5874,9 +5863,6 @@ class json_sax_acceptor
 
 }  // namespace nlohmann
 
-// #include <nlohmann/detail/input/lexer.hpp>
-
-
 #include <array> // array
 #include <clocale> // localeconv
 #include <cstddef> // size_t
@@ -5886,12 +5872,6 @@ class json_sax_acceptor
 #include <string> // char_traits, string
 #include <utility> // move
 #include <vector> // vector
-
-// #include <nlohmann/detail/input/input_adapters.hpp>
-
-// #include <nlohmann/detail/input/position_t.hpp>
-
-// #include <nlohmann/detail/macro_scope.hpp>
 
 
 namespace nlohmann
@@ -15227,29 +15207,7 @@ void grisu2(char* buf, int& len, int& decimal_exponent, FloatType value)
 
     JSON_ASSERT(std::isfinite(value));
     JSON_ASSERT(value > 0);
-
-    // If the neighbors (and boundaries) of 'value' are always computed for double-precision
-    // numbers, all float's can be recovered using strtod (and strtof). However, the resulting
-    // decimal representations are not exactly "short".
-    //
-    // The documentation for 'std::to_chars' (https://en.cppreference.com/w/cpp/utility/to_chars)
-    // says "value is converted to a string as if by std::sprintf in the default ("C") locale"
-    // and since sprintf promotes float's to double's, I think this is exactly what 'std::to_chars'
-    // does.
-    // On the other hand, the documentation for 'std::to_chars' requires that "parsing the
-    // representation using the corresponding std::from_chars function recovers value exactly". That
-    // indicates that single precision floating-point numbers should be recovered using
-    // 'std::strtof'.
-    //
-    // NB: If the neighbors are computed for single-precision numbers, there is a single float
-    //     (7.0385307e-26f) which can't be recovered using strtod. The resulting double precision
-    //     value is off by 1 ulp.
-#if 0
-    const boundaries w = compute_boundaries(static_cast<double>(value));
-#else
     const boundaries w = compute_boundaries(value);
-#endif
-
     grisu2(buf, len, decimal_exponent, w.minus, w.w, w.plus);
 }
 
@@ -15444,19 +15402,6 @@ char* to_chars(char* first, const char* last, FloatType value)
 
 } // namespace detail
 } // namespace nlohmann
-
-// #include <nlohmann/detail/exceptions.hpp>
-
-// #include <nlohmann/detail/macro_scope.hpp>
-
-// #include <nlohmann/detail/meta/cpp_future.hpp>
-
-// #include <nlohmann/detail/output/binary_writer.hpp>
-
-// #include <nlohmann/detail/output/output_adapters.hpp>
-
-// #include <nlohmann/detail/value_t.hpp>
-
 
 namespace nlohmann
 {
@@ -25442,7 +25387,6 @@ inline nlohmann::json::json_pointer operator "" _json_pointer(const char* s, std
 #undef JSON_HEDLEY_WARN_UNUSED_RESULT
 #undef JSON_HEDLEY_WARN_UNUSED_RESULT_MSG
 #undef JSON_HEDLEY_FALL_THROUGH
-
 
 
 #endif  // INCLUDE_NLOHMANN_JSON_HPP_

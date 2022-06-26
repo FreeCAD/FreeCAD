@@ -786,13 +786,6 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
         getObject()->touch(true);
     int size = static_cast<int>(colors.size());
     if (size > 1) {
-#if 0
-        int numPoints = coords->point.getNum() - nodeset->startIndex.getValue();
-        if (numPoints != size) {
-            SoDebugError::postWarning("ViewProviderPartExt::setHighlightedPoints",
-                                      "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, size);
-        }
-#endif
         pcPointBind->value = SoMaterialBinding::PER_VERTEX;
         pcPointMaterial->diffuseColor.setNum(size);
         SbColor* ca = pcPointMaterial->diffuseColor.startEditing();

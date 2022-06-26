@@ -28,10 +28,6 @@
 
 using namespace ImageGui;
 
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "Image");
-#endif
-
 /// @namespace ImageGui @class Workbench
 TYPESYSTEM_SOURCE(ImageGui::Workbench, Gui::StdWorkbench)
 

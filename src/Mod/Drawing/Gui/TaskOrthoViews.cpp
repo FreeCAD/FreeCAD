@@ -44,12 +44,6 @@ using namespace DrawingGui;
 using namespace std;
 namespace bp = boost::placeholders;
 
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("QObject", "Make axonometric...");
-    qApp->translate("QObject", "Edit axonometric settings...");
-    qApp->translate("QObject", "Make orthographic");
-#endif
-
 
 #if _MSC_VER <= 1700
 // maybe in the c++ standard later, older compiler don't have round()

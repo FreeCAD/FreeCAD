@@ -41,11 +41,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup, Gui::ViewP
  */
 ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
 {
-#if 0
-    setDefaultMode(SO_SWITCH_ALL);
-#endif
     ViewProviderGroupExtension::initExtension(this);
-
     sPixmap = "folder";
 }
 

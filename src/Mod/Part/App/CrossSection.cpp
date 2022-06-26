@@ -87,19 +87,6 @@ void CrossSection::sliceNonSolid(double d, const TopoDS_Shape& shape, std::list<
 
 void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<TopoDS_Wire>& wires) const
 {
-#if 0
-    gp_Pln slicePlane(a,b,c,-d);
-    BRepBuilderAPI_MakeFace mkFace(slicePlane);
-    TopoDS_Face face = mkFace.Face();
-    BRepAlgoAPI_Common mkInt(shape, face);
-
-    if (mkInt.IsDone()) {
-        // sort and repair the wires
-        TopTools_IndexedMapOfShape mapOfWires;
-        TopExp::MapShapes(mkInt.Shape(), TopAbs_WIRE, mapOfWires);
-        connectWires(mapOfWires, wires);
-    }
-#else
     gp_Pln slicePlane(a,b,c,-d);
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
     TopoDS_Face face = mkFace.Face();
@@ -133,7 +120,6 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
             }
         }
     }
-#endif
 }
 
 void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<TopoDS_Wire>& wires) const

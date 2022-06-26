@@ -305,22 +305,6 @@ App::DocumentObject *ImportOCAF2::expandShape(
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More())
         return nullptr;
 
-    // When saved as compound, STEP file does not support instance sharing,
-    // meaning that even if the source compound may contain child shapes of
-    // shared instances, or multiple hierarchies, those information are lost
-    // when saved to STEP, everything become flat and duplicated. So the code
-    // below is not necessary.
-#if 0
-    auto baseShape = shape.Located(TopLoc_Location());
-    auto it = myShapes.find(baseShape);
-    if(it!=myShapes.end()) {
-        auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-        link->Visibility.setValue(false);
-        link->setLink(-1,it->second.obj);
-        setPlacement(&link->Placement,shape);
-        return link;
-    }
-#endif
     std::vector<App::DocumentObject*> objs;
 
     if(shape.ShapeType() == TopAbs_COMPOUND) {
@@ -341,7 +325,6 @@ App::DocumentObject *ImportOCAF2::expandShape(
             return nullptr;
         auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
         compound->Links.setValues(objs);
-        // compound->Visibility.setValue(false);
         setPlacement(&compound->Placement,shape);
         return compound;
     }
@@ -448,7 +431,6 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
     } else {
         feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature",tshape.shapeName().c_str()));
         feature->Shape.setValue(shape);
-        // feature->Visibility.setValue(false);
     }
     applyFaceColors(feature,{info.faceColor});
     applyEdgeColors(feature,{info.edgeColor});
@@ -537,9 +519,7 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
                 link->Placement.setValue(pla->getValue());
             child = link;
         }
-        // child->Visibility.setValue(false);
     }
-    // group->Visibility.setValue(false);
     group->ElementList.setValues(children);
     group->VisibilityList.setValue(visibilities);
     info.obj = group;
@@ -604,7 +584,6 @@ App::DocumentObject* ImportOCAF2::loadShapes()
             ret = info.obj;
     }
     if(ret) {
-        // ret->Visibility.setValue(true);
         ret->recomputeFeature(true);
     }
     if(merge && ret && !ret->isDerivedFrom(Part::Feature::getClassTypeId())) {
@@ -728,7 +707,6 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         {
             auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
             compound->Links.setValue(info.obj);
-            // compound->Visibility.setValue(false);
             info.propPlacement = &compound->Placement;
             if(info.faceColor!=it->second.faceColor)
                 applyFaceColors(compound,{info.faceColor});
@@ -743,7 +721,6 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
     }
 
     auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-    // link->Visibility.setValue(false);
     link->setLink(-1,info.obj);
     setPlacement(&link->Placement,shape);
     info.obj = link;
@@ -862,7 +839,6 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
                 myNames.emplace(childLabel,name + std::to_string(i++));
                 getSHUOColors(childLabel,shuoColors,true);
             }
-
             child = link;
             Info objInfo;
             objInfo.obj = child;
@@ -1085,7 +1061,6 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                     FC_WARN("Current OCCT does not support element color override, for object "
                             << obj->getFullName());
                 }
-                // continue;
             }
 
             auto subShape = shape.getSubShape(vv.first.c_str(),true);

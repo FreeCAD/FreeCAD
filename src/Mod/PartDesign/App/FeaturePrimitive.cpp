@@ -503,22 +503,12 @@ App::DocumentObjectExecReturn* Torus::execute(void)
     if (Radius2.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
     try {
-        // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
-#if 0
-        BRepPrimAPI_MakeTorus mkTorus(Radius1.getValue(),
-                                      Radius2.getValue(),
-                                      Base::toRadians<double>(Angle1.getValue()),
-                                      Base::toRadians<double>(Angle2.getValue()),
-                                      Base::toRadians<double>(Angle3.getValue()));
-        return FeaturePrimitive::execute(mkTorus.Solid());
-#else
         Part::TopoShape shape;
         return FeaturePrimitive::execute(shape.makeTorus(Radius1.getValue(),
                                                          Radius2.getValue(),
                                                          Angle1.getValue(),
                                                          Angle2.getValue(),
                                                          Angle3.getValue()));
-#endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

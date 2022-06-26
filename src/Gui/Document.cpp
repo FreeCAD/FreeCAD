@@ -483,21 +483,6 @@ void Document::_resetEdit(void)
         }
         d->_editViewProvider = nullptr;
 
-        // The logic below is not necessary anymore, because this method is
-        // changed into a private one,  _resetEdit(). And the exposed
-        // resetEdit() above calls into Application->setEditDocument(0) which
-        // will prevent recursive calling.
-#if 0
-        // Nullify the member variable before calling finishEditing().
-        // This is to avoid a possible stack overflow when a view provider wrongly
-        // invokes the document's resetEdit() method.
-        ViewProvider* editViewProvider = d->_editViewProvider;
-        d->_editViewProvider = nullptr;
-
-        editViewProvider->finishEditing();
-        if (editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
-            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(editViewProvider)));
-#endif
         App::GetApplication().closeActiveTransaction();
     }
     d->_editViewProviderParent = nullptr;
@@ -759,9 +744,6 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
     handleChildren3D(viewProvider,true);
 
-#if 0 // With this we can show child objects again if this method was called by undo
-    viewProvider->onDelete(std::vector<std::string>());
-#endif
     if (viewProvider && viewProvider->getTypeId().isDerivedFrom
         (ViewProviderDocumentObject::getClassTypeId())) {
         // go through the views

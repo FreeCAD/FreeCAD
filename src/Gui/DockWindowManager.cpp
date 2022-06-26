@@ -369,28 +369,6 @@ void DockWindowManager::setup(DockWindowItems* items)
             }
         }
     }
-
-#if 0 // FIXME: don't tabify always after switching the workbench
-    // tabify dock widgets for which "tabbed" is true and which have the same position
-    for (int i=0; i<4; i++) {
-        const QList<QDockWidget*>& dws = areas[i];
-        for (QList<QDockWidget*>::ConstIterator it = dws.begin(); it != dws.end(); ++it) {
-            if (*it != dws.front()) {
-                getMainWindow()->tabifyDockWidget(dws.front(), *it);
-            }
-        }
-    }
-#endif
-
-#if 0
-    // hide all dock windows which we don't need for the moment
-    for (QList<QDockWidget*>::Iterator it = docked.begin(); it != docked.end(); ++it) {
-        QByteArray dockName = (*it)->toggleViewAction()->data().toByteArray();
-        hPref->SetBool(dockName.constData(), (*it)->isVisible());
-        (*it)->hide();
-        (*it)->toggleViewAction()->setVisible(false);
-    }
-#endif
 }
 
 void DockWindowManager::saveState()

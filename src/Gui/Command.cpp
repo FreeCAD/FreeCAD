@@ -1504,15 +1504,6 @@ void PythonGroupCommand::activated(int iMsg)
                 cmd->invoke(checked?1:0,TriggerAction);
             }
         }
-
-        // It is better to let ActionGroup::onActivated() to handle icon and
-        // text change. The net effect is that the GUI won't change by user
-        // inovking command through runCommandByName()
-#if 0
-        // Since the default icon is reset when enabling/disabling the command we have
-        // to explicitly set the icon of the used command.
-        pcAction->setIcon(a[iMsg]->icon());
-#endif
     }
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;

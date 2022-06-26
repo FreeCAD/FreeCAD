@@ -564,20 +564,6 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
     jt = myColorMap.find(shape.HashCode(INT_MAX));
 
     App::Color partColor(0.8f,0.8f,0.8f);
-#if 0//TODO
-    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-    if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
-        if (jt != myColorMap.end()) {
-            App::Color color;
-            color.r = jt->second.Red();
-            color.g = jt->second.Green();
-            color.b = jt->second.Blue();
-            static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.setValue(color);
-        }
-
-        partColor = static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue();
-    }
-#endif
 
     // set label name if defined
     if (setname && !myNameMap.empty()) {
@@ -597,7 +583,6 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             xp.Next();
         }
 
-        bool found_face_color = false;
         std::vector<App::Color> faceColors;
         faceColors.resize(faces.Extent(), partColor);
         xp.Init(shape,TopAbs_FACE);
@@ -606,18 +591,8 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             if (jt != myColorMap.end()) {
                 int index = faces.FindIndex(xp.Current());
                 faceColors[index-1] = convertColor(jt->second);
-                found_face_color = true;
             }
             xp.Next();
-        }
-
-        if (found_face_color) {
-#if 0//TODO
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-                static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.setValues(faceColors);
-            }
-#endif
         }
     }
 }
@@ -626,12 +601,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
 {
     TopoDS_Shape aShape;
     if (aShapeTool->GetShape(label,aShape)) {
-        //if (aShapeTool->IsReference(label)) {
-        //    TDF_Label reflabel;
-        //    if (aShapeTool->GetReferredShape(label, reflabel)) {
-        //        loadShapes(reflabel);
-        //    }
-        //}
+
         if (aShapeTool->IsTopLevel(label)) {
             int ctSolids = 0, ctShells = 0, ctComps = 0;
             // add the shapes
@@ -689,18 +659,6 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
                 myNameMap[aShape.HashCode(INT_MAX)] = labelName;
             delete [] str;
         }
-
-#if 0
-        // http://www.opencascade.org/org/forum/thread_15174/
-        if (aShapeTool->IsAssembly(label)) {
-            TDF_LabelSequence shapeLabels;
-            aShapeTool->GetComponents(label, shapeLabels);
-            Standard_Integer nbShapes = shapeLabels.Length();
-            for (Standard_Integer i = 1; i <= nbShapes; i++) {
-                loadShapes(shapeLabels.Value(i));
-            }
-        }
-#endif
 
         if (label.HasChild()) {
             TDF_ChildIterator it;

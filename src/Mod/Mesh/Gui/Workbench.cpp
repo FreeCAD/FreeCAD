@@ -41,19 +41,6 @@
 
 using namespace MeshGui;
 
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "Analyze");
-    qApp->translate("Workbench", "Boolean");
-    qApp->translate("Workbench", "&Meshes");
-    qApp->translate("Workbench", "Cutting");
-    qApp->translate("Workbench", "Mesh tools");
-    qApp->translate("Workbench", "Mesh modify");
-    qApp->translate("Workbench", "Mesh boolean");
-    qApp->translate("Workbench", "Mesh cutting");
-    qApp->translate("Workbench", "Mesh segmentation");
-    qApp->translate("Workbench", "Mesh analyze");
-#endif
-
 /// @namespace MeshGui @class Workbench
 TYPESYSTEM_SOURCE(MeshGui::Workbench, Gui::StdWorkbench)
 

@@ -465,14 +465,8 @@ void SoBrepFaceSet::renderSimpleArray()
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-#if 0
-    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
-#else
     glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
     glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, &(index_array[0]));
-#endif
-
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
 }
@@ -492,13 +486,8 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-#if 0
-    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
-    const int32_t* ptr = index_array.data();
-#else
     glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
     const int32_t* ptr = &(index_array[0]);
-#endif
 
     for (int part_id = 0; part_id < num_parts; part_id++) {
         int tris = partIndex[part_id];

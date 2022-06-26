@@ -182,15 +182,11 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
         item->setText(0, text);
     }
 
-#if 0
-    TDF_IDList localList = myList;
-#else
     TDF_IDList localList;
     TDF_AttributeIterator itr (label);
     for ( ; itr.More(); itr.Next()) {
         localList.Append(itr.Value()->ID());
     }
-#endif
 
     for (TDF_ListIteratorOfIDList it(localList); it.More(); it.Next()) {
         Handle(TDF_Attribute) attr;

@@ -666,15 +666,8 @@ void SoFCMeshObjectShape::GLRender(SoGLRenderAction *action)
             }
         }
         else {
-#if 0 && defined (RENDER_GLARRAYS)
-            renderCoordsGLArray(action);
-#else
             drawPoints(mesh, needNormals, ccw);
-#endif
         }
-
-        // Disable caching for this node
-        //SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
     }
 }
 
@@ -889,32 +882,6 @@ void SoFCMeshObjectShape::generateGLArrays(SoState * state)
     const MeshCore::MeshPointArray& cP = kernel.GetPoints();
     const MeshCore::MeshFacetArray& cF = kernel.GetFacets();
 
-#if 0
-    // Smooth shading
-    face_vertices.resize(cP.size() * 6);
-    face_indices.resize(3 * cF.size());
-
-    int indexed = 0;
-    for (MeshCore::MeshPointArray::const_iterator it = cP.begin(); it != cP.end(); ++it) {
-        face_vertices[indexed * 6 + 3] += it->x;
-        face_vertices[indexed * 6 + 4] += it->y;
-        face_vertices[indexed * 6 + 5] += it->z;
-        indexed++;
-    }
-
-    indexed = 0;
-    for (MeshCore::MeshFacetArray::const_iterator it = cF.begin(); it != cF.end(); ++it) {
-        Base::Vector3f n = kernel.GetFacet(*it).GetNormal();
-        for (int i=0; i<3; i++) {
-            int32_t idx = it->_aulPoints[i];
-            face_vertices[idx * 6 + 0] += n.x;
-            face_vertices[idx * 6 + 1] += n.y;
-            face_vertices[idx * 6 + 2] += n.z;
-
-            face_indices[indexed++] = idx;
-        }
-    }
-#else
     // Flat shading
     face_vertices.reserve(3 * cF.size() * 6); // duplicate each vertex
     face_indices.resize(3 * cF.size());
@@ -935,8 +902,6 @@ void SoFCMeshObjectShape::generateGLArrays(SoState * state)
             indexed++;
         }
     }
-#endif
-
     this->index_array.swap(face_indices);
     this->vertex_array.swap(face_vertices);
 }

@@ -190,42 +190,20 @@ bool Base::XMLReader::read()
         parser->parseNext(token);
     }
     catch (const XMLException& toCatch) {
-#if 0
-        char* message = XMLString::transcode(toCatch.getMessage());
-        cerr << "Exception message is: \n"
-             << message << "\n";
-        XMLString::release(&message);
-        return false;
-#else
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
         throw Base::XMLBaseException(what);
-#endif
     }
     catch (const SAXParseException& toCatch) {
-#if 0
-        char* message = XMLString::transcode(toCatch.getMessage());
-        cerr << "Exception message is: \n"
-             << message << "\n";
-        XMLString::release(&message);
-        return false;
-#else
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
         throw Base::XMLParseException(what);
-#endif
     }
     catch (...) {
-#if 0
-        cerr << "Unexpected Exception \n" ;
-        return false;
-#else
         throw Base::XMLBaseException("Unexpected XML exception");
-#endif
     }
-
     return true;
 }
 

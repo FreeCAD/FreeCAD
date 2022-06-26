@@ -878,60 +878,6 @@ void SoFCMeshFaceSet::generatePrimitives(SoAction* action)
   if ( !rFacets || rPoints->size() < 1 )
     return;
 
-#if 0
-  // In case we have too many triangles we just create a rough model of the original mesh
-  if ( this->MaximumTriangles < rFacets->size() ) {
-    // We notify this shape when the data has changed because just counting the number of triangles won't always work.
-    // 
-    if ( meshChanged ) {
-      try {
-        createProxyModel(rPoints, rFacets, FALSE);
-        meshChanged = false;
-      } catch (const Base::MemoryException&) {
-          Base::Console().Log("Not enough memory to create a proxy model, use its bounding box instead\n");
-          try {
-            // try to create a triangulation of the bbox instead
-            createProxyModel(rPoints, rFacets, TRUE);
-            meshChanged = false;
-          } catch (const Base::MemoryException&) {
-              Base::Console().Log("Not enough memory to make the object pickable\n");
-              return;
-          }
-      }
-    }
-    SoPrimitiveVertex vertex;
-    beginShape(action, TRIANGLES, 0);
-    try 
-    {
-        int i=0;
-        while ( i<coordIndex.getNum() )
-        {
-          const SbVec3f& v0 = point[coordIndex[i++]]; 
-          const SbVec3f& v1 = point[coordIndex[i++]]; 
-          const SbVec3f& v2 = point[coordIndex[i++]]; 
-
-          // Calculate the normal n = (v1-v0)x(v2-v0)
-          SbVec3f n;
-          n[0] = (v1[1]-v0[1])*(v2[2]-v0[2])-(v1[2]-v0[2])*(v2[1]-v0[1]);
-          n[1] = (v1[2]-v0[2])*(v2[0]-v0[0])-(v1[0]-v0[0])*(v2[2]-v0[2]);
-          n[2] = (v1[0]-v0[0])*(v2[1]-v0[1])-(v1[1]-v0[1])*(v2[0]-v0[0]);
-
-          // Set the normal
-          vertex.setNormal(n);
-
-          vertex.setPoint( v0 );
-          shapeVertex(&vertex);
-          vertex.setPoint( v1 );
-          shapeVertex(&vertex);
-          vertex.setPoint( v2 );
-          shapeVertex(&vertex);
-        }
-    } catch (const Base::MemoryException&) {
-        Base::Console().Log("Not enough memory to generate primitives from the proxy model\n");
-    }
-    endShape();
-  } else {
-#endif
     // get material binding
     Binding mbind = this->findMaterialBinding(state);
 
@@ -995,9 +941,6 @@ void SoFCMeshFaceSet::generatePrimitives(SoAction* action)
     }
 
     endShape();
-#if 0
-  }
-#endif
 }
 
 /**
@@ -1011,16 +954,8 @@ SoDetail * SoFCMeshFaceSet::createTriangleDetail(SoRayPickAction * action,
                                               const SoPrimitiveVertex * v3,
                                               SoPickedPoint * pp)
 {
-#if 0
-  if ( this->MaximumTriangles < countTriangles(action) ) {
-    return 0;
-  } else {
-#endif
     SoDetail* detail = inherited::createTriangleDetail(action, v1, v2, v3, pp);
     return detail;
-#if 0
-  }
-#endif
 }
 
 /**

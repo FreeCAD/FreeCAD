@@ -871,32 +871,6 @@ void GLImageBox::renderText(int x, int y, const QString& str, const QFont& fnt)
 {
     if (str.isEmpty() || !isValid())
         return;
-
-    //glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-    //glPushAttrib(GL_ALL_ATTRIB_BITS);
-
-#if 0
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    GLfloat color[4];
-    glGetFloatv(GL_CURRENT_COLOR, &color[0]);
-    QColor col;
-    col.setRgbF(color[0], color[1], color[2],color[3]);
-
-    QFont font(fnt);
-    font.setStyleHint(QFont::Times, QFont::PreferAntialias);
-
-    QPainter painter;
-    painter.begin(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setRenderHint(QPainter::TextAntialiasing);
-
-    painter.setFont(font);
-    painter.setPen(col);
-    painter.drawText(x, y, str);
-    painter.end();
-#else
     GLfloat color[4];
     glGetFloatv(GL_CURRENT_COLOR, &color[0]);
     QColor col;
@@ -917,9 +891,6 @@ void GLImageBox::renderText(int x, int y, const QString& str, const QFont& fnt)
     painter.setPen(Qt::NoPen);
     painter.drawPath(textPath);
     painter.end();
-#endif
-    //glPopAttrib();
-    //glPopClientAttrib();
 }
 
-#include "moc_OpenGLImageBox.cpp"
+//#include "moc_OpenGLImageBox.cpp"

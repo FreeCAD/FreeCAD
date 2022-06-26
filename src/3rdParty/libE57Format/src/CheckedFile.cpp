@@ -425,19 +425,6 @@ template <class FTYPE> CheckedFile &CheckedFile::writeFloatingPoint( FTYPE value
          s = mantissa + exponent;
       }
    }
-
-   // Disable these checks because they compare floats using "!=" which is
-   // invalid
-#if 0 // E57_MAX_DEBUG
-   /// Double check same value
-   FTYPE old_value = static_cast<FTYPE>(atof(old_s.c_str()));
-   FTYPE new_value = static_cast<FTYPE>(atof(s.c_str()));
-   if (old_value != new_value)
-      throw E57_EXCEPTION2(E57_ERROR_INTERNAL, "fileName=" + fileName_ + " oldValue=" + toString(old_value) + " newValue=" + toString(new_value));
-   if (new_value != value)
-      throw E57_EXCEPTION2(E57_ERROR_INTERNAL, "fileName=" + fileName_ + " newValue=" + toString(new_value) + " value=" + toString(value));
-#endif
-
    return ( *this << s );
 }
 

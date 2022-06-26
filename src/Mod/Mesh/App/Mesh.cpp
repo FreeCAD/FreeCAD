@@ -526,28 +526,6 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
             this->_segments[index].setName(g[index]);
         }
     }
-
-#if 0
-#ifndef FC_DEBUG
-    try {
-        MeshCore::MeshEvalNeighbourhood nb(_kernel);
-        if (!nb.Evaluate()) {
-            Base::Console().Warning("Errors in neighbourhood of mesh found...");
-            _kernel.RebuildNeighbours();
-            Base::Console().Warning("fixed\n");
-        }
-
-        MeshCore::MeshEvalTopology eval(_kernel);
-        if (!eval.Evaluate()) {
-            Base::Console().Warning("The mesh data structure has some defects\n");
-        }
-    }
-    catch (const Base::MemoryException&) {
-        // ignore memory exceptions and continue
-        Base::Console().Log("Check for defects in mesh data structure failed\n");
-    }
-#endif
-#endif
 }
 
 void MeshObject::save(std::ostream& out) const

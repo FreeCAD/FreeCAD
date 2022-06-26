@@ -417,18 +417,6 @@ unsigned long MeshEvalTopology::CountManifolds() const
 
 bool MeshFixTopology::Fixup ()
 {
-#if 0
-    MeshEvalTopology eval(_rclMesh);
-    if (!eval.Evaluate()) {
-        eval.GetFacetManifolds(deletedFaces);
-
-        // remove duplicates
-        std::sort(deletedFaces.begin(), deletedFaces.end());
-        deletedFaces.erase(std::unique(deletedFaces.begin(), deletedFaces.end()), deletedFaces.end());
-
-        _rclMesh.DeleteFacets(deletedFaces);
-    }
-#else
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     deletedFaces.reserve(3 * nonManifoldList.size()); // allocate some memory
     std::list<std::vector<FacetIndex> >::const_iterator it;
@@ -459,8 +447,6 @@ bool MeshFixTopology::Fixup ()
         _rclMesh.DeleteFacets(deletedFaces);
         _rclMesh.RebuildNeighbours();
     }
-#endif
-
     return true;
 }
 

@@ -313,9 +313,6 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
         const Mesh::PropertyCurvatureList* curv = static_cast<const Mesh::PropertyCurvatureList*>(prop);
         if (curv->getSize() < 3) // invalid array
             return;
-#if 0 // FIXME: Do not always change the range
-        init(curv); // init color bar
-#endif
         setActiveMode();
     }
 }

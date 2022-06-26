@@ -83,69 +83,8 @@ private:
 
             try {
                 Base::Vector3d m1 = arc->getCenter();
-              //Base::Vector3d a3 = arc->getStartPoint();
                 Base::Vector3d a3 = arc->getEndPoint(true);
-              //Base::Vector3d l1 = seg->getStartPoint();
                 Base::Vector3d l2 = seg->getEndPoint();
-#if 0
-                Py::Module pd("FilletArc");
-                Py::Callable method(pd.getAttr(std::string("makeFilletArc")));
-                Py::Callable vector(pd.getAttr(std::string("Vector")));
-
-                Py::Tuple xyz(3);
-                Py::Tuple args(6);
-                xyz.setItem(0, Py::Float(m1.x));
-                xyz.setItem(1, Py::Float(m1.y));
-                xyz.setItem(2, Py::Float(m1.z));
-                args.setItem(0,vector.apply(xyz));
-
-                xyz.setItem(0, Py::Float(a3.x));
-                xyz.setItem(1, Py::Float(a3.y));
-                xyz.setItem(2, Py::Float(a3.z));
-                args.setItem(1,vector.apply(xyz));
-
-                xyz.setItem(0, Py::Float(l2.x));
-                xyz.setItem(1, Py::Float(l2.y));
-                xyz.setItem(2, Py::Float(l2.z));
-                args.setItem(2,vector.apply(xyz));
-
-                xyz.setItem(0, Py::Float((float)0));
-                xyz.setItem(1, Py::Float((float)0));
-                xyz.setItem(2, Py::Float((float)1));
-                args.setItem(3,vector.apply(xyz));
-
-                args.setItem(4,Py::Float(radius));
-                args.setItem(5,Py::Int((int)0));
-                Py::Tuple ret(method.apply(args));
-                Py::Object S1(ret.getItem(0));
-                Py::Object S2(ret.getItem(1));
-                Py::Object M2(ret.getItem(2));
-
-                Base::Vector3d s1, s2, m2;
-                s1.x = (double)Py::Float(S1.getAttr("x"));
-                s1.y = (double)Py::Float(S1.getAttr("y"));
-                s1.z = (double)Py::Float(S1.getAttr("z"));
-
-                s2.x = (double)Py::Float(S2.getAttr("x"));
-                s2.y = (double)Py::Float(S2.getAttr("y"));
-                s2.z = (double)Py::Float(S2.getAttr("z"));
-
-                m2.x = (double)Py::Float(M2.getAttr("x"));
-                m2.y = (double)Py::Float(M2.getAttr("y"));
-                m2.z = (double)Py::Float(M2.getAttr("z"));
-
-                coords->point.set1Value(0, (float)s1.x,(float)s1.y,(float)s1.z);
-                coords->point.set1Value(1, (float)m2.x,(float)m2.y,(float)m2.z);
-                coords->point.set1Value(2, (float)s2.x,(float)s2.y,(float)s2.z);
-
-                Base::Console().Message("M1=<%.4f,%.4f>\n", m1.x,m1.y);
-                Base::Console().Message("M2=<%.4f,%.4f>\n", m2.x,m2.y);
-                Base::Console().Message("S1=<%.4f,%.4f>\n", s1.x,s1.y);
-                Base::Console().Message("S2=<%.4f,%.4f>\n", s2.x,s2.y);
-                Base::Console().Message("P=<%.4f,%.4f>\n", a3.x,a3.y);
-                Base::Console().Message("Q=<%.4f,%.4f>\n", l2.x,l2.y);
-                Base::Console().Message("\n");
-#else
                 Py::Module pd("PartDesign");
                 Py::Callable method(pd.getAttr(std::string("makeFilletArc")));
 
@@ -155,7 +94,6 @@ private:
                 args.setItem(2,Py::Vector(l2));
                 args.setItem(3,Py::Vector(Base::Vector3d(0,0,1)));
                 args.setItem(4,Py::Float(radius));
-              //args.setItem(5,Py::Int((int)0));
                 args.setItem(5,Py::Long((long)1));
                 Py::Tuple ret(method.apply(args));
                 Py::Vector S1(ret.getItem(0));
@@ -176,7 +114,6 @@ private:
                 Base::Console().Message("P=<%.4f,%.4f>\n", a3.x,a3.y);
                 Base::Console().Message("Q=<%.4f,%.4f>\n", l2.x,l2.y);
                 Base::Console().Message("\n");
-#endif
             }
             catch (Py::Exception&) {
                 Base::PyException e; // extract the Python error text

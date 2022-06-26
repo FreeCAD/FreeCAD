@@ -355,24 +355,6 @@ void ActionGroup::onToggled(bool)
 void ActionGroup::onActivated (QAction* a)
 {
     int index = _group->actions().indexOf(a);
-
-    // Calling QToolButton::setIcon() etc. has no effect if it has QAction set.
-    // We have to change the QAction icon instead
-#if 0
-    QList<QWidget*> widgets = a->associatedWidgets();
-    for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-        QMenu* menu = qobject_cast<QMenu*>(*it);
-        if (menu) {
-            QToolButton* button = qobject_cast<QToolButton*>(menu->parent());
-            if (button) {
-                button->setIcon(a->icon());
-                button->setText(a->text());
-                button->setToolTip(a->toolTip());
-                this->setProperty("defaultAction", QVariant(index));
-            }
-        }
-    }
-#endif
     this->setIcon(a->icon());
     if (!this->_isMode) this->setToolTip(a->toolTip());
     this->setProperty("defaultAction", QVariant(index));

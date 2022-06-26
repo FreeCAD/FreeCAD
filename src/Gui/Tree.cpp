@@ -968,28 +968,10 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 }
 
 void TreeWidget::hideEvent(QHideEvent* ev) {
-    // No longer required. Visibility is now handled inside onUpdateStatus() by
-    // UpdateDisabler.
-#if 0
-    TREE_TRACE("detaching selection observer");
-    this->detachSelection();
-    selectTimer->stop();
-#endif
     QTreeWidget::hideEvent(ev);
 }
 
 void TreeWidget::showEvent(QShowEvent* ev) {
-    // No longer required. Visibility is now handled inside onUpdateStatus() by
-    // UpdateDisabler.
-#if 0
-    TREE_TRACE("attaching selection observer");
-    this->attachSelection();
-    int timeout = TreeParams::Instance()->SelectionTimeout();
-    if (timeout <= 0)
-        timeout = 1;
-    selectTimer->start(timeout);
-    _updateStatus();
-#endif
     QTreeWidget::showEvent(ev);
 }
 
@@ -1042,22 +1024,9 @@ void TreeWidget::onStartEditing()
             MDIView* view = doc->getActiveView();
             if (view) getMainWindow()->setActiveWindow(view);
 
-            // Always open a transaction here doesn't make much sense because:
-            // - many objects open transactions when really changing some properties
-            // - this leads to certain inconsistencies with the doubleClicked() method
-            // So, only the view provider class should decide what to do
-#if 0
-            // open a transaction before starting edit mode
-            std::string cmd("Edit ");
-            cmd += obj->Label.getValue();
-            doc->openCommand(cmd.c_str());
-            bool ok = doc->setEdit(objitem->object(), edit);
-            if (!ok) doc->abortCommand();
-#else
             editingItem = objitem;
             if (!doc->setEdit(objitem->object(), edit))
                 editingItem = nullptr;
-#endif
         }
     }
 }
@@ -1345,15 +1314,6 @@ Qt::DropActions TreeWidget::supportedDropActions() const
 
 bool TreeWidget::event(QEvent* e)
 {
-#if 0
-    if (e->type() == QEvent::ShortcutOverride) {
-        QKeyEvent* ke = static_cast<QKeyEvent*>(e);
-        switch (ke->key()) {
-        case Qt::Key_Delete:
-            ke->accept();
-        }
-    }
-#endif
     return QTreeWidget::event(e);
 }
 
@@ -1380,11 +1340,6 @@ bool TreeWidget::eventFilter(QObject*, QEvent* ev) {
 
 void TreeWidget::keyPressEvent(QKeyEvent* event)
 {
-#if 0
-    if (event && event->matches(QKeySequence::Delete)) {
-        event->ignore();
-    }
-#endif
     if (event->matches(QKeySequence::Find)) {
         event->accept();
         onSearchObjects();
@@ -1533,19 +1488,6 @@ void TreeWidget::startDrag(Qt::DropActions supportedActions)
 
 QMimeData* TreeWidget::mimeData(const QList<QTreeWidgetItem*> items) const
 {
-#if 0
-    // all selected items must reference an object from the same document
-    App::Document* doc = 0;
-    for (QList<QTreeWidgetItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
-        if ((*it)->type() != TreeWidget::ObjectType)
-            return 0;
-        App::DocumentObject* obj = static_cast<DocumentObjectItem*>(*it)->object()->getObject();
-        if (!doc)
-            doc = obj->getDocument();
-        else if (doc != obj->getDocument())
-            return 0;
-    }
-#endif
     return QTreeWidget::mimeData(items);
 }
 

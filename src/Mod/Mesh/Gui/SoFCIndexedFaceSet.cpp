@@ -259,30 +259,6 @@ void MeshRenderer::Private::generateGLArrays(SoGLRenderAction*,
 
 void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 {
-#if 0 // use Inventor's coordIndex saves memory but the rendering is very slow then
-    const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-    PFNGLPRIMITIVERESTARTINDEXPROC glPrimitiveRestartIndex = (PFNGLPRIMITIVERESTARTINDEXPROC)
-        cc_glglue_getprocaddress(glue, "glPrimitiveRestartIndex");
-
-    int cnt = coordIndex.getNum();
-
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
-
-    // https://www.opengl.org/discussion_boards/archive/index.php/t-180767.html
-    // https://www.khronos.org/opengl/wiki/Vertex_Rendering#Primitive_Restart
-    glPrimitiveRestartIndex(0xffffffff);
-    glEnable(GL_PRIMITIVE_RESTART);
-    //glEnable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
-
-    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, coordIndex.getValues(0));
-
-    glDisable(GL_PRIMITIVE_RESTART);
-    //glDisable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-#else // Needs more memory but makes it very fast
     (void)action;
     int cnt = index_array.size();
 
@@ -297,7 +273,6 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
-#endif
 }
 
 void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *)
@@ -588,11 +563,6 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
 #endif
     }
     else {
-#if 0 && defined (RENDER_GLARRAYS)
-        SoMaterialBundle mb(action);
-        mb.sendFirst();
-        render.renderCoordsGLArray(action);
-#else
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
         int32_t binding = (int32_t)(matbind);
@@ -619,16 +589,11 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
 
         drawCoords(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
                    normals, nindices, &mb, mindices, binding, &tb, tindices);
-
-        // getVertexData() internally calls readLockNormalCache() that read locks
-        // the normal cache. When the cache is not needed any more we must call
-        // readUnlockNormalCache()
         if (normalCacheUsed)
             this->readUnlockNormalCache();
 
         // Disable caching for this node
         SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-#endif
     }
 }
 

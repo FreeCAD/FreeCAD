@@ -499,20 +499,6 @@ inline void isect2(float VTX0[3],float VTX1[3],float VTX2[3],float VV0,float VV1
 }
 
 
-#if 0
-#define ISECT2(VTX0,VTX1,VTX2,VV0,VV1,VV2,D0,D1,D2,isect0,isect1,isectpoint0,isectpoint1) \
-              tmp=D0/(D0-D1);                    \
-              isect0=VV0+(VV1-VV0)*tmp;          \
-      SUB(diff,VTX1,VTX0);               \
-      MULT(diff,diff,tmp);               \
-              ADD(isectpoint0,diff,VTX0);        \
-              tmp=D0/(D0-D2);
-/*              isect1=VV0+(VV2-VV0)*tmp;          \ */
-/*              SUB(diff,VTX2,VTX0);               \     */
-/*              MULT(diff,diff,tmp);               \   */
-/*              ADD(isectpoint1,VTX0,diff);           */
-#endif
-
 inline int compute_intervals_isectline(float VERT0[3],float VERT1[3],float VERT2[3],
        float VV0,float VV1,float VV2,float D0,float D1,float D2,
        float D0D1,float D0D2,float *isect0,float *isect1,
@@ -557,32 +543,6 @@ inline int compute_intervals_isectline(float VERT0[3],float VERT1[3],float VERT2
     /* that is D0, D1 are on the same side, D2 on the other or on the plane */ \
     isect2(VERT2,VERT0,VERT1,VV2,VV0,VV1,D2,D0,D1,&isect0,&isect1,isectpoint0,isectpoint1);          \
   }
-#if 0
-  else if(D0D2>0.0f)                                    \
-  {                                                     \
-    /* here we know that d0d1<=0.0 */                   \
-    isect2(VERT1,VERT0,VERT2,VV1,VV0,VV2,D1,D0,D2,&isect0,&isect1,isectpoint0,isectpoint1);          \
-  }                                                     \
-  else if(D1*D2>0.0f || D0!=0.0f)                       \
-  {                                                     \
-    /* here we know that d0d1<=0.0 or that D0!=0.0 */   \
-    isect2(VERT0,VERT1,VERT2,VV0,VV1,VV2,D0,D1,D2,&isect0,&isect1,isectpoint0,isectpoint1);          \
-  }                                                     \
-  else if(D1!=0.0f)                                     \
-  {                                                     \
-    isect2(VERT1,VERT0,VERT2,VV1,VV0,VV2,D1,D0,D2,&isect0,&isect1,isectpoint0,isectpoint1);          \
-  }                                                     \
-  else if(D2!=0.0f)                                     \
-  {                                                     \
-    isect2(VERT2,VERT0,VERT1,VV2,VV0,VV1,D2,D0,D1,&isect0,&isect1,isectpoint0,isectpoint1);          \
-  }                                                     \
-  else                                                  \
-  {                                                     \
-    /* triangles are coplanar */                        \
-    coplanar=1;                                         \
-    return coplanar_tri_tri(N1,V0,V1,V2,U0,U1,U2);      \
-  }
-#endif
 
 int tri_tri_intersect_with_isectline(float V0[3],float V1[3],float V2[3],
      float U0[3],float U1[3],float U2[3],int *coplanar,
@@ -721,4 +681,3 @@ int tri_tri_intersect_with_isectline(float V0[3],float V1[3],float V2[3],
   }
   return 1;
 }
-

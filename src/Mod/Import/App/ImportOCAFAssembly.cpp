@@ -276,15 +276,6 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape, const TopLoc_Lo
         std::vector<App::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
-#if 0//TODO
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
-            color.r = aColor.Red();
-            color.g = aColor.Green();
-            color.b = aColor.Blue();
-            static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.setValue(color);
-        }
-#endif
     }
 
     TopTools_IndexedMapOfShape faces;

@@ -45,12 +45,6 @@ using namespace std;
 namespace bp = boost::placeholders;
 
 
-/* TRANSLATOR Gui::Dialog::DlgDisplayPropertiesImp */
-
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("QDockWidget", "Display properties");
-#endif
-
 class DlgDisplayPropertiesImp::Private
 {
     typedef boost::signals2::connection DlgDisplayPropertiesImp_Connection;

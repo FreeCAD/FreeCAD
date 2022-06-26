@@ -404,11 +404,6 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
     QStringList list;
     for (int i=0; i<this->string.getNum(); i++)
         list << QLatin1String(this->string[i].getString());
-#if 0 // Old OpenGL API
-    window->renderText(nil[0],nil[1],nil[2],list.join(QLatin1String("\n")),font);
-#else
-    //FIXME: renderText
-#endif
 
     // Leave 2D screen mode
     glPopAttrib();
@@ -523,76 +518,6 @@ void SoFrameLabel::drawImage()
 void SoFrameLabel::GLRender(SoGLRenderAction *action)
 {
     inherited::GLRender(action);
-#if 0
-    QtGLWidget* window;
-    SoState * state = action->getState();
-    state->push();
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    SoGLWidgetElement::get(state, window);
-    if (!window) {
-        state->pop();
-        return;
-    }
-
-    // Enter in 2D screen mode
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(-1,1,-1,1,-1,1);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glPushAttrib(GL_ENABLE_BIT);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-
-    QFont font;
-    font.setStyleStrategy(QFont::NoAntialias);
-    font.setFamily(QLatin1String(this->name.getValue()));
-    font.setPixelSize(this->size.getValue());
-
-    glBlendFunc(GL_ONE,GL_SRC_ALPHA);
-
-    /* Background Box */
-    //glColor4f(1,0.1f,0.1f,1);
-    //int ln =4;
-    //float ls = font.pixelSize()*1.5f;
-    //float bh = -1 + 2.0*(ls*(ln+.25))/float(window->height());
-
-    //glBegin(GL_QUADS);
-    //glVertex2f(-1.f,bh);   glVertex2f(-1.f,-1.f);
-    //glVertex2f( 1.f,-1.f); glVertex2f( 1.f,bh);
-    //glEnd();
-
-    //float middleCol=window->width()*0.40;
-    //float rightCol=window->width()*0.85;
-    //float startPos = window->height()-(5+ls*(ln));
-
-    // text color
-    SbColor color = this->textColor.getValue();
-    glColor4f(color[0], color[1], color[2],1);
-    //window->renderText(20,20/*startPos+ 1*ls*/,QLatin1String(this->string[0].getString()),font);
-    const SbMatrix & mat = SoModelMatrixElement::get(state);
-    const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
-                                   SoProjectionMatrixElement::get(state));
-    SbVec3f nil(0.0f, 0.0f, 0.0f);
-    projmatrix.multVecMatrix(nil, nil);
-    QStringList list;
-    for (int i=0; i<this->string.getNum(); i++)
-        list << QLatin1String(this->string[i].getString());
-    window->renderText(nil[0],nil[1],nil[2],list.join(QLatin1String("\n")),font);
-
-    // Leave 2D screen mode
-    glPopAttrib();
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-
-    state->pop();
-#endif
 }
 
 // ------------------------------------------------------
@@ -602,8 +527,7 @@ SO_NODE_SOURCE(TranslateManip)
 void
 TranslateManip::initClass()
 {
-    SO_NODE_INIT_CLASS(TranslateManip, SoTransformManip,
-                       "TransformManip");
+    SO_NODE_INIT_CLASS(TranslateManip, SoTransformManip, "TransformManip");
 }
 
 TranslateManip::TranslateManip()

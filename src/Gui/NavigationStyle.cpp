@@ -559,16 +559,6 @@ void NavigationStyle::viewAll()
     if (box.isEmpty())
         return;
 
-#if 0
-    // check whether the box is very wide or tall, if not do nothing
-    float box_width, box_height, box_depth;
-    box.getSize( box_width, box_height, box_depth );
-    if (box_width < 5.0f*box_height && box_width < 5.0f*box_depth &&
-        box_height < 5.0f*box_width && box_height < 5.0f*box_depth &&
-        box_depth < 5.0f*box_width && box_depth < 5.0f*box_height )
-        return;
-#endif
-
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
     if (!cam)
         return;

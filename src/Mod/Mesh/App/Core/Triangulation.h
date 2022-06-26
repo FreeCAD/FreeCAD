@@ -232,25 +232,6 @@ private:
     float fMaxArea;
 };
 
-#if 0
-class MeshExport Triangulator : public AbstractPolygonTriangulator
-{
-public:
-    Triangulator(const MeshKernel&, bool flat);
-    ~Triangulator();
-    void Discard();
-    void Reset();
-
-    bool NeedsReindexing() const { return false; }
-    MeshGeomFacet GetTriangle(const MeshPointArray&, const MeshFacet&) const;
-    void PostProcessing(const std::vector<Base::Vector3f>&);
-
-protected:
-    bool Triangulate();
-
-    const MeshKernel& _kernel;
-};
-#endif
 
 } // namespace MeshCore
 

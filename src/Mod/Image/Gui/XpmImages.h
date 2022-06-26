@@ -65,58 +65,6 @@ static const char *image_oneToOne[]={
 ".##############.",
 "................"};
 
-#if 0
-/* XPM */
-static const char *image_orig[]={
-"16 16 5 1",
-". c #000000",
-"b c #000080",
-"a c #008000",
-"c c #404040",
-"# c #800000",
-"................",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-"................",
-".cccccccccccccc.",
-".cccccccccccccc.",
-".cccccccccccccc.",
-".cccccccccccccc.",
-".cccccccccccccc.",
-"................"};
-
-/* XPM */
-static const char *image_bright[]={
-"16 16 5 1",
-". c #000000",
-"b c #0000ff",
-"a c #00ff00",
-"c c #c0c0c0",
-"# c #ff0000",
-"................",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-".#####aaaabbbbb.",
-"................",
-".cccccccccccccc.",
-".cccccccccccccc.",
-".cccccccccccccc.",
-".cccccccccccccc.",
-".cccccccccccccc.",
-"................"};
-#endif
-
 } // namespace ImageGui
 
 #endif // XpmImages_H

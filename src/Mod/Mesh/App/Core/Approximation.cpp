@@ -1051,38 +1051,6 @@ CylinderFit::~CylinderFit()
 
 Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
 {
-#if 0
-    int nc = 0;
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    for (int i = 0; i < (int)n.size()-1; ++i) {
-        for (int j = i+1; j < (int)n.size(); ++j) {
-            Base::Vector3f cross = n[i] % n[j];
-            if (cross.Sqr() > 1.0e-6) {
-                cross.Normalize();
-                x += cross.x;
-                y += cross.y;
-                z += cross.z;
-                ++nc;
-            }
-        }
-    }
-
-    if (nc > 0) {
-        x /= (double)nc;
-        y /= (double)nc;
-        z /= (double)nc;
-        Base::Vector3f axis(x,y,z);
-        axis.Normalize();
-        return axis;
-    }
-
-    PlaneFit planeFit;
-    planeFit.AddPoints(n);
-    planeFit.Fit();
-    return planeFit.GetNormal();
-#endif
 
     // Like a plane fit where the base is at (0,0,0)
     double sxx,sxy,sxz,syy,syz,szz;

@@ -29,21 +29,6 @@
 
 using namespace PartGui;
 
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "&Part");
-    qApp->translate("Workbench", "&Simple");
-    qApp->translate("Workbench", "&Parametric");
-    qApp->translate("Workbench", "Solids");
-    qApp->translate("Workbench", "Part tools");
-    qApp->translate("Workbench", "Boolean");
-    qApp->translate("Workbench", "Primitives");
-    qApp->translate("Workbench", "Join");
-    qApp->translate("Workbench", "Split");
-    qApp->translate("Workbench", "Compound");
-    qApp->translate("Workbench", "Create a copy");
-    qApp->translate("Workbench", "Measure");
-#endif
-
 /// @namespace PartGui @class Workbench
 TYPESYSTEM_SOURCE(PartGui::Workbench, Gui::StdWorkbench)
 

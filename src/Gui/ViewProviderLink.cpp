@@ -739,15 +739,7 @@ void ViewProviderLinkObserver::extensionReattach(App::DocumentObject *) {
 }
 
 void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
-#if 0
-    auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
-    if(!owner || !linkInfo)
-        return;
-    if(prop != &owner->Visibility && prop != &owner->DisplayMode)
-        linkInfo->update();
-#else
     (void)prop;
-#endif
 }
 
 void ViewProviderLinkObserver::extensionModeSwitchChange() {

@@ -214,19 +214,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         items.pop_front();
         if (!dict.hasKey(std::string(modname.toLatin1())))
             return tips; // unknown object
-#if 0
-        // get the Python object we need
-        Py::Object obj = dict.getItem(std::string(modname.toLatin1()));
-        while (!items.isEmpty()) {
-            QByteArray name = items.front().toLatin1();
-            std::string attr = name.constData();
-            items.pop_front();
-            if (obj.hasAttr(attr))
-                obj = obj.getAttr(attr);
-            else
-                return tips;
-        }
-#else
+
         // Don't use hasattr & getattr because if a property is bound to a method this will be executed twice.
         PyObject* code = Py_CompileString(static_cast<const char*>(context.toLatin1()), "<CallTipsList>", Py_eval_input);
         if (!code) {
@@ -244,7 +232,6 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             return tips;
         }
         Py::Object obj(eval, true);
-#endif
 
         // Checks whether the type is a subclass of PyObjectBase because to get the doc string
         // of a member we must get it by its type instead of its instance otherwise we get the

@@ -33,10 +33,6 @@
 
 using namespace DrawingGui;
 
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "Drawing");
-#endif
-
 /// @namespace DrawingGui @class Workbench
 TYPESYSTEM_SOURCE(DrawingGui::Workbench, Gui::StdWorkbench)
 

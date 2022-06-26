@@ -136,14 +136,8 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         mat *= Placement.getValue().toMatrix();
 
     if(!pyObj) {
-#if 0
-        if(subname==0 || *subname==0 || Shape.getShape().hasSubShape(subname))
-            return const_cast<Feature*>(this);
-        return nullptr;
-#else
         // TopoShape::hasSubShape is kind of slow, let's cut outself some slack here.
         return const_cast<Feature*>(this);
-#endif
     }
 
     try {

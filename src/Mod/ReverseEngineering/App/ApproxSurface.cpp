@@ -1074,19 +1074,6 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
         }
     }
 
-    // The product of its transform and itself results in the quadratic
-    // system matrix (slowly)
-#if 0
-    math_Matrix MTM = M.TMultiply(M);
-#elif 0
-    math_Matrix MTM(0, ulDim-1, 0, ulDim-1);
-    for (unsigned m=0; m<ulDim; m++) {
-        math_Vector Mm = M.Col(m);
-        for (unsigned n=m; n<ulDim; n++) {
-            MTM(m,n) = MTM(n,m) = Mm * M.Col(n);
-        }
-    }
-#else // multi-threaded
     std::vector<int> columns(ulDim);
     std::generate(columns.begin(), columns.end(), Base::iotaGen<int>(0));
     ScalarProduct scalar(M);
@@ -1104,7 +1091,6 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
             MTM(rowIndex, colIndex) = *jt;
         rowIndex++;
     }
-#endif
 
     // Determine the right side
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {

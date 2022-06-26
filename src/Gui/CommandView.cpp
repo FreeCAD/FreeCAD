@@ -559,24 +559,12 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
 Action * StdCmdToggleClipPlane::createAction(void)
 {
     Action *pcAction = (Action*)Command::createAction();
-#if 0
-    pcAction->setCheckable(true);
-#endif
     return pcAction;
 }
 
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        if (iMsg > 0 && !view->hasClippingPlane())
-            view->toggleClippingPlane();
-        else if (iMsg == 0 && view->hasClippingPlane())
-            view->toggleClippingPlane();
-    }
-#else
     static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
     if (!clipping) {
         View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
@@ -584,29 +572,12 @@ void StdCmdToggleClipPlane::activated(int iMsg)
             clipping = Gui::Dialog::Clipping::makeDockWidget(view);
         }
     }
-#endif
 }
 
 bool StdCmdToggleClipPlane::isActive(void)
 {
-#if 0
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        Action* action = qobject_cast<Action*>(_pcAction);
-        if (action->isChecked() != view->hasClippingPlane())
-            action->setChecked(view->hasClippingPlane());
-        return true;
-    }
-    else {
-        Action* action = qobject_cast<Action*>(_pcAction);
-        if (action->isChecked())
-            action->setChecked(false);
-        return false;
-    }
-#else
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     return view ? true : false;
-#endif
 }
 
 //===========================================================================
@@ -1151,26 +1122,13 @@ StdCmdSetAppearance::StdCmdSetAppearance()
 void StdCmdSetAppearance::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-    static QPointer<QDialog> dlg = 0;
-    if (!dlg)
-        dlg = new Gui::Dialog::DlgDisplayPropertiesImp(true, getMainWindow());
-    dlg->setModal(false);
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->show();
-#else
     Gui::Control().showDialog(new Gui::Dialog::TaskDisplayProperties());
-#endif
 }
 
 bool StdCmdSetAppearance::isActive(void)
 {
-#if 0
-    return Gui::Selection().size() != 0;
-#else
     return (Gui::Control().activeDialog() == nullptr) &&
            (Gui::Selection().size() != 0);
-#endif
 }
 
 //===========================================================================
@@ -2039,96 +1997,6 @@ bool StdCmdToggleNavigation::isActive(void)
 }
 
 
-
-#if 0 // old Axis command
-// Command to show/hide axis cross
-class StdCmdAxisCross : public Gui::Command
-{
-private:
-    SoShapeScale* axisCross;
-    SoGroup* axisGroup;
-public:
-    StdCmdAxisCross() : Command("Std_AxisCross"), axisCross(0), axisGroup(0)
-    {
-        sGroup        = "Standard-View";
-        sMenuText     = QT_TR_NOOP("Toggle axis cross");
-        sToolTipText  = QT_TR_NOOP("Toggle axis cross");
-        sStatusTip    = QT_TR_NOOP("Toggle axis cross");
-        sWhatsThis    = "Std_AxisCross";
-        sPixmap       = "Std_AxisCross";
-    }
-    ~StdCmdAxisCross()
-    {
-        if (axisGroup)
-            axisGroup->unref();
-        if (axisCross)
-            axisCross->unref();
-    }
-    const char* className() const
-    { return "StdCmdAxisCross"; }
-
-    Action * createAction(void)
-    {
-        axisCross = new Gui::SoShapeScale;
-        axisCross->ref();
-        Gui::SoAxisCrossKit* axisKit = new Gui::SoAxisCrossKit();
-        axisKit->set("xAxis.appearance.drawStyle", "lineWidth 2");
-        axisKit->set("yAxis.appearance.drawStyle", "lineWidth 2");
-        axisKit->set("zAxis.appearance.drawStyle", "lineWidth 2");
-        axisCross->setPart("shape", axisKit);
-        axisGroup = new SoSkipBoundingGroup;
-        axisGroup->ref();
-        axisGroup->addChild(axisCross);
-
-        Action *pcAction = Gui::Command::createAction();
-        pcAction->setCheckable(true);
-        return pcAction;
-    }
-
-protected:
-    void activated(int iMsg)
-    {
-        float scale = 1.0f;
-
-        Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>
-            (getMainWindow()->activeWindow());
-        if (view) {
-            SoNode* scene = view->getViewer()->getSceneGraph();
-            SoSeparator* sep = static_cast<SoSeparator*>(scene);
-            bool hasaxis = (sep->findChild(axisGroup) != -1);
-            if (iMsg > 0 && !hasaxis) {
-                axisCross->scaleFactor = scale;
-                sep->addChild(axisGroup);
-            }
-            else if (iMsg == 0 && hasaxis) {
-                sep->removeChild(axisGroup);
-            }
-        }
-    }
-
-    bool isActive(void)
-    {
-        Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
-        if (view) {
-            Gui::View3DInventorViewer* viewer = view->getViewer();
-            if (!viewer)
-                return false; // no active viewer
-            SoGroup* group = dynamic_cast<SoGroup*>(viewer->getSceneGraph());
-            if (!group)
-                return false; // empty scene graph
-            bool hasaxis = group->findChild(axisGroup) != -1;
-            if (_pcAction->isChecked() != hasaxis)
-                _pcAction->setChecked(hasaxis);
-            return true;
-        }
-        else {
-            if (_pcAction->isChecked())
-                _pcAction->setChecked(false);
-            return false;
-        }
-    }
-};
-#else
 //===========================================================================
 // Std_ViewExample1
 //===========================================================================
@@ -2175,7 +2043,6 @@ bool StdCmdAxisCross::isActive(void)
 
 }
 
-#endif
 
 //===========================================================================
 // Std_ViewExample1

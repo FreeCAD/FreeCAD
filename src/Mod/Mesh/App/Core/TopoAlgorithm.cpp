@@ -1380,30 +1380,6 @@ void MeshTopoAlgorithm::SplitNeighbourFacet(FacetIndex ulFacetPos, unsigned shor
   _rclMesh._aclFacetArray.push_back(cNew);
 }
 
-#if 0
-  // create 3 new facets
-  MeshGeomFacet clFacet;
-
-  // facet [P1, Ei+1, P2]
-  clFacet._aclPoints[0] = cP1;
-  clFacet._aclPoints[1] = _rclMesh._aclPointArray[rFace._aulPoints[(iEdgeNo1+1)%3]];
-  clFacet._aclPoints[2] = cP2;
-  clFacet.CalcNormal();
-  _aclNewFacets.push_back(clFacet);
-  // facet [P2, Ei+2, Ei]
-  clFacet._aclPoints[0] = cP2;
-  clFacet._aclPoints[1] = _rclMesh._aclPointArray[rFace._aulPoints[(iEdgeNo1+2)%3]];
-  clFacet._aclPoints[2] = _rclMesh._aclPointArray[rFace._aulPoints[iEdgeNo1]];
-  clFacet.CalcNormal();
-  _aclNewFacets.push_back(clFacet);
-  // facet [P2, Ei, P1]
-  clFacet._aclPoints[0] = cP2;
-  clFacet._aclPoints[1] = _rclMesh._aclPointArray[rFace._aulPoints[iEdgeNo1]];
-  clFacet._aclPoints[2] = cP1;
-  clFacet.CalcNormal();
-  _aclNewFacets.push_back(clFacet);
-#endif
-
 bool MeshTopoAlgorithm::RemoveDegeneratedFacet(FacetIndex index)
 {
   if (index >= _rclMesh._aclFacetArray.size())

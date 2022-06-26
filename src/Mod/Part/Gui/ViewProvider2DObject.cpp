@@ -135,36 +135,6 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
     SoBaseColor *mycolor;
     SoVertexProperty *vts;
 
-   // carpet
- /* mycolor = new SoBaseColor;
-    mycolor->rgb.setValue(0.2f, 0.7f, 0.7f);
-    parent->addChild(mycolor);
-
-    vts = new SoVertexProperty;
-    vts->vertex.set1Value(0, -0.5*dx, -1.5*dy,  0.5*zGrid);
-    vts->vertex.set1Value(1, -0.5*dx, -1.5*dy, -0.5*zGrid);
-    vts->vertex.set1Value(2,  0.5*dx, -1.5*dy,  0.5*zGrid);
-    vts->vertex.set1Value(3,  0.5*dx, -1.5*dy, -0.5*zGrid);
-
-    SoQuadMesh *carpet = new SoQuadMesh;
-    carpet->verticesPerColumn = 2;
-    carpet->verticesPerRow = 2;
-    carpet->vertexProperty = vts;
-    parent->addChild(carpet);*/
-
-    // It seems that SoDepthBuffer will mess up with other object's
-    // pre-selection highlight. No idea why the setting can leak out of a
-    // separator.
-    //
-    // What's the purpose of using SoDepthBuffer here anyway? If the intention
-    // is to render grid always on top, shouldn't it be better to use
-    // SoAnnotation?
-#if 0
-    SoDepthBuffer *depth = new SoDepthBuffer;
-    depth->function = SoDepthBuffer::ALWAYS;
-    parent->addChild(depth);
-#endif
-
     // gridlines
     mycolor = new SoBaseColor;
     mycolor->rgb.setValue(0.7f, 0.7f ,0.7f);

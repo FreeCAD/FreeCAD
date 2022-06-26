@@ -389,36 +389,16 @@ void View3DInventorViewer::init()
     cam->nearDistance = 0;
     cam->farDistance = 10;
 
-    // dragger
-    //SoSeparator * dragSep = new SoSeparator();
-    //SoScale *scale = new SoScale();
-    //scale->scaleFactor = SbVec3f  (0.2,0.2,0.2);
-    //dragSep->addChild(scale);
-    //SoCenterballDragger *dragger = new SoCenterballDragger();
-    //dragger->center = SbVec3f  (0.8,0.8,0);
-    ////dragger->rotation = SbRotation(rrot[0],rrot[1],rrot[2],rrot[3]);
-    //dragSep->addChild(dragger);
-
     this->foregroundroot->addChild(cam);
     this->foregroundroot->addChild(lm);
     this->foregroundroot->addChild(bc);
-    //this->foregroundroot->addChild(dragSep);
 
-#if 0
-    // NOTE: For every mouse click event the SoSelection searches for the picked
-    // point which causes a certain slow-down because for all objects the primitives
-    // must be created. Using an SoSeparator avoids this drawback.
-    SoSelection* selectionRoot = new SoSelection();
-    selectionRoot->addSelectionCallback(View3DInventorViewer::selectCB, this);
-    selectionRoot->addDeselectionCallback(View3DInventorViewer::deselectCB, this);
-    selectionRoot->setPickFilterCallback(View3DInventorViewer::pickFilterCB, this);
-#else
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
     // must be created. Using an SoSeparator avoids this drawback.
     selectionRoot = new Gui::SoFCUnifiedSelection();
     selectionRoot->applySettings();
-#endif
+
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
 
@@ -502,10 +482,7 @@ void View3DInventorViewer::init()
     this->getSoRenderManager()->setGLRenderAction(new SoBoxSelectionRenderAction);
     this->getSoRenderManager()->getGLRenderAction()->setCacheContext(id);
 
-    // set the transparency and antialiasing settings
-//  getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
     getSoRenderManager()->getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
-//  getGLRenderAction()->setSmoothing(true);
 
     // Settings
     setSeekTime(0.4f);
@@ -2366,11 +2343,6 @@ void View3DInventorViewer::renderScene(void)
         this->getSoRenderManager()->scheduleRedraw();
     }
 
-#if 0 // this breaks highlighting of edges
-    glDisable(GL_LIGHTING);
-    glDisable(GL_DEPTH_TEST);
-#endif
-
     printDimension();
     navigation->redraw();
 
@@ -2388,11 +2360,6 @@ void View3DInventorViewer::renderScene(void)
 
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
-
-#if 0 // this breaks highlighting of edges
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
-#endif
 }
 
 void View3DInventorViewer::setSeekMode(SbBool on)
@@ -3282,12 +3249,7 @@ void View3DInventorViewer::drawAxisCross(void)
     SbVec2s view = this->getSoRenderManager()->getSize();
     const int pixelarea =
         int(float(this->axiscrossSize)/100.0f * std::min(view[0], view[1]));
-#if 0 // middle of canvas
-    SbVec2s origin(view[0]/2 - pixelarea/2, view[1]/2 - pixelarea/2);
-#endif // middle of canvas
-#if 1 // lower right of canvas
     SbVec2s origin(view[0] - pixelarea, 0);
-#endif // lower right of canvas
     glViewport(origin[0], origin[1], pixelarea, pixelarea);
 
     // Set up the projection matrix.
@@ -3298,7 +3260,6 @@ void View3DInventorViewer::drawAxisCross(void)
     const float FARVAL = 10.0f;
     const float dim = NEARVAL * float(tan(M_PI / 8.0)); // FOV is 45 deg (45/360 = 1/8)
     glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
-
 
     // Set up the model matrix.
     glMatrixMode(GL_MODELVIEW);
@@ -3319,7 +3280,6 @@ void View3DInventorViewer::drawAxisCross(void)
     mx[3][2] = -3.5; // Translate away from the projection point (along z axis).
     glLoadMatrixf((float*)mx);
 
-
     // Find unit vector end points.
     SbMatrix px;
     glGetFloatv(GL_PROJECTION_MATRIX, (float*)px);
@@ -3337,7 +3297,6 @@ void View3DInventorViewer::drawAxisCross(void)
     comb.multVecMatrix(SbVec3f(0,0,1), zpos);
     zpos[0] = (1 + zpos[0]) * view[0]/2;
     zpos[1] = (1 + zpos[1]) * view[1]/2;
-
 
     // Render the cross.
     {

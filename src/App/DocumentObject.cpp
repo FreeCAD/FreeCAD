@@ -386,43 +386,6 @@ const std::vector<App::DocumentObject*> &DocumentObject::getInList(void) const
 
 #endif // if USE_OLD_DAG
 
-
-#if 0
-
-void _getInListRecursive(std::set<DocumentObject*>& objSet,
-                         const DocumentObject* obj,
-                         const DocumentObject* checkObj, int depth)
-{
-    for (const auto objIt : obj->getInList()) {
-        // if the check object is in the recursive inList we have a cycle!
-        if (objIt == checkObj || depth <= 0) {
-            throw Base::BadGraphError("DocumentObject::getInListRecursive(): cyclic dependency detected!");
-        }
-
-        // if the element was already in the set then there is no need to process it again
-        auto pair = objSet.insert(objIt);
-        if (pair.second)
-            _getInListRecursive(objSet, objIt, checkObj, depth-1);
-    }
-}
-
-std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
-{
-    // number of objects in document is a good estimate in result size
-    // int maxDepth = getDocument()->countObjects() +2;
-    int maxDepth = GetApplication().checkLinkDepth(0);
-    std::vector<App::DocumentObject*> result;
-    result.reserve(maxDepth);
-
-    // using a rcursie helper to collect all InLists
-    _getInListRecursive(result, this, this, maxDepth);
-
-    std::vector<App::DocumentObject*> array;
-    array.insert(array.begin(), result.begin(), result.end());
-    return array;
-}
-
-#else
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
 // object, there is another object linked by every other of the remaining
@@ -438,7 +401,6 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
     return res;
 }
 
-#endif
 
 // More efficient algorithm to find the recursive inList of an object,
 // including possible external parents.  One shortcoming of this algorithm is
@@ -641,24 +603,12 @@ bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
 
 bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const
 {
-#if 0
-    Document* doc = this->getDocument();
-    if (!doc)
-        throw Base::RuntimeError("DocumentObject::testIfLinkIsDAG: object is not in any document.");
-    std::vector<App::DocumentObject*> deplist = doc->getDependencyList(linksTo);
-    if( std::find(deplist.begin(),deplist.end(),this) != deplist.end() )
-        //found this in dependency list
-        return false;
-    else
-        return true;
-#else
     auto inLists = getInListEx(true);
     inLists.emplace(const_cast<DocumentObject*>(this));
     for(auto obj : linksTo)
         if(inLists.count(obj))
             return false;
     return true;
-#endif
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSubList &linksTo) const

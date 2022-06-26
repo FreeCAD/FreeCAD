@@ -366,11 +366,7 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
         return FLT_MAX; // must be inside bbox
 
     std::set<unsigned long> indices;
-#if 0 // a point in a neighbour grid can be nearer
-    std::vector<unsigned long> elements;
-    _pGrid->GetElements(point, elements);
-    indices.insert(elements.begin(), elements.end());
-#else
+
     unsigned long ulX, ulY, ulZ;
     _pGrid->Position(point, ulX, ulY, ulZ);
     unsigned long ulLevel = 0;
@@ -378,7 +374,6 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
         _pGrid->GetHull(ulX, ulY, ulZ, ulLevel++, indices);
     if (indices.size() == 0 || ulLevel==1)
         _pGrid->GetHull(ulX, ulY, ulZ, ulLevel, indices);
-#endif
 
     float fMinDist=FLT_MAX;
     bool positive = true;
@@ -784,61 +779,6 @@ App::DocumentObjectExecReturn* Feature::execute(void)
             inspectNominal.push_back(nominal);
     }
 
-#if 0
-#if 1 // test with some huge data sets
-    std::vector<unsigned long> index(actual->countPoints());
-    std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
-    DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
-    QFuture<float> future = QtConcurrent::mapped
-        (index, boost::bind(&DistanceInspection::mapped, &check, bp::_1));
-    //future.waitForFinished(); // blocks the GUI
-    Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
-    QFutureWatcher<float> watcher;
-    QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-                     &progress, SLOT(progressValueChanged(int)));
-
-    // keep it responsive during computation
-    QEventLoop loop;
-    QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
-    watcher.setFuture(future);
-    loop.exec();
-
-    std::vector<float> vals;
-    vals.insert(vals.end(), future.begin(), future.end());
-#else
-    DistanceInspection insp(this->SearchRadius.getValue(), actual, inspectNominal);
-    unsigned long count = actual->countPoints();
-    std::stringstream str;
-    str << "Inspecting " << this->Label.getValue() << "...";
-    Base::SequencerLauncher seq(str.str().c_str(), count);
-
-    std::vector<float> vals(count);
-    for (unsigned long index = 0; index < count; index++) {
-        float fMinDist = insp.mapped(index);
-        vals[index] = fMinDist;
-        seq.next();
-    }
-#endif
-
-    Distances.setValues(vals);
-
-    float fRMS = 0;
-    int countRMS = 0;
-    for (std::vector<float>::iterator it = vals.begin(); it != vals.end(); ++it) {
-        if (fabs(*it) < FLT_MAX) {
-            fRMS += (*it) * (*it);
-            countRMS++;
-        }
-    }
-
-    if (countRMS > 0) {
-        fRMS = fRMS / countRMS;
-        fRMS = sqrt(fRMS);
-    }
-
-    Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
-        this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), fRMS);
-#else
     unsigned long count = actual->countPoints();
     std::vector<float> vals(count);
     std::function<DistanceInspectionRMS(int)> fMap = [&](unsigned int index)
@@ -902,7 +842,6 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
         this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), res.getRMS());
     Distances.setValues(vals);
-#endif
 
     delete actual;
     for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it)

@@ -179,16 +179,6 @@ void NormalEstimation::perform(std::vector<Base::Vector3d>& normals)
     cloud->width = int (cloud->points.size ());
     cloud->height = 1;
 
-#if 0
-    // Build a passthrough filter to remove spurious NaNs
-    pcl::PointCloud<PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<PointXYZ>);
-    pcl::PassThrough<PointXYZ> pass;
-    pass.setInputCloud (cloud);
-    pass.setFilterFieldName ("z");
-    pass.setFilterLimits (0, 1.5);
-    pass.filter (*cloud_filtered);
-#endif
-
     // Estimate point normals
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
     pcl::search::KdTree<PointXYZ>::Ptr tree (new pcl::search::KdTree<PointXYZ> ());

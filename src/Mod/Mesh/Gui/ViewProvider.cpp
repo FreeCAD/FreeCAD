@@ -365,7 +365,6 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     else if (prop == &Lighting) {
         if (Lighting.getValue() == 0) {
             pShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
-            //pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
         }
         else {
             pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -502,35 +501,8 @@ void ViewProviderMesh::updateData(const App::Property* prop)
 
 QIcon ViewProviderMesh::getIcon() const
 {
-#if 1
     static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
     return icon;
-#else
-    static const char * const Mesh_Feature_xpm[] = {
-        "16 16 4 1",
-        ".	c None",
-        "#	c #000000",
-        "s	c #BEC2FC",
-        "g	c #00FF00",
-        ".......##.......",
-        "....#######.....",
-        "..##ggg#ggg#....",
-        "##ggggg#gggg##..",
-        "#g#ggg#gggggg##.",
-        "#gg#gg#gggg###s.",
-        "#gg#gg#gg##gg#s.",
-        "#ggg#####ggg#ss.",
-        "#gggg##gggg#ss..",
-        ".#g##g#gggg#s...",
-        ".##ggg#ggg#ss...",
-        ".##gggg#g#ss....",
-        "..s#####g#s.....",
-        "....sss##ss.....",
-        "........ss......",
-        "................"};
-    QPixmap px(Mesh_Feature_xpm);
-    return px;
-#endif
 }
 
 App::PropertyColorList* ViewProviderMesh::getColorProperty() const
@@ -1374,40 +1346,6 @@ private:
 std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewportRegion& vp,
                                                               SoCamera* camera) const
 {
-#if 0
-    Q_UNUSED(vp)
-
-    SbVec3f pos = camera->position.getValue();
-
-    const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
-    const Mesh::MeshObject& mesh = meshProp.getValue();
-
-    const MeshCore::MeshKernel& kernel = mesh.getKernel();
-    MeshCore::MeshFacetGrid grid(kernel);
-
-    std::vector<Base::Vector3f> points;
-    points.reserve(kernel.CountFacets());
-    for (unsigned long i = 0; i < kernel.CountFacets(); i++) {
-        points.push_back(kernel.GetFacet(i).GetGravityPoint());
-    }
-
-    Vertex v(kernel, grid, Base::convertTo<Base::Vector3f>(pos));
-    QFuture<bool> future = QtConcurrent::mapped
-        (points, std::bind(&Vertex::visible, &v, bp::_1));
-    QFutureWatcher<bool> watcher;
-    watcher.setFuture(future);
-    watcher.waitForFinished();
-
-    unsigned long index = 0;
-    std::vector<unsigned long> faces;
-    for (QFuture<bool>::const_iterator i = future.begin(); i != future.end(); ++i, index++) {
-        if ((*i)) {
-            faces.push_back(index);
-        }
-    }
-
-    return faces;
-#else
     const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
     const Mesh::MeshObject& mesh = meshProp.getValue();
     uint32_t count = (uint32_t)mesh.countFacets();
@@ -1429,13 +1367,8 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
 
     mat->diffuseColor.finishEditing();
 
-    // backface culling
-    //SoShapeHints* hints = new SoShapeHints;
-    //hints->shapeType = SoShapeHints::SOLID;
-    //hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     SoMaterialBinding* bind = new SoMaterialBinding();
     bind->value = SoMaterialBinding::PER_FACE;
-    //root->addChild(hints);
     root->addChild(mat);
     root->addChild(bind);
     root->addChild(this->getCoordNode());
@@ -1465,12 +1398,10 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
             }
         }
     }
-
     std::sort(faces.begin(), faces.end());
     faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
 
     return faces;
-#endif
 }
 
 void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked, 

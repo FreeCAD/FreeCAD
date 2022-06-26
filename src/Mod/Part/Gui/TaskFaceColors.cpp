@@ -186,10 +186,6 @@ public:
                     Base::Vector3d pt2d;
                     pt2d = proj(Base::Vector3d(p.X(), p.Y(), p.Z()));
                     if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
-#if 0
-                        // TODO
-                        if (isVisibleFace(k - 1, SbVec2f(pt2d.x, pt2d.y), viewer))
-#endif
                         {
                             std::stringstream str;
                             str << "Face" << k;
@@ -199,19 +195,6 @@ public:
                     }
                     xp_vertex.Next();
                 }
-
-                //GProp_GProps props;
-                //BRepGProp::SurfaceProperties(face, props);
-                //gp_Pnt c = props.CentreOfMass();
-                //Base::Vector3d pt2d;
-                //pt2d = proj(Base::Vector3d(c.X(), c.Y(), c.Z()));
-                //if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
-                //    if (isVisibleFace(k-1, SbVec2f(pt2d.x, pt2d.y), viewer)) {
-                //        std::stringstream str;
-                //        str << "Face" << k;
-                //        Gui::Selection().addSelection(appdoc->getName(), obj->getNameInDocument(), str.str().c_str());
-                //    }
-                //}
             }
         }
         catch (...) {

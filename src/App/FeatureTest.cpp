@@ -195,15 +195,7 @@ doc.recompute()
         case 0: break;
         case 1: throw std::runtime_error("Test Exception");
         case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
-#if 0 // only allow these error types on purpose
-        case 3: *i=0;printf("%i",*i);break;                 // seg-fault
-        case 4: t = nullptr; break;                         // seg-fault
-        case 5: j=0; printf("%i",1/j); break;               // int division by zero
-        case 6: f=0.0; printf("%f",1/f); break;             // float division by zero
-        case 7: s = malloc(3600000000ul); free(s); break;   // out-of-memory
-#else
         default: (void)i; (void)j; (void)f; (void)s; (void)t; break;
-#endif
     }
 
     ExecCount.setValue(ExecCount.getValue() + 1);

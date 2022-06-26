@@ -511,55 +511,6 @@ std::list<std::string> Workbench::listCommandbars() const
     return bars;
 }
 
-// --------------------------------------------------------------------
-
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("CommandGroup", "File");
-    qApp->translate("CommandGroup", "Edit");
-    qApp->translate("CommandGroup", "Help");
-    qApp->translate("CommandGroup", "Link");
-    qApp->translate("CommandGroup", "Tools");
-    qApp->translate("CommandGroup", "View");
-    qApp->translate("CommandGroup", "Window");
-    qApp->translate("CommandGroup", "Standard");
-    qApp->translate("CommandGroup", "Macros");
-    qApp->translate("CommandGroup", "Macro");
-    qApp->translate("CommandGroup", "Structure");
-    qApp->translate("CommandGroup", "Standard-Test");
-    qApp->translate("CommandGroup", "Standard-View");
-    qApp->translate("CommandGroup", "TreeView");
-    qApp->translate("CommandGroup", "Measure");
-
-    qApp->translate("Workbench", "&File");
-    qApp->translate("Workbench", "&Edit");
-    qApp->translate("Workbench", "Standard views");
-    qApp->translate("Workbench", "Axonometric");
-    qApp->translate("Workbench", "&Stereo");
-    qApp->translate("Workbench", "&Zoom");
-    qApp->translate("Workbench", "Visibility");
-    qApp->translate("Workbench", "&View");
-    qApp->translate("Workbench", "&Tools");
-    qApp->translate("Workbench", "&Macro");
-    qApp->translate("Workbench", "&Windows");
-    qApp->translate("Workbench", "&On-line help");
-    qApp->translate("Workbench", "&Help");
-    qApp->translate("Workbench", "File");
-    qApp->translate("Workbench", "Macro");
-    qApp->translate("Workbench", "View");
-    qApp->translate("Workbench", "Special Ops");
-    // needed for Structure toolbar
-    qApp->translate("Workbench", "Link actions");
-#endif
-
-#if 0 // needed for the application menu on OSX
-    qApp->translate("MAC_APPLICATION_MENU", "Services");
-    qApp->translate("MAC_APPLICATION_MENU", "Hide %1");
-    qApp->translate("MAC_APPLICATION_MENU", "Hide Others");
-    qApp->translate("MAC_APPLICATION_MENU", "Show All");
-    qApp->translate("MAC_APPLICATION_MENU", "Preferences...");
-    qApp->translate("MAC_APPLICATION_MENU", "Quit %1");
-    qApp->translate("MAC_APPLICATION_MENU", "About %1");
-#endif
 
 TYPESYSTEM_SOURCE(Gui::StdWorkbench, Gui::Workbench)
 

@@ -1353,11 +1353,7 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
     // restart from the beginning
     buf->pubseekoff(0, std::ios::beg, std::ios::in);
 
-#if 0
-    MeshBuilder builder(this->_rclMesh);
-#else
     MeshFastBuilder builder(this->_rclMesh);
-#endif
     builder.Initialize(ulFacetCt);
 
     ulVertexCt = 0;
@@ -1421,11 +1417,7 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
     if (ulCt > ulFac)
         return false;// not a valid STL file
 
-#if 0
-    MeshBuilder builder(this->_rclMesh);
-#else
     MeshFastBuilder builder(this->_rclMesh);
-#endif
     builder.Initialize(ulCt);
 
     for (uint32_t i = 0; i < ulCt; i++) {
@@ -1438,9 +1430,7 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
         // overread 2 bytes attribute
         rstrIn.read((char*)&usAtt, sizeof(usAtt));
     }
-
     builder.Finish();
-
     return true;
 }
 
@@ -3462,16 +3452,6 @@ bool MeshOutput::SaveX3DOM (std::ostream &out) const
     onclick("Left");
     onclick("Top");
     onclick("Bottom");
-
-#if 0 // https://stackoverflow.com/questions/32305678/x3dom-how-to-make-zoom-buttons
-    function zoom (delta) {
-        var x3d = document.getElementById("right");
-        var vpt = x3d.getElementsByTagName("Viewpoint")[0];
-        vpt.fieldOfView = parseFloat(vpt.fieldOfView) + delta;
-    }
-
-    <button onclick="zoom(0.15);">Zoom out</button>
-#endif
 
     SaveX3DContent(out, true);
 
