@@ -81,13 +81,13 @@ public:
     virtual ~QGVPage();
 
     /// Observer message from the ParameterGrp
-    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
+    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
 
 
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter *p, const QRectF &rect) override;
 
-    QGSPage* getScene() {return m_scene; };
+    QGSPage* getScene() {return m_scene; }
 
     void startBalloonPlacing(void);
     void cancelBalloonPlacing(void);
@@ -104,15 +104,15 @@ public:
     void showGrid(bool state) {m_showGrid = state;}
     void updateViewport(void) {viewport()->repaint();}
 
-    bool isBalloonPlacing() {return balloonPlacing; };
-    void setBalloonPlacing(bool s) {balloonPlacing = s;};
+    bool isBalloonPlacing() {return balloonPlacing; }
+    void setBalloonPlacing(bool s) {balloonPlacing = s;}
 
-    QLabel* getBalloonCursor() {return balloonCursor;};
-    void setBalloonCursor(QLabel* l) {balloonCursor = l;};
+    QLabel* getBalloonCursor() {return balloonCursor;}
+    void setBalloonCursor(QLabel* l) {balloonCursor = l;}
 
     void kbPanScroll(int xMove = 1, int yMove = 1);
-    QPointF getBalloonCursorPos() {return balloonCursorPos;};
-    void setBalloonCursorPos(QPoint p) { balloonCursorPos = p;};
+    QPointF getBalloonCursorPos() {return balloonCursorPos;}
+    void setBalloonCursorPos(QPoint p) { balloonCursorPos = p;}
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -128,7 +128,7 @@ protected:
     void focusOutEvent(QFocusEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
-    virtual void contextMenuEvent(QContextMenuEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
     static QColor SelectColor;
     static QColor PreselectColor;
@@ -139,7 +139,7 @@ protected:
 
     void activateCursor(QCursor cursor);
     void resetCursor();
-    virtual void drawForeground(QPainter *painter, const QRectF &rect) override;
+    void drawForeground(QPainter *painter, const QRectF &rect) override;
     
     std::string getNavStyleParameter();
     Base::Type getStyleType(std::string model);
