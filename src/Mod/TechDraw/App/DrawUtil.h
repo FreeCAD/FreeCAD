@@ -79,6 +79,9 @@ class TechDrawExport DrawUtil {
                                                                         double xRange,
                                                                         double yRange) ;
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
+
+        static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn);
+
         static std::string formatVector(const Base::Vector3d& v);
         static std::string formatVector(const gp_Dir& v);
         static std::string formatVector(const gp_Dir2d& v);
