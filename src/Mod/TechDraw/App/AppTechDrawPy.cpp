@@ -60,7 +60,7 @@
 #include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/OCCError.h>
 
-#include <Mod/Import/App/ImpExpDxf.h>
+#include <Mod/Import/App/dxf/ImpExpDxf.h>
 
 #include "DrawProjectSplit.h"
 #include "DrawViewPart.h"
