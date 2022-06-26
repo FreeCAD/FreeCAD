@@ -80,13 +80,14 @@ def Startup():
 
         # If camotics is installed and current enough, import the GUI
         try:
+            import camotics
             r = subprocess.run(
                 ["camotics", "--version"], capture_output=True, text=True
             ).stderr.strip()
             major, minor, patch = r.split(".")
             if int(major) >= 1 and int(minor) >= 2 and int(patch) >= 2:
                 from PathScripts import PathCamoticsGui
-        except FileNotFoundError:
+        except (FileNotFoundError, ModuleNotFoundError):
             pass
 
         Processed = True
