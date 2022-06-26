@@ -6,8 +6,6 @@
 #ifndef _dxf_h_
 #define _dxf_h_
 
-#pragma once
-
 #include <algorithm>
 #include <list>
 #include <vector>
