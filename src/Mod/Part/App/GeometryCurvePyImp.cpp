@@ -556,6 +556,74 @@ PyObject* GeometryCurvePy::normal(PyObject *args)
     return nullptr;
 }
 
+PyObject* GeometryCurvePy::projectPoint(PyObject *args, PyObject* kwds)
+{
+    PyObject* v;
+    const char* meth = "NearestPoint";
+    static char *kwlist[] = {"Point", "Method", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist,
+        &Base::VectorPy::Type, &v, &meth))
+        return nullptr;
+
+    try {
+        Base::Vector3d vec = Py::Vector(v, false).toVector();
+        gp_Pnt pnt(vec.x, vec.y, vec.z);
+        std::string method = meth;
+
+        Handle(Geom_Geometry) geom = getGeometryPtr()->handle();
+        Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(geom);
+
+        GeomAPI_ProjectPointOnCurve proj(pnt, curve);
+        if (method == "NearestPoint") {
+            pnt = proj.NearestPoint();
+            vec.Set(pnt.X(), pnt.Y(), pnt.Z());
+            return new Base::VectorPy(vec);
+        }
+        else if (method == "LowerDistance") {
+            Py::Float dist(proj.LowerDistance());
+            return Py::new_reference_to(dist);
+        }
+        else if (method == "LowerDistanceParameter") {
+            Py::Float par(proj.LowerDistanceParameter());
+            return Py::new_reference_to(par);
+        }
+        else if (method == "Distance") {
+            Standard_Integer num = proj.NbPoints();
+            Py::List list;
+            for (Standard_Integer i=1; i <= num; i++) {
+                list.append(Py::Float(proj.Distance(i)));
+            }
+            return Py::new_reference_to(list);
+        }
+        else if (method == "Parameter") {
+            Standard_Integer num = proj.NbPoints();
+            Py::List list;
+            for (Standard_Integer i=1; i <= num; i++) {
+                list.append(Py::Float(proj.Parameter(i)));
+            }
+            return Py::new_reference_to(list);
+        }
+        else if (method == "Point") {
+            Standard_Integer num = proj.NbPoints();
+            Py::List list;
+            for (Standard_Integer i=1; i <= num; i++) {
+                gp_Pnt pnt = proj.Point(i);
+                Base::Vector3d vec(pnt.X(), pnt.Y(), pnt.Z());
+                list.append(Py::Vector(vec));
+            }
+            return Py::new_reference_to(list);
+        }
+        else {
+            PyErr_SetString(PartExceptionOCCError, "Unsupported method");
+            return nullptr;
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+}
+
 PyObject* GeometryCurvePy::curvature(PyObject *args)
 {
     Handle(Geom_Geometry) g = getGeometryPtr()->handle();

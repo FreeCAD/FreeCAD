@@ -131,6 +131,21 @@ of the nearest orthogonal projection of the point.</UserDocu>
 			  <UserDocu>Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 		</Methode>
+		<Methode Name="projectPoint" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>
+Computes the projection of a point on the curve
+
+projectPoint(Point=Vector,[Method=\"NearestPoint\"])
+projectPoint(Vector,\"NearestPoint\") -> Vector
+projectPoint(Vector,\"LowerDistance\") -> float
+projectPoint(Vector,\"LowerDistanceParameter\") -> float
+projectPoint(Vector,\"Distance\") -> list of floats
+projectPoint(Vector,\"Parameter\") -> list of floats
+projectPoint(Vector,\"Point\") -> list of points
+</UserDocu>
+            </Documentation>
+        </Methode>
 	  <Methode Name="curvature" Const="true">
 		  <Documentation>
 			  <UserDocu>Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined</UserDocu>
