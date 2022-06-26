@@ -113,7 +113,7 @@ private:
 
             reader->read(EncodedName);
 
-            App::Document* pcDoc = App::GetApplication().newDocument("Unnamed");
+            App::Document* pcDoc = App::GetApplication().newDocument();
 
             Points::Feature* pcFeature = nullptr;
             if (reader->hasProperties()) {

@@ -175,7 +175,7 @@ private:
         PyMem_Free(Name);
 
         // create new document and add Import feature
-        App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+        App::Document *pcDoc = App::GetApplication().newDocument();
 
         Mesh::Importer import(pcDoc);
         import.load(EncodedName);
