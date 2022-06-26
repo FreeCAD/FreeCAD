@@ -612,6 +612,20 @@ private:
             s = mkTrf.Shape();
             writer.exportShape(s);
         }
+        //add the cosmetic edges also
+        std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
+        std::vector<TopoDS_Edge> cosmeticEdges;
+        for (auto& g: geoms) {
+            if (g->hlrVisible && g->cosmetic) {
+                cosmeticEdges.push_back(g->occEdge);
+            }
+        }
+        if (!cosmeticEdges.empty()) {
+            s = TechDraw::mirrorShape(DrawUtil::vectorToCompound(cosmeticEdges));
+            mkTrf.Perform(s);
+            s = mkTrf.Shape();
+            writer.exportShape(s);
+        }
     }
 
     Py::Object writeDXFView(const Py::Tuple& args)

@@ -801,6 +801,17 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
     return result;
 } 
 
+//construct a compound shape from a list of edges
+TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
+{
+    BRep_Builder builder;
+    TopoDS_Compound compOut;
+    builder.MakeCompound(compOut);
+    for (auto& v : vecIn) {
+        builder.Add(compOut, v);
+    }
+    return compOut;
+}
 //get 3d position of a face's center
 Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
 {
