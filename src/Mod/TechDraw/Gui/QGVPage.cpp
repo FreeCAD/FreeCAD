@@ -137,6 +137,49 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
+class QGVPage::Private : public ParameterGrp::ObserverType {
+public:
+    /// handle to the viewer parameter group
+    ParameterGrp::handle hGrp;
+    QGVPage* page;
+    Private(QGVPage* page) : page(page) {
+        // attach parameter Observer
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Attach(this);
+    }
+    void init() {
+        page->m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
+        page->m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
+        page->m_zoomIncrement = hGrp->GetFloat("ZoomStep",0.02);
+
+        auto hTDPref = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+        page->m_reversePan = hTDPref->GetInt("KbPan",1);
+        page->m_reverseScroll = hTDPref->GetInt("KbScroll",1);
+    }
+    /// Observer message from the ParameterGrp
+    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override {
+        const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+        if (strcmp(Reason,"NavigationStyle") == 0) {
+            std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
+            page->setNavigationStyle(model);
+        } else if (strcmp(Reason,"InvertZoom") == 0) {
+            page->m_invertZoom = rGrp.GetBool("InvertZoom", true);
+        } else if (strcmp(Reason,"ZoomStep") == 0) {
+            page->m_zoomIncrement = rGrp.GetFloat("ZoomStep", 0.0f);
+        } else if (strcmp(Reason,"ZoomAtCursor") == 0) {
+            page->m_atCursor = rGrp.GetBool("ZoomAtCursor", true);
+            if (page->m_atCursor) {
+                page->setResizeAnchor(QGVPage::AnchorUnderMouse);
+                page->setTransformationAnchor(QGVPage::AnchorUnderMouse);
+            } else {
+                page->setResizeAnchor(QGVPage::AnchorViewCenter);
+                page->setTransformationAnchor(QGVPage::AnchorViewCenter);
+            }
+        }
+    }
+};
+
 QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     : QGraphicsView(parent),
       m_renderer(Native),
@@ -146,7 +189,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
       balloonPlacing(false),
       panningActive(false),
       m_showGrid(false),
-      m_navStyle(nullptr)
+      m_navStyle(nullptr),
+      d(new Private(this))
 {
     assert(vp);
     m_vpPage = vp;
@@ -165,17 +209,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
                                                           //somewhere???? QTBUG-18021????
     setCacheMode(QGraphicsView::CacheBackground);
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-    m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
-    m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
-    m_zoomIncrement = hGrp->GetFloat("ZoomStep",0.02);
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    m_reversePan = hGrp->GetInt("KbPan",1);
-    m_reverseScroll = hGrp->GetInt("KbScroll",1);
-
-
+    d->init();
     if (m_atCursor) {
         setResizeAnchor(AnchorUnderMouse);
         setTransformationAnchor(AnchorUnderMouse);
@@ -196,10 +230,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     balloonCursor->hide();
 
     resetCachedContent();
-
-    // attach parameter Observer
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrp->Attach(this);
 
     initNavigationStyle();
 }
@@ -259,28 +289,6 @@ void QGVPage::setNavigationStyle(std::string navParm)
     }
 
     m_navStyle->setViewer(this);
-}
-
-void QGVPage::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
-{
-    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    if (strcmp(Reason,"NavigationStyle") == 0) {
-        std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
-        setNavigationStyle(model);
-    } else if (strcmp(Reason,"InvertZoom") == 0) {
-        m_invertZoom = rGrp.GetBool("InvertZoom", true);
-    } else if (strcmp(Reason,"ZoomStep") == 0) {
-        m_zoomIncrement = rGrp.GetFloat("ZoomStep", 0.0f);
-    } else if (strcmp(Reason,"ZoomAtCursor") == 0) {
-        m_atCursor = rGrp.GetBool("ZoomAtCursor", true);
-        if (m_atCursor) {
-            setResizeAnchor(AnchorUnderMouse);
-            setTransformationAnchor(AnchorUnderMouse);
-        } else {
-            setResizeAnchor(AnchorViewCenter);
-            setTransformationAnchor(AnchorViewCenter);
-        }
-    }
 }
 
 void QGVPage::startBalloonPlacing(void)

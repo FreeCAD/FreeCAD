@@ -23,6 +23,7 @@
 #ifndef TECHDRAWGUI_QGVIEW_H
 #define TECHDRAWGUI_QGVIEW_H
 
+#include <memory>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QGraphicsView>
@@ -30,7 +31,6 @@
 #include <QPainterPath>
 
 #include <Base/Type.h>
-#include <Base/Parameter.h>
 
 class QTemporaryFile;
 
@@ -70,7 +70,7 @@ class QGIRichAnno;
 class QGITile;
 class QGVNavStyle;
 
-class TechDrawGuiExport QGVPage : public QGraphicsView, public ParameterGrp::ObserverType
+class TechDrawGuiExport QGVPage : public QGraphicsView
 {
     Q_OBJECT
 
@@ -79,10 +79,6 @@ public:
 
     QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent = nullptr);
     virtual ~QGVPage();
-
-    /// Observer message from the ParameterGrp
-    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
-
 
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter *p, const QRectF &rect) override;
@@ -175,9 +171,8 @@ private:
 
     QGVNavStyle* m_navStyle;
 
-    /// handle to the viewer parameter group
-    ParameterGrp::handle hGrp;
-
+    class Private;
+    std::unique_ptr<Private> d;
 };
 
 } // namespace 
