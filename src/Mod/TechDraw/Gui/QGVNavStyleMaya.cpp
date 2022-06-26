@@ -34,14 +34,8 @@ using namespace TechDrawGui;
 
 namespace TechDrawGui {
 
-//******
-// Issue: on linux mint, ALT + mouse button doesn't get to the application.
-//        system eats the event for menus, accessibility magnifier, etc.
-//        only wheel zoom is known to work.
-//        need to test in different environment.
-//******
-
-QGVNavStyleMaya::QGVNavStyleMaya()
+QGVNavStyleMaya::QGVNavStyleMaya(QGVPage *qgvp) :
+    QGVNavStyle(qgvp)
 {
 }
 
@@ -65,19 +59,7 @@ void QGVNavStyleMaya::handleKeyReleaseEvent(QKeyEvent *event)
 }
 void QGVNavStyleMaya::handleMousePressEvent(QMouseEvent *event)
 {
-    //pan mode alt + MMB + mouse movement
-    if ((event->button() == Qt::MiddleButton) && 
-        (QApplication::keyboardModifiers() == Qt::AltModifier)) {
-        startPan(event->pos());
-        event->accept();
-    }
-
-    //zoom mode 2 ALT + RMB
-    if ((event->button() == Qt::RightButton) &&
-        (QApplication::keyboardModifiers() == Qt::AltModifier)) {
-        startZoom(event->pos());
-        event->accept();
-    }
+    Q_UNUSED(event)
 }
 
 void QGVNavStyleMaya::handleMouseMoveEvent(QMouseEvent *event)
@@ -86,13 +68,25 @@ void QGVNavStyleMaya::handleMouseMoveEvent(QMouseEvent *event)
         getViewer()->setBalloonCursorPos(event->pos());
     }
 
-    if (panningActive) {
-        pan(event->pos());
+    //pan mode alt + MMB + mouse movement
+    if (QGuiApplication::mouseButtons() & Qt::MiddleButton &&
+        QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
+        if (panningActive) {
+            pan(event->pos());
+        } else {
+            startPan(event->pos());
+        }
         event->accept();
     }
 
-    if (zoomingActive) {
-        zoom(mouseZoomFactor(event->pos()));
+    //zoom mode 2 ALT + RMB
+    if (QGuiApplication::mouseButtons() & Qt::RightButton &&
+        QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
+        if (zoomingActive) {
+            zoom(mouseZoomFactor(event->pos()));
+        } else {
+            startZoom(event->pos());
+        }
         event->accept();
     }
 }
@@ -120,4 +114,16 @@ void QGVNavStyleMaya::handleMouseReleaseEvent(QMouseEvent *event)
     }
 }
 
+bool QGVNavStyleMaya::allowContextMenu(QContextMenuEvent *event)
+{
+//    Base::Console().Message("QGVNSM::allowContextMenu()\n");
+    if (event->reason() == QContextMenuEvent::Mouse) {
+        //must check for a button combination involving context menu button
+        if (QApplication::keyboardModifiers() == Qt::AltModifier) {
+            //Alt is down, so this is Alt + RMB - don't allow context menu
+            return false;
+        }
+    }
+    return true;
+}
 }  // namespace TechDrawGui

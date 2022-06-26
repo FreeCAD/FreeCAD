@@ -35,7 +35,7 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleInventor : public QGVNavStyle
 {
 public:
-    QGVNavStyleInventor();
+    QGVNavStyleInventor(QGVPage* qgvp);
     virtual ~QGVNavStyleInventor();
 
     virtual void handleMousePressEvent(QMouseEvent *event) override;

@@ -37,7 +37,7 @@ class TechDrawGuiExport QGVNavStyleTinkerCAD : public QGVNavStyle
 //    TYPESYSTEM_HEADER();
 
 public:
-    QGVNavStyleTinkerCAD();
+    QGVNavStyleTinkerCAD(QGVPage* qgvp);
     virtual ~QGVNavStyleTinkerCAD();
 
     virtual void handleMouseMoveEvent(QMouseEvent *event) override;

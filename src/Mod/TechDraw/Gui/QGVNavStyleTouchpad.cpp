@@ -34,7 +34,8 @@ using namespace TechDrawGui;
 
 namespace TechDrawGui {
 
-QGVNavStyleTouchpad::QGVNavStyleTouchpad()
+QGVNavStyleTouchpad::QGVNavStyleTouchpad(QGVPage *qgvp) :
+    QGVNavStyle(qgvp)
 {
 }
 
@@ -64,14 +65,18 @@ void QGVNavStyleTouchpad::handleKeyReleaseEvent(QKeyEvent *event)
 {
 //    Q_UNUSED(event)
     if (event->key() == Qt::Key_Shift) {
-        if (panningActive == true) {
+        if (panningActive) {
             stopPan();
         }
-        zoomingActive = false;
+        if (zoomingActive) {
+            stopZoom();
+        }
+        event->accept();
     }
 
     if (event->key() == Qt::Key_Control) {
-        zoomingActive = false;
+        stopZoom();
+        event->accept();
     }
 
 }
@@ -84,35 +89,23 @@ void QGVNavStyleTouchpad::handleMouseMoveEvent(QMouseEvent *event)
 
     if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
         //if shift is down then we are panning
-        if (!panningActive) {
+        if (panningActive) {
+            pan(event->pos());
+        } else {
             startPan(event->pos());
         }
-        zoomingActive = false;
-    } else if (QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::ShiftModifier)) {
-        // if control and shift are down then we are zooming
-        if (panningActive == true) {
-            stopPan();
-        }
-        if (!zoomingActive) {
-            startZoom(event->pos());
-            event->accept();
-            return;     //don't zoom on first movement
-        }
-    } else {
-        if (panningActive == true) {
-            stopPan();
-        }
-        zoomingActive = false;
-    }
-
-    if (panningActive) {
-        pan(event->pos());
         event->accept();
     }
 
-    if (zoomingActive) {
-//        setAnchor();
-        zoom(mouseZoomFactor(event->pos()));
+    if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier) &&
+        QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) ) {
+        //if control and shift are down, then we are zooming
+        if (zoomingActive) {
+            setAnchor();
+            zoom(mouseZoomFactor(event->pos()));
+        } else {
+            startZoom(event->pos());
+        }
         event->accept();
     }
 }
@@ -125,6 +118,5 @@ void QGVNavStyleTouchpad::setAnchor()
         m_viewer->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     }
 }
-
 
 }  //namespace TechDrawGui

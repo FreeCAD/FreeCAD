@@ -34,7 +34,8 @@ using namespace TechDrawGui;
 
 namespace TechDrawGui {
 
-QGVNavStyleOCC::QGVNavStyleOCC()
+QGVNavStyleOCC::QGVNavStyleOCC(QGVPage *qgvp) :
+    QGVNavStyle(qgvp)
 {
 }
 
@@ -46,25 +47,20 @@ void QGVNavStyleOCC::handleKeyReleaseEvent(QKeyEvent *event)
 {
     //zoom mode 2
     if ( (event->key() == Qt::Key_Control) && zoomingActive) {
-        zoomingActive = false;
-        event->accept();
-    }
-}
-void QGVNavStyleOCC::handleMousePressEvent(QMouseEvent *event)
-{
-    //pan mode MMB + mouse movement
-    //also Control + MMB + mouse movement, but this is redundant for our purposes
-    if (event->button() == Qt::MiddleButton) {
-        startPan(event->pos());
+        stopZoom();
         event->accept();
     }
 
-    //zoom mode 2 Control + LMB
-    if ((event->button() == Qt::LeftButton) &&
-        (QApplication::keyboardModifiers() == Qt::ControlModifier)) {
-        startZoom(event->pos());
+    //pan mode
+    if ( (event->key() == Qt::Key_Control) && panningActive) {
+        stopPan();
         event->accept();
     }
+}
+
+void QGVNavStyleOCC::handleMousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
 }
 
 void QGVNavStyleOCC::handleMouseMoveEvent(QMouseEvent *event)
@@ -73,13 +69,36 @@ void QGVNavStyleOCC::handleMouseMoveEvent(QMouseEvent *event)
         getViewer()->setBalloonCursorPos(event->pos());
     }
 
-    if (panningActive) {
-        pan(event->pos());
+    //pan mode 1 - MMB + mouse movement
+    if (QGuiApplication::mouseButtons() & Qt::MiddleButton) {
+        if (panningActive) {
+            pan(event->pos());
+        } else {
+            startPan(event->pos());
+        }
         event->accept();
     }
 
-    if (zoomingActive) {
-        zoom(mouseZoomFactor(event->pos()));
+    //pan mode 2 - CNTL + MMB + mouse movement
+    if (QGuiApplication::mouseButtons() & Qt::MiddleButton &&
+        QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier) ) {
+        if (panningActive) {
+            pan(event->pos());
+        } else {
+            startPan(event->pos());
+        }
+        event->accept();
+    }
+
+    //zoom mode 2 Control + LMB
+    if ((QGuiApplication::mouseButtons() & Qt::LeftButton) &&
+         QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier) ) {
+        if (zoomingActive) {
+            zoom(mouseZoomFactor(event->pos()));
+        } else {
+            startZoom(event->pos());
+        }
+        event->accept();
     }
 }
 
@@ -100,10 +119,24 @@ void QGVNavStyleOCC::handleMouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         //zoom mode 2 Control + LMB
         if (zoomingActive) {
-            zoomingActive = false;
+            stopZoom();
             event->accept();
         }
     }
 }
+
+bool QGVNavStyleOCC::allowContextMenu(QContextMenuEvent *event)
+{
+//    Base::Console().Message("QGVNSOCC::allowContextMenu()\n");
+    if (event->reason() == QContextMenuEvent::Mouse) {
+        //must check for a button combination involving context menu button
+        if (QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier) ) {
+            //CNTL is down, so this is CNTL + RMB - don't allow context menu
+            return false;
+        }
+    }
+    return true;
+}
+
 
 }  // namespace TechDrawGui

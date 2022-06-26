@@ -34,7 +34,8 @@ using namespace TechDrawGui;
 
 namespace TechDrawGui {
 
-QGVNavStyleBlender::QGVNavStyleBlender()
+QGVNavStyleBlender::QGVNavStyleBlender(QGVPage* qgvp) :
+    QGVNavStyle(qgvp)
 {
 }
 
@@ -52,39 +53,51 @@ void QGVNavStyleBlender::handleKeyReleaseEvent(QKeyEvent *event)
 
 void QGVNavStyleBlender::handleMousePressEvent(QMouseEvent *event)
 {
-    if (event->buttons() == (Qt::LeftButton | Qt::RightButton)) {
-        //pan mode 1 - LMB + RMB + mouse move
-        startPan(event->pos());
-        event->accept();
-    } else if ((event->button() == Qt::MiddleButton) &&
-                QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier)) {
-        //pan mode 2 - Shift + MMB
-        startPan(event->pos());
-        event->accept();
-    }
+    Q_UNUSED(event)
+//    Base::Console().Message("QGVNSBlender::handleMousePressEvent() - button: %d buttons: %d\n", event->button(), event->buttons());
 }
 
 void QGVNavStyleBlender::handleMouseMoveEvent(QMouseEvent *event)
 {
+//    Base::Console().Message("QGVNSBlender::handleMouseMoveEvent() - buttons: %d modifiers: %X\n",
+//                            QGuiApplication::mouseButtons() & Qt::MiddleButton,
+//                            QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier));
+
     if (getViewer()->isBalloonPlacing()) {
         getViewer()->setBalloonCursorPos(event->pos());
     }
 
-    if (panningActive) {
-        pan(event->pos());
+    if ((QGuiApplication::mouseButtons() & Qt::LeftButton) &&
+        (QGuiApplication::mouseButtons() & Qt::RightButton)) {
+        //pan mode 1 - LMB + RMB
+        if (panningActive) {
+            pan(event->pos());
+        } else {
+            startPan(event->pos());
+        }
+        event->accept();
+    } else if ((QGuiApplication::mouseButtons() & Qt::MiddleButton) &&
+               (QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier)) ) {
+        //pan mode 2 - Shift + MMB
+        if (panningActive) {
+            pan(event->pos());
+        } else {
+            startPan(event->pos());
+        }
         event->accept();
     }
 }
 
 void QGVNavStyleBlender::handleMouseReleaseEvent(QMouseEvent *event)
 {
+//    Base::Console().Message("QGVNSBlender::handleMouseReleaseEvent() - button: %d buttons: %d\n", event->button(), event->buttons());
     if (getViewer()->isBalloonPlacing()) {
         placeBalloon(event->pos());
     }
 
     if (panningActive) {
         //pan mode 1 - LMB + RMB + mouse move
-        //stop panning if either button release
+        //stop panning if either button released
         if ( (event->button() == Qt::LeftButton) ||
              (event->button() == Qt::RightButton)) {
             stopPan();
@@ -98,4 +111,18 @@ void QGVNavStyleBlender::handleMouseReleaseEvent(QMouseEvent *event)
         }
     }
 }
+
+bool QGVNavStyleBlender::allowContextMenu(QContextMenuEvent *event)
+{
+//    Base::Console().Message("QGVNSBlender::allowContextMenu()\n");
+    if (event->reason() == QContextMenuEvent::Mouse) {
+        //must check for a button combination involving context menu button
+        if (QGuiApplication::mouseButtons() & Qt::LeftButton) {
+            //LeftButton is down, so this is LMB + RMB - don't allow context menu
+            return false;
+        }
+    }
+    return true;
+}
+
 }  // namespace TechDrawGui

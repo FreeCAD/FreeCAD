@@ -35,15 +35,14 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleRevit : public QGVNavStyle
 {
 public:
-    QGVNavStyleRevit();
+    QGVNavStyleRevit(QGVPage* qgvp);
     virtual ~QGVNavStyleRevit();
 
     virtual void handleMousePressEvent(QMouseEvent *event) override;
     virtual void handleMouseMoveEvent(QMouseEvent *event) override;
     virtual void handleMouseReleaseEvent(QMouseEvent *event) override;
 
-    //context menu (RMB) prevents pan mode 2 (LMB + RMB)
-    virtual bool allowContextMenu() override {return false;};
+    virtual bool allowContextMenu(QContextMenuEvent *event) override;
 
 protected:
 private:

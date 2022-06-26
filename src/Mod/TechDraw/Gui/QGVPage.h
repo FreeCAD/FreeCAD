@@ -32,8 +32,6 @@
 
 #include <Base/Type.h>
 
-class QTemporaryFile;
-
 namespace App {
 class DocumentObject;
 }
@@ -59,6 +57,7 @@ class DrawWeldSymbol;
 
 namespace TechDrawGui
 {
+class MDIViewPage;
 class QGSPage;
 class QGIView;
 class QGIViewDimension;
@@ -92,10 +91,6 @@ public:
 
     void setExporting(bool enable);
 
-    /// Renders the page to SVG with filename.
-//    void saveSvg(QString filename);
-//    void postProcessXml(QTemporaryFile& tempFile, QString filename, QString pagename);
-
     void makeGrid(int width, int height, double step);
     void showGrid(bool state) {m_showGrid = state;}
     void updateViewport(void) {viewport()->repaint();}
@@ -109,6 +104,13 @@ public:
     void kbPanScroll(int xMove = 1, int yMove = 1);
     QPointF getBalloonCursorPos() {return balloonCursorPos;}
     void setBalloonCursorPos(QPoint p) { balloonCursorPos = p;}
+
+    void activateCursor(QCursor cursor);
+    void resetCursor();
+    void setPanCursor();
+    void setZoomCursor();
+
+    void pseudoContextEvent();
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -133,8 +135,6 @@ protected:
     double getDevicePixelRatio() const;
     QPixmap prepareCursorPixmap(const char *iconName, QPoint &hotspot);
 
-    void activateCursor(QCursor cursor);
-    void resetCursor();
     void drawForeground(QPainter *painter, const QRectF &rect) override;
     
     std::string getNavStyleParameter();
@@ -142,6 +142,8 @@ protected:
 
     void initNavigationStyle();
     void setNavigationStyle(std::string navParm);
+
+    void createStandardCursors(double dpr);
 
 private:
     RendererType m_renderer;
@@ -173,6 +175,12 @@ private:
 
     class Private;
     std::unique_ptr<Private> d;
+
+    QCursor panCursor;
+    QCursor zoomCursor;
+
+    MDIViewPage* m_parentMDI;
+    QContextMenuEvent* m_saveContextEvent;
 };
 
 } // namespace 
