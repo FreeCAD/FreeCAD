@@ -932,12 +932,16 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
     ui->centerY->setValue(vec.y);
     ui->centerZ->setValue(vec.z);
 
+    // update all fields
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
+
+    // read in point value
+    auto pointValue = static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->PointData[0];
+    showValue(pointValue, static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.getValue());
+
     connect(ui->centerX, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
     connect(ui->centerY, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
     connect(ui->centerZ, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
-
-    // update all fields
-    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
 
     // the point filter object needs to be recomputed
     // to fill all fields with data at the current point
