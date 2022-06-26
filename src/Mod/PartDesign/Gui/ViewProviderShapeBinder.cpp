@@ -248,7 +248,7 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property* prop) {
             shapeColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeColor());
             lineColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeLineColor());
             pointColor = lineColor;
-            transparency = 0;
+            transparency = Gui::ViewParams::instance()->getDefaultShapeTransparency();
             linewidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
         }
         ShapeColor.setValue(shapeColor);

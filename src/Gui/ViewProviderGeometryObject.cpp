@@ -70,18 +70,20 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
         b = (float)rand()/fMax;
     }
     else {
-        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
+        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435973887UL); // light gray (204,204,204)
         r = ((shcol >> 24) & 0xff) / 255.0;
         g = ((shcol >> 16) & 0xff) / 255.0;
         b = ((shcol >> 8) & 0xff) / 255.0;
     }
+
+    int initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0); 
 
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
     static const char *osgroup = "Object Style";
 
     ADD_PROPERTY_TYPE(ShapeColor, (r, g, b), osgroup, App::Prop_None, "Set shape color");
-    ADD_PROPERTY_TYPE(Transparency, (0), osgroup, App::Prop_None, "Set object transparency");
+    ADD_PROPERTY_TYPE(Transparency, (initialTransparency), osgroup, App::Prop_None, "Set object transparency");
     Transparency.setConstraints(&intPercent);
     App::Material mat(App::Material::DEFAULT);
     ADD_PROPERTY_TYPE(ShapeMaterial,(mat), osgroup, App::Prop_None, "Shape material");
@@ -95,6 +97,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     pcShapeMaterial->ref();
     //ShapeMaterial.touch(); materials are rarely used, so better to initialize with default shape color
     ShapeColor.touch();
+    Transparency.touch();
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();

@@ -72,6 +72,41 @@
          </widget>
         </item>
         <item row="1" column="0">
+         <widget class="QLabel" name="label_transparency">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Shape transparency</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefSpinBox" name="DefaultShapeTransparency">
+          <property name="toolTip">
+           <string>The default transparency for new shapes</string>
+          </property>
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="singleStep">
+           <number>10</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapeTransparency</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
          <widget class="QLabel" name="label_7">
           <property name="minimumSize">
            <size>
@@ -84,7 +119,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="Gui::PrefColorButton" name="DefaultShapeLineColor">
           <property name="toolTip">
            <string>The default line color for new shapes</string>
@@ -104,7 +139,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_9">
           <property name="minimumSize">
            <size>
@@ -117,7 +152,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultShapeLineWidth">
           <property name="toolTip">
            <string>The default line thickness for new shapes</string>
@@ -139,7 +174,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_10">
           <property name="minimumSize">
            <size>
@@ -152,7 +187,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <widget class="Gui::PrefColorButton" name="DefaultShapeVertexColor">
           <property name="toolTip">
            <string>The default color for new vertices</string>
@@ -172,7 +207,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_11">
           <property name="minimumSize">
            <size>
@@ -185,7 +220,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultShapeVertexSize">
           <property name="toolTip">
            <string>The default size for new vertices</string>
@@ -207,7 +242,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_8">
           <property name="minimumSize">
            <size>
@@ -220,7 +255,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <widget class="Gui::PrefColorButton" name="BoundingBoxColor">
           <property name="toolTip">
            <string>The color of bounding boxes in the 3D view</string>
@@ -240,7 +275,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_fontsize">
           <property name="minimumSize">
            <size>
@@ -253,7 +288,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="BoundingBoxFontSize">
           <property name="toolTip">
            <string>The font size of bounding boxes in the 3D view</string>
@@ -264,11 +299,11 @@
           <property name="decimals">
            <number>1</number>
           </property>
-          <property name="maximum">
-           <double>64.000000000000000</double>
-          </property>
           <property name="minimum">
            <double>2.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>64.000000000000000</double>
           </property>
           <property name="value">
            <double>10.000000000000000</double>
@@ -281,7 +316,7 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="Gui::PrefCheckBox" name="twosideRendering">
           <property name="minimumSize">
            <size>
@@ -291,7 +326,7 @@
           </property>
           <property name="toolTip">
            <string>Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option "Backlight color"
+If not checked, it depends on the option &quot;Backlight color&quot;
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</string>
           </property>
@@ -406,11 +441,6 @@ will be used or black.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -418,6 +448,11 @@ will be used or black.</string>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

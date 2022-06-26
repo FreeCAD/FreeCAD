@@ -59,6 +59,7 @@ void DlgSettingsObjectColor::saveSettings()
     // Part
     ui->DefaultShapeColor->onSave();
     ui->checkRandomColor->onSave();
+    ui->DefaultShapeTransparency->onSave();
     ui->DefaultShapeLineColor->onSave();
     ui->DefaultShapeLineWidth->onSave();
     ui->DefaultShapeVertexColor->onSave();
@@ -75,6 +76,7 @@ void DlgSettingsObjectColor::loadSettings()
     // Part
     ui->DefaultShapeColor->onRestore();
     ui->checkRandomColor->onRestore();
+    ui->DefaultShapeTransparency->onRestore();
     ui->DefaultShapeLineColor->onRestore();
     ui->DefaultShapeLineWidth->onRestore();
     ui->DefaultShapeVertexColor->onRestore();

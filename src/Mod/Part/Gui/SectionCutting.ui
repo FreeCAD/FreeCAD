@@ -334,7 +334,7 @@ Works only if all objects have the same values.</string>
        </widget>
       </item>
       <item row="1" column="1" colspan="2">
-       <widget class="QSlider" name="CutTransparency">
+       <widget class="Gui::PrefSlider" name="CutTransparency">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -346,6 +346,12 @@ Works only if all objects have the same values.</string>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="prefEntry">
+         <cstring>DefaultShapeTransparency</cstring>
+        </property>
+        <property name="prefPath">
+         <cstring>View</cstring>
         </property>
        </widget>
       </item>
@@ -423,6 +429,11 @@ only created cuts will be visible</string>
   <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSlider</class>
+   <extends>QSlider</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
