@@ -568,6 +568,8 @@ class DraftModification(unittest.TestCase):
             self.assertTrue(obj, "'{}' failed".format(operation))
         except TypeError:
             pass
+        except ModuleNotFoundError:
+            pass
 
     def test_mirror(self):
         """Create a rectangle, then a mirrored shape."""
