@@ -155,7 +155,6 @@ void CoordinateSystem::setPlacement(const Placement& p)
     p.getRotation().multVec(zdir, zdir);
     axis.setBase(p.getPosition());
     axis.setDirection(zdir);
-
     p.getRotation().multVec(Vector3d(1,0,0), this->xdir);
     p.getRotation().multVec(Vector3d(0,1,0), this->ydir);
 }

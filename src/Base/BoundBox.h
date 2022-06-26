@@ -849,6 +849,7 @@ inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_P
     closest.z = std::min<_Precision>(std::max<_Precision>(closest.z, MinZ), MaxZ);
 
     return closest;
+
 }
 
 template <class _Precision>

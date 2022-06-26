@@ -255,27 +255,10 @@ std::vector<std::string> ViewProviderPoints::getDisplayModes() const
     // doesn't support it.
     // For the future a more flexible way is needed to add new display modes
     // at a later time
-#if 1
+
     StrList.push_back("Color");
     StrList.push_back("Shaded");
     StrList.push_back("Intensity");
-
-#else
-    if (pcObject) {
-        std::map<std::string,App::Property*> Map;
-        pcObject->getPropertyMap(Map);
-
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            Base::Type type = it->second->getTypeId();
-            if (type == Points::PropertyNormalList::getClassTypeId())
-                StrList.push_back("Shaded");
-            else if (type == Points::PropertyGreyValueList::getClassTypeId())
-                StrList.push_back("Intensity");
-            else if (type == App::PropertyColorList::getClassTypeId())
-                StrList.push_back("Color");
-        }
-    }
-#endif
 
     return StrList;
 }

@@ -219,6 +219,7 @@ void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
 
 void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 {
+
     Q_UNUSED(ev);
     // The 'FramelessWindowHint' is also set when the background is transparent.
     if (windowFlags() & Qt::FramelessWindowHint) {

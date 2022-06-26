@@ -59,6 +59,7 @@ PyException::PyException()
     setPyObject(PP_PyDict_Object);
 
     std::string prefix = PP_last_error_type; /* exception name text */
+
     std::string error = PP_last_error_info;            /* exception data text */
 
     _sErrMsg = error;
@@ -116,7 +117,6 @@ void PyException::raiseException() {
         e.setReported(_isReported);
         throw e;
     }
-
     throw *this;
 }
 
@@ -244,7 +244,6 @@ std::string InterpreterSingleton::runString(const char *sCmd)
         else {
             PyException::ThrowException();
             return std::string(); // just to quieten code analyzers
-            //throw PyException();
         }
     }
 

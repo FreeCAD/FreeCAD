@@ -100,7 +100,6 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute
     if(!GeoFeatureGroupExtension::areLinksValid(this)) {
-#if 1
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very long.
         std::vector<App::DocumentObject*> invalid_linkobjs;
@@ -133,9 +132,6 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
             scopenames.pop_back();
         }
         Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. Instead, the linked object(s) reside within '%s'.\n", getTypeId().getName(), objnames.c_str(), getNameInDocument(), scopenames.c_str());
-#else
-        return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
-#endif
     }
 
     // set/unset the execution bit
@@ -152,7 +148,6 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
             ret = executeExtensions();
         }
     }
-
     return ret;
 }
 
@@ -386,6 +381,7 @@ const std::vector<App::DocumentObject*> &DocumentObject::getInList(void) const
 
 #endif // if USE_OLD_DAG
 
+
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
 // object, there is another object linked by every other of the remaining
@@ -531,12 +527,7 @@ bool _isInInListRecursive(const DocumentObject* act,
 
 bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
 {
-#if 0
-    int maxDepth = getDocument()->countObjects() + 2;
-    return _isInInListRecursive(this, linkTo, maxDepth);
-#else
     return this==linkTo || getInListEx(true).count(linkTo);
-#endif
 }
 
 bool DocumentObject::isInInList(DocumentObject *linkTo) const

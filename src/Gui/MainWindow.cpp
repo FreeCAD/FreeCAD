@@ -422,7 +422,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     //TODO: Add external object support for DAGView
-#if 1
     //Dag View.
     if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
         //work through parameter.
@@ -446,7 +445,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
             pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
         }
     }
-#endif
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);

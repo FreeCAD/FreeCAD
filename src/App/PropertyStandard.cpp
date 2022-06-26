@@ -312,6 +312,7 @@ void PropertyEnumeration::setEnums(const char **plEnums)
 void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
 {
     setEnumVector(Enums);
+
 }
 
 void PropertyEnumeration::setValue(const char *value)

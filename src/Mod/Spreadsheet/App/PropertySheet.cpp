@@ -1328,25 +1328,7 @@ void PropertySheet::onRemoveDep(App::DocumentObject *obj) {
 
 void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
 {
-#if 1
     (void)docObj;
-#else
-    if (documentObjectName.find(docObj) == documentObjectName.end())
-        return;
-
-    std::map<CellAddress, Cell* >::iterator i = data.begin();
-
-    while (i != data.end()) {
-        RelabelDocumentObjectExpressionVisitor<PropertySheet> v(*this, docObj);
-        i->second->visit(v);
-        if(v.changed()) {
-            v.reset();
-            recomputeDependencies(i->first);
-            setDirty(i->first);
-        }
-        ++i;
-    }
-#endif
 }
 
 void PropertySheet::onRelabeledDocument(const App::Document &doc)
@@ -1372,19 +1354,6 @@ void PropertySheet::renameObjectIdentifiers(const std::map<App::ObjectIdentifier
 void PropertySheet::deletedDocumentObject(const App::DocumentObject *docObj)
 {
     (void)docObj;
-    // This function is only used in SheetObserver, which is obsolete.
-    //
-    // if(docDeps.erase(const_cast<App::DocumentObject*>(docObj))) {
-    //     const App::DocumentObject * docObj = dynamic_cast<const App::DocumentObject*>(getContainer());
-    //     if(docObj && docObj->getDocument()!=docObj->getDocument()) {
-    //         for(auto it=xlinks.begin();it!=xlinks.end();++it) {
-    //             if(it->getValue() == docObj) {
-    //                 xlinks.erase(it);
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 void PropertySheet::documentSet()

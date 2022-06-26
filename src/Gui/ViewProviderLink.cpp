@@ -1045,68 +1045,12 @@ void LinkView::setLinkViewObject(ViewProviderDocumentObject *vpd,
 }
 
 void LinkView::setTransform(SoTransform *pcTransform, const Base::Matrix4D &mat) {
-#if 1
     double dMtrx[16];
     mat.getGLMatrix(dMtrx);
     pcTransform->setMatrix(SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
                                     dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
                                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]));
-#else
-    // extract scale factor from column vector length
-    double sx = Base::Vector3d(mat[0][0],mat[1][0],mat[2][0]).Sqr();
-    double sy = Base::Vector3d(mat[0][1],mat[1][1],mat[2][1]).Sqr();
-    double sz = Base::Vector3d(mat[0][2],mat[1][2],mat[2][2]).Sqr();
-    bool bx,by,bz;
-    if((bx=fabs(sx-1.0)>=1e-10))
-        sx = sqrt(sx);
-    else
-        sx = 1.0;
-    if((by=fabs(sy-1.0)>=1e-10))
-        sy = sqrt(sy);
-    else
-        sy = 1.0;
-    if((bz=fabs(sz-1.0)>=1e-10))
-        sz = sqrt(sz);
-    else
-        sz = 1.0;
-    // TODO: how to deal with negative scale?
-    pcTransform->scaleFactor.setValue(sx,sy,sz);
-
-    Base::Matrix4D matRotate;
-    if(bx) {
-        matRotate[0][0] = mat[0][0]/sx;
-        matRotate[1][0] = mat[1][0]/sx;
-        matRotate[2][0] = mat[2][0]/sx;
-    }else{
-        matRotate[0][0] = mat[0][0];
-        matRotate[1][0] = mat[1][0];
-        matRotate[2][0] = mat[2][0];
-    }
-    if(by) {
-        matRotate[0][1] = mat[0][1]/sy;
-        matRotate[1][1] = mat[1][1]/sy;
-        matRotate[2][1] = mat[2][1]/sy;
-    }else{
-        matRotate[0][1] = mat[0][1];
-        matRotate[1][1] = mat[1][1];
-        matRotate[2][1] = mat[2][1];
-    }
-    if(bz) {
-        matRotate[0][2] = mat[0][2]/sz;
-        matRotate[1][2] = mat[1][2]/sz;
-        matRotate[2][2] = mat[2][2]/sz;
-    }else{
-        matRotate[0][2] = mat[0][2];
-        matRotate[1][2] = mat[1][2];
-        matRotate[2][2] = mat[2][2];
-    }
-
-    Base::Rotation rot(matRotate);
-    pcTransform->rotation.setValue(rot[0],rot[1],rot[2],rot[3]);
-    pcTransform->translation.setValue(mat[0][3],mat[1][3],mat[2][3]);
-    pcTransform->center.setValue(0.0f,0.0f,0.0f);
-#endif
 }
 
 void LinkView::setSize(int _size) {

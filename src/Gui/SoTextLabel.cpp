@@ -154,7 +154,6 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
         nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];
 
-#if 1
         // Unfortunately, the size of the label is stored in the pimpl class of
         // SoText2 which cannot be accessed directly. However, there is a trick
         // to get the required information: set model, viewing and projection
@@ -203,40 +202,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         if (lines > 1) {
             nilpoint[1] -= (float(lines-1)/(float)lines*height);
         }
-#else
-        // Unfortunately, the required size (in pixels) is stored in a non-accessible way
-        // in the subclass SoText2. Thus, we try to get a satisfactory solution with Qt
-        // methods.
-        // The font name is of the form "family:style". If 'style' is given it can be
-        // 'Bold', 'Italic' or 'Bold Italic'.
-        QFont font;
-        QString fn = QString::fromLatin1(fontname.getString());
-        int pos = fn.indexOf(QLatin1Char(':'));
-        if (pos > -1) {
-            if (fn.indexOf(QLatin1String("Bold"),pos,Qt::CaseInsensitive) > pos)
-                font.setBold(true);
-            if (fn.indexOf(QLatin1String("Italic"),pos,Qt::CaseInsensitive) > pos)
-                font.setItalic(true);
-            fn = fn.left(pos);
-        }
-        font.setFamily(fn);
-        font.setPixelSize((int)fontsize);
-        QFontMetrics fm(font);
 
-        float width = 0.0f;
-        float height = 0.75f*fontsize*lines + (lines-1)*space;//fm.height();
-        float hh=0;
-        for (int i = 0; i < lines; i++) {
-            SbString str = this->string[i];
-            float w = fm.width(QLatin1String(this->string[i].getString()));
-            width = std::max<float>(width, w);
-            hh = fm.height();
-        }
-
-        if (lines > 1) {
-            nilpoint[1] -= ((lines-1)*fontsize*0.75f+space);
-        }
-#endif
 
         SbVec3f toppoint = nilpoint;
         toppoint[0] += width;
@@ -290,7 +256,6 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
     }
-
     state->pop();
 
     inherited::GLRender(action);
@@ -377,20 +342,6 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
 
     glBlendFunc(GL_ONE,GL_SRC_ALPHA);
 
-    /* Background Box */
-    //glColor4f(1,0.1f,0.1f,1);
-    //int ln =4;
-    //float ls = font.pixelSize()*1.5f;
-    //float bh = -1 + 2.0*(ls*(ln+.25))/float(window->height());
-
-    //glBegin(GL_QUADS);
-    //glVertex2f(-1.f,bh);   glVertex2f(-1.f,-1.f);
-    //glVertex2f( 1.f,-1.f); glVertex2f( 1.f,bh);
-    //glEnd();
-
-    //float middleCol=window->width()*0.40;
-    //float rightCol=window->width()*0.85;
-    //float startPos = window->height()-(5+ls*(ln));
 
     // text color
     SbColor color = this->textColor.getValue();
@@ -434,7 +385,6 @@ SoFrameLabel::SoFrameLabel()
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (12));
     SO_NODE_ADD_FIELD(frame, (true));
-  //SO_NODE_ADD_FIELD(image, (SbVec2s(0,0), 0, NULL));
 }
 
 void SoFrameLabel::notify(SoNotList * list)

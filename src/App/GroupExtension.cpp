@@ -148,7 +148,6 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
 
 void GroupExtension::removeObjectsFromDocument()
 {
-#if 1
     while (Group.getSize() > 0) {
         // Remove the objects step by step because it can happen
         // that an object is part of several groups and thus a
@@ -156,15 +155,6 @@ void GroupExtension::removeObjectsFromDocument()
         const std::vector<DocumentObject*> & grp = Group.getValues();
         removeObjectFromDocument(grp.front());
     }
-#else
-    const std::vector<DocumentObject*> & grp = Group.getValues();
-    // Use set so iterate on each linked object exactly one time (in case of multiple links to the same document)
-    std::set<DocumentObject*> grpSet (grp.begin(), grp.end());
-
-    for (std::set<DocumentObject*>::iterator it = grpSet.begin(); it != grpSet.end(); ++it) {
-        removeObjectFromDocument(*it);
-    }
-#endif
 }
 
 void GroupExtension::removeObjectFromDocument(DocumentObject* obj)

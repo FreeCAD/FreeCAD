@@ -355,6 +355,7 @@ void ActionGroup::onToggled(bool)
 void ActionGroup::onActivated (QAction* a)
 {
     int index = _group->actions().indexOf(a);
+
     this->setIcon(a->icon());
     if (!this->_isMode) this->setToolTip(a->toolTip());
     this->setProperty("defaultAction", QVariant(index));

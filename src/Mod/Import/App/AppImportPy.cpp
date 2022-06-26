@@ -350,7 +350,7 @@ private:
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
-                //Interface_Static::SetCVal("write.step.schema", "AP214IS");
+
                 STEPCAFControl_Writer writer;
                 Interface_Static::SetIVal("write.step.assembly",1);
                 // writer.SetColorMode(Standard_False);

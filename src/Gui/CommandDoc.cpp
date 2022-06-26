@@ -634,6 +634,7 @@ StdCmdSave::StdCmdSave()
 void StdCmdSave::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Save\")");
 }
 
@@ -1330,6 +1331,7 @@ void StdCmdDelete::activated(int iMsg)
                 if(more)
                     break;
             }
+
 
             if (!autoDeletion) {
                 QString bodyMessage;

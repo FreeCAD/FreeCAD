@@ -95,7 +95,6 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         PyErr_SetString(PyExc_TypeError, "Second argument must be a Unit not a Quantity");
         return -1;
     }
-
     int i1=0;
     int i2=0;
     int i3=0;
@@ -131,7 +130,6 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             PyErr_SetString(PyExc_ValueError, e.what());
             return -1;
         }
-
         return 0;
     }
 

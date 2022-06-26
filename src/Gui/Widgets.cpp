@@ -652,10 +652,8 @@ ColorButton::ColorButton(QWidget* parent)
     d->col = palette().color(QPalette::Active,QPalette::Midlight);
     connect(this, SIGNAL(clicked()), SLOT(onChooseColor()));
 
-#if 1
     int e = style()->pixelMetric(QStyle::PM_ButtonIconSize);
     setIconSize(QSize(2*e, e));
-#endif
 }
 
 /**

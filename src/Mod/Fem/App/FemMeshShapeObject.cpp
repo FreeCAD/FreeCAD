@@ -91,12 +91,13 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
     Fem::FemMesh newMesh;
 
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
-    TopoDS_Shape shape = feat->Shape.getValue();
-    newMesh.getSMesh()->ShapeToMesh(shape);
-    SMESH_Gen *myGen = newMesh.getGenerator();
 
-    int hyp=0;
-#if 1  // Surface quad mesh
+    TopoDS_Shape shape = feat->Shape.getValue();
+
+    newMesh.getSMesh()->ShapeToMesh(shape);
+    //SMESH_Gen *myGen = newMesh.getGenerator();
+
+// Surface quad mesh
 #if SMESH_VERSION_MAJOR >= 9
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, myGen));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
@@ -126,36 +127,6 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,myGen));
     newMesh.addHypothesis(shape, q2d);
-#else
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
-    static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
-    newMesh.addHypothesis(shape, len);
-
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, myGen));
-    static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
-    newMesh.addHypothesis(shape, loc);
-
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, myGen));
-    static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
-    newMesh.addHypothesis(shape, area);
-
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, myGen));
-    static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
-    newMesh.addHypothesis(shape, segm);
-
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, myGen));
-    static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
-    newMesh.addHypothesis(shape, defl);
-
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, myGen));
-    newMesh.addHypothesis(shape, reg);
-
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,myGen));
-    newMesh.addHypothesis(shape, qdp);
-
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,myGen));
-    newMesh.addHypothesis(shape, q2d);
-#endif
 
     // create mesh
     newMesh.compute();
@@ -163,5 +134,6 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     // set the value to the object
     FemMesh.setValue(newMesh);
+
     return App::DocumentObject::StdReturn;
 }

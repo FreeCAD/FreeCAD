@@ -1504,6 +1504,8 @@ void PythonGroupCommand::activated(int iMsg)
                 cmd->invoke(checked?1:0,TriggerAction);
             }
         }
+
+
     }
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;

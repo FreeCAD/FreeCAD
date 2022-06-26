@@ -559,12 +559,14 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
 Action * StdCmdToggleClipPlane::createAction(void)
 {
     Action *pcAction = (Action*)Command::createAction();
+
     return pcAction;
 }
 
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
     static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
     if (!clipping) {
         View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
@@ -1995,6 +1997,7 @@ bool StdCmdToggleNavigation::isActive(void)
     }
     return false;
 }
+
 
 
 //===========================================================================

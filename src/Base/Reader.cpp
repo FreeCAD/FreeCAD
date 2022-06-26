@@ -196,12 +196,14 @@ bool Base::XMLReader::read()
         throw Base::XMLBaseException(what);
     }
     catch (const SAXParseException& toCatch) {
+
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
         throw Base::XMLParseException(what);
     }
     catch (...) {
+
         throw Base::XMLBaseException("Unexpected XML exception");
     }
     return true;

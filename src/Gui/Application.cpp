@@ -492,6 +492,7 @@ Application::~Application()
     WidgetFactorySupplier::destruct();
     BitmapFactoryInst::destruct();
 
+
     Base::PyGILStateLocker lock;
     Py_DECREF(_pcWorkbenchDictionary);
 

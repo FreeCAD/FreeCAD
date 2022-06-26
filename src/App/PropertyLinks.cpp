@@ -293,6 +293,7 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject 
 
     if(oldObj == obj) {
         if(owner == parent) {
+
             res.first = newObj;
             if(subname) res.second = subname;
             return res;
@@ -315,6 +316,7 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject 
             break;
         if(sobj == oldObj) {
             if(prev == parent) {
+
                 if(sub[prevPos] == '$')
                     sub.replace(prevPos+1,pos-1-prevPos,newObj->Label.getValue());
                 else
@@ -694,7 +696,9 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
 PyObject *PropertyLinkList::getPyObject(void)
 {
     int count = getSize();
+
     Py::List sequence(count);
+
     for (int i = 0; i<count; i++) {
         auto obj = _lValueList[i];
         if(obj && obj->getNameInDocument())
@@ -1977,6 +1981,7 @@ PyObject *PropertyLinkSubList::getPyObject(void)
 {
     std::vector<SubSet> subLists = getSubListValues();
     std::size_t count = subLists.size();
+
     Py::List sequence(count);
     for (std::size_t i = 0; i<count; i++) {
         Py::Tuple tup(2);
@@ -1991,7 +1996,6 @@ PyObject *PropertyLinkSubList::getPyObject(void)
         tup[1] = items;
         sequence[i] = tup;
     }
-
     return Py::new_reference_to(sequence);
 }
 

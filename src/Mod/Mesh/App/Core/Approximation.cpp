@@ -1090,7 +1090,6 @@ float CylinderFit::Fit()
         return FLOAT_MAX;
     _bIsFitted = true;
 
-#if 1
     // Do the cylinder fit
     MeshCoreFit::CylinderFit cylFit;
     cylFit.AddPoints(_vPoints);
@@ -1111,57 +1110,7 @@ float CylinderFit::Fit()
         _fRadius = (float)cylFit.GetRadius();
         _fLastResult = result;
     }
-#else
-    int m = static_cast<int>(_vPoints.size());
-    int n = 7;
-
-    Eigen::MatrixXd measuredValues(m, 3);
-    int index = 0;
-    for (const auto& it : _vPoints) {
-        measuredValues(index, 0) = it.x;
-        measuredValues(index, 1) = it.y;
-        measuredValues(index, 2) = it.z;
-        index++;
-    }
-
-    Eigen::VectorXd x(n);
-    x(0) = 1.0;             // initial value for dir_x
-    x(1) = 1.0;             // initial value for dir_y
-    x(2) = 1.0;             // initial value for dir_z
-    x(3) = 0.0;             // initial value for cnt_x
-    x(4) = 0.0;             // initial value for cnt_y
-    x(5) = 0.0;             // initial value for cnt_z
-    x(6) = 0.0;             // initial value for radius
-
-    //
-    // Run the LM optimization
-    // Create a LevenbergMarquardt object and pass it the functor.
-    //
-
-    LMCylinderFunctor functor;
-    functor.measuredValues = measuredValues;
-    functor.m = m;
-    functor.n = n;
-
-    Eigen::LevenbergMarquardt<LMCylinderFunctor, double> lm(functor);
-    int status = lm.minimize(x);
-    Base::Console().Log("Cylinder fit: %d, iterations: %d, gradient norm: %f\n", status, lm.iter, lm.gnorm);
-
-    _vAxis.x = x(0);
-    _vAxis.y = x(1);
-    _vAxis.z = x(2);
-    _vAxis.Normalize();
-
-    _vBase.x = x(3);
-    _vBase.y = x(4);
-    _vBase.z = x(5);
-
-    _fRadius = x(6);
-
-    _fLastResult = lm.gnorm;
-#endif
-
-    return _fLastResult;
+   return _fLastResult;
 }
 
 float CylinderFit::GetRadius() const
@@ -1195,10 +1144,6 @@ float CylinderFit::GetDistanceToCylinder(const Base::Vector3f &rcPoint) const
 
 float CylinderFit::GetStdDeviation() const
 {
-    // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
-    // Standard deviation: SD=SQRT(VAR)
-    // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
         return FLOAT_MAX;
 
@@ -1357,10 +1302,6 @@ float SphereFit::GetDistanceToSphere(const Base::Vector3f& rcPoint) const
 
 float SphereFit::GetStdDeviation() const
 {
-    // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
-    // Standard deviation: SD=SQRT(VAR)
-    // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
         return FLOAT_MAX;
 
