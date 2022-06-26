@@ -113,6 +113,7 @@ public:
     bool addView(const App::DocumentObject *obj);
 
     static MDIViewPage *getFromScene(const QGSPage *scene);
+    void contextMenuEvent(QContextMenuEvent *event);
 
 public Q_SLOTS:
     void viewAll();
@@ -133,7 +134,6 @@ protected:
     /// Attaches view of obj to m_scene.  Returns true on success, false otherwise
     bool attachView(App::DocumentObject *obj);
 
-    void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
 
     void setDimensionGroups(void);

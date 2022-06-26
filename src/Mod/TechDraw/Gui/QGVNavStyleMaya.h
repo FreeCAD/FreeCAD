@@ -35,7 +35,7 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleMaya : public QGVNavStyle
 {
 public:
-    QGVNavStyleMaya();
+    QGVNavStyleMaya(QGVPage* qgvp);
     virtual ~QGVNavStyleMaya();
 
     virtual void handleKeyReleaseEvent(QKeyEvent *event) override;
@@ -43,8 +43,7 @@ public:
     virtual void handleMouseMoveEvent(QMouseEvent *event) override;
     virtual void handleMouseReleaseEvent(QMouseEvent *event) override;
 
-    //context menu (RMB) prevents zoom mode 2 (ALT + RMB)
-    virtual bool allowContextMenu() override {return false;};
+    virtual bool allowContextMenu(QContextMenuEvent *event) override;
 
 protected:
 private:

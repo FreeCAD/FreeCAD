@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
+#include <QContextMenuEvent>
 #include <QKeyEvent>
 #include <QScrollBar>
 #endif
@@ -43,7 +44,8 @@ using namespace TechDrawGui;
 
 namespace TechDrawGui {
 
-QGVNavStyle::QGVNavStyle() : m_viewer(nullptr)
+QGVNavStyle::QGVNavStyle(QGVPage *qgvp) :
+    m_viewer(qgvp)
 {
     initialize();
 }
@@ -78,6 +80,7 @@ void QGVNavStyle::initialize()
     m_panPending = false;
     m_zoomPending = false;
     m_clickButton = Qt::NoButton;
+    m_saveCursor = getViewer()->cursor();
 }
 
 void QGVNavStyle::setAnchor()
@@ -214,7 +217,7 @@ void QGVNavStyle::handleLeaveEvent(QEvent *event)
 void QGVNavStyle::handleMousePressEvent(QMouseEvent *event)
 {
 //    Base::Console().Message("QGVNS::handleMousePressEvent()\n");
-   if (!panningActive && (event->button() == Qt::MiddleButton)) {
+    if (!panningActive && (event->button() == Qt::MiddleButton)) {
         startPan(event->pos());
         event->accept();
     }
@@ -233,8 +236,11 @@ void QGVNavStyle::handleMouseMoveEvent(QMouseEvent *event)
     }
 }
 
+//NOTE: QGraphicsView::contextMenuEvent consumes the mouse release event for the
+//button that caused the event (typically RMB)
 void QGVNavStyle::handleMouseReleaseEvent(QMouseEvent *event)
 {
+//    Base::Console().Message("QGVNS::handleMouseReleaseEvent()\n");
     if (getViewer()->isBalloonPlacing()) {
         placeBalloon(event->pos());
     }
@@ -243,6 +249,21 @@ void QGVNavStyle::handleMouseReleaseEvent(QMouseEvent *event)
         stopPan();
         event->accept();
     }
+}
+
+bool QGVNavStyle::allowContextMenu(QContextMenuEvent *event)
+{
+    Q_UNUSED(event)
+//    Base::Console().Message("QGVNS::allowContextMenu()\n");
+//    if (event->reason() == QContextMenuEvent::Mouse) {
+//        //must check for a button combination involving context menu button
+//    }
+    return true;
+}
+
+void QGVNavStyle::pseudoContextEvent()
+{
+    getViewer()->pseudoContextEvent();
 }
 
 void QGVNavStyle::handleWheelEvent(QWheelEvent *event)
@@ -273,6 +294,7 @@ void QGVNavStyle::zoom(double factor)
     QPoint newCenter = getViewer()->viewport()->rect().center();
     QPoint change = newCenter - center;
     getViewer()->translate(change.x(), change.y());
+    m_zoomPending = false;
 }
 
 void QGVNavStyle::startZoom(QPoint p)
@@ -280,11 +302,20 @@ void QGVNavStyle::startZoom(QPoint p)
 //    Base::Console().Message("QGVNS::startZoom(%s)\n", TechDraw::DrawUtil::formatVector(p).c_str());
     zoomOrigin = p;
     zoomingActive = true;
+    m_zoomPending = false;
+    getViewer()->setZoomCursor();
+}
+
+void QGVNavStyle::stopZoom()
+{
+//    Base::Console().Message("QGVNS::stopZoom()\n");
+    zoomingActive = false;
+    m_zoomPending = false;
+    getViewer()->resetCursor();
 }
 
 double QGVNavStyle::mouseZoomFactor(QPoint p)
 {
-
 //    Base::Console().Message("QGVNS::mouseZoomFactor(%s)\n", TechDraw::DrawUtil::formatVector(p).c_str());
     QPoint movement = p - zoomOrigin;
     double sensitivity = 0.1;
@@ -305,8 +336,8 @@ void QGVNavStyle::startPan(QPoint p)
 {
     panOrigin = p;
     panningActive = true;
-    QApplication::setOverrideCursor(Qt::SizeAllCursor);
-
+    m_panPending = false;
+    getViewer()->setPanCursor();
 }
 
 void QGVNavStyle::pan(QPoint p)
@@ -323,8 +354,10 @@ void QGVNavStyle::pan(QPoint p)
 
 void QGVNavStyle::stopPan()
 {
-    QApplication::restoreOverrideCursor();
+//    Base::Console().Message("QGVNS::stopPan()\n");
     panningActive = false;
+    m_panPending = false;
+    getViewer()->resetCursor();
 }
 
 void QGVNavStyle::startClick(Qt::MouseButton b)

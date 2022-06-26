@@ -35,7 +35,7 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleOpenSCAD : public QGVNavStyle
 {
 public:
-    QGVNavStyleOpenSCAD();
+    QGVNavStyleOpenSCAD(QGVPage* qgvp);
     virtual ~QGVNavStyleOpenSCAD();
 
     virtual void handleKeyReleaseEvent(QKeyEvent *event) override;
@@ -43,8 +43,7 @@ public:
     virtual void handleMousePressEvent(QMouseEvent *event) override;
     virtual void handleMouseReleaseEvent(QMouseEvent *event) override;
 
-    //context menu (RMB) prevents pan and zoom
-    virtual bool allowContextMenu() override {return false;};
+    virtual bool allowContextMenu(QContextMenuEvent *event) override;
 
 protected:
 private:

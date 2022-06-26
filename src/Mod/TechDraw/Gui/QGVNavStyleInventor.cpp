@@ -41,7 +41,8 @@ namespace TechDrawGui {
 //        QGraphicsView?
 //**********
 
-QGVNavStyleInventor::QGVNavStyleInventor()
+QGVNavStyleInventor::QGVNavStyleInventor(QGVPage *qgvp) :
+    QGVNavStyle(qgvp)
 {
 }
 
@@ -51,15 +52,7 @@ QGVNavStyleInventor::~QGVNavStyleInventor()
 
 void QGVNavStyleInventor::handleMousePressEvent(QMouseEvent *event)
 {
-    if (event->buttons() == (Qt::LeftButton | Qt::MiddleButton)) {
-        //zoom mode 2 LMB + MMB
-        startZoom(event->pos());
-        event->accept();
-    } else if (event->button() == Qt::MiddleButton) {
-        //pan mode MMB + mouse movement
-        startPan(event->pos());
-        event->accept();
-    }
+    Q_UNUSED(event)
 }
 
 void QGVNavStyleInventor::handleMouseMoveEvent(QMouseEvent *event)
@@ -68,13 +61,22 @@ void QGVNavStyleInventor::handleMouseMoveEvent(QMouseEvent *event)
         getViewer()->setBalloonCursorPos(event->pos());
     }
 
-    if (panningActive) {
-        pan(event->pos());
+    if ((QGuiApplication::mouseButtons() & Qt::LeftButton) &&
+        (QGuiApplication::mouseButtons() & Qt::MiddleButton)) {
+        //zoom mode 2 - LMB + MMB
+        if (zoomingActive) {
+            zoom(mouseZoomFactor(event->pos()));
+        } else {
+            startZoom(event->pos());
+        }
         event->accept();
-    }
-
-    if (zoomingActive) {
-        zoom(mouseZoomFactor(event->pos()));
+    } else if (QGuiApplication::mouseButtons() & Qt::MiddleButton)  {
+        //pan mode - MMB + move
+        if (panningActive) {
+            pan(event->pos());
+        } else {
+            startPan(event->pos());
+        }
         event->accept();
     }
 }

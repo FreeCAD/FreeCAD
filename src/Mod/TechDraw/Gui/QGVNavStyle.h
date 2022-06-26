@@ -26,13 +26,14 @@
 #define TECHDRAW_NAVIGATIONSTYLE_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <QCursor>
 
 class QEvent;
 class QFocusEvent;
 class QKeyEvent;
 class QMouseEvent;
 class QWheelEvent;
-
+class QContextMenuEvent;
 #include <Base/BaseClass.h>
 
 namespace TechDrawGui {
@@ -60,7 +61,7 @@ private:
 class TechDrawGuiExport QGVNavStyle : public Base::BaseClass
 {
 public:
-    QGVNavStyle();
+    QGVNavStyle(QGVPage* qgvp);
     virtual ~QGVNavStyle();
 
     void setViewer(QGVPage* qgvp) { m_viewer = qgvp;} ;
@@ -76,11 +77,13 @@ public:
     virtual void handleMouseReleaseEvent(QMouseEvent *event);
     virtual void handleWheelEvent(QWheelEvent *event);
 
-    virtual bool allowContextMenu() {return true;};
+    virtual bool allowContextMenu(QContextMenuEvent *event);
+    virtual void pseudoContextEvent();
 
-    virtual void zoom(double factor);
-    virtual double mouseZoomFactor(QPoint p);
     virtual void startZoom(QPoint p);
+    virtual void zoom(double factor);
+    virtual void stopZoom();
+    virtual double mouseZoomFactor(QPoint p);
 
     virtual void startPan(QPoint p);
     virtual void pan(QPoint p);
@@ -114,6 +117,7 @@ protected:
     Qt::MouseButton m_clickButton;
 
     KeyCombination m_keyCombo;
+    QCursor m_saveCursor;
 
 private:
 

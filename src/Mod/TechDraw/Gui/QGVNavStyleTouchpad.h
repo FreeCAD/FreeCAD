@@ -35,7 +35,7 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleTouchpad : public QGVNavStyle
 {
 public:
-    QGVNavStyleTouchpad();
+    QGVNavStyleTouchpad(QGVPage* qgvp);
     virtual ~QGVNavStyleTouchpad();
 
     virtual void handleKeyPressEvent(QKeyEvent *event) override;

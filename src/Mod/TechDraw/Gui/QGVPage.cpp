@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QApplication>
+# include <QBitmap>
 # include <QContextMenuEvent>
 # include <QFileInfo>
 # include <QFileDialog>
@@ -133,6 +134,50 @@
 #define INKSCAPE_NS_URI "http://www.inkscape.org/namespaces/inkscape"
 #define SODIPODI_NS_URI "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
 
+/*** pan-style cursor *******/
+
+#define PAN_WIDTH 16
+#define PAN_HEIGHT 16
+#define PAN_BYTES ((PAN_WIDTH + 7) / 8) * PAN_HEIGHT
+#define PAN_HOT_X 7
+#define PAN_HOT_Y 7
+
+static unsigned char pan_bitmap[PAN_BYTES] =
+{
+  0xc0, 0x03, 0x60, 0x02, 0x20, 0x04, 0x10, 0x08,
+  0x68, 0x16, 0x54, 0x2a, 0x73, 0xce, 0x01, 0x80,
+  0x01, 0x80, 0x73, 0xce, 0x54, 0x2a, 0x68, 0x16,
+  0x10, 0x08, 0x20, 0x04, 0x40, 0x02, 0xc0, 0x03
+};
+
+static unsigned char pan_mask_bitmap[PAN_BYTES] =
+{
+ 0xc0,0x03,0xe0,0x03,0xe0,0x07,0xf0,0x0f,0xe8,0x17,0xdc,0x3b,0xff,0xff,0xff,
+ 0xff,0xff,0xff,0xff,0xff,0xdc,0x3b,0xe8,0x17,0xf0,0x0f,0xe0,0x07,0xc0,0x03,
+ 0xc0,0x03
+};
+/*** zoom-style cursor ******/
+
+#define ZOOM_WIDTH 16
+#define ZOOM_HEIGHT 16
+#define ZOOM_BYTES ((ZOOM_WIDTH + 7) / 8) * ZOOM_HEIGHT
+#define ZOOM_HOT_X 5
+#define ZOOM_HOT_Y 7
+
+static unsigned char zoom_bitmap[ZOOM_BYTES] =
+{
+  0x00, 0x0f, 0x80, 0x1c, 0x40, 0x38, 0x20, 0x70,
+  0x90, 0xe4, 0xc0, 0xcc, 0xf0, 0xfc, 0x00, 0x0c,
+  0x00, 0x0c, 0xf0, 0xfc, 0xc0, 0xcc, 0x90, 0xe4,
+  0x20, 0x70, 0x40, 0x38, 0x80, 0x1c, 0x00, 0x0f
+};
+
+static unsigned char zoom_mask_bitmap[ZOOM_BYTES] =
+{
+ 0x00,0x0f,0x80,0x1f,0xc0,0x3f,0xe0,0x7f,0xf0,0xff,0xf0,0xff,0xf0,0xff,0x00,
+ 0x0f,0x00,0x0f,0xf0,0xff,0xf0,0xff,0xf0,0xff,0xe0,0x7f,0xc0,0x3f,0x80,0x1f,
+ 0x00,0x0f
+};
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -202,7 +247,9 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     setMouseTracking(true);
     viewport()->setMouseTracking(true);
 
-//    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    m_parentMDI = static_cast<MDIViewPage*>(parent);
+    m_saveContextEvent = nullptr;
+
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate); //this prevents crash when deleting dims.
                                                           //scene(view?) indices of dirty regions gets
                                                           //out of sync.  missing prepareGeometryChange
@@ -219,7 +266,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     }
     setAlignment(Qt::AlignCenter);
 
-    setDragMode(ScrollHandDrag);
+//    setDragMode(ScrollHandDrag);
+    setDragMode(QGraphicsView::NoDrag);
     resetCursor();
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
@@ -232,6 +280,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     resetCachedContent();
 
     initNavigationStyle();
+
+    createStandardCursors(devicePixelRatio());
 }
 
 QGVPage::~QGVPage()
@@ -265,30 +315,28 @@ void QGVPage::setNavigationStyle(std::string navParm)
     std::size_t foundRevit = navParm.find("Revit");
 
     if (foundBlender != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleBlender());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleBlender(this));
     } else if (foundCAD != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleCAD());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleCAD(this));
     } else if (foundTouchPad != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleTouchpad());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleTouchpad(this));
     } else if (foundInventor != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleInventor());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleInventor(this));
     } else if (foundTinker != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleTinkerCAD());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleTinkerCAD(this));
     } else if (foundGesture != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleGesture());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleGesture(this));
     } else if (foundMaya != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleMaya());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleMaya(this));
     } else if (foundOCC != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleOCC());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleOCC(this));
     } else if (foundOpenSCAD != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleOpenSCAD());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleOpenSCAD(this));
     } else if (foundRevit != std::string::npos) {
-        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleRevit());
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleRevit(this));
     } else {
-        m_navStyle = new QGVNavStyle();
+        m_navStyle = new QGVNavStyle(this);
     }
-
-    m_navStyle->setViewer(this);
 }
 
 void QGVPage::startBalloonPlacing(void)
@@ -375,25 +423,6 @@ void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 #endif
 }
 
-void QGVPage::contextMenuEvent(QContextMenuEvent *event)
-{
-    if (m_navStyle->allowContextMenu()) {
-        QGraphicsView::contextMenuEvent(event);
-    }
-    //TODO: allow RMB press and context menu
-    //      by triggering pseudo-mousePressEvent, then calling QGV::contextMenuEvent
-    //    QMouseEvent* mouseEvent(QEvent::MouseButtonPress,
-    //                            event->pos(),              //local pos
-    //                            event->globalPos(),        //window pos
-    //                            event->globalPos(),        //screen pos
-    //                            Qt::RightButton,           //button
-    //                            Qt::RightButton,           //buttons,
-    //                            Qt::NoModifier,            //KB modifiers
-    //                            Qt::MouseEventSynthesizedByApplication)   //source
-    //    m_navStyle->handleMousePressEvent(mouseEvent);
-    //    QGraphicsView::contextMenuEvent(event);
-}
-
 void QGVPage::paintEvent(QPaintEvent *event)
 {
     if (m_renderer == Image) {
@@ -410,6 +439,30 @@ void QGVPage::paintEvent(QPaintEvent *event)
 
     } else {
         QGraphicsView::paintEvent(event);
+    }
+}
+
+void QGVPage::contextMenuEvent(QContextMenuEvent *event)
+{
+    if (m_navStyle->allowContextMenu(event)) {
+        QGraphicsView::contextMenuEvent(event);    //this eats the event. mouseReleaseEvent will not be called.
+        return;
+    }
+
+    //delete the old saved event before creating a new one to avoid memory leak
+    //NOTE: saving the actual event doesn't work as the event gets deleted somewhere in Qt
+    if (m_saveContextEvent != nullptr) {
+        delete m_saveContextEvent;
+    }
+    m_saveContextEvent = new QContextMenuEvent(QContextMenuEvent::Mouse,
+                                               event->pos(),
+                                               event->globalPos());
+}
+
+void QGVPage::pseudoContextEvent()
+{
+    if (m_saveContextEvent != nullptr) {
+        m_parentMDI->contextMenuEvent(m_saveContextEvent);
     }
 }
 
@@ -553,6 +606,16 @@ void QGVPage::resetCursor() {
     viewport()->setCursor(Qt::ArrowCursor);
 }
 
+void QGVPage::setPanCursor()
+{
+    activateCursor(panCursor);
+}
+
+void QGVPage::setZoomCursor()
+{
+    activateCursor(zoomCursor);
+}
+
 void QGVPage::drawForeground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
@@ -609,6 +672,26 @@ Base::Type QGVPage::getStyleType(std::string model)
 {
     Base::Type type = Base::Type::fromName(model.c_str());
     return type;
+}
+
+void QGVPage::createStandardCursors(double dpr)
+{
+    (void) dpr;         //avoid clang warning re unused parameter
+    QBitmap cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
+    QBitmap mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
+    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
+
+    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
+    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
+    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

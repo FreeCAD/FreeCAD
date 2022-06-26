@@ -38,7 +38,8 @@ using namespace TechDrawGui;
 
 namespace TechDrawGui {
 
-QGVNavStyleTinkerCAD::QGVNavStyleTinkerCAD()
+QGVNavStyleTinkerCAD::QGVNavStyleTinkerCAD(QGVPage *qgvp) :
+    QGVNavStyle(qgvp)
 {
 }
 
@@ -48,10 +49,7 @@ QGVNavStyleTinkerCAD::~QGVNavStyleTinkerCAD()
 
 void QGVNavStyleTinkerCAD::handleMousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::MiddleButton) {
-        startPan(event->pos());
-        event->accept();
-    }
+    Q_UNUSED(event)
 }
 
 void QGVNavStyleTinkerCAD::handleMouseMoveEvent(QMouseEvent *event)
@@ -60,8 +58,13 @@ void QGVNavStyleTinkerCAD::handleMouseMoveEvent(QMouseEvent *event)
         getViewer()->setBalloonCursorPos(event->pos());
     }
 
-    if (panningActive) {
-        pan(event->pos());
+    //pan mode - MMB + move
+    if (QGuiApplication::mouseButtons() & Qt::MiddleButton) {
+        if (panningActive) {
+            pan(event->pos());
+        } else {
+            startPan(event->pos());
+        }
         event->accept();
     }
 }
@@ -72,8 +75,8 @@ void QGVNavStyleTinkerCAD::handleMouseReleaseEvent(QMouseEvent *event)
         placeBalloon(event->pos());
     }
 
-    if (panningActive) {
-        if (event->button() == Qt::MiddleButton) {
+    if (event->button() == Qt::MiddleButton) {
+        if (panningActive) {
             stopPan();
             event->accept();
         }

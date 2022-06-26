@@ -35,13 +35,16 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleOCC : public QGVNavStyle
 {
 public:
-    QGVNavStyleOCC();
+    QGVNavStyleOCC(QGVPage* qgvp);
     virtual ~QGVNavStyleOCC();
 
     virtual void handleKeyReleaseEvent(QKeyEvent *event) override;
     virtual void handleMousePressEvent(QMouseEvent *event) override;
     virtual void handleMouseMoveEvent(QMouseEvent *event) override;
     virtual void handleMouseReleaseEvent(QMouseEvent *event) override;
+
+    //context menu (RMB) prevents pan mode 2 (RMB or CNTL+RMB)
+    virtual bool allowContextMenu(QContextMenuEvent *event) override;
 
 protected:
 private:
