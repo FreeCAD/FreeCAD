@@ -341,7 +341,7 @@ FemPostDataAtPointFilter::FemPostDataAtPointFilter(void) : FemPostFilter() {
 
     ADD_PROPERTY_TYPE(Center, (Base::Vector3d(0.0, 0.0, 0.0)), "DataAtPoint", App::Prop_None, "Center of the point");
     ADD_PROPERTY_TYPE(Radius, (0), "DataAtPoint", App::Prop_None, "Radius around the point (unused)");
-    ADD_PROPERTY_TYPE(PointData, (0), "DataAtPoint", App::Prop_None, "Point data values used for plotting");
+    ADD_PROPERTY_TYPE(PointData, (0), "DataAtPoint", App::Prop_None, "Point data values");
     ADD_PROPERTY_TYPE(FieldName, (""), "DataAtPoint", App::Prop_None, "Field used for plotting");
     ADD_PROPERTY_TYPE(Unit, (""), "DataAtPoint", App::Prop_None, "Unit used for the field");
 
