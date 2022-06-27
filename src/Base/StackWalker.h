@@ -39,15 +39,6 @@
 #include <FCGlobal.h>
 #endif
 
-// special defines for VC5/6 (if no actual PSDK is installed):
-#if _MSC_VER < 1300
-typedef unsigned __int64 DWORD64, *PDWORD64;
-#if defined(_WIN64)
-typedef unsigned __int64 SIZE_T, *PSIZE_T;
-#else
-typedef unsigned long SIZE_T, *PSIZE_T;
-#endif
-#endif  // _MSC_VER < 1300
 
 class StackWalkerInternal;  // forward
 class BaseExport StackWalker
@@ -114,11 +105,6 @@ public:
     LPVOID pUserData = NULL  // optional to identify some data in the 'readMemoryFunction'-callback
     );
 
-#if _MSC_VER >= 1300
-// due to some reasons, the "STACKWALK_MAX_NAMELEN" must be declared as "public" 
-// in older compilers in order to use it... starting with VC7 we can declare it as "protected"
-protected:
-#endif
 	enum { STACKWALK_MAX_NAMELEN = 1024 }; // max name length for found symbols
 
 protected:
@@ -170,9 +156,6 @@ protected:
 // So we just use the compiler-version (and assumes that the PSDK is 
 // the one which was installed by the VS-IDE)
 
-// INFO: If you want, you can use the RtlCaptureContext if you only target XP and later...
-//       But I currently use it in x64/IA64 environments...
-//#if defined(_M_IX86) && (_WIN32_WINNT <= 0x0500) && (_MSC_VER < 1400)
 
 #if defined(_M_IX86)
 #ifdef CURRENT_THREAD_VIA_EXCEPTION
