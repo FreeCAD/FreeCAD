@@ -1192,7 +1192,18 @@ void StackWalker::OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUser
   _snprintf_s(buffer, STACKWALK_MAX_NAMELEN, "SymInit: Symbol-SearchPath: '%s', symOptions: %d, UserName: '%s'\n", szSearchPath, symOptions, szUserName);
   OnOutput(buffer);
   // Also display the OS-version
-
+#if _MSC_VER <= 1200
+  OSVERSIONINFOA ver;
+  ZeroMemory(&ver, sizeof(OSVERSIONINFOA));
+  ver.dwOSVersionInfoSize = sizeof(ver);
+  if (GetVersionExA(&ver) != FALSE)
+  {
+    _snprintf_s(buffer, STACKWALK_MAX_NAMELEN, "OS-Version: %d.%d.%d (%s)\n", 
+      ver.dwMajorVersion, ver.dwMinorVersion, ver.dwBuildNumber,
+      ver.szCSDVersion);
+    OnOutput(buffer);
+  }
+#else
   OSVERSIONINFOEXA ver;
   ZeroMemory(&ver, sizeof(OSVERSIONINFOEXA));
   ver.dwOSVersionInfoSize = sizeof(ver);
