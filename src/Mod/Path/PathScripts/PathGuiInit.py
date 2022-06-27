@@ -21,6 +21,7 @@
 # ***************************************************************************
 
 import PathScripts.PathLog as PathLog
+import subprocess
 
 LOGLEVEL = False
 
@@ -49,7 +50,6 @@ def Startup():
         from PathScripts import PathDressupPathBoundaryGui
         from PathScripts import PathDressupRampEntry
         from PathScripts import PathDressupTagGui
-        from PathScripts import PathDressupLeadInOut
         from PathScripts import PathDressupZCorrect
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
@@ -68,7 +68,6 @@ def Startup():
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
-        from PathScripts import PathCamoticsGui
         from PathScripts import PathSlotGui
         from PathScripts import PathStop
         from PathScripts import PathThreadMillingGui
@@ -78,6 +77,18 @@ def Startup():
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathUtilsGui
         from PathScripts import PathVcarveGui
+
+        # If camotics is installed and current enough, import the GUI
+        try:
+            import camotics
+            r = subprocess.run(
+                ["camotics", "--version"], capture_output=True, text=True
+            ).stderr.strip()
+            major, minor, patch = r.split(".")
+            if int(major) >= 1 and int(minor) >= 2 and int(patch) >= 2:
+                from PathScripts import PathCamoticsGui
+        except (FileNotFoundError, ModuleNotFoundError):
+            pass
 
         Processed = True
     else:
