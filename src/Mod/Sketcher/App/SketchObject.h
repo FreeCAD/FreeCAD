@@ -260,20 +260,24 @@ public:
     int toggleConstruction(int GeoId);
     int setConstruction(int GeoId, bool on);
 
+    //Make the chamfer's lines. Called from fillet() function.
+    int makeChamfers(Part::GeomArcOfCircle* arc, int nAngles);
     /*!
      \brief Create a sketch fillet from the point at the intersection of two lines
      \param geoId, pos - one of the (exactly) two coincident endpoints
      \param radius - fillet radius
+     \param nofAngles. Fillet if 1, chamfer if 2 or -2, polychamfer if 3 or more. Inward fillet if -1, inward polychamfer if -3 or less
      \param trim - if false, leaves the original lines untouched
      \param createCorner - keep geoId/pos as a Point and keep as many constraints as possible
      \retval - 0 on success, -1 on failure
      */
-    int fillet(int geoId, PointPos pos, double radius, bool trim=true, bool preserveCorner=false);
+    int fillet(int geoId, PointPos pos, double radius, bool trim=true, bool preserveCorner=false, int nAngles = 1);
     /*!
      \brief More general form of fillet
      \param geoId1, geoId2 - geoId for two lines (which don't necessarily have to coincide)
      \param refPnt1, refPnt2 - reference points on the input geometry, used to influence the free fillet variables
      \param radius - fillet radius
+     \param nofAngles. Fillet if 1, chamfer if 2 or -2, polychamfer if 3 or more. Inward fillet if -1, inward polychamfer if -3 or less
      \param trim - if false, leaves the original lines untouched
      \param preserveCorner - if the lines are coincident, place a Point where they meet and keep as many
      of the existing constraints as possible
@@ -281,7 +285,7 @@ public:
      */
     int fillet(int geoId1, int geoId2,
                const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
-               double radius, bool trim=true, bool createCorner=false);
+               double radius, bool trim=true, bool createCorner=false, int nAngles = 1);
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
@@ -363,12 +367,12 @@ public:
 
     // retrieves an array of maps, each map containing the points that are coincidence by virtue of
     // any number of direct or indirect coincidence constraints
-    const std::vector< std::map<int, Sketcher::PointPos> > getCoincidenceGroups();
+    const std::vector< std::map<int, Sketcher::PointPos> > getCoincidenceGroups() const;
     // returns if the given geoId is fixed (coincident) with external geometry on any of the possible relevant points
     void isCoincidentWithExternalGeometry(int GeoId, bool &start_external, bool &mid_external, bool &end_external);
     // returns a map containing all the GeoIds that are coincident with the given point as keys, and the PosIds as values associated
     // with the keys.
-    const std::map<int, Sketcher::PointPos> getAllCoincidentPoints(int GeoId, PointPos PosId);
+    const std::map<int, Sketcher::PointPos> getAllCoincidentPoints(int GeoId, PointPos PosId) const;
 
     /// retrieves for a Vertex number a list with all coincident points (sharing a single coincidence constraint)
     void getDirectlyCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
