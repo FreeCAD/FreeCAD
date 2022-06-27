@@ -127,8 +127,6 @@ using namespace TechDrawGui;
 QGSPage::QGSPage(ViewProviderPage *vp, QWidget *parent)
     : QGraphicsScene(parent),
       pageTemplate(nullptr),
-      m_renderer(Native),
-      drawBkg(true),
       m_vpPage(nullptr)
 {
     assert(vp);
@@ -136,14 +134,10 @@ QGSPage::QGSPage(ViewProviderPage *vp, QWidget *parent)
     const char* name = vp->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
     m_vpPage->setGraphicsScene(this);
-
-    bkgBrush = new QBrush(getBackgroundColor());
-
 }
 
 QGSPage::~QGSPage()
 {
-    delete bkgBrush;
 
 }
 
