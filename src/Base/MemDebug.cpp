@@ -122,19 +122,13 @@ MemDebug::MemDebug()
    // Open a log file for the hook functions to use
    if ( logFile != NULL )
      throw std::runtime_error("Base::MemDebug::MemDebug():38: Don't call the constructor by your self!");
-#if (_MSC_VER >= 1400)
+
    fopen_s( &logFile, "MemLog.txt", "w" );
    if ( logFile == NULL )
      throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
    _strtime_s( timeStr, 15 );
    _strdate_s( dateStr, 15 );
-#elif (_MSC_VER >= 1200)
-   logFile = fopen( "MemLog.txt", "w" );
-   if ( logFile == NULL )
-     throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
-   _strtime( timeStr );
-   _strdate( dateStr );
-#endif
+
    fprintf( logFile,
             "Memory Allocation Log File for FreeCAD, run at %s on %s.\n",
             timeStr, dateStr );

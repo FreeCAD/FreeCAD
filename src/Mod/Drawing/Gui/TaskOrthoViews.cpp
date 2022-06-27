@@ -51,12 +51,7 @@ namespace bp = boost::placeholders;
 #endif
 
 
-#if _MSC_VER <= 1700
-// maybe in the c++ standard later, older compiler don't have round()
-double round(double r) {
-    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
-}
-#endif  // _MSC_VER < 1500
+
 
 void pagesize(string & page_template, int dims[4], int block[4])
 {

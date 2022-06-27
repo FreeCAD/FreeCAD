@@ -71,16 +71,11 @@
 //	Which C++ standard is in use?
 //
 #if defined( _MSC_VER )
-#  if _MSC_VER <= 1200
-// MSVC++ 6.0
-#    define PYCXX_ISO_CPP_LIB 0
-#    define STR_STREAM <strstream>
-#    define TEMPLATE_TYPENAME class
-#  else
+
 #    define PYCXX_ISO_CPP_LIB 1
 #    define STR_STREAM <sstream>
 #    define TEMPLATE_TYPENAME typename
-#  endif
+
 #elif defined( __GNUC__ )
 #  if __GNUC__ >= 3
 #    define PYCXX_ISO_CPP_LIB 1

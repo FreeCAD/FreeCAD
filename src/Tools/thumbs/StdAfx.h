@@ -28,9 +28,7 @@
 #if !defined(AFX_STDAFX_H__BA56C57E_75FC_4E34_A374_AEA259EB50FA__INCLUDED_)
 #define AFX_STDAFX_H__BA56C57E_75FC_4E34_A374_AEA259EB50FA__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // Disable warnings
 #pragma warning(disable : 4996)
