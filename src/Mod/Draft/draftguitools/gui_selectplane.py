@@ -198,6 +198,9 @@ class Draft_SelectPlane:
             if hasattr(sel.Object, 'TypeId') and sel.Object.TypeId == 'App::Part':
                 self.setPlaneFromObjPlacement(sel.Object)
                 return True
+            elif hasattr(sel.Object, "TypeId") and sel.Object.TypeId == "PartDesign::Plane":
+                self.setPlaneFromObjPlacement(sel.Object)
+                return True
             elif Draft.getType(sel.Object) == "Axis":
                 FreeCAD.DraftWorkingPlane.alignToEdges(sel.Object.Shape.Edges)
                 self.display(FreeCAD.DraftWorkingPlane.axis)
