@@ -782,26 +782,23 @@ private:
                         } else if (dvd->Type.isValue("Radius")) {
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             arcPoints pts = dvd->getArcPoints();
+                            pointPair arrowPts = dvd->getArrowPositions();
                             Base::Vector3d center = pts.center;
                             center.y = -center.y;
-                            Base::Vector3d arcPoint = pts.onCurve.first;
-                            arcPoint.y = -arcPoint.y;
                             center = center + parentPos;
-                            arcPoint = arcPoint + parentPos;
+                            Base::Vector3d lineDir = (arrowPts.first - arrowPts.second).Normalize();
+                            Base::Vector3d arcPoint = center + lineDir * pts.radius;
                             writer.exportRadialDim(center, textLocn, arcPoint, dimText);
                         } else if(dvd->Type.isValue("Diameter")){
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             arcPoints pts = dvd->getArcPoints();
+                            pointPair arrowPts = dvd->getArrowPositions();
                             Base::Vector3d center = pts.center;
                             center.y = -center.y;
-                            double radius = pts.radius;
-                            Base::Vector3d lineDir = (textLocn - center).Normalize();
-                            Base::Vector3d end1 = center + lineDir * radius;
-                            end1.y = -end1.y;
-                            Base::Vector3d end2 = center - lineDir * radius;
-                            end2.y = -end2.y;
-                            end1 = end1 + parentPos;
-                            end2 = end2 + parentPos;
+                            center = center + parentPos;
+                            Base::Vector3d lineDir = (arrowPts.first - arrowPts.second).Normalize();
+                            Base::Vector3d end1 = center + lineDir * pts.radius;
+                            Base::Vector3d end2 = center - lineDir * pts.radius;
                             writer.exportDiametricDim(textLocn, end1, end2, dimText);
                         }
                    }

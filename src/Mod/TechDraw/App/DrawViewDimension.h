@@ -198,6 +198,10 @@ protected:
     pointPair   m_linearPoints;
     pointPair   m_arrowPositions;
 
+    void resetLinear(void);
+    void resetAngular(void);
+    void resetArc(void);
+
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
