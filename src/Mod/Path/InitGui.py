@@ -166,6 +166,12 @@ class PathWorkbench(Workbench):
                 if int(major) >= 1 and int(minor) >= 2 and int(patch) >= 2:
                     # subprocess.call(["camsim", "-v"])
                     toolcmdlist.append("Path_Camotics")
+                    from PathScripts import PathCamoticsGui
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        translate("Path", "Camotics usage requires version >= 1.2.2")
+                        + "\n"
+                    )
             except FileNotFoundError:
                 pass
 
