@@ -82,6 +82,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerTrimming.h
     DrawSketchHandlerExtend.h
     DrawSketchHandlerSplitting.h
+    DrawSketchHandlerInsert.h
     DrawSketchHandlerExternal.h
     DrawSketchHandlerCarbonCopy.h
     DrawSketchHandlerSlot.h

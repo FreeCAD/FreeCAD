@@ -84,6 +84,7 @@
 #include "DrawSketchHandlerTrimming.h"
 #include "DrawSketchHandlerExtend.h"
 #include "DrawSketchHandlerSplitting.h"
+#include "DrawSketchHandlerInsert.h"
 #include "DrawSketchHandlerExternal.h"
 #include "DrawSketchHandlerCarbonCopy.h"
 #include "DrawSketchHandlerSlot.h"
