@@ -195,7 +195,7 @@ class Draft_SelectPlane:
         sel = FreeCADGui.Selection.getSelectionEx()
         if len(sel) == 1:
             sel = sel[0]
-            if hasattr(sel.Object, 'TypeId') and sel.Object.TypeId == 'App::Part':
+            if hasattr(sel.Object, 'TypeId') and (sel.Object.TypeId == 'App::Part' or sel.Object.TypeId == 'PartDesign::Plane'):
                 self.setPlaneFromObjPlacement(sel.Object)
                 return True
             elif Draft.getType(sel.Object) == "Axis":
