@@ -87,6 +87,7 @@
 #include "DrawSketchHandlerExternal.h"
 #include "DrawSketchHandlerCarbonCopy.h"
 #include "DrawSketchHandlerSlot.h"
+#include "DrawSketchHandlerArcSlot.h"
 
 using namespace std;
 using namespace SketcherGui;
