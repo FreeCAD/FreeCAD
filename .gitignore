@@ -1,6 +1,11 @@
 # file types to ignore
 .*
 !/.gitignore
+!/.travis/
+!/.travis.yml
+!/.clang-format
+!/.git-blame-ignore-revs
+!/.gitattributes
 *.DS_Store
 *.pyc
 *.obj
