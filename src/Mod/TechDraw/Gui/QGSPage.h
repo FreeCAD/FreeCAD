@@ -69,8 +69,6 @@ class TechDrawGuiExport QGSPage : public QGraphicsScene
     Q_OBJECT
 
 public:
-    enum RendererType { Native, OpenGL, Image };
-
     QGSPage(ViewProviderPage *vp, QWidget *parent = nullptr);
     virtual ~QGSPage();
 
@@ -132,16 +130,8 @@ protected:
     QGITemplate *pageTemplate;
 
 private:
-    RendererType m_renderer;
-
-    bool drawBkg;
-    QBrush* bkgBrush;
-    QImage m_image;
     ViewProviderPage *m_vpPage;
 
-    QLabel *balloonCursor;
-    QPoint balloonCursorPos;
-    QPoint balloonHotspot;
 };
 
 } // namespace 
