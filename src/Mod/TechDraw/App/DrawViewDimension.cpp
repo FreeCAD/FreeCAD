@@ -154,13 +154,33 @@ DrawViewDimension::DrawViewDimension(void)
 
     //initialize the descriptive geometry.
     //TODO: should this be more like DVP with a "geometry object"?
+    resetLinear();
+    resetAngular();
+    resetArc();
+    m_hasGeometry = false;
+}
+
+DrawViewDimension::~DrawViewDimension()
+{
+    delete measurement;
+    measurement = nullptr;
+}
+
+void DrawViewDimension::resetLinear(void)
+{
     m_linearPoints.first  = Base::Vector3d(0,0,0);
     m_linearPoints.second = Base::Vector3d(0,0,0);
+}
 
+void DrawViewDimension::resetAngular(void)
+{
     m_anglePoints.ends.first = Base::Vector3d(0,0,0);
     m_anglePoints.ends.second = Base::Vector3d(0,0,0);
     m_anglePoints.vertex = Base::Vector3d(0,0,0);
+}
 
+void DrawViewDimension::resetArc(void)
+{
     m_arcPoints.isArc = false;
     m_arcPoints.center = Base::Vector3d(0,0,0);
     m_arcPoints.onCurve.first = Base::Vector3d(0,0,0);
@@ -169,13 +189,6 @@ DrawViewDimension::DrawViewDimension(void)
     m_arcPoints.arcEnds.second = Base::Vector3d(0,0,0);
     m_arcPoints.midArc = Base::Vector3d(0,0,0);
     m_arcPoints.arcCW = false;
-    m_hasGeometry = false;
-}
-
-DrawViewDimension::~DrawViewDimension()
-{
-    delete measurement;
-    measurement = nullptr;
 }
 
 void DrawViewDimension::onChanged(const App::Property* prop)
@@ -408,6 +421,10 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
     const std::vector<std::string> &subElements = References2D.getSubValues();
 
+    resetLinear();
+    resetAngular();
+    resetArc();
+
     if ( Type.isValue("Distance")  ||
          Type.isValue("DistanceX") ||
          Type.isValue("DistanceY") )  {
@@ -564,7 +581,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.arcEnds.second = Base::Vector3d(aoe->endPnt.x,aoe->endPnt.y,0.0);
                 pts.midArc         = Base::Vector3d(aoe->midPnt.x,aoe->midPnt.y,0.0);
                 pts.arcCW          = aoe->cw;
-                pts.onCurve.first  = Base::Vector3d(aoe->midPnt.x,aoe->midPnt.y,0.0);
+                pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * rAvg;   //arbitrary point on edge
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
            }
         } else if (base && base->geomType == TechDraw::GeomType::BSPLINE) {
