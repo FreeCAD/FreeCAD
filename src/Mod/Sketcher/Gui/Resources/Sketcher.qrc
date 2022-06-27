@@ -222,8 +222,6 @@
     </qresource>
     <qresource>
         <file>icons/tools/Sketcher_Clone.svg</file>
-        <file>icons/tools/Sketcher_CloseShape.svg</file>
-        <file>icons/tools/Sketcher_ConnectLines.svg</file>
         <file>icons/tools/Sketcher_Copy.svg</file>
         <file>icons/tools/Sketcher_DeleteConstraints.svg</file>
         <file>icons/tools/Sketcher_DeleteGeometry.svg</file>

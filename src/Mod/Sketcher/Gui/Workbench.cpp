@@ -358,8 +358,6 @@ template <>
 inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 {
     consaccel   << "Sketcher_SelectElementsWithDoFs"
-                << "Sketcher_CloseShape"
-                << "Sketcher_ConnectLines"
                 << "Sketcher_SelectConstraints"
                 << "Sketcher_SelectElementsAssociatedWithConstraints"
                 << "Sketcher_SelectRedundantConstraints"
@@ -385,8 +383,6 @@ template <>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
     consaccel   << "Sketcher_SelectElementsWithDoFs"
-                << "Sketcher_CloseShape"
-                << "Sketcher_ConnectLines"
                 << "Sketcher_SelectConstraints"
                 << "Sketcher_SelectElementsAssociatedWithConstraints"
                 << "Sketcher_SelectRedundantConstraints"
