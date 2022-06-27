@@ -669,7 +669,7 @@ protected:
     virtual void applyConstraint(std::vector<SelIdPair> &, int) {}
     virtual void activated(int /*iMsg*/);
     virtual bool isActive(void)
-    { return isCreateGeoActive(getActiveGuiDocument()); }
+    { return isCommandActive(getActiveGuiDocument()); }
 };
 
 class DrawSketchHandlerGenConstraint: public DrawSketchHandler
@@ -5704,7 +5704,7 @@ void CmdSketcherCompConstrainRadDia::languageChange()
 
 bool CmdSketcherCompConstrainRadDia::isActive(void)
 {
-    return isCreateGeoActive(getActiveGuiDocument());
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ======================================================================================
@@ -7516,7 +7516,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 
 bool CmdSketcherToggleDrivingConstraint::isActive(void)
 {
-    return isCreateGeoActive( getActiveGuiDocument() );
+    return isCommandActive( getActiveGuiDocument() );
 }
 
 DEF_STD_CMD_A(CmdSketcherToggleActiveConstraint)

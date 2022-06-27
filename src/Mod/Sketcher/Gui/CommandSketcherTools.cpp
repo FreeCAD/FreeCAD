@@ -61,38 +61,6 @@ using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
 
-bool isSketcherAcceleratorActive(Gui::Document *doc, bool actsOnSelection)
-{
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            auto mode = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
-                ->getSketchMode();
-            if (mode == ViewProviderSketch::STATUS_NONE ||
-                mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
-                if (!actsOnSelection)
-                    return true;
-                else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
-                    return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-void ActivateAcceleratorHandler(Gui::Document *doc, DrawSketchHandler *handler)
-{
-    std::unique_ptr<DrawSketchHandler> ptr(handler);
-    if (doc) {
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
-            vp->purgeHandler();
-            vp->activateHandler(ptr.release());
-        }
-    }
-}
-
 // ================================================================================
 
 // Close Shape Command
@@ -202,7 +170,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
 
 bool CmdSketcherCloseShape::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -289,7 +257,7 @@ void CmdSketcherConnect::activated(int iMsg)
 
 bool CmdSketcherConnect::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -366,7 +334,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectConstraints::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -412,7 +380,7 @@ void CmdSketcherSelectOrigin::activated(int iMsg)
 
 bool CmdSketcherSelectOrigin::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -456,7 +424,7 @@ void CmdSketcherSelectVerticalAxis::activated(int iMsg)
 
 bool CmdSketcherSelectVerticalAxis::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -500,7 +468,7 @@ void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
 
 bool CmdSketcherSelectHorizontalAxis::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -557,7 +525,7 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectRedundantConstraints::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -613,7 +581,7 @@ void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectMalformedConstraints::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -669,7 +637,7 @@ void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectPartiallyRedundantConstraints::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -724,7 +692,7 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectConflictingConstraints::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -845,7 +813,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -936,7 +904,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
 bool CmdSketcherSelectElementsWithDoFs::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -1049,7 +1017,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
 bool CmdSketcherRestoreInternalAlignmentGeometry::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -1251,7 +1219,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
 bool CmdSketcherSymmetry::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -1573,7 +1541,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     }
 */
 
-    ActivateAcceleratorHandler(getActiveGuiDocument(),
+    ActivateHandler(getActiveGuiDocument(),
                                new DrawSketchHandlerCopy(geoIdList, LastGeoId, LastPointPos, geoids, op));
 }
 
@@ -1619,7 +1587,7 @@ void CmdSketcherCopy::activate()
 
 bool CmdSketcherCopy::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -1664,7 +1632,7 @@ void CmdSketcherClone::activate()
 
 bool CmdSketcherClone::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 class CmdSketcherMove : public SketcherCopy
@@ -1707,7 +1675,7 @@ void CmdSketcherMove::activate()
 
 bool CmdSketcherMove::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -1807,7 +1775,7 @@ void CmdSketcherCompCopy::languageChange()
 
 bool CmdSketcherCompCopy::isActive(void)
 {
-    return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
+    return isCommandActive( getActiveGuiDocument(), true );
 }
 
 // ================================================================================
@@ -2120,7 +2088,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     SketchRectangularArrayDialog slad;
 
     if (slad.exec() == QDialog::Accepted) {
-        ActivateAcceleratorHandler(getActiveGuiDocument(),
+        ActivateHandler(getActiveGuiDocument(),
             new DrawSketchHandlerRectangularArray(geoIdList, LastGeoId, LastPointPos, geoids, slad.Clone,
                                                   slad.Rows, slad.Cols, slad.ConstraintSeparation,
                                                   slad.EqualVerticalHorizontalSpacing));
@@ -2129,7 +2097,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 
 bool CmdSketcherRectangularArray::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 // ================================================================================
@@ -2192,7 +2160,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
 
 bool CmdSketcherDeleteAllGeometry::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -2255,7 +2223,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
 bool CmdSketcherDeleteAllConstraints::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -2373,7 +2341,7 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
 
 bool CmdSketcherRemoveAxesAlignment::isActive(void)
 {
-    return isSketcherAcceleratorActive(getActiveGuiDocument(), true);
+    return isCommandActive(getActiveGuiDocument(), true);
 }
 
 void CreateSketcherCommandsConstraintAccel(void)

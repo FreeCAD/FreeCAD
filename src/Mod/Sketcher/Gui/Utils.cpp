@@ -302,17 +302,23 @@ void SketcherGui::ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler
     }
 }
 
-bool SketcherGui::isCreateGeoActive(Gui::Document *doc)
+bool SketcherGui::isCommandActive(Gui::Document *doc, bool actsOnSelection)
 {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
-            (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            /*if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->
-                getSketchMode() == ViewProviderSketch::STATUS_NONE)*/
-                return true;
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            auto mode = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
+                ->getSketchMode();
+            if (mode == ViewProviderSketch::STATUS_NONE ||
+                mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
+                if (!actsOnSelection)
+                    return true;
+                else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
+                    return true;
+            }
         }
     }
+
     return false;
 }
 

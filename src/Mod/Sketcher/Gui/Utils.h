@@ -112,7 +112,7 @@ double GetPointAngle (const Base::Vector2d &p1, const Base::Vector2d &p2);
 
 void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler);
 
-bool isCreateGeoActive(Gui::Document *doc);
+bool isCommandActive(Gui::Document *doc, bool actsOnSelection = false);
 
 SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc);
 
