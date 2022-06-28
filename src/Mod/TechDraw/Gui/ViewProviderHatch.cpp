@@ -92,24 +92,17 @@ std::vector<std::string> ViewProviderHatch::getDisplayModes(void) const
 
 bool ViewProviderHatch::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    TaskDlgHatch *projDlg = qobject_cast<TaskDlgHatch *>(dlg);
-    if (projDlg && (projDlg->getViewProvider() != this))
-        projDlg = nullptr; // somebody left task panel open
-
-    // clear the selection (convenience)
-    Gui::Selection().clearSelection();
-
-    // start the edit dialog
-    if (projDlg) {
-        projDlg->setCreateMode(false);
-        Gui::Control().showDialog(projDlg);
+    if (ModNum == ViewProvider::Default ) {
+        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+            return false;
+        }
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgHatch(this));
+        return true;
+    } else {
+        return Gui::ViewProviderDocumentObject::setEdit(ModNum);
     }
-    else {
-        Gui::Control().showDialog(new TaskDlgHatch(getViewObject(), this, false));
-    }
-
     return true;
 }
 

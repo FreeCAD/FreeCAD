@@ -23,11 +23,16 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
 #define DRAWINGGUI_QGRAPHICSITEMFACE_H
 
-#include <QByteArray>
+#include <Qt>
 #include <QGraphicsItem>
+#include <QSvgRenderer>
+#include <QByteArray>
+#include <QBrush>
 #include <QPixmap>
+#include <QImage>
 
 #include <Mod/TechDraw/App/HatchLine.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIPrimPath.h"
 
