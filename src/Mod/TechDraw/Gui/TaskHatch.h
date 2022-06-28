@@ -24,23 +24,23 @@
 #ifndef GUI_TASKVIEW_TASKHATCH_H
 #define GUI_TASKVIEW_TASKHATCH_H
 
+#include <App/Material.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
+#include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/Gui/ui_TaskHatch.h>
+
+
+class Ui_TaskHatch;
 
 namespace App
 {
 class DocumentObject;
 }
 
-namespace TechDraw
-{
-class DrawHatch;
-}
-
 namespace TechDrawGui
 {
-class Ui_TaskHatch;
 class ViewProviderHatch;
 
 class TaskHatch : public QWidget
@@ -48,43 +48,47 @@ class TaskHatch : public QWidget
     Q_OBJECT
 
 public:
-    TaskHatch(TechDraw::DrawHatch* inHatch,TechDrawGui::ViewProviderHatch* inVp, bool mode);
+    TaskHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
+    TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
     ~TaskHatch();
 
 public:
     virtual bool accept();
     virtual bool reject();
-    void setCreateMode(bool b) { m_createMode = b;}
-    bool getCreateMode() { return m_createMode; }
 
 protected Q_SLOTS:
     void onFileChanged(void);
+    void onScaleChanged();
+    void onColorChanged();
 
 protected:
     void changeEvent(QEvent *e);
-    void initUi();
-//    bool resetUi();
-    void updateValues();
-    void getParameters();
-    QStringList listToQ(std::vector<std::string> in);
+    void apply(bool forceUpdate = false);
 
-private Q_SLOTS:
-    void onScaleChanged();
-    void onColorChanged();
+    void createHatch(void);
+    void updateHatch(void);
+
+    void setUiPrimary();
+    void setUiEdit();
+
+    void saveHatchState();
+    void restoreHatchState();
+    void getParameters();
 
 private:
     std::unique_ptr<Ui_TaskHatch> ui;
     TechDraw::DrawHatch* m_hatch;
-    TechDrawGui::ViewProviderHatch* m_Vp;
-    App::DocumentObject* m_source;
+    TechDrawGui::ViewProviderHatch* m_vp;
+    TechDraw::DrawViewPart* m_dvp;
+    std::vector<std::string> m_subs;
     std::string m_file;
     double m_scale;
     App::Color m_color;
-    std::string m_origFile;
-    double m_origScale;
-    App::Color m_origColor;
 
-    bool m_createMode;
+    std::string m_saveFile;
+    double m_saveScale;
+    App::Color m_saveColor;
+    std::vector<std::string> m_saveSubs;
 
 };
 
@@ -93,9 +97,9 @@ class TaskDlgHatch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgHatch(TechDraw::DrawHatch* inHatch,TechDrawGui::ViewProviderHatch* inVp, bool mode);
+    TaskDlgHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
+    TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
     ~TaskDlgHatch();
-    const ViewProviderHatch * getViewProvider() const { return viewProvider; }
 
 public:
     /// is called the TaskView when the dialog is opened
@@ -110,12 +114,10 @@ public:
     virtual void helpRequested() { return;}
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
-    void setCreateMode(bool b);
 
     void update();
 
 protected:
-    const ViewProviderHatch *viewProvider;
 
 private:
     TaskHatch * widget;

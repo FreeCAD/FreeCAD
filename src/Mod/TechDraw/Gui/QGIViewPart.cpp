@@ -476,7 +476,6 @@ void QGIViewPart::drawViewPart()
             QGIFace* newFace = drawFace(*fit,i);
             newFace->isHatched(false);
             newFace->setFillMode(QGIFace::PlainFill);
-//            newFace->setFill(QColor(Qt::red), Qt::SolidPattern);  //this overrides the QGIF defaults
             TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
             TechDraw::DrawGeomHatch* fGeom = faceIsGeomHatched(i,geomObjs);
             if (fGeom) {
@@ -504,24 +503,30 @@ void QGIViewPart::drawViewPart()
                     }
                 }
             } else if (fHatch) {
-                if (!fHatch->SvgIncluded.isEmpty()) {
-                    if (getExporting()) {
-                        newFace->hideSvg(true);
-                    } else {
-                        newFace->hideSvg(false);
-                    }
-                    newFace->isHatched(true);
-                    newFace->setFillMode(QGIFace::SvgFill);
-                    newFace->setHatchFile(fHatch->SvgIncluded.getValue());
-                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
-                    ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
-                    if (hatchVp != nullptr) {
-                        double hatchScale = hatchVp->HatchScale.getValue();
-                        if (hatchScale > 0.0) {
-                            newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                if (fHatch->isSvgHatch()) {
+                    if (!fHatch->SvgIncluded.isEmpty()) {
+                        if (getExporting()) {
+                            newFace->hideSvg(true);
+                        } else {
+                            newFace->hideSvg(false);
                         }
-                        newFace->setHatchColor(hatchVp->HatchColor.getValue());
+                        newFace->isHatched(true);
+                        newFace->setFillMode(QGIFace::SvgFill);
+                        newFace->setHatchFile(fHatch->SvgIncluded.getValue());
+                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
+                        ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+                        if (hatchVp != nullptr) {
+                            double hatchScale = hatchVp->HatchScale.getValue();
+                            if (hatchScale > 0.0) {
+                                newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                            }
+                            newFace->setHatchColor(hatchVp->HatchColor.getValue());
+                        }
                     }
+                } else { //bitmap hatch
+                    newFace->isHatched(true);
+                    newFace->setFillMode(QGIFace::BitmapFill);
+                    newFace->setHatchFile(fHatch->SvgIncluded.getValue());
                 }
             }
             bool drawEdges = prefFaceEdges();

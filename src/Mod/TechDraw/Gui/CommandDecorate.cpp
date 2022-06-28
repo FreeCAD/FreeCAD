@@ -132,8 +132,8 @@ void CmdTechDrawHatch::activated(int iMsg)
         }
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
     if (removeOld) {
+        openCommand(QT_TRANSLATE_NOOP("Command", "Remove old Hatch"));
         std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
         for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
             std::vector<std::string> hatchSubs = h->Source.getSubValues();
@@ -154,33 +154,11 @@ void CmdTechDrawHatch::activated(int iMsg)
                 doCommand(Doc,"App.activeDocument().removeObject('%s')",r.second->getNameInDocument());
             }
         }
+        commitCommand();
     }
-
-    std::string FeatName = getUniqueObjectName("Hatch");
-    std::stringstream featLabel;
-    featLabel << FeatName << "F" << 
-                    TechDraw::DrawUtil::getIndexFromName(subNames.at(0)); //use 1st face# for label
-
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
-
-    auto hatch( static_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str())) );
-    hatch->Source.setValue(partFeat, subNames);
-
-    Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(hatch);
-    TechDrawGui::ViewProviderHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderHatch*>(vp);
-    if (!hvp) {
-        Base::Console().Log("ERROR - CommandDecorate - Hatch has no ViewProvider\n");
-        return;
-    }
-
-    //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
-    //seems very unwieldy
 
     // dialog to fill in hatch values
-    Gui::Control().showDialog(new TaskDlgHatch(hatch, hvp, true));
-
-    commitCommand();
+    Gui::Control().showDialog(new TaskDlgHatch(partFeat, subNames));
 
     //Horrible hack to force Tree update  ??still required?? 
     //WF: yes. ViewProvider will not claim children without this!
@@ -188,7 +166,6 @@ void CmdTechDrawHatch::activated(int iMsg)
     partFeat->X.setValue(x);
     getDocument()->recompute();
 }
-
 
 bool CmdTechDrawHatch::isActive(void)
 {

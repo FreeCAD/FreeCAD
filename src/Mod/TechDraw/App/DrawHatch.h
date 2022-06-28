@@ -23,11 +23,16 @@
 #ifndef _TechDraw_DrawHatch_h_
 #define _TechDraw_DrawHatch_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyLinks.h>
 
+namespace App {
+class Color;
+}
 
 namespace TechDraw
 {
@@ -46,6 +51,7 @@ public:
     App::PropertyFileIncluded SvgIncluded;
 
     virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual short mustExecute() const override;
 
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderHatch";
@@ -64,12 +70,15 @@ public:
     static std::string prefSvgHatch(void);
     static App::Color prefSvgHatchColor(void);
     
+    bool isSvgHatch(void) const;
+    bool isBitmapHatch(void) const;
+
 protected:
     void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;
-    void setupSvgIncluded(void);
-    void replaceSvgIncluded(std::string newSvgFile);
+    void setupFileIncluded(void);
+    void replaceFileIncluded(std::string newSvgFile);
 
 private:
 

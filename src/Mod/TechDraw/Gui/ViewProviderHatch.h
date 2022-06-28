@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERHATCH_H
 #define DRAWINGGUI_VIEWPROVIDERHATCH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderDocumentObject.h>
 
 namespace TechDraw{
