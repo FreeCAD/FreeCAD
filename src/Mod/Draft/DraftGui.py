@@ -270,7 +270,7 @@ class DraftToolBar:
         self.textbuffer = []
         self.crossedViews = []
         self.isTaskOn = False
-        self.fillmode = Draft.getParam("fillmode",False)
+        self.fillmode = Draft.getParam("fillmode", True)
         self.mask = None
         self.alock = False
         self.x = 0
