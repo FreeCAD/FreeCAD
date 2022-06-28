@@ -633,14 +633,13 @@ bool ViewProvider::checkRecursion(SoNode* node)
 
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInventorViewer* viewer) const
 {
-    return viewer->getPointOnRay(pos,const_cast<ViewProvider*>(this));
+    return viewer->getPointOnRay(pos, this);
 }
 
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, const View3DInventorViewer* viewer) const
 {
-    return viewer->getPointOnRay(pos,dir,const_cast<ViewProvider*>(this));
+    return viewer->getPointOnRay(pos, dir, this);
 }
-
 
 std::vector<Base::Vector3d> ViewProvider::getModelPoints(const SoPickedPoint* pp) const
 {

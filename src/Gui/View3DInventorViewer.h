@@ -210,11 +210,11 @@ public:
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */
-    SoPickedPoint* getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const;
+    SoPickedPoint* getPointOnRay(const SbVec2s& pos, const ViewProvider* vp) const;
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */
-    SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, ViewProvider* vp) const;
+    SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, const ViewProvider* vp) const;
     /// display override mode
     void setOverrideMode(const std::string &mode);
     void updateOverrideMode(const std::string &mode);

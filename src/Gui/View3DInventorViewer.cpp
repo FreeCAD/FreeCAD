@@ -1082,14 +1082,15 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
     }
 }
 
-SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const
+SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, const ViewProvider* vp) const
 {
     SoPath *path;
-    if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
+    if (vp == editViewProvider && pcEditingRoot->getNumChildren() > 1) {
         path = new SoPath(1);
         path->ref();
         path->append(pcEditingRoot);
-    }else{
+    }
+    else {
         //first get the path to this node and calculate the current transformation
         SoSearchAction sa;
         sa.setNode(vp->getRoot());
@@ -1128,17 +1129,18 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvi
     return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
 
-SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, ViewProvider* vp) const
+SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, const ViewProvider* vp) const
 {
     // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
 
     SoPath *path;
-    if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
+    if (vp == editViewProvider && pcEditingRoot->getNumChildren() > 1) {
         path = new SoPath(1);
         path->ref();
         path->append(pcEditingRoot);
-    }else{
+    }
+    else {
         //first get the path to this node and calculate the current setTransformation
         SoSearchAction sa;
         sa.setNode(vp->getRoot());
