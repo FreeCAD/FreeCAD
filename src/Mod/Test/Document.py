@@ -203,6 +203,15 @@ class DocumentBasicCases(unittest.TestCase):
     with self.assertRaises(ValueError):
       obj.myEnumeration = enumeration_choices[0]
 
+    obj.myEnumeration = enumeration_choices
+    obj.myEnumeration = 0
+    self.Doc.openTransaction("Modify enum")
+    obj.myEnumeration = 1
+    self.assertTrue(obj.myEnumeration, enumeration_choices[1])
+    self.Doc.commitTransaction()
+    self.Doc.undo()
+    self.assertTrue(obj.myEnumeration, enumeration_choices[0])
+
   def testWrongTypes(self):
     with self.assertRaises(TypeError):
       self.Doc.addObject("App::DocumentObjectExtension")
