@@ -89,6 +89,7 @@ class PathWorkbench(Workbench):
 
         import PathCommands
         import subprocess
+        from packaging.version import Version, parse
 
         PathGuiInit.Startup()
 
@@ -162,11 +163,11 @@ class PathWorkbench(Workbench):
                 r = subprocess.run(
                     ["camotics", "--version"], capture_output=True, text=True
                 ).stderr.strip()
-                major, minor, patch = r.split(".")
-                if int(major) >= 1 and int(minor) >= 2 and int(patch) >= 2:
-                    # subprocess.call(["camsim", "-v"])
+                v = parse(r)
+
+                if v >= Version("1.2.2"):
                     toolcmdlist.append("Path_Camotics")
-            except FileNotFoundError:
+            except (FileNotFoundError, ModuleNotFoundError):
                 pass
 
             try:

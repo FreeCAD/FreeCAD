@@ -78,14 +78,18 @@ def Startup():
         from PathScripts import PathUtilsGui
         from PathScripts import PathVcarveGui
 
+        from packaging.version import Version, parse
+
         # If camotics is installed and current enough, import the GUI
         try:
             import camotics
+
             r = subprocess.run(
                 ["camotics", "--version"], capture_output=True, text=True
             ).stderr.strip()
-            major, minor, patch = r.split(".")
-            if int(major) >= 1 and int(minor) >= 2 and int(patch) >= 2:
+
+            v = parse(r)
+            if v >= Version("1.2.2"):
                 from PathScripts import PathCamoticsGui
         except (FileNotFoundError, ModuleNotFoundError):
             pass
