@@ -37,8 +37,10 @@
 #endif
 
 #include "Geometry.h"
+#include "BSplineCurveBiArcs.h"
 #include "Tools.h"
 
+using Part::BSplineCurveBiArcs;
 using Part::GeomBSplineCurve;
 using Part::Geometry;
 
@@ -115,9 +117,9 @@ public:
 
 }
 
-void GeomBSplineCurve::createArcs(double tolerance, std::list<Geometry*>& new_spans,
-                                  const gp_Pnt& p_start, const gp_Vec& v_start,
-                                  double t_start, double t_end, gp_Pnt& p_end, gp_Vec& v_end) const
+void BSplineCurveBiArcs::createArcs(double tolerance, std::list<Geometry*>& new_spans,
+                                    const gp_Pnt& p_start, const gp_Vec& v_start,
+                                    double t_start, double t_end, gp_Pnt& p_end, gp_Vec& v_end) const
 {
     this->myCurve->D1(t_end, p_end, v_end);
 
@@ -161,15 +163,16 @@ void GeomBSplineCurve::createArcs(double tolerance, std::list<Geometry*>& new_sp
     }
     else {
         // calculate_biarc_points failed, just add a line
-        GeomLineSegment* line = new GeomLineSegment();
+        Part::GeomLineSegment* line = new Part::GeomLineSegment();
         line->setPoints(Base::convertTo<Base::Vector3d>(p_start),Base::convertTo<Base::Vector3d>(p_end));
         new_spans.push_back(line);
     }
 }
 
-GeomBSplineCurve::Type GeomBSplineCurve::calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Vec v_start,
-                                                              double t_end, const gp_Pnt& p4, gp_Vec v_end,
-                                                              gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const
+BSplineCurveBiArcs::Type
+BSplineCurveBiArcs::calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Vec v_start,
+                                         double t_end, const gp_Pnt& p4, gp_Vec v_end,
+                                         gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const
 {
     if (v_start.Magnitude() < Precision::Intersection())
         v_start = gp_Vec(p0, p1);
@@ -225,7 +228,13 @@ GeomBSplineCurve::Type GeomBSplineCurve::calculateBiArcPoints(double t_start, co
     return Type::SingleArc;
 }
 
-std::list<Geometry*> GeomBSplineCurve::toBiArcs(double tolerance) const
+BSplineCurveBiArcs::BSplineCurveBiArcs(const Handle(Geom_Curve)& c)
+    : myCurve(c)
+{
+
+}
+
+std::list<Geometry*> BSplineCurveBiArcs::toBiArcs(double tolerance) const
 {
     gp_Pnt p_start;
     gp_Vec v_start;

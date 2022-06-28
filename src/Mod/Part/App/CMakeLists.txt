@@ -502,6 +502,7 @@ SET(Part_SRCS
     BRepOffsetAPI_MakeOffsetFix.cpp
     BRepOffsetAPI_MakeOffsetFix.h
     BSplineCurveBiArcs.cpp
+    BSplineCurveBiArcs.h
     CrossSection.cpp
     CrossSection.h
     ExtrusionHelper.cpp

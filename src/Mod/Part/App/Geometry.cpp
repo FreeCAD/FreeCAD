@@ -124,6 +124,7 @@
 #include <Mod/Part/App/OffsetCurvePy.h>
 #include <Mod/Part/App/ParabolaPy.h>
 #include <Mod/Part/App/BezierSurfacePy.h>
+#include <Mod/Part/App/BSplineCurveBiArcs.h>
 #include <Mod/Part/App/BSplineSurfacePy.h>
 #include <Mod/Part/App/ConePy.h>
 #include <Mod/Part/App/CylinderPy.h>
@@ -1203,6 +1204,12 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
     catch (Standard_Failure& e) {
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
+}
+
+std::list<Geometry*> GeomBSplineCurve::toBiArcs(double tolerance) const
+{
+    BSplineCurveBiArcs arcs(this->myCurve);
+    return arcs.toBiArcs(tolerance);
 }
 
 void GeomBSplineCurve::workAroundOCCTBug(const std::vector<double>& weights)
