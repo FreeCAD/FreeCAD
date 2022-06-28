@@ -328,8 +328,13 @@ private:
     void createArcs(double tolerance, std::list<Geometry*>& new_spans,
                     const gp_Pnt &p_start, const gp_Vec &v_start,
                     double t_start, double t_end, gp_Pnt &p_end, gp_Vec &v_end) const;
-    bool calculateBiArcPoints(const gp_Pnt& p0, gp_Vec v_start,
-                              const gp_Pnt& p4, gp_Vec v_end,
+    enum class Type {
+        SingleArc,
+        SplitCurve,
+        SingleLine
+    };
+    Type calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Vec v_start,
+                              double t_end, const gp_Pnt& p4, gp_Vec v_end,
                               gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const;
 
     // If during assignment of weights (during the for loop iteratively setting the poles) all weights
