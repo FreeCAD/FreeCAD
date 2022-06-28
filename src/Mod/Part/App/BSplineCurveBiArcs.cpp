@@ -123,12 +123,12 @@ void GeomBSplineCurve::createArcs(double tolerance, std::list<Geometry*>& new_sp
 
     gp_Pnt p1, p2, p3;
 
-    bool can_do_spline_whole = calculateBiArcPoints(p_start, v_start, p_end, v_end, p1, p2, p3);
+    Type can_do_spline_whole = calculateBiArcPoints(t_start, p_start, v_start, t_end, p_end, v_end, p1, p2, p3);
 
     Geometry* arc_object1 = nullptr;
     Geometry* arc_object2 = nullptr;
 
-    if (can_do_spline_whole) {
+    if (can_do_spline_whole == Type::SingleArc) {
         Part::TangentialArc arc1(p_start, v_start, p2);
         Part::TangentialArc arc2(p2, gp_Vec(p3.XYZ() - p2.XYZ()), p_end);
 
@@ -138,26 +138,19 @@ void GeomBSplineCurve::createArcs(double tolerance, std::list<Geometry*>& new_sp
 
         if (!arc1.isRadiusEqual(p_middle1, tolerance) ||
             !arc2.isRadiusEqual(p_middle2, tolerance)) {
-            can_do_spline_whole = false;
+            can_do_spline_whole = Type::SplitCurve;
         }
         else {
             arc_object1 = arc1.makeArc();
             arc_object2 = arc2.makeArc();
         }
     }
-    else {
-        // calculate_biarc_points failed, just add a line
-        GeomLineSegment* line = new GeomLineSegment();
-        line->setPoints(Base::convertTo<Base::Vector3d>(p_start),Base::convertTo<Base::Vector3d>(p_end));
-        new_spans.push_back(line);
-        return;
-    }
 
-    if (can_do_spline_whole) {
+    if (can_do_spline_whole == Type::SingleArc) {
         new_spans.push_back(arc_object1);
         new_spans.push_back(arc_object2);
     }
-    else {
+    else if (can_do_spline_whole == Type::SplitCurve) {
         double t_middle = t_start + ((t_end - t_start) * 0.5);
         gp_Pnt p_middle;
         gp_Vec v_middle;
@@ -166,11 +159,17 @@ void GeomBSplineCurve::createArcs(double tolerance, std::list<Geometry*>& new_sp
         gp_Vec new_v_end;
         createArcs(tolerance, new_spans, p_middle, v_middle, t_middle, t_end, new_p_end, new_v_end);
     }
+    else {
+        // calculate_biarc_points failed, just add a line
+        GeomLineSegment* line = new GeomLineSegment();
+        line->setPoints(Base::convertTo<Base::Vector3d>(p_start),Base::convertTo<Base::Vector3d>(p_end));
+        new_spans.push_back(line);
+    }
 }
 
-bool GeomBSplineCurve::calculateBiArcPoints(const gp_Pnt& p0, gp_Vec v_start,
-                                            const gp_Pnt& p4, gp_Vec v_end,
-                                            gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const
+GeomBSplineCurve::Type GeomBSplineCurve::calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Vec v_start,
+                                                              double t_end, const gp_Pnt& p4, gp_Vec v_end,
+                                                              gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const
 {
     if (v_start.Magnitude() < Precision::Intersection())
         v_start = gp_Vec(p0, p1);
@@ -185,32 +184,45 @@ bool GeomBSplineCurve::calculateBiArcPoints(const gp_Pnt& p0, gp_Vec v_start,
     double a = 2*(v_start*v_end-1);
     double c = v*v;
     double b = (v*2)*(v_start+v_end);
-    if (fabs(a) < Precision::Intersection())
-        return false;
+    if (fabs(a) < Precision::Intersection()) {
+        // Check the tangent of a value between t_start and t_end
+        double t_mid = 0.9 * t_start + 0.1 * t_end;
+        if (fabs(t_mid) > 0.1) {
+            gp_Pnt p_mid;
+            gp_Vec v_mid;
+            this->myCurve->D1(t_mid, p_mid, v_mid);
+            v_mid.Normalize();
+            double a = 2*(v_start*v_mid-1);
+            if (fabs(a) >= Precision::Intersection()) {
+                return Type::SplitCurve;
+            }
+        }
+        return Type::SingleLine;
+    }
 
 
     double d = b*b-4*a*c;
     if (d < 0.0)
-        return false;
+        return Type::SingleLine;
 
     double sd = sqrt(d);
     double e1 = (-b - sd) / (2.0 * a);
     double e2 = (-b + sd) / (2.0 * a);
     if (e1 > 0 && e2 > 0)
-        return false;
+        return Type::SingleLine;
 
     double e = e1;
     if (e2 > e)
         e = e2;
     if (e < 0)
-        return false;
+        return Type::SingleLine;
 
     p1 = p0.XYZ() + v_start.XYZ() * e;
     p3 = p4.XYZ() - v_end.XYZ() * e;
     p2 = p1.XYZ() * 0.5 + p3.XYZ() * 0.5;
 
 
-    return true;
+    return Type::SingleArc;
 }
 
 std::list<Geometry*> GeomBSplineCurve::toBiArcs(double tolerance) const
