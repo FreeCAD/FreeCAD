@@ -450,6 +450,8 @@ public: /* Solver exposed interface */
         {solvedSketch.setRecalculateInitialSolutionWhileMovingPoint(recalculateInitialSolutionWhileMovingPoint);}
     /// Forwards a request for a temporary initMove to the solver using the current sketch state as a reference (enables dragging)
     inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true);
+    /// Forwards a request for a temporary initBSplinePieceMove to the solver using the current sketch state as a reference (enables dragging)
+    inline int initTemporaryBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint, bool fine=true);
     /** Forwards a request for point or curve temporary movement to the solver using the current state as a reference (enables dragging).
      *  NOTE: A temporary move operation must always be preceded by a initTemporaryMove() operation.
      */
@@ -690,6 +692,17 @@ inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine/*=
         solve();
 
     return solvedSketch.initMove(geoId,pos,fine);
+}
+
+inline int SketchObject::initTemporaryBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint, bool fine)
+{
+    // if a previous operation did not update the geometry (including geometry extensions)
+    // or constraints (including any deleted pointer, as in renameConstraint) of the solver,
+    // here we update them before starting a temporary operation.
+    if(solverNeedsUpdate)
+        solve();
+
+    return solvedSketch.initBSplinePieceMove(geoId,pos,firstPoint,fine);
 }
 
 inline int SketchObject::moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative/*=false*/)

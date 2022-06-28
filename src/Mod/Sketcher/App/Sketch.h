@@ -133,9 +133,18 @@ public:
       */
     int initMove(int geoId, PointPos pos, bool fine=true);
 
+    /** Initializes a B-spline piece drag by setting the current
+      * sketch status as a reference. Only moves piece around `firstPoint`.
+      */
+    int initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint, bool fine=true);
+
     /** Resets the initialization of a point or curve drag
      */
     void resetInitMove();
+
+    /** Limits a b-spline drag to the segment around `firstPoint`.
+     */
+    int limitBSplineMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint);
 
     /** move this point (or curve) to a new location and solve.
       * This will introduce some additional weak constraints expressing
