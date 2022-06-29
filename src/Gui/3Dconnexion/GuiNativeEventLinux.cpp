@@ -21,41 +21,16 @@
  ***************************************************************************/
 
 #include <FCConfig.h>
-#include <cstdio>
 
 #include "GuiNativeEventLinux.h"
 
 #include "GuiApplicationNativeEventAware.h"
 #include <Base/Console.h>
-#include <Base/FileInfo.h>
 #include <QMainWindow>
 
 #include <QSocketNotifier>
 
 #include <spnav.h>
-
-namespace {
-class RedirectStdErr
-{
-public:
-    RedirectStdErr()
-        : fi(Base::FileInfo::getTempFileName())
-        , file(stderr)
-    {
-        stderr = fopen(fi.filePath().c_str(), "w");
-    }
-    ~RedirectStdErr()
-    {
-        fclose(stderr);
-        fi.deleteFile();
-        stderr = file;
-    }
-
-private:
-    Base::FileInfo fi;
-    FILE* file;
-};
-}
 
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 : GuiAbstractNativeEvent(app)
@@ -72,8 +47,6 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
 
 void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 {
-    // tmp. redirect stderr to a file to suppress an error message from spnav_open()
-    RedirectStdErr err;
     Q_UNUSED(window)
     if (spnav_open() == -1) {
         Base::Console().Log("Couldn't connect to spacenav daemon. Please ignore if you don't have a spacemouse.\n");
