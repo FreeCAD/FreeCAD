@@ -406,7 +406,7 @@ void DownloadItem::tryAgain()
         m_output.remove();
     m_reply = r;
     init();
-    /*emit*/ statusChanged();
+    Q_EMIT statusChanged();
 }
 
 void DownloadItem::contextMenuEvent (QContextMenuEvent * e)
@@ -429,11 +429,11 @@ void DownloadItem::downloadReadyRead()
             downloadInfoLabel->setText(tr("Error opening saved file: %1")
                     .arg(m_output.errorString()));
             stopButton->click();
-            /*emit*/ statusChanged();
+            Q_EMIT statusChanged();
             return;
         }
         downloadInfoLabel->setToolTip(m_url.toString());
-        /*emit*/ statusChanged();
+        Q_EMIT statusChanged();
     }
     if (-1 == m_output.write(m_reply->readAll())) {
         downloadInfoLabel->setText(tr("Error saving: %1")
@@ -604,7 +604,7 @@ void DownloadItem::finished()
     stopButton->hide();
     m_output.close();
     updateInfoLabel();
-    /*emit*/ statusChanged();
+    Q_EMIT statusChanged();
 }
 
 #include "moc_DownloadItem.cpp"

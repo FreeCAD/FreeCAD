@@ -87,7 +87,7 @@ public:
         // causes some problems with Qt5.
         run();
         // Can't use the finished() signal of QThread
-        emitFinished();
+        Q_EMIT emitFinished();
     }
 
     void run() {

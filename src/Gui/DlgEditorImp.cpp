@@ -132,7 +132,7 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
     QStringList labels; labels << tr("Items");
     ui->displayItems->setHeaderLabels(labels);
     ui->displayItems->header()->hide();
-    for (QVector<QPair<QString, unsigned int> >::ConstIterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
+    for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->displayItems);
         item->setText(0, tr((*it).first.toLatin1()));
     }
@@ -193,7 +193,7 @@ void DlgSettingsEditorImp::saveSettings()
 
     // Saves the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
-    for (QVector<QPair<QString, unsigned int> >::ConstIterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
+    for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
         unsigned long col = static_cast<unsigned long>((*it).second);
         hGrp->SetUnsigned((*it).first.toLatin1(), col);
     }
@@ -265,7 +265,7 @@ void DlgSettingsEditorImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         int index = 0;
-        for (QVector<QPair<QString, unsigned int> >::ConstIterator it = d->colormap.begin(); it != d->colormap.end(); ++it)
+        for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it)
             ui->displayItems->topLevelItem(index++)->setText(0, tr((*it).first.toLatin1()));
         ui->retranslateUi(this);
     } else {

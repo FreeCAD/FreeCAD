@@ -238,7 +238,7 @@ QByteArray PythonOnlineHelp::fileNotFound() const
     QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
-    QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
+    QString httpResponseHeader = http.arg(404).arg(QString::fromLatin1("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
@@ -267,7 +267,7 @@ QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
     QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
-    QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
+    QString httpResponseHeader = http.arg(404).arg(QString::fromLatin1("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;

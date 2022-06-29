@@ -200,7 +200,7 @@ TStringList Translator::supportedLanguages() const
 {
     TStringList languages;
     TStringMap locales = supportedLocales();
-    for (auto it : locales)
+    for (const auto& it : locales)
         languages.push_back(it.first);
 
     return languages;

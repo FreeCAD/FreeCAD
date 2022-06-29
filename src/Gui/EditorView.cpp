@@ -479,7 +479,7 @@ void EditorView::printPdf()
 void EditorView::setCurrentFileName(const QString &fileName)
 {
     d->fileName = fileName;
-    /*emit*/ changeFileName(d->fileName);
+    Q_EMIT changeFileName(d->fileName);
     d->textEdit->document()->setModified(false);
 
     QString name;

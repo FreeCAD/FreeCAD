@@ -915,7 +915,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
             objitem->object()->setupContextMenu(&editMenu, this, SLOT(onStartEditing()));
             QList<QAction*> editAct = editMenu.actions();
             if (!editAct.isEmpty()) {
-                QAction* topact = contextMenu.actions().front();
+                QAction* topact = contextMenu.actions().constFirst();
                 for (QList<QAction*>::iterator it = editAct.begin(); it != editAct.end(); ++it)
                     contextMenu.insertAction(topact, *it);
                 QAction* first = editAct.front();
@@ -1326,7 +1326,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject* obj) {
 
 void TreeWidget::onSearchObjects()
 {
-    emitSearchObjects();
+    Q_EMIT emitSearchObjects();
 }
 
 void TreeWidget::onActivateDocument(QAction* active)
@@ -3282,7 +3282,7 @@ const char* DocumentItem::getTreeName() const {
         for(auto _item : _it->second->items) {
 
 #define FOREACH_ITEM_ALL(_item) \
-    for(auto _v : ObjectMap) {\
+    for(const auto& _v : ObjectMap) {\
         for(auto _item : _v.second->items) {
 
 #define END_FOREACH_ITEM }}

@@ -791,7 +791,7 @@ void DlgCustomToolbarsImp::removeCustomCommand(const QString& name, const QByteA
             cmd = "Separator";
         }
         QList<QAction*> actions = bars.front()->actions();
-        for (QList<QAction*>::ConstIterator it = actions.begin(); it != actions.end(); ++it) {
+        for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
             if ((*it)->data().toByteArray() == cmd) {
                 // if we move a separator then make sure to pick up the right one
                 if (numSep > 0) {
@@ -822,7 +822,7 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
         }
         QList<QAction*> actions = bars.front()->actions();
         QAction* before=nullptr;
-        for (QList<QAction*>::ConstIterator it = actions.begin(); it != actions.end(); ++it) {
+        for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
             if ((*it)->data().toByteArray() == cmd) {
                 // if we move a separator then make sure to pick up the right one
                 if (numSep > 0) {
@@ -862,7 +862,7 @@ void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByt
             cmd = "Separator";
         }
         QList<QAction*> actions = bars.front()->actions();
-        for (QList<QAction*>::ConstIterator it = actions.begin(); it != actions.end(); ++it) {
+        for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
             if ((*it)->data().toByteArray() == cmd) {
                 // if we move a separator then make sure to pick up the right one
                 if (numSep > 0) {

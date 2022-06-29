@@ -268,7 +268,7 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     ui->actionAccel->clear();
 
     // emit signal to notify the container widget
-    addMacroAction(actionName);
+    Q_EMIT addMacroAction(actionName);
 }
 
 void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
@@ -352,7 +352,7 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
     }
 
     // emit signal to notify the container widget
-    modifyMacroAction(actionName);
+    Q_EMIT modifyMacroAction(actionName);
 
     // call this at the end because it internally invokes the highlight method
     if (macro->getPixmap())
@@ -378,7 +378,7 @@ void DlgCustomActionsImp::on_buttonRemoveAction_clicked()
         if (actionName == (*it2)->getName())
         {
             // emit signal to notify the container widget
-            removeMacroAction(actionName);
+            Q_EMIT removeMacroAction(actionName);
             // remove from manager and delete it immediately
             rclMan.removeCommand(*it2);
             break;

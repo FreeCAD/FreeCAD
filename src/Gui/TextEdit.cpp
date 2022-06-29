@@ -450,7 +450,7 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         lineNumberArea->setFont(font);
     }
     else {
-        QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
+        QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
             unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
@@ -579,7 +579,7 @@ bool CompletionList::eventFilter(QObject * watched, QEvent * event)
                 hide();
                 return false;
             } else if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
-                itemActivated(currentItem());
+                Q_EMIT itemActivated(currentItem());
                 return true;
             }
         } else if (event->type() == QEvent::FocusOut) {

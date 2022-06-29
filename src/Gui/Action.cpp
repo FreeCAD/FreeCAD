@@ -254,7 +254,7 @@ void ActionGroup::addTo(QWidget *w)
         }
         else if (w->inherits("QToolBar")) {
             w->addAction(_action);
-            QToolButton* tb = w->findChildren<QToolButton*>().last();
+            QToolButton* tb = w->findChildren<QToolButton*>().constLast();
             tb->setPopupMode(QToolButton::MenuButtonPopup);
             tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
             QList<QAction*> acts = _group->actions();
@@ -329,10 +329,13 @@ int ActionGroup::checkedAction() const
 
 void ActionGroup::setCheckedAction(int i)
 {
-    QAction* a = _group->actions()[i];
+    auto acts = _group->actions();
+    QAction* a = acts.at(i);
     a->setChecked(true);
     this->setIcon(a->icon());
-    if (!this->_isMode) this->setToolTip(a->toolTip());
+
+    if (!this->_isMode)
+        this->setToolTip(a->toolTip());
     this->setProperty("defaultAction", QVariant(i));
 }
 
@@ -481,7 +484,7 @@ void WorkbenchComboBox::onActivated(int i)
 {
     // Send the event to the workbench group to delay the destruction of the emitting widget.
     int index = itemData(i).toInt();
-    WorkbenchActionEvent* ev = new WorkbenchActionEvent(this->actions()[index]);
+    WorkbenchActionEvent* ev = new WorkbenchActionEvent(this->actions().at(index));
     QApplication::postEvent(this->group, ev);
     // TODO: Test if we can use this instead
     //QTimer::singleShot(20, this->actions()[i], SLOT(trigger()));

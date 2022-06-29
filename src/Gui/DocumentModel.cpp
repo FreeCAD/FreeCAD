@@ -419,7 +419,7 @@ void DocumentModel::slotRelabelDocument(const Gui::Document& Doc)
     if (row > -1) {
         QModelIndex parent = createIndex(0,0,d->rootItem);
         QModelIndex item = index (row, 0, parent);
-        dataChanged(item, item);
+        Q_EMIT dataChanged(item, item);
     }
 }
 
@@ -429,7 +429,7 @@ void DocumentModel::slotActiveDocument(const Gui::Document& /*Doc*/)
     QModelIndex parent = createIndex(0,0,d->rootItem);
     QModelIndex top = index (0, 0, parent);
     QModelIndex bottom = index (d->rootItem->childCount()-1, 0, parent);
-    dataChanged(top, bottom);
+    Q_EMIT dataChanged(top, bottom);
 }
 
 void DocumentModel::slotInEdit(const Gui::ViewProviderDocumentObject& v)
@@ -494,7 +494,7 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
                 QModelIndex parent = createIndex(0,0,parentitem);
                 int row = (*it)->row();
                 QModelIndex item = index (row, 0, parent);
-                dataChanged(item, item);
+                Q_EMIT dataChanged(item, item);
             }
         }
     }

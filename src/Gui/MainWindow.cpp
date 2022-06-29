@@ -682,7 +682,7 @@ void MainWindow::activateWorkbench(const QString& name)
         }
     }
     // emit this signal
-    workbenchActivated(name);
+    Q_EMIT workbenchActivated(name);
     updateActions(true);
 }
 
@@ -812,7 +812,7 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
                 Qt::WindowStates oldstate = static_cast<QWindowStateChangeEvent*>(e)->oldState();
                 Qt::WindowStates newstate = view->windowState();
                 if (oldstate != newstate)
-                    windowStateChanged(view);
+                    Q_EMIT windowStateChanged(view);
             }
         }
 
@@ -1156,11 +1156,11 @@ void MainWindow::closeEvent (QCloseEvent * e)
         QList<QDialog*> dialogs = this->findChildren<QDialog*>();
         // It is possible that closing a dialog internally closes further dialogs. Thus,
         // we have to check the pointer before.
-        QList< QPointer<QDialog> > dialogs_ptr;
+        QVector< QPointer<QDialog> > dialogs_ptr;
         for (QList<QDialog*>::iterator it = dialogs.begin(); it != dialogs.end(); ++it) {
             dialogs_ptr.append(*it);
         }
-        for (QList< QPointer<QDialog> >::iterator it = dialogs_ptr.begin(); it != dialogs_ptr.end(); ++it) {
+        for (QVector< QPointer<QDialog> >::iterator it = dialogs_ptr.begin(); it != dialogs_ptr.end(); ++it) {
             if (!(*it).isNull())
                 (*it)->close();
         }
@@ -1174,7 +1174,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
         if (Workbench* wb = WorkbenchManager::instance()->active())
             wb->removeTaskWatcher();
 
-        /*emit*/ mainWindowClosed();
+        Q_EMIT  mainWindowClosed();
         d->activityTimer->stop();
 
         // https://forum.freecadweb.org/viewtopic.php?f=8&t=67748

@@ -932,7 +932,7 @@ void ManualAlignment::finish()
     Gui::getMainWindow()->showMessage(tr("The alignment has finished"));
 
     // If an event receiver has been defined send the manual alignment finished event to it
-    emitFinished();
+    Q_EMIT emitFinished();
 }
 
 /**
@@ -950,7 +950,7 @@ void ManualAlignment::cancel()
     Gui::getMainWindow()->showMessage(tr("The alignment has been canceled"));
 
     // If an event receiver has been defined send the manual alignment cancelled event to it
-    emitCanceled();
+    Q_EMIT emitCanceled();
 }
 
 void ManualAlignment::align()

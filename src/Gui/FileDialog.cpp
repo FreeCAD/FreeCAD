@@ -214,7 +214,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
-            file = dlg.selectedFiles().front();
+            file = dlg.selectedFiles().constFirst();
         }
     }
     else {
@@ -291,7 +291,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
-            file = dlg.selectedFiles().front();
+            file = dlg.selectedFiles().constFirst();
         }
     }
     else {
@@ -469,7 +469,7 @@ void FileOptionsDialog::accept()
         bool ok=false;
         // Compare the given suffix with the suffixes of all filters
         QString filter;
-        for (QStringList::ConstIterator it = filters.begin(); it != filters.end(); ++it) {
+        for (QStringList::ConstIterator it = filters.cbegin(); it != filters.cend(); ++it) {
             if ((*it).contains(ext)) {
                 filter = *it;
                 ok = true;
@@ -688,7 +688,7 @@ void FileChooser::editingFinished()
     QString le_converted = QDir::fromNativeSeparators(lineEdit->text());
     lineEdit->setText(le_converted);
     FileDialog::setWorkingDirectory(le_converted);
-    fileNameSelected(le_converted);
+    Q_EMIT fileNameSelected(le_converted);
 }
 
 /**
@@ -730,7 +730,7 @@ void FileChooser::chooseFile()
         fn = QDir::fromNativeSeparators(fn);
         lineEdit->setText(fn);
         FileDialog::setWorkingDirectory(fn);
-        fileNameSelected(fn);
+        Q_EMIT fileNameSelected(fn);
     }
 }
 
@@ -944,8 +944,8 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
             dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
-    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin();
-        it != filetypeHandler.end(); ++it) {
+    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.cbegin();
+        it != filetypeHandler.cend(); ++it) {
         if (it.value().size() > 1) {
             SelectModule dlg(it.key(),it.value(), getMainWindow());
             QApplication::beep();
@@ -1006,8 +1006,8 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
             dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
-    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin();
-        it != filetypeHandler.end(); ++it) {
+    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.cbegin();
+        it != filetypeHandler.cend(); ++it) {
         if (it.value().size() > 1) {
             SelectModule dlg(it.key(),it.value(), getMainWindow());
             QApplication::beep();

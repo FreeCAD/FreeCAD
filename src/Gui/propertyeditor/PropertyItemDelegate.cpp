@@ -237,7 +237,7 @@ void PropertyItemDelegate::valueChanged()
     QWidget* editor = qobject_cast<QWidget*>(sender());
     if (editor) {
         Base::FlagToggler<> flag(changed);
-        commitData(editor);
+        Q_EMIT commitData(editor);
     }
 }
 

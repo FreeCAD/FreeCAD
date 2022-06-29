@@ -67,7 +67,7 @@ void ButtonView::goSelectionChanged(const QItemSelection &selected, const QItemS
     if (selected.indexes().isEmpty())
         return;
     QModelIndex select(selected.indexes().at(0));
-    changeCommandSelection(this->model()->data(select, Qt::UserRole).toString());
+    Q_EMIT changeCommandSelection(this->model()->data(select, Qt::UserRole).toString());
 }
 
 void ButtonView::goChangedCommand(const QString& commandName)
@@ -329,7 +329,7 @@ void CommandView::goClicked(const QModelIndex &index)
         QString commandName = this->model()->data(index, Qt::UserRole).toString();
         if (commandName.isEmpty())
             return;
-        changedCommand(commandName);
+        Q_EMIT changedCommand(commandName);
     }
 }
 

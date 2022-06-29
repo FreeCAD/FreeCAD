@@ -96,8 +96,8 @@ public:
     NetworkAccessManager(QObject *parent = nullptr);
 
 private Q_SLOTS:
-    void authenticationRequired(QNetworkReply *reply, QAuthenticator *auth);
-    void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth);
+    void authenticationRequired(QNetworkReply *reply, QAuthenticator *auth);  // clazy:exclude=overridden-signal
+    void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth);  // clazy:exclude=overridden-signal
 };
 
 #include "ui_DownloadItem.h"

@@ -89,7 +89,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
 
     QPixmap pixmap;
     dataStream << items.count();
-    for (QList<QListWidgetItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
+    for (QList<QListWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
         if (it == items.begin())
             pixmap = ((*it)->data(Qt::UserRole)).value<QPixmap>();
         dataStream << (*it)->text();
@@ -113,7 +113,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
 void CommandIconView::onSelectionChanged(QListWidgetItem * item, QListWidgetItem *)
 {
     if (item)
-        emitSelectionChanged(item->toolTip());
+        Q_EMIT emitSelectionChanged(item->toolTip());
 }
 
 // ------------------------------------------------------------------------------
@@ -825,12 +825,12 @@ void ColorButton::onChooseColor()
             QColor c = cd.selectedColor();
             if (c.isValid()) {
                 setColor(c);
-                changed();
+                Q_EMIT changed();
             }
         }
         else if (d->autoChange) {
             setColor(currentColor);
-            changed();
+            Q_EMIT changed();
         }
     }
     else {
@@ -853,13 +853,13 @@ void ColorButton::onChooseColor()
 void ColorButton::onColorChosen(const QColor& c)
 {
     setColor(c);
-    changed();
+    Q_EMIT changed();
 }
 
 void ColorButton::onRejected()
 {
     setColor(d->old);
-    changed();
+    Q_EMIT changed();
 }
 
 // ------------------------------------------------------------------------------
@@ -1117,7 +1117,7 @@ void LabelButton::setValue(const QVariant& val)
 {
     _val = val;
     showValue(_val);
-    valueChanged(_val);
+    Q_EMIT valueChanged(_val);
 }
 
 void LabelButton::showValue(const QVariant& data)

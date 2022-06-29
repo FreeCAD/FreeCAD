@@ -364,7 +364,7 @@ void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
         QByteArray data = wget->readAll();
         Base::Console().Warning(data);
     }
-    wgetExited();
+    Q_EMIT wgetExited();
 }
 
 /**

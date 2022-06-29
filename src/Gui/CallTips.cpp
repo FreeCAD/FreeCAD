@@ -637,21 +637,21 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
                 // which in Qt 4.8 gives Key_Minus instead of Key_Underscore
             }
             else if (this->hideKeys.indexOf(ke->key()) > -1) {
-                itemActivated(currentItem());
+                Q_EMIT itemActivated(currentItem());
                 return false;
             }
             else if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
-                itemActivated(currentItem());
+                Q_EMIT itemActivated(currentItem());
                 return true;
             }
             else if (ke->key() == Qt::Key_Tab) {
                 // enable call completion for activating items
                 Temporary<bool> tmp( this->doCallCompletion, true ); //< previous state restored on scope exit
-                itemActivated( currentItem() );
+                Q_EMIT itemActivated( currentItem() );
                 return true;
             }
             else if (this->compKeys.indexOf(ke->key()) > -1) {
-                itemActivated(currentItem());
+                Q_EMIT itemActivated(currentItem());
                 return false;
             }
             else if (ke->key() == Qt::Key_Shift || ke->key() == Qt::Key_Control ||

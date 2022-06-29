@@ -508,7 +508,7 @@ void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sR
 #endif
     }
     else {
-        QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
+        QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
             unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
@@ -1030,7 +1030,7 @@ bool PythonConsole::canInsertFromMimeData (const QMimeData * source) const
         return true;
     if (source->hasUrls()) {
         QList<QUrl> uri = source->urls();
-        for (QList<QUrl>::ConstIterator it = uri.begin(); it != uri.end(); ++it) {
+        for (QList<QUrl>::Iterator it = uri.begin(); it != uri.end(); ++it) {
             QFileInfo info((*it).toLocalFile());
             if (info.exists() && info.isFile()) {
                 QString ext = info.suffix().toLower();
@@ -1055,7 +1055,7 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
     bool existingFile = false;
     if (source->hasUrls()) {
         QList<QUrl> uri = source->urls();
-        for (QList<QUrl>::ConstIterator it = uri.begin(); it != uri.end(); ++it) {
+        for (QList<QUrl>::Iterator it = uri.begin(); it != uri.end(); ++it) {
             // get the file name and check the extension
             QFileInfo info((*it).toLocalFile());
             QString ext = info.suffix().toLower();
@@ -1481,7 +1481,7 @@ void PythonConsoleHighlighter::colorChanged(const QString& type, const QColor& c
 ConsoleHistory::ConsoleHistory()
 : _scratchBegin(0)
 {
-    _it = _history.end();
+    _it = _history.cend();
 }
 
 ConsoleHistory::~ConsoleHistory()
@@ -1490,12 +1490,12 @@ ConsoleHistory::~ConsoleHistory()
 
 void ConsoleHistory::first()
 {
-    _it = _history.begin();
+    _it = _history.cbegin();
 }
 
 bool ConsoleHistory::more()
 {
-    return (_it != _history.end());
+    return (_it != _history.cend());
 }
 
 /**
@@ -1508,10 +1508,10 @@ bool ConsoleHistory::next()
     bool wentNext = false;
 
     // if we didn't reach history's end ...
-    if (_it != _history.end())
+    if (_it != _history.cend())
     {
       // we go forward until we find an item matching the prefix.
-      for (++_it; _it != _history.end(); ++_it)
+      for (++_it; _it != _history.cend(); ++_it)
       {
         if (!_it->isEmpty() && _it->startsWith( _prefix ))
           { break; }
@@ -1534,11 +1534,11 @@ bool ConsoleHistory::prev( const QString &prefix )
     bool wentPrev = false;
 
     // store prefix if it's the first history access
-    if (_it == _history.end())
+    if (_it == _history.cend())
       { _prefix = prefix; }
 
     // while we didn't go back or reach history's begin ...
-    while (!wentPrev && _it != _history.begin())
+    while (!wentPrev && _it != _history.cbegin())
     {
       // go back in history and check if item matches prefix
       // Skip empty items
@@ -1564,7 +1564,7 @@ void ConsoleHistory::append( const QString& item )
     _history.append( item );
     // reset iterator to make the next history
     //   access begin with the latest item.
-    _it = _history.end();
+    _it = _history.cend();
 }
 
 const QStringList& ConsoleHistory::values() const
@@ -1577,7 +1577,7 @@ const QStringList& ConsoleHistory::values() const
  */
 void ConsoleHistory::restart( void )
 {
-    _it = _history.end();
+    _it = _history.cend();
 }
 
 /**

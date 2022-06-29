@@ -352,7 +352,7 @@ void UIntSpinBox::setValue(uint value)
 
 void UIntSpinBox::valueChange(int value)
 {
-    valueChanged(d->mapToUInt(value));
+    Q_EMIT valueChanged(d->mapToUInt(value));
 }
 
 uint UIntSpinBox::minimum() const

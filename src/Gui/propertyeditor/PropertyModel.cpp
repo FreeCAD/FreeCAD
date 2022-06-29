@@ -436,7 +436,7 @@ void PropertyModel::updateProperty(const App::Property& prop)
     QModelIndex parent = this->index(item->parent()->row(), 0, QModelIndex());
     item->assignProperty(&prop);
     QModelIndex data = this->index(item->row(), column, parent);
-    dataChanged(data, data);
+    Q_EMIT dataChanged(data, data);
     updateChildren(item, column, data);
 }
 
@@ -492,7 +492,7 @@ void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelI
     if (numChild > 0) {
         QModelIndex topLeft = this->index(0, column, parent);
         QModelIndex bottomRight = this->index(numChild, column, parent);
-        dataChanged(topLeft, bottomRight);
+        Q_EMIT dataChanged(topLeft, bottomRight);
 #if 0 // It seems we don't have to inform grand children
         for (int row=0; row<numChild; row++) {
             PropertyItem* child = item->child(row);

@@ -52,11 +52,11 @@ public:
 
     /// Show the object in the view: suppresses behavior of DocumentObjectGroup
     virtual void extensionShow(void) override {
-        ViewProviderExtension::extensionShow();
+        ViewProviderExtension::extensionShow(); // clazy:exclude=skipped-base-method
     }
     /// Hide the object in the view: suppresses behavior of DocumentObjectGroup
     virtual void extensionHide(void) override {
-        ViewProviderExtension::extensionHide();
+        ViewProviderExtension::extensionHide(); // clazy:exclude=skipped-base-method
     }
 
     virtual void extensionUpdateData(const App::Property*) override;

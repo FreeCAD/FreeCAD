@@ -4374,7 +4374,7 @@ void LinkLabel::onLinkChanged() {
         auto links = dlg->currentLinks();
         if(links != dlg->originalLinks()) {
             link = QVariant::fromValue(links);
-            /*emit*/ linkChanged(link);
+            Q_EMIT  linkChanged(link);
             updatePropertyLink();
         }
     }

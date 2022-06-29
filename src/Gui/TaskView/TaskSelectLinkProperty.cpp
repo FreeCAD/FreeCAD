@@ -188,11 +188,11 @@ void TaskSelectLinkProperty::checkSelectionStatus(void)
 
     if (Filter->match()) {
         palette.setBrush(QPalette::Base,QColor(200,250,200));
-        emitSelectionFit();
+        Q_EMIT emitSelectionFit();
     }
     else {
         palette.setBrush(QPalette::Base,QColor(250,200,200));
-        emitSelectionMisfit();
+        Q_EMIT emitSelectionMisfit();
     }
     //ui->listWidget->setAutoFillBackground(true);
     ui->listWidget->setPalette(palette);

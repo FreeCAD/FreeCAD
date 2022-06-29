@@ -378,7 +378,7 @@ void Transform::on_applyButton_clicked()
 void Transform::directionActivated(int index)
 {
     if (ui->directionActivated(this, index)) {
-        /*emit*/ directionChanged();
+        Q_EMIT directionChanged();
     }
 }
 

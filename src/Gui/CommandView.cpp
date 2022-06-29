@@ -342,7 +342,7 @@ void StdCmdFreezeViews::activated(int iMsg)
 
         QList<QAction*> acts = pcAction->actions();
         int index = 1;
-        for (QList<QAction*>::ConstIterator it = acts.begin()+offset; it != acts.end(); ++it, index++) {
+        for (QList<QAction*>::Iterator it = acts.begin()+offset; it != acts.end(); ++it, index++) {
             if (!(*it)->isVisible()) {
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index);
@@ -359,7 +359,7 @@ void StdCmdFreezeViews::activated(int iMsg)
     else if (iMsg == 4) {
         savedViews = 0;
         QList<QAction*> acts = pcAction->actions();
-        for (QList<QAction*>::ConstIterator it = acts.begin()+offset; it != acts.end(); ++it)
+        for (QList<QAction*>::Iterator it = acts.begin()+offset; it != acts.end(); ++it)
             (*it)->setVisible(false);
     }
     else if (iMsg >= offset) {
@@ -388,7 +388,7 @@ void StdCmdFreezeViews::onSaveViews()
             << "<FrozenViews SchemaVersion=\"1\">\n";
         str << "  <Views Count=\"" << savedViews <<"\">\n";
 
-        for (QList<QAction*>::ConstIterator it = acts.begin()+offset; it != acts.end(); ++it) {
+        for (QList<QAction*>::Iterator it = acts.begin()+offset; it != acts.end(); ++it) {
             if ( !(*it)->isVisible() )
                 break;
             QString data = (*it)->toolTip();
@@ -529,7 +529,7 @@ void StdCmdFreezeViews::languageChange()
     acts[3]->setText(QObject::tr("Freeze view"));
     acts[4]->setText(QObject::tr("Clear views"));
     int index=1;
-    for (QList<QAction*>::ConstIterator it = acts.begin()+5; it != acts.end(); ++it, index++) {
+    for (QList<QAction*>::Iterator it = acts.begin()+5; it != acts.end(); ++it, index++) {
         if ((*it)->isVisible()) {
             QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index);
             (*it)->setText(viewnr);

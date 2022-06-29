@@ -83,7 +83,7 @@ void ToolBoxManager::setup( ToolBarItem* toolBar ) const
     CommandManager& mgr = Application::Instance->commandManager();
     QList<ToolBarItem*> items = toolBar->getItems();
 
-    for ( QList<ToolBarItem*>::ConstIterator item = items.begin(); item != items.end(); ++item )
+    for ( QList<ToolBarItem*>::Iterator item = items.begin(); item != items.end(); ++item )
     {
         QToolBar* bar = new QToolBar();
         bar->setOrientation(Qt::Vertical);
@@ -94,7 +94,7 @@ void ToolBoxManager::setup( ToolBarItem* toolBar ) const
         _toolBox->addItem( bar, bar->windowTitle() );
 
         QList<ToolBarItem*> subitems = (*item)->getItems();
-        for ( QList<ToolBarItem*>::ConstIterator subitem = subitems.begin(); subitem != subitems.end(); ++subitem )
+        for ( QList<ToolBarItem*>::Iterator subitem = subitems.begin(); subitem != subitems.end(); ++subitem )
         {
             if ( (*subitem)->command() == "Separator" ) {
                 //bar->addSeparator();

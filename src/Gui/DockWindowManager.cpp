@@ -171,7 +171,7 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
  */
 QWidget* DockWindowManager::getDockWindow(const char* name) const
 {
-    for (QList<QDockWidget*>::ConstIterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
+    for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
         if ((*it)->objectName() == QLatin1String(name))
             return (*it)->widget();
     }
@@ -185,7 +185,7 @@ QWidget* DockWindowManager::getDockWindow(const char* name) const
 QList<QWidget*> DockWindowManager::getDockWindows() const
 {
     QList<QWidget*> docked;
-    for (QList<QDockWidget*>::ConstIterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it)
+    for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it)
         docked.push_back((*it)->widget());
     return docked;
 }
@@ -334,7 +334,7 @@ void DockWindowManager::setup(DockWindowItems* items)
         bool visible = hPref->GetBool(dockName.constData(), it->visibility);
 
         if (!dw) {
-            QMap<QString, QPointer<QWidget> >::ConstIterator jt = d->_dockWindows.find(it->name);
+            QMap<QString, QPointer<QWidget> >::Iterator jt = d->_dockWindows.find(it->name);
             if (jt != d->_dockWindows.end()) {
                 dw = addDockWindow(jt.value()->objectName().toUtf8(), jt.value(), it->pos);
                 jt.value()->show();

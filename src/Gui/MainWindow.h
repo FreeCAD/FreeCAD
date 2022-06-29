@@ -256,7 +256,9 @@ protected:
     void closeEvent (QCloseEvent * e);
     void showEvent  (QShowEvent  * e);
     void hideEvent  (QHideEvent  * e);
-    void timerEvent (QTimerEvent *  ){ timeEvent();}
+    void timerEvent (QTimerEvent *  ) {
+        Q_EMIT timeEvent();
+    }
     void customEvent(QEvent      * e);
     bool event      (QEvent      * e);
     /**

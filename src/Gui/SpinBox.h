@@ -134,7 +134,7 @@ public:
     void paintEvent(QPaintEvent *event);
 
 Q_SIGNALS:
-    void valueChanged( uint value );
+    void valueChanged( uint value ); // clazy:exclude=overloaded-signal
 
 public Q_SLOTS:
     void setValue( uint value );

@@ -169,7 +169,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
 
     QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
     paths.removeDuplicates();
-    for (QStringList::ConstIterator pt = paths.begin(); pt != paths.end(); ++pt) {
+    for (QStringList::Iterator pt = paths.begin(); pt != paths.end(); ++pt) {
         QDir d(*pt);
         d.setNameFilters(filters);
         QFileInfoList fi = d.entryInfoList();
@@ -193,7 +193,7 @@ void BitmapFactoryInst::addPixmapToCache(const char* name, const QPixmap& icon)
 
 bool BitmapFactoryInst::findPixmapInCache(const char* name, QPixmap& px) const
 {
-    QMap<std::string, QPixmap>::ConstIterator it = d->xpmCache.find(name);
+    QMap<std::string, QPixmap>::Iterator it = d->xpmCache.find(name);
     if (it != d->xpmCache.end()) {
         px = it.value();
         return true;
@@ -241,13 +241,13 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         return QPixmap();
 
     // as very first test check whether the pixmap is in the cache
-    QMap<std::string, QPixmap>::ConstIterator it = d->xpmCache.find(name);
+    QMap<std::string, QPixmap>::Iterator it = d->xpmCache.find(name);
     if (it != d->xpmCache.end())
         return it.value();
 
     // now try to find it in the built-in XPM
     QPixmap icon;
-    QMap<std::string,const char**>::ConstIterator It = d->xpmMap.find(name);
+    QMap<std::string,const char**>::Iterator It = d->xpmMap.find(name);
     if (It != d->xpmMap.end())
         icon = QPixmap(It.value());
 
@@ -350,9 +350,9 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
 QStringList BitmapFactoryInst::pixmapNames() const
 {
     QStringList names;
-    for (QMap<std::string,const char**>::ConstIterator It = d->xpmMap.begin(); It != d->xpmMap.end(); ++It)
+    for (QMap<std::string,const char**>::Iterator It = d->xpmMap.begin(); It != d->xpmMap.end(); ++It)
         names << QString::fromUtf8(It.key().c_str());
-    for (QMap<std::string, QPixmap>::ConstIterator It = d->xpmCache.begin(); It != d->xpmCache.end(); ++It) {
+    for (QMap<std::string, QPixmap>::Iterator It = d->xpmCache.begin(); It != d->xpmCache.end(); ++It) {
         QString item = QString::fromUtf8(It.key().c_str());
         if (!names.contains(item))
             names << item;

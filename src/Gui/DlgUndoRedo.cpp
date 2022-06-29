@@ -76,7 +76,7 @@ void UndoDialog::onSelected()
 {
     QAction* a = static_cast<QAction*>(sender());
     QList<QAction*> acts = this->actions();
-    for (QList<QAction*>::ConstIterator it = acts.begin(); it != acts.end(); ++it) {
+    for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it) {
         Gui::Application::Instance->sendMsgToActiveView("Undo");
         if (*it == a)
             break;
@@ -124,7 +124,7 @@ void RedoDialog::onSelected()
 {
     QAction* a = static_cast<QAction*>(sender());
     QList<QAction*> acts = this->actions();
-    for (QList<QAction*>::ConstIterator it = acts.begin(); it != acts.end(); ++it) {
+    for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it) {
         Gui::Application::Instance->sendMsgToActiveView("Redo");
         if (*it == a)
             break;

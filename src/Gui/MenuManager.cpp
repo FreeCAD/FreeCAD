@@ -107,7 +107,7 @@ MenuItem* MenuItem::copy() const
     root->setCommand(command());
 
     QList<MenuItem*> items = getItems();
-    for (QList<MenuItem*>::ConstIterator it = items.begin(); it != items.end(); ++it)
+    for (QList<MenuItem*>::Iterator it = items.begin(); it != items.end(); ++it)
     {
         root->appendItem((*it)->copy());
     }
@@ -225,7 +225,7 @@ void MenuManager::setup(MenuItem* menuItems) const
 
     QList<MenuItem*> items = menuItems->getItems();
     QList<QAction*> actions = menuBar->actions();
-    for (QList<MenuItem*>::ConstIterator it = items.begin(); it != items.end(); ++it)
+    for (QList<MenuItem*>::Iterator it = items.begin(); it != items.end(); ++it)
     {
         // search for the menu action
         QAction* action = findAction(actions, QString::fromLatin1((*it)->command().c_str()));
@@ -277,7 +277,7 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
     CommandManager& mgr = Application::Instance->commandManager();
     QList<MenuItem*> items = item->getItems();
     QList<QAction*> actions = menu->actions();
-    for (QList<MenuItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
+    for (QList<MenuItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
         // search for the menu item
         QList<QAction*> used_actions = findActions(actions, QString::fromLatin1((*it)->command().c_str()));
         if (used_actions.isEmpty()) {

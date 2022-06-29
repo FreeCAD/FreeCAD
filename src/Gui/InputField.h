@@ -177,14 +177,14 @@ Q_SIGNALS:
      *  If you want the unfiltered/non-validated input use textChanged(const QString&)
      *  instead:
      */
-    void valueChanged(const Base::Quantity&);
+    void valueChanged(const Base::Quantity&); // clazy:exclude=overloaded-signal
     /** gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
      *  like: minimum, maximum and/or the right Unit (if specified).
      *  If you want the unfiltered/non-validated input use textChanged(const QString&)
      *  instead:
      */
-    void valueChanged(double);
+    void valueChanged(double); // clazy:exclude=overloaded-signal
 
     /// signal for an invalid user input (signals a lot while typing!)
     void parseError(const QString& errorText);

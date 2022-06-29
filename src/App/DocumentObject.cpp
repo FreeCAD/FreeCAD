@@ -708,13 +708,13 @@ bool DocumentObject::removeDynamicProperty(const char* name)
     auto expressions = ExpressionEngine.getExpressions();
     std::vector<App::ObjectIdentifier> removeExpr;
 
-    for (auto it : expressions) {
+    for (const auto& it : expressions) {
         if (it.first.getProperty() == prop) {
             removeExpr.push_back(it.first);
         }
     }
 
-    for (auto it : removeExpr) {
+    for (const auto& it : removeExpr) {
         ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
     }
 

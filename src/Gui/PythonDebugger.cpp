@@ -509,22 +509,22 @@ bool PythonDebugger::stop()
 void PythonDebugger::tryStop()
 {
     d->trystop = true;
-    signalNextStep();
+    Q_EMIT signalNextStep();
 }
 
 void PythonDebugger::stepOver()
 {
-    signalNextStep();
+    Q_EMIT signalNextStep();
 }
 
 void PythonDebugger::stepInto()
 {
-    signalNextStep();
+    Q_EMIT signalNextStep();
 }
 
 void PythonDebugger::stepRun()
 {
-    signalNextStep();
+    Q_EMIT signalNextStep();
 }
 
 void PythonDebugger::showDebugMarker(const QString& fn, int line)
