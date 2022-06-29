@@ -8,8 +8,11 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244)
 endif(MSVC)
 
-include_directories(${PYTHON_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(
+    ${PYTHON_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/Mod/Import/App/dxf
+)
 
 
 if(NOT FREECAD_USE_PYBIND11)
@@ -52,7 +55,6 @@ set(AREA_SRC_COMMON
     AreaPocket.cpp
     Circle.cpp
     Curve.cpp
-    dxf.cpp
     kurve/Construction.cpp
     kurve/Finite.cpp
     kurve/kurve.cpp
@@ -62,7 +64,7 @@ set(AREA_SRC_COMMON
 
 set(AREA_SRC_CLIPPER
     AreaClipper.cpp
-	Adaptive.cpp
+    Adaptive.cpp
     clipper.cpp
 )
 
@@ -150,7 +152,7 @@ else(MSVC)
     endif(BUILD_DYNAMIC_LINK_PYTHON)
 endif(MSVC)
 
-target_link_libraries(area-native ${area_native_LIBS})
+target_link_libraries(area-native ${area_native_LIBS} Import)
 SET_BIN_DIR(area-native area-native /Mod/Path)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
