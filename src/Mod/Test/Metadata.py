@@ -25,6 +25,7 @@
 import FreeCAD
 import unittest
 import os
+import tempfile
 
 class TestMetadata(unittest.TestCase):
 
@@ -106,6 +107,28 @@ class TestMetadata(unittest.TestCase):
         self.assertEqual(len(workbenches), 3)
         self.assertEqual(len(macros), 2)
         self.assertEqual(len(preferencepacks), 1)
+
+    def test_file_path(self):
+        # Issue 7112
+        filename = os.path.join(tempfile.gettempdir(), b'H\xc3\xa5vard.xml'.decode("utf-8"))
+        xmlfile = open(filename, "w")
+        xmlfile.write(r"""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>test</name>
+  <description>Text</description>
+  <version>1.0.0</version>
+  <date>2022-01-01</date>
+  <content>
+    <workbench>
+      <classname>Workbench</classname>
+    </workbench>
+  </content>
+</package>""")
+        xmlfile.close()
+        md = FreeCAD.Metadata(filename)
+        self.assertEqual(md.Name, "test")
+        self.assertEqual(md.Description, "Text")
+        self.assertEqual(md.Version, "1.0.0")
 
     def test_content_item_tags(self):
         pass
