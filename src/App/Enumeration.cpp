@@ -33,7 +33,7 @@
 using namespace App;
 
 namespace {
-struct StringCopy {
+struct StringCopy : public Enumeration::Object {
     StringCopy(const char* str) : d(str) {
     }
     const char* data() const {
@@ -50,7 +50,7 @@ private:
     std::string d;
 };
 
-struct StringView {
+struct StringView : public Enumeration::Object {
     StringView(const char* str) : d(str) {
     }
     const char* data() const {
@@ -82,7 +82,7 @@ Enumeration::Enumeration(const Enumeration &other)
 Enumeration::Enumeration(const char *valStr)
     : _index(0)
 {
-    enumArray.push_back(StringCopy(valStr));
+    enumArray.push_back(std::make_shared<StringCopy>(valStr));
     setValue(valStr);
 }
 
@@ -90,7 +90,7 @@ Enumeration::Enumeration(const char **list, const char *valStr)
     : _index(0)
 {
     while (list && *list) {
-        enumArray.push_back(StringView(*list));
+        enumArray.push_back(std::make_shared < StringView>(*list));
         list++;
     }
     setValue(valStr);
@@ -113,7 +113,7 @@ void Enumeration::setEnums(const char **plEnums)
 
     enumArray.clear();
     while (plEnums && *plEnums) {
-        enumArray.push_back(StringView(*plEnums));
+        enumArray.push_back(std::make_shared<StringView>(*plEnums));
         plEnums++;
     }
 
@@ -142,7 +142,7 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
 
     enumArray.clear();
     for (std::vector<std::string>::const_iterator it = values.begin(); it != values.end(); ++it) {
-        enumArray.push_back(StringCopy(it->c_str()));
+        enumArray.push_back(std::make_shared<StringCopy>(it->c_str()));
     }
 
     // set _index
@@ -157,7 +157,7 @@ void Enumeration::setValue(const char *value)
 {
     _index = 0;
     for (std::size_t i = 0; i < enumArray.size(); i++) {
-        if (enumArray[i].isEqual(value)) {
+        if (enumArray[i]->isEqual(value)) {
             _index = static_cast<int>(i);
             break;
         }
@@ -184,7 +184,7 @@ bool Enumeration::isValue(const char *value) const
     if (i == -1) {
         return false;
     } else {
-        return enumArray[i].isEqual(value);
+        return enumArray[i]->isEqual(value);
     }
 }
 
@@ -195,7 +195,7 @@ bool Enumeration::contains(const char *value) const
     }
 
     for (const auto& it : enumArray) {
-        if (it.isEqual(value))
+        if (it->isEqual(value))
             return true;
     }
 
@@ -208,7 +208,7 @@ const char * Enumeration::getCStr() const
         return nullptr;
     }
 
-    return enumArray[_index].data();
+    return enumArray[_index]->data();
 }
 
 int Enumeration::getInt() const
@@ -224,7 +224,7 @@ std::vector<std::string> Enumeration::getEnumVector() const
 {
     std::vector<std::string> list;
     for (const auto& it : enumArray)
-        list.emplace_back(it.data());
+        list.emplace_back(it->data());
     return list;
 }
 
@@ -249,7 +249,7 @@ int Enumeration::maxValue() const
 bool Enumeration::isCustom() const
 {
     for (const auto& it : enumArray) {
-        if (it.isCustom())
+        if (it->isCustom())
             return true;
     }
     return false;
@@ -272,11 +272,11 @@ bool Enumeration::operator==(const Enumeration &other) const
         return false;
     }
     for (size_t i = 0; i < enumArray.size(); ++i) {
-        if (enumArray[i].data() == other.enumArray[i].data())
+        if (enumArray[i]->data() == other.enumArray[i]->data())
             continue;
-        if (enumArray[i].data() == nullptr || other.enumArray[i].data() == nullptr)
+        if (enumArray[i]->data() == nullptr || other.enumArray[i]->data() == nullptr)
             return false;
-        if (!enumArray[i].isEqual(other.enumArray[i].data()))
+        if (!enumArray[i]->isEqual(other.enumArray[i]->data()))
             return false;
     }
     return true;

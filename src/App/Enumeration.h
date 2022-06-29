@@ -51,45 +51,13 @@ namespace App
      */
     class AppExport Enumeration
     {
-    protected:
+    public:
         class Object {
         public:
-            template <typename T>
-            Object(T&& obj): object(std::make_shared<Model<T>>(std::forward<T>(obj))){}
-            const char* data() const {
-                return object->data();
-            }
-            bool isEqual(const char* str) const {
-                return object->isEqual(str);
-            }
-            bool isCustom() const {
-                return object->isCustom();
-            }
-
-            struct Concept {
-                virtual ~Concept() {}
-                virtual const char* data() const = 0;
-                virtual bool isEqual(const char*) const = 0;
-                virtual bool isCustom() const = 0;
-            };
-
-            template< typename T >
-            struct Model : Concept {
-                Model(const T& t) : object(t) {}
-                const char* data() const override {
-                    return object.data();
-                }
-                bool isEqual(const char* str) const override {
-                    return object.isEqual(str);
-                }
-                bool isCustom() const override {
-                    return object.isCustom();
-                }
-            private:
-                T object;
-            };
-
-            std::shared_ptr<Concept> object;
+            virtual ~Object() {}
+            virtual const char* data() const = 0;
+            virtual bool isEqual(const char*) const = 0;
+            virtual bool isCustom() const = 0;
         };
 
     public:
@@ -207,7 +175,8 @@ namespace App
 
     private:
         /// Handle to C Strings of possible enumeration values
-        std::vector<Object> enumArray;
+        using ObjectPtr = std::shared_ptr<Object>;
+        std::vector<ObjectPtr> enumArray;
 
         /// Integer value of the enumeration
         /*!
