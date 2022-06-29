@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include "Metadata.h"
+#include <Base/FileInfo.h>
 
 // inclusion of the generated files (generated out of MetadataPy.xml)
 #include "MetadataPy.h"
@@ -64,10 +65,13 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     // Main class constructor -- takes a file path, loads the metadata from it
     PyErr_Clear();
-    const char* filename;
-    if (PyArg_ParseTuple(args, "s", &filename)) {
+    char* filename;
+    if (PyArg_ParseTuple(args, "et", "utf-8", &filename)) {
         try {
-            auto md = new Metadata(filename);
+            std::string utf8Name = std::string(filename);
+            PyMem_Free(filename);
+
+            auto md = new Metadata(Base::FileInfo::stringToPath(utf8Name));
             setTwinPointer(md);
             return 0;
         }
