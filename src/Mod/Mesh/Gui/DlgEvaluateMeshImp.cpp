@@ -335,7 +335,7 @@ void DlgEvaluateMeshImp::on_meshNameButton_activated(int i)
 
 void DlgEvaluateMeshImp::refreshList()
 {
-    QList<QPair<QString, QString> > items;
+    QVector<QPair<QString, QString> > items;
     if (this->getDocument()) {
         std::vector<App::DocumentObject*> objs = this->getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
         for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
@@ -346,7 +346,7 @@ void DlgEvaluateMeshImp::refreshList()
 
     d->ui.meshNameButton->clear();
     d->ui.meshNameButton->addItem(tr("No selection"));
-    for (QList<QPair<QString, QString> >::iterator it = items.begin(); it != items.end(); ++it)
+    for (QVector<QPair<QString, QString> >::iterator it = items.begin(); it != items.end(); ++it)
         d->ui.meshNameButton->addItem(it->first, it->second);
     d->ui.meshNameButton->setDisabled(items.empty());
     cleanInformation();

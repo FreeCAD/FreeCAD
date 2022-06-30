@@ -93,7 +93,7 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
     pcColorRoot->ref();
     pcColorMat = new SoMaterial;
     pcColorMat->ref();
-    pcColorStyle = new SoDrawStyle(); 
+    pcColorStyle = new SoDrawStyle();
     pcColorRoot->addChild(pcColorStyle);
     // simple color bar
     pcColorBar = new Gui::SoFCColorBar;
@@ -181,7 +181,7 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
         aMaxValues.push_back( jt->fMaxCurvature );
     }
 
-    if ( aMinValues.empty() || aMaxValues.empty() ) 
+    if ( aMinValues.empty() || aMaxValues.empty() )
         return; // no values inside
 
     float fMin = *std::min_element( aMinValues.begin(), aMinValues.end() );
