@@ -12,6 +12,7 @@ path_classifiers:
   - "src/CXX/"
   template:
   - "src/Tools/examplePy2wiki.py"
+  - "src/Tools/wiki2qhelp.py"
   - "src/Mode/TemplatePyMod/"
   unmaintained:
   - "src/Mod/Robot/"
