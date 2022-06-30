@@ -102,7 +102,7 @@ public:
         void setStatus(ParameterStatus status) { std::fill(pstatus.begin(), pstatus.end(), status);}
 
         void setStatus(int index, ParameterStatus status) {
-            if(index > int(pstatus.size()))
+            if(index >= int(pstatus.size()))
                 pstatus.resize(index+1,ParameterStatus::Dependent);
 
             pstatus.at(index) = status;
