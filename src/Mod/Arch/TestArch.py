@@ -604,7 +604,7 @@ class ArchTest(unittest.TestCase):
     def testSection(self):
         App.Console.PrintLog ('Checking Arch Section...\n')
         s = Arch.makeSectionPlane([])
-        v = Arch.makeSectionView(s)
+        #v = Arch.makeSectionView(s) # obsolete, uses the Drawing module
         self.failUnless(v,"Arch Section failed")
 
     def testSpace(self):

@@ -85,7 +85,8 @@ def makeSectionPlane(objectslist=None,name="Section"):
 
 def makeSectionView(section,name="View"):
 
-    """makeSectionView(section) : Creates a Drawing view of the given Section Plane
+    """OBSOLETE
+    makeSectionView(section) : Creates a Drawing view of the given Section Plane
     in the active Page object (a new page will be created if none exists"""
 
     page = None
