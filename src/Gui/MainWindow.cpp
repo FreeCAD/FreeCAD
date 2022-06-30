@@ -1308,9 +1308,7 @@ void MainWindow::delayedStartup()
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
         if (App::GetApplication().getDocuments().empty()){
-            App::GetApplication().newDocument();
-            Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.activeDocument().activeView().viewDefaultOrientation()");
+            Application::Instance->commandManager().runCommandByName("Std_New");
         }
     }
 
