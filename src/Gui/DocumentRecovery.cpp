@@ -157,7 +157,7 @@ public:
         QString label;
         QString fileName;
         QString tooltip;
-        Status status;
+        Status status = Unknown;
     };
     Ui_DocumentRecovery ui;
     bool recovered;

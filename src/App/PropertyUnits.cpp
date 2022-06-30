@@ -193,14 +193,14 @@ void PropertyQuantityConstraint::setPyObject(PyObject *value)
     quant.setValue(temp);
 
     if (unit.isEmpty()){
-        PropertyFloat::setValue(quant.getValue());
+        PropertyFloat::setValue(quant.getValue()); // clazy:exclude=skipped-base-method
         return;
     }
 
     if (unit != _Unit)
         throw Base::UnitsMismatchError("Not matching Unit!");
 
-    PropertyFloat::setValue(quant.getValue());
+    PropertyFloat::setValue(quant.getValue()); // clazy:exclude=skipped-base-method
 }
 
 //**************************************************************************

@@ -33,15 +33,15 @@
 using namespace Base;
 
 Rotation::Rotation()
+    : quat{0.0,0.0,0.0,1.0}
+    , _axis{0.0,0.0,1.0}
+    , _angle{0.0}
 {
-    quat[0]=quat[1]=quat[2]=0.0;quat[3]=1.0;
-
-    _axis.Set(0.0, 0.0, 1.0);
-    _angle = 0.0;
 }
 
 /** Construct a rotation by rotation axis and angle */
 Rotation::Rotation(const Vector3d& axis, const double fAngle)
+    : Rotation()
 {
     // set to (0,0,1) as fallback in case the passed axis is the null vector
     _axis.Set(0.0, 0.0, 1.0);
@@ -49,6 +49,7 @@ Rotation::Rotation(const Vector3d& axis, const double fAngle)
 }
 
 Rotation::Rotation(const Matrix4D& matrix)
+    : Rotation()
 {
     this->setValue(matrix);
 }
@@ -58,6 +59,7 @@ Rotation::Rotation(const Matrix4D& matrix)
  * where the quaternion is specified by q=w+xi+yj+zk.
  */
 Rotation::Rotation(const double q[4])
+    : Rotation()
 {
     this->setValue(q);
 }
@@ -67,16 +69,19 @@ Rotation::Rotation(const double q[4])
  * where the quaternion is specified by q=w+xi+yj+zk.
  */
 Rotation::Rotation(const double q0, const double q1, const double q2, const double q3)
+    : Rotation()
 {
     this->setValue(q0, q1, q2, q3);
 }
 
 Rotation::Rotation(const Vector3d & rotateFrom, const Vector3d & rotateTo)
+    : Rotation()
 {
     this->setValue(rotateFrom, rotateTo);
 }
 
 Rotation::Rotation(const Rotation& rot)
+    : Rotation()
 {
     this->quat[0] = rot.quat[0];
     this->quat[1] = rot.quat[1];
