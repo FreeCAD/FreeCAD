@@ -233,7 +233,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 
                         Gui::TimerFunction* func = new Gui::TimerFunction();
                         func->setAutoDelete(true);
-                        func->setFunction(boost::bind(&Document::resetEdit, doc));
+                        func->setFunction(std::bind(&Document::resetEdit, doc));
                         QTimer::singleShot(0, func, SLOT(timeout()));
                     }
                 }

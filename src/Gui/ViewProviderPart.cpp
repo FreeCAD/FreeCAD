@@ -71,7 +71,7 @@ void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Toggle active part"));
-    func->trigger(act, boost::bind(&ViewProviderPart::doubleClicked, this));
+    func->trigger(act, std::bind(&ViewProviderPart::doubleClicked, this));
 
     ViewProviderDragger::setupContextMenu(menu, receiver, member);
 }

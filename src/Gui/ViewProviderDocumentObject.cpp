@@ -272,7 +272,7 @@ void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& te
     QAction* act = menu->addAction(text);
     act->setData(QVariant((int)ViewProvider::Default));
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    func->trigger(act, boost::bind(&ViewProviderDocumentObject::startDefaultEditMode, this));
+    func->trigger(act, std::bind(&ViewProviderDocumentObject::startDefaultEditMode, this));
 }
 
 void ViewProviderDocumentObject::setModeSwitch() {

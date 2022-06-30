@@ -23,6 +23,7 @@
 #ifndef TASKCHECKGEOMETRY_H
 #define TASKCHECKGEOMETRY_H
 
+#include <functional>
 #include <tuple>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Status.hxx>
@@ -73,7 +74,7 @@ void goSetupResultInvalidCurveSurface(ResultEntry *entry);
 void goSetupResultInvalidSameParameterFlag(ResultEntry *entry);
 void goSetupResultUnorientableShapeFace(ResultEntry *entry);
 
-typedef boost::function<void (ResultEntry *entry)> ResultFunction;
+typedef std::function<void (ResultEntry *entry)> ResultFunction;
 typedef std::tuple<TopAbs_ShapeEnum, BRepCheck_Status, ResultFunction> FunctionMapType;
 
 class ResultModel : public QAbstractItemModel

@@ -74,7 +74,7 @@ void ViewProviderTextDocument::setupContextMenu(QMenu* menu, QObject* receiver, 
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit text"));
-    func->trigger(act, boost::bind(&ViewProviderTextDocument::doubleClicked, this));
+    func->trigger(act, std::bind(&ViewProviderTextDocument::doubleClicked, this));
 
     ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }

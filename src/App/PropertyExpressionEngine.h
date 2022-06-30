@@ -23,8 +23,8 @@
 #ifndef EXPRESSIONENGINE_H
 #define EXPRESSIONENGINE_H
 
+#include <functional>
 #include <boost/unordered/unordered_map.hpp>
-#include <boost/function.hpp>
 #include <boost_signals2.hpp>
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
@@ -77,7 +77,7 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
                         App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    typedef boost::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)> ValidatorFunc;
+    typedef std::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)> ValidatorFunc;
 
     /**
      * @brief The ExpressionInfo struct encapsulates an expression.

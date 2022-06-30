@@ -55,7 +55,7 @@
 
 
 using namespace PartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 PROPERTY_SOURCE(PartGui::ViewProviderSpline, PartGui::ViewProviderPartExt)
@@ -99,7 +99,7 @@ void ViewProviderSplineExtension::extensionSetupContextMenu(QMenu* menu, QObject
     QAction* act = menu->addAction(QObject::tr("Show control points"));
     act->setCheckable(true);
     act->setChecked(ControlPoints.getValue());
-    func->toggle(act, boost::bind(&ViewProviderSplineExtension::toggleControlPoints, this, bp::_1));
+    func->toggle(act, std::bind(&ViewProviderSplineExtension::toggleControlPoints, this, sp::_1));
 }
 
 void ViewProviderSplineExtension::extensionUpdateData(const App::Property* prop)

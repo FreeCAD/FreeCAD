@@ -534,10 +534,10 @@ void TaskFeaturePick::showExternal(bool val)
 
 TaskDlgFeaturePick::TaskDlgFeaturePick( std::vector<App::DocumentObject*> &objects,
                                         const std::vector<TaskFeaturePick::featureStatus> &status,
-                                        boost::function<bool (std::vector<App::DocumentObject*>)> afunc,
-                                        boost::function<void (std::vector<App::DocumentObject*>)> wfunc,
+                                        std::function<bool (std::vector<App::DocumentObject*>)> afunc,
+                                        std::function<void (std::vector<App::DocumentObject*>)> wfunc,
                                         bool singleFeatureSelect,
-                                        boost::function<void (void)> abortfunc /* = NULL */ )
+                                        std::function<void (void)> abortfunc /* = NULL */ )
     : TaskDialog(), accepted(false)
 {
     pick  = new TaskFeaturePick(objects, status, singleFeatureSelect);

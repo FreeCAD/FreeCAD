@@ -131,7 +131,7 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Q_UNUSED(member);
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Toggle active body"));
-    func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));
+    func->trigger(act, std::bind(&ViewProviderBody::doubleClicked, this));
 
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
 }

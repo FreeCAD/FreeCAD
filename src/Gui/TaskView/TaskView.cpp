@@ -403,7 +403,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
             func->setAutoDelete(true);
             Gui::Document* doc = Gui::Application::Instance->getDocument(ActiveDialog->getDocumentName().c_str());
             if (doc) {
-                func->setFunction(boost::bind(&Document::resetEdit, doc));
+                func->setFunction(std::bind(&Document::resetEdit, doc));
                 QTimer::singleShot(0, func, SLOT(timeout()));
             }
         }

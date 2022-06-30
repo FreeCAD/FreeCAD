@@ -38,9 +38,9 @@ namespace Gui {
 class ActionFunctionPrivate
 {
 public:
-    QMap<QAction*, boost::function<void()> > triggerMap;
-    QMap<QAction*, boost::function<void(bool)> > toggleMap;
-    QMap<QAction*, boost::function<void()> > hoverMap;
+    QMap<QAction*, std::function<void()> > triggerMap;
+    QMap<QAction*, std::function<void(bool)> > toggleMap;
+    QMap<QAction*, std::function<void()> > hoverMap;
 };
 }
 
@@ -53,7 +53,7 @@ ActionFunction::~ActionFunction()
 {
 }
 
-void ActionFunction::trigger(QAction* action, boost::function<void()> func)
+void ActionFunction::trigger(QAction* action, std::function<void()> func)
 {
     Q_D(ActionFunction);
 
@@ -66,19 +66,19 @@ void ActionFunction::triggered()
     Q_D(ActionFunction);
 
     QAction* a = qobject_cast<QAction*>(sender());
-    QMap<QAction*, boost::function<void()> >::iterator it = d->triggerMap.find(a);
+    QMap<QAction*, std::function<void()> >::iterator it = d->triggerMap.find(a);
     if (it != d->triggerMap.end()) {
         // invoke the class function here
         it.value()();
     }
 }
 
-void ActionFunction::toggle(QAction* action, boost::function<void(bool)> func)
+void ActionFunction::toggle(QAction* action, std::function<void(bool)> func)
 {
     Q_D(ActionFunction);
 
     d->toggleMap[action] = func;
-    connect(action, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
+    connect(action, &QAction::toggled, this, &ActionFunction::toggled);
 }
 
 void ActionFunction::toggled(bool on)
@@ -86,19 +86,19 @@ void ActionFunction::toggled(bool on)
     Q_D(ActionFunction);
 
     QAction* a = qobject_cast<QAction*>(sender());
-    QMap<QAction*, boost::function<void(bool)> >::iterator it = d->toggleMap.find(a);
+    QMap<QAction*, std::function<void(bool)> >::iterator it = d->toggleMap.find(a);
     if (it != d->toggleMap.end()) {
         // invoke the class function here
         it.value()(on);
     }
 }
 
-void ActionFunction::hover(QAction* action, boost::function<void()> func)
+void ActionFunction::hover(QAction* action, std::function<void()> func)
 {
     Q_D(ActionFunction);
 
     d->hoverMap[action] = func;
-    connect(action, SIGNAL(hovered()), this, SLOT(hovered()));
+    connect(action, &QAction::hovered, this, &ActionFunction::hovered);
 }
 
 void ActionFunction::hovered()
@@ -106,7 +106,7 @@ void ActionFunction::hovered()
     Q_D(ActionFunction);
 
     QAction* a = qobject_cast<QAction*>(sender());
-    QMap<QAction*, boost::function<void()> >::iterator it = d->hoverMap.find(a);
+    QMap<QAction*, std::function<void()> >::iterator it = d->hoverMap.find(a);
     if (it != d->hoverMap.end()) {
         // invoke the class function here
         it.value()();
@@ -119,9 +119,9 @@ namespace Gui {
 class TimerFunctionPrivate
 {
 public:
-    boost::function<void()> timeoutFunc;
-    boost::function<void(QObject*)> timeoutFuncQObject;
-    boost::function<void(QVariant)> timeoutFuncQVariant;
+    std::function<void()> timeoutFunc;
+    std::function<void(QObject*)> timeoutFuncQObject;
+    std::function<void(QVariant)> timeoutFuncQVariant;
     bool autoDelete;
     QPointer<QObject> argQObject;
     QVariant argQVariant;
@@ -138,20 +138,20 @@ TimerFunction::~TimerFunction()
 {
 }
 
-void TimerFunction::setFunction(boost::function<void()> func)
+void TimerFunction::setFunction(std::function<void()> func)
 {
     Q_D(TimerFunction);
     d->timeoutFunc = func;
 }
 
-void TimerFunction::setFunction(boost::function<void(QObject*)> func, QObject* args)
+void TimerFunction::setFunction(std::function<void(QObject*)> func, QObject* args)
 {
     Q_D(TimerFunction);
     d->timeoutFuncQObject = func;
     d->argQObject = args;
 }
 
-void TimerFunction::setFunction(boost::function<void(QVariant)> func, QVariant args)
+void TimerFunction::setFunction(std::function<void(QVariant)> func, QVariant args)
 {
     Q_D(TimerFunction);
     d->timeoutFuncQVariant = func;

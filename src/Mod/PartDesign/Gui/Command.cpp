@@ -979,7 +979,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
 }
 
 void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const std::string& which,
-                        boost::function<void (Part::Feature*, App::DocumentObject*)> func)
+                         std::function<void (Part::Feature*, App::DocumentObject*)> func)
 {
     auto base_worker = [=](App::DocumentObject* feature, const std::vector<string> &subs) {
 
@@ -2167,7 +2167,7 @@ bool CmdPartDesignThickness::isActive(void)
 //===========================================================================
 
 void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const std::string& which,
-    boost::function<void(App::DocumentObject*, std::vector<App::DocumentObject*>)> func)
+                        std::function<void(App::DocumentObject*, std::vector<App::DocumentObject*>)> func)
 {
     std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 

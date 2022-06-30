@@ -118,7 +118,7 @@ void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject
         QAction* act = menu->addAction(QObject::tr("Attachment editor"));
         if (Gui::Control().activeDialog())
             act->setDisabled(true);
-        func->trigger(act, boost::bind(&ViewProviderAttachExtension::showAttachmentEditor, this));
+        func->trigger(act, std::bind(&ViewProviderAttachExtension::showAttachmentEditor, this));
     }
 }
 
