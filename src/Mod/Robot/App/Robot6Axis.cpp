@@ -76,7 +76,7 @@ Robot6Axis::Robot6Axis()
     Max = JntArray(6);
 
     // Create joint array
-    Actuall = JntArray(6);
+    Actual = JntArray(6);
 
     // set to default kuka 500
     setKinematic(KukaIR500);
@@ -187,7 +187,7 @@ void Robot6Axis::Save (Writer &writer) const
                         << "maxAngle=\""    <<  Max(i)*(180.0/M_PI)  << "\" "
                         << "minAngle=\""    <<  Min(i)*(180.0/M_PI)  << "\" "
                         << "AxisVelocity=\""<<  Velocity[i]          << "\" "
-                        << "Pos=\""         <<  Actuall(i)           << "\"/>"
+                        << "Pos=\""         <<  Actual(i)           << "\"/>"
                         << std::endl;
     }
 }
@@ -222,7 +222,7 @@ void Robot6Axis::Restore(XMLReader &reader)
             Velocity[i] = reader.getAttributeAsFloat("AxisVelocity");
         else
             Velocity[i] = 156.0;
-        Actuall(i) = reader.getAttributeAsFloat("Pos");
+        Actual(i) = reader.getAttributeAsFloat("Pos");
     }
     Kinematic = Temp;
 
@@ -243,11 +243,11 @@ bool Robot6Axis::setTo(const Placement &To)
     Frame F_dest = Frame(KDL::Rotation::Quaternion(To.getRotation()[0],To.getRotation()[1],To.getRotation()[2],To.getRotation()[3]),KDL::Vector(To.getPosition()[0],To.getPosition()[1],To.getPosition()[2]));
 
     // solve
-    if (iksolver1.CartToJnt(Actuall,F_dest,result) < 0) {
+    if (iksolver1.CartToJnt(Actual,F_dest,result) < 0) {
         return false;
     }
     else {
-        Actuall = result;
+        Actual = result;
         Tcp = F_dest;
         return true;
     }
@@ -270,7 +270,7 @@ bool Robot6Axis::calcTcp(void)
  
     // Calculate forward position kinematics
     int kinematics_status;
-    kinematics_status = fksolver.JntToCart(Actuall,cartpos);
+    kinematics_status = fksolver.JntToCart(Actual,cartpos);
     if (kinematics_status>=0) {
         Tcp = cartpos;
         return true;
@@ -282,11 +282,11 @@ bool Robot6Axis::calcTcp(void)
 
 bool Robot6Axis::setAxis(int Axis,double Value)
 {
-    Actuall(Axis) = RotDir[Axis] * Value * (M_PI/180); // degree to radiants
+    Actual(Axis) = RotDir[Axis] * Value * (M_PI/180); // degree to radiants
     return calcTcp();
 }
 
 double Robot6Axis::getAxis(int Axis)
 {
-    return RotDir[Axis] * (Actuall(Axis)/(M_PI/180)); // radian to degree
+    return RotDir[Axis] * (Actual(Axis)/(M_PI/180)); // radian to degree
 }
