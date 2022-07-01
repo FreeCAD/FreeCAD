@@ -531,7 +531,7 @@ void TaskPostClip::on_CreateButton_triggered(QAction*) {
     int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
 
-    // if a new function was successfuly added use it
+    // if a new function was successfully added use it
     int indexCount = ui->FunctionBox->count();
     if (indexCount > currentItem + 1)
         ui->FunctionBox->setCurrentIndex(indexCount - 1);
@@ -1486,7 +1486,7 @@ void TaskPostCut::on_CreateButton_triggered(QAction*) {
     int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
 
-    // if a new function was successfuly added use it
+    // if a new function was successfully added use it
     int indexCount = ui->FunctionBox->count();
     if (indexCount > currentItem + 1)
         ui->FunctionBox->setCurrentIndex(indexCount - 1);
