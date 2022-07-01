@@ -173,8 +173,6 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
 
     menu.addSeparator();
 
-    CONTEXT_ITEM("Sketcher_CloseShape","Close Shape","Sketcher_CloseShape",doCloseShape,true)
-    CONTEXT_ITEM("Sketcher_ConnectLines","Connect","Sketcher_ConnectLines",doConnect,true)
     CONTEXT_ITEM("Sketcher_SelectConstraints","Select Constraints","Sketcher_SelectConstraints",doSelectConstraints,true)
     CONTEXT_ITEM("Sketcher_SelectOrigin","Select Origin","Sketcher_SelectOrigin",doSelectOrigin,false)
     CONTEXT_ITEM("Sketcher_SelectHorizontalAxis","Select Horizontal Axis","Sketcher_SelectHorizontalAxis",doSelectHAxis,false)
@@ -213,8 +211,6 @@ CONTEXT_MEMBER_DEF("Sketcher_ConstrainAngle",doAngleConstraint)
 
 CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction",doToggleConstruction)
 
-CONTEXT_MEMBER_DEF("Sketcher_CloseShape",doCloseShape)
-CONTEXT_MEMBER_DEF("Sketcher_ConnectLines",doConnect)
 CONTEXT_MEMBER_DEF("Sketcher_SelectConstraints",doSelectConstraints)
 CONTEXT_MEMBER_DEF("Sketcher_SelectOrigin",doSelectOrigin)
 CONTEXT_MEMBER_DEF("Sketcher_SelectHorizontalAxis",doSelectHAxis)
