@@ -15,8 +15,10 @@ is provided on an as is basis, without warranties of any kind.
 #include <string.h>
 #include <assert.h>
 #include <compile.h>
-#include <eval.h>
 #include <frameobject.h>
+#if PY_VERSION_HEX < 0x030b0000
+#include <eval.h>
+#endif
 
 
 /*****************************************************************************
@@ -310,7 +312,13 @@ void PP_Fetch_Error_Text()
         if(!frame) 
             return;
         int line = PyFrame_GetLineNumber(frame);
+#if PY_VERSION_HEX < 0x030b0000
         const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+        PyCodeObject* code = PyFrame_GetCode(frame);
+        const char *file = PyUnicode_AsUTF8(code->co_filename);
+        Py_DECREF(code);
+#endif
 #ifdef FC_OS_WIN32
         const char *_f = strstr(file, "\\src\\");
 #else

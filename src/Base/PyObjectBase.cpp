@@ -60,7 +60,11 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
   , baseProxy(nullptr)
   , attrDict(nullptr)
 {
+#if PY_VERSION_HEX < 0x030b0000
     Py_TYPE(this) = T;
+#else
+    Py_SET_TYPE(this, T);
+#endif
     _Py_NewReference(this);
 #ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO+: %s (%p)\n",T->tp_name, this);

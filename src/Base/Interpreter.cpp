@@ -523,6 +523,7 @@ void InterpreterSingleton::addPythonPath(const char* Path)
     list.append(Py::String(Path));
 }
 
+#if PY_VERSION_HEX < 0x030b0000
 const char* InterpreterSingleton::init(int argc,char *argv[])
 {
     if (!Py_IsInitialized()) {
@@ -565,6 +566,61 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
     PyGILStateLocker lock;
     return Py_EncodeLocale(Py_GetPath(),nullptr);
 }
+#else
+namespace {
+void initInterpreter(int argc,char *argv[])
+{
+    PyStatus status;
+    PyConfig config;
+    PyConfig_InitPythonConfig(&config);
+
+    status = PyConfig_SetBytesArgv(&config, argc, argv);
+    if (PyStatus_Exception(status)) {
+        throw Base::RuntimeError("Failed to set config");
+    }
+
+    status = Py_InitializeFromConfig(&config);
+    if (PyStatus_Exception(status)) {
+        throw Base::RuntimeError("Failed to init from config");
+    }
+
+    PyConfig_Clear(&config);
+
+    Py_Initialize();
+    const char* virtualenv = getenv("VIRTUAL_ENV");
+    if (virtualenv) {
+        PyRun_SimpleString(
+            "# Check for virtualenv, and activate if present.\n"
+            "# See https://virtualenv.pypa.io/en/latest/userguide/#using-virtualenv-without-bin-python\n"
+            "import os\n"
+            "import sys\n"
+            "base_path = os.getenv(\"VIRTUAL_ENV\")\n"
+            "if not base_path is None:\n"
+            "    activate_this = os.path.join(base_path, \"bin\", \"activate_this.py\")\n"
+            "    exec(open(activate_this).read(), {'__file__':activate_this})\n"
+        );
+    }
+}
+}
+const char* InterpreterSingleton::init(int argc,char *argv[])
+{
+    try {
+        if (!Py_IsInitialized()) {
+            initInterpreter(argc, argv);
+
+            PythonStdOutput::init_type();
+            this->_global = PyEval_SaveThread();
+        }
+
+        PyGILStateLocker lock;
+        return Py_EncodeLocale(Py_GetPath(),nullptr);
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+        throw;
+    }
+}
+#endif
 
 void InterpreterSingleton::replaceStdOutput()
 {

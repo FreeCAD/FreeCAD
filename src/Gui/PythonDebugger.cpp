@@ -563,6 +563,14 @@ void PythonDebugger::hideDebugMarker(const QString& fn)
     }
 }
 
+#if PY_VERSION_HEX < 0x030900B1
+static PyCodeObject* PyFrame_GetCode(PyFrameObject *frame)
+{
+    Py_INCREF(frame->f_code);
+    return frame->f_code;
+}
+#endif
+
 // http://www.koders.com/cpp/fidBA6CD8A0FE5F41F1464D74733D9A711DA257D20B.aspx?s=PyEval_SetTrace
 // http://code.google.com/p/idapython/source/browse/trunk/python.cpp
 // http://www.koders.com/cpp/fid191F7B13CF73133935A7A2E18B7BF43ACC6D1784.aspx?s=PyEval_SetTrace
@@ -578,7 +586,9 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
 
     //no = frame->f_tstate->recursion_depth;
     //std::string funcname = PyString_AsString(frame->f_code->co_name);
-    QString file = QString::fromUtf8(PyUnicode_AsUTF8(frame->f_code->co_filename));
+    PyCodeObject* code = PyFrame_GetCode(frame);
+    QString file = QString::fromUtf8(PyUnicode_AsUTF8(code->co_filename));
+    Py_DECREF(code);
     switch (what) {
     case PyTrace_CALL:
         self->depth++;
@@ -592,7 +602,10 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
             //PyObject *str;
             //str = PyObject_Str(frame->f_code->co_filename);
             //no = frame->f_lineno;
-            int line = PyCode_Addr2Line(frame->f_code, frame->f_lasti);
+            PyCodeObject* f_code = PyFrame_GetCode(frame);
+            int f_lasti = PyFrame_GetLineNumber(frame);
+            int line = PyCode_Addr2Line(f_code, f_lasti);
+            Py_DECREF(f_code);
             //if (str) {
             //    Base::Console().Message("PROFILING: %s:%d\n", PyString_AsString(str), frame->f_lineno);
             //    Py_DECREF(str);
