@@ -275,7 +275,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor &cb, const Base::Vector3d &start
             // relative mode
             absolutecenter = false;
 
-        } else if ((name=="G81")||(name=="G82")||(name=="G83")||(name=="G84")||(name=="G85")||(name=="G86")||(name=="G89")){
+        } else if ((name=="G73")||(name=="G81")||(name=="G82")||(name=="G83")||(name=="G84")||(name=="G85")||(name=="G86")||(name=="G89")){
             // drill,tap,bore
             double r = 0;
             if (cmd.has("R"))
