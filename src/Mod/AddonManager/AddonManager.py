@@ -857,7 +857,7 @@ class CommandAddonManager:
             addon_repo.icon = self.get_icon(addon_repo)
         for repo in self.item_model.repos:
             if repo.name == addon_repo.name:
-                #self.item_model.reload_item(repo) # If we want to have later additions supercede earlier
+                #self.item_model.reload_item(repo) # If we want to have later additions supersede earlier
                 return
         self.item_model.append_item(addon_repo)
 
