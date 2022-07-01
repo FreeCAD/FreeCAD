@@ -38,7 +38,27 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None):
+def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None, chipBreak=False):
+    """
+    Generates Gcode for drilling a single hole.
+
+    Takes as input an edge. It assumes the edge is trivial with just two vectors.
+    The edge must be aligned with the Z axes (Vector(0,0,1)) or it is an error.
+
+    The first vertex of the edge will be the startpoint
+    The second vertex of the edge will be the endpoint.
+    All other vertices are ignored.
+
+    additionally, you can pass in a dwelltime, peckdepth, and repeat value.
+
+    These will result in appropriate G81,G82, and G83 codes.
+
+    If chipBreak is True, the generator will produce G73 cycles instead of G83.
+    Chipbreaking cycles produce very small retracts to break the chip rather than
+    full retracts to clear chips from the hole.
+    http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g73
+
+    """
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
 
@@ -48,6 +68,9 @@ def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None):
     PathLog.debug(numpy.isclose(startPoint.sub(endPoint).x, 0, rtol=1e-05, atol=1e-06))
     PathLog.debug(numpy.isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
     PathLog.debug(endPoint)
+
+    if dwelltime > 0.0 and peckdepth > 0.0:
+        raise ValueError("Peck and Dwell cannot be used together")
 
     if repeat < 1:
         raise ValueError("repeat must be 1 or greater")
@@ -79,6 +102,12 @@ def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None):
     cmdParams["Z"] = endPoint.z
     cmdParams["R"] = retractheight if retractheight is not None else startPoint.z
 
+    if repeat < 1:
+        raise ValueError("repeat must be 1 or greater")
+
+    if not type(repeat) is int:
+        raise ValueError("repeat value must be an integer")
+
     if repeat > 1:
         cmdParams["L"] = repeat
 
@@ -89,7 +118,7 @@ def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None):
         else:
             cmd = "G81"
     else:
-        cmd = "G83"
+        cmd = "G73" if chipBreak else "G83"
         cmdParams["Q"] = peckdepth
 
     return [Path.Command(cmd, cmdParams)]
