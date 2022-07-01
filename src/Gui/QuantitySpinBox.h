@@ -118,7 +118,7 @@ public:
     QString textFromValue(const Base::Quantity& val) const;
     virtual void stepBy(int steps);
     virtual void clear();
-    virtual QValidator::State validate(QString &input, int &pos) const;
+    virtual QValidator::State validate(QString &input) const;
     virtual void fixup(QString &str) const;
 
     /// This is a helper function to determine the size this widget requires to fully display the text
