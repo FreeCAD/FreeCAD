@@ -83,7 +83,7 @@ public:
 
 protected:
     KDL::Chain Kinematic;
-    KDL::JntArray Actuall;
+    KDL::JntArray Actual;
     KDL::JntArray Min;
     KDL::JntArray Max;
     KDL::Frame Tcp;
