@@ -90,7 +90,7 @@ Enumeration::Enumeration(const char **list, const char *valStr)
     : _index(0)
 {
     while (list && *list) {
-        enumArray.push_back(std::make_shared < StringView>(*list));
+        enumArray.push_back(std::make_shared<StringView>(*list));
         list++;
     }
     setValue(valStr);
