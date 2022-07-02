@@ -640,7 +640,7 @@ namespace SketcherGui {
         toolWidget->setCheckboxToolTip(WCheckbox::SecondBox, QApplication::translate("TaskSketcherTool_c2_pattern", "Fully constrain the pattern. Can be very laggy if you have lot of hexagones."));
 
         toolWidget->setNoticeVisible(true);
-        toolWidget->setNoticeText(QApplication::translate("Pattern_1", "If your shape does not fill completely, increase the 'Max number of hex'. By default it's 500 for preview and 2000 when creating the geometries (So even if it doesn't fill in preview it might fill when creating).\n Be carefull using 'Add all constraints' if you have a lot of hexagones as large numbers of constraints risk lag or crash."));
+        toolWidget->setNoticeText(QApplication::translate("Pattern_1", "If your shape does not fill completely, increase the 'Max number of hex'. By default it's 500 for preview and 2000 when creating the geometries (So even if it doesn't fill in preview it might fill when creating).\n Be careful using 'Add all constraints' if you have a lot of hexagones as large numbers of constraints risk lag or crash."));
     }
 
     template <> void DrawSketchHandlerPatternBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {

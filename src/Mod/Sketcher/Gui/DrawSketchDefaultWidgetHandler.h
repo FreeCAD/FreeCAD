@@ -216,7 +216,7 @@ private:
         void parameterValueChanged(int parameterindex, double value)
         {
             // -> A machine does not forward to a next state when adapting the parameter (though it may forward to
-            //    a next state if all the parameters are fulfiled, see doChangeDrawSketchHandlerMode). This ensures
+            //    a next state if all the parameters are fulfilled, see doChangeDrawSketchHandlerMode). This ensures
             //    that the geometry has been defined (either by mouse clicking or by widget). Autoconstraints on point
             //    should be picked when the state is reached upon machine state advancement.
             //

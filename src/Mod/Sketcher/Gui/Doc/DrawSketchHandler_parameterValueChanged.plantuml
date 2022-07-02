@@ -52,7 +52,7 @@ else #Pink Parameter is of the current mode or a future mode
     DrawSketchDefaultWidgetHandlerWidget -[hidden]> DrawSketchDefaultWidgetHandlerWidget
     note left
       A machine does **not** forward to a future state/mode as a consequence of changing a parameter of a future state (though it may forward to
-      a next state if all the parameters of a present state are fulfiled, see doChangeDrawSketchHandlerMode).
+      a next state if all the parameters of a present state are fulfilled, see doChangeDrawSketchHandlerMode).
       This ensures that previous steps of of the geometry have been defined (either by mouse clicking or by widget).
       Autoconstraints on point should be picked when the state corresponding to the parameter is reached (upon machine state advancement).
     end note

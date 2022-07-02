@@ -258,7 +258,7 @@ private:
  * PInitEditCurveSize : Initial size of the EditCurve vector
  * PInitAutoConstraintSize : Initial size of the AutoConstraint vector
  *
- * Question 1: Do I need to use this handler or derive from this handler to make a new hander?
+ * Question 1: Do I need to use this handler or derive from this handler to make a new handler?
  *
  * No, you do not NEED to. But you are encouraged to. Structuring a handler following this NVI, apart
  * from savings in amount of code typed, enables a much easier and less verbose implementation of a handler
