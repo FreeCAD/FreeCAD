@@ -58,9 +58,7 @@
 #include "Utils.h"
 
 #include <BRepAdaptor_Curve.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
+
 #include <BRepClass_FaceClassifier.hxx>
 #include <Mod/Part/App/BRepOffsetAPI_MakeOffsetFix.h>
 #include <BRepBuilderAPI_Copy.hxx>
