@@ -8,17 +8,14 @@ This branch is dedicated to integrating code that improves the [topological nami
 
 Thanks to an independent developer named Zheng Lei ('realthunder'), who has gone the farthest in the effort of fixing toponaming in FreeCAD, and has provided a proof of concept fix in his own branch named 'Link' branch. 
 
-* FreeCAD toponaming git repository: https://github.com/FreeCAD/FreeCAD/tree/development/toponaming  
-* FreeCAD main ('master') branch: https://github.com/FreeCAD/FreeCAD/
+* [@Realthunder](https://github.com/realthunder)'s Link branch: https://github.com/realthunder/FreeCAD
+* Official FreeCAD main ('master') branch: https://github.com/FreeCAD/FreeCAD/
+* Official FreeCAD toponaming git repository: https://github.com/FreeCAD/FreeCAD/tree/development/toponaming  
+
 
 ### Objective
 
 Per the FreeCAD developer meetings that occurred during the pre-release of v0.20, 'toponaming' was identified as one of the main targets for merge in the v0.21/v1.0 release cycle. 
-
-### Main developers
-
-* @realthunder
-* @wwmayer
 
 ### Contributing
 
