@@ -339,8 +339,9 @@ inline Vector2d& Vector2d::Scale(double factor)
 
 inline Vector2d& Vector2d::Rotate(double angle)
 {
+  decltype(x) tmp_x = x;
   x = x*cos(angle) - y*sin(angle);
-  y = x*sin(angle) + y*cos(angle);
+  y = tmp_x * sin(angle) + y * cos(angle);
   return *this;
 }
 
