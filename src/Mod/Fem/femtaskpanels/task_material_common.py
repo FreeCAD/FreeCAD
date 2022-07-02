@@ -461,22 +461,36 @@ class _TaskPanel:
                     .format(self.material["Name"])
                 )
                 self.material["KinematicViscosity"] = "0 m^2/s"
+            if "ThermalExpansionCoefficient" in self.material:
+                vol_ther_ex_co = self.material["ThermalExpansionCoefficient"]
+                if "ThermalExpansionCoefficient" not in str(Units.Unit(vol_ther_ex_co)):
+                    FreeCAD.Console.PrintMessage(
+                        "ThermalExpansionCoefficient in material data "
+                        "seems to have no unit or a wrong unit (reset the value): {}\n"
+                        .format(self.material["Name"])
+                    )
+                    self.material["ThermalExpansionCoefficient"] = "0 1/K"
+            else:
+                FreeCAD.Console.PrintMessage(
+                    "ThermalExpansionCoefficient not found in {}\n"
+                    .format(self.material["Name"])
+                )
+                self.material["VolumetricThermalExpansionCoefficient"] = "0 1/K"
             if "VolumetricThermalExpansionCoefficient" in self.material:
                 # unit type VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
                 vol_ther_ex_co = self.material["VolumetricThermalExpansionCoefficient"]
-                if "VolumetricThermalExpansionCoefficient" not in str(Units.Unit(vol_ther_ex_co)):
+                if "ThermalExpansionCoefficient" not in str(Units.Unit(vol_ther_ex_co)):
                     FreeCAD.Console.PrintMessage(
                         "VolumetricThermalExpansionCoefficient in material data "
                         "seems to have no unit or a wrong unit (reset the value): {}\n"
                         .format(self.material["Name"])
                     )
-                    self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
+                    self.material["VolumetricThermalExpansionCoefficient"] = "0 1/K"
             else:
-                FreeCAD.Console.PrintMessage(
-                    "VolumetricThermalExpansionCoefficient not found in {}\n"
-                    .format(self.material["Name"])
-                )
-                self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
+                if "ThermalExpansionCoefficient" in self.material:
+                    self.material["VolumetricThermalExpansionCoefficient"] = self.material["ThermalExpansionCoefficient"]
+                else:
+                    self.material["VolumetricThermalExpansionCoefficient"] = "0 1/K"
         # Thermal properties
         if "ThermalConductivity" in self.material:
             # TODO implement for all task panel values
