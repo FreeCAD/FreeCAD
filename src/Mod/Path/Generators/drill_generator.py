@@ -38,7 +38,7 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1):
+def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None):
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
 
@@ -61,6 +61,9 @@ def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1):
     if not type(dwelltime) is float:
         raise ValueError("dwelltime must be a float")
 
+    if retractheight is not None and not type(retractheight) is float:
+        raise ValueError("retractheight must be a float")
+
     if not (
         numpy.isclose(startPoint.sub(endPoint).x, 0, rtol=1e-05, atol=1e-06)
         and (numpy.isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
@@ -74,7 +77,7 @@ def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1):
     cmdParams["X"] = startPoint.x
     cmdParams["Y"] = startPoint.y
     cmdParams["Z"] = endPoint.z
-    cmdParams["R"] = startPoint.z
+    cmdParams["R"] = retractheight if retractheight is not None else startPoint.z
 
     if repeat > 1:
         cmdParams["L"] = repeat

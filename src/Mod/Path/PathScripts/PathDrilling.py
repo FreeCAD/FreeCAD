@@ -233,7 +233,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             repeat = 1  # technical debt:  Add a repeat property for user control
 
             try:
-                drillcommands = generator.generate(edge, dwelltime, peckdepth, repeat)
+                drillcommands = generator.generate(
+                    edge, dwelltime, peckdepth, repeat, obj.RetractHeight.Value
+                )
 
             except ValueError as e:  # any targets that fail the generator are ignored
                 PathLog.info(e)
