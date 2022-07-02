@@ -14,8 +14,8 @@ PrandtlNumber = 0.7
 [Thermal]
 SpecificHeat = 1.01 kJ/kg/K
 ThermalConductivity = 0.02587 W/m/K
-; volumetric expansion coeff of ideal gas depends on temperature and pressure
-VolumetricThermalExpansionCoefficient = 3.43e-3 m/m/K
+; thermal expansion coefficient of ideal gas is 1/temperature
+ThermalExpansionCoefficient = 3.43e-3 1/K
 
 [Electrical]
 RelativePermittivity = 1.00059
