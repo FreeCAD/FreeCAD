@@ -55,7 +55,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
         else if(UnitValue < 0.001) {
             unitString = QString::fromLatin1("nm");
-            factor = 0.000001;
+            factor = 1e-6;
         }
         else if (UnitValue < 0.1) {
             unitString = QString::fromUtf8("\xC2\xB5m");
@@ -71,7 +71,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
         else if (UnitValue < 100000000000.0) {
             unitString = QString::fromLatin1("km");
-            factor = 1000000.0;
+            factor = 1e6;
         }
         else { // bigger than 1000 km -> scientific notation
             unitString = QString::fromLatin1("mm");
@@ -145,7 +145,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     else if (unit == Unit::Density) {
         if (UnitValue < 0.0001) {
             unitString = QString::fromLatin1("kg/m^3");
-            factor = 0.000000001;
+            factor = 1e-9;
         }
         else if (UnitValue < 1.0) {
             unitString = QString::fromLatin1("kg/cm^3");
@@ -157,7 +157,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
     }
     else if (unit == Unit::ThermalConductivity) {
-        if (UnitValue > 1000000) {
+        if (UnitValue > 1e6) {
             unitString = QString::fromLatin1("W/mm/K");
             factor = 1e6;
         }
@@ -169,7 +169,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     else if (unit == Unit::ThermalExpansionCoefficient) {
         if (UnitValue < 0.001) {
             unitString = QString::fromUtf8("\xC2\xB5m/m/K");  // micro-meter/meter/K
-            factor = 0.000001;
+            factor = 1e-6;
         }
         else {
             unitString = QString::fromLatin1("mm/mm/K");
@@ -209,7 +209,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
         else if (UnitValue < 10000000000.0) {
             unitString = QString::fromLatin1("GPa");
-            factor = 1000000.0;
+            factor = 1e6;
         }
         else { // bigger -> scientific notation
             unitString = QString::fromLatin1("Pa");
