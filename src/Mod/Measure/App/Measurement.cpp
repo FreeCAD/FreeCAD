@@ -27,6 +27,7 @@
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepGProp.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
+# include <gp_Circ.hxx>
 # include <gp_Lin.hxx>
 # include <GProp_GProps.hxx>
 # include <TopoDS.hxx>
