@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#include "GeometryDefaultExtension.h"
 
 #include "GeometryBoolExtensionPy.h"
 #include "GeometryBoolExtensionPy.cpp"
+
 
 using namespace Part;
 

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "GeometryExtension.h"
 #include "GeometryExtensionPy.h"
 #include "GeometryExtensionPy.cpp"
+
 
 using namespace Part;
 

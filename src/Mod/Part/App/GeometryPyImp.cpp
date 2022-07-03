@@ -20,40 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Ax1.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Vec.hxx>
-# include <gp_Trsf.hxx>
-# include <Geom_Geometry.hxx>
-# include <Geom_Curve.hxx>
-# include <Geom_Surface.hxx>
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
 
+#ifndef _PreComp_
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
-#include <Base/Rotation.h>
 #include <Base/Placement.h>
 #include <Base/PlacementPy.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
 #include "GeometryPy.h"
 #include "GeometryPy.cpp"
-
 #include "GeometryExtensionPy.h"
-#include "TopoShape.h"
-#include "TopoShapePy.h"
+#include "OCCError.h"
+
 
 using namespace Part;
 

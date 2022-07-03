@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include "GeometryDefaultExtension.h"
-
 #include "GeometryStringExtensionPy.h"
 #include "GeometryStringExtensionPy.cpp"
+
 
 using namespace Part;
 
