@@ -20,27 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_TOOLS_H
 #define PART_TOOLS_H
 
 #include <Base/Converter.h>
 #include <Base/Placement.h>
+#include <Mod/Part/PartGlobal.h>
+
+#include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#include <gp_Dir.hxx>
 #include <gp_XYZ.hxx>
 #include <Geom_Surface.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <Poly_Triangle.hxx>
 #include <Poly_Triangulation.hxx>
-#include <TColStd_ListOfTransient.hxx>
 #include <TColgp_Array1OfDir.hxx>
+#include <TColStd_ListOfTransient.hxx>
 #include <TopLoc_Location.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <vector>
-#include <Mod/Part/PartGlobal.h>
+
 
 class gp_Lin;
 class gp_Pln;

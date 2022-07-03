@@ -20,18 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_TOPOSHAPE_H
 #define PART_TOPOSHAPE_H
 
 #include <iosfwd>
 #include <list>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopTools_ListOfShape.hxx>
+
 #include <App/ComplexGeoData.h>
 #include <Base/Exception.h>
 #include <Mod/Part/PartGlobal.h>
+
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Wire.hxx>
+#include <TopTools_ListOfShape.hxx>
+
 
 class gp_Ax1;
 class gp_Ax2;
