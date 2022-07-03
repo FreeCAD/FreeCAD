@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef APP_PropertyGeometryList_H
 #define APP_PropertyGeometryList_H
 
-// Std. configurations
-
-
 #include <vector>
-#include <string>
+
 #include <App/Property.h>
+
 #include "Geometry.h"
+
 
 namespace Base {
 class Writer;

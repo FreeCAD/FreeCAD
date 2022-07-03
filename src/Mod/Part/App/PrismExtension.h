@@ -23,10 +23,12 @@
 #ifndef PART_PRISM_EXTENSION_H
 #define PART_PRISM_EXTENSION_H
 
-#include <Mod/Part/PartGlobal.h>
 #include <App/DocumentObjectExtension.h>
 #include <App/PropertyUnits.h>
+#include <Mod/Part/PartGlobal.h>
+
 #include <TopoDS_Face.hxx>
+
 
 namespace Part
 {

@@ -20,54 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-# include <BRepLib.hxx>
-# include <BRepPrimAPI_MakeCone.hxx>
-# include <BRepPrimAPI_MakeCylinder.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepPrimAPI_MakeSphere.hxx>
-# include <BRepPrim_Cylinder.hxx>
-# include <BRepPrim_Wedge.hxx>
+# include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
-# include <BRepBuilderAPI_GTransform.hxx>
-# include <BRepProj_Projection.hxx>
-# include <gp_Circ.hxx>
+# include <BRepPrim_Cylinder.hxx>
+# include <BRepPrim_Wedge.hxx>
+# include <BRepPrimAPI_MakeCone.hxx>
+# include <BRepPrimAPI_MakeCylinder.hxx>
+# include <BRepPrimAPI_MakeSphere.hxx>
+# include <Geom_Plane.hxx>
 # include <gp_Elips.hxx>
 # include <gp_GTrsf.hxx>
-# include <GCE2d_MakeSegment.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_ConicalSurface.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom2d_Line.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom2d_Line.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
 # include <Precision.hxx>
 # include <Standard_Real.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Vertex.hxx>
 # include <Standard_Version.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Vertex.hxx>
 #endif
 
-#include "PrimitiveFeature.h"
-#include <Mod/Part/App/PartFeaturePy.h>
 #include <App/FeaturePythonPyImp.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
+
+#include "PrimitiveFeature.h"
+#include "PartFeaturePy.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -75,11 +57,11 @@
 
 
 namespace Part {
-    const App::PropertyQuantityConstraint::Constraints apexRange   = {-90.0,90.0,0.1};
-    const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0,180.0,1.0};
-    const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
-    const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
-    const App::PropertyQuantityConstraint::Constraints quantityRange  = {0.0,FLT_MAX,0.1};
+    const App::PropertyQuantityConstraint::Constraints apexRange = {-90.0, 90.0, 0.1};
+    const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0, 180.0, 1.0};
+    const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0, 360.0, 1.0};
+    const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0, 90.0, 1.0};
+    const App::PropertyQuantityConstraint::Constraints quantityRange = {0.0, FLT_MAX, 0.1};
 }
 
 using namespace Part;
