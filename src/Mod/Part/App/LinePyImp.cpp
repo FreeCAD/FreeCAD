@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp.hxx>
-# include <gp_Lin.hxx>
 # include <Geom_Line.hxx>
 # include <GC_MakeLine.hxx>
-# include <Precision.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
+#include "LinePy.h"
+#include "LinePy.cpp"
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/LinePy.cpp>
+
 
 using namespace Part;
 

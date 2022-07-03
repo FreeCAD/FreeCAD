@@ -20,65 +20,59 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
 # include <iterator>
-# include <Geom_Surface.hxx>
-# include <Geom_RectangularTrimmedSurface.hxx>
-# include <GeomAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <gp_Ax3.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Cylinder.hxx>
-# include <TColgp_Array2OfPnt.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
+# include <Bnd_Box.hxx>
+# include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepLib_MakeWire.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepGProp.hxx>
 # include <BRepLib_FuseEdges.hxx>
+# include <BRepLib_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <Geom_Conic.hxx>
-# include <ShapeBuild_ReShape.hxx>
-# include <ShapeFix_Face.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-# include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
-# include <BRep_Builder.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <ShapeAnalysis_Edge.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom_RectangularTrimmedSurface.hxx>
+# include <Geom_Surface.hxx>
+# include <GeomAdaptor_Surface.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <gp_Ax3.hxx>
+# include <gp_Cylinder.hxx>
+# include <gp_Pln.hxx>
+# include <GProp_GProps.hxx>
 # include <ShapeAnalysis_Curve.hxx>
 # include <ShapeAnalysis_Shell.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <TColgp_SequenceOfPnt.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
+# include <ShapeBuild_ReShape.hxx>
+# include <ShapeFix_Face.hxx>
 # include <Standard_Version.hxx>
+# include <TColgp_Array2OfPnt.hxx>
+# include <TColgp_SequenceOfPnt.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
+# include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
 #endif // _PreComp_
 
-#include <Base/Tools.h>
-
 #include <Base/Console.h>
-#include <Base/Tools.h>
 
 #include "modelRefine.h"
 
 
 using namespace ModelRefine;
-
 
 
 void ModelRefine::getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges)

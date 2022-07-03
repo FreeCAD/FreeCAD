@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MODELREFINE_H
 #define MODELREFINE_H
 
-#include <vector>
-#include <map>
 #include <list>
+#include <map>
+#include <vector>
+
+#include <BRepBuilderAPI_MakeShape.hxx>
 #include <GeomAbs_SurfaceType.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Wire.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shell.hxx>
+
 #include <TopTools_DataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
-#include <BRepBuilderAPI_MakeShape.hxx>
+#include <TopTools_MapOfShape.hxx>
+
 #include <Mod/Part/PartGlobal.h>
 
 
