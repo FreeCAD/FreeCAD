@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
@@ -33,7 +33,9 @@
 
 #include <App/Document.h>
 #include <Base/Exception.h>
+
 #include "FeatureDressUp.h"
+
 
 using namespace PartDesign;
 
