@@ -20,20 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_OffsetSurface.hxx>
 # include <memory>
 #endif
 
-#include <Base/VectorPy.h>
-#include <Base/Vector3D.h>
-
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/OffsetSurfacePy.h>
-#include <Mod/Part/App/OffsetSurfacePy.cpp>
+#include "OffsetSurfacePy.h"
+#include "OffsetSurfacePy.cpp"
+
 
 using namespace Part;
 
