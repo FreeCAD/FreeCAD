@@ -24,7 +24,7 @@
 #define PARTGUI_SECTIONCUTTING_H
 
 #include <QDialog>
-#include <App/DocumentObserver.h>
+
 
 namespace PartGui {
 
