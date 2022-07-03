@@ -641,6 +641,31 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     _transaction_name = "Edit LeadInOut Dress-up"
     _ui_file = ":/panels/DressUpLeadInOutEdit.ui"
 
+    def abort(self):
+        """abort() overwritten here to include task panel cancel action"""
+        FreeCAD.ActiveDocument.abortTransaction()
+        self.cleanupObject()
+        FreeCADGui.ActiveDocument.resetEdit()
+        self.cleanup(True)
+
+    def cleanupObject(self):
+        """cleanupObject()... Remove new dressup object upon reject/cancel.
+        This method is necessary because the object is a dressup."""
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(
+                translate("PathOp", "Uncreate AreaOp Operation")
+            )
+            base = self.obj.Base
+            baseName = self.obj.Base.Name
+            job = PathUtils.findParentJob(self.obj)
+            try:
+                FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+                FreeCADGui.ActiveDocument.getObject(baseName).Visibility = True
+                job.Proxy.addOperation(base)
+            except Exception as ee:
+                PathLog.debug("{}\n".format(ee))
+            FreeCAD.ActiveDocument.commitTransaction()
+
     def setupUi(self):
         self.connectWidget("LeadIn", self.form.chkLeadIn)
         self.connectWidget("LeadOut", self.form.chkLeadOut)
@@ -660,6 +685,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
 class ViewProviderDressup:
     def __init__(self, vobj):
         self.obj = vobj.Object
+        self.deleteOnReject = True
         self.setEdit(vobj)
 
     def attach(self, vobj):
@@ -679,10 +705,15 @@ class ViewProviderDressup:
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        panel = TaskDressupLeadInOut(vobj.Object, self)
-        FreeCADGui.Control.showDialog(panel)
-        return True
+        if 0 == mode:
+            FreeCADGui.Control.closeDialog()
+            panel = TaskDressupLeadInOut(vobj.Object, self)
+            panel.deleteOnReject = self.deleteObjectsOnReject()
+            FreeCADGui.Control.showDialog(panel)
+            self.deleteOnReject = False
+            return True
+
+        return False
 
     def unsetEdit(self, vobj, mode=0):
         if self.panel:
@@ -698,6 +729,16 @@ class ViewProviderDressup:
                 job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
             arg1.Object.Base = None
         return True
+
+    def deleteObjectsOnReject(self):
+        """
+        deleteObjectsOnReject() ... return true if all objects should
+        be deleted if the user hits cancel. This is used during the initial
+        edit session, if the user does not press OK, it is assumed they've
+        changed their mind about creating the operation.
+        """
+        PathLog.track()
+        return hasattr(self, "deleteOnReject") and self.deleteOnReject
 
     def __getstate__(self):
         return None

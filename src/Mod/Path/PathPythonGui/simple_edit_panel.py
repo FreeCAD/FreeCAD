@@ -25,6 +25,7 @@ class SimpleEditPanel:
     def __init__(self, obj, view):
         self.obj = obj
         self.viewProvider = view
+        self.deleteOnReject = True
         FreeCAD.ActiveDocument.openTransaction(self._transaction_name)
         self.form = FreeCADGui.PySideUic.loadUi(self._ui_file)
         self._fc = {}
