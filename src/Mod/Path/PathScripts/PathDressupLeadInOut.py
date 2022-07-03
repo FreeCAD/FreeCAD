@@ -701,7 +701,7 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-                    print(i.Group)
+                    # print(i.Group)
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
