@@ -374,6 +374,7 @@ public:
     int addInternalAlignmentHyperbolaMinorDiameter(int geoId1, int geoId2);
     int addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2);
     int addInternalAlignmentParabolaFocus(int geoId1, int geoId2);
+    int addInternalAlignmentParabolaFocalDistance(int geoId1, int geoId2);
     int addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int poleindex);
     int addInternalAlignmentKnotPoint(int geoId1, int geoId2, int knotindex);
     //@}

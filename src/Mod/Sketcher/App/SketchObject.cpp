@@ -5069,7 +5069,6 @@ int SketchObject::exposeInternalGeometry(int GeoId)
     else if(geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
         // First we search what has to be restored
         bool focus=false;
-        int focusgeoid=-1;
         bool focus_to_vertex=false;
 
         const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
@@ -5081,7 +5080,9 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 switch((*it)->AlignmentType){
                     case Sketcher::ParabolaFocus:
                         focus=true;
-                        focusgeoid=(*it)->First;
+                        break;
+                    case Sketcher::ParabolaFocalAxis:
+                        focus_to_vertex = true;
                         break;
                     default:
                         return -1;
@@ -5089,42 +5090,13 @@ int SketchObject::exposeInternalGeometry(int GeoId)
             }
         }
 
-        if(focus) {
-            // look for a line from focusgeoid:start to Geoid:mid_external
-            std::vector<int> focusgeoidlistgeoidlist;
-            std::vector<PointPos> focusposidlist;
-            getDirectlyCoincidentPoints(focusgeoid, Sketcher::PointPos::start, focusgeoidlistgeoidlist,
-                                           focusposidlist);
-
-            std::vector<int> parabgeoidlistgeoidlist;
-            std::vector<PointPos> parabposidlist;
-            getDirectlyCoincidentPoints(GeoId, Sketcher::PointPos::mid, parabgeoidlistgeoidlist,
-                                       parabposidlist);
-
-            if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
-                std::size_t i,j;
-                for(i=0;i<focusgeoidlistgeoidlist.size();i++) {
-                    for(j=0;j<parabgeoidlistgeoidlist.size();j++) {
-                        if(focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
-                            const Part::Geometry * geo = getGeometry(focusgeoidlistgeoidlist[i]);
-                            if (geo && geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                if((focusposidlist[i] == Sketcher::PointPos::start && parabposidlist[j] == Sketcher::PointPos::end) ||
-                                    (focusposidlist[i] == Sketcher::PointPos::end && parabposidlist[j] == Sketcher::PointPos::start))
-                                    focus_to_vertex=true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         int currentgeoid= getHighestCurveIndex();
         int incrgeo= 0;
 
-        const Part::GeomArcOfParabola *aoh = static_cast<const Part::GeomArcOfParabola *>(geo);
+        const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo);
 
-        Base::Vector3d center = aoh->getCenter();
-        Base::Vector3d focusp = aoh->getFocus();
+        Base::Vector3d center = aop->getCenter();
+        Base::Vector3d focusp = aop->getFocus();
 
         std::vector<Part::Geometry *> igeo;
         std::vector<Constraint *> icon;
@@ -5142,36 +5114,24 @@ int SketchObject::exposeInternalGeometry(int GeoId)
             newConstr->FirstPos = Sketcher::PointPos::start;
             newConstr->Second = GeoId;
 
-            focusgeoid = currentgeoid+incrgeo+1;
-
             icon.push_back(newConstr);
             incrgeo++;
         }
 
-        if(!focus_to_vertex)
-        {
+       if (!focus_to_vertex) {
             Part::GeomLineSegment *paxis = new Part::GeomLineSegment();
             paxis->setPoints(center,focusp);
 
             igeo.push_back(paxis);
 
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::Coincident;
-            newConstr->First = focusgeoid;
-            newConstr->FirstPos = Sketcher::PointPos::start;
-            newConstr->Second = currentgeoid+incrgeo+1; // just added line
-            newConstr->SecondPos = Sketcher::PointPos::end;
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->FirstPos = Sketcher::PointPos::none;
+            newConstr->Second = GeoId;
 
             icon.push_back(newConstr);
-
-            Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
-            newConstr2->Type = Sketcher::Coincident;
-            newConstr2->First = GeoId;
-            newConstr2->FirstPos = Sketcher::PointPos::mid;
-            newConstr2->Second = currentgeoid+incrgeo+1; // just added line
-            newConstr2->SecondPos = Sketcher::PointPos::start;
-
-            icon.push_back(newConstr2);
 
             incrgeo++;
         }
@@ -5464,37 +5424,11 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
                 case Sketcher::ParabolaFocus:
                     focus1elementindex = (*it)->First;
                     break;
+                case Sketcher::ParabolaFocalAxis:
+                    majorelementindex = (*it)->First;
+                    break;
                 default:
                     return -1;
-                }
-            }
-        }
-
-        if (focus1elementindex!=-1) {
-            // look for a line from focusgeoid:start to Geoid:mid_external
-            std::vector<int> focusgeoidlistgeoidlist;
-            std::vector<PointPos> focusposidlist;
-            getDirectlyCoincidentPoints(focus1elementindex, Sketcher::PointPos::start, focusgeoidlistgeoidlist,
-                                        focusposidlist);
-
-            std::vector<int> parabgeoidlistgeoidlist;
-            std::vector<PointPos> parabposidlist;
-            getDirectlyCoincidentPoints(GeoId, Sketcher::PointPos::mid, parabgeoidlistgeoidlist,
-                                       parabposidlist);
-
-            if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
-                std::size_t i,j;
-                for (i=0;i<focusgeoidlistgeoidlist.size();i++) {
-                    for (j=0;j<parabgeoidlistgeoidlist.size();j++) {
-                        if (focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
-                            const Part::Geometry * geo = getGeometry(focusgeoidlistgeoidlist[i]);
-                            if (geo && geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                if((focusposidlist[i] == Sketcher::PointPos::start && parabposidlist[j] == Sketcher::PointPos::end) ||
-                                    (focusposidlist[i] == Sketcher::PointPos::end && parabposidlist[j] == Sketcher::PointPos::start))
-                                    majorelementindex = focusgeoidlistgeoidlist[i];
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -5516,12 +5450,12 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         std::vector<int> delgeometries;
 
-        if (majorelementindex !=-1 && majorconstraints<3) { // major as two coincidents to focus and vertex
+        // major has minimum one constraint, the specific internal alignment constraint
+        if (majorelementindex !=-1 && majorconstraints<2)
             delgeometries.push_back(majorelementindex);
-            majorelementindex = -1;
-        }
 
-        if (majorelementindex == -1 && focus1elementindex !=-1 && focus1constraints<3) // focus has one coincident and one internal align
+        // focus has minimum one constraint now, the specific internal alignment constraint
+        if (focus1elementindex !=-1 && focus1constraints<2)
             delgeometries.push_back(focus1elementindex);
 
         if(delgeoid)
@@ -8067,6 +8001,9 @@ bool SketchObject::getInternalTypeState(const Constraint * cstr, Sketcher::Inter
                 break;
             case BSplineKnotPoint:
                 internaltypestate = InternalType::BSplineKnotPoint;
+                break;
+            case ParabolaFocalAxis:
+                internaltypestate = InternalType::ParabolaFocalAxis;
                 break;
         }
 

@@ -1898,6 +1898,9 @@ int Sketch::addConstraint(const Constraint *constraint)
             case BSplineKnotPoint:
                 rtn = addInternalAlignmentKnotPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
                 break;
+            case ParabolaFocalAxis:
+                rtn = addInternalAlignmentParabolaFocalDistance(constraint->First,constraint->Second);
+                break;
             default:
                 break;
         }
@@ -3253,6 +3256,44 @@ int Sketch::addInternalAlignmentParabolaFocus(int geoId1, int geoId2)
         GCSsys.addConstraintInternalAlignmentParabolaFocus(a1, p1, tag);
         return ConstraintsCounter;
     }
+    return -1;
+}
+
+int Sketch::addInternalAlignmentParabolaFocalDistance(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfParabola)
+        return -1;
+    if (Geoms[geoId2].type != Line)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, PointPos::start);
+    int pointId2 = getPointId(geoId2, PointPos::end);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size()) &&
+        pointId2 >= 0 && pointId2 < int(Points.size())) {
+
+        GCS::Point &p1 = Points[pointId1];
+        GCS::Point &p2 = Points[pointId2];
+
+        GCS::ArcOfParabola &a1 = ArcsOfParabola[Geoms[geoId1].index];
+
+        auto & vertexpoint = a1.vertex;
+        auto & focuspoint = a1.focus1;
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintP2PCoincident(p1, vertexpoint, tag);
+
+        tag = ++ConstraintsCounter;
+        GCSsys.addConstraintP2PCoincident(p2, focuspoint, tag);
+
+        return ConstraintsCounter;
+    }
+
     return -1;
 }
 
