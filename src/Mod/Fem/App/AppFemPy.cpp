@@ -20,28 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
 # include <cstdlib>
-# include <Standard_Real.hxx>
+# include <memory>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/VectorPy.h>
-#include <Base/PlacementPy.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
-//#include <Mod/Mesh/App/Core/MeshKernel.h>
-//#include <Mod/Mesh/App/Core/Evaluation.h>
-//#include <Mod/Mesh/App/Core/Iterator.h>
+#include <Base/Interpreter.h>
+#include <Base/PlacementPy.h>
+#include <Mod/Part/App/OCCError.h>
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
@@ -51,8 +42,6 @@
 #include "FemVTKTools.h"
 #endif
 
-#include <Base/Vector3D.h>
-#include <Mod/Part/App/OCCError.h>
 
 namespace Fem {
 class Module : public Py::ExtensionModule<Module>
