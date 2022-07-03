@@ -21,16 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #include "PartPyCXX.h"
-#include <CXX/Objects.hxx>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeVertexPy.h>
-#include <Mod/Part/App/TopoShapeSolidPy.h>
-#include <Mod/Part/App/TopoShapeShellPy.h>
-#include <Mod/Part/App/TopoShapeCompSolidPy.h>
-#include <Mod/Part/App/TopoShapeCompoundPy.h>
+
 
 namespace Part {
 PartExport Py::Object shape2pyshape(const TopoShape &shape)

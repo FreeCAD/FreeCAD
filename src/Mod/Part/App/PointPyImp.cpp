@@ -20,27 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeVertex.hxx>
-# include <gp.hxx>
-# include <Geom_CartesianPoint.hxx>
 # include <GC_MakeLine.hxx>
-# include <GC_MakeSegment.hxx>
-# include <Precision.hxx>
+# include <Geom_CartesianPoint.hxx>
 # include <TopoDS_Vertex.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
-#include "Geometry.h"
 #include "PointPy.h"
 #include "PointPy.cpp"
 #include "OCCError.h"
-#include "TopoShape.h"
 #include "TopoShapeVertexPy.h"
+
 
 using namespace Part;
 

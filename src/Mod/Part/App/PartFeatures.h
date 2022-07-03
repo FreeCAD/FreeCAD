@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATURES_H
 #define PART_FEATURES_H
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-#include <Mod/Part/App/PartFeature.h>
+
+#include "PartFeature.h"
+
 
 namespace Part
 {

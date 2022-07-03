@@ -20,29 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <gp_Ax1.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pnt.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_TrimmedCurve.hxx>
 # include <GC_MakePlane.hxx>
+# include <Geom_Plane.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
+#include "PlanePy.h"
+#include "PlanePy.cpp"
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/PlanePy.h>
-#include <Mod/Part/App/PlanePy.cpp>
+
 
 using namespace Part;
 

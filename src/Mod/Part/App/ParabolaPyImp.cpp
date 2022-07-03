@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_Parabola.hxx>
-# include <gp_Parab.hxx>
 # include <gce_MakeParab.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
+#include "ParabolaPy.h"
+#include "ParabolaPy.cpp"
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/ParabolaPy.h>
-#include <Mod/Part/App/ParabolaPy.cpp>
+
 
 using namespace Part;
 

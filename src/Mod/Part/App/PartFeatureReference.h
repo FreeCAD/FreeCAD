@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FeatureReference_H
 #define PART_FeatureReference_H
 
-#include "TopoShape.h"
-#include "PropertyTopoShape.h"
 #include <App/GeoFeature.h>
-#include <App/FeaturePython.h>
-#include <App/PropertyLinks.h>
+
+#include "PropertyTopoShape.h"
+
 
 namespace Part
 {

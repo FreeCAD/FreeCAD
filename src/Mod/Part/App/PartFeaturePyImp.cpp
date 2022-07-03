@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "PartFeature.h"
@@ -28,6 +27,7 @@
 // inclusion of the generated files (generated out of PartFeaturePy.xml)
 #include "PartFeaturePy.h"
 #include "PartFeaturePy.cpp"
+
 
 using namespace Part;
 
