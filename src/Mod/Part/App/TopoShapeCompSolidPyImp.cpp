@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -30,12 +29,12 @@
 #endif
 
 #include "OCCError.h"
-#include "TopoShape.h"
 
 // inclusion of the generated files (generated out of TopoShapeCompSolidPy.xml)
-#include "TopoShapeSolidPy.h"
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeCompSolidPy.cpp"
+#include "TopoShapeSolidPy.h"
+
 
 using namespace Part;
 

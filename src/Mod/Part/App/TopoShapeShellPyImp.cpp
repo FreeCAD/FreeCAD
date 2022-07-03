@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Ax1.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepGProp.hxx>
@@ -32,23 +30,22 @@
 # include <GProp_PrincipalProps.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Shell.hxx>
-# include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeAnalysis_Shell.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
+# include <ShapeUpgrade_ShellSewing.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
 #include "OCCError.h"
 #include "Tools.h"
-#include "TopoShape.h"
 #include "TopoShapeCompoundPy.h"
-#include "TopoShapeCompSolidPy.h"
+#include "TopoShapeCompoundPy.h"
 #include "TopoShapeFacePy.h"
 #include "TopoShapeShellPy.h"
 #include "TopoShapeShellPy.cpp"
 #include "TopoShapeSolidPy.h"
+
 
 using namespace Part;
 

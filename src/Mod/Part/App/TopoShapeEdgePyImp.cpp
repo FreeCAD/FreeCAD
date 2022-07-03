@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepGProp.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepLProp_CurveTool.hxx>
 # include <GProp_GProps.hxx>
@@ -40,66 +38,55 @@
 # include <Geom_Hyperbola.hxx>
 # include <Geom_Parabola.hxx>
 # include <Geom_Line.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <Geom_BSplineCurve.hxx>
 # include <Geom_OffsetCurve.hxx>
 # include <Geom_Surface.hxx>
 # include <Geom2d_Curve.hxx>
 # include <TopLoc_Location.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Hypr.hxx>
-# include <gp_Parab.hxx>
-# include <gp_Lin.hxx>
-# include <Poly_Polygon2D.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Poly_Triangulation.hxx>
 # include <Poly_PolygonOnTriangulation.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TopExp.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
 # include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <ShapeAnalysis_Edge.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-# include <BRepGProp.hxx>
 # include <GProp_GProps.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
-# include <GCPnts_UniformAbscissa.hxx>
-# include <GCPnts_UniformDeflection.hxx>
-# include <GCPnts_TangentialDeflection.hxx>
 # include <GCPnts_QuasiUniformAbscissa.hxx>
 # include <GCPnts_QuasiUniformDeflection.hxx>
+# include <GCPnts_TangentialDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
 #endif // _PreComp_
 
+#include <Base/GeometryPyCXX.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
 
-#include "Tools.h"
-#include "OCCError.h"
-#include "TopoShape.h"
+#include <Mod/Part/App/BezierCurvePy.h>
+#include <Mod/Part/App/BSplineCurvePy.h>
+#include <Mod/Part/App/CirclePy.h>
+#include <Mod/Part/App/EllipsePy.h>
+#include <Mod/Part/App/GeometryPy.h>
+#include <Mod/Part/App/HyperbolaPy.h>
+#include <Mod/Part/App/LinePy.h>
+#include <Mod/Part/App/OffsetCurvePy.h>
+#include <Mod/Part/App/ParabolaPy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.cpp>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeVertexPy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.cpp>
 
 #include "Geometry2d.h"
-#include "Geometry.h"
-#include <Mod/Part/App/GeometryPy.h>
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/CirclePy.h>
-#include <Mod/Part/App/EllipsePy.h>
-#include <Mod/Part/App/HyperbolaPy.h>
-#include <Mod/Part/App/ParabolaPy.h>
-#include <Mod/Part/App/BezierCurvePy.h>
-#include <Mod/Part/App/BSplineCurvePy.h>
-#include <Mod/Part/App/OffsetCurvePy.h>
+#include "OCCError.h"
+#include "Tools.h"
+
 
 using namespace Part;
 

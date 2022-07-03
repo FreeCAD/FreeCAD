@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_Circle.hxx>
 # include <Geom_ToroidalSurface.hxx>
-# include <gp_Torus.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
-#include "Geometry.h"
-#include "CirclePy.h"
+#include "OCCError.h"
 #include "ToroidPy.h"
 #include "ToroidPy.cpp"
-#include "OCCError.h"
+
 
 using namespace Part;
 

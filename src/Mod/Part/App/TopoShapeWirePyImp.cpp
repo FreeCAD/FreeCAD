@@ -20,46 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Approx_Curve3d.hxx>
-# include <ShapeAlgo_AlgoContainer.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepBuilderAPI_FindPlane.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepGProp.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
 # include <BRepTools_WireExplorer.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PrincipalProps.hxx>
+# include <GCPnts_QuasiUniformAbscissa.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
+# include <GCPnts_TangentialDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
 # include <Precision.hxx>
+# include <ShapeAlgo_AlgoContainer.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <TopExp.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <GProp_PrincipalProps.hxx>
-# include <GCPnts_UniformAbscissa.hxx>
-# include <GCPnts_UniformDeflection.hxx>
-# include <GCPnts_TangentialDeflection.hxx>
-# include <GCPnts_QuasiUniformAbscissa.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
 #endif
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
-#include "TopoShape.h"
 #include <Mod/Part/App/BSplineCurvePy.h>
-#include <Mod/Part/App/TopoShapeShellPy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.cpp>
-#include <Mod/Part/App/TopoShapeVertexPy.h>
 #include "OCCError.h"
 #include "Tools.h"
+
 
 using namespace Part;
 
