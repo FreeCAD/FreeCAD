@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>
+# include <sstream>
 # include <BRep_Builder.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <STEPControl_Writer.hxx>
+# include <Quantity_Color.hxx>
 # include <STEPControl_Reader.hxx>
 # include <StepData_StepModel.hxx>
 # include <TopoDS.hxx>
@@ -35,50 +34,22 @@
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopExp_Explorer.hxx>
-# include <sstream>
 # include <Standard_Version.hxx>
-# include <XSControl_WorkSession.hxx>
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <STEPConstruct_Styles.hxx>
-# include <TColStd_HSequenceOfTransient.hxx>
-# include <STEPConstruct.hxx>
-# include <StepVisual_StyledItem.hxx>
-# include <StepShape_ShapeRepresentation.hxx>
-# include <StepVisual_PresentationStyleByContext.hxx>
-# include <StepVisual_StyleContextSelect.hxx>
-# include <StepVisual_PresentationStyleByContext.hxx>
-# include <Interface_EntityIterator.hxx>
-# include <StepRepr_RepresentedDefinition.hxx>
-# include <StepShape_ShapeDefinitionRepresentation.hxx>
-# include <StepRepr_CharacterizedDefinition.hxx>
-# include <StepRepr_ProductDefinitionShape.hxx>
-# include <StepRepr_AssemblyComponentUsage.hxx>
-# include <StepRepr_AssemblyComponentUsage.hxx>
-# include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
-# include <Quantity_Color.hxx>
-# include <TCollection_ExtendedString.hxx>
-# include <StepBasic_Product.hxx>
-# include <StepBasic_Product.hxx>
-# include <StepBasic_ProductDefinition.hxx>
-# include <StepBasic_ProductDefinition.hxx>
-# include <StepBasic_ProductDefinitionFormation.hxx>
 #endif
 
-# include <StepElement_AnalysisItemWithinRepresentation.hxx>
-# include <StepVisual_AnnotationCurveOccurrence.hxx>
+#include <StepElement_AnalysisItemWithinRepresentation.hxx>
+#include <StepVisual_AnnotationCurveOccurrence.hxx>
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Console.h>
 
 #include "ImportStep.h"
+#include "encodeFilename.h"
 #include "PartFeature.h"
 #include "ProgressIndicator.h"
-#include "encodeFilename.h"
+
 
 using namespace Part;
 
