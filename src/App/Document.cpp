@@ -2618,15 +2618,17 @@ bool Document::saveToFile(const char* filename) const
 #ifdef FC_OS_WIN32
     QString utf8Name = QString::fromUtf8(filename);
     auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
+    std::string nativePath = QString::fromStdWString(realpath.native()).toStdString();
 #else
     auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
+    std::string nativePath = realpath.native();
 #endif
 
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
     // fails so that the data of the work up to now isn't lost.
     std::string uuid = Base::Uuid::createUuid();
-    std::string fn = realpath.native();
+    std::string fn = nativePath;
     if (policy) {
         fn += ".";
         fn += uuid;
@@ -2696,7 +2698,7 @@ bool Document::saveToFile(const char* filename) const
             policy.setPolicy(BackupPolicy::Standard);
         }
         policy.setNumberOfFiles(count_bak);
-        policy.apply(fn, realpath.native());
+        policy.apply(fn, nativePath);
     }
 
     signalFinishSave(*this, filename);
