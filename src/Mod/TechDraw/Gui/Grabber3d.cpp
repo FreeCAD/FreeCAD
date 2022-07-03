@@ -65,6 +65,36 @@ using namespace Gui;
     //       newSG->addChild();
     //
 
+void Grabber3d::quickView(App::Document* appDoc,
+                          int outWidth, int outHeight,
+                          const QColor bgColor,
+                          QImage &image)
+{
+//    Base::Console().Message("G3d::quickView() - %d x %d\n", outWidth, outHeight);
+    //get the active view
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(appDoc);
+    Gui::MDIView* mdiView = guiDoc->getActiveView();
+    if (mdiView == nullptr) {
+        Base::Console().Warning("G3d::quickView - no ActiveView - returning\n");
+        return;
+    }
+
+    View3DInventor* view3d = qobject_cast<View3DInventor*>(mdiView);
+    if (view3d == nullptr) {
+        Base::Console().Warning("G3d::quickView - no viewer for ActiveView - returning\n");
+        return;
+    }
+
+    View3DInventorViewer* viewer = view3d->getViewer();
+    if (viewer == nullptr) {
+        Base::Console().Warning("G3d::quickView - could not create viewer - returning\n");
+        return;
+    }
+
+    int samples = 8;  //magic number from Gui::View3DInventorViewer
+    viewer->savePicture(outWidth, outHeight, samples, bgColor, image);
+}
+
 //creates Svg file and returns estimate of scale
 double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
                                         std::string fileSpec,

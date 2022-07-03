@@ -118,7 +118,7 @@ void DrawViewImage::replaceImageIncluded(std::string newFileName)
 void DrawViewImage::setupImageIncluded()
 {
 //    Base::Console().Message("DVI::setupImageIncluded()\n");
-        App::Document* doc = getDocument();
+    App::Document* doc = getDocument();
     std::string dir = doc->TransientDir.getValue();
     std::string special = getNameInDocument();
     special += "Image.bitmap";

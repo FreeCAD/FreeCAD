@@ -54,7 +54,11 @@ namespace TechDrawGui
 /// Utility functions for obtaining 3d window image
 class TechDrawGuiExport Grabber3d {
     public:
-    static double copyActiveViewToSvgFile(App::Document* appDoc,
+    static void quickView(App::Document* appDoc,
+                          int outWidth, int outHeight,
+                          const QColor bgColor,
+                          QImage &image);
+    static double copyActiveViewToSvgFile(App::Document* appDoc, 
                                         std::string fileSpec,
                                         double outWidth = 138.5,    //TODO: change to A4 for release
                                         double outHeight = 95.0,    //ISO A5 defaults
