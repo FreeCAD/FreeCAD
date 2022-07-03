@@ -42,7 +42,12 @@
 # include <Geom_Surface.hxx>
 # include <Geom_ToroidalSurface.hxx>
 # include <Geom2d_Curve.hxx>
+# include <gp_Cylinder.hxx>
+# include <gp_Cone.hxx>
+# include <gp_Pln.hxx>
 # include <gp_Pnt2d.hxx>
+# include <gp_Sphere.hxx>
+# include <gp_Torus.hxx>
 # include <GProp_GProps.hxx>
 # include <GProp_PrincipalProps.hxx>
 # include <Poly_Triangulation.hxx>
