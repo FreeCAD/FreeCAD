@@ -54,6 +54,8 @@ class TaskMoveView:
         self.fromPageName = ""
         self.toPageName   = ""
 
+        self.dialogOpen = False;
+
     def accept(self):
 #        print ("Accept")
         view = App.ActiveDocument.getObject(self.viewName)
@@ -68,9 +70,12 @@ class TaskMoveView:
 
     def pickView(self):
 #        print("pickView")
+        if (self.dialogOpen) :
+            return
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
+        self.dialogOpen = True;
         dlg.lPrompt.setText(QT_TRANSLATE_NOOP("TechDraw_MoveView", "Select View to move from list."))
         dlg.setWindowTitle(QT_TRANSLATE_NOOP("TechDraw_MoveView", "Select View"))
 
@@ -84,12 +89,16 @@ class TaskMoveView:
                 selItem = dlg.lwPages.selectedItems()[0]
                 self.viewName = selItem.data(QtCore.Qt.UserRole)
                 self.form.leView.setText(self.viewName)
+        self.dialogOpen = False
 
     def pickFromPage(self):
 #        print("pickFromPage")
+        if (self.dialogOpen) :
+            return
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
+        self.dialogOpen = True;
         dlg.lPrompt.setText(QT_TRANSLATE_NOOP("TechDraw_MoveView", "Select From Page."))
         dlg.setWindowTitle(QT_TRANSLATE_NOOP("TechDraw_MoveView", "Select Page"))
 
@@ -103,12 +112,16 @@ class TaskMoveView:
                 selItem = dlg.lwPages.selectedItems()[0]
                 self.fromPageName = selItem.data(QtCore.Qt.UserRole)
                 self.form.leFromPage.setText(self.fromPageName)
+        self.dialogOpen = False
 
     def pickToPage(self):
 #        print("pickToPage")
+        if (self.dialogOpen) :
+            return
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
+        self.dialogOpen = True;
         dlg.lPrompt.setText(QT_TRANSLATE_NOOP("TechDraw_MoveView", "Select To Page."))
         dlg.setWindowTitle(QT_TRANSLATE_NOOP("TechDraw_MoveView", "Select Page"))
 
@@ -122,6 +135,7 @@ class TaskMoveView:
                 selItem = dlg.lwPages.selectedItems()[0]
                 self.toPageName = selItem.data(QtCore.Qt.UserRole)
                 self.form.leToPage.setText(self.toPageName)
+        self.dialogOpen = False
 
     def setValues(self, viewName, fromPageName, toPageName):
         self.viewName = viewName
