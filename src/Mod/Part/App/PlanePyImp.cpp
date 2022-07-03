@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <gp_Ax1.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
 # include <gp_Pnt.hxx>
 # include <GC_MakePlane.hxx>
 # include <Geom_Plane.hxx>
