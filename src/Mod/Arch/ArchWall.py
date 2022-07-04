@@ -902,9 +902,9 @@ class _Wall(ArchComponent.Component):
                                 plate2 = bplates.Faces
                             blocks2 = Part.makeCompound([f.extrude(bvec) for f in plate2])
                             interval = extv.Length/(fsize)
-                            entires = int(interval)
-                            rest = (interval - entires)
-                            for i in range(entires):
+                            entire = int(interval)
+                            rest = (interval - entire)
+                            for i in range(entire):
                                 if i % 2: # odd
                                     b = Part.Shape(blocks2)
                                 else:
@@ -915,15 +915,15 @@ class _Wall(ArchComponent.Component):
                                     b.translate(t)
                                 blocks.append(b)
                             if rest:
-                                rest = extv.Length-(entires*fsize)
+                                rest = extv.Length - (entire * fsize)
                                 rvec = FreeCAD.Vector(n)
                                 rvec.multiply(rest)
-                                if entires % 2:
+                                if entire % 2:
                                     b = Part.makeCompound([f.extrude(rvec) for f in plate2])
                                 else:
                                     b = Part.makeCompound([f.extrude(rvec) for f in plate1])
                                 t = FreeCAD.Vector(svec)
-                                t.multiply(entires)
+                                t.multiply(entire)
                                 b.translate(t)
                                 blocks.append(b)
                             if blocks:
