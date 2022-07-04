@@ -26,6 +26,7 @@
 # include <QApplication>
 # include <QButtonGroup>
 # include <QCompleter>
+# include <QCryptographicHash>
 # include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
@@ -597,9 +598,38 @@ QIcon FileIconProvider::icon(IconType type) const
 
 QIcon FileIconProvider::icon(const QFileInfo & info) const
 {
-    if (info.suffix().toLower() == QLatin1String("fcstd")) {
-        // return QApplication::windowIcon();
+    auto toUrl = [](const QFileInfo & info) {
+        QFileInfo fi(info);
+        fi.makeAbsolute();
+        QString fileName = fi.absoluteFilePath();
+        if (fi.isSymLink()) {
+            fileName = fi.symLinkTarget();
+        }
+
+        return QUrl::fromLocalFile(fileName).toString();
+    };
+
+    auto urlToThumbnail = [](const QString& filename) {
+        QString hash = QString::fromLatin1(QCryptographicHash::hash(filename.toUtf8(), QCryptographicHash::Md5).toHex());
+        QString cache = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+        return QString::fromLatin1("%1/thumbnails/normal/%2.png").arg(cache, hash);
+    };
+
+    auto iconFromFile = [](const QString& filename) {
+        if (QFile::exists(filename)) {
+            QIcon icon(filename);
+            if (!icon.isNull())
+                return icon;
+        }
+
         return QIcon(QString::fromLatin1(":/icons/freecad-doc.png"));
+    };
+
+    if (info.suffix().toLower() == QLatin1String("fcstd")) {
+        // Check if a thumbnail is available
+        QString fileName = toUrl(info);
+        QString thumb = urlToThumbnail(fileName);
+        return iconFromFile(thumb);
     }
     else if (info.suffix().toLower().startsWith(QLatin1String("fcstd"))) {
         QIcon icon(QString::fromLatin1(":/icons/freecad-doc.png"));
