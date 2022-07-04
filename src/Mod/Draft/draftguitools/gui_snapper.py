@@ -385,15 +385,9 @@ class Snapper:
             # Passive snapping
             snaps = [self.snapToVertex(self.snapInfo)]
         else:
-            # First stick to the snapped object
-            s = self.snapToVertex(self.snapInfo)
-            if s:
-                point = s[0]
-                snaps = [s]
-
             # Active snapping
+            point = App.Vector(self.snapInfo['x'], self.snapInfo['y'], self.snapInfo['z'])
             comp = self.snapInfo['Component']
-
             shape = Part.getShape(parent, subname,
                                   needSubElement=True,
                                   noElementMap=True)
@@ -416,6 +410,7 @@ class Snapper:
                         # we are snapping to an edge
                         if shape.ShapeType == "Edge":
                             edge = shape
+                            snaps.extend(self.snapToNear(edge, point))
                             snaps.extend(self.snapToEndpoints(edge))
                             snaps.extend(self.snapToMidpoint(edge))
                             snaps.extend(self.snapToPerpendicular(edge, lastpoint))
@@ -434,11 +429,14 @@ class Snapper:
                         # we are snapping to a face
                         if shape.ShapeType == "Face":
                             face = shape
-                            snaps.extend(self.snapToFace(face))
+                            snaps.extend(self.snapToNearFace(face, point))
+                            snaps.extend(self.snapToPerpendicularFace(face, lastpoint))
+                            snaps.extend(self.snapToCenterFace(face))
                     elif "Vertex" in comp:
-                        # directly snapped to a vertex
-                        snaps.append(self.snapToVertex(self.snapInfo, active=True))
-                    elif comp == '':
+                        # we are snapping to a vertex
+                        if shape.ShapeType == "Vertex":
+                            snaps.extend(self.snapToEndpoints(shape))
+                    elif comp == "":
                         # workaround for the new view provider
                         snaps.append(self.snapToVertex(self.snapInfo, active=True))
                     else:
@@ -802,28 +800,62 @@ class Snapper:
         return snaps
 
 
+    def snapToNear(self, shape, point):
+        """Return a list of a near snap location for an edge."""
+        if self.isEnabled("Near") and point:
+            try:
+                np = shape.Curve.projectPoint(point, "NearestPoint")
+            except Exception:
+                return []
+            return [[np, "passive", self.toWP(np)]]
+        else:
+            return []
+
+
+    def snapToNearFace(self, shape, point):
+        """Return a list with a near snap location for a face."""
+        if self.isEnabled("Near") and point:
+            try:
+                np = shape.Surface.projectPoint(point, "NearestPoint")
+            except Exception:
+                return []
+            return [[np, "passive", self.toWP(np)]]
+        else:
+            return []
+
+
     def snapToPerpendicular(self, shape, last):
-        """Return a list of perpendicular snap locations."""
-        snaps = []
-        if self.isEnabled("Perpendicular"):
-            if last:
-                if isinstance(shape, Part.Edge):
-                    if DraftGeomUtils.geomType(shape) == "Line":
-                        np = self.getPerpendicular(shape, last)
-                    elif DraftGeomUtils.geomType(shape) == "Circle":
-                        dv = last.sub(shape.Curve.Center)
-                        dv = DraftVecUtils.scaleTo(dv, shape.Curve.Radius)
-                        np = (shape.Curve.Center).add(dv)
-                    elif DraftGeomUtils.geomType(shape) == "BSplineCurve":
-                        try:
-                            pr = shape.Curve.parameter(last)
-                            np = shape.Curve.value(pr)
-                        except Exception:
-                            return snaps
-                    else:
-                        return snaps
-                    snaps.append([np, 'perpendicular', self.toWP(np)])
-        return snaps
+        """Return a list of perpendicular snap locations for an edge."""
+        if self.isEnabled("Perpendicular") and last:
+            curv = shape.Curve
+            try:
+                prs = curv.projectPoint(last, "Parameter")
+            except Exception:
+                return []
+            snaps = []
+            for pr in prs:
+                np = curv.value(pr)
+                snaps.append([np, "perpendicular", self.toWP(np)])
+            return snaps
+        else:
+            return []
+
+
+    def snapToPerpendicularFace(self, shape, last):
+        """Return a list of perpendicular snap locations for a face."""
+        if self.isEnabled("Perpendicular") and last:
+            surf = shape.Surface
+            try:
+                prs = surf.projectPoint(last, "Parameters")
+            except Exception:
+                return []
+            snaps = []
+            for pr in prs:
+                np = surf.value(pr[0], pr[1])
+                snaps.append([np, "perpendicular", self.toWP(np)])
+            return snaps
+        else:
+            return []
 
 
     def snapToOrtho(self, shape, last, constrain):
@@ -990,7 +1022,7 @@ class Snapper:
         return snaps
 
 
-    def snapToFace(self, shape):
+    def snapToCenterFace(self, shape):
         """Return a face center snap location."""
         snaps = []
         if self.isEnabled("Center"):
