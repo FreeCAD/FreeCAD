@@ -21,15 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
+#include "DatumFeature.h"
 #include "OCCError.h"
 #include "PartPyCXX.h"
-#include "DatumFeature.h"
 
 
 using namespace Part;

@@ -21,15 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_DATUMFEATURE_H
 #define PART_DATUMFEATURE_H
 
-#include <QString>
-#include <App/PropertyLinks.h>
-
-#include "PartFeature.h"
 #include "AttachExtension.h"
+
 
 namespace Part
 {
