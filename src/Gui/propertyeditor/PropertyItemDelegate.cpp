@@ -76,11 +76,6 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         }
         option.palette.setColor(QPalette::Text, color);
         option.font.setBold(true);
-
-        // Since the group item now parents all the property items and can be
-        // collapsed, it makes sense to have some selection visual clue for it.
-        //
-        // option.state &= ~QStyle::State_Selected;
     }
     else if (index.column() == 1) {
         option.state &= ~QStyle::State_Selected;
@@ -132,6 +127,11 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
         if (widget && parentEditor && parentEditor->activeEditor
                    && widget != parentEditor->activeEditor)
         {
+            // All the attempts to ignore the focus-out event has been approved to not work
+            // reliably because there are still cases that cannot be handled.
+            // So, the best for now is to always ignore this event.
+            // See https://forum.freecadweb.org/viewtopic.php?p=579530#p579530 why this is not
+            // possible.
             return false;
         }
     }
