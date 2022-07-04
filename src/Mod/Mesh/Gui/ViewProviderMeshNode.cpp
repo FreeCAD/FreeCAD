@@ -308,13 +308,6 @@ bool ViewProviderMeshNode::handleEvent(const SoEvent * const ev,Gui::View3DInven
     cAlg.GetFacetsFromToolMesh(cToolMesh, cNormal, cGrid, indices);
     meshProp.deleteFacetIndices( indices );
 
-      // update open edge display if needed
-//      if ( pcOpenEdge ) 
-//      {
-//        showOpenEdges(false);
-//        showOpenEdges(true);
-//      }
-
     Viewer.render();
     if ( !ok ) // note: the mouse grabbing needs to be released
       //QMessageBox::warning(Viewer.getWidget(),"Invalid polygon","The picked polygon seems to have self-overlappings.\n\nThis could lead to strange rersults.");
@@ -326,7 +319,6 @@ bool ViewProviderMeshNode::handleEvent(const SoEvent * const ev,Gui::View3DInven
 
 void ViewProviderMeshNode::showOpenEdges(bool show)
 {
-#if 1
   if ( show ) {
     pcOpenEdge = new SoSeparator();
     pcOpenEdge->addChild(pcLineStyle);
@@ -344,61 +336,4 @@ void ViewProviderMeshNode::showOpenEdges(bool show)
     pcHighlight->removeChild(pcOpenEdge);
     pcOpenEdge = 0;
   }
-#else
-  if ( show ) {
-    pcOpenEdge = new SoSeparator();
-    pcOpenEdge->addChild(pcLineStyle);
-    pcOpenEdge->addChild(pOpenColor);
-    SoCoordinate3* points = new SoCoordinate3();
-    pcOpenEdge->addChild(points);
-    SoLineSet* lines = new SoLineSet();
-    pcOpenEdge->addChild(lines);
-    // add to the highlight node
-    pcHighlight->addChild(pcOpenEdge);
-
-    // Build up the array of border points
-    int index=0;
-    const MeshCore::MeshKernel& rMesh = dynamic_cast<Mesh::Feature*>(pcObject)->getMesh();
-    const MeshCore::MeshFacetArray& rFaces = rMesh.GetFacets();
-    const MeshCore::MeshPointArray& rPoint = rMesh.GetPoints();
-
-    // Count number of open edges first
-    int ctEdges=0;
-    for ( MeshCore::MeshFacetArray::_TConstIterator jt = rFaces.begin(); jt != rFaces.end(); ++jt ) {
-      for ( int i=0; i<3; i++ ) {
-        if ( jt->_aulNeighbours[i] == ULONG_MAX ) {
-          ctEdges++;
-        }
-      }
-    }
-
-    // disable internal notification for speedup
-    points->enableNotify(false);
-    lines->enableNotify(false);
-
-    points->point.setNum(2*ctEdges);
-    lines->numVertices.setNum(ctEdges);
-    for ( MeshCore::MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it ) {
-      for ( int i=0; i<3; i++ ) {
-        if ( it->_aulNeighbours[i] == ULONG_MAX ) {
-          const MeshCore::MeshPoint& cP0 = rPoint[it->_aulPoints[i]];
-          const MeshCore::MeshPoint& cP1 = rPoint[it->_aulPoints[(i+1)%3]];
-          points->point.set1Value(index++, cP0.x, cP0.y, cP0.z);
-          points->point.set1Value(index++, cP1.x, cP1.y, cP1.z);
-          lines->numVertices.set1Value(index/2-1,2);
-        }
-      }
-    }
-
-    // enable notification
-    points->enableNotify(true);
-    lines->enableNotify(true);
-    points->touch();
-    lines->touch();
-  } else {
-    // remove the node and destroy the data
-    pcHighlight->removeChild(pcOpenEdge);
-    pcOpenEdge = 0;
-  }
-#endif
 }

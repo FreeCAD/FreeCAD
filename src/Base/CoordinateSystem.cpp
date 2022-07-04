@@ -106,26 +106,6 @@ void CoordinateSystem::setZDirection(const Vector3d& dir)
 
 Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
 {
-#if 0
-    // align the Z axes
-    Base::Rotation rotZ(getZDirection(), cs.getZDirection());
-
-    // align the X axes
-    Base::Vector3d xd = xdir;
-    rotZ.multVec(xd,xd);
-    Base::Rotation rotX(xd, cs.getXDirection());
-
-    // the transformed base point
-    Vector3d mov = axis.getBase();
-    rotZ.multVec(mov,mov);
-    rotX.multVec(mov,mov);
-    mov = cs.getPosition() - mov;
-
-    Base::Rotation rot;
-    rot = rotX * rotZ;
-
-    return Placement(mov, rot);
-#else
     const Base::Vector3d& a = axis.getBase();
     const Base::Vector3d& zdir = axis.getDirection();
     Base::Matrix4D At;
@@ -142,15 +122,10 @@ Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
     B[1][0] = cs.xdir.y; B[1][1] = cs.ydir.y; B[1][2] = cszdir.y; B[1][3] = b.y;
     B[2][0] = cs.xdir.z; B[2][1] = cs.ydir.z; B[2][2] = cszdir.z; B[2][3] = b.z;
 
-    //Base::Matrix4D C;
-    //C = B * At;
-    //Placement p(C);
-    //return p;
     Placement PAt(At);
     Placement PB(B);
     Placement C = PB * PAt;
     return C;
-#endif
 }
 
 void CoordinateSystem::transformTo(Vector3d& p)
@@ -180,7 +155,6 @@ void CoordinateSystem::setPlacement(const Placement& p)
     p.getRotation().multVec(zdir, zdir);
     axis.setBase(p.getPosition());
     axis.setDirection(zdir);
-
     p.getRotation().multVec(Vector3d(1,0,0), this->xdir);
     p.getRotation().multVec(Vector3d(0,1,0), this->ydir);
 }

@@ -60,7 +60,6 @@ namespace geoff_geometry {
 	void SpanVertex::Add(int offset, int spantype, const Point& p, const Point& pc, int ID)
 	{
 		type[offset] = spantype;
-//		index[offset] = NULL;
 		x[offset] = p.x;
 		y[offset] = p.y;
 		xc[offset] = pc.x;
@@ -116,15 +115,12 @@ namespace geoff_geometry {
 				Offsp.p1.y += offset * vs.getx();
 			}
 			else {
-				//	 circular span
-				//	double coffset = (double) dir * offset;
 				Offsp.p0.x -= vs.gety() * offset;
 				Offsp.p0.y += vs.getx() * offset;
 
 				Offsp.p1.x -= ve.gety() * offset;
 				Offsp.p1.y += ve.getx() * offset;
 
-//				Offsp.radius -= dir * offset;
 			}
 			Offsp.SetProperties(true);
 		}
@@ -179,14 +175,7 @@ namespace geoff_geometry {
 			this->SetProperties(true);
 		return geoff_geometry::Split(tolerance, angle, radius, dir);
 	}
-#if 0
-	int Span3d::Split(double tolerance) {
-		// returns the number of divisions required to keep in tolerance
-		if(!returnSpanProperties)
-			this->SetProperties(true);
-		return geoff_geometry::Split(tolerance, angle, radius, dir);
-	}
-#endif
+
 	static int Split(double tolerance, double angle, double radius, int dir) {
 		if(dir == LINEAR)	// straight span
 		    return 0;
@@ -215,34 +204,11 @@ namespace geoff_geometry {
 		}
 	}
 
-#if 0
-	void Span3d::SplitMatrix(int num_vectors, Matrix* matrix) {
-		// returns the incremental matrix
-		matrix->Unit();
-		if(dir) {
-			// arc span
-			if(normal.getz() <= NEARLY_ONE) FAILURE(getMessage(L"Unfinished coding - contact the Company", GENERAL_MESSAGES, MES_UNFINISHEDCODING));
-			double incang = angle / (double) num_vectors ;
-
-			matrix->Translate(-pc.x, -pc.y, -pc.z);
-			matrix->Rotate(incang, 3);
-			matrix->Translate(pc.x, pc.y, pc.z);
-		} else {
-			// linear span
-			double d = length / num_vectors;
-			matrix->Translate(d * vs.getx(), d * vs.gety(), d * vs.getz());
-		}
-	}
-#endif
 
 	void Span::minmax(Box& box, bool start) {
 		minmax(box.min, box.max, start);
 	}
-#if 0
-	void Span3d::minmax(Box3d& box, bool start) {
-		minmax(box.min, box.max, start);
-	}
-#endif
+
 	void Span::minmax(Point& min, Point& max, bool start) {
 		// box a span (min/max)
 		if(start) {
@@ -279,43 +245,6 @@ namespace geoff_geometry {
 		}
 	}
 
-#if 0
-	void Span3d::minmax(Point3d& min, Point3d& max, bool start) {
-		// box a span (min/max)
-		if(start) {
-			MinMax(p0, min, max);
-		}
-		MinMax(p1, min, max);
-
-		if(dir) {
-			// check the quadrant points ... MUST RECODE THIS FOR 3D sometime
-			double dx1 = p1.x - p0.x;
-			double dy1 = p1.y - p0.y;
-
-			double dx = pc.x - p0.x;
-			double dy = pc.y - p0.y;
-
-			double dx0 = dx + radius;		// 0deg
-
-			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x + radius > max.x) max.x = pc.x + radius;	
-			}
-			dx0 = dx - radius;				// 180deg
-			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x - radius < min.x) min.x = pc.x - radius;	
-			}
-			double dy0 = dy + radius;		// 90deg
-			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y + radius > max.y) max.y = pc.y + radius;	
-			}
-
-			dy0 = dy - radius;				// 270deg
-			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y - radius < min.y) min.y = pc.y - radius;	
-			}
-		}
-	}
-#endif
 
 	int Span::Intof(const Span& sp, Point& pInt1, Point& pInt2, double t[4])const {
 		// Intof 2 spans
@@ -358,20 +287,6 @@ namespace geoff_geometry {
 			SetProperties(true);
 	}
 
-#if 0
-	void Span3d::Transform(const Matrix& m, bool setprops) {
-		p0 = p0.Transform(m);
-		p1 = p1.Transform(m);
-		if(dir != LINEAR) {
-			pc = pc.Transform(m);
-			normal.Transform(m);
-			if(m.m_mirrored == -1) FAILURE(L"Don't know mirror - use IsMirrored method on object");
-			if(m.m_mirrored) dir = -dir;
-		}
-		if(setprops)
-			SetProperties(true);
-	}
-#endif
 
 	Point Span::Mid()const {
 		// midpoint of a span
@@ -452,13 +367,7 @@ namespace geoff_geometry {
 		this->Clear();
 
 		if(k.m_nVertices) m_started = true;
-//		m_nVertices = 0;
 
-//		spVertex spv;
-//		for(int i = 0; i < k.m_nVertices; i++) {
-//			k.Get(i, spv);
-//			Add(spv);
-//		}
 		for(unsigned int i = 0; i < k.m_spans.size(); i++) {
 			SpanVertex* spv = new SpanVertex;
 			*spv = *k.m_spans[i];
@@ -468,47 +377,9 @@ namespace geoff_geometry {
 		return *this;
 	}
 
-#if 0
-
-	 Kurve::Kurve(Kurve& k) :Matrix(){
-*this = k;
-return;
-		*this = Matrix(k);
-
-		Point p, pc;
-		m_nVertices = 0;
-
-		for(int i = 0; i < k.m_nVertices; i++) {
-			int spantype = k.Get(i, p, pc);
-			int spanid = k.GetSpanID(i);
-			if(Add(spantype, p, pc)) this->AddSpanID(spanid);
-		}
-		if(k.m_nVertices) m_started = true;
-	}
-
-	const Kurve& Kurve::operator=( Kurve &k)
-	{
-		*this = Matrix(k);
-
-		Point p, pc;
-		this->Clear();
-		m_isReversed = k.m_isReversed;
-
-		for(int i = 0; i < k.m_nVertices; i++) {
-			int spantype = k.Get(i, p, pc);
-			int spanid = k.GetSpanID(i);
-			if(Add(spantype, p, pc)) this->AddSpanID(spanid);
-		}
-		if(k.m_nVertices) m_started = true;
-		return *this;
-	}
-#endif
 
 	const Kurve& Kurve::operator=(const Matrix &m)
 	{
-//		*this = Matrix(m);
-//		return *this;
-
 		for(int i = 0; i < 16; i++) e[i] = m.e[i];
 		m_unit = m.m_unit;
 		m_mirrored = m.m_mirrored;
@@ -795,32 +666,6 @@ return;
 		return sp.dir;
 	}
 
-#if 0
-	int Kurve::Get(int spannumber, Span3d& sp, bool returnSpanProperties, bool transform) const {
-		// returns span data and optional properties - the function returns as the span type
-		if(spannumber < 1 || spannumber > m_nVertices) FAILURE(getMessage(L"Kurve::Get - vertexNumber out of range"));
-		if(m_nVertices < 2)
-		    return -99;
-
-		int spanVertexNumber = spannumber - 1;
-		SpanVertex* p = (SpanVertex*)m_spans[spanVertexNumber / SPANSTORAGE];
-		sp.p0.x = p->x[spanVertexNumber % SPANSTORAGE];
-		sp.p0.y = p->y[spanVertexNumber % SPANSTORAGE];
-		sp.p0.z = 0;
-//		sp.p0.ok = 1;
-
-		sp.dir = Get(spannumber, sp.p1, sp.pc);
-
-		if(transform && !m_unit) {
-			const Matrix *m = this;
-			sp.Transform(*m, false);
-		}
-
-		sp.SetProperties(returnSpanProperties);
-
-		return sp.dir;
-	}
-#endif
 
 	void Kurve::Get(Point &ps,Point &pe) const
 	{
@@ -847,7 +692,6 @@ return;
 
 				radius = vs.normalise();
 				double radCheck = ve.normalise();
-//				if(FNE(radius, radCheck, geoff_geometry::TOLERANCE * 0.5)){
 				if(FNE(radius, radCheck, geoff_geometry::TOLERANCE)){
 					FAILURE(getMessage(L"Invalid Geometry - Radii mismatch - SetProperties"));
 				}
@@ -877,49 +721,6 @@ return;
 			minmax(box, true);
 		}
 	}
-
-#if 0
-	void Span3d::SetProperties(bool returnProperties) {
-		if(returnSpanProperties = returnProperties) {
-			// return span properties
-			if(dir) {
-				// arc properties
-				vs = normal ^ Vector3d(pc, p0);// tangent at start ( perp to radial vector)
-				ve = normal ^ Vector3d(pc, p1);// tangent at end   ( perp to radial vector)
-				if(dir == CW) {
-					vs = -vs;				// reverse directions for CW arc
-					ve = -ve;
-				}
-
-				radius = vs.normalise();
-				double radCheck = ve.normalise();
-				if(FNE(radius, radCheck, geoff_geometry::TOLERANCE * 0.5)) FAILURE(getMessage(L"Invalid Geometry - Radii mismatch - SetProperties", GEOMETRY_ERROR_MESSAGES, MES_INVALIDARC));
-				if(radius > geoff_geometry::TOLERANCE) {
-					if(NullSpan = (p0.Dist(p1) <= geoff_geometry::TOLERANCE)) {
-						length = 0.0;
-						angle = 0.0;
-						dir = LINEAR;
-					}
-					else {
-						// arc length & included angle
-						length = fabs(angle = IncludedAngle(vs, ve, normal, dir)) * radius;
-					}
-				}
-				else
-					NullSpan = true;
-			}
-			else {
-				// straight properties
-				vs = Vector3d(p0, p1);
-
-				length = vs.normalise();
-				NullSpan = (length <= geoff_geometry::TOLERANCE);
-				ve = vs;
-			}
-			minmax(box, true);
-		}
-	}
-#endif
 
 
 	Point Mid(const Span& span) {
@@ -1061,8 +862,6 @@ return;
 
 			temp.Add(sp.dir, sp.p1, sp.pc, true);
 			if(spanno == endSpanno)break;
-
-			//spanno++;
 		}
 
 		*this = temp;
@@ -1109,7 +908,6 @@ return;
 	}
 
 	bool Kurve::operator==(const Kurve &k)const{
-		// k = kk (vertex check)
 		if(nSpans() != k.nSpans())
 		    return false;
 		spVertex thisvertex, vertex;
@@ -1214,10 +1012,6 @@ return;
 
 			for(int j = 0; j < (int)p0.size(); j++) all.push_back(p0[j]);
 		}
-		//FILE* d;
-		//d = fopen("\\temp\\test.txt", "w");
-		//		for(int l = 0; l < all.size(); l++) all[l].print(d, "all","\n");
-
 
 		for(int i = 0; i < (int)all.size(); i++) {
 			if(i == 0) 
@@ -1226,7 +1020,6 @@ return;
 				if(all[i-1].Dist(all[i]) > geoff_geometry::TOLERANCE) p.push_back(all[i]);
 		}
 
-		//fclose(d);
 		return (int)p.size();
 	}
 
@@ -1342,20 +1135,6 @@ return;
 		Kurve kReduced;
 		kReduced = Matrix(*this);
 
-#if 0
-		for(int i = 1; i <= this->nSpans(); i++) {
-			Span sp;
-			this->Get(i, sp, true);
-
-			for(int j = i+1; j <= this->nSpans(); j++) {
-				Span spnext;
-				this->Get(j, spnext, true);
-
-			}
-		}
-		return m_nVertices - kReduced.m_nVertices;
-
-#else 
 		int dir1, dir2 = 0;
 		Point p0, p1, p2, pc0, pc1, pc2;
 		int vertex = 0;
@@ -1394,7 +1173,6 @@ return;
 
 		if(m_nVertices != kReduced.m_nVertices) *this = kReduced;
 		return m_nVertices - kReduced.m_nVertices;
-#endif
 	}
 
 void Kurve::Part(int startVertex, int EndVertex, Kurve *part) {

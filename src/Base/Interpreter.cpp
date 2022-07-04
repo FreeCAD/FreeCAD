@@ -59,17 +59,9 @@ PyException::PyException()
     setPyObject(PP_PyDict_Object);
 
     std::string prefix = PP_last_error_type; /* exception name text */
-//  prefix += ": ";
+
     std::string error = PP_last_error_info;            /* exception data text */
-#if 0
-    // The Python exceptions might be thrown from nested functions, so take
-    // into account not to add the same prefix several times
-    std::string::size_type pos = error.find(prefix);
-    if (pos == std::string::npos)
-        _sErrMsg = prefix + error;
-    else
-        _sErrMsg = error;
-#endif
+
     _sErrMsg = error;
     _errorType = prefix;
 
@@ -125,7 +117,6 @@ void PyException::raiseException() {
         e.setReported(_isReported);
         throw e;
     }
-
     throw *this;
 }
 
@@ -253,7 +244,6 @@ std::string InterpreterSingleton::runString(const char *sCmd)
         else {
             PyException::ThrowException();
             return std::string(); // just to quieten code analyzers
-            //throw PyException();
         }
     }
 
@@ -422,9 +412,6 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
 #endif
     if (fp) {
         PyGILStateLocker locker;
-        //std::string encoding = PyUnicode_GetDefaultEncoding();
-        //PyUnicode_SetDefaultEncoding("utf-8");
-        //PyUnicode_SetDefaultEncoding(encoding.c_str());
         PyObject *module, *dict;
         module = PyImport_AddModule("__main__");
         dict = PyModule_GetDict(module);
@@ -470,8 +457,6 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
 
 bool InterpreterSingleton::loadModule(const char* psModName)
 {
-    // buffer acrobatics
-    //PyBuf ModName(psModName);
     PyObject *module;
 
     PyGILStateLocker locker;

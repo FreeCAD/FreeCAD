@@ -263,7 +263,7 @@ void CrossSections::apply()
     bool connectEdges = ui->checkBoxConnect->isChecked();
     double eps = ui->spinEpsilon->value();
 
-#if 1 // multi-threaded sections
+    // multi-threaded sections
     for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
         const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
 
@@ -297,53 +297,6 @@ void CrossSections::apply()
         section->Shape.setValue(comp);
         section->purgeTouched();
     }
-#else
-    try {
-        Gui::Command::runCommand(Gui::Command::App, "import Mesh, Part\n");
-        Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
-
-        std::stringstream str;
-        str << "[";
-        for (std::vector<double>::iterator jt = d.begin(); jt != d.end(); ++jt) {
-            double d = *jt;
-            str << "("
-                << "App.Vector(" << a*d << ", " << b*d << ", " << c*d << "), "
-                << "App.Vector(" << a   << ", " << b   << ", " << c   << ")"
-                << "), ";
-        }
-        str << "]";
-
-        QString planes = QString::fromStdString(str.str());
-        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-            App::Document* doc = (*it)->getDocument();
-            std::string s = (*it)->getNameInDocument();
-            s += "_cs";
-            Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
-                "points=FreeCAD.getDocument(\"%1\").%2.Mesh.crossSections(%3, %4, %5)\n"
-                "wires=[]\n"
-                "for i in points:\n"
-                "    wires.extend([Part.makePolygon(j) for j in i])\n")
-                .arg(QLatin1String(doc->getName()))
-                .arg(QLatin1String((*it)->getNameInDocument()))
-                .arg(planes)
-                .arg(eps)
-                .arg(connectEdges ? QLatin1String("True") : QLatin1String("False"))
-                .toLatin1());
-
-            Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
-                "comp=Part.Compound(wires)\n"
-                "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
-                "slice.Shape=comp\n"
-                "slice.purgeTouched()\n"
-                "del slice,comp,wires,points")
-                .arg(QLatin1String(doc->getName()))
-                .arg(QLatin1String(s.c_str())).toLatin1());
-        }
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::critical(this, tr("Failure"), QString::fromLatin1(e.what()));
-    }
-#endif
 }
 
 void CrossSections::on_xyPlane_clicked()

@@ -571,7 +571,6 @@ bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Fac
 
 bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face)
 {
-#if 1
     BRepBuilderAPI_MakeEdge mkEdge(line);
     TopoDS_Wire wire = ShapeAnalysis::OuterWire(face);
     BRepExtrema_DistShapeShape distss(wire, mkEdge.Shape(), Precision::Confusion());
@@ -659,60 +658,6 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
     }
 
     return false;
-#else
-    // This is not as easy as it looks, because a distance of zero might be OK if
-    // the axis touches the sketchshape in a linear edge or a vertex
-    // Note: This algorithm doesn't catch cases where the sketchshape touches the
-    // axis in two or more points
-    // Note: And it only works on closed outer wires
-    TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
-    BRepBuilderAPI_MakeEdge mkEdge(line);
-    if (!mkEdge.IsDone())
-        throw Base::RuntimeError("Revolve: Unexpected OCE failure");
-    BRepAdaptor_Curve axis(TopoDS::Edge(mkEdge.Shape()));
-
-    TopExp_Explorer ex;
-    int intersections = 0;
-    std::vector<gp_Pnt> intersectionpoints;
-
-    // Note: We need to look at every edge separately to catch coincident lines
-    for (ex.Init(outerWire, TopAbs_EDGE); ex.More(); ex.Next()) {
-        BRepAdaptor_Curve edge(TopoDS::Edge(ex.Current()));
-        Extrema_ExtCC intersector(axis, edge);
-
-        if (intersector.IsDone()) {
-            for (int i = 1; i <= intersector.NbExt(); i++) {
-
-                if (intersector.SquareDistance(i) < Precision::Confusion()) {
-                    if (intersector.IsParallel()) {
-                        // A line that is coincident with the axis produces three intersections
-                        // 1 with the line itself and 2 with the adjacent edges
-                        intersections -= 2;
-                    }
-                    else {
-                        Extrema_POnCurv p1, p2;
-                        intersector.Points(i, p1, p2);
-                        intersectionpoints.push_back(p1.Value());
-                        intersections++;
-                    }
-                }
-            }
-        }
-    }
-
-    // Note: We might check this inside the loop but then we have to rely on TopExp_Explorer
-    // returning the wire's edges in adjacent order (because of the coincident line checking)
-    if (intersections > 1) {
-        // Check that we don't touch the sketchface just in two identical vertices
-        if ((intersectionpoints.size() == 2) &&
-            (intersectionpoints[0].IsEqual(intersectionpoints[1], Precision::Confusion())))
-            return false;
-        else
-            return true;
-    }
-
-    return false;
-#endif
 }
 
 void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
@@ -799,12 +744,10 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
                         }
                     }
                 }
-
                 // the new shape couldn't be found so keep the old sub-name
                 if (!success)
                     newSubValues.push_back(*it);
             }
-
             link->setValue(this, newSubValues);
         }
     }
@@ -1024,7 +967,6 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
                 return;
             } //else - an edge of the sketch was selected as an axis
         }
-
     }
     else if (profile->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         Base::Placement SketchPlm = getVerifiedObject()->Placement.getValue();

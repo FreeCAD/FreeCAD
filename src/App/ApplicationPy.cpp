@@ -345,25 +345,7 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args)
 
     Py_Return;
 }
-#if 0
-PyObject* Application::sSaveDocumentAs(PyObject * /*self*/, PyObject *args)
-{
-    char *pDoc, *pFileName;
-    if (!PyArg_ParseTuple(args, "ss", &pDoc, &pFileName))
-        return nullptr;
 
-    Document* doc = GetApplication().getDocument(pDoc);
-    if (doc) {
-        doc->saveAs( pFileName );
-    }
-    else {
-        PyErr_Format(PyExc_NameError, "Unknown document '%s'", pDoc);
-        return NULL;
-    }
-
-    Py_Return;
-}
-#endif
 PyObject* Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

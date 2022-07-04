@@ -132,27 +132,11 @@ namespace geoff_geometry {
 			FAILURE(L"OnSpan - properties no set, incorrect calling code");
 		}
 #endif
-#if 0
-		if(NullSpan) {
-			*t = 0.0;
-			return (p == p0);
-		}
 
-		if(p == p0) {
-			*t = 0.0;
-			return true;
-		}
-
-		if(p == p1) {
-			*t = 1.0;
-			return true;
-		}
-#endif
 		bool ret;
-//		if(p == this->p0 || p == this->p1) return true;
 
 		if(dir == LINEAR) {
-#if 1
+
 #if _DEBUG
 			// check p is on line
 			CLine cl(*this);
@@ -161,18 +145,16 @@ namespace geoff_geometry {
 				FAILURE(L"OnSpan - point not on linear span, incorrect calling code");
 			}
 #endif
-#endif
+
 			Vector2d v0(p0, p);
 			*t = vs * v0;
-//			ret = (*t > - geoff_geometry::TOLERANCE && *t < length + geoff_geometry::TOLERANCE);
-
 			*t = *t / length;
 			ret = (*t >= 0 && *t <= 1.0 );
 
 		}
 		else {
 			// true if p lies on arc span sp (p must be on circle of span)
-#if 1
+
 #if _DEBUG
 			// check that p lies on the arc
 			double d = p.Dist(pc);
@@ -181,16 +163,7 @@ namespace geoff_geometry {
 			}
 
 #endif
-#endif
-#if 0	// alt method (faster, but doesn't provide t)
-			Vector2d v0(p0, p);
-			Vector2d v1(p0, p1);
 
-			// check angle to point from start
-			double cp;
-			ret = ((cp = (dir * (v0 ^ v1))) > 0);
-			*t = 0.0;// incorrect !!!
-#else
 			Vector2d v = ~Vector2d(pc, p);
 			v.normalise();
 			if(dir == CW) v = -v;
@@ -198,7 +171,6 @@ namespace geoff_geometry {
 			double ang = IncludedAngle(vs, v, dir);
 			*t = ang / angle;
 			ret = (*t >= 0 && *t <= 1.0);
-#endif
 		}
 
 		return ret;
@@ -227,7 +199,6 @@ namespace geoff_geometry {
 		p0 = sp.p0;
 		v = sp.vs * sp.length;
 		length = sp.length;
-		//	box = sp.box;
 		box.min = Point3d(sp.box.min);
 		box.max = Point3d(sp.box.max);
 		ok = !sp.NullSpan;
@@ -390,14 +361,6 @@ namespace geoff_geometry {
 		Vector3d vcp = *vl ^ v;
 		double d = vcp.magnitude(); // l * sina
 		return d;
-#if 0
-		// slower method requires 2 sqrts
-		Vector3d v(*p, *pf);
-		double magv = v.normalise();
-		Vector3d cp = *vl ^ v;
-		double d = magv * cp.magnitude();
-		return d;  // l * sina
-#endif
 	}
 
 	double Dist(const Span& sp, const Point& p , Point& pnear ) {
@@ -431,11 +394,6 @@ namespace geoff_geometry {
 				// check if projected point is on the arc
 				if(sp.OnSpan(pnear))
 				    return fabs(radiusp - sp.radius);
-				// double      h1 = pnear.x - sp.p0.x ;
-				// double      v1 = pnear.y - sp.p0.y ;
-				// double      h2 = sp.p1.x - pnear.x ;
-				// double      v2 = sp.p1.y - pnear.y ;
-				//       if ( sp.dir * ( h1 * v2 - h2 * v1 ) >= 0 )return fabs(radiusp - sp.radius);
 
 				// point not on arc so calc nearest end-point
 				double ndist = p.Dist(sp.p0);

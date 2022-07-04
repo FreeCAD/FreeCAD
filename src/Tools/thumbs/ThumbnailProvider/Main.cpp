@@ -100,10 +100,8 @@ STDAPI DllRegisterServer()
     //uncomment the following
     REGKEY_SUBKEY_AND_VALUE keys[] = {
                                         {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider, NULL, REG_SZ, (DWORD_PTR)L"FCStd Thumbnail Provider"},
-#if 1
                                       //{HKEY_CLASSES_ROOT, L"CLSID\\DisableProcessIsolation", NULL, REG_DWORD, (DWORD) 1}, 
                                         {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider, L"DisableProcessIsolation", REG_DWORD, (DWORD) 1}, 
-#endif
                                         {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider L"\\InprocServer32", NULL, REG_SZ, (DWORD_PTR)szModule},
                                         {HKEY_CLASSES_ROOT, L"CLSID\\" szCLSID_SampleThumbnailProvider L"\\InprocServer32", L"ThreadingModel", REG_SZ, (DWORD_PTR)L"Apartment"},
                                       //{HKEY_CLASSES_ROOT, L".FCStd\\shellex", L"Trick only here to create shellex when not existing",REG_DWORD, 1}, 

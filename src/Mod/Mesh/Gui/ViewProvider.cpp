@@ -502,35 +502,8 @@ void ViewProviderMesh::updateData(const App::Property* prop)
 
 QIcon ViewProviderMesh::getIcon() const
 {
-#if 1
     static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
     return icon;
-#else
-    static const char * const Mesh_Feature_xpm[] = {
-        "16 16 4 1",
-        ".	c None",
-        "#	c #000000",
-        "s	c #BEC2FC",
-        "g	c #00FF00",
-        ".......##.......",
-        "....#######.....",
-        "..##ggg#ggg#....",
-        "##ggggg#gggg##..",
-        "#g#ggg#gggggg##.",
-        "#gg#gg#gggg###s.",
-        "#gg#gg#gg##gg#s.",
-        "#ggg#####ggg#ss.",
-        "#gggg##gggg#ss..",
-        ".#g##g#gggg#s...",
-        ".##ggg#ggg#ss...",
-        ".##gggg#g#ss....",
-        "..s#####g#s.....",
-        "....sss##ss.....",
-        "........ss......",
-        "................"};
-    QPixmap px(Mesh_Feature_xpm);
-    return px;
-#endif
 }
 
 App::PropertyColorList* ViewProviderMesh::getColorProperty() const

@@ -743,21 +743,17 @@ private:
         if (file.hasExtension("stp") || file.hasExtension("step")) {
             // create new document and add Import feature
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
-#if 1
+
             ImportStepParts(pcDoc,EncodedName.c_str());
-#else
-            Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
-            pcFeature->FileName.setValue(Name);
-#endif
             pcDoc->recompute();
         }
-#if 1
+
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
         }
-#endif
+
         else {
             TopoShape shape;
             shape.read(EncodedName.c_str());
@@ -795,21 +791,15 @@ private:
         }
 
         if (file.hasExtension("stp") || file.hasExtension("step")) {
-#if 1
+
             ImportStepParts(pcDoc,EncodedName.c_str());
-#else
-            // add Import feature
-            Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
-            pcFeature->FileName.setValue(Name);
-#endif
             pcDoc->recompute();
         }
-#if 1
+
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
         }
-#endif
         else {
             TopoShape shape;
             shape.read(EncodedName.c_str());
