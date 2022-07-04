@@ -28,6 +28,8 @@
 #include <gp_Dir.hxx>
 #include <TopoDS_Shape.hxx>
 
+#include <Mod/Part/PartGlobal.h>
+
 
 namespace Part
 {
