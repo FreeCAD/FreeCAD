@@ -21,7 +21,13 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+
+// to avoid compiler warnings of redefining contents of basic.h
+// later by #include <Gui/ViewProviderGeometryObject.h>
+# include <corecrt_math_defines.h>
+
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
