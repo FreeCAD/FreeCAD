@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_GEOMETRYEXTENSION_H
 #define PART_GEOMETRYEXTENSION_H
 
-#include <Base/Persistence.h>
-#include <Mod/Part/PartGlobal.h>
 #include <memory>
 #include <string>
+
+#include <Base/Persistence.h>
+#include <Mod/Part/PartGlobal.h>
 
 
 namespace Part {

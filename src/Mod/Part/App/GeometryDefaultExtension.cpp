@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
 
 #include "GeometryDefaultExtension.h"
-
-#include "GeometryStringExtensionPy.h"
-#include "GeometryIntExtensionPy.h"
 #include "GeometryBoolExtensionPy.h"
 #include "GeometryDoubleExtensionPy.h"
+#include "GeometryIntExtensionPy.h"
+#include "GeometryStringExtensionPy.h"
+
 
 using namespace Part;
 

@@ -20,67 +20,63 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge2d.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
-# include <Geom2dConvert_CompCurveToBSplineCurve.hxx>
 # include <Geom2dAPI_Interpolate.hxx>
 # include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <Geom2dConvert.hxx>
+# include <Geom2dConvert_CompCurveToBSplineCurve.hxx>
 # include <Geom2dLProp_CLProps2d.hxx>
-# include <gp.hxx>
+# include <gce_ErrorType.hxx>
 # include <gp_Ax22d.hxx>
 # include <gp_Circ2d.hxx>
 # include <gp_Elips2d.hxx>
 # include <gp_Hypr2d.hxx>
 # include <gp_Lin2d.hxx>
 # include <gp_Parab2d.hxx>
-# include <gce_ErrorType.hxx>
-# include <Standard_Real.hxx>
-# include <Standard_Version.hxx>
 # include <Standard_ConstructionError.hxx>
+# include <Standard_Version.hxx>
 # include <TColgp_Array1OfPnt2d.hxx>
 # include <TColgp_Array1OfVec2d.hxx>
 # include <TColgp_HArray1OfPnt2d.hxx>
-# include <TColStd_HArray1OfBoolean.hxx>
-# include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <GCE2d_MakeCircle.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TColStd_HArray1OfBoolean.hxx>
 # include <GCE2d_MakeArcOfCircle.hxx>
-# include <GCE2d_MakeEllipse.hxx>
 # include <GCE2d_MakeArcOfEllipse.hxx>
-# include <GCE2d_MakeParabola.hxx>
-# include <GCE2d_MakeArcOfParabola.hxx>
-# include <GCE2d_MakeHyperbola.hxx>
 # include <GCE2d_MakeArcOfHyperbola.hxx>
+# include <GCE2d_MakeArcOfParabola.hxx>
+# include <GCE2d_MakeCircle.hxx>
+# include <GCE2d_MakeEllipse.hxx>
+# include <GCE2d_MakeHyperbola.hxx>
 # include <GCE2d_MakeLine.hxx>
+# include <GCE2d_MakeParabola.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <Precision.hxx>
 #endif
 
-#include <Base/VectorPy.h>
-
 #include <Base/Exception.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
+#include <Base/Writer.h>
 
 #include "Geometry2d.h"
-#include <Mod/Part/App/Geom2d/Circle2dPy.h>
-#include <Mod/Part/App/Geom2d/Ellipse2dPy.h>
-#include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
-#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.h>
-#include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/BSplineCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
-#include <Mod/Part/App/Geom2d/Line2dPy.h>
-#include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
+
+#include <Geom2d/ArcOfCircle2dPy.h>
+#include <Geom2d/ArcOfEllipse2dPy.h>
+#include <Geom2d/ArcOfHyperbola2dPy.h>
+#include <Geom2d/ArcOfParabola2dPy.h>
+#include <Geom2d/BezierCurve2dPy.h>
+#include <Geom2d/BSplineCurve2dPy.h>
+#include <Geom2d/Circle2dPy.h>
+#include <Geom2d/Ellipse2dPy.h>
+#include <Geom2d/Hyperbola2dPy.h>
+#include <Geom2d/Line2dSegmentPy.h>
+#include <Geom2d/Line2dPy.h>
+#include <Geom2d/OffsetCurve2dPy.h>
+#include <Geom2d/Parabola2dPy.h>
+
 
 using namespace Part;
 using namespace std;

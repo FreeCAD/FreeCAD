@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 
-#include "GeometryMigrationExtension.h"
-
 #include <Base/Exception.h>
 
-using namespace Part;
+#include "GeometryMigrationExtension.h"
 
+
+using namespace Part;
 
 //---------- Geometry Extension
 TYPESYSTEM_SOURCE(Part::GeometryMigrationExtension,Part::GeometryExtension)
