@@ -20,37 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopExp_Explorer.hxx>
-# include <TopAbs_ShapeEnum.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
 # include <TopExp.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
-# include <TopoDS_Compound.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
-# include <BRep_Builder.hxx>
-#endif
-
-#ifndef _PreComp_
-# include <TopExp_Explorer.hxx>
-# include <TopAbs_ShapeEnum.hxx>
-# include <BRep_Tool.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Compound.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
-# include <BRep_Builder.hxx>
 #endif
 
 #include "edgecluster.h"
+
 
 using namespace Part;
 

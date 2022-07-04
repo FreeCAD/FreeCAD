@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_EXTRUSIONHELPER_H
 #define PART_EXTRUSIONHELPER_H
 
@@ -28,7 +27,7 @@
 #include <vector>
 #include <gp_Dir.hxx>
 #include <TopoDS_Shape.hxx>
-#include <Mod/Part/PartGlobal.h>
+
 
 namespace Part
 {

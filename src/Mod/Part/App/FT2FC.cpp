@@ -39,31 +39,28 @@
 # include <stdexcept>
 # include <vector>
 
-# include <BRepLib.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
+# include <BRepLib.hxx>
+# include <GCE2d_MakeSegment.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom2d_BezierCurve.hxx>
+# include <Geom2d_BSplineCurve.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 # include <gp_Pnt.hxx>
+# include <gp_Trsf.hxx>
 # include <gp_Vec.hxx>
+# include <Precision.hxx>
+# include <ShapeConstruct_Curve.hxx>
+# include <TColgp_Array1OfPnt2d.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TColgp_Array1OfPnt2d.hxx>
-# include <GCE2d_MakeSegment.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom2d_BezierCurve.hxx>
-# include <gp_Trsf.hxx>
-# include <Precision.hxx>
-#include <ShapeConstruct_Curve.hxx>
-#include <Geom2d_BSplineCurve.hxx>
 #endif // _PreComp
 
 #include <Base/Console.h>
-#include "TopoShape.h"
-#include "TopoShapePy.h"
-#include "TopoShapeEdgePy.h"
+
 #include "TopoShapeWirePy.h"
 
 #include <ft2build.h>
@@ -76,6 +73,8 @@
 
 #define CLOCKWISE 0
 #define ANTICLOCKWISE 1
+
+
 using namespace Part;
 
 typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4

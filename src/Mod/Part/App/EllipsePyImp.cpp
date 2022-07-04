@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Elips.hxx>
-# include <Geom_Ellipse.hxx>
 # include <GC_MakeEllipse.hxx>
+# include <Geom_Ellipse.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "EllipsePy.h"
+#include "EllipsePy.cpp"
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/EllipsePy.h>
-#include <Mod/Part/App/EllipsePy.cpp>
+
 
 using namespace Part;
 
