@@ -40,6 +40,7 @@
 # include <gp_Trsf.hxx>
 # include <GProp_GProps.hxx>
 # include <IntCurveSurface_IntersectionPoint.hxx>
+# include <Precision.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
 # include <TopExp.hxx>

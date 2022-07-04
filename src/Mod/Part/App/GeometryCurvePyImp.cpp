@@ -49,6 +49,7 @@
 # include <GeomLProp.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
 # include <gp_Quaternion.hxx>
 # include <gp_Vec.hxx>
 # include <IntRes2d_IntersectionSegment.hxx>

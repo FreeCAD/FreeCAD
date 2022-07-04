@@ -35,6 +35,7 @@
 # include <TopoDS_Compound.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Standard_Version.hxx>
+# include <Transfer_TransientProcess.hxx>
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
 #endif

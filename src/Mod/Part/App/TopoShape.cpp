@@ -139,6 +139,7 @@
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <Transfer_FinderProcess.hxx>
+# include <Transfer_TransientProcess.hxx>
 # include <XSControl_TransferWriter.hxx>
 # include <XSControl_WorkSession.hxx>
 

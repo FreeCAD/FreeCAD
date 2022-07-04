@@ -35,6 +35,9 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Shape.hxx>
+# include <Transfer_TransientProcess.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <XSControl_WorkSession.hxx>
 #endif
 
 #include <App/Document.h>
