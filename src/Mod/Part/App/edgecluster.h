@@ -29,6 +29,8 @@
 #include <gp_Pnt.hxx>
 #include <TopoDS_Edge.hxx>
 
+#include <Mod/Part/PartGlobal.h>
+
 
 namespace Part {
 
