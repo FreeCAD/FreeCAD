@@ -275,9 +275,7 @@ class Snapper:
             self.radiusTracker.off()
 
         # Activate snap
-        oldActive = False
         if Draft.getParam("alwaysSnap", True):
-            oldActive = active
             active = True
         if not self.active:
             active = False
@@ -320,8 +318,7 @@ class Snapper:
             self.snapInfo = objectsUnderCursor[self.snapObjectIndex]
 
         if self.snapInfo and "Component" in self.snapInfo:
-            osnap = self.snapToObject(lastpoint, active, constrain,
-                                     eline, point, oldActive)
+            osnap = self.snapToObject(lastpoint, active, constrain, eline, point)
             if osnap:
                 return osnap
 
@@ -352,8 +349,7 @@ class Snapper:
         self.snapObjectIndex = self.snapObjectIndex + 1
 
 
-    def snapToObject(self, lastpoint, active, constrain,
-                     eline, point, oldActive):
+    def snapToObject(self, lastpoint, active, constrain, eline, point):
         """Snap to an object."""
 
         parent = self.snapInfo.get('ParentObject', None)
@@ -499,13 +495,6 @@ class Snapper:
                     winner = snap
 
         if winner:
-            # see if we are out of the max radius, if any
-            if self.radius:
-                dv = point.sub(winner[2])
-                if (dv.Length > self.radius):
-                    if (not oldActive) and self.isEnabled("Near"):
-                        winner = self.snapToVertex(self.snapInfo)
-
             # setting the cursors
             if self.tracker and not self.selectMode:
                 self.tracker.setCoords(winner[2])
