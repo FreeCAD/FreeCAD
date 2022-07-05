@@ -66,7 +66,7 @@ public:
         Base::Console().Error("ERR");
         if (buffer.str() != expectedResult)
             throw Py::RuntimeError("ILoggerTest: " + buffer.str() + " different from " + expectedResult);
-    };
+    }
 
     void runTest()
     {
@@ -102,7 +102,7 @@ public:
             runSingleTest("Log is enabled but a warning is triggered in debug mode", "LOG");
         }
         runSingleTest("Print all", "LOGMSGWRNERR");
-    };
+    }
 
 private:
     std::ostringstream buffer;
@@ -163,6 +163,7 @@ private:
         (void) args;
         ILoggerBlockerTest iltest;
         Base::Console().AttachObserver(static_cast<Base::ILogger *>(&iltest));
+        Base::Console().SetConnectionMode(Base::ConsoleSingleton::Direct);
         iltest.runTest();
         return Py::None();
     }
