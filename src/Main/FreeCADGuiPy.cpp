@@ -194,11 +194,6 @@ FreeCADGui_setupWithoutGUI(PyObject * /*self*/, PyObject *args)
         _isSetupWithoutGui = true;
         Q_UNUSED(app);
     }
-    else {
-        PyErr_SetString(PyExc_RuntimeError, "FreeCADGui already initialized");
-        return nullptr;
-    }
-
     if (!SoDB::isInitialized()) {
         // init the Inventor subsystem
         SoDB::init();
