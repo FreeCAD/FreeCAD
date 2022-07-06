@@ -55,7 +55,7 @@ QGCustomClip::QGCustomClip()
 
 void QGCustomClip::centerAt(QPointF centerPos)
 {
-    centerAt(centerPos.x(),centerPos.y());
+    centerAt(centerPos.x(), centerPos.y());
 }
 
 void QGCustomClip::centerAt(double cX, double cY)

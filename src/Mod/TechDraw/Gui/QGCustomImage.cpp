@@ -51,7 +51,7 @@ QGCustomImage::~QGCustomImage()
 
 void QGCustomImage::centerAt(QPointF centerPos)
 {
-    centerAt(centerPos.x(),centerPos.y());
+    centerAt(centerPos.x(), centerPos.y());
 }
 
 void QGCustomImage::centerAt(double cX, double cY)

@@ -51,7 +51,7 @@ QGCustomSvg::~QGCustomSvg()
 
 void QGCustomSvg::centerAt(QPointF centerPos)
 {
-    centerAt(centerPos.x(),centerPos.y());
+    centerAt(centerPos.x(), centerPos.y());
 }
 
 void QGCustomSvg::centerAt(double cX, double cY)
