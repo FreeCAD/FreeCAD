@@ -52,7 +52,7 @@ QGDisplayArea::QGDisplayArea(void)
 
 void QGDisplayArea::centerAt(QPointF centerPos)
 {
-    centerAt(centerPos.x(),centerPos.y());
+    centerAt(centerPos.x(), centerPos.y());
 }
 
 void QGDisplayArea::centerAt(double cX, double cY)

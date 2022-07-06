@@ -65,7 +65,7 @@ QGCustomText::QGCustomText(QGraphicsItem* parent) :
 
 void QGCustomText::centerAt(QPointF centerPos)
 {
-      centerAt(centerPos.x(),centerPos.y());
+      centerAt(centerPos.x(), centerPos.y());
 }
 
 void QGCustomText::centerAt(double cX, double cY)
