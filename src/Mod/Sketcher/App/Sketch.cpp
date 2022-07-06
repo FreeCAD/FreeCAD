@@ -4040,11 +4040,16 @@ int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& 
         return -1;
     }
 
+    GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
+
+    // If spline has too few poles, just move all
+    if (bsp.poles.size() <= (bsp.degree + 1))
+        return initMove(geoId, pos, fine);
+
     // Find the closest knot
     auto partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId].geo);
     double uNear;
     partBsp->closestParameter(firstPoint, uNear);
-    GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
     auto& knots = bsp.knots;
     auto upperknot = std::upper_bound(
         knots.begin(), knots.end(), uNear,
