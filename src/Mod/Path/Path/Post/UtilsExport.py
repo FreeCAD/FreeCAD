@@ -35,11 +35,6 @@ import Path.Post.Utils as PostUtils
 import Path.Post.UtilsParse as PostUtilsParse
 import Path.Tool.Controller as PathToolController
 
-
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
-
 #
 # This routine processes things in the following order:
 #
@@ -301,8 +296,7 @@ def export_common(values, objectslist, filename):
     print("done postprocessing.")
 
     if not filename == "-":
-        gfile = pythonopen(filename, "w", newline=values["END_OF_LINE_CHARACTERS"])
-        gfile.write(final)
-        gfile.close()
+        with open(filename, "w", newline=values["END_OF_LINE_CHARACTERS"]) as gfile:
+            gfile.write(final)
 
     return final

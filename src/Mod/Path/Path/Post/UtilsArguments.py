@@ -36,10 +36,6 @@ import shlex
 
 from FreeCAD import Units
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
-
 
 def add_flag_type_arguments(
     argument_group,
@@ -50,6 +46,7 @@ def add_flag_type_arguments(
     false_help,
     visible=True,
 ):
+    """Create an argument specification for an argument that is a flag."""
     if visible:
         if default_flag:
             true_help += " (default)"
@@ -103,13 +100,11 @@ def init_arguments_visible(arguments_visible):
 
 
 def init_shared_arguments(values, argument_defaults, arguments_visible):
-    """Initialize the shared arguments for postprocessors."""
+    """Initialize the arguments for postprocessors."""
     parser = argparse.ArgumentParser(
         prog=values["MACHINE_NAME"], usage=argparse.SUPPRESS, add_help=False
     )
-    shared = parser.add_argument_group(
-        "Arguments that are shared with all postprocessors"
-    )
+    shared = parser.add_argument_group("Arguments that are commonly used")
     add_flag_type_arguments(
         shared,
         argument_defaults["metric_inches"],
@@ -272,8 +267,8 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         argument_defaults["translate_drill"],
         "--translate_drill",
         "--no-translate_drill",
-        "Translate drill cycles G81, G82 & G83 into G0/G1 movements",
-        "Don't translate drill cycles G81, G82 & G83 into G0/G1 movements",
+        "Translate drill cycles G73, G81, G82 & G83 into G0/G1 movements",
+        "Don't translate drill cycles G73, G81, G82 & G83 into G0/G1 movements",
         arguments_visible["translate_drill"],
     )
     if arguments_visible["wait-for-spindle"]:
@@ -581,20 +576,14 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
         if args.output_all_arguments:
             argument_text = all_visible.format_help()
             if not filename == "-":
-                gfile = pythonopen(
-                    filename, "w", newline=values["END_OF_LINE_CHARACTERS"]
-                )
-                gfile.write(argument_text)
-                gfile.close()
+                with open(filename, "w", newline=values["END_OF_LINE_CHARACTERS"]) as f:
+                    f.write(argument_text)
             return (False, argument_text)
         if args.output_visible_arguments:
             argument_text = parser.format_help()
             if not filename == "-":
-                gfile = pythonopen(
-                    filename, "w", newline=values["END_OF_LINE_CHARACTERS"]
-                )
-                gfile.write(argument_text)
-                gfile.close()
+                with open(filename, "w", newline=values["END_OF_LINE_CHARACTERS"]) as f:
+                    f.write(argument_text)
             return (False, argument_text)
         # Default to metric unless an argument overrides it
         values["UNITS"] = "G21"
@@ -711,7 +700,7 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
 #
 # G53 G00|G01 or G00|G01 G53  X Y Z
 #
-# G73, G74, G81 to G86, G89   (X Y Z) or (U V W) R Q L P F K $
+# G73, G74, G81 to G86, G89   "X Y Z" | "U V W" R Q L P F K $
 #
 # G76                         P Z I J R K Q H E L $
 #
