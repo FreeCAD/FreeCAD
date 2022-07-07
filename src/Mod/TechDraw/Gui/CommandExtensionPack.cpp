@@ -768,11 +768,11 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg) {
         BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
         if (baseGeo != nullptr) {
             if (baseGeo->cosmetic) {
-                if (baseGeo->source() == 1) {
+                if (baseGeo->getSource() == 1) {
                     TechDraw::CosmeticEdge* cosEdgeTag = objFeat->getCosmeticEdgeBySelection(name);
                     _setLineAttributes(cosEdgeTag);
                 }
-                else if (baseGeo->source() == 2) {
+                else if (baseGeo->getSource() == 2) {
                     TechDraw::CenterLine* centerLineTag = objFeat->getCenterLineBySelection(name);
                     _setLineAttributes(centerLineTag);
                 }
@@ -1520,14 +1520,14 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
                         App::Color oldColor;
                         std::vector<std::string> toDelete;
                         toDelete.push_back(uniTag);
-                        if (baseGeo->source() == 1) {
+                        if (baseGeo->getSource() == 1) {
                             auto cosEdge = objFeat->getCosmeticEdge(uniTag);
                             oldStyle = cosEdge->m_format.m_style;
                             oldWeight = cosEdge->m_format.m_weight;
                             oldColor = cosEdge->m_format.m_color;
                             objFeat->removeCosmeticEdge(toDelete);
                         }
-                        else if (baseGeo->source() == 2) {
+                        else if (baseGeo->getSource() == 2) {
                             isCenterLine = true;
                             centerEdge = objFeat->getCenterLine(uniTag);
                         }

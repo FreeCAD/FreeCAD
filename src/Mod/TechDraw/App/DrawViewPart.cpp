@@ -1314,7 +1314,7 @@ void DrawViewPart::refreshCEGeoms(void)
     std::vector<TechDraw::BaseGeomPtr> gEdges = getEdgeGeometry();
     std::vector<TechDraw::BaseGeomPtr> oldGEdges;
     for (auto& ge :gEdges) {
-        if (ge->source() != SourceType::COSEDGE)  {
+        if (ge->getSource() != SourceType::COSEDGE)  {
             oldGEdges.push_back(ge);
         }
     }
@@ -1352,7 +1352,7 @@ void DrawViewPart::refreshCLGeoms(void)
     std::vector<TechDraw::BaseGeomPtr> gEdges = getEdgeGeometry();
     std::vector<TechDraw::BaseGeomPtr> newGEdges;
     for (auto& ge :gEdges) {
-        if (ge->source() != SourceType::CENTERLINE)  {
+        if (ge->getSource() != SourceType::CENTERLINE)  {
             newGEdges.push_back(ge);
         }
     }

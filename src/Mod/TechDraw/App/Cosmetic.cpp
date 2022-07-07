@@ -421,7 +421,7 @@ void CosmeticEdge::initialize(void)
     m_geometry->classOfEdge = ecHARD;
     m_geometry->hlrVisible = true;
     m_geometry->cosmetic = true;
-    m_geometry->source(COSMETICEDGE);
+    m_geometry->setSource(COSMETICEDGE);
 
     createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
@@ -437,7 +437,7 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(double scale)
     newGeom->classOfEdge = ecHARD;
     newGeom->hlrVisible = true;
     newGeom->cosmetic = true;
-    newGeom->source(COSMETICEDGE);
+    newGeom->setSource(COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     return newGeom;
 }
@@ -713,7 +713,7 @@ void CenterLine::initialize()
     m_geometry->classOfEdge = ecHARD;
     m_geometry->hlrVisible = true;
     m_geometry->cosmetic = true;
-    m_geometry->source(CENTERLINE);
+    m_geometry->setSource(CENTERLINE);
 
     createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
@@ -826,7 +826,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
         newGeom->classOfEdge = ecHARD;
         newGeom->hlrVisible = true;
         newGeom->cosmetic = true;
-        newGeom->source(CENTERLINE);
+        newGeom->setSource(CENTERLINE);
         newGeom->setCosmeticTag(getTagAsString());
     } else { 
         Base::Console().Warning("Centerline endpoints are equal. Could not draw.\n");

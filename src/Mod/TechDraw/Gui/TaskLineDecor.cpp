@@ -118,13 +118,13 @@ void TaskLineDecor::getDefaults(void)
         BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg != nullptr) {
             if (bg->cosmetic) {
-                if (bg->source() == 1) {
+                if (bg->getSource() == 1) {
                     TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
                     m_style = ce->m_format.m_style;
                     m_color = ce->m_format.m_color;
                     m_weight = ce->m_format.m_weight;
                     m_visible = ce->m_format.m_visible;
-                } else if (bg->source() == 2) {
+                } else if (bg->getSource() == 2) {
 //                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag);
                     TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(m_edges.front());
                     m_style = cl->m_format.m_style;
@@ -190,13 +190,13 @@ void TaskLineDecor::applyDecorations(void)
         BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg != nullptr) {
             if (bg->cosmetic) {
-                if (bg->source() == 1) {
+                if (bg->getSource() == 1) {
                     TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
                     ce->m_format.m_style = m_style;
                     ce->m_format.m_color = m_color;
                     ce->m_format.m_weight = m_weight;
                     ce->m_format.m_visible = m_visible;
-                } else if (bg->source() == 2) {
+                } else if (bg->getSource() == 2) {
 //                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag());
                     TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(e);
                     cl->m_format.m_style = m_style;

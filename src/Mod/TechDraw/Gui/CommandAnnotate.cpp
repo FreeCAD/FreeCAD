@@ -1205,7 +1205,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                 TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
                 if ((bg != nullptr) &&
                     (bg->cosmetic) ) {
-                    int source = bg->source();
+                    int source = bg->getSource();
                     std::string tag = bg->getCosmeticTag();
                     if (source == 1) {  //this is a "CosmeticEdge"
                         ce2Delete.push_back(tag);

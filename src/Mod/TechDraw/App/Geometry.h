@@ -106,10 +106,14 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         int ref3D;                      //obs?
         TopoDS_Edge occEdge;            //projected Edge
         bool cosmetic;
-        int source(void) { return m_source; }
-        void source(int s) { m_source = s; }
-        int sourceIndex(void) { return m_sourceIndex; }
-        void sourceIndex(int si) { m_sourceIndex = si; }
+        //! Returns m_source
+        int getSource(void) { return m_source; }
+        //! Sets m_source
+        void setSource(int s) { m_source = s; }
+        //! Returns m_sourceIndex
+        int getSourceIndex(void) { return m_sourceIndex; }
+        //! Sets m_sourceIndex
+        void setSourceIndex(int si) { m_sourceIndex = si; }
         std::string getCosmeticTag(void) { return cosmeticTag; }
         void setCosmeticTag(std::string t) { cosmeticTag = t; }
 
@@ -147,7 +151,8 @@ private:
                             std::vector<Base::Vector3d>& interPoints);
 
 protected:
-        int m_source;         //0 - geom, 1 - cosmetic edge, 2 - centerline
+        //! 0: geom, 1: cosmetic edge, 2: centerline
+        int m_source;
         int m_sourceIndex;
         std::string cosmeticTag;
 

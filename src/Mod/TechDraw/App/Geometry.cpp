@@ -125,17 +125,16 @@ Wire::~Wire()
 
 TopoDS_Wire Wire::toOccWire(void) const
 {
-    TopoDS_Wire result;
     BRepBuilderAPI_MakeWire mkWire;
     for (auto& g: geoms) {
         TopoDS_Edge e = g->occEdge;
         mkWire.Add(e);
     }
     if (mkWire.IsDone())  {
-        result = mkWire.Wire();
+        return mkWire.Wire();
     }
 //    BRepTools::Write(result, "toOccWire.brep");
-    return result;
+    return TopoDS_Wire();
 }
 
 void Wire::dump(std::string s)
@@ -145,7 +144,6 @@ void Wire::dump(std::string s)
 
 TopoDS_Face Face::toOccFace(void) const
 {
-    TopoDS_Face result;
     //if (!wires.empty) {
     BRepBuilderAPI_MakeFace mkFace(wires.front()->toOccWire(), true);
     int limit = wires.size();
@@ -158,9 +156,9 @@ TopoDS_Face Face::toOccFace(void) const
         }
     }
     if (mkFace.IsDone())  {
-        result = mkFace.Face();
+        return mkFace.Face();
     }
-    return result;
+    return TopoDS_Face();
 }
 
 Face::~Face()
@@ -179,7 +177,7 @@ BaseGeom::BaseGeom() :
     reversed(false),
     ref3D(-1),                      //obs?
     cosmetic(false),
-    m_source(0),
+    m_source(GEOMETRYEDGE),
     m_sourceIndex(-1)
 {
     occEdge = TopoDS_Edge();
@@ -187,34 +185,28 @@ BaseGeom::BaseGeom() :
     tag = boost::uuids::nil_uuid();
 }
 
+//! Makes a copy of the object and returns the copy's TechDraw::BaseGeomPtr
 BaseGeomPtr BaseGeom::copy()
 {
     BaseGeomPtr result;
     if (!occEdge.IsNull()) {
         result = baseFactory(occEdge);
-        if (result != nullptr) {
-            result->extractType = extractType;
-            result->classOfEdge = classOfEdge;
-            result->hlrVisible = hlrVisible;
-            result->reversed = reversed;
-            result->ref3D = ref3D;
-            result->cosmetic = cosmetic;
-            result->source(m_source);
-            result->sourceIndex(m_sourceIndex);
-            result->cosmeticTag = cosmeticTag;
+        if (result == nullptr) {
+            return result;
         }
     } else {
         result = std::make_shared<BaseGeom>();
-        result->extractType = extractType;
-        result->classOfEdge = classOfEdge;
-        result->hlrVisible = hlrVisible;
-        result->reversed = reversed;
-        result->ref3D = ref3D;
-        result->cosmetic = cosmetic;
-        result->source(m_source);
-        result->sourceIndex(m_sourceIndex);
-        result->cosmeticTag = cosmeticTag;
     }
+
+    result->extractType = extractType;
+    result->classOfEdge = classOfEdge;
+    result->hlrVisible = hlrVisible;
+    result->reversed = reversed;
+    result->ref3D = ref3D;
+    result->cosmetic = cosmetic;
+    result->setSource(m_source);
+    result->setSourceIndex(m_sourceIndex);
+    result->cosmeticTag = cosmeticTag;
    
     return result;
 }
@@ -234,17 +226,20 @@ std::string BaseGeom::toString(void) const
     return ss.str();
 }
 
+//! Returns tag.
 boost::uuids::uuid BaseGeom::getTag() const
 {
     return tag;
 }
 
+//! Returns tag as string
 std::string BaseGeom::getTagAsString(void) const
 {
     std::string tmp = boost::uuids::to_string(getTag());
     return tmp;
 }
 
+//! Saves the object
 void BaseGeom::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeomType value=\"" << geomType << "\"/>" << endl;
@@ -263,6 +258,7 @@ void BaseGeom::Save(Base::Writer &writer) const
 //    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
+//! Restores the object
 void BaseGeom::Restore(Base::XMLReader &reader)
 {
     reader.readElement("GeomType");
@@ -287,37 +283,42 @@ void BaseGeom::Restore(Base::XMLReader &reader)
     cosmeticTag = reader.getAttribute("value");
 }
 
+//! Returns endspoints. If no endpoints are found, returns empty std::vector<Base::Vector3d>
 std::vector<Base::Vector3d> BaseGeom::findEndPoints()
 {
     std::vector<Base::Vector3d> result;
 
-    if (!occEdge.IsNull()) {
-        gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-        result.emplace_back(p.X(),p.Y(), p.Z());
-        p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-        result.emplace_back(p.X(),p.Y(), p.Z());
-    } else {
+    if (occEdge.IsNull()) {
         //TODO: this should throw something
         Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
+        return result;
     }
+
+    gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
+    result.emplace_back(p.X(),p.Y(), p.Z());
+    p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
+    result.emplace_back(p.X(),p.Y(), p.Z());
+    
     return result;
 }
 
 
+//! Returns start point. If no start point found, returns empty.
 Base::Vector3d BaseGeom::getStartPoint()
 {
     std::vector<Base::Vector3d> verts = findEndPoints();
-    if (!verts.empty()) {
-        return verts[0];
-    } else {
+
+    if (verts.empty()) {
         //TODO: this should throw something
         Base::Console().Message("Geometry::getStartPoint - start point not found!\n");
-        Base::Vector3d badResult(0.0, 0.0, 0.0);
-        return badResult;
+        return Base::Vector3d();
     }
+
+    return verts[0];
 }
 
 
+//! Returns start point. If no start point found, returns empty.
 Base::Vector3d BaseGeom::getEndPoint()
 {
     std::vector<Base::Vector3d> verts = findEndPoints();
@@ -325,12 +326,13 @@ Base::Vector3d BaseGeom::getEndPoint()
     if (verts.size() != 2) {
         //TODO: this should throw something
         Base::Console().Message("Geometry::getEndPoint - end point not found!\n");
-        Base::Vector3d badResult(0.0, 0.0, 0.0);
-        return badResult;
+        return Base::Vector3d();
     }
+
     return verts[1];
 }
 
+//! Returns mid point of 
 Base::Vector3d BaseGeom::getMidPoint()
 {
     // Midpoint calculation - additional details here: https://forum.freecadweb.org/viewtopic.php?f=35&t=59582
@@ -381,17 +383,14 @@ std::vector<Base::Vector3d> BaseGeom::getQuads()
 
 double BaseGeom::minDist(Base::Vector3d p)
 {
-    double minDist = -1.0;
     gp_Pnt pnt(p.x,p.y,0.0);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
-    minDist = TechDraw::DrawUtil::simpleMinDist(occEdge,v);
-    return minDist;
+    return TechDraw::DrawUtil::simpleMinDist(occEdge,v);
 }
 
-//!find point on me nearest to p
+//! Find point on me nearest to p
 Base::Vector3d BaseGeom::nearPoint(const BaseGeomPtr p)
 {
-    Base::Vector3d result(0.0, 0.0, 0.0);
     TopoDS_Edge pEdge = p->occEdge;
     BRepExtrema_DistShapeShape extss(occEdge, pEdge);
     if (extss.IsDone()) {
@@ -399,16 +398,15 @@ Base::Vector3d BaseGeom::nearPoint(const BaseGeomPtr p)
         if (count != 0) {
             gp_Pnt p1;
             p1 = extss.PointOnShape1(1);
-            result =  Base::Vector3d(p1.X(), p1.Y(), 0.0);
+            return Base::Vector3d(p1.X(), p1.Y(), 0.0);
         }
     }
-    return result;
+    return Base::Vector3d();
 }
 
 Base::Vector3d BaseGeom::nearPoint(Base::Vector3d p)
 {
     gp_Pnt pnt(p.x,p.y,0.0);
-    Base::Vector3d result(0.0,0.0, 0.0);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
     BRepExtrema_DistShapeShape extss(occEdge, v);
     if (extss.IsDone()) {
@@ -416,12 +414,13 @@ Base::Vector3d BaseGeom::nearPoint(Base::Vector3d p)
         if (count != 0) {
             gp_Pnt p1;
             p1 = extss.PointOnShape1(1);
-            result =  Base::Vector3d(p1.X(),p1.Y(), 0.0);
+            return Base::Vector3d(p1.X(),p1.Y(), 0.0);
         }
     }
-    return result;
+    return Base::Vector3d();
 }
 
+//! Dumps information about the object
 std::string BaseGeom::dump()
 {
     Base::Vector3d start = getStartPoint();
@@ -429,13 +428,13 @@ std::string BaseGeom::dump()
     std::stringstream ss;
     ss << "BaseGeom: s:(" << start.x << "," << start.y << ") e:(" << end.x << "," << end.y << ") ";
     ss << "type: " << geomType << " class: " << classOfEdge << " viz: " << hlrVisible << " rev: " << reversed;
-    ss << "cosmetic: " << cosmetic << " source: " << source() << " iSource: " << sourceIndex();
+    ss << "cosmetic: " << cosmetic << " source: " << getSource() << " iSource: " << getSourceIndex();
     return ss.str();
 }
 
+//! Returns true if the geometry is closed (start and endpoint at same x and y position), else false
 bool BaseGeom::closed(void)
 {
-    bool result = false;
     Base::Vector3d start(getStartPoint().x,
                          getStartPoint().y,
                          0.0);
@@ -443,9 +442,9 @@ bool BaseGeom::closed(void)
                        getEndPoint().y,
                        0.0);
     if (start.IsEqual(end, 0.00001)) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 
@@ -546,6 +545,7 @@ bool BaseGeom::validateEdge(TopoDS_Edge edge)
     return !DrawUtil::isCrazy(edge);
 }
 
+//! Returns intersections between the objects and a given TechDraw::BaseGeomPtr
 std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 {
     // find intersection vertex(es) between two edges
@@ -711,6 +711,7 @@ void BaseGeom::intersectionCC(TechDraw::BaseGeomPtr geom1,
     }
 }
 
+//! Constructs the object from a TopoDS_Edge
 Ellipse::Ellipse(const TopoDS_Edge &e)
 {
     geomType = ELLIPSE;
@@ -728,6 +729,7 @@ Ellipse::Ellipse(const TopoDS_Edge &e)
     angle = xaxis.AngleWithRef(gp_Dir(1, 0, 0), gp_Dir(0, 0, -1));
 }
 
+//! Constructs the object from center c, minor mnr and major mjr
 Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
 {
     geomType = ELLIPSE;
@@ -792,6 +794,7 @@ Circle::Circle(void)
     center = Base::Vector3d(0.0, 0.0, 0.0);
 }
 
+//! Constructs a circle from a given center c and radius r
 Circle::Circle(Base::Vector3d c, double r)
 {
     geomType = CIRCLE;
@@ -813,6 +816,7 @@ Circle::Circle(Base::Vector3d c, double r)
 }
 
 
+//! Constructs the object from a TopoDS_Edge
 Circle::Circle(const TopoDS_Edge &e)
 {
     geomType = CIRCLE;             //center, radius
@@ -836,6 +840,7 @@ std::string Circle::toString(void) const
     return baseCSV + ",$$$," + ss.str();
 }
 
+//! Saves the object
 void Circle::Save(Base::Writer &writer) const
 {
     BaseGeom::Save(writer);
@@ -848,6 +853,7 @@ void Circle::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Radius value=\"" << radius << "\"/>" << endl;
 }
 
+//! Restores the object
 void Circle::Restore(Base::XMLReader &reader)
 {
     BaseGeom::Restore(reader);
@@ -920,14 +926,15 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     gp_Vec v3(0,0,1);      //stdZ
     double a = v3.DotCross(v1,v2);    //error if v1 = v2?
 
+
+    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
+    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
+    midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
     startAngle = fmod(f,2.0*M_PI);
     endAngle = fmod(l,2.0*M_PI);
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
-    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
-    midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
     if (edge.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -950,7 +957,6 @@ AOC::AOC(void) : Circle()
 
 bool AOC::isOnArc(Base::Vector3d p)
 {
-    bool result = false;
     double minDist = -1.0;
     gp_Pnt pnt(p.x,p.y,p.z);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
@@ -960,24 +966,22 @@ bool AOC::isOnArc(Base::Vector3d p)
         if (count != 0) {
             minDist = extss.Value();
             if (minDist < Precision::Confusion()) {
-                result = true;
+                return true;
             }
         }
     }
-    return result;
+    return false;
 }
 
 double AOC::distToArc(Base::Vector3d p)
 {
     Base::Vector3d p2(p.x, p.y, p.z);
-    double result = minDist(p2);
-    return result;
+    return minDist(p2);
 }
 
 
 bool AOC::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
 {
-    bool result = false;
     double minDist = -1.0;
     gp_Pnt pnt1(p1.x,p1.y,p1.z);
     TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(pnt1);
@@ -991,11 +995,11 @@ bool AOC::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
         if (count != 0) {
             minDist = extss.Value();
             if (minDist < Precision::Confusion()) {
-                result = true;
+                return true;
             }
         }
     }
-    return result;
+    return false;
 }
 
 std::string AOC::toString(void) const
@@ -1021,6 +1025,7 @@ std::string AOC::toString(void) const
     return result;
 }
 
+//! Saves the object
 void AOC::Save(Base::Writer &writer) const
 {
     Circle::Save(writer);
@@ -1047,6 +1052,7 @@ void AOC::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Large value=\"" <<  la << "\"/>" << endl;
 }
 
+//! Restores the object
 void AOC::Restore(Base::XMLReader &reader)
 {
     Circle::Restore(reader);
@@ -1122,6 +1128,7 @@ std::string Generic::toString(void) const
 }
 
 
+//! Saves the object
 void Generic::Save(Base::Writer &writer) const
 {
     BaseGeom::Save(writer);
@@ -1140,13 +1147,13 @@ void Generic::Save(Base::Writer &writer) const
 
 }
 
+//! Restores the object
 void Generic::Restore(Base::XMLReader &reader)
 {
     BaseGeom::Restore(reader);
     reader.readElement("Points");
     int stop = reader.getAttributeAsInteger("PointsCount");
-    int i = 0;
-    for ( ; i < stop; i++) {
+    for (int i = 0; i < stop; i++) {
         reader.readElement("Point");
         Base::Vector3d p;
         p.x = reader.getAttributeAsFloat("X");
@@ -1191,8 +1198,7 @@ Base::Vector3d Generic::apparentInter(GenericPtr g)
     double y = (dir0.y*c1 - dir1.y*c0)/det;
 
     // Apparent Intersection point
-    Base::Vector3d result = Base::Vector3d(x, y, 0.0);
-    return result;
+    return Base::Vector3d(x, y, 0.0);
 
 }
 
@@ -1282,7 +1288,6 @@ BSpline::BSpline(const TopoDS_Edge &e)
 // if len(first-last) == sum(len(pi - pi+1)) then it is a line
 bool BSpline::isLine()
 {
-    bool result = false;
     BRepAdaptor_Curve c(occEdge);
 
     Handle(Geom_BSplineCurve) spline = c.BSpline();
@@ -1310,10 +1315,10 @@ bool BSpline::isLine()
         }
 
         if (DrawUtil::fpCompare(lenTotal,endLength)) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 //used by DVDim for approximate dims
@@ -1513,7 +1518,6 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
 
 bool BSpline::intersectsArc(Base::Vector3d p1,Base::Vector3d p2)
 {
-    bool result = false;
     double minDist = -1.0;
     gp_Pnt pnt1(p1.x,p1.y,p1.z);
     TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(pnt1);
@@ -1527,11 +1531,11 @@ bool BSpline::intersectsArc(Base::Vector3d p1,Base::Vector3d p2)
         if (count != 0) {
             minDist = extss.Value();
             if (minDist < Precision::Confusion()) {
-                result = true;
+                return true;
             }
         }
     }
-    return result;
+    return false;
 }
 
 
@@ -1557,20 +1561,11 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
 
 
 //**** Vertex
+
+//! Constructs a new TechDraw::Vertex with at a default x = 0.0 and y = 0.0
 Vertex::Vertex()
 {
-    pnt = Base::Vector3d(0.0, 0.0, 0.0);
-    extractType = ExtractionType::Plain;       //obs?
-    hlrVisible = false;
-    ref3D = -1;                        //obs. never used.
-    isCenter = false;
-    BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(0.0, 0.0, 0.0));
-    occVertex = mkVert.Vertex();
-    cosmetic = false;
-    cosmeticLink = -1;
-    cosmeticTag = std::string();
-    reference = false;
-    createNewTag();
+    Vertex(0.0, 0.0);
 }
 
 Vertex::Vertex(const Vertex* v)
@@ -1588,6 +1583,7 @@ Vertex::Vertex(const Vertex* v)
     createNewTag();
 }
 
+//! Constructs a new TechDraw::Vertex with given x and y
 Vertex::Vertex(double x, double y)
 {
     pnt = Base::Vector3d(x, y, 0.0);
@@ -1611,16 +1607,17 @@ Vertex::Vertex(Base::Vector3d v) : Vertex(v.x,v.y)
 }
 
 
+//! Checks if object is equal to another TechDraw::Vertex within a given tolerance
 bool Vertex::isEqual(const Vertex& v, double tol)
 {
-    bool result = false;
     double dist = (pnt - (v.pnt)).Length();
     if (dist <= tol) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
+//! Saves the object
 void Vertex::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Point "
@@ -1683,6 +1680,7 @@ void Vertex::Restore(Base::XMLReader &reader)
     occVertex = mkVert.Vertex();
 }
 
+//! Creates a new tag for the object
 void Vertex::createNewTag()
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
@@ -1699,17 +1697,20 @@ void Vertex::createNewTag()
 }
 
 
+//! Returns tag
 boost::uuids::uuid Vertex::getTag() const
 {
     return tag;
 }
 
+//! Returns tag as string
 std::string Vertex::getTagAsString(void) const
 {
     std::string tmp = boost::uuids::to_string(getTag());
     return tmp;
 }
 
+//! Dumps information about the object
 void Vertex::dump(const char* title)
 {
     Base::Console().Message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
@@ -1728,37 +1729,42 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
         return result;
     }
 
+
+    //start with first edge
+    result.push_back(geoms[0]);
+
     if (geoms.size() == 1) {
         //don't bother for single geom (circles, ellipses,etc)
-        result.push_back(geoms[0]);
-    } else {
-        //start with first edge
-        result.push_back(geoms[0]);
-        Base::Vector3d atPoint = (geoms[0])->getEndPoint();
-        used[0] = true;
-        for (unsigned int i = 1; i < geoms.size(); i++) { //do size-1 more edges
-            auto next( nextGeom(atPoint, geoms, used, Precision::Confusion()) );
-            if (next.index) { //found an unused edge with vertex == atPoint
-                BaseGeomPtr nextEdge = geoms.at(next.index);
-                used[next.index] = true;
-                nextEdge->reversed = next.reversed;
-                result.push_back(nextEdge);
-                if (next.reversed) {
-                    atPoint = nextEdge->getStartPoint();
-                } else {
-                    atPoint = nextEdge->getEndPoint();
-                }
+        return result;
+    }
+
+    // Keep going
+    Base::Vector3d atPoint = (geoms[0])->getEndPoint();
+    used[0] = true;
+    for (unsigned int i = 1; i < geoms.size(); i++) { //do size-1 more edges
+        auto next( nextGeom(atPoint, geoms, used, Precision::Confusion()) );
+        if (next.index) { //found an unused edge with vertex == atPoint
+            BaseGeomPtr nextEdge = geoms.at(next.index);
+            used[next.index] = true;
+            nextEdge->reversed = next.reversed;
+            result.push_back(nextEdge);
+            if (next.reversed) {
+                atPoint = nextEdge->getStartPoint();
             } else {
-                Base::Console().Log("Error - Geometry::chainGeoms - couldn't find next edge\n");
-                //TARFU
+                atPoint = nextEdge->getEndPoint();
             }
+        } else {
+            Base::Console().Log("Error - Geometry::chainGeoms - couldn't find next edge\n");
+            //TARFU
         }
     }
+
     return result;
 }
 
 
-/*static*/ GeometryUtils::ReturnType GeometryUtils::nextGeom(
+/*static*/
+GeometryUtils::ReturnType GeometryUtils::nextGeom(
         Base::Vector3d atPoint,
         BaseGeomPtrVector geoms,
         std::vector<bool> used,
@@ -1799,6 +1805,7 @@ TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::GenericPtr g)
     return e;
 }
 
+//! Returns a TopoDS_Edge made from TechDraw::CirclePtr
 TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::CirclePtr c)
 {
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
@@ -1813,8 +1820,11 @@ TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::CirclePtr c)
     return e;
 }
 
+//! Returns a TopoDS_Edge made from TechDraw::AOCPtr
 TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOCPtr c)
 {
+    double startAngle = c->startAngle;
+    double endAngle = c->endAngle;
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
     gp_Dir dir(0,0,1);
     gp_Ax1 axis(loc, dir);
@@ -1822,8 +1832,6 @@ TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOCPtr c)
     circle.SetAxis(axis);
     circle.SetRadius(c->radius);
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    double startAngle = c->startAngle;
-    double endAngle = c->endAngle;
     BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, startAngle, endAngle);
     TopoDS_Edge e = aMakeEdge.Edge();
     return e;

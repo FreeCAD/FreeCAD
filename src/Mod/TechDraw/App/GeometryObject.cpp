@@ -500,8 +500,8 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 //            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
 
-        base->source(0);             //object geometry
-        base->sourceIndex(i-1);
+        base->setSource(0);             //object geometry
+        base->setSourceIndex(i-1);
         base->classOfEdge = category;
         base->hlrVisible = hlrVisible;
         edgeGeom.push_back(base);
@@ -665,7 +665,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
     TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(occEdge);
     base->cosmetic = true;
     base->setCosmeticTag(tagString);
-    base->source(1);           //1-CosmeticEdge, 2-CenterLine
+    base->setSource(1);           //1-CosmeticEdge, 2-CenterLine
     base->hlrVisible = true;
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);
@@ -678,9 +678,9 @@ int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base,
 //    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
     base->cosmetic = true;
     base->hlrVisible = true;
-    base->source(1);           //1-CosmeticEdge, 2-CenterLine
+    base->setSource(1);           //1-CosmeticEdge, 2-CenterLine
     base->setCosmeticTag(tagString);
-    base->sourceIndex(-1);
+    base->setSourceIndex(-1);
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);
     return idx;
@@ -693,8 +693,8 @@ int GeometryObject::addCenterLine(TechDraw::BaseGeomPtr base,
 //    Base::Console().Message("GO::addCenterLine()\n");
     base->cosmetic = true;
     base->setCosmeticTag(tag);
-    base->source(2);
-//    base->sourceIndex(si);     //index into source;
+    base->setSource(2);
+//    base->setSourceIndex(si);     //index into source;
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);
     return idx;
