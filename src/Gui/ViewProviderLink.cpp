@@ -1883,7 +1883,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             if(canScale(v))
                 pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
             SbMatrix matrix = convert(ext->getTransform(false));
-            linkView->renderDoubleSide(matrix.det3() < 0);
+            linkView->renderDoubleSide(matrix.det3() < 1e-7);
         }
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
@@ -1894,7 +1894,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             if(canScale(v))
                 pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
             SbMatrix matrix = convert(ext->getTransform(false));
-            linkView->renderDoubleSide(matrix.det3() < 0);
+            linkView->renderDoubleSide(matrix.det3() < 1e-7);
         }
     }else if(prop == ext->getLinkCopyOnChangeGroupProperty()) {
         if (auto group = ext->getLinkCopyOnChangeGroupValue()) {
@@ -3461,6 +3461,30 @@ ViewProviderDocumentObject *ViewProviderLink::getLinkedViewProvider(
     if(res)
         return res;
     return self;
+}
+
+void ViewProviderLink::setTransformation(const Base::Matrix4D &rcMatrix)
+{
+    inherited::setTransformation(rcMatrix);
+    auto ext = getLinkExtension();
+    if(ext) {
+        if (ext->getScaleVectorProperty())
+            updateDataPrivate(getLinkExtension(),ext->getScaleVectorProperty());
+        else
+            updateDataPrivate(getLinkExtension(),ext->getScaleProperty());
+    }
+}
+
+void ViewProviderLink::setTransformation(const SbMatrix &rcMatrix)
+{
+    inherited::setTransformation(rcMatrix);
+    auto ext = getLinkExtension();
+    if(ext) {
+        if (ext->getScaleVectorProperty())
+            updateDataPrivate(getLinkExtension(),ext->getScaleVectorProperty());
+        else
+            updateDataPrivate(getLinkExtension(),ext->getScaleProperty());
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
