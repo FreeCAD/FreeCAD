@@ -268,6 +268,9 @@ public:
         return true;
     }
 
+    virtual void setTransformation(const Base::Matrix4D &rcMatrix) override;
+    virtual void setTransformation(const SbMatrix &rcMatrix) override;
+
 protected:
     bool setEdit(int ModNum) override;
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
