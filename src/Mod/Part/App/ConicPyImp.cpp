@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_Conic.hxx>
 #endif
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/ConicPy.h>
-#include <Mod/Part/App/ConicPy.cpp>
-
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
+#include "ConicPy.h"
+#include "ConicPy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 
