@@ -29,16 +29,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Ax2.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Circ.hxx>
 # include <GC_MakeArcOfCircle.hxx>
-# include <Geom_BSplineCurve.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Pln.hxx>
 #endif
 
-#include "Geometry.h"
 #include "BSplineCurveBiArcs.h"
+#include "Geometry.h"
 #include "Tools.h"
+
 
 using Part::BSplineCurveBiArcs;
 using Part::GeomBSplineCurve;
