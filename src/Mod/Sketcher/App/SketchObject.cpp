@@ -8135,8 +8135,6 @@ void SketchObject::migrateSketch()
         // There are parabolas and there isn't an IA axis. (1) there are no axis or (2) there is a legacy construction line
         if(focalaxisfound == constraints.end()) {
 
-            Base::Console().Warning("Migrating parabolas. Migrated files won't open in previous versions of FreeCAD!!\n");
-
             // maps parabola geoid to focusgeoid
             std::map<int,int> parabolageoid2focusgeoid;
 
@@ -8225,6 +8223,11 @@ void SketchObject::migrateSketch()
             }
 
             Constraints.setValues(std::move(newconstraints));
+
+            Base::Console().Warning("In Sketch %s, parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!\n",this->Label.getStrValue().c_str());
+
+            this->getDocument()->signalUserMessage(*this, QStringLiteral(QT_TRANSLATE_NOOP("CriticalMessages","Sketch:")) + QStringLiteral(" ") + QString::fromStdString(this->Label.getStrValue()) +
+                QStringLiteral(".\n\n") + QString::fromLatin1(QT_TRANSLATE_NOOP("CriticalMessages","Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!")), App::Document::NotificationType::Critical);
         }
     }
 }
