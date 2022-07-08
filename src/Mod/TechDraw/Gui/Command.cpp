@@ -303,7 +303,7 @@ CmdTechDrawView::CmdTechDrawView()
     sToolTipText    = QT_TR_NOOP("Insert a View");
     sWhatsThis      = "TechDraw_View";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-View";
+    sPixmap         = "actions/TechDraw_View";
 }
 
 void CmdTechDrawView::activated(int iMsg)
@@ -733,7 +733,7 @@ bool CmdTechDrawProjectionGroup::isActive(void)
 //    sToolTipText    = QT_TR_NOOP("Insert a new View of a multiple Parts in the active drawing");
 //    sWhatsThis      = "TechDraw_NewMulti";
 //    sStatusTip      = sToolTipText;
-//    sPixmap         = "actions/techdraw-multiview";
+//    sPixmap         = "actions/TechDraw_Multiview";
 //}
 
 //void CmdTechDrawNewMulti::activated(int iMsg)
@@ -1179,7 +1179,7 @@ CmdTechDrawDraftView::CmdTechDrawDraftView()
     sToolTipText  = QT_TR_NOOP("Insert a View of a Draft Workbench object");
     sWhatsThis    = "TechDraw_NewDraft";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-DraftView";
+    sPixmap       = "actions/TechDraw_DraftView";
 }
 
 void CmdTechDrawDraftView::activated(int iMsg)
@@ -1237,7 +1237,7 @@ CmdTechDrawArchView::CmdTechDrawArchView()
     sToolTipText  = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
     sWhatsThis    = "TechDraw_NewArch";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ArchView";
+    sPixmap       = "actions/TechDraw_ArchView";
 }
 
 void CmdTechDrawArchView::activated(int iMsg)

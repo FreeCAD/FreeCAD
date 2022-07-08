@@ -258,7 +258,7 @@ CmdTechDrawImage::CmdTechDrawImage()
     sToolTipText  = QT_TR_NOOP("Insert Bitmap from a file into a page");
     sWhatsThis    = "TechDraw_Image";
     sStatusTip    = QT_TR_NOOP("Insert Bitmap from a file into a page");
-    sPixmap       = "actions/techdraw-image";
+    sPixmap       = "actions/TechDraw_Image";
 }
 
 void CmdTechDrawImage::activated(int iMsg)
@@ -309,7 +309,7 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
     sToolTipText    = QT_TR_NOOP("Turn View Frames On/Off");
     sWhatsThis      = "TechDraw_Toggle";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-toggleframe";
+    sPixmap         = "actions/TechDraw_ToggleFrame";
 }
 
 void CmdTechDrawToggleFrame::activated(int iMsg)

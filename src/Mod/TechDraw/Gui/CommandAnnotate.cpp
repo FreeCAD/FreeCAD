@@ -107,7 +107,7 @@ CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_LeaderLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-LeaderLine";
+    sPixmap         = "actions/TechDraw_LeaderLine";
 }
 
 void CmdTechDrawLeaderLine::activated(int iMsg)
@@ -260,7 +260,7 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-CosmeticVertex"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_CosmeticVertex"));
     p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertex"));
     QAction* p2 = pcAction->addAction(QString());
@@ -410,7 +410,7 @@ CmdTechDrawCosmeticVertex::CmdTechDrawCosmeticVertex()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_CosmeticVertex";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-CosmeticVertex";
+    sPixmap         = "actions/TechDraw_CosmeticVertex";
 }
 
 void CmdTechDrawCosmeticVertex::activated(int iMsg)
@@ -549,7 +549,7 @@ CmdTechDrawAnnotation::CmdTechDrawAnnotation()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_NewAnnotation";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-annotation";
+    sPixmap       = "actions/TechDraw_Annotation";
 }
 
 void CmdTechDrawAnnotation::activated(int iMsg)
@@ -630,11 +630,11 @@ Gui::Action * CmdTechDrawCenterLineGroup::createAction(void)
     p1->setObjectName(QString::fromLatin1("TechDraw_FaceCenterLine"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_FaceCenterLine"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-2linecenterline"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2LineCenterline"));
     p2->setObjectName(QString::fromLatin1("TechDraw_2LineCenterLine"));
     p2->setWhatsThis(QString::fromLatin1("TechDraw_2LineCenterLine"));
     QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-2pointcenterline"));
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2PointCenterline"));
     p3->setObjectName(QString::fromLatin1("TechDraw_2PointCenterLine"));
     p3->setWhatsThis(QString::fromLatin1("TechDraw_2PointCenterLine"));
 
@@ -802,7 +802,7 @@ CmdTechDraw2LineCenterLine::CmdTechDraw2LineCenterLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_2LineCenterLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-2linecenterline";
+    sPixmap         = "actions/TechDraw_2LineCenterline";
 }
 
 void CmdTechDraw2LineCenterLine::activated(int iMsg)
@@ -879,7 +879,7 @@ CmdTechDraw2PointCenterLine::CmdTechDraw2PointCenterLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_2PointCenterLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-2pointcenterline";
+    sPixmap         = "actions/TechDraw_2PointCenterline";
 }
 
 void CmdTechDraw2PointCenterLine::activated(int iMsg)
@@ -992,7 +992,7 @@ CmdTechDraw2PointCosmeticLine::CmdTechDraw2PointCosmeticLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_2PointCosmeticLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-line2points";
+    sPixmap         = "actions/TechDraw_Line2Points";
 }
 
 void CmdTechDraw2PointCosmeticLine::activated(int iMsg)
@@ -1144,7 +1144,7 @@ CmdTechDrawCosmeticEraser::CmdTechDrawCosmeticEraser()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_CosmeticEraser";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-CosmeticEraser";
+    sPixmap         = "actions/TechDraw_CosmeticEraser";
 }
 
 void CmdTechDrawCosmeticEraser::activated(int iMsg)
@@ -1271,7 +1271,7 @@ CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
     sToolTipText    = QT_TR_NOOP("Change Appearance of selected Lines");
     sWhatsThis      = "TechDraw_DecorateLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-DecorateLine";
+    sPixmap         = "actions/TechDraw_DecorateLine";
 }
 
 void CmdTechDrawDecorateLine::activated(int iMsg)
