@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-//# include <Geom_BSplineCurve.hxx>
 # include <Geom_BSplineSurface.hxx>
 # include <GeomAbs_Shape.hxx>
 # include <GeomAPI_PointsToBSplineSurface.hxx>
