@@ -40,7 +40,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderImage, TechDrawGui::ViewProviderDrawing
 
 ViewProviderImage::ViewProviderImage()
 {
-    sPixmap = "actions/techdraw-image";
+    sPixmap = "actions/TechDraw_Image";
 
     ADD_PROPERTY_TYPE(Crop ,(false),"Image", App::Prop_None, "Crop image to Width x Height");
 }

@@ -19,7 +19,7 @@
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <title
-     id="title2043">Techdraw-annotation</title>
+     id="title2043">TechDraw_Annotation</title>
   <defs
      id="defs2768">
     <linearGradient
@@ -557,7 +557,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Techdraw-annotation</dc:title>
+        <dc:title>TechDraw_Annotation</dc:title>
         <cc:license
            rdf:resource="http://artlibre.org/licence/lal" />
         <dc:date>2019-01-14</dc:date>

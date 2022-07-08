@@ -63,7 +63,7 @@ const char* ViewProviderLeader::LineStyleEnums[] = { "NoLine",
 
 ViewProviderLeader::ViewProviderLeader()
 {
-    sPixmap = "actions/techdraw-LeaderLine";
+    sPixmap = "actions/TechDraw_LeaderLine";
 
     static const char *group = "Line Format";
 

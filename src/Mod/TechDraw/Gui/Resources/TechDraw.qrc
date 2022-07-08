@@ -75,40 +75,40 @@
         <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>
         <file>icons/TechDraw_LandmarkDimension.svg</file>
-        <file>icons/actions/techdraw-View.svg</file>
+        <file>icons/actions/TechDraw_View.svg</file>
         <file>icons/actions/TechDraw_ActiveView.svg</file>
-        <file>icons/actions/techdraw-multiview.svg</file>
-        <file>icons/actions/techdraw-annotation.svg</file>
+        <file>icons/actions/TechDraw_Multiview.svg</file>
+        <file>icons/actions/TechDraw_Annotation.svg</file>
         <file>icons/actions/TechDraw_ClipGroup.svg</file>
         <file>icons/actions/TechDraw_ClipGroupAdd.svg</file>
         <file>icons/actions/TechDraw_ClipGroupRemove.svg</file>
-        <file>icons/actions/techdraw-DraftView.svg</file>
-        <file>icons/actions/techdraw-ArchView.svg</file>
+        <file>icons/actions/TechDraw_DraftView.svg</file>
+        <file>icons/actions/TechDraw_ArchView.svg</file>
         <file>icons/actions/TechDraw_ExportPageDXF.svg</file>
         <file>icons/actions/TechDraw_ExportPageSVG.svg</file>
         <file>icons/actions/TechDraw_SectionView.svg</file>
         <file>icons/actions/TechDraw_Hatch.svg</file>
         <file>icons/actions/TechDraw_GeometricHatch.svg</file>
-        <file>icons/actions/techdraw-toggleframe.svg</file>
+        <file>icons/actions/TechDraw_ToggleFrame.svg</file>
         <file>icons/actions/TechDraw_RedrawPage.svg</file>
         <file>icons/actions/TechDraw_ProjectionGroup.svg</file>
         <file>icons/actions/TechDraw_PageDefault.svg</file>
         <file>icons/actions/TechDraw_PageTemplate.svg</file>
         <file>icons/actions/TechDraw_SpreadsheetView.svg</file>
-        <file>icons/actions/techdraw-image.svg</file>
+        <file>icons/actions/TechDraw_Image.svg</file>
         <file>icons/actions/TechDraw_DetailView.svg</file>
-        <file>icons/actions/techdraw-LeaderLine.svg</file>
+        <file>icons/actions/TechDraw_LeaderLine.svg</file>
         <file>icons/actions/TechDraw_RichTextAnnotation.svg</file>
-        <file>icons/actions/techdraw-CosmeticVertex.svg</file>
+        <file>icons/actions/TechDraw_CosmeticVertex.svg</file>
         <file>icons/actions/TechDraw_Midpoints.svg</file>
         <file>icons/actions/TechDraw_Quadrants.svg</file>
         <file>icons/actions/TechDraw_FaceCenterLine.svg</file>
-        <file>icons/actions/techdraw-2linecenterline.svg</file>
-        <file>icons/actions/techdraw-2pointcenterline.svg</file>
-        <file>icons/actions/techdraw-line2points.svg</file>
-        <file>icons/actions/techdraw-CosmeticEraser.svg</file>
-        <file>icons/actions/techdraw-DecorateLine.svg</file>
-        <file>icons/actions/techdraw-facedecor.svg</file>
+        <file>icons/actions/TechDraw_2LineCenterline.svg</file>
+        <file>icons/actions/TechDraw_2PointCenterline.svg</file>
+        <file>icons/actions/TechDraw_Line2Points.svg</file>
+        <file>icons/actions/TechDraw_CosmeticEraser.svg</file>
+        <file>icons/actions/TechDraw_DecorateLine.svg</file>
+        <file>icons/actions/TechDraw_FaceDecor.svg</file>
         <file>icons/actions/TechDraw_ShowAll.svg</file>
         <file>icons/actions/TechDraw_Symbol.svg</file>
         <file>icons/actions/TechDraw_Tile.svg</file>
