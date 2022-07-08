@@ -2975,286 +2975,224 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
     std::vector<Constraint *> newConstraints;
 
     Base::Vector3d startPoint, endPoint, splitPoint;
-    double radius, startAngle, endAngle, splitAngle=0.0;
     double startParam, endParam, splitParam=0.0;
     unsigned int longestPart = 0;
 
+    auto createGeosFromPeriodic =
+        [&](const Part::GeomCurve* curve,
+            auto getCurveWithLimitParams,
+            auto createAndTransferConstraints) {
+            // find split point
+            curve->closestParameter(point, splitParam);
+            double period = curve->getLastParameter() - curve->getFirstParameter();
+            startParam = splitParam;
+            endParam = splitParam + period;
+
+            // create new arc and restrict it
+            auto newCurve = getCurveWithLimitParams(curve, startParam, endParam);
+            int newId(GeoEnum::GeoUndef);
+            newGeometries.push_back(newCurve);
+            newId = addGeometry(newCurve);
+            if (newId >= 0) {
+                newIds.push_back(newId);
+                setConstruction(newId, GeometryFacade::getConstruction(curve));
+                exposeInternalGeometry(newId);
+
+                // transfer any constraints
+                createAndTransferConstraints(GeoId, newId);
+                return true;
+            }
+
+            return false;
+        };
+
+    auto createGeosFromNonPeriodic =
+        [&](const Part::GeomBoundedCurve* curve,
+            auto getCurveWithLimitParams,
+            auto createAndTransferConstraints) {
+            startPoint = curve->getStartPoint();
+            endPoint = curve->getEndPoint();
+
+            // find split point
+            curve->closestParameter(point, splitParam);
+            startParam = curve->getFirstParameter();
+            endParam = curve->getLastParameter();
+            // TODO: Using parameter difference as a poor substitute of length.
+            // Computing length of an arc of a generic conic would be expensive.
+            if (endParam - splitParam > splitParam - startParam) {
+                longestPart = 1;
+            }
+
+            // create new curves
+            auto newCurve = getCurveWithLimitParams(curve, startParam, splitParam);
+            int newId(GeoEnum::GeoUndef);
+            newGeometries.push_back(newCurve);
+            newId = addGeometry(newCurve);
+            if (newId >= 0) {
+                newIds.push_back(newId);
+                setConstruction(newId, GeometryFacade::getConstruction(curve));
+                exposeInternalGeometry(newId);
+
+                // the "second" half
+                newCurve = getCurveWithLimitParams(curve, splitParam, endParam);
+                newGeometries.push_back(newCurve);
+                newId = addGeometry(newCurve);
+                if (newId >= 0) {
+                    newIds.push_back(newId);
+                    setConstruction(newId, GeometryFacade::getConstruction(curve));
+                    exposeInternalGeometry(newId);
+
+                    // TODO: Certain transfers and new constraint can be directly made here.
+                    // But this may reduce readability.
+                    // apply appropriate constraints on the new points at split point and
+                    // transfer constraints from start and end of original spline
+                    createAndTransferConstraints(GeoId, newIds[0], newIds[1]);
+                    return true;
+                }
+            }
+
+            return false;
+        };
 
     bool ok = false;
     if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-        const Part::GeomLineSegment *lineSegm = static_cast<const Part::GeomLineSegment *>(geo);
-
-        startPoint = lineSegm->getStartPoint();
-        endPoint = lineSegm->getEndPoint();
-        splitPoint = point.Perpendicular(startPoint, endPoint - startPoint);
-        if ((endPoint - splitPoint).Length() > (splitPoint - startPoint).Length()) {
-            longestPart = 1;
-        }
-
-        Part::GeomLineSegment *newLine = static_cast<Part::GeomLineSegment *>(lineSegm->copy());
-        newGeometries.push_back(newLine);
-
-        newLine->setPoints(startPoint, splitPoint);
-        int newId = addGeometry(newLine);
-        if (newId >= 0) {
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(geo));
-
-            newLine = static_cast<Part::GeomLineSegment*>(lineSegm->copy());
-            newGeometries.push_back(newLine);
-
-            newLine->setPoints(splitPoint, endPoint);
-            newId = addGeometry(newLine);
-            if (newId >= 0) {
-                newIds.push_back(newId);
-                setConstruction(newId, GeometryFacade::getConstruction(geo));
-
+        ok = createGeosFromNonPeriodic(
+            static_cast<const Part::GeomBoundedCurve *>(geo),
+            [](const Part::GeomCurve* curve, double startParam, double endParam) {
+                auto newArc = static_cast<Part::GeomLineSegment *>(curve->clone());
+                newArc->setRange(startParam, endParam);
+                return newArc;
+            },
+            [this, &newConstraints](int GeoId, int newId0, int newId1) {
                 Constraint* joint = new Constraint();
                 joint->Type = Coincident;
-                joint->First = newIds[0];
+                joint->First = newId0;
                 joint->FirstPos = PointPos::end;
-                joint->Second = newIds[1];
+                joint->Second = newId1;
                 joint->SecondPos = PointPos::start;
                 newConstraints.push_back(joint);
 
-                transferConstraints(GeoId, PointPos::start, newIds[0], PointPos::start, true);
-                transferConstraints(GeoId, PointPos::end, newIds[1], PointPos::end, true);
-                ok = true;
-            }
-        }
+                transferConstraints(GeoId, PointPos::start, newId0, PointPos::start);
+                transferConstraints(GeoId, PointPos::end, newId1, PointPos::end);
+            });
     }
     else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-        const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
-
-        Base::Vector3d center(circle->getLocation());
-        Base::Vector3d dir(point - center);
-        radius = circle->getRadius();
-
-        splitAngle = atan2(dir.y, dir.x);
-        startAngle = splitAngle;
-        endAngle = splitAngle + M_PI*2.0;
-
-        splitPoint = Base::Vector3d(center.x + radius*cos(splitAngle), center.y + radius*sin(splitAngle));
-        startPoint = splitPoint;
-        endPoint = splitPoint;
-
-        Part::GeomArcOfCircle *arc = new Part::GeomArcOfCircle();
-        newGeometries.push_back(arc);
-
-        arc->setLocation(center);
-        arc->setRadius(radius);
-        arc->setRange(startAngle, endAngle, false);
-        int arcId = addGeometry(arc);
-        if (arcId >= 0) {
-            newIds.push_back(arcId);
-            setConstruction(arcId, GeometryFacade::getConstruction(geo));
-
-            transferConstraints(GeoId, PointPos::mid, arcId, PointPos::mid);
-            ok = true;
-        }
+        ok = createGeosFromPeriodic(
+            static_cast<const Part::GeomCurve *>(geo),
+            [](const Part::GeomCurve* curve, double startParam, double endParam) {
+                auto newArc = new Part::GeomArcOfCircle(Handle(Geom_Circle)::DownCast(curve->handle()->Copy()));
+                newArc->setRange(startParam, endParam, false);
+                return newArc;
+            },
+            [this](int GeoId, int newId) {
+                transferConstraints(GeoId, PointPos::mid, newId, PointPos::mid);
+            });
     }
     else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-        const Part::GeomEllipse *curve = static_cast<const Part::GeomEllipse *>(geo);
-
-        // find split point
-        curve->closestParameter(point, splitParam);
-        double period = curve->getLastParameter() - curve->getFirstParameter();
-        startParam = splitParam;
-        endParam = splitParam + period;
-
-        // create new arc
-        auto newArc = new Part::GeomArcOfEllipse(Handle(Geom_Ellipse)::DownCast(curve->handle()->Copy()));
-        newArc->setRange(startParam, endParam, false);
-        int newId = addGeometry(newArc);
-        if (newId >= 0) {
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(geo));
-            exposeInternalGeometry(newId);
-
-            transferConstraints(GeoId, PointPos::mid, newId, PointPos::mid);
-            ok = true;
-        }
+        ok = createGeosFromPeriodic(
+            static_cast<const Part::GeomCurve *>(geo),
+            [](const Part::GeomCurve* curve, double startParam, double endParam) {
+                auto newArc = new Part::GeomArcOfEllipse(Handle(Geom_Ellipse)::DownCast(curve->handle()->Copy()));
+                newArc->setRange(startParam, endParam, false);
+                return newArc;
+            },
+            [this](int GeoId, int newId) {
+                transferConstraints(GeoId, PointPos::mid, newId, PointPos::mid);
+            });
     }
     else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-        const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
-
-        startPoint = arc->getStartPoint();
-        endPoint = arc->getEndPoint();
-
-        Base::Vector3d center(arc->getLocation());
-        radius = arc->getRadius();
-        arc->getRange(startAngle, endAngle, false);
-
-        Base::Vector3d dir(point - center);
-        splitAngle = atan2(dir.y, dir.x);
-        if (splitAngle < startAngle) {
-            splitAngle += M_PI*2.0;
-        }
-        if (endAngle - splitAngle > splitAngle - startAngle) {
-            longestPart = 1;
-        }
-
-        splitPoint = Base::Vector3d(center.x + radius*cos(splitAngle), center.y + radius*sin(splitAngle));
-        startPoint = splitPoint;
-        endPoint = splitPoint;
-
-        Part::GeomArcOfCircle *newArc = static_cast<Part::GeomArcOfCircle *>(arc->copy());
-        newGeometries.push_back(newArc);
-
-        newArc->setRange(startAngle, splitAngle, false);
-        int newId = addGeometry(newArc);
-        if (newId >= 0) {
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(geo));
-
-            newArc = static_cast<Part::GeomArcOfCircle*>(arc->copy());
-            newGeometries.push_back(newArc);
-
-            newArc->setRange(splitAngle, endAngle, false);
-            newId = addGeometry(newArc);
-            if (newId >= 0) {
-                newIds.push_back(newId);
-                setConstruction(newId, GeometryFacade::getConstruction(geo));
-
+        ok = createGeosFromNonPeriodic(
+            static_cast<const Part::GeomBoundedCurve *>(geo),
+            [](const Part::GeomCurve* curve, double startParam, double endParam) {
+                auto newArc = static_cast<Part::GeomArcOfCircle *>(curve->clone());
+                newArc->setRange(startParam, endParam, false);
+                return newArc;
+            },
+            [this, &newConstraints](int GeoId, int newId0, int newId1) {
                 Constraint* joint = new Constraint();
                 joint->Type = Coincident;
-                joint->First = newIds[0];
+                joint->First = newId0;
                 joint->FirstPos = PointPos::end;
-                joint->Second = newIds[1];
+                joint->Second = newId1;
                 joint->SecondPos = PointPos::start;
                 newConstraints.push_back(joint);
 
                 joint = new Constraint();
                 joint->Type = Coincident;
-                joint->First = newIds[0];
+                joint->First = newId0;
                 joint->FirstPos = PointPos::mid;
-                joint->Second = newIds[1];
+                joint->Second = newId1;
                 joint->SecondPos = PointPos::mid;
                 newConstraints.push_back(joint);
 
-                transferConstraints(GeoId, PointPos::start, newIds[0], PointPos::start, true);
-                transferConstraints(GeoId, PointPos::mid, newIds[0], PointPos::mid);
-                transferConstraints(GeoId, PointPos::end, newIds[1], PointPos::end, true);
-                ok = true;
-            }
-        }
+                transferConstraints(GeoId, PointPos::start, newId0, PointPos::start, true);
+                transferConstraints(GeoId, PointPos::mid, newId0, PointPos::mid);
+                transferConstraints(GeoId, PointPos::end, newId1, PointPos::end, true);
+            });
     }
     else if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
-        const Part::GeomArcOfConic *arc = static_cast<const Part::GeomArcOfConic *>(geo);
-
-        startPoint = arc->getStartPoint();
-        endPoint = arc->getEndPoint();
-
-        // find split point
-        arc->closestParameter(point, splitParam);
-        startParam = arc->getFirstParameter();
-        endParam = arc->getLastParameter();
-        // TODO: Using parameter difference as a poor substitute of length.
-        // Computing length of an arc of a generic conic would be expensive.
-        if (endParam - splitParam > splitParam - startParam) {
-            longestPart = 1;
-        }
-
-        // create new arcs
-        auto newArc = static_cast<Part::GeomArcOfConic *>(arc->clone());
-        int newId(GeoEnum::GeoUndef);
-        newGeometries.push_back(newArc);
-        newArc->setRange(startParam, splitParam, /*emulateCCW=*/true);
-        newId = addGeometry(newArc);
-        if (newId >= 0) {
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(geo));
-            exposeInternalGeometry(newId);
-
-            // the "second" half
-            auto newArc2 = static_cast<Part::GeomArcOfConic *>(arc->clone());
-            int newId2(GeoEnum::GeoUndef);
-            newArc2->setRange(splitParam, endParam, /*emulateCCW=*/true);
-            newId2 = addGeometry(newArc2);
-            if (newId2 >= 0) {
-                newIds.push_back(newId2);
-                setConstruction(newId2, GeometryFacade::getConstruction(geo));
-                exposeInternalGeometry(newId2);
-
+        ok = createGeosFromNonPeriodic(
+            static_cast<const Part::GeomBoundedCurve *>(geo),
+            [](const Part::GeomCurve* curve, double startParam, double endParam) {
+                auto newArc = static_cast<Part::GeomArcOfConic *>(curve->clone());
+                newArc->setRange(startParam, endParam);
+                return newArc;
+            },
+            [this, &newConstraints](int GeoId, int newId0, int newId1) {
                 // apply appropriate constraints on the new points at split point
                 Constraint* joint = new Constraint();
                 joint->Type = Coincident;
-                joint->First = newIds[0];
+                joint->First = newId0;
                 joint->FirstPos = PointPos::end;
-                joint->Second = newIds[1];
+                joint->Second = newId1;
                 joint->SecondPos = PointPos::start;
                 newConstraints.push_back(joint);
 
                 // TODO: Do we apply constraints on center etc of the conics?
 
-                // transfer constraints from start and end of original spline
-                transferConstraints(GeoId, PointPos::start, newIds[0], PointPos::start, true);
-                transferConstraints(GeoId, PointPos::end, newIds[1], PointPos::end, true);
-                ok = true;
-            }
-        }
+                // transfer constraints from start and end of original
+                transferConstraints(GeoId, PointPos::start, newId0, PointPos::start, true);
+                transferConstraints(GeoId, PointPos::end, newId1, PointPos::end, true);
+            });
     }
     else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
         const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
 
-        // find split point
-        bsp->closestParameter(point, splitParam);
-
         // what to do for periodic b-splines?
         if (bsp->isPeriodic()) {
-            Part::GeomBSplineCurve* newBsp;
-            int newId(GeoEnum::GeoUndef);
-            newBsp = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
-            newGeometries.push_back(newBsp);
-            newBsp->Trim(splitParam, splitParam);
-            newId = addGeometry(newBsp);
-            if (newId >= 0) {
-                newIds.push_back(newId);
-                setConstruction(newId, GeometryFacade::getConstruction(geo));
-                exposeInternalGeometry(newId);
-
-                // no constraints to transfer here, and we assume the split is to "break" the b-spline
-                ok = true;
-            }
+            ok = createGeosFromPeriodic(
+                static_cast<const Part::GeomCurve *>(geo),
+                [](const Part::GeomCurve* curve, double startParam, double endParam) {
+                    auto newBsp = static_cast<Part::GeomBSplineCurve *>(curve->clone());
+                    newBsp->Trim(startParam, endParam);
+                    return newBsp;
+                },
+                [](int, int) {
+                    // no constraints to transfer here, and we assume the split is to "break" the b-spline
+                });
         }
         else {
-            // create new b-splines
-            Part::GeomBSplineCurve* newBsp;
-            int newId(GeoEnum::GeoUndef);
-            newBsp = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
-            newGeometries.push_back(newBsp);
-            newBsp->Trim(newBsp->getFirstParameter(), splitParam);
-            newId = addGeometry(newBsp);
-            if (newId >= 0) {
-                newIds.push_back(newId);
-                setConstruction(newId, GeometryFacade::getConstruction(geo));
-                exposeInternalGeometry(newId);
-
-                // the "second" half
-                newBsp = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
-                newGeometries.push_back(newBsp);
-                newBsp->Trim(splitParam, newBsp->getLastParameter());
-                newId = addGeometry(newBsp);
-                if (newId >= 0) {
-                    newIds.push_back(newId);
-                    setConstruction(newId, GeometryFacade::getConstruction(geo));
-                    exposeInternalGeometry(newId);
-
+            ok = createGeosFromNonPeriodic(
+                static_cast<const Part::GeomBoundedCurve *>(geo),
+                [](const Part::GeomCurve* curve, double startParam, double endParam) {
+                    auto newBsp = static_cast<Part::GeomBSplineCurve *>(curve->clone());
+                    newBsp->Trim(startParam, endParam);
+                    return newBsp;
+                },
+                [this, &newConstraints](int GeoId, int newId0, int newId1) {
                     // apply appropriate constraints on the new points at split point
                     Constraint* joint = new Constraint();
                     joint->Type = Coincident;
-                    joint->First = newIds[0];
+                    joint->First = newId0;
                     joint->FirstPos = PointPos::end;
-                    joint->Second = newIds[1];
+                    joint->Second = newId1;
                     joint->SecondPos = PointPos::start;
                     newConstraints.push_back(joint);
 
                     // transfer constraints from start and end of original spline
-                    transferConstraints(GeoId, PointPos::start, newIds[0], PointPos::start, true);
-                    transferConstraints(GeoId, PointPos::end, newIds[1], PointPos::end, true);
-                    ok = true;
-                }
-            }
+                    transferConstraints(GeoId, PointPos::start, newId0, PointPos::start, true);
+                    transferConstraints(GeoId, PointPos::end, newId1, PointPos::end, true);
+                });
         }
     }
 
@@ -3284,127 +3222,117 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
 
             bool transferToAll = false;
             switch (con->Type) {
-                case Horizontal:
-                case Vertical:
-                case Parallel: {
-                    transferToAll = geo->getTypeId() == Part::GeomLineSegment::getClassTypeId();
-                    break;
+            case Horizontal:
+            case Vertical:
+            case Parallel: {
+                transferToAll = geo->getTypeId() == Part::GeomLineSegment::getClassTypeId();
+                break;
+            }
+            case Tangent:
+            case Perpendicular: {
+                unsigned int initial = 0;
+                unsigned int limit = newIds.size();
+
+                if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
+                    const Part::Geometry *conGeo = getGeometry(conId);
+                    if (conGeo && conGeo->isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+                        std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
+                        bool intersects[2];
+
+                        intersects[0] = static_cast<const Part::GeomCurve *>(newGeometries[0])->
+                            intersect(static_cast<const Part::GeomCurve *>(conGeo), intersections);
+                        intersects[1] = static_cast<const Part::GeomCurve *>(newGeometries[1])->
+                            intersect(static_cast<const Part::GeomCurve *>(conGeo), intersections);
+
+                        initial = longestPart;
+                        if (intersects[0] != intersects[1]) {
+                            initial = intersects[1] ? 1 : 0;
+                        }
+                        limit = initial + 1;
+                    }
                 }
-                case Tangent:
-                case Perpendicular: {
-                    unsigned int initial = 0;
-                    unsigned int limit = newIds.size();
 
-                    if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
-                        const Part::Geometry *conGeo = getGeometry(conId);
-                        if (conGeo && conGeo->isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
-                            std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
-                            bool intersects[2];
+                for (unsigned int i = initial; i < limit; ++i) {
+                    Constraint *trans = con->copy();
+                    trans->substituteIndex(GeoId, newIds[i]);
+                    newConstraints.push_back(trans);
+                }
+                break;
+            }
+            case Distance:
+            case DistanceX:
+            case DistanceY:
+            case PointOnObject: {
+                if (con->FirstPos == PointPos::none && con->SecondPos == PointPos::none) {
+                    Constraint *dist = con->copy();
+                    dist->First = newIds[0];
+                    dist->FirstPos = PointPos::start;
+                    dist->Second = newIds[1];
+                    dist->SecondPos = PointPos::end;
+                    newConstraints.push_back(dist);
+                }
+                else {
+                    Constraint *trans = con->copy();
+                    trans->First = conId;
+                    trans->FirstPos = conPos;
+                    trans->SecondPos = PointPos::none;
 
-                            intersects[0] = static_cast<const Part::GeomCurve *>(newGeometries[0])->
-                                                intersect(static_cast<const Part::GeomCurve *>(conGeo), intersections);
-                            intersects[1] = static_cast<const Part::GeomCurve *>(newGeometries[1])->
-                                                intersect(static_cast<const Part::GeomCurve *>(conGeo), intersections);
+                    Base::Vector3d conPoint(getPoint(conId, conPos));
+                    int targetId = newIds[0];
 
-                            initial = longestPart;
-                            if (intersects[0] != intersects[1]) {
-                                initial = intersects[1] ? 1 : 0;
-                            }
-                            limit = initial + 1;
+                    // for non-periodic curves, see if second curve is more appropriate
+                    if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        Base::Vector3d projPoint(conPoint.Perpendicular(startPoint, endPoint - startPoint));
+                        Base::Vector3d splitDir = splitPoint - startPoint;
+                        if ((projPoint - startPoint)*splitDir > splitDir*splitDir) {
+                            targetId = newIds[1];
                         }
                     }
-
-                    for (unsigned int i = initial; i < limit; ++i) {
-                        Constraint *trans = con->copy();
-                        trans->substituteIndex(GeoId, newIds[i]);
-                        newConstraints.push_back(trans);
+                    else if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
+                        double conParam;
+                        static_cast<const Part::GeomArcOfConic*>(geo)->closestParameter(conPoint, conParam);
+                        if (conParam > splitParam)
+                            targetId = newIds[1];
                     }
-                    break;
-                }
-                case Distance:
-                case DistanceX:
-                case DistanceY:
-                case PointOnObject: {
-                    if (con->FirstPos == PointPos::none && con->SecondPos == PointPos::none) {
-                        Constraint *dist = con->copy();
-                        dist->First = newIds[0];
-                        dist->FirstPos = PointPos::start;
-                        dist->Second = newIds[1];
-                        dist->SecondPos = PointPos::end;
-                        newConstraints.push_back(dist);
-                    }
-                    else {
-                        Constraint *trans = con->copy();
-                        trans->First = conId;
-                        trans->FirstPos = conPos;
-                        trans->SecondPos = PointPos::none;
+                    trans->Second = targetId;
 
-                        Base::Vector3d conPoint(getPoint(conId, conPos));
-                        int targetId = newIds[0];
-
-                        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                            Base::Vector3d projPoint(conPoint.Perpendicular(startPoint, endPoint - startPoint));
-                            Base::Vector3d splitDir = splitPoint - startPoint;
-                            if ((projPoint - startPoint)*splitDir > splitDir*splitDir) {
-                                targetId = newIds[1];
-                            }
-                        }
-                        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                            Base::Vector3d conDir(conPoint - static_cast<const Part::GeomArcOfCircle *>(geo)->getLocation());
-                            double conAngle = atan2(conDir.y, conDir.x);
-                            if (conAngle < startAngle) {
-                                conAngle += M_PI*2.0;
-                            }
-                            if (conAngle > splitAngle) {
-                                targetId = newIds[1];
-                            }
-                        }
-                        else if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
-                            double conParam;
-                            static_cast<const Part::GeomArcOfConic*>(geo)->closestParameter(conPoint, conParam);
-                            if (conParam > splitParam)
-                                targetId = newIds[1];
-                        }
-                        trans->Second = targetId;
-
-                        newConstraints.push_back(trans);
-                    }
-                    break;
+                    newConstraints.push_back(trans);
                 }
-                case Radius:
-                case Diameter:
-                case Equal: {
-                    transferToAll = geo->getTypeId() == Part::GeomCircle::getClassTypeId()
-                                    || geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId();
-                    break;
-                }
-                default:
-                    // Release other constraints
-                    break;
+                break;
+            }
+            case Radius:
+            case Diameter:
+            case Equal: {
+                transferToAll = geo->getTypeId() == Part::GeomCircle::getClassTypeId()
+                    || geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId();
+                break;
+            }
+            default:
+                // Release other constraints
+                break;
             }
 
             if (transferToAll) {
-                for (unsigned int i = 0; i < newIds.size(); ++i) {
+                for (auto& newId: newIds) {
                     Constraint *trans = con->copy();
-                    trans->substituteIndex(GeoId, newIds[i]);
+                    trans->substituteIndex(GeoId, newId);
                     newConstraints.push_back(trans);
                 }
             }
         }
 
-        if (noRecomputes) {
+        if (noRecomputes)
             solve();
-        }
 
         delConstraints(oldConstraints);
         addConstraints(newConstraints);
     }
 
-    for (std::vector<Part::Geometry *>::iterator it = newGeometries.begin(); it != newGeometries.end(); ++it) {
-         delete *it;
+    for (auto& geom: newGeometries) {
+        delete geom;
     }
-    for (std::vector<Constraint *>::iterator it = newConstraints.begin(); it != newConstraints.end(); ++it) {
-         delete *it;
+    for (auto& cons: newConstraints) {
+        delete cons;
     }
 
     if (ok) {
