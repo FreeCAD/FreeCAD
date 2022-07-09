@@ -22,8 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cstring>
 # include <algorithm>
+# include <cstring>
+
 # include <QApplication>
 # include <QDebug>
 # include <QGenericReturnArgument>
@@ -124,9 +125,11 @@ QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
     item->setText(QObject::tr(groupNameQString.toLatin1()));
     item->setToolTip(QObject::tr(groupNameQString.toLatin1()));
     std::string fileName = groupName;
-    for (auto & ch : fileName) {
-        if (ch == ' ') ch = '_';
-        else ch = tolower(ch);
+    for (auto &ch : fileName) {
+        if (ch == ' ')
+            ch = '_';
+        else
+            ch = tolower(ch);
     }
     fileName = std::string("preferences-") + fileName;
     QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(fileName.c_str(), QSize(48, 48));
