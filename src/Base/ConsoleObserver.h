@@ -21,14 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-
 #ifndef BASE_CONSOLEOBSERVER_H
 #define BASE_CONSOLEOBSERVER_H
 
 #include <Base/Console.h>
 #include <Base/Stream.h>
+
 
 namespace Base {
 
@@ -101,8 +99,8 @@ conObs(co)
 
 ILoggerBlocker::~ILoggerBlocker()
 {
-    auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
 #ifdef FC_DEBUG
+    auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
     if (debug != msgTypesBlocked)
         Console().Warning("Enabled message types have been changed while ILoggerBlocker was set\n");
 #endif
