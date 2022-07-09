@@ -20,21 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Mod/Part/App/BodyBasePy.h>
-#include <App/Application.h>
 #include <App/Document.h>
-#include <Base/Placement.h>
 
 #include "BodyBase.h"
+#include "BodyBasePy.h"
 
 
 namespace Part {
-
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(Part::BodyBase, Part::Feature)
 

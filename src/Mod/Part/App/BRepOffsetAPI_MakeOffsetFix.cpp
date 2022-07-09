@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
@@ -30,19 +29,21 @@
 # include <Geom_BSplineCurve.hxx>
 # include <Precision.hxx>
 # include <ShapeConstruct_Curve.hxx>
-# include <Standard_Version.hxx>
 # include <Standard_ConstructionError.hxx>
+# include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopLoc_Location.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Wire.hxx>
-# include <TopLoc_Location.hxx>
-# include <TopTools_ListOfShape.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
 # include <TopTools_MapOfShape.hxx>
 #endif
+
 #include "BRepOffsetAPI_MakeOffsetFix.h"
+
 
 using namespace Part;
 

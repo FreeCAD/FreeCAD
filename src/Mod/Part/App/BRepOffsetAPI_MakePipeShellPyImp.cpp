@@ -20,27 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pnt.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Wire.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <Standard_Version.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
 
-#include "TopoShapePy.h"
-#include "TopoShapeVertexPy.h"
+#include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.cpp"
-#include "Tools.h"
 #include "OCCError.h"
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+#include "Tools.h"
+#include "TopoShapePy.h"
+#include "TopoShapeVertexPy.h"
+
 
 using namespace Part;
 

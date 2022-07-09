@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_BodyBase_H
 #define PART_BodyBase_H
 
 #include <App/PropertyStandard.h>
 #include <App/OriginGroupExtension.h>
-#include <Mod/Part/App/PartFeature.h>
+
+#include "PartFeature.h"
 
 
 namespace Part
