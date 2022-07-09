@@ -122,11 +122,20 @@ QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
     QListWidgetItem* item = new QListWidgetItem(ui->listBox);
     item->setData(GroupNameRole, QVariant(groupNameQString));
     item->setText(QObject::tr(groupNameQString.toLatin1()));
-    item->setToolTip(QObject::tr(groupNameQString.toLatin1()));
+    // for Part/PD we need another tooltip since this group is for 2 WBs
+    if (groupName.compare("Part/Part Design") == 0)
+        item->setToolTip(QObject::tr(QString::fromStdString("Part and Part Design workbench").toLatin1()));
+    else
+        item->setToolTip(QObject::tr(groupNameQString.toLatin1()));
     std::string fileName = groupName;
-    for (auto & ch : fileName) {
-        if (ch == ' ') ch = '_';
-        else ch = tolower(ch);
+    // for Part/PD the filename cannot be groupName since this group is for 2 WBs
+    if (groupName.compare("Part/Part Design") == 0)
+        fileName = "Part design";
+    for (auto &ch : fileName) {
+        if (ch == ' ')
+            ch = '_';
+        else
+            ch = tolower(ch);
     }
     fileName = std::string("preferences-") + fileName;
     QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(fileName.c_str(), QSize(48, 48));
