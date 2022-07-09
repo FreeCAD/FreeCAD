@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_Failure.hxx>
@@ -30,9 +29,9 @@
 #include "GeomPlate/BuildPlateSurfacePy.cpp"
 #include "GeomPlate/CurveConstraintPy.h"
 #include "GeomPlate/PointConstraintPy.h"
-#include "GeometryCurvePy.h"
-#include "GeometrySurfacePy.h"
 #include "Geometry2d.h"
+#include "GeometrySurfacePy.h"
+
 
 using namespace Part;
 

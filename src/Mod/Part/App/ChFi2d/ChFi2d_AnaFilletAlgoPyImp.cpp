@@ -20,27 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Pln.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <TopoDS_Wire.hxx>
 #endif
 
-#include <Mod/Part/App/ChFi2d/ChFi2d_AnaFilletAlgoPy.h>
-#include <Mod/Part/App/ChFi2d/ChFi2d_AnaFilletAlgoPy.cpp>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/PlanePy.h>
-#include <Base/VectorPy.h>
-#include "Tools.h"
+#include "ChFi2d/ChFi2d_AnaFilletAlgoPy.h"
+#include "ChFi2d/ChFi2d_AnaFilletAlgoPy.cpp"
+#include "PlanePy.h"
+#include "TopoShapeEdgePy.h"
+#include "TopoShapeWirePy.h"
+
 
 using namespace Part;
-
 
 PyObject *ChFi2d_AnaFilletAlgoPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {

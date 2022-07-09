@@ -20,26 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
+
 # include <gp_Ax2.hxx>
 # include <gp_Pnt.hxx>
-# include <limits>
+# include <HLRAlgo_Projector.hxx>
 #endif
+
+#include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "HLRBRep/HLRBRep_AlgoPy.h"
 #include "HLRBRep/HLRBRep_AlgoPy.cpp"
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/Tools.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+#include "TopoShapePy.h"
+#include "Tools.h"
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <HLRAlgo_Projector.hxx>
 
 using namespace Part;
-
 
 PyObject *HLRBRep_AlgoPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
