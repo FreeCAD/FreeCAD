@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FeaturePartCurveNet_H
 #define PART_FeaturePartCurveNet_H
 
-
 #include "PartFeature.h"
+
 
 namespace Part
 {
-
 
 class CurveNet :public Part::Feature
 {

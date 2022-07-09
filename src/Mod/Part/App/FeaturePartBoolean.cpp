@@ -20,19 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <memory>
+
 # include <BRepAlgoAPI_BooleanOperation.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
-# include <memory>
 #endif
+
+#include <App/Application.h>
+#include <Base/Parameter.h>
 
 #include "FeaturePartBoolean.h"
 #include "modelRefine.h"
-#include <App/Application.h>
-#include <Base/Parameter.h>
 
 
 using namespace Part;

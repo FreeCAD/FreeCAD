@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FEATUREPARTBOX_H
 #define PART_FEATUREPARTBOX_H
 
 #include <App/PropertyStandard.h>
 
 #include "PrimitiveFeature.h"
+
 
 namespace Part
 {

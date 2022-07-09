@@ -20,23 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS_Iterator.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 # include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include <App/Application.h>
+#include <Base/Parameter.h>
 
 #include "FeaturePartFuse.h"
 #include "modelRefine.h"
-#include <App/Application.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
+
 
 using namespace Part;
 
