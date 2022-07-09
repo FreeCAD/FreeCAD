@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepFilletAPI_MakeFillet.hxx>
+# include <Precision.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
@@ -31,14 +31,12 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-
-#include "FeatureFillet.h"
 #include <Base/Exception.h>
 
-#include <Precision.hxx>
+#include "FeatureFillet.h"
+
 
 using namespace Part;
-
 
 PROPERTY_SOURCE(Part::Fillet, Part::FilletBase)
 

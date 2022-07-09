@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATUREREVOLUTION_H
 #define PART_FEATUREREVOLUTION_H
 
 #include <App/PropertyStandard.h>
-#include "PartFeature.h"
 #include <Base/Vector3D.h>
+
+#include "PartFeature.h"
+
 
 namespace Part
 {

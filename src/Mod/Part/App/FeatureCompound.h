@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATURECOMPOUND_H
 #define PART_FEATURECOMPOUND_H
 
 #include <App/PropertyLinks.h>
 #include "PartFeature.h"
+
 
 namespace Part
 {

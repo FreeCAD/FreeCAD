@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include "Geometry.h"
 
 #include "FeatureGeometrySet.h"
 

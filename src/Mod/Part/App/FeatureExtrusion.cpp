@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepLib_FindSurface.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
-# include <gp_Pln.hxx>
 # include <gp_Trsf.hxx>
 # include <Precision.hxx>
 # include <TopExp.hxx>
@@ -39,7 +37,6 @@
 #endif
 
 #include <Base/Exception.h>
-#include <Base/Tools.h>
 
 #include "FeatureExtrusion.h"
 #include "ExtrusionHelper.h"
