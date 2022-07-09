@@ -28,6 +28,7 @@
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepLib_FindSurface.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
+# include <gp_Pln.hxx>
 # include <gp_Trsf.hxx>
 # include <Precision.hxx>
 # include <TopExp.hxx>
