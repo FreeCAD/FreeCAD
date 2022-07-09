@@ -27,7 +27,6 @@
 # include <gp_Circ.hxx>
 #endif
 
-#include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
 #include "CirclePy.h"

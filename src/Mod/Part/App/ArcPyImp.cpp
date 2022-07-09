@@ -20,36 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ.hxx>
-# include <Geom_Circle.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Parab.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Parabola.hxx>
-# include <Geom_TrimmedCurve.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeArcOfEllipse.hxx>
-# include <GC_MakeArcOfParabola.hxx>
-# include <gp_Hypr.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeArcOfHyperbola.hxx>
+# include <GC_MakeArcOfParabola.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_Ellipse.hxx>
+# include <Geom_Hyperbola.hxx>
+# include <Geom_Parabola.hxx>
 #endif
+
+#include <Base/VectorPy.h>
 
 #include "ArcPy.h"
 #include "ArcPy.cpp"
 #include "CirclePy.h"
 #include "EllipsePy.h"
-#include "ParabolaPy.h"
 #include "HyperbolaPy.h"
 #include "OCCError.h"
+#include "ParabolaPy.h"
 
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 

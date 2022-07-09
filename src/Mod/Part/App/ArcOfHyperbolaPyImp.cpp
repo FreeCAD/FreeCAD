@@ -20,24 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Hypr.hxx>
-# include <Geom_Hyperbola.hxx>
 # include <GC_MakeArcOfHyperbola.hxx>
-# include <GC_MakeHyperbola.hxx>
+# include <Geom_Hyperbola.hxx>
 # include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include "Geometry.h"
-#include <Mod/Part/App/ArcOfHyperbolaPy.h>
-#include <Mod/Part/App/ArcOfHyperbolaPy.cpp>
-#include <Mod/Part/App/HyperbolaPy.h>
+#include "ArcOfHyperbolaPy.h"
+#include "ArcOfHyperbolaPy.cpp"
+#include "HyperbolaPy.h"
 #include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
 

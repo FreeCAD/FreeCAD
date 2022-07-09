@@ -20,24 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Elips.hxx>
-# include <Geom_Ellipse.hxx>
 # include <GC_MakeArcOfEllipse.hxx>
-# include <GC_MakeEllipse.hxx>
+# include <Geom_Ellipse.hxx>
 # include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include "Geometry.h"
-#include <Mod/Part/App/ArcOfEllipsePy.h>
-#include <Mod/Part/App/ArcOfEllipsePy.cpp>
-#include <Mod/Part/App/EllipsePy.h>
+#include "ArcOfEllipsePy.h"
+#include "ArcOfEllipsePy.cpp"
+#include "EllipsePy.h"
 #include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
 

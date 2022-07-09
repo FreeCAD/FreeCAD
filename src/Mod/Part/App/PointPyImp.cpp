@@ -28,7 +28,6 @@
 # include <TopoDS_Vertex.hxx>
 #endif
 
-#include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
 #include "PointPy.h"

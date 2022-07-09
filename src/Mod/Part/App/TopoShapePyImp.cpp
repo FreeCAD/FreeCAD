@@ -68,7 +68,6 @@
 
 #include <App/PropertyStandard.h>
 #include <Base/GeometryPyCXX.h>
-#include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
