@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 # include <BRepAdaptor_Curve.hxx>
 # include <gp_Ax1.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Lin.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 #endif
