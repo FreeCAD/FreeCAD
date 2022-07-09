@@ -1901,24 +1901,23 @@ namespace TechDrawGui {
         TechDraw::DrawViewPart*& objFeat,
         std::string message) {
         // check selection of getSelectionEx() and selection[0].getObject()
-        bool OK = true;
         selection = cmd->getSelection().getSelectionEx();
         if (selection.empty()) {
             QMessageBox::warning(Gui::getMainWindow(),
                 QObject::tr(message.c_str()),
                 QObject::tr("Selection is empty"));
-            OK = false;
+            return false;
         }
-        if (OK) {
-            objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
-            if (objFeat == nullptr) {
-                QMessageBox::warning(Gui::getMainWindow(),
-                    QObject::tr(message.c_str()),
-                    QObject::tr("No object selected"));
-                OK = false;
-            }
+        
+        objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
+        if (objFeat == nullptr) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                QObject::tr(message.c_str()),
+                QObject::tr("No object selected"));
+            return false;
         }
-        return OK;
+
+        return true;
     }
 
     std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat) {
@@ -1964,17 +1963,16 @@ namespace TechDrawGui {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
-        if (GeoType == "Edge") {
-            if (geom->geomType == TechDraw::CIRCLE) {
-                TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle> (geom);
-                Base::Vector3d center = cgen->center;
-                float radius = cgen->radius;
-                TechDraw::BaseGeomPtr threadArc =
-                    std::make_shared<TechDraw::AOC>(center / scale, radius * factor / scale, 255.0, 165.0);
-                std::string arcTag = objFeat->addCosmeticEdge(threadArc);
-                TechDraw::CosmeticEdge* arc = objFeat->getCosmeticEdge(arcTag);
-                _setLineAttributes(arc);
-            }
+
+        if (GeoType == "Edge" && geom->geomType == TechDraw::CIRCLE) {
+            TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle> (geom);
+            Base::Vector3d center = cgen->center;
+            float radius = cgen->radius;
+            TechDraw::BaseGeomPtr threadArc =
+                std::make_shared<TechDraw::AOC>(center / scale, radius * factor / scale, 255.0, 165.0);
+            std::string arcTag = objFeat->addCosmeticEdge(threadArc);
+            TechDraw::CosmeticEdge* arc = objFeat->getCosmeticEdge(arcTag);
+            _setLineAttributes(arc);
         }
     }
 
@@ -1988,39 +1986,38 @@ namespace TechDrawGui {
             int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
             TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
-            if ((geom0->geomType == TechDraw::GENERIC) && (geom1->geomType == TechDraw::GENERIC)) {
-                TechDraw::GenericPtr line0 = std::static_pointer_cast<TechDraw::Generic> (geom0);
-                TechDraw::GenericPtr line1 = std::static_pointer_cast<TechDraw::Generic> (geom1);
-                Base::Vector3d start0 = line0->points.at(0);
-                Base::Vector3d end0 = line0->points.at(1);
-                Base::Vector3d start1 = line1->points.at(0);
-                Base::Vector3d end1 = line1->points.at(1);
-                if (DrawUtil::circulation(start0, end0, start1) != DrawUtil::circulation(end0, end1, start1)) {
-                    Base::Vector3d help1 = start1;
-                    Base::Vector3d help2 = end1;
-                    start1 = help2;
-                    end1 = help1;
-                }
-                start0.y = -start0.y;
-                end0.y = -end0.y;
-                start1.y = -start1.y;
-                end1.y = -end1.y;
-                float kernelDiam = (start1 - start0).Length();
-                float kernelFactor = (kernelDiam * factor - kernelDiam) / 2;
-                Base::Vector3d delta = (start1 - start0).Normalize() * kernelFactor;
-                std::string line0Tag = objFeat->addCosmeticEdge((start0 - delta) / scale, (end0 - delta) / scale);
-                std::string line1Tag = objFeat->addCosmeticEdge((start1 + delta) / scale, (end1 + delta) / scale);
-                TechDraw::CosmeticEdge* cosTag0 = objFeat->getCosmeticEdge(line0Tag);
-                TechDraw::CosmeticEdge* cosTag1 = objFeat->getCosmeticEdge(line1Tag);
-                _setLineAttributes(cosTag0);
-                _setLineAttributes(cosTag1);
-            }
-            else {
+            if (geom0->geomType != TechDraw::GENERIC || geom1->geomType != TechDraw::GENERIC) {
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("TechDraw Thread Hole Side"),
                     QObject::tr("Please select two straight lines"));
                 return;
             }
+
+            TechDraw::GenericPtr line0 = std::static_pointer_cast<TechDraw::Generic> (geom0);
+            TechDraw::GenericPtr line1 = std::static_pointer_cast<TechDraw::Generic> (geom1);
+            Base::Vector3d start0 = line0->points.at(0);
+            Base::Vector3d end0 = line0->points.at(1);
+            Base::Vector3d start1 = line1->points.at(0);
+            Base::Vector3d end1 = line1->points.at(1);
+            if (DrawUtil::circulation(start0, end0, start1) != DrawUtil::circulation(end0, end1, start1)) {
+                Base::Vector3d help1 = start1;
+                Base::Vector3d help2 = end1;
+                start1 = help2;
+                end1 = help1;
+            }
+            start0.y = -start0.y;
+            end0.y = -end0.y;
+            start1.y = -start1.y;
+            end1.y = -end1.y;
+            float kernelDiam = (start1 - start0).Length();
+            float kernelFactor = (kernelDiam * factor - kernelDiam) / 2;
+            Base::Vector3d delta = (start1 - start0).Normalize() * kernelFactor;
+            std::string line0Tag = objFeat->addCosmeticEdge((start0 - delta) / scale, (end0 - delta) / scale);
+            std::string line1Tag = objFeat->addCosmeticEdge((start1 + delta) / scale, (end1 + delta) / scale);
+            TechDraw::CosmeticEdge* cosTag0 = objFeat->getCosmeticEdge(line0Tag);
+            TechDraw::CosmeticEdge* cosTag1 = objFeat->getCosmeticEdge(line1Tag);
+            _setLineAttributes(cosTag0);
+            _setLineAttributes(cosTag1);
         }
     }
 

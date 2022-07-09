@@ -125,10 +125,10 @@ void CmdTechDrawHatch::activated(int iMsg)
                             QObject::tr("Some Faces in selection are already hatched.  Replace?"));
             if (rc == QMessageBox::StandardButton::NoButton) {
                 return;
-            } else {
-                removeOld = true;
-                break;
             }
+            
+            removeOld = true;
+            break;
         }
     }
 
@@ -276,17 +276,18 @@ void CmdTechDrawImage::activated(int iMsg)
         QString(),
         QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
 
-    if (!fileName.isEmpty())
-    {
-        std::string FeatName = getUniqueObjectName("Image");
-        fileName = Base::Tools::escapeEncodeFilename(fileName);
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
-        doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewImage','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),fileName.toUtf8().constData());
-        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-        updateActive();
-        commitCommand();
+    if (fileName.isEmpty()) {
+        return;
     }
+
+    std::string FeatName = getUniqueObjectName("Image");
+    fileName = Base::Tools::escapeEncodeFilename(fileName);
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewImage','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),fileName.toUtf8().constData());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
 }
 
 bool CmdTechDrawImage::isActive(void)
@@ -325,13 +326,12 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
     ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
 
-    if (vpp != nullptr) {
-        vpp->toggleFrameState();
-    } else {
+    if (vpp == nullptr) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
             QObject::tr("Need a TechDraw Page for this command"));
         return;
     }
+    vpp->toggleFrameState();
 }
 
 bool CmdTechDrawToggleFrame::isActive(void)
