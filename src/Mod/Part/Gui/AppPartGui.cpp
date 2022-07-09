@@ -206,13 +206,12 @@ PyMOD_INIT_FUNC(PartGui)
         err.ReportException();
     }
 
-
     // register preferences pages
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>   ( QT_TRANSLATE_NOOP("QObject","Part design") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Part design") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
     Gui::ViewProviderBuilder::add(
         Part::PropertyPartShape::getClassTypeId(),
         PartGui::ViewProviderPart::getClassTypeId());
