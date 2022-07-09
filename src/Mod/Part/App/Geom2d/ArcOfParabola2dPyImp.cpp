@@ -20,22 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Parab2d.hxx>
-# include <Geom2d_Parabola.hxx>
 # include <GCE2d_MakeArcOfParabola.hxx>
+# include <Geom2d_Parabola.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
 #endif
 
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.cpp>
-#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
-#include <Mod/Part/App/OCCError.h>
+#include "Geom2d/ArcOfParabola2dPy.h"
+#include "Geom2d/ArcOfParabola2dPy.cpp"
+#include "Geom2d/Parabola2dPy.h"
+#include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 

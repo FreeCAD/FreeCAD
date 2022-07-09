@@ -20,35 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <gp_Dir2d.hxx>
 # include <gp_Pnt2d.hxx>
-# include <gp_Vec2d.hxx>
-# include <gp_Trsf2d.hxx>
 # include <gp_Trsf.hxx>
-# include <Geom2d_Geometry.hxx>
-# include <Geom2d_Curve.hxx>
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
+# include <gp_Trsf2d.hxx>
+# include <gp_Vec2d.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
-#include <Base/Matrix.h>
-#include <Base/MatrixPy.h>
-#include <Base/Tools2D.h>
-#include <Base/Rotation.h>
-#include <Base/Placement.h>
-#include <Base/PlacementPy.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/Geometry2dPy.h>
-#include <Mod/Part/App/Geom2d/Geometry2dPy.cpp>
+#include "Geom2d/Geometry2dPy.h"
+#include "Geom2d/Geometry2dPy.cpp"
+#include "OCCError.h"
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
 
 using namespace Part;
 

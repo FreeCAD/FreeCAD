@@ -20,34 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom2d_BSplineCurve.hxx>
 # include <Geom2dAPI_PointsToBSpline.hxx>
 # include <Geom2dAPI_Interpolate.hxx>
 # include <Geom2dConvert_BSplineCurveToBezierCurve.hxx>
-# include <Standard_PrimitiveTypes.hxx>
 # include <gp_Pnt2d.hxx>
-# include <TColStd_Array1OfReal.hxx>
+# include <Precision.hxx>
 # include <TColgp_Array1OfPnt2d.hxx>
 # include <TColgp_Array1OfVec2d.hxx>
 # include <TColgp_HArray1OfPnt2d.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <TColStd_HArray1OfReal.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_HArray1OfBoolean.hxx>
-
-# include <Precision.hxx>
+# include <TColStd_HArray1OfReal.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/BSplineCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/BSplineCurve2dPy.cpp>
-#include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
+#include "Geom2d/BSplineCurve2dPy.h"
+#include "Geom2d/BSplineCurve2dPy.cpp"
+#include "Geom2d/BezierCurve2dPy.h"
+#include "OCCError.h"
+
 
 using namespace Part;
 

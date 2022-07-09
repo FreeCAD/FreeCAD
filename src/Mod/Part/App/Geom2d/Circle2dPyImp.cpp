@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ2d.hxx>
-# include <Geom2d_Circle.hxx>
 # include <GCE2d_MakeCircle.hxx>
+# include <Geom2d_Circle.hxx>
 #endif
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geom2d/Circle2dPy.h>
-#include <Mod/Part/App/Geom2d/Circle2dPy.cpp>
-
 #include <Base/GeometryPyCXX.h>
+
+#include "Geom2d/Circle2dPy.h"
+#include "Geom2d/Circle2dPy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 
