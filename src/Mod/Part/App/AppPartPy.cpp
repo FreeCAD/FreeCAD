@@ -41,7 +41,6 @@
 # include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepFill.hxx>
 # include <BRepFill_Filling.hxx>
-# include <BRepFill_Generator.hxx>
 # include <BRepLib.hxx>
 # include <BSplCLib.hxx>
 # include <gp_Ax3.hxx>
@@ -69,6 +68,7 @@
 # include <TopoDS_Solid.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
+# include <BRepFill_Generator.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
