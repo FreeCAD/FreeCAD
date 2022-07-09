@@ -27,21 +27,16 @@
 #ifndef PARTATTACHABLEOBJECT_H
 #define PARTATTACHABLEOBJECT_H
 
-#include <App/ExtensionPython.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
 #include <App/DocumentObjectExtension.h>
-#include <Base/Vector3D.h>
-#include <Base/Placement.h>
+#include <App/ExtensionPython.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <Base/Exception.h>
+#include <Base/Placement.h>
 
-#include "PartFeature.h"
 #include "Attacher.h"
+#include "PartFeature.h"
 
-#include <QString>
-
-#include <gp_Vec.hxx>
 
 namespace Part
 {

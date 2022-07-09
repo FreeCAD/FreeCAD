@@ -22,51 +22,50 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopoDS.hxx>
 # include <BRep_Tool.hxx>
-# include <gp_Pln.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepGProp.hxx>
+# include <BRepIntCurveSurface_Inter.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <Geom_Plane.hxx>
+# include <GeomAdaptor.hxx>
+# include <GeomAPI.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 # include <gp_Ax1.hxx>
-# include <gp_Pnt.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Elips.hxx>
-# include <gp_Parab.hxx>
 # include <gp_Hypr.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom2d_Curve.hxx>
-# include <Geom2dAPI_InterCurveCurve.hxx>
-# include <Geom2dAPI_ProjectPointOnCurve.hxx>
-# include <GeomAPI.hxx>
-# include <GeomAdaptor.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepIntCurveSurface_Inter.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <ShapeExtend_Explorer.hxx>
+# include <gp_Parab.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt.hxx>
 # include <GProp_GProps.hxx>
 # include <GProp_PGProps.hxx>
 # include <GProp_PrincipalProps.hxx>
-# include <BRepGProp.hxx>
-# include <GeomLib_IsPlanarSurface.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <ShapeExtend_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Iterator.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 #endif
+
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/OriginFeature.h>
+#include <Base/Console.h>
 
 #include "Attacher.h"
 #include "AttachExtension.h"
 #include "Tools.h"
-#include <Base/Console.h>
-#include <App/OriginFeature.h>
-#include <App/Application.h>
-#include <App/Document.h>
+
 
 using namespace Part;
 using namespace Attacher;
