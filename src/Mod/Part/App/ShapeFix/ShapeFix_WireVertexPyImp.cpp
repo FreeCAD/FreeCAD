@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Wire.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_WireVertexPy.h"
 #include "ShapeFix/ShapeFix_WireVertexPy.cpp"
 #include "TopoShapeWirePy.h"
+
 
 using namespace Part;
 

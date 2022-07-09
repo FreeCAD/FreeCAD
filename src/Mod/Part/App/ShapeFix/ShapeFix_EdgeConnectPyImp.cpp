@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_EdgeConnectPy.h"
 #include "ShapeFix/ShapeFix_EdgeConnectPy.cpp"
 #include "TopoShapeEdgePy.h"
+
 
 using namespace Part;
 

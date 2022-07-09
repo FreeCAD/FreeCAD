@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_ShellPy.h"
 #include "ShapeFix/ShapeFix_ShellPy.cpp"
 #include "ShapeFix/ShapeFix_FacePy.h"
-#include <Mod/Part/App/TopoShapeShellPy.h>
+#include "TopoShapeShellPy.h"
+
 
 using namespace Part;
 

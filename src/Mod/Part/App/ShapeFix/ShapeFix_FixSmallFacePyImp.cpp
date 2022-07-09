@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS.hxx>
@@ -31,8 +30,8 @@
 #include "ShapeFix/ShapeFix_FixSmallFacePy.cpp"
 #include "TopoShapeFacePy.h"
 
-using namespace Part;
 
+using namespace Part;
 
 std::string ShapeFix_FixSmallFacePy::representation() const
 {

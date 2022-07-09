@@ -20,26 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
-#endif
 
-#if OCC_VERSION_HEX >= 0x070500
-# include <Message_ProgressRange.hxx>
+# if OCC_VERSION_HEX >= 0x070500
+#  include <Message_ProgressRange.hxx>
+# endif
 #endif
 
 #include "ShapeFix/ShapeFix_SolidPy.h"
 #include "ShapeFix/ShapeFix_SolidPy.cpp"
 #include "ShapeFix/ShapeFix_ShellPy.h"
-#include "ShapeFix/ShapeFix_FacePy.h"
-#include <Mod/Part/App/TopoShapeShellPy.h>
-#include <Mod/Part/App/TopoShapeSolidPy.h>
+#include "TopoShapeShellPy.h"
+#include "TopoShapeSolidPy.h"
+
 
 using namespace Part;
 

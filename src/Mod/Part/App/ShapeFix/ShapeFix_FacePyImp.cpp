@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS.hxx>
@@ -32,6 +31,7 @@
 #include <Mod/Part/App/GeometrySurfacePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
+
 
 using namespace Part;
 
