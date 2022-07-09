@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <gp_Pln.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
