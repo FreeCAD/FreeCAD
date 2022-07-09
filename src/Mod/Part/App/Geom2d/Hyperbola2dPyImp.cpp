@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <GCE2d_MakeHyperbola.hxx>
 # include <Geom2d_Hyperbola.hxx>
+# include <gp_Hypr2d.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>

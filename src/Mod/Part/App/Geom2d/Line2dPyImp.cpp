@@ -22,8 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom2d_Line.hxx>
 # include <GCE2d_MakeLine.hxx>
+# include <Geom2d_Line.hxx>
+# include <gp_Lin2d.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
