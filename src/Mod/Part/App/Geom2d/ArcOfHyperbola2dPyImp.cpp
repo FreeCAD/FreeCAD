@@ -25,6 +25,7 @@
 # include <GCE2d_MakeArcOfHyperbola.hxx>
 # include <Geom2d_Hyperbola.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
+# include <gp_Hypr2d.hxx>
 #endif
 
 #include "Geom2d/ArcOfHyperbola2dPy.h"

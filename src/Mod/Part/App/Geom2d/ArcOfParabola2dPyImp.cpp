@@ -25,6 +25,7 @@
 # include <GCE2d_MakeArcOfParabola.hxx>
 # include <Geom2d_Parabola.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
+# include <gp_Parab2d.hxx>
 #endif
 
 #include "Geom2d/ArcOfParabola2dPy.h"
