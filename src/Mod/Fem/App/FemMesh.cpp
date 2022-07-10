@@ -1879,7 +1879,7 @@ void FemMesh::read(const char *FileName)
         readNastran(File.filePath());
     }
 #ifdef FC_USE_VTK
-    else if (File.hasExtension("vtk") || File.hasExtension("vtu")) {
+    else if (File.hasExtension("vtk") || File.hasExtension("vtu") || File.hasExtension("pvtu")) {
         // read *.vtk legacy format or *.vtu XML unstructure Mesh
         FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
     }

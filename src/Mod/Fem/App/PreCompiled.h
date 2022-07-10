@@ -202,6 +202,7 @@
 #include <vtkXMLPolyDataReader.h>
 #include <vtkXMLStructuredGridReader.h>
 #include <vtkXMLUnstructuredGridReader.h>
+#include <vtkXMLPUnstructuredGridReader.h>
 #include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLImageDataReader.h>
 

@@ -7,205 +7,247 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>199</height>
+    <height>203</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Elmer</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QGroupBox" name="gb_gmsh_param">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="title">
-        <string>Elmer binaries</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetNoConstraint</enum>
+    <widget class="QGroupBox" name="gb_gmsh_param">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="title">
+      <string>Elmer binaries</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="l_grid_binary_std">
+        <property name="text">
+         <string>ElmerGrid:</string>
         </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefCheckBox" name="cb_grid_binary_std">
+        <property name="text">
+         <string>Search in known binary directories</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseStandardGridLocation</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Fem/Elmer</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="l_grid_binary_path">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>ElmerGrid binary path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefFileChooser" name="fc_grid_binary_path">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Leave blank to use default ElmerGrid binary file</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>gridBinaryPath</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Fem/Elmer</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="l_elmer_binary_std">
+        <property name="text">
+         <string>ElmerSolver:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefCheckBox" name="cb_elmer_binary_std">
+        <property name="text">
+         <string>Search in known binary directories</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseStandardElmerLocation</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Fem/Elmer</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="l_elmer_binary_path">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>ElmerSolver binary path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefFileChooser" name="fc_elmer_binary_path">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>elmerBinaryPath</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Fem/Elmer</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="l_elmer_binary_std_2">
+        <property name="text">
+         <string>Multithreading:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <layout class="QGridLayout" name="gl_01">
-          <item row="0" column="0">
-           <widget class="QLabel" name="l_grid_binary_std">
-            <property name="text">
-             <string>ElmerGrid:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="Gui::PrefCheckBox" name="cb_grid_binary_std">
-            <property name="text">
-             <string>Search in known binary directories</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>UseStandardGridLocation</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Elmer</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="l_grid_binary_path">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>ElmerGrid binary path</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="Gui::PrefFileChooser" name="fc_grid_binary_path">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="sizeIncrement">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="baseSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>Leave blank to use default ElmerGrid binary file</string>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>gridBinaryPath</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Elmer</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="l_elmer_binary_std">
-            <property name="text">
-             <string>ElmerSolver:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="Gui::PrefCheckBox" name="cb_elmer_binary_std">
-            <property name="text">
-             <string>Search in known binary directories</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>UseStandardElmerLocation</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Elmer</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="l_elmer_binary_path">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>ElmerSolver binary path</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="Gui::PrefFileChooser" name="fc_elmer_binary_path">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="sizeIncrement">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="baseSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>Leave blank to use default Elmer elmer binary file</string>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>elmerBinaryPath</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Elmer</cstring>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <widget class="QLabel" name="label_cores">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>CPU cores to be used:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="sb_elmer_num_cores">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>32</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UseNumberOfCores</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Elmer</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
-      </widget>
-     </item>
-    </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -218,7 +260,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -235,6 +277,11 @@
   <customwidget>
    <class>Gui::PrefFileChooser</class>
    <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -282,22 +329,6 @@
   <connection>
    <sender>cb_elmer_binary_std</sender>
    <signal>toggled(bool)</signal>
-   <receiver>l_elmer_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>247</x>
-     <y>91</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>71</x>
-     <y>114</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_elmer_binary_std</sender>
-   <signal>toggled(bool)</signal>
    <receiver>fc_elmer_binary_path</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
@@ -307,6 +338,22 @@
     </hint>
     <hint type="destinationlabel">
      <x>247</x>
+     <y>114</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_elmer_binary_std</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>l_elmer_binary_path</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>247</x>
+     <y>91</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>71</x>
      <y>114</y>
     </hint>
    </hints>
