@@ -424,7 +424,8 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         userName = UserName;
     }
     else {
-        userName = Name;
+        QString L10nUserName= QObject::tr("Unnamed");
+        userName = L10nUserName.toStdString().c_str();
         std::vector<std::string> names;
         names.reserve(DocMap.size());
         std::map<string,Document*>::const_iterator pos;
