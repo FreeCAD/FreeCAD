@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>425</width>
-    <height>640</height>
+    <height>642</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -291,7 +291,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="l_ccx_numcpu">
           <property name="text">
-           <string>Number of CPU's to use (Spooles only)</string>
+           <string>Number of CPU's to use</string>
           </property>
          </widget>
         </item>
@@ -434,6 +434,9 @@
         </item>
         <item row="5" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_step">
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -790,38 +793,6 @@
    <sender>cb_int_editor</sender>
    <signal>toggled(bool)</signal>
    <receiver>l_ext_editor</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>65</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>88</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_int_editor</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fc_ext_editor</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>65</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>88</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_int_editor</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>l_ext_editor</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -847,38 +818,6 @@
     <hint type="destinationlabel">
      <x>406</x>
      <y>88</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_ccx_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>l_ccx_binary_path</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_ccx_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fc_ccx_binary_path</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>68</y>
     </hint>
    </hints>
   </connection>
