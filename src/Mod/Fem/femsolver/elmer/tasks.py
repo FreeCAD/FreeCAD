@@ -121,10 +121,18 @@ class Solve(run.Solve):
                 if os.path.isdir(solvpath):
                     os.environ["ELMER_HOME"] = solvpath
                     os.environ["LD_LIBRARY_PATH"] = "$LD_LIBRARY_PATH:{}/modules".format(solvpath)
-            self._process = subprocess.Popen(
+            # hide the popups on Windows
+            if system() == "Windows":
+                self._process = subprocess.Popen(
                 [binary], cwd=self.directory,
                 stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE)
+                stderr=subprocess.PIPE,
+                startupinfo=femutils.startProgramInfo("hide"))
+            else:
+                self._process = subprocess.Popen(
+                    [binary], cwd=self.directory,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE)
             self.signalAbort.add(self._process.terminate)
             output = self._observeSolver(self._process)
             self._process.communicate()
