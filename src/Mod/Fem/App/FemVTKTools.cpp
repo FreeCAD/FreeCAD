@@ -53,6 +53,7 @@
 # include <vtkRectilinearGrid.h>
 # include <vtkUnstructuredGrid.h>
 # include <vtkXMLUnstructuredGridReader.h>
+# include <vtkXMLPUnstructuredGridReader.h>
 # include <vtkXMLUnstructuredGridWriter.h>
 # include <vtkPointData.h>
 # include <vtkCellData.h>
@@ -209,6 +210,14 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     if(f.hasExtension("vtu"))
     {
         vtkSmartPointer<vtkDataSet> dataset  = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
+        if (!dataset.Get()) {
+            Base::Console().Error("Failed to load file %s\n", filename);
+            return nullptr;
+        }
+        importVTKMesh(dataset, mesh);
+    }
+    else if (f.hasExtension("pvtu")) {
+        vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkXMLPUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
             Base::Console().Error("Failed to load file %s\n", filename);
             return nullptr;

@@ -216,23 +216,38 @@ class Writer(object):
             )
         else:
             binary = settings.get_binary("ElmerGrid")
+            num_cores = settings.get_cores("ElmerGrid")
             if binary is None:
                 raise WriteError("Could not find ElmerGrid binary.")
-            args = [binary,
-                    _ELMERGRID_IFORMAT,
-                    _ELMERGRID_OFORMAT,
-                    unvPath,
-                    "-scale", "0.001", "0.001", "0.001",
-                    "-out", self.directory]
-            # hide the popups on Windows
+            # for multithreading we first need a normal mesh creation run
+            # then a second to split the mesh into the number of used cores
+            argsBasic = [binary,
+                         _ELMERGRID_IFORMAT,
+                         _ELMERGRID_OFORMAT,
+                         unvPath,
+                         "-scale", "0.001", "0.001", "0.001"]
+            args = argsBasic
+            args.extend(["-out", self.directory])
             if system() == "Windows":
                 subprocess.call(
                     args,
-                    stdout=subprocess.DEVNULL,
+                    stdout=subprocess.DEVNULL, 
                     startupinfo=femutils.startProgramInfo("hide")
                 )
             else:
                 subprocess.call(args, stdout=subprocess.DEVNULL)
+            if int(num_cores) > 1:
+                args = argsBasic
+                args.extend(["-partdual", "-metiskway", num_cores,
+                             "-out", self.directory])
+                if system() == "Windows":
+                   subprocess.call(
+                       args,
+                       stdout=subprocess.DEVNULL,
+                       startupinfo=femutils.startProgramInfo("hide")
+                   )
+                else:
+                    subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)

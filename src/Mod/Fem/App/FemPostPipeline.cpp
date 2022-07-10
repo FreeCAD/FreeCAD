@@ -33,6 +33,7 @@
 # include <vtkRectilinearGrid.h>
 # include <vtkAppendFilter.h>
 # include <vtkXMLUnstructuredGridReader.h>
+# include <vtkXMLPUnstructuredGridReader.h>
 # include <vtkXMLPolyDataReader.h>
 # include <vtkXMLStructuredGridReader.h>
 # include <vtkXMLRectilinearGridReader.h>
@@ -121,7 +122,8 @@ bool FemPostPipeline::canRead(Base::FileInfo File) {
         File.hasExtension("vts") ||
         File.hasExtension("vtr") ||
         File.hasExtension("vti") ||
-        File.hasExtension("vtu"))
+        File.hasExtension("vtu") ||
+        File.hasExtension("pvtu")) 
         return true;
 
     return false;
@@ -135,6 +137,8 @@ void FemPostPipeline::read(Base::FileInfo File) {
 
     if (File.hasExtension("vtu"))
         readXMLFile<vtkXMLUnstructuredGridReader>(File.filePath());
+    else if (File.hasExtension("pvtu"))
+        readXMLFile<vtkXMLPUnstructuredGridReader>(File.filePath());
     else if (File.hasExtension("vtp"))
         readXMLFile<vtkXMLPolyDataReader>(File.filePath());
     else if (File.hasExtension("vts"))

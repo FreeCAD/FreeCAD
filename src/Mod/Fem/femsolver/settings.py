@@ -94,11 +94,30 @@ def get_binary(name):
     """
     if name in _SOLVER_PARAM:
         binary = _SOLVER_PARAM[name].get_binary()
-        FreeCAD.Console.PrintMessage(
-            'Solver binary path (returned from binary getter): {} \n'
-            .format(binary)
-        )
+        FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
         return binary
+    else:
+        FreeCAD.Console.PrintError(
+            "Settings solver name: {} not found in "
+            "solver settings modules _SOLVER_PARAM dirctionary.\n"
+            .format(name)
+        )
+        return None
+
+def get_cores(name):
+    """ Read number of CPU cores for solver *name* honoring user settings.
+
+    Returns number of CPU cores to be used for the solvier run
+
+    :param name: solver id as a ``str`` (see :mod:`femsolver.settings`)
+    """
+    if name in _SOLVER_PARAM:
+        cores = _SOLVER_PARAM[name].get_cores()
+        FreeCAD.Console.PrintMessage(
+            'Number of CPU cores to be used for the solvier run: {} \n'
+            .format(cores)
+        )
+        return cores
     else:
         FreeCAD.Console.PrintError(
             "Settings solver name: {} not found in "
@@ -219,6 +238,10 @@ class _SolverDlg(object):
             )
         FreeCAD.Console.PrintLog("Solver binary found path: {}\n".format(the_found_binary))
         return the_found_binary
+
+    def get_cores(self):
+        cores = str(self.param_group.GetInt("UseNumberOfCores"))
+        return cores
 
     def get_write_comments(self):
         return self.param_group.GetBool(self.WRITE_COMMENTS_PARAM, True)
