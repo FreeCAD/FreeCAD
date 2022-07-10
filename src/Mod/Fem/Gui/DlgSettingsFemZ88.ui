@@ -337,38 +337,6 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
    <sender>cb_z88_binary_std</sender>
    <signal>toggled(bool)</signal>
    <receiver>l_z88_binary_path</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_z88_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fc_z88_binary_path</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_z88_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>l_z88_binary_path</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
