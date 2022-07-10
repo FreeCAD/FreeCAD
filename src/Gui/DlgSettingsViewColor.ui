@@ -6,30 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
-    <height>598</height>
+    <width>405</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Colors</string>
   </property>
-  <layout class="QGridLayout">
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
-    <number>9</number>
-   </property>
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QGroupBox" name="groupBoxSelection">
      <property name="title">
       <string>Selection</string>
@@ -106,7 +91,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>225</red>
             <green>225</green>
@@ -140,7 +125,7 @@
           </property>
          </widget>
         </item>
-       <item row="1" column="1">
+        <item row="1" column="1">
          <widget class="Gui::PrefColorButton" name="SelectionColor">
           <property name="enabled">
            <bool>false</bool>
@@ -148,7 +133,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>28</red>
             <green>173</green>
@@ -163,9 +148,9 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
-     <item row="0" column="1">
+      <item row="0" column="1">
        <spacer name="spacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -178,10 +163,10 @@
         </property>
        </spacer>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxColor">
      <property name="toolTip">
       <string>Background color for the model view</string>
@@ -244,7 +229,7 @@
           </property>
          </widget>
         </item>
-       <item row="0" column="1">
+        <item row="0" column="3">
          <widget class="Gui::PrefColorButton" name="SelectionColor_Background">
           <property name="enabled">
            <bool>false</bool>
@@ -261,7 +246,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>20</red>
             <green>20</green>
@@ -295,7 +280,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="3">
          <widget class="Gui::PrefColorButton" name="backgroundColorFrom">
           <property name="toolTip">
            <string>Top color</string>
@@ -303,7 +288,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>51</red>
             <green>51</green>
@@ -318,23 +303,30 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="4">
+         <widget class="QPushButton" name="SwitchGradientColors">
+          <property name="toolTip">
+           <string>Switches the colors of the gradient</string>
+          </property>
+          <property name="text">
+           <string>Switch</string>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0">
-         <spacer name="spacer_2">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Minimum</enum>
-          </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>171</width>
+            <width>40</width>
             <height>20</height>
            </size>
           </property>
          </spacer>
         </item>
-        <item row="2" column="1">
+        <item row="2" column="3">
          <widget class="Gui::PrefColorButton" name="backgroundColorTo">
           <property name="toolTip">
            <string>Bottom color</string>
@@ -342,7 +334,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>151</red>
             <green>151</green>
@@ -357,7 +349,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="6" column="0">
          <widget class="Gui::PrefCheckBox" name="checkMidColor">
           <property name="toolTip">
            <string>Color gradient will get selected color as middle color</string>
@@ -373,7 +365,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="6" column="3">
          <widget class="Gui::PrefColorButton" name="backgroundColorMid">
           <property name="enabled">
            <bool>false</bool>
@@ -384,7 +376,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>111</red>
             <green>111</green>
@@ -399,9 +391,9 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
-     <item row="0" column="1">
+      <item row="0" column="1">
        <spacer name="spacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -414,10 +406,10 @@
         </property>
        </spacer>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxTree">
      <property name="title">
       <string>Tree view</string>
@@ -482,7 +474,7 @@
           <property name="toolTip">
            <string>Background color for objects in tree view that are currently edited</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>255</green>
@@ -515,7 +507,7 @@
           <property name="toolTip">
            <string>Background color for active containers in tree view</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>230</red>
             <green>230</green>
@@ -532,7 +524,7 @@
         </item>
        </layout>
       </item>
-     <item row="0" column="1">
+      <item row="0" column="1">
        <spacer name="spacer_5">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -545,10 +537,10 @@
         </property>
        </spacer>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <spacer name="spacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -556,7 +548,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -582,11 +574,6 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
