@@ -3886,7 +3886,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element dimension:</source>
-      <translation>Elementgröße:</translation>
+      <translation>Elementdimension:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
@@ -3907,7 +3907,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="138"/>
       <source>Element order:</source>
-      <translation>Elementreihenfolge:</translation>
+      <translation>Elementordnung:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="156"/>
