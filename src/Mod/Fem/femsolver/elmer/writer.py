@@ -33,6 +33,7 @@ import os
 import os.path
 import subprocess
 import tempfile
+from platform import system
 
 from FreeCAD import Console
 from FreeCAD import Units
@@ -216,7 +217,12 @@ class Writer(object):
                     unvPath,
                     "-scale", "0.001", "0.001", "0.001",
                     "-out", self.directory]
-            subprocess.call(args, stdout=subprocess.DEVNULL)
+            # hide the popups on Windows
+            if system() == "Windows":
+                subprocess.call(args, stdout=subprocess.DEVNULL,
+                    startupinfo=femutils.startProgramInfo("hide"))
+            else:
+                subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
