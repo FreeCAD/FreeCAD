@@ -53,4 +53,4 @@ class ImageWorkbench ( Workbench ):
 Gui.addWorkbench(ImageWorkbench())
 
 # Append the open handler
-FreeCAD.EndingAdd("Image formats (*.bmp *.jpg *.png *.xpm)","ImageGui")
+FreeCAD.addImportType("Image formats (*.bmp *.jpg *.png *.xpm)","ImageGui")
