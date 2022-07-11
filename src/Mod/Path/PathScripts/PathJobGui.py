@@ -54,7 +54,7 @@ DraftVecUtils = LazyLoader("DraftVecUtils", globals(), "DraftVecUtils")
 
 translate = FreeCAD.Qt.translate
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
