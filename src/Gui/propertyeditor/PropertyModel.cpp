@@ -35,8 +35,6 @@ using namespace Gui;
 using namespace Gui::PropertyEditor;
 
 
-/* TRANSLATOR Gui::PropertyEditor::PropertyModel */
-
 PropertyModel::PropertyModel(QObject* parent)
     : QAbstractItemModel(parent)
 {
@@ -493,15 +491,6 @@ void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelI
         QModelIndex topLeft = this->index(0, column, parent);
         QModelIndex bottomRight = this->index(numChild, column, parent);
         Q_EMIT dataChanged(topLeft, bottomRight);
-#if 0 // It seems we don't have to inform grand children
-        for (int row=0; row<numChild; row++) {
-            PropertyItem* child = item->child(row);
-            QModelIndex data = this->index(row, column, parent);
-            if (data.isValid()) {
-                updateChildren(child, column, data);
-            }
-        }
-#endif
     }
 }
 

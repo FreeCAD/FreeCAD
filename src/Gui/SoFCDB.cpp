@@ -406,59 +406,6 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, const char* filename, bool binary)
 
 bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& buffer)
 {
-#if 0
-    writeToVRML(node, buffer);
-    if (buffer.empty())
-        return false;
-
-    QString filename = QDir::tempPath();
-    filename += QLatin1String("/sceneXXXXXX.wrl");
-    QTemporaryFile wrlFile(filename);
-    if (wrlFile.open()) {
-        filename = wrlFile.fileName();
-        wrlFile.write(buffer.c_str(), buffer.size());
-        wrlFile.close();
-
-        QString exe(QLatin1String("tovrmlx3d"));
-        QStringList args;
-        args << filename << QLatin1String("--encoding") << QLatin1String("xml");
-        QProcess proc;
-        proc.setEnvironment(QProcess::systemEnvironment());
-        proc.start(exe, args);
-        if (proc.waitForStarted() && proc.waitForFinished()) {
-            QByteArray x3d = proc.readAll();
-            if (x3d.isEmpty())
-                return false;
-
-            x3d.replace('\t', "  ");
-
-            if (exportViewpoints) {
-                // compute a sensible view point
-                SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
-                bboxAction.apply(node);
-                SbBox3f bbox = bboxAction.getBoundingBox();
-                SbSphere bs;
-                bs.circumscribe(bbox);
-                const SbVec3f& cnt = bs.getCenter();
-                float dist = bs.getRadius();
-
-                QString vp = QString::fromLatin1("  <Viewpoint id=\"Top\" centerOfRotation=\"%1 %2 %3\" "
-                                                 "position=\"%1 %2 %4\" orientation=\"0.000000 0.000000 1.000000 0.000000\" "
-                                                 "description=\"camera\" fieldOfView=\"0.9\"></Viewpoint>\n")
-                             .arg(cnt[0]).arg(cnt[1]).arg(cnt[2]).arg(cnt[2] + 2.0f * dist);
-                int index = x3d.indexOf("<Scene>\n");
-                if (index >= 0) {
-                    x3d.insert(index + 8, vp);
-                }
-            }
-
-            buffer = x3d.data();
-            return true;
-        }
-    }
-
-    return false;
-#else
     SoNode* noSwitches = replaceSwitchesInSceneGraph(node);
     noSwitches->ref();
     SoVRMLAction vrml2;
@@ -510,7 +457,6 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
     noSwitches->unref();
 
     return true;
-#endif
 }
 
 void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
@@ -748,7 +694,6 @@ bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
             ret = true;
         }
     }
-
     return ret;
 }
 

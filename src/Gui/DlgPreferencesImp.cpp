@@ -321,14 +321,7 @@ void DlgPreferencesImp::restoreDefaults()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                               SetBool("SaveUserParameter", saveParameter);
 
-#if 0
-        QList<PreferencePage*> pages = this->findChildren<PreferencePage*>();
-        for (QList<PreferencePage*>::iterator it = pages.begin(); it != pages.end(); ++it) {
-            (*it)->loadSettings();
-        }
-#else
         reject();
-#endif
     }
 }
 
@@ -435,7 +428,6 @@ void DlgPreferencesImp::applyChanges()
 
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
-    //canEmbedScrollArea = false;
     this->adjustSize();
     QDialog::showEvent(ev);
 }

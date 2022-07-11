@@ -101,8 +101,6 @@ FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
 #if defined(Q_OS_WIN32)
 #define slots
-//#include <private/qmainwindowlayout_p.h>
-//#include <private/qwidgetresizehandler_p.h>
 #endif
 
 using namespace Gui;
@@ -336,18 +334,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     if (ht != config.end())
         hiddenDockWindows = ht->second;
 
-    // Show all dockable windows over the workbench facility
-    //
-#if 0
-    // Toolbox
-    if (hiddenDockWindows.find("Std_ToolBox") == std::string::npos) {
-        ToolBox* toolBox = new ToolBox(this);
-        toolBox->setObjectName(QT_TRANSLATE_NOOP("QDockWidget","Toolbox"));
-        pDockMgr->registerDockWindow("Std_ToolBox", toolBox);
-        ToolBoxManager::getInstance()->setToolBox( toolBox );
-    }
-#endif
-
     bool treeView = false, propertyView = false;
     if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
         //work through parameter.
@@ -435,7 +421,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     //TODO: Add external object support for DAGView
-#if 1
+
     //Dag View.
     if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
         //work through parameter.
@@ -459,25 +445,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
             pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
         }
     }
-#endif
-
-#if 0 //defined(Q_OS_WIN32) this portion of code is not able to run with a vanilla Qtlib build on Windows.
-    // The MainWindowTabBar is used to show tabbed dock windows with icons
-    //
-    // add our own QTabBar-derived class to the main window layout
-    // NOTE: This uses some private stuff from QMainWindow which doesn't
-    // seem to be accessible on all platforms.
-    QMainWindowLayout* l = static_cast<QMainWindowLayout*>(this->layout());
-    for (int i=0; i<5; i++) {
-        MainWindowTabBar* result = new MainWindowTabBar(this);
-        result->setDrawBase(true);
-        result->setElideMode(Qt::ElideRight);
-        result->hide(); // avoid to show horizontal bar in top left area
-        //result->setDocumentMode(_documentMode);
-        connect(result, SIGNAL(currentChanged(int)), l, SLOT(tabChanged()));
-        l->unusedTabBars << result;
-    }
-#endif
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
@@ -1624,17 +1591,6 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
     // Here we must allow uri drafs and check them in dropEvent
     const QMimeData* data = e->mimeData();
     if (data->hasUrls()) {
-#if 0
-#ifdef QT_NO_OPENSSL
-        QList<QUrl> urls = data->urls();
-        for (QList<QUrl>::ConstIterator it = urls.begin(); it != urls.end(); ++it) {
-            if (it->scheme().toLower() == QLatin1String("https")) {
-                e->ignore();
-                return;
-            }
-        }
-#endif
-#endif
         e->accept();
     }
     else {
@@ -1850,7 +1806,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();
             dm->download(dm->redirectUrl(*it));
         }
-//#ifndef QT_NO_OPENSSL
+
         else if (it->scheme().toLower() == QLatin1String("https")) {
             QUrl url = *it;
             QUrlQuery urlq(url);
@@ -1862,7 +1818,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();
             dm->download(dm->redirectUrl(url));
         }
-//#endif
+
         else if (it->scheme().toLower() == QLatin1String("ftp")) {
             Gui::Dialog::DownloadManager::getInstance()->download(*it);
         }

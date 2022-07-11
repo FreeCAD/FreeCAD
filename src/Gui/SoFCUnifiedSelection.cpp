@@ -658,32 +658,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         }
     }
 
-#if 0 // ViewProviderDocumentObject now has default implementation of getElementPicked
-
-    // If no next hierarchy is found, do another try on view provider hierarchies,
-    // which is used by geo feature group.
-    if(!hasNext) {
-        bool found = false;
-        auto vps = this->pcDocument->getViewProvidersByPath(pPath);
-        for(auto it=vps.begin();it!=vps.end();++it) {
-            auto vpdNext = it->first;
-            if(Gui::Selection().isSelected(vpdNext->getObject(),"")) {
-                found = true;
-                continue;
-            }
-            if(!found || !vpdNext->useNewSelectionModel() || !vpdNext->isSelectable())
-                continue;
-            hasNext = true;
-            vpd = vpdNext;
-            det = 0;
-            pPath->truncate(it->second+1);
-            objectName = vpd->getObject()->getNameInDocument();
-            subName = "";
-            break;
-        }
-    }
-#endif
-
     FC_TRACE("clearing selection");
     Gui::Selection().clearSelection();
     FC_TRACE("add selection");
