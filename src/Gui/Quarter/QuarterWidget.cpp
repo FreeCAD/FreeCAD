@@ -924,31 +924,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 
 bool QuarterWidget::viewportEvent(QEvent* event)
 {
-    // Disable the old implementation of this method as it show
-    // problems with panning and rotations when a widget item is
-    // added to the scene.
-#if 0
-    if (event->type() == QEvent::Paint || event->type() == QEvent::Resize) {
-        return QGraphicsView::viewportEvent(event);
-    }
-    else if (event->type() == QEvent::MouseMove ||
-             event->type() == QEvent::Wheel ||
-             event->type() == QEvent::MouseButtonDblClick ||
-             event->type() == QEvent::MouseButtonRelease ||
-             event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
-        QGraphicsItem *item = itemAt(mouse->pos());
-        if (!item) {
-            return false;
-        }
 
-        return QGraphicsView::viewportEvent(event);
-      }
-
-     //if we return false the events get processed normally, this means they get passed to the quarter
-     //event filters for processing in the scene graph. If we return true event processing stops here.
-     return false;
-#else
     // If no item is selected still let the graphics scene handle it but
     // additionally handle it by this viewer. This is e.g. needed when
     // resizing a widget item because the cursor may already be outside
@@ -973,7 +949,6 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     }
 
     return QGraphicsView::viewportEvent(event);
-#endif
 }
 
 /*!
@@ -1217,19 +1192,13 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
 
   if (url.scheme()=="coin") {
     filename = url.path();
-    //FIXME: This conditional needs to be implemented when the
-    //CoinResources systems if working
-#if 0
-    //#if (COIN_MAJOR_VERSION==3) && (COIN_MINOR_VERSION==0)
-#endif
+
     //Workaround for differences between url scheme, and Coin internal
     //scheme in Coin 3.0.
     if (filename[0]=='/') {
       filename.remove(0,1);
     }
-#if 0
-    //#endif
-#endif
+
     filename = url.scheme()+':'+filename;
   }
   else if (url.scheme()=="file")

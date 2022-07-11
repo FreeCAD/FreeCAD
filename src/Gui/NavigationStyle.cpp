@@ -559,15 +559,6 @@ void NavigationStyle::viewAll()
     if (box.isEmpty())
         return;
 
-#if 0
-    // check whether the box is very wide or tall, if not do nothing
-    float box_width, box_height, box_depth;
-    box.getSize( box_width, box_height, box_depth );
-    if (box_width < 5.0f*box_height && box_width < 5.0f*box_depth &&
-        box_height < 5.0f*box_width && box_height < 5.0f*box_depth &&
-        box_depth < 5.0f*box_width && box_depth < 5.0f*box_height )
-        return;
-#endif
 
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
     if (!cam)
@@ -592,23 +583,7 @@ void NavigationStyle::viewAll()
 
     float aspect = cam->aspectRatio.getValue();
 
-    if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        // set the new camera position dependent on the occupied space of projected bounding box
-        //SbVec3f direction = cam->position.getValue() - box.getCenter();
-        //float movelength = direction.length();
-        //direction.normalize();
-        //float fRatio = getViewportRegion().getViewportAspectRatio();
-        //if ( fRatio > 1.0f ) {
-        //  float factor = std::max<float>(s[0]/fRatio,s[1]);
-        //  movelength = factor * movelength;
-        //}
-        //else {
-        //    float factor = std::max<float>(s[0],s[1]/fRatio);
-        //    movelength = factor * movelength;
-        //}
-        //cam->position.setValue(box.getCenter() + direction * movelength);
-    }
-    else if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         SoOrthographicCamera* ocam = (SoOrthographicCamera *)cam;  // safe downward cast, knows the type
         if (aspect < 1.0f)
             ocam->height = cam_height / aspect;

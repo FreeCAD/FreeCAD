@@ -634,22 +634,11 @@ StdCmdSave::StdCmdSave()
 void StdCmdSave::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->save();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Save\")");
 }
 
 bool StdCmdSave::isActive(void)
 {
-#if 0
-  if( getActiveGuiDocument() )
-    return true;
-  else
-#endif
     return getGuiApplication()->sendHasMsgToActiveView("Save");
 }
 
@@ -674,22 +663,11 @@ StdCmdSaveAs::StdCmdSaveAs()
 void StdCmdSaveAs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->saveAs();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveAs\")");
 }
 
 bool StdCmdSaveAs::isActive(void)
 {
-#if 0
-  if( getActiveGuiDocument() )
-    return true;
-  else
-#endif
     return getGuiApplication()->sendHasMsgToActiveView("SaveAs");
 }
 
@@ -712,12 +690,6 @@ StdCmdSaveCopy::StdCmdSaveCopy()
 void StdCmdSaveCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->saveCopy();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveCopy\")");
 }
 
@@ -1359,23 +1331,6 @@ void StdCmdDelete::activated(int iMsg)
                     break;
             }
 
-            // The check below is not needed because we now only get selection
-            // from the active document
-#if 0
-            //check for inactive objects in selection  Mantis #3477
-            std::set<QString> inactiveLabels;
-            App::Application& app = App::GetApplication();
-            App::Document* actDoc = app.getActiveDocument();
-            for (std::vector<Gui::SelectionObject>::iterator ft = sels.begin(); ft != sels.end(); ++ft) {
-                App::DocumentObject* obj = ft->getObject();
-                App::Document* objDoc = obj->getDocument();
-                if (actDoc != objDoc) {
-                    inactiveLabels.insert(QString::fromUtf8(obj->Label.getValue()));
-                    autoDeletion = false;
-                }
-            }
-#endif
-
             if (!autoDeletion) {
                 QString bodyMessage;
                 QTextStream bodyMessageStream(&bodyMessage);
@@ -1386,19 +1341,6 @@ void StdCmdDelete::activated(int iMsg)
                     bodyMessageStream << '\n' << currentLabel;
                 if(more)
                     bodyMessageStream << "\n...";
-#if 0
-                //message for inactive items
-                if (!inactiveLabels.empty()) {
-                    if (!affectedLabels.empty()) {
-                        bodyMessageStream << "\n";
-                    }
-                    std::string thisDoc = pGuiDoc->getDocument()->getName();
-                    bodyMessageStream << qApp->translate("Std_Delete",
-                                            "These items are selected for deletion, but are not in the active document.");
-                    for (const auto &currentLabel : inactiveLabels)
-                        bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
-                }
-#endif
 
                 int ret = QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,

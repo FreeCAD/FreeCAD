@@ -362,9 +362,6 @@ private:
 
 void RecoveryWriter::writeFiles(void)
 {
-#if 0
-    FileWriter::writeFiles();
-#else
     // use a while loop because it is possible that while
     // processing the files new ones can be added
     size_t index = 0;
@@ -397,7 +394,6 @@ void RecoveryWriter::writeFiles(void)
 
         index++;
     }
-#endif
 }
 
 

@@ -119,8 +119,6 @@
 
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
-//#define FC_LOGGING_CB
-
 using namespace Gui;
 
 /*** zoom-style cursor ******/
@@ -389,36 +387,16 @@ void View3DInventorViewer::init()
     cam->nearDistance = 0;
     cam->farDistance = 10;
 
-    // dragger
-    //SoSeparator * dragSep = new SoSeparator();
-    //SoScale *scale = new SoScale();
-    //scale->scaleFactor = SbVec3f  (0.2,0.2,0.2);
-    //dragSep->addChild(scale);
-    //SoCenterballDragger *dragger = new SoCenterballDragger();
-    //dragger->center = SbVec3f  (0.8,0.8,0);
-    ////dragger->rotation = SbRotation(rrot[0],rrot[1],rrot[2],rrot[3]);
-    //dragSep->addChild(dragger);
-
     this->foregroundroot->addChild(cam);
     this->foregroundroot->addChild(lm);
     this->foregroundroot->addChild(bc);
-    //this->foregroundroot->addChild(dragSep);
 
-#if 0
-    // NOTE: For every mouse click event the SoSelection searches for the picked
-    // point which causes a certain slow-down because for all objects the primitives
-    // must be created. Using an SoSeparator avoids this drawback.
-    SoSelection* selectionRoot = new SoSelection();
-    selectionRoot->addSelectionCallback(View3DInventorViewer::selectCB, this);
-    selectionRoot->addDeselectionCallback(View3DInventorViewer::deselectCB, this);
-    selectionRoot->setPickFilterCallback(View3DInventorViewer::pickFilterCB, this);
-#else
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
     // must be created. Using an SoSeparator avoids this drawback.
     selectionRoot = new Gui::SoFCUnifiedSelection();
     selectionRoot->applySettings();
-#endif
+
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
 
@@ -453,7 +431,6 @@ void View3DInventorViewer::init()
 
     auto pcGroupOnTopPickStyle = new SoPickStyle;
     pcGroupOnTopPickStyle->style = SoPickStyle::UNPICKABLE;
-    // pcGroupOnTopPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
     pcGroupOnTopPickStyle->setOverride(true);
     pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
 
@@ -502,10 +479,7 @@ void View3DInventorViewer::init()
     this->getSoRenderManager()->setGLRenderAction(new SoBoxSelectionRenderAction);
     this->getSoRenderManager()->getGLRenderAction()->setCacheContext(id);
 
-    // set the transparency and antialiasing settings
-//  getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
     getSoRenderManager()->getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
-//  getGLRenderAction()->setSmoothing(true);
 
     // Settings
     setSeekTime(0.4f);
@@ -1428,7 +1402,6 @@ void View3DInventorViewer::setAxisCross(bool on)
             axisCross->scaleFactor = 1.0f;
             axisGroup = new SoSkipBoundingGroup;
             axisGroup->addChild(axisCross);
-
             sep->addChild(axisGroup);
         }
     }
@@ -2165,9 +2138,6 @@ void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
     glClearColor(col.redF(), col.greenF(), col.blueF(), col.alphaF());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // If on then transparent areas may shine through opaque areas
-    //glDepthRange(0.1,1.0);
-
     SoBoxSelectionRenderAction gl(SbViewportRegion(width, height));
     // When creating a new GL render action we have to copy over the cache context id
     // For further details see init().
@@ -2191,7 +2161,6 @@ void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
     if (this->axiscrossEnabled) {
         this->drawAxisCross();
     }
-
     fbo->release();
 }
 
@@ -2284,9 +2253,6 @@ void View3DInventorViewer::renderGLImage()
     glEnable(GL_DEPTH_TEST);
 }
 
-// #define ENABLE_GL_DEPTH_RANGE
-// The calls of glDepthRange inside renderScene() causes problems with transparent objects
-// so that's why it is disabled now: http://forum.freecadweb.org/viewtopic.php?f=3&t=6037&hilit=transparency
 
 // Documented in superclass. Overrides this method to be able to draw
 // the axis cross, if selected, and to keep a continuous animation
@@ -2306,11 +2272,6 @@ void View3DInventorViewer::renderScene(void)
     glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-
-#if defined(ENABLE_GL_DEPTH_RANGE)
-    // using 90% of the z-buffer for the background and the main node
-    glDepthRange(0.1,1.0);
-#endif
 
     // Render our scenegraph with the image.
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
@@ -2346,11 +2307,6 @@ void View3DInventorViewer::renderScene(void)
         state->pop();
     }
 
-#if defined (ENABLE_GL_DEPTH_RANGE)
-    // using 10% of the z-buffer for the foreground node
-    glDepthRange(0.0,0.1);
-#endif
-
     // Render overlay front scenegraph.
     glra->apply(this->foregroundroot);
 
@@ -2358,20 +2314,10 @@ void View3DInventorViewer::renderScene(void)
         this->drawAxisCross();
     }
 
-#if defined (ENABLE_GL_DEPTH_RANGE)
-    // using the main portion of z-buffer again (for frontbuffer highlighting)
-    glDepthRange(0.1,1.0);
-#endif
-
     // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     }
-
-#if 0 // this breaks highlighting of edges
-    glDisable(GL_LIGHTING);
-    glDisable(GL_DEPTH_TEST);
-#endif
 
     printDimension();
     navigation->redraw();
@@ -2390,11 +2336,6 @@ void View3DInventorViewer::renderScene(void)
 
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
-
-#if 0 // this breaks highlighting of edges
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
-#endif
 }
 
 void View3DInventorViewer::setSeekMode(SbBool on)
@@ -2465,7 +2406,6 @@ void View3DInventorViewer::selectAll()
             if (obj) objs.push_back(obj);
         }
     }
-
     if (!objs.empty())
         Gui::Selection().setSelection(objs.front()->getDocument()->getName(), objs);
 }
@@ -2495,7 +2435,6 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
             break;
         }
     }
-
     return navigation->processEvent(ev);
 }
 
@@ -3284,12 +3223,9 @@ void View3DInventorViewer::drawAxisCross(void)
     SbVec2s view = this->getSoRenderManager()->getSize();
     const int pixelarea =
         int(float(this->axiscrossSize)/100.0f * std::min(view[0], view[1]));
-#if 0 // middle of canvas
-    SbVec2s origin(view[0]/2 - pixelarea/2, view[1]/2 - pixelarea/2);
-#endif // middle of canvas
-#if 1 // lower right of canvas
+
     SbVec2s origin(view[0] - pixelarea, 0);
-#endif // lower right of canvas
+
     glViewport(origin[0], origin[1], pixelarea, pixelarea);
 
     // Set up the projection matrix.
