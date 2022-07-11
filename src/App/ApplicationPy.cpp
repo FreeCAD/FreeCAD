@@ -66,10 +66,6 @@ PyMethodDef Application::Methods[] = {
      "Change the import module name of a registered filetype"},
     {"getImportType",  (PyCFunction) Application::sGetImportType, METH_VARARGS,
      "Get the name of the module that can import the filetype"},
-    {"EndingAdd",      (PyCFunction) Application::sAddImportType, METH_VARARGS, // deprecated
-     "deprecated -- use addImportType"},
-    {"EndingGet",      (PyCFunction) Application::sGetImportType, METH_VARARGS, // deprecated
-     "deprecated -- use getImportType"},
     {"addExportType",  (PyCFunction) Application::sAddExportType, METH_VARARGS,
      "Register filetype for export"},
     {"changeExportModule",  (PyCFunction) Application::sChangeExportModule, METH_VARARGS,
