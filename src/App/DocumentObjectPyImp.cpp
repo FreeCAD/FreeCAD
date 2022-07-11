@@ -709,13 +709,13 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
         throw Py::RuntimeError(e.what());
     }
 }
-//remove
-PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
+
+PyObject *DocumentObjectPy::getCustomAttributes(const char* ) const
 {
         return nullptr;
 }
 //remove
-int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
+int DocumentObjectPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0;
 }
