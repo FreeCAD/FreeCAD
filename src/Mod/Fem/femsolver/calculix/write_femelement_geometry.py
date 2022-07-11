@@ -37,7 +37,7 @@ def write_femelement_geometry(f, ccxwriter):
             elsetdef = "ELSET={}, ".format(matgeoset["ccx_elset_name"])
             material = "MATERIAL={}".format(matgeoset["mat_obj_name"])
 
-            if "beamsection_obj"in matgeoset:  # beam mesh
+            if "beamsection_obj" in matgeoset:  # beam mesh
                 beamsec_obj = matgeoset["beamsection_obj"]
                 beam_axis_m = matgeoset["beam_axis_m"]
                 # in CalxuliX called the 1direction
