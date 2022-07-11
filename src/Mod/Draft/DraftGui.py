@@ -774,7 +774,7 @@ class DraftToolBar:
             "draft", "Continue") + " (" + inCommandShortcuts["Continue"][0] + ")")
         self.occOffset.setToolTip(translate(
             "draft", "If checked, an OCC-style offset will be performed"
-                     + "instead of the classic offset"))
+                     + " instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
 
         # OBSOLETE
