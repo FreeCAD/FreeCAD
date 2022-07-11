@@ -39,6 +39,9 @@ public:
     DlgSettingsFemElmerImp( QWidget* parent = nullptr );
     ~DlgSettingsFemElmerImp();
 
+protected Q_SLOTS:
+    void onfileNameChanged(QString FileName);
+
 protected:
     void saveSettings();
     void loadSettings();

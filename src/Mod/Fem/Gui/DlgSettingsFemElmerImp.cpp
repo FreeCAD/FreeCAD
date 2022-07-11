@@ -23,6 +23,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QMessageBox>
+#endif
 
 #include "DlgSettingsFemElmerImp.h"
 #include "ui_DlgSettingsFemElmer.h"
@@ -35,6 +38,11 @@ DlgSettingsFemElmerImp::DlgSettingsFemElmerImp(QWidget* parent)
     , ui(new Ui_DlgSettingsFemElmerImp)
 {
     ui->setupUi(this);
+
+    connect(ui->fc_grid_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+        this, &DlgSettingsFemElmerImp::onfileNameChanged);
+    connect(ui->fc_elmer_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+            this, &DlgSettingsFemElmerImp::onfileNameChanged);
 }
 
 DlgSettingsFemElmerImp::~DlgSettingsFemElmerImp()
@@ -70,6 +78,16 @@ void DlgSettingsFemElmerImp::changeEvent(QEvent* e)
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void DlgSettingsFemElmerImp::onfileNameChanged(QString FileName)
+{
+    if (!QFileInfo::exists(FileName)) {
+        QMessageBox::critical(this, tr("File does not exist"),
+                              tr("The specified executable \n'%1'\n does not exist!\n"
+                                 "Specify another file please.").arg(FileName));
+        return;
     }
 }
 

@@ -23,6 +23,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QMessageBox>
+#endif
 
 #include <Gui/Application.h>
 
@@ -37,6 +40,9 @@ DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp(QWidget* parent)
     , ui(new Ui_DlgSettingsFemZ88Imp)
 {
     ui->setupUi(this);
+
+    connect(ui->fc_z88_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+            this, &DlgSettingsFemZ88Imp::onfileNameChanged);
 }
 
 DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp()
@@ -90,6 +96,34 @@ void DlgSettingsFemZ88Imp::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgSettingsFemZ88Imp::onfileNameChanged(QString FileName)
+{
+    if (!QFileInfo::exists(FileName)) {
+        QMessageBox::critical(this, tr("File does not exist"),
+                              tr("The specified z88r executable \n'%1'\n does not exist!\n"
+                                 "Specify another file please.")
+                                  .arg(FileName));
+        return;
+    }
+
+    // since the Z88 folder is full of files like "z88h", "z88o" etc. one can easily make a
+    // mistake and is then lost why the solver fails. Therefore check for the correct filename.
+    auto strName = FileName.toStdString();
+#if defined(FC_OS_WIN32)
+    if (strName.substr(strName.length() - 8) != "z88r.exe") {
+        QMessageBox::critical(this, tr("Wrong file"),
+                             tr("You must specify the path to the z88r.exe!"));
+        return;
+    }
+#elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+    if (strName.substr(strName.length() - 4) != "z88r") {
+        QMessageBox::critical(this, tr("Wrong file"),
+                              tr("You must specify the path to the z88r!"));
+        return;
+    }
+#endif
 }
 
 #include "moc_DlgSettingsFemZ88Imp.cpp"

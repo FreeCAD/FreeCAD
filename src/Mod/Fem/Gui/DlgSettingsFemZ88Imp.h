@@ -40,6 +40,9 @@ public:
     DlgSettingsFemZ88Imp( QWidget* parent = nullptr );
     ~DlgSettingsFemZ88Imp();
 
+protected Q_SLOTS:
+    void onfileNameChanged(QString FileName);
+
 protected:
     void saveSettings();
     void loadSettings();
