@@ -88,14 +88,14 @@ def get_defmake_count(
     modfile = open(name_modfile, "r")
     lines_modefile = modfile.readlines()
     modfile.close()
-    lines_defmake = [l for l in lines_modefile if l.startswith("def make")]
+    lines_defmake = [li for li in lines_modefile if li.startswith("def make")]
     if not fem_vtk_post:
         # FEM VTK post processing is disabled
         # we are not able to create VTK post objects
         new_lines = []
-        for l in lines_defmake:
-            if "PostVtk" not in l:
-                new_lines.append(l)
+        for li in lines_defmake:
+            if "PostVtk" not in li:
+                new_lines.append(li)
         lines_defmake = new_lines
     return len(lines_defmake)
 
@@ -196,23 +196,23 @@ def compare_inp_files(
     # for python3 problem with 1DFlow input
     # TODO as soon as the 1DFlow result reading is fixed
     # this should be triggered in the 1DFlow unit test
-    lf1 = [l for l in f1 if not (
-        l.startswith("**   written ") or l.startswith("**   file ") or l.startswith("17671.0,1")
+    lf1 = [li for li in f1 if not (
+        li.startswith("**   written ") or li.startswith("**   file ") or li.startswith("17671.0,1")
     )]
     lf1 = force_unix_line_ends(lf1)
     file2 = open(file_name2, "r")
     f2 = file2.readlines()
     file2.close()
     # TODO see comment on file1
-    lf2 = [l for l in f2 if not (
-        l.startswith("**   written ") or l.startswith("**   file ") or l.startswith("17671.0,1")
+    lf2 = [li for li in f2 if not (
+        li.startswith("**   written ") or li.startswith("**   file ") or li.startswith("17671.0,1")
     )]
     lf2 = force_unix_line_ends(lf2)
     import difflib
     diff = difflib.unified_diff(lf1, lf2, n=0)
     result = ""
-    for l in diff:
-        result += l
+    for li in diff:
+        result += li
     if result:
         result = (
             "Comparing {} to {} failed!\n"
@@ -234,22 +234,28 @@ def compare_files(
 
     # workaround to compare geos of elmer test and temporary file path
     # (not only names change, path changes with operating system)
-    lf1 = [l for l in f1 if not (
-        l.startswith('Merge "') or l.startswith('Save "') or l.startswith("// ") or l.startswith("General.NumThreads")
+    lf1 = [li for li in f1 if not (
+        li.startswith('Merge "')
+        or li.startswith('Save "')
+        or li.startswith("// ")
+        or li.startswith("General.NumThreads")
     )]
     lf1 = force_unix_line_ends(lf1)
     file2 = open(file_name2, "r")
     f2 = file2.readlines()
     file2.close()
-    lf2 = [l for l in f2 if not (
-        l.startswith('Merge "') or l.startswith('Save "') or l.startswith("// ") or l.startswith("General.NumThreads")
+    lf2 = [li for li in f2 if not (
+        li.startswith('Merge "')
+        or li.startswith('Save "')
+        or li.startswith("// ")
+        or li.startswith("General.NumThreads")
     )]
     lf2 = force_unix_line_ends(lf2)
     import difflib
     diff = difflib.unified_diff(lf1, lf2, n=0)
     result = ""
-    for l in diff:
-        result += l
+    for li in diff:
+        result += li
     if result:
         result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
     return result
@@ -301,10 +307,10 @@ def compare_stats(
     # get stats to compare with, the expected ones
     sf = open(stat_file, "r")
     sf_content = []
-    for l in sf.readlines():
+    for li in sf.readlines():
         for st in loc_stat_types:
-            if l.startswith(st):
-                sf_content.append(l)
+            if li.startswith(st):
+                sf_content.append(li)
     sf.close()
     sf_content = force_unix_line_ends(sf_content)
     if sf_content == []:

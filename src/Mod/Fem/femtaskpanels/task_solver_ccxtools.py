@@ -247,12 +247,14 @@ class _TaskPanel:
         self.form.pb_run_ccx.setText("Break CalculiX")
 
     def calculixStateChanged(self, newState):
-        if (newState == QtCore.QProcess.ProcessState.Starting):
-                self.femConsoleMessage("Starting CalculiX...")
-        if (newState == QtCore.QProcess.ProcessState.Running):
-                self.femConsoleMessage("CalculiX is running...")
-        if (newState == QtCore.QProcess.ProcessState.NotRunning):
-                self.femConsoleMessage("CalculiX stopped.")
+        if newState == QtCore.QProcess.ProcessState.Starting:
+            self.femConsoleMessage("Starting CalculiX...")
+        elif newState == QtCore.QProcess.ProcessState.Running:
+            self.femConsoleMessage("CalculiX is running...")
+        elif newState == QtCore.QProcess.ProcessState.NotRunning:
+            self.femConsoleMessage("CalculiX stopped.")
+        else:
+            self.femConsoleMessage("Problems.")
 
     def calculixFinished(self, exitCode):
         # print("calculixFinished(), exit code: {}".format(exitCode))
@@ -387,7 +389,7 @@ class _TaskPanel:
             env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
         else:
             cpu_count = os.cpu_count()
-            if cpu_count != None and cpu_count > 1:
+            if cpu_count is not None and cpu_count > 1:
                 env.insert("OMP_NUM_THREADS", str(cpu_count))
         self.Calculix.setProcessEnvironment(env)
 

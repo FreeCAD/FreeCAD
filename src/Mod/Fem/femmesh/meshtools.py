@@ -27,10 +27,12 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import numpy as np
+
 import FreeCAD
 
 from femtools import geomtools
-import numpy as np
+
 
 # ************************************************************************************************
 def get_femnodes_by_femobj_with_references(
@@ -485,7 +487,10 @@ def get_femelement_sets(
     # fem_objects = FreeCAD FEM document objects
     # get femelements for reference shapes of each obj.References
     count_femelements = 0
-    referenced_femelements = np.zeros((max(femelement_table.keys())+1,),dtype=np.int)
+    referenced_femelements = np.zeros(
+        (max(femelement_table.keys()) + 1,),
+        dtype=np.int
+    )
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object["Object"]
@@ -515,7 +520,9 @@ def get_femelement_sets(
         femelement_table_array = np.zeros_like(referenced_femelements)
         femelement_table_array[list(femelement_table.keys())] = 1
         remaining_femelements_array = femelement_table_array > referenced_femelements
-        remaining_femelements = [ i.item() for i in np.nditer(remaining_femelements_array.nonzero()) ]
+        remaining_femelements = [
+            i.item() for i in np.nditer(remaining_femelements_array.nonzero())
+        ]
         count_femelements += len(remaining_femelements)
         for fem_object in fem_objects:
             obj = fem_object["Object"]
@@ -933,7 +940,7 @@ def get_force_obj_edge_nodeload_table(
 
         # try debugging of the last bad refedge
         FreeCAD.Console.PrintMessage("DEBUGGING\n")
-        FreeCAD.Console.PrintMessage("\n".format(bad_refedge))
+        FreeCAD.Console.PrintMessage("{}\n".format(bad_refedge))
 
         FreeCAD.Console.PrintMessage("bad_refedge_nodes\n")
         bad_refedge_nodes = femmesh.getNodesByEdge(bad_refedge)
@@ -949,7 +956,7 @@ def get_force_obj_edge_nodeload_table(
         FreeCAD.Console.PrintMessage("{}\n".format(len(bad_edge_table)))
         bad_edge_table_nodes = []
         for elem in bad_edge_table:
-            FreeCAD.Console.PrintMessage(elem, " --> \n".format(bad_edge_table[elem]))
+            FreeCAD.Console.PrintMessage(elem, " --> {}\n".format(bad_edge_table[elem]))
             for node in bad_edge_table[elem]:
                 if node not in bad_edge_table_nodes:
                     bad_edge_table_nodes.append(node)
@@ -1997,7 +2004,7 @@ def get_reference_group_elements(
                 FreeCAD.Console.PrintError(
                     "Error, two refshapes in References with different ShapeTypes.\n"
                 )
-            FreeCAD.Console.PrintLog("\n".format(ref_shape))
+            FreeCAD.Console.PrintLog("{}\n".format(ref_shape))
             found_element = geomtools.find_element_in_shape(aShape, ref_shape)
             if found_element is not None:
                 elements.append(found_element)
@@ -2162,8 +2169,8 @@ def sortlistoflistvalues(
     listoflists
 ):
     new_list = []
-    for l in listoflists:
-        new_list.append(sorted(l))
+    for li in listoflists:
+        new_list.append(sorted(li))
     return new_list
 
 
@@ -2213,7 +2220,7 @@ def is_zplane_2D_mesh(
         for n in femmesh.Nodes:
             z = femmesh.Nodes[n].z
             if ((0 - tol) < z < (0 + tol)) is not True:
-                    return False
+                return False
         return True
     else:
         return False

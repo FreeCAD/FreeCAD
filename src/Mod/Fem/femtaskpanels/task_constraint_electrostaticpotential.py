@@ -33,6 +33,7 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 from femguiutils import selection_widgets
+
 from femtools import femutils
 from femtools import membertools
 
@@ -111,7 +112,7 @@ class _TaskPanel(object):
             not self._paramWidget.capacitanceBodyBox.isChecked())
 
     def _applyWidgetChanges(self):
-        unit = "V"
+        # unit = "V"
         self._obj.PotentialEnabled = \
             not self._paramWidget.potentialBox.isChecked()
         if self._obj.PotentialEnabled:

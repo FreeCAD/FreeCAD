@@ -735,7 +735,7 @@ class GmshTools():
         geo.write("\n")
 
         cpu_count = os.cpu_count()
-        if cpu_count != None and cpu_count > 1:
+        if cpu_count is not None and cpu_count > 1:
             geo.write("// enable multi-core processing\n")
             geo.write(f"General.NumThreads = {cpu_count};\n")
             geo.write("\n")
