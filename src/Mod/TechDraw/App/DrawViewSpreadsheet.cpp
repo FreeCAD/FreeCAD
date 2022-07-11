@@ -301,17 +301,17 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             // get colors, style, alignment and span
             int alignment = 0;
             std::string bcolor = "none";
-            std::string fcolor = c.asCSSString();
+            std::string fcolor = c.asHexString();
             std::string textstyle = "";
             if (cell) {
                 App::Color f,b;
                 std::set<std::string> st;
                 int colspan, rowspan;
                 if (cell->getBackground(b)) {
-                    bcolor = b.asCSSString();
+                    bcolor = b.asHexString();
                 }
                 if (cell->getForeground(f)) {
-                    fcolor = f.asCSSString();
+                    fcolor = f.asHexString();
                 }
                 if (cell->getStyle(st)) {
                     for (std::set<std::string>::const_iterator i = st.begin(); i != st.end(); ++i) {
@@ -342,7 +342,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
                 result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\"" << cellwidth
                        << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor << ";stroke-width:"
-                       << LineWidth.getValue()/getScale() << ";stroke:" << c.asCSSString() << ";\" />" << endl;
+                       << LineWidth.getValue()/getScale() << ";stroke:" << c.asHexString() << ";\" />" << endl;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     result << "    <text style=\"" << textstyle << "\" x=\"" << coloffset + TextSize.getValue()/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)

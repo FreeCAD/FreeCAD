@@ -110,7 +110,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
                  // TODO treat fillstyle here
                  << ",direction=FreeCAD.Vector(" << Direction.getValue().x << "," << Direction.getValue().y << "," << Direction.getValue().z << ")"
                  << ",linestyle=\"" << LineStyle.getValue() << "\""
-                 << ",color=\"" << col.asCSSString() << "\""
+                 << ",color=\"" << col.asHexString() << "\""
                  << ",linespacing=" << LineSpacing.getValue()
                  // We must set techdraw to "true" becausea couple of things behave differently than in Drawing
                  << ",techdraw=True"

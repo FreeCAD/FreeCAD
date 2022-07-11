@@ -130,12 +130,7 @@ public:
                                                                      << std::setw(2) << int(b*255.0f);
         return ss.str();
     }
-    /**
-     * \deprecated
-     */
-    std::string asCSSString() const {
-        return asHexString();
-    }
+
     /**
      * gets color from hex color "#RRGGBB"
      *
