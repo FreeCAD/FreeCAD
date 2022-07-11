@@ -156,7 +156,7 @@ void QGIViewAnnotation::drawAnnotation()
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
     App::Color c = viewAnno->TextColor.getValue();
-    ss << "color:" << c.asCSSString() << "; ";
+    ss << "color:" << c.asHexString() << "; ";
     ss << "}\n</style>\n</head>\n<body>\n<p>";
     for(std::vector<std::string>::const_iterator it = annoText.begin(); it != annoText.end(); it++) {
         if (it != annoText.begin()) {

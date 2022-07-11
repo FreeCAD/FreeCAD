@@ -670,7 +670,7 @@ QPixmap QGIFace::textureFromSvg(std::string fileSpec)
 
 void QGIFace::setHatchColor(App::Color c)
 {
-    m_svgCol = c.asCSSString();
+    m_svgCol = c.asHexString();
     m_geomColor = c.asValue<QColor>();
 }
 
