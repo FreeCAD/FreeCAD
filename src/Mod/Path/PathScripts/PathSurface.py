@@ -2103,7 +2103,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 hlim = bb.XMax
 
         # Compute max radius of stock, as it rotates, and rotational clearance & safe heights
-        self.bbRadius = math.sqrt(hlim ** 2 + vlim ** 2)
+        self.bbRadius = math.sqrt(hlim**2 + vlim**2)
         self.clearHeight = self.bbRadius + JOB.SetupSheet.ClearanceHeightOffset.Value
         self.safeHeight = self.bbRadius + JOB.SetupSheet.ClearanceHeightOffset.Value
 
