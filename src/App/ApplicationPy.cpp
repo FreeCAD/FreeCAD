@@ -343,25 +343,7 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args)
 
     Py_Return;
 }
-#if 0
-PyObject* Application::sSaveDocumentAs(PyObject * /*self*/, PyObject *args)
-{
-    char *pDoc, *pFileName;
-    if (!PyArg_ParseTuple(args, "ss", &pDoc, &pFileName))
-        return nullptr;
 
-    Document* doc = GetApplication().getDocument(pDoc);
-    if (doc) {
-        doc->saveAs( pFileName );
-    }
-    else {
-        PyErr_Format(PyExc_NameError, "Unknown document '%s'", pDoc);
-        return NULL;
-    }
-
-    Py_Return;
-}
-#endif
 PyObject* Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -843,21 +825,6 @@ PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args)
         }
         // For performance reason, we only output integer value
         return Py_BuildValue("i",Base::Console().LogLevel(l));
-
-        // switch(l) {
-        // case FC_LOGLEVEL_LOG:
-        //     return Py_BuildValue("s","Log");
-        // case FC_LOGLEVEL_WARN:
-        //     return Py_BuildValue("s","Warning");
-        // case FC_LOGLEVEL_ERR:
-        //     return Py_BuildValue("s","Error");
-        // case FC_LOGLEVEL_MSG:
-        //     return Py_BuildValue("s","Message");
-        // case FC_LOGLEVEL_TRACE:
-        //     return Py_BuildValue("s","Trace");
-        // default:
-        //     return Py_BuildValue("i",l);
-        // }
     } PY_CATCH;
 }
 

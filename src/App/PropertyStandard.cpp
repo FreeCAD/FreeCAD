@@ -311,19 +311,7 @@ void PropertyEnumeration::setEnums(const char **plEnums)
 
 void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
 {
-    // _enum.setEnums() will preserve old value possible, so no need to do it
-    // here
-#if 0
-    if (_enum.isValid()) {
-        const std::string &index = getValueAsString();
-        _enum.setEnums(Enums);
-        setValue(index.c_str());
-    } else {
-        _enum.setEnums(Enums);
-    }
-#else
     setEnumVector(Enums);
-#endif
 }
 
 void PropertyEnumeration::setValue(const char *value)
@@ -459,13 +447,6 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
 PyObject * PropertyEnumeration::getPyObject()
 {
     if (!_enum.isValid()) {
-        // There is legimate use case of having an empty PropertyEnumeration and
-        // set its enumeration items later. Returning error here cause hasattr()
-        // to return False even though the property exists.
-        //
-        // PyErr_SetString(PyExc_AssertionError, "The enum is empty");
-        // return 0;
-        //
         Py_Return;
     }
 

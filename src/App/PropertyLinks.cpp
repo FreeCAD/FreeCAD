@@ -293,17 +293,6 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject 
 
     if(oldObj == obj) {
         if(owner == parent) {
-            // Do not throw on sub object error yet. It's better to let
-            // recompute find out the error and point out the affected objects
-            // to user.
-#if 0
-            if(subname && subname[0] && !newObj->getSubObject(subname)) {
-                FC_THROWM(Base::RuntimeError,
-                        "Sub-object '" << newObj->getFullName()
-                        << '.' << subname << "' not found when replacing link in "
-                        << owner->getFullName() << '.' << getName());
-            }
-#endif
             res.first = newObj;
             if(subname) res.second = subname;
             return res;
@@ -326,14 +315,6 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject 
             break;
         if(sobj == oldObj) {
             if(prev == parent) {
-#if 0
-                if(sub[pos] && !newObj->getSubObject(sub.c_str()+pos)) {
-                    FC_THROWM(Base::RuntimeError,
-                            "Sub-object '" << newObj->getFullName()
-                            << '.' << (sub.c_str()+pos) << "' not found when replacing link in "
-                            << owner->getFullName() << '.' << getName());
-                }
-#endif
                 if(sub[prevPos] == '$')
                     sub.replace(prevPos+1,pos-1-prevPos,newObj->Label.getValue());
                 else
@@ -1998,7 +1979,6 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues(b
 
 PyObject *PropertyLinkSubList::getPyObject(void)
 {
-#if 1
     std::vector<SubSet> subLists = getSubListValues();
     std::size_t count = subLists.size();
 #if 0//FIXME: Should switch to tuple
@@ -2021,24 +2001,6 @@ PyObject *PropertyLinkSubList::getPyObject(void)
     }
 
     return Py::new_reference_to(sequence);
-#else
-    unsigned int count = getSize();
-#if 0//FIXME: Should switch to tuple
-    Py::Tuple sequence(count);
-#else
-    Py::List sequence(count);
-#endif
-    for (unsigned int i = 0; i<count; i++) {
-        Py::Tuple tup(2);
-        tup[0] = Py::asObject(_lValueList[i]->getPyObject());
-        std::string subItem;
-        if (_lSubList.size() > i)
-            subItem = _lSubList[i];
-        tup[1] = Py::String(subItem);
-        sequence[i] = tup;
-    }
-    return Py::new_reference_to(sequence);
-#endif
 }
 
 void PropertyLinkSubList::setPyObject(PyObject *value)
@@ -2675,7 +2637,6 @@ public:
         if (path.startsWith(QLatin1String("https://")))
             return path;
         else {
-            // return QFileInfo(path).canonicalFilePath();
             return QFileInfo(path).absoluteFilePath();
         }
     }
@@ -2685,7 +2646,6 @@ public:
         if (path.startsWith(QLatin1String("https://")))
             return path;
         else {
-            // return QFileInfo(myPos->first).canonicalFilePath();
             return QFileInfo(myPos->first).absoluteFilePath();
         }
     }
@@ -2832,7 +2792,6 @@ public:
             return;
 
         QFileInfo info(myPos->first);
-        // QString path(info.canonicalFilePath());
         QString path(info.absoluteFilePath());
         const char *filename = doc.getFileName();
         QString docPath(getFullPath(filename));
