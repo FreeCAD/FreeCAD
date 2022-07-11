@@ -4043,7 +4043,7 @@ int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& 
     GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
 
     // If spline has too few poles, just move all
-    if (bsp.poles.size() <= (bsp.degree + 1))
+    if (bsp.poles.size() <= std::size_t(bsp.degree + 1))
         return initMove(geoId, pos, fine);
 
     // Find the closest knot
