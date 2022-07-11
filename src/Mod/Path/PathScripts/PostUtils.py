@@ -42,6 +42,7 @@ FreeCADGui = None
 if FreeCAD.GuiUp:
     import FreeCADGui
 
+
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, parent=None):
         super(GCodeHighlighter, self).__init__(parent)
@@ -177,7 +178,9 @@ def editor(gcode):
         FreeCAD.Console.PrintMessage(
             translate(
                 "Path",
-                "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize),
+                "GCode size too big ({} o), disabling syntax highlighter.".format(
+                    gcodeSize
+                ),
             )
         )
     result = dia.exec_()

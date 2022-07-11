@@ -39,10 +39,10 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
     @classmethod
     def setUpClass(cls):
         """setUpClass()...
-        This method is called upon instantiation of this test class.  Add code and objects here
-        that are needed for the duration of the test() methods in this class.  In other words,
-        set up the 'global' test environment here; use the `setUp()` method to set up a 'local'
-        test environment.
+        This method is called upon instantiation of this test class.  Add code
+        and objects here that are needed for the duration of the test() methods
+        in this class.  In other words, set up the 'global' test environment
+        here; use the `setUp()` method to set up a 'local' test environment.
         This method does not have access to the class `self` reference, but it
         is able to call static methods within this same class.
         """
@@ -53,10 +53,11 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
     @classmethod
     def tearDownClass(cls):
         """tearDownClass()...
-        This method is called prior to destruction of this test class.  Add code and objects here
-        that cleanup the test environment after the test() methods in this class have been executed.
-        This method does not have access to the class `self` reference.  This method
-        is able to call static methods within this same class.
+        This method is called prior to destruction of this test class.  Add
+        code and objects here that cleanup the test environment after the
+        test() methods in this class have been executed.  This method does not
+        have access to the class `self` reference.  This method is able to
+        call static methods within this same class.
         """
         # Close geometry document without saving
         FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
@@ -64,8 +65,8 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
     # Setup and tear down methods called before and after each unit test
     def setUp(self):
         """setUp()...
-        This method is called prior to each `test()` method.  Add code and objects here
-        that are needed for multiple `test()` methods.
+        This method is called prior to each `test()` method.  Add code and
+        objects here that are needed for multiple `test()` methods.
         """
         self.doc = FreeCAD.ActiveDocument
         self.con = FreeCAD.Console
@@ -90,7 +91,8 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         postables = [self.docobj]
 
         # Test generating with header
-        # header contains a time stamp that messes up unit testing. Only test length of result
+        # Header contains a time stamp that messes up unit testing.
+        # Only test length of result.
         args = "--no-show-editor"
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         self.assertTrue(len(gcode.splitlines()) == 14)
@@ -150,8 +152,6 @@ M2
         expected = "G0 X10.00 Y20.00 Z30.00"
         self.assertEqual(result, expected)
 
-
-
     def test020(self):
         """
         Test Line Numbers
@@ -209,7 +209,7 @@ M2
         expected = "G0 X0.3937 Y0.7874 Z1.1811"
         self.assertEqual(result, expected)
 
-        args = ("--no-header --inches --precision=2 --no-show-editor")
+        args = "--no-header --inches --precision=2 --no-show-editor"
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         result = gcode.splitlines()[5]
         expected = "G0 X0.39 Y0.79 Z1.18"

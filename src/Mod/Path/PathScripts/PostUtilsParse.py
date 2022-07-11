@@ -76,7 +76,9 @@ def drill_translate(values, outstring, cmd, params):
     if RETRACT_Z < drill_Z:
         trBuff += (
             linenumber(values)
-            + create_comment("Drill cycle error: R less than Z", values["COMMENT_SYMBOL"])
+            + create_comment(
+                "Drill cycle error: R less than Z", values["COMMENT_SYMBOL"]
+            )
             + "\n"
         )
         return trBuff
@@ -100,20 +102,27 @@ def drill_translate(values, outstring, cmd, params):
     elif cmd == "G82":
         drill_DwellTime = params["P"]
 
-    # wrap this block to ensure machine's values["MOTION_MODE"] is restored in case of error
+    # wrap this block to ensure machine's values["MOTION_MODE"] is restored
+    # in case of error
     try:
         if values["MOTION_MODE"] == "G91":
-            trBuff += linenumber(values) + "G90\n"  # force absolute coordinates during cycles
+            trBuff += (
+                linenumber(values) + "G90\n"
+            )  # force absolute coordinates during cycles
 
         strG0_RETRACT_Z = (
             "G0 Z"
-            + format(float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+            + format(
+                float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])),
+                axis_precision_string,
+            )
             + "\n"
         )
         strF_Feedrate = (
             " F"
             + format(
-                float(drill_feedrate.getValueAs(values["UNIT_SPEED_FORMAT"])), feed_precision_string
+                float(drill_feedrate.getValueAs(values["UNIT_SPEED_FORMAT"])),
+                feed_precision_string,
             )
             + "\n"
         )
@@ -125,9 +134,13 @@ def drill_translate(values, outstring, cmd, params):
         trBuff += (
             linenumber(values)
             + "G0 X"
-            + format(float(drill_X.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+            + format(
+                float(drill_X.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
+            )
             + " Y"
-            + format(float(drill_Y.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+            + format(
+                float(drill_Y.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
+            )
             + "\n"
         )
         if values["CURRENT_Z"] > RETRACT_Z:
@@ -136,7 +149,10 @@ def drill_translate(values, outstring, cmd, params):
             trBuff += (
                 linenumber(values)
                 + "G1 Z"
-                + format(float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+                + format(
+                    float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])),
+                    axis_precision_string,
+                )
                 + strF_Feedrate
             )
         last_Stop_Z = RETRACT_Z
@@ -146,7 +162,10 @@ def drill_translate(values, outstring, cmd, params):
             trBuff += (
                 linenumber(values)
                 + "G1 Z"
-                + format(float(drill_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+                + format(
+                    float(drill_Z.getValueAs(values["UNIT_FORMAT"])),
+                    axis_precision_string,
+                )
                 + strF_Feedrate
             )
             # pause where applicable
@@ -164,7 +183,9 @@ def drill_translate(values, outstring, cmd, params):
                             linenumber(values)
                             + "G0 Z"
                             + format(
-                                float(clearance_depth.getValueAs(values["UNIT_FORMAT"])),
+                                float(
+                                    clearance_depth.getValueAs(values["UNIT_FORMAT"])
+                                ),
                                 axis_precision_string,
                             )
                             + "\n"
@@ -243,7 +264,9 @@ def parse(values, pathobj):
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         if values["OUTPUT_COMMENTS"]:
-            comment = create_comment("Compound: " + pathobj.Label, values["COMMENT_SYMBOL"])
+            comment = create_comment(
+                "Compound: " + pathobj.Label, values["COMMENT_SYMBOL"]
+            )
             out += linenumber(values) + comment + "\n"
         for p in pathobj.Group:
             out += parse(values, p)
@@ -305,7 +328,9 @@ def parse(values, pathobj):
                     if opHorizRapid and opVertRapid:
                         command = "G1"
                     else:
-                        outstring.append("(Tool Controller Rapid Values are unset)" + "\n")
+                        outstring.append(
+                            "(Tool Controller Rapid Values are unset)" + "\n"
+                        )
 
             outstring.append(command)
 
@@ -318,16 +343,23 @@ def parse(values, pathobj):
             for param in values["PARAMETER_ORDER"]:
                 if param in c.Parameters:
                     if param == "F" and (
-                        currLocation[param] != c.Parameters[param] or values["OUTPUT_DOUBLES"]
+                        currLocation[param] != c.Parameters[param]
+                        or values["OUTPUT_DOUBLES"]
                     ):
                         # centroid and linuxcnc don't use rapid speeds
                         if command not in values["RAPID_MOVES"]:
-                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
+                            speed = Units.Quantity(
+                                c.Parameters["F"], FreeCAD.Units.Velocity
+                            )
                             if speed.getValueAs(values["UNIT_SPEED_FORMAT"]) > 0.0:
                                 outstring.append(
                                     param
                                     + format(
-                                        float(speed.getValueAs(values["UNIT_SPEED_FORMAT"])),
+                                        float(
+                                            speed.getValueAs(
+                                                values["UNIT_SPEED_FORMAT"]
+                                            )
+                                        ),
                                         feed_precision_string,
                                     )
                                 )
@@ -342,7 +374,9 @@ def parse(values, pathobj):
                             outstring.append(
                                 param
                                 + PostUtils.fmt(
-                                    c.Parameters[param], values["SPINDLE_DECIMALS"], "G21"
+                                    c.Parameters[param],
+                                    values["SPINDLE_DECIMALS"],
+                                    "G21",
                                 )
                             )
                         else:  # anything else that is supported (G41.1?, G42.1?)
@@ -350,10 +384,20 @@ def parse(values, pathobj):
                     elif param == "P":
                         if command in ["G2", "G02", "G3", "G03", "G5.2", "G5.3", "G10"]:
                             outstring.append(param + str(int(c.Parameters[param])))
-                        elif command in ["G4", "G04", "G64", "G76", "G82", "G86", "G89"]:
+                        elif command in [
+                            "G4",
+                            "G04",
+                            "G64",
+                            "G76",
+                            "G82",
+                            "G86",
+                            "G89",
+                        ]:
                             outstring.append(param + str(float(c.Parameters[param])))
                         elif command in ["G5", "G05"]:
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            pos = Units.Quantity(
+                                c.Parameters[param], FreeCAD.Units.Length
+                            )
                             outstring.append(
                                 param
                                 + format(
@@ -366,7 +410,9 @@ def parse(values, pathobj):
                     elif param == "S":
                         outstring.append(
                             param
-                            + PostUtils.fmt(c.Parameters[param], values["SPINDLE_DECIMALS"], "G21")
+                            + PostUtils.fmt(
+                                c.Parameters[param], values["SPINDLE_DECIMALS"], "G21"
+                            )
                         )
                     else:
                         if (
@@ -376,7 +422,9 @@ def parse(values, pathobj):
                         ):
                             continue
                         else:
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            pos = Units.Quantity(
+                                c.Parameters[param], FreeCAD.Units.Length
+                            )
                             outstring.append(
                                 param
                                 + format(
@@ -392,7 +440,11 @@ def parse(values, pathobj):
                             outstring.append(
                                 "F"
                                 + format(
-                                    float(opHorizRapid.getValueAs(values["UNIT_SPEED_FORMAT"])),
+                                    float(
+                                        opHorizRapid.getValueAs(
+                                            values["UNIT_SPEED_FORMAT"]
+                                        )
+                                    ),
                                     axis_precision_string,
                                 )
                             )
@@ -400,7 +452,11 @@ def parse(values, pathobj):
                             outstring.append(
                                 "F"
                                 + format(
-                                    float(opVertRapid.getValueAs(values["UNIT_SPEED_FORMAT"])),
+                                    float(
+                                        opVertRapid.getValueAs(
+                                            values["UNIT_SPEED_FORMAT"]
+                                        )
+                                    ),
                                     axis_precision_string,
                                 )
                             )
@@ -413,11 +469,17 @@ def parse(values, pathobj):
             # and the withdrawal plan
             if command in values["MOTION_COMMANDS"]:
                 if "X" in c.Parameters:
-                    values["CURRENT_X"] = Units.Quantity(c.Parameters["X"], FreeCAD.Units.Length)
+                    values["CURRENT_X"] = Units.Quantity(
+                        c.Parameters["X"], FreeCAD.Units.Length
+                    )
                 if "Y" in c.Parameters:
-                    values["CURRENT_Y"] = Units.Quantity(c.Parameters["Y"], FreeCAD.Units.Length)
+                    values["CURRENT_Y"] = Units.Quantity(
+                        c.Parameters["Y"], FreeCAD.Units.Length
+                    )
                 if "Z" in c.Parameters:
-                    values["CURRENT_Z"] = Units.Quantity(c.Parameters["Z"], FreeCAD.Units.Length)
+                    values["CURRENT_Z"] = Units.Quantity(
+                        c.Parameters["Z"], FreeCAD.Units.Length
+                    )
 
             if command in ("G98", "G99"):
                 values["DRILL_RETRACT_MODE"] = command
@@ -433,10 +495,14 @@ def parse(values, pathobj):
 
             if values["SPINDLE_WAIT"] > 0:
                 if command in ("M3", "M03", "M4", "M04"):
-                    out += linenumber(values) + format_outstring(values, outstring) + "\n"
+                    out += (
+                        linenumber(values) + format_outstring(values, outstring) + "\n"
+                    )
                     out += (
                         linenumber(values)
-                        + format_outstring(values, ["G4", "P%s" % values["SPINDLE_WAIT"]])
+                        + format_outstring(
+                            values, ["G4", "P%s" % values["SPINDLE_WAIT"]]
+                        )
                         + "\n"
                     )
                     outstring = []
@@ -444,7 +510,9 @@ def parse(values, pathobj):
             # Check for Tool Change:
             if command in ("M6", "M06"):
                 if values["OUTPUT_COMMENTS"]:
-                    comment = create_comment("Begin toolchange", values["COMMENT_SYMBOL"])
+                    comment = create_comment(
+                        "Begin toolchange", values["COMMENT_SYMBOL"]
+                    )
                     out += linenumber(values) + comment + "\n"
                 if values["OUTPUT_TOOL_CHANGE"]:
                     if values["STOP_SPINDLE_FOR_TOOL_CHANGE"]:

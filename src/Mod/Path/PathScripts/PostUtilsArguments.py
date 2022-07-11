@@ -36,7 +36,13 @@ import shlex
 
 
 def add_flag_type_arguments(
-    argument_group, default_flag, true_argument, false_argument, true_help, false_help, visible=True
+    argument_group,
+    default_flag,
+    true_argument,
+    false_argument,
+    true_help,
+    false_help,
+    visible=True,
 ):
     if visible:
         if default_flag:
@@ -50,7 +56,7 @@ def add_flag_type_arguments(
 
 
 def init_argument_defaults(argument_defaults):
-    """Initialize which argument to show as the default in flag-type arguments"""
+    """Initialize which argument to show as the default in flag-type arguments."""
     argument_defaults["axis-modal"] = False
     argument_defaults["bcnc"] = False
     argument_defaults["comments"] = True
@@ -91,7 +97,9 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
     parser = argparse.ArgumentParser(
         prog=values["MACHINE_NAME"], usage=argparse.SUPPRESS, add_help=False
     )
-    shared = parser.add_argument_group("Arguments that are shared with all postprocessors")
+    shared = parser.add_argument_group(
+        "Arguments that are shared with all postprocessors"
+    )
     add_flag_type_arguments(
         shared,
         argument_defaults["metric_inches"],
@@ -142,9 +150,8 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         arguments_visible["comments"],
     )
     if arguments_visible["feed-precision"]:
-        help_message = (
-            "Number of digits of precision for feed rate, default is "
-            + str(values["DEFAULT_FEED_PRECISION"])
+        help_message = "Number of digits of precision for feed rate, default is " + str(
+            values["DEFAULT_FEED_PRECISION"]
         )
     else:
         help_message = argparse.SUPPRESS
@@ -199,9 +206,10 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--preamble", help=help_message)
-    # The --precision argument is included for backwards compatibility with some postprocessors.
-    # If both --axis-precision and --precision are provided, the --axis-precision value "wins".
-    # If both --feed-precision and --precision are provided, the --feed-precision value "wins".
+    # The --precision argument is included for backwards compatibility with
+    # some postprocessors.  If both --axis-precision and --precision are provided,
+    # the --axis-precision value "wins".  If both --feed-precision and --precision
+    # are provided, the --feed-precision value "wins".
     if arguments_visible["precision"]:
         help_message = (
             "Number of digits of precision for both feed rate and axis moves, default is "
@@ -263,7 +271,9 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         help_message = "Time to wait (in seconds) after M3, M4 (default = 0.0)"
     else:
         help_message = argparse.SUPPRESS
-    shared.add_argument("--wait-for-spindle", type=float, default=0.0, help=help_message)
+    shared.add_argument(
+        "--wait-for-spindle", type=float, default=0.0, help=help_message
+    )
     return parser
 
 
@@ -394,7 +404,8 @@ def init_shared_values(values):
     #
     values["OUTPUT_COMMENTS"] = True
     #
-    # if False duplicate axis values are suppressed if they are the same as the previous line.
+    # if False duplicate axis values are suppressed if they are the same as
+    # the previous line.
     #
     values["OUTPUT_DOUBLES"] = True
     #
@@ -616,7 +627,9 @@ def process_shared_arguments(values, parser, argstring):
             values["RETURN_TO"] = [int(v) for v in args.return_to.split(",")]
             if len(values["RETURN_TO"]) != 3:
                 values["RETURN_TO"] = None
-                print("--return-to coordinates must be specified as <x>,<y>,<z>, ignoring")
+                print(
+                    "--return-to coordinates must be specified as <x>,<y>,<z>, ignoring"
+                )
         if args.show_editor:
             values["SHOW_EDITOR"] = True
         if args.no_show_editor:

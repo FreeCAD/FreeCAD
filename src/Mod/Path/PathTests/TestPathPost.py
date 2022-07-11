@@ -156,7 +156,10 @@ class TestPathPost(unittest.TestCase):
                     )
                     processor = PostProcessor.load(postprocessor_id)
                     output_file_path = FreeCAD.getHomePath() + PATHTESTS_LOCATION
-                    output_file_pattern = "test_%s_%s" % (postprocessor_id, output_file_id)
+                    output_file_pattern = "test_%s_%s" % (
+                        postprocessor_id,
+                        output_file_id,
+                    )
                     output_file_extension = ".ngc"
                     for idx, section in enumerate(postlist):
                         partname = section[0]
@@ -173,23 +176,34 @@ class TestPathPost(unittest.TestCase):
                         file_path, extension = os.path.splitext(output_filename)
                         reference_file_name = "%s%s%s" % (file_path, "_ref", extension)
                         # print("reference file: " + reference_file_name)
-                        gcode = processor.export(sublist, output_filename, postprocessor_arguments)
+                        gcode = processor.export(
+                            sublist, output_filename, postprocessor_arguments
+                        )
                         if not gcode:
                             print("no gcode")
                         with open(reference_file_name, "r") as fp:
                             reference_gcode = fp.read()
                         if not reference_gcode:
                             print("no reference gcode")
-                        # Remove the "Output Time:" line in the header from the comparison
-                        # if it is present because it changes with every test.
-                        gcode_lines = [i for i in gcode.splitlines(True) if "Output Time:" not in i]
+                        # Remove the "Output Time:" line in the header from the
+                        # comparison if it is present because it changes with
+                        # every test.
+                        gcode_lines = [
+                            i for i in gcode.splitlines(True) if "Output Time:" not in i
+                        ]
                         reference_gcode_lines = [
-                            i for i in reference_gcode.splitlines(True) if "Output Time:" not in i
+                            i
+                            for i in reference_gcode.splitlines(True)
+                            if "Output Time:" not in i
                         ]
                         if gcode_lines != reference_gcode_lines:
-                            msg = "".join(difflib.ndiff(gcode_lines, reference_gcode_lines))
+                            msg = "".join(
+                                difflib.ndiff(gcode_lines, reference_gcode_lines)
+                            )
                             self.fail(
-                                os.path.basename(output_filename) + " output doesn't match:\n" + msg
+                                os.path.basename(output_filename)
+                                + " output doesn't match:\n"
+                                + msg
                             )
                         if not KEEP_DEBUG_OUTPUT:
                             os.remove(output_filename)
@@ -214,11 +228,15 @@ class TestPathPostUtils(unittest.TestCase):
 
         testpath = Path.Path(commands)
         self.assertTrue(len(testpath.Commands) == 9)
-        self.assertTrue(len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4)
+        self.assertTrue(
+            len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4
+        )
 
         results = PostUtils.splitArcs(testpath)
         # self.assertTrue(len(results.Commands) == 117)
-        self.assertTrue(len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0)
+        self.assertTrue(
+            len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0
+        )
 
 
 def dumpgroup(group):
@@ -392,7 +410,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
         FreeCAD.setActiveDocument(self.doc.Label)
         teststring = ""
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         self.job.SplitOutput = False
         outlist = PathPost.buildPostList(self.job)
 
@@ -406,7 +426,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # Test basic string substitution without splitting
         teststring = "~/Desktop/%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         self.job.SplitOutput = False
         outlist = PathPost.buildPostList(self.job)
 
@@ -414,24 +436,31 @@ class TestOutputNameSubstitution(unittest.TestCase):
         subpart, objs = outlist[0]
 
         filename = PathPost.resolveFileName(self.job, subpart, 0)
-        self.assertEqual(os.path.normpath(filename), os.path.normpath("~/Desktop/MainJob.nc"))
+        self.assertEqual(
+            os.path.normpath(filename), os.path.normpath("~/Desktop/MainJob.nc")
+        )
 
     def test010(self):
         # Substitute current file path
         teststring = "%D/testfile.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         outlist = PathPost.buildPostList(self.job)
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
         self.assertEqual(
-            os.path.normpath(filename), os.path.normpath(f"{self.testfilepath}/testfile.nc")
+            os.path.normpath(filename),
+            os.path.normpath(f"{self.testfilepath}/testfile.nc"),
         )
 
     def test020(self):
         teststring = "%d.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         outlist = PathPost.buildPostList(self.job)
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
@@ -440,7 +469,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
     def test030(self):
         teststring = "%M/outfile.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         outlist = PathPost.buildPostList(self.job)
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
@@ -450,19 +481,24 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # unused substitution strings should be ignored
         teststring = "%d%T%t%W%O/testdoc.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         outlist = PathPost.buildPostList(self.job)
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
         self.assertEqual(
-            os.path.normpath(filename), os.path.normpath(f"{self.testfilename}/testdoc.nc")
+            os.path.normpath(filename),
+            os.path.normpath(f"{self.testfilename}/testdoc.nc"),
         )
 
     def test050(self):
         # explicitly using the sequence number should include it where indicated.
         teststring = "%S-%d.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         outlist = PathPost.buildPostList(self.job)
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
@@ -477,7 +513,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # substitute jobname and use default sequence numbers
         teststring = "%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
         self.assertEqual(filename, "MainJob-0.nc")
@@ -488,7 +526,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # Use Toolnumbers and default sequence numbers
         teststring = "%T.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         outlist = PathPost.buildPostList(self.job)
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
@@ -500,7 +540,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # Use Tooldescriptions and default sequence numbers
         teststring = "%t.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         outlist = PathPost.buildPostList(self.job)
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
@@ -517,7 +559,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
         teststring = "%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
         self.assertEqual(filename, "MainJob-0.nc")
@@ -527,7 +571,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
         teststring = "%W-%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
         self.assertEqual(filename, "G54-MainJob-0.nc")
@@ -543,7 +589,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
         teststring = "%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
         self.assertEqual(filename, "MainJob-0.nc")
@@ -553,7 +601,9 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
         teststring = "%O-%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
+        PathPreferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
         self.assertEqual(filename, "OutsideProfile-MainJob-0.nc")

@@ -80,7 +80,9 @@ def processFileNameSubstitutions(
             if not D:
                 D = "."
         else:
-            FreeCAD.Console.PrintError("Please save document in order to resolve output path!\n")
+            FreeCAD.Console.PrintError(
+                "Please save document in order to resolve output path!\n"
+            )
             return None
         outputpath = outputpath.replace("%D", D)
 
@@ -133,7 +135,9 @@ def processFileNameSubstitutions(
         if "%O" in filename and job.OrderOutputBy == "Operation":
             filename = filename.replace("%O", subpartname)
 
-        if "%S" in filename:  # We always add a sequence number but the user can say where
+        if (
+            "%S" in filename
+        ):  # We always add a sequence number but the user can say where
             filename = filename.replace("%S", str(sequencenumber))
         else:
             filename = f"{filename}-{sequencenumber}"
@@ -208,9 +212,10 @@ def resolveFileName(job, subpartname, sequencenumber):
     # This section determines whether user interaction is necessary
     policy = PathPreferences.defaultOutputPolicy()
 
-    openDialog = (policy == "Open File Dialog")
+    openDialog = policy == "Open File Dialog"
     # if os.path.isdir(filename) or not os.path.isdir(os.path.dirname(filename)):
-    #     # Either the entire filename resolves into a directory or the parent directory doesn't exist.
+    #     # Either the entire filename resolves into a directory or the parent
+    #     # directory doesn't exist.
     #     # Either way I don't know what to do - ask for help
     #     openDialog = True
 
@@ -252,7 +257,7 @@ def resolveFileName(job, subpartname, sequencenumber):
 def buildPostList(job):
     """Takes the job and determines the specific objects and order to
     postprocess  Returns a list of objects which can be passed to
-    exportObjectsWith() for final posting"""
+    exportObjectsWith() for final posting."""
     wcslist = job.Fixtures
     orderby = job.OrderOutputBy
 
@@ -260,8 +265,8 @@ def buildPostList(job):
 
     if orderby == "Fixture":
         PathLog.debug("Ordering by Fixture")
-        # Order by fixture means all operations and tool changes will be completed in one
-        # fixture before moving to the next.
+        # Order by fixture means all operations and tool changes will be
+        # completed in one fixture before moving to the next.
 
         currTool = None
         for index, f in enumerate(wcslist):
@@ -273,7 +278,8 @@ def buildPostList(job):
                 c2 = Path.Command(
                     "G0 Z"
                     + str(
-                        job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value
+                        job.Stock.Shape.BoundBox.ZMax
+                        + job.SetupSheet.ClearanceHeightOffset.Value
                     )
                 )
                 fobj.Path.addCommands(c2)
@@ -308,7 +314,10 @@ def buildPostList(job):
             c1 = Path.Command(f)
             c2 = Path.Command(
                 "G0 Z"
-                + str(job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value)
+                + str(
+                    job.Stock.Shape.BoundBox.ZMax
+                    + job.SetupSheet.ClearanceHeightOffset.Value
+                )
             )
             fobj.Path = Path.Path([c1, c2])
             fobj.InList.append(job)
@@ -408,7 +417,9 @@ def buildPostList(job):
         return postlist
     else:
         PathLog.track()
-        finalpostlist = [("allitems", [item for slist in postlist for item in slist[1]])]
+        finalpostlist = [
+            ("allitems", [item for slist in postlist for item in slist[1]])
+        ]
         return finalpostlist
 
 
@@ -418,7 +429,9 @@ class DlgSelectPostProcessor:
         firstItem = None
         for post in PathPreferences.allEnabledPostProcessors():
             item = QtGui.QListWidgetItem(post)
-            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
+            item.setFlags(
+                QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
+            )
             self.dialog.lwPostProcessor.addItem(item)
             if not firstItem:
                 firstItem = item
@@ -527,7 +540,9 @@ class CommandPathPost:
 
         selected = FreeCADGui.Selection.getSelectionEx()
         if len(selected) > 1:
-            FreeCAD.Console.PrintError("Please select a single job or other path object\n")
+            FreeCAD.Console.PrintError(
+                "Please select a single job or other path object\n"
+            )
             return
         elif len(selected) == 1:
             sel = selected[0].Object

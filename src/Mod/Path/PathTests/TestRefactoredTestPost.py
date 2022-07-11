@@ -41,10 +41,10 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
     def setUpClass(cls):
         """setUpClass()...
 
-        This method is called upon instantiation of this test class.  Add code and objects here
-        that are needed for the duration of the test() methods in this class.  In other words,
-        set up the 'global' test environment here; use the `setUp()` method to set up a 'local'
-        test environment.
+        This method is called upon instantiation of this test class.  Add code
+        and objects here that are needed for the duration of the test() methods
+        in this class.  In other words, set up the 'global' test environment
+        here; use the `setUp()` method to set up a 'local' test environment.
         This method does not have access to the class `self` reference, but it
         is able to call static methods within this same class.
         """
@@ -55,10 +55,11 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
     def tearDownClass(cls):
         """tearDownClass()...
 
-        This method is called prior to destruction of this test class.  Add code and objects here
-        that cleanup the test environment after the test() methods in this class have been executed.
-        This method does not have access to the class `self` reference.  This method
-        is able to call static methods within this same class.
+        This method is called prior to destruction of this test class.  Add
+        code and objects here that cleanup the test environment after the
+        test() methods in this class have been executed.  This method does
+        not have access to the class `self` reference.  This method is able
+        to call static methods within this same class.
         """
         # Close geometry document without saving
         FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
@@ -68,8 +69,8 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
     def setUp(self):
         """setUp()...
 
-        This method is called prior to each `test()` method.  Add code and objects here
-        that are needed for multiple `test()` methods.
+        This method is called prior to each `test()` method.  Add code and
+        objects here that are needed for multiple `test()` methods.
         """
         self.doc = FreeCAD.ActiveDocument
         self.con = FreeCAD.Console
@@ -103,7 +104,8 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[0], "(Exported by FreeCAD)")
         self.assertEqual(
-            gcode.splitlines()[1], "(Post Processor: PathScripts.post.refactored_test_post)"
+            gcode.splitlines()[1],
+            "(Post Processor: PathScripts.post.refactored_test_post)",
         )
         self.assertEqual(gcode.splitlines()[2], "(Cam File: )")
         self.assertIn("(Output Time: ", gcode.splitlines()[3])
@@ -134,7 +136,8 @@ G21
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[0], "(Exported by FreeCAD)")
         self.assertEqual(
-            gcode.splitlines()[1], "(Post Processor: PathScripts.post.refactored_test_post)"
+            gcode.splitlines()[1],
+            "(Post Processor: PathScripts.post.refactored_test_post)",
         )
         self.assertEqual(gcode.splitlines()[2], "(Cam File: )")
         self.assertIn("(Output Time: ", gcode.splitlines()[3])
@@ -237,13 +240,15 @@ G21
         args = ""
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         # print("--------\n" + gcode + "--------\n")
-        # Note:  The "internal" F speed is in mm/s, while the output F speed is in mm/min.
+        # Note:  The "internal" F speed is in mm/s,
+        #        while the output F speed is in mm/min.
         self.assertEqual(gcode.splitlines()[2], "G1 X10.000 Y20.000 Z30.000 F7387.407")
 
         args = "--feed-precision=2"
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         # print("--------\n" + gcode + "--------\n")
-        # Note:  The "internal" F speed is in mm/s, while the output F speed is in mm/min.
+        # Note:  The "internal" F speed is in mm/s,
+        #        while the output F speed is in mm/min.
         self.assertEqual(gcode.splitlines()[2], "G1 X10.000 Y20.000 Z30.000 F7387.41")
 
     def test00150(self):
