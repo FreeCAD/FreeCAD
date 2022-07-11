@@ -106,11 +106,6 @@ FeatureTest::FeatureTest()
   QuantityLength.setUnit(Base::Unit::Length);
   ADD_PROPERTY(QuantityOther,(5.0));
   QuantityOther.setUnit(Base::Unit(-3,1));
-  //ADD_PROPERTY(QuantityMass,(1.0));
-  //QuantityMass.setUnit(Base::Unit::Mass);
-  //ADD_PROPERTY(QuantityAngle,(1.0));
-  //QuantityAngle.setUnit(Base::Unit::Angle);
-
 }
 
 FeatureTest::~FeatureTest()
@@ -158,31 +153,7 @@ DocumentObjectExecReturn *FeatureTest::execute()
     list.emplace_back("World");
     enumObj6.setEnums(list);
     enumObj6.setValue(list.back());
-    /*
-doc=App.newDocument()
-obj=doc.addObject("App::FeatureTest")
 
-obj.ExceptionType=0 # good
-doc.recompute()
-
-obj.ExceptionType=1 # unknown exception
-doc.recompute()
-
-obj.ExceptionType=2 # Runtime error
-doc.recompute()
-
-obj.ExceptionType=3 # segfault
-doc.recompute()
-
-obj.ExceptionType=4 # segfault
-doc.recompute()
-
-obj.ExceptionType=5 # int division by zero
-doc.recompute()
-
-obj.ExceptionType=6 # float division by zero
-doc.recompute()
-     */
     int *i=nullptr,j;
     float f;
     void *s;
@@ -195,15 +166,7 @@ doc.recompute()
         case 0: break;
         case 1: throw std::runtime_error("Test Exception");
         case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
-#if 0 // only allow these error types on purpose
-        case 3: *i=0;printf("%i",*i);break;                 // seg-fault
-        case 4: t = nullptr; break;                         // seg-fault
-        case 5: j=0; printf("%i",1/j); break;               // int division by zero
-        case 6: f=0.0; printf("%f",1/f); break;             // float division by zero
-        case 7: s = malloc(3600000000ul); free(s); break;   // out-of-memory
-#else
         default: (void)i; (void)j; (void)f; (void)s; (void)t; break;
-#endif
     }
 
     ExecCount.setValue(ExecCount.getValue() + 1);

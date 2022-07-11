@@ -412,25 +412,9 @@ void Application::setupPythonException(PyObject* module)
 /// get called by the document when the name is changing
 void Application::renameDocument(const char *OldName, const char *NewName)
 {
-#if 1
     (void)OldName;
     (void)NewName;
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
-#else
-    std::map<std::string,Document*>::iterator pos;
-    pos = DocMap.find(OldName);
-
-    if (pos != DocMap.end()) {
-        Document* temp;
-        temp = pos->second;
-        DocMap.erase(pos);
-        DocMap[NewName] = temp;
-        signalRenameDocument(*temp);
-    }
-    else {
-        throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
-    }
-#endif
 }
 
 Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
