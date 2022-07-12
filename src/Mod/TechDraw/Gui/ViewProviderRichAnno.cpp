@@ -80,16 +80,14 @@ void ViewProviderRichAnno::attach(App::DocumentObject *pcFeat)
 bool ViewProviderRichAnno::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog()) { //TaskPanel already open!
-            return false;
-        }
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgRichAnno(this));
-        return true;
-    } else {
+    if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
+    if (Gui::Control().activeDialog()) { //TaskPanel already open!
+        return false;
+    }
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgRichAnno(this));
     return true;
 }
 
@@ -170,10 +168,9 @@ double ViewProviderRichAnno::getDefFontSize()
 
 double ViewProviderRichAnno::getDefLineWeight(void)
 {
-    double result = 0.0;
     int lgNumber = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    result = lg->getWeight("Graphics");
+    double result = lg->getWeight("Graphics");
     delete lg;
     return result;
 }
