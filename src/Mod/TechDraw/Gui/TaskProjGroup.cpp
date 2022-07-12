@@ -144,22 +144,24 @@ TaskProjGroup::~TaskProjGroup()
 void TaskProjGroup::saveGroupState()
 {
 //    Base::Console().Message("TPG::saveGroupState()\n");
-    if (multiView != nullptr) {
-        m_saveSource   = multiView->Source.getValues();
-        m_saveProjType = multiView->ProjectionType.getValueAsString();
-        m_saveScaleType = multiView->ScaleType.getValueAsString();
-        m_saveScale = multiView->Scale.getValue();
-        m_saveAutoDistribute = multiView->AutoDistribute.getValue();
-        m_saveSpacingX = multiView->spacingX.getValue();
-        m_saveSpacingY = multiView->spacingY.getValue();
-        DrawProjGroupItem* anchor = multiView->getAnchor();
-        m_saveDirection = anchor->Direction.getValue();
+    if (multiView == nullptr) {
+        return;
+    }
 
-        for( const auto it : multiView->Views.getValues() ) {
-            auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-            if (view != nullptr) {
-                m_saveViewNames.push_back(view->Type.getValueAsString());
-            }
+    m_saveSource   = multiView->Source.getValues();
+    m_saveProjType = multiView->ProjectionType.getValueAsString();
+    m_saveScaleType = multiView->ScaleType.getValueAsString();
+    m_saveScale = multiView->Scale.getValue();
+    m_saveAutoDistribute = multiView->AutoDistribute.getValue();
+    m_saveSpacingX = multiView->spacingX.getValue();
+    m_saveSpacingY = multiView->spacingY.getValue();
+    DrawProjGroupItem* anchor = multiView->getAnchor();
+    m_saveDirection = anchor->Direction.getValue();
+
+    for( const auto it : multiView->Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if (view != nullptr) {
+            m_saveViewNames.push_back(view->Type.getValueAsString());
         }
     }
 }
@@ -168,18 +170,20 @@ void TaskProjGroup::saveGroupState()
 void TaskProjGroup::restoreGroupState()
 {
     Base::Console().Message("TPG::restoreGroupState()\n");
-    if (multiView != nullptr) {
-        multiView->ProjectionType.setValue(m_saveProjType.c_str());
-        multiView->ScaleType.setValue(m_saveScaleType.c_str());
-        multiView->Scale.setValue(m_saveScale);
-        multiView->AutoDistribute.setValue(m_saveAutoDistribute);
-        multiView->spacingX.setValue(m_saveSpacingX);
-        multiView->spacingY.setValue(m_saveSpacingY);
-        multiView->purgeProjections();
-        for(auto & sv : m_saveViewNames) {
-            if (sv != "Front") {
-                multiView->addProjection(sv.c_str());
-            }
+    if (multiView == nullptr) {
+        return;
+    }
+
+    multiView->ProjectionType.setValue(m_saveProjType.c_str());
+    multiView->ScaleType.setValue(m_saveScaleType.c_str());
+    multiView->Scale.setValue(m_saveScale);
+    multiView->AutoDistribute.setValue(m_saveAutoDistribute);
+    multiView->spacingX.setValue(m_saveSpacingX);
+    multiView->spacingY.setValue(m_saveSpacingY);
+    multiView->purgeProjections();
+    for(auto & sv : m_saveViewNames) {
+        if (sv != "Front") {
+            multiView->addProjection(sv.c_str());
         }
     }
 }
