@@ -217,31 +217,35 @@ void TaskSectionView::setUiEdit()
 void TaskSectionView::saveSectionState()
 {
 //    Base::Console().Message("TSV::saveSectionState()\n");
-    if (m_section != nullptr) {
-        m_saveSymbol = m_section->SectionSymbol.getValue();
-        m_saveScale  = m_section->getScale();
-        m_saveScaleType = m_section->ScaleType.getValue();
-        m_saveNormal = m_section->SectionNormal.getValue();
-        m_saveDirection = m_section->Direction.getValue();
-        m_saveOrigin    = m_section->SectionOrigin.getValue();
-        m_saveDirName   = m_section->SectionDirection.getValueAsString();
-        m_saved = true;
+    if (m_section == nullptr) {
+        return;
     }
+
+    m_saveSymbol = m_section->SectionSymbol.getValue();
+    m_saveScale  = m_section->getScale();
+    m_saveScaleType = m_section->ScaleType.getValue();
+    m_saveNormal = m_section->SectionNormal.getValue();
+    m_saveDirection = m_section->Direction.getValue();
+    m_saveOrigin    = m_section->SectionOrigin.getValue();
+    m_saveDirName   = m_section->SectionDirection.getValueAsString();
+    m_saved = true;
 }
 
 //restore the start conditions
 void TaskSectionView::restoreSectionState()
 {
 //    Base::Console().Message("TSV::restoreSectionState()\n");
-    if (m_section != nullptr) {
-        m_section->SectionSymbol.setValue(m_saveSymbol);
-        m_section->Scale.setValue(m_saveScale);
-        m_section->ScaleType.setValue(m_saveScaleType);
-        m_section->SectionNormal.setValue(m_saveNormal);
-        m_section->Direction.setValue(m_saveDirection);
-        m_section->SectionOrigin.setValue(m_saveOrigin);
-        m_section->SectionDirection.setValue(m_saveDirName.c_str());
+    if (m_section == nullptr) {
+        return;
     }
+
+    m_section->SectionSymbol.setValue(m_saveSymbol);
+    m_section->Scale.setValue(m_saveScale);
+    m_section->ScaleType.setValue(m_saveScaleType);
+    m_section->SectionNormal.setValue(m_saveNormal);
+    m_section->Direction.setValue(m_saveDirection);
+    m_section->SectionOrigin.setValue(m_saveOrigin);
+    m_section->SectionDirection.setValue(m_saveDirName.c_str());
 }
 
 void TaskSectionView::onUpClicked()
@@ -378,13 +382,14 @@ void TaskSectionView::applyQuick(std::string dir)
     if (m_section == nullptr) {
         createSectionView();
     }
-    if (isSectionValid()) {
-        updateSectionView();
-        enableAll(true);
-    } else {
+
+    if (!isSectionValid()) {
         failNoObject(m_sectionName);
         return;
     }
+
+    updateSectionView();
+    enableAll(true);
 
     m_section->recomputeFeature();
     if (isBaseValid()) {
@@ -504,30 +509,30 @@ void TaskSectionView::failNoObject(std::string objectName)
 
 bool TaskSectionView::isBaseValid(void)
 {
-    bool result = true;
     if (m_base == nullptr) {
-        result = false;
-    } else {
-        App::DocumentObject* baseObj = m_doc->getObject(m_saveBaseName.c_str());
-        if (baseObj == nullptr) {
-            result = false;
-        }
+        return false;
     }
-    return result;
+
+    App::DocumentObject* baseObj = m_doc->getObject(m_saveBaseName.c_str());
+    if (baseObj == nullptr) {
+        return false;
+    }
+
+    return true;
 }
 
 bool TaskSectionView::isSectionValid(void)
 {
-    bool result = true;
     if (m_section == nullptr) {
-        result = false;
-    } else {
-        App::DocumentObject* sectionObj = m_doc->getObject(m_sectionName.c_str());
-        if (sectionObj == nullptr) {
-            result = false;
-        }
+        return false;
     }
-    return result;
+
+    App::DocumentObject* sectionObj = m_doc->getObject(m_sectionName.c_str());
+    if (sectionObj == nullptr) {
+        return false;
+    }
+    
+    return true;
 }
 
 //******************************************************************************
