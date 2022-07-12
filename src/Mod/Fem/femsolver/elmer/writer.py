@@ -95,7 +95,14 @@ class Writer(object):
         self._writeStartinfo()
 
     def _handleUnits(self):
-        # TODO constants and units
+        # Elmer solver writer no longer uses FreeCAD unit system
+        # to retrieve units for writing the sif file
+        #
+        # ATM Elmer writer uses SI units only
+        #
+        # see forum topic: https://forum.freecadweb.org/viewtopic.php?f=18&t=70150
+        #
+        # TODO: adapt method and comment
         # should be only one system for all solver and not in each solver
         # https://forum.freecadweb.org/viewtopic.php?t=47895
         # https://forum.freecadweb.org/viewtopic.php?t=48451
