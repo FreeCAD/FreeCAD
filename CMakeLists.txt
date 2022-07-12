@@ -13,6 +13,9 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
+# for cross compiling: https://stackoverflow.com/a/53635241
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+
 project(FreeCAD)
 
 set(PACKAGE_VERSION_NAME "Vulcan")
