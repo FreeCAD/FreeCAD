@@ -1749,15 +1749,13 @@ bool PropertySheet::isBindingPath(const ObjectIdentifier &path,
     if (comps.size()!=4 
             || !comps[2].isSimple()
             || !comps[3].isSimple()
-            || (comps[1].getName()!="Bind"
-                && comps[1].getName()!="BindHREF"
-                && comps[1].getName()!="BindHiddenRef")
+            || (comps[1].getName()!="Bind" && comps[1].getName()!="BindHiddenRef")
             || path.getProperty() != this)
     {
         return false;
     }
     if(href)
-        *href = (comps[1].getName()=="BindHREF" || comps[1].getName()=="BindHiddenRef");
+        *href = ( comps[1].getName()=="BindHiddenRef");
     if(from)
         *from = CellAddress(comps[2].getName());
     if(to)
