@@ -126,13 +126,13 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     //                                or ViewProviderWeld.setEdit
 
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
-    if ( (obj != nullptr) &&
-         (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) )  {
-        m_leadFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
-    } else {
+    if (obj == nullptr ||
+        !obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) )  {
         Base::Console().Error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
         return;
     }
+
+    m_leadFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
 
     ui->setupUi(this);
 
@@ -272,47 +272,36 @@ void TaskWeldingSymbol::setUiEdit()
     ui->pbArrowSymbol->setFocus();
 }
 
-void TaskWeldingSymbol::onArrowSymbolCreateClicked()
+void TaskWeldingSymbol::symbolDialog(const char* source)
 {
-    QString source = tr("arrow");
-    SymbolChooser* dlg = new SymbolChooser(this, m_currDir, source);
+    QString _source = tr(source);
+    SymbolChooser* dlg = new SymbolChooser(this, m_currDir, _source);
     connect(dlg, SIGNAL(symbolSelected(QString, QString)),
-        this, SLOT(onSymbolSelected(QString, QString)));
+            this, SLOT(onSymbolSelected(QString, QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->exec();
 }
 
+void TaskWeldingSymbol::onArrowSymbolCreateClicked()
+{
+    symbolDialog("arrow");
+}
+
 void TaskWeldingSymbol::onArrowSymbolClicked()
 {
-    QString source = tr("arrow");
-    SymbolChooser* dlg = new SymbolChooser(this, m_currDir, source);
-    connect(dlg, SIGNAL(symbolSelected(QString, QString)),
-            this, SLOT(onSymbolSelected(QString, QString)));
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-
-    dlg->exec();
+    symbolDialog("arrow");
     updateTiles();
     m_weldFeat->requestPaint();
 }
 
 void TaskWeldingSymbol::onOtherSymbolCreateClicked()
 {
-    QString source = tr("other");
-    SymbolChooser* dlg = new SymbolChooser(this, m_currDir, source);
-    connect(dlg, SIGNAL(symbolSelected(QString, QString)),
-        this, SLOT(onSymbolSelected(QString, QString)));
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->exec();
+    symbolDialog("other");
 }
 
 void TaskWeldingSymbol::onOtherSymbolClicked()
 {
-    QString source = tr("other");
-    SymbolChooser* dlg = new SymbolChooser(this, m_currDir, source);
-    connect(dlg, SIGNAL(symbolSelected(QString, QString)),
-            this, SLOT(onSymbolSelected(QString, QString)));
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->exec();
+    symbolDialog("other");
     updateTiles();
     m_weldFeat->requestPaint();
 }
@@ -475,13 +464,15 @@ void TaskWeldingSymbol::getTileFeats(void)
     m_arrowFeat = nullptr;
     m_otherFeat = nullptr;
 
-    if (!tiles.empty()) {
-        TechDraw::DrawTileWeld* tempTile = tiles.at(0);
-        if (tempTile->TileRow.getValue() == 0) {
-            m_arrowFeat = tempTile;
-        } else {
-            m_otherFeat = tempTile;
-        }
+    if (tiles.empty()) {
+        return;
+    }
+
+    TechDraw::DrawTileWeld* tempTile = tiles.at(0);
+    if (tempTile->TileRow.getValue() == 0) {
+        m_arrowFeat = tempTile;
+    } else {
+        m_otherFeat = tempTile;
     }
     if (tiles.size() > 1) {
         TechDraw::DrawTileWeld* tempTile = tiles.at(1);

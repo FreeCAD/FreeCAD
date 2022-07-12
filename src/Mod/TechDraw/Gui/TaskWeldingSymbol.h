@@ -98,6 +98,7 @@ public:
     ~TaskWeldingSymbol();
 
 public Q_SLOTS:
+    void symbolDialog(const char* source);
     void onArrowSymbolCreateClicked();
     void onArrowSymbolClicked();
     void onOtherSymbolCreateClicked();
