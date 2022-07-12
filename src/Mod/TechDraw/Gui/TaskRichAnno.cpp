@@ -424,27 +424,28 @@ void TaskRichAnno::commonFeatureUpdate(void)
 void TaskRichAnno::removeFeature(void)
 {
 //    Base::Console().Message("TRA::removeFeature()\n");
-    if (m_annoFeat != nullptr) {
-        if (m_createMode) {
-            try {
-                // this doesn't remove the QGMText item??
-                std::string PageName = m_basePage->getNameInDocument();
-                Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                        PageName.c_str(),m_annoFeat->getNameInDocument());
-                Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",
-                                         m_annoFeat->getNameInDocument());
-            }
-            catch (...) {
-                Base::Console().Warning("TRA::removeFeature - failed to delete feature\n");
-                return;
-            }
+    if (m_annoFeat == nullptr)
+        return;
+
+    if (m_createMode) {
+        try {
+            // this doesn't remove the QGMText item??
+            std::string PageName = m_basePage->getNameInDocument();
+            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
+                                    PageName.c_str(),m_annoFeat->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",
+                                        m_annoFeat->getNameInDocument());
+        }
+        catch (...) {
+            Base::Console().Warning("TRA::removeFeature - failed to delete feature\n");
+            return;
+        }
+    } else {
+        if (Gui::Command::hasPendingCommand()) {
+            std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
+            Gui::Application::Instance->activeDocument()->undo(1);
         } else {
-            if (Gui::Command::hasPendingCommand()) {
-                std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
-                Gui::Application::Instance->activeDocument()->undo(1);
-            } else {
-                Base::Console().Log("TaskRichAnno: Edit mode - NO command is active\n");
-            }
+            Base::Console().Log("TaskRichAnno: Edit mode - NO command is active\n");
         }
     }
 }
@@ -472,16 +473,14 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
             points = dll->WayPoints.getValues();
         } else {
 //            Base::Console().Message("TRA::calcTextPos - m_baseFeat is not Leader\n");
-            QPointF result(0.0,0.0);
-            return result;
+            return QPointF(0.0,0.0);
         }
     } else {
 //        Base::Console().Message("TRA::calcStartPos - no m_baseFeat\n");
         if (m_basePage != nullptr) {
             double w = Rez::guiX(m_basePage->getPageWidth() / 2.0);
             double h = Rez::guiX(m_basePage->getPageHeight() / 2.0);
-            QPointF result(w,h);
-            return result;
+            return QPointF(w,h);
         } else {
             Base::Console().Message("TRA::calcStartPos - no m_basePage\n"); //shouldn't happen. caught elsewhere
         }
@@ -502,8 +501,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
             tPosY = lastOffset.y() - textHeight;
         }
     }
-    QPointF result(tPosX, -tPosY);
-    return result;
+    return QPointF(tPosX, -tPosY);
 }
 
 void TaskRichAnno::saveButtons(QPushButton* btnOK,
@@ -534,10 +532,10 @@ bool TaskRichAnno::accept()
     if (!doc)
         return false;
 
-    if (!getCreateMode())  {
-        updateAnnoFeature();
-    } else {
+    if (getCreateMode())  {
         createAnnoFeature();
+    } else {
+        updateAnnoFeature();
     }
 //    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
