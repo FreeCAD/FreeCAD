@@ -23,8 +23,6 @@
 
 """This module contains FreeCAD commands for the Draft workbench"""
 
-import os
-import FreeCAD
 from draftguitools.gui_hatch import Draft_Hatch_TaskPanel
 
 class ViewProviderDraftHatch:
@@ -47,6 +45,8 @@ class ViewProviderDraftHatch:
         return None
 
     def setEdit(self,vobj,mode):
+        if mode != 0:
+            return None
 
         import FreeCADGui
 
@@ -59,12 +59,10 @@ class ViewProviderDraftHatch:
         return True
 
     def unsetEdit(self,vobj,mode):
+        if mode != 0:
+            return None
 
         import FreeCADGui
 
         FreeCADGui.Control.closeDialog()
         return True
-
-    def doubleClicked(self,vobj):
-
-        self.setEdit(vobj,None)
