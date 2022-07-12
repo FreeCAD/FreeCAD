@@ -221,7 +221,9 @@ class ViewProviderText(ViewProviderDraftAnnotation):
     def setEdit(self,vobj,mode):
 
         import FreeCADGui
-        self.text = ''
+        if not hasattr(FreeCADGui, "draftToolBar"):
+            import Draft
+        self.text = ""
         FreeCADGui.draftToolBar.sourceCmd = self
         FreeCADGui.draftToolBar.taskUi()
         FreeCADGui.draftToolBar.textUi()
