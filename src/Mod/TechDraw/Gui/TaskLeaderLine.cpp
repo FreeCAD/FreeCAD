@@ -475,26 +475,27 @@ void TaskLeaderLine::commonFeatureUpdate(void)
 void TaskLeaderLine::removeFeature(void)
 {
 //    Base::Console().Message("TTL::removeFeature()\n");
-    if (m_lineFeat != nullptr) {
-        if (m_createMode) {
-            try {
-                std::string PageName = m_basePage->getNameInDocument();
-                Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                        PageName.c_str(),m_lineFeat->getNameInDocument());
-                Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",
-                                         m_lineFeat->getNameInDocument());
-            }
-            catch (...) {
-                Base::Console().Message("TTL::removeFeature - failed to delete feature\n");
-                return;
-            }
+    if (m_lineFeat == nullptr)
+        return;
+    
+    if (m_createMode) {
+        try {
+            std::string PageName = m_basePage->getNameInDocument();
+            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
+                                    PageName.c_str(),m_lineFeat->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",
+                                        m_lineFeat->getNameInDocument());
+        }
+        catch (...) {
+            Base::Console().Message("TTL::removeFeature - failed to delete feature\n");
+            return;
+        }
+    } else {
+        if (Gui::Command::hasPendingCommand()) {
+            std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
+            Gui::Application::Instance->activeDocument()->undo(1);
         } else {
-            if (Gui::Command::hasPendingCommand()) {
-                std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
-                Gui::Application::Instance->activeDocument()->undo(1);
-            } else {
-                Base::Console().Log("TaskLeaderLine: Edit mode - NO command is active\n");
-            }
+            Base::Console().Log("TaskLeaderLine: Edit mode - NO command is active\n");
         }
     }
 }
@@ -696,26 +697,24 @@ void TaskLeaderLine::onCancelEditClicked(bool b)
 
 QGIView* TaskLeaderLine::findParentQGIV()
 {
-    QGIView* result = nullptr;
-    if (m_baseFeat != nullptr) {
-        Gui::ViewProvider* gvp = QGIView::getViewProvider(m_baseFeat);
-        ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(gvp);
-        if (vpdv != nullptr) {
-            result = vpdv->getQView();
-        }
-    }
-    return result;
+    if (m_baseFeat == nullptr)
+        return nullptr;
+
+    Gui::ViewProvider* gvp = QGIView::getViewProvider(m_baseFeat);
+    ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(gvp);
+    if (vpdv == nullptr)
+        return nullptr;
+    
+    return vpdv->getQView();;
 }
 
 void TaskLeaderLine::setEditCursor(QCursor c)
 {
-    if (!m_haveMdi) {
+    if (!m_haveMdi || m_baseFeat == nullptr) {
         return;
     }
-    if (m_baseFeat != nullptr) {
-        QGIView* qgivBase = m_scene->findQViewForDocObj(m_baseFeat);
-        qgivBase->setCursor(c);
-    }
+    QGIView* qgivBase = m_scene->findQViewForDocObj(m_baseFeat);
+    qgivBase->setCursor(c);
 }
 
 //from 1:1 scale scene QPointF to zero origin Vector3d points
@@ -847,9 +846,7 @@ bool TaskLeaderLine::reject()
         (m_lineFeat != nullptr) )  {
         removeFeature();
     }
-
-    if (!getCreateMode() &&
-        (m_lineFeat != nullptr) )  {
+    else  {
         restoreState();
     }
 
