@@ -330,27 +330,27 @@ void TaskCenterLine::createCenterLine(void)
         }
     }
 
-    if (cl != nullptr) {
-        double hShift = ui->qsbHorizShift->rawValue();
-        double vShift = ui->qsbVertShift->rawValue();
-        double rotate = ui->qsbRotate->rawValue();
-        double extendBy = ui->qsbExtend->rawValue();
-        cl->setShifts(hShift, vShift);
-        cl->setExtend(extendBy);
-        cl->setRotate(rotate);
-        cl->m_flip2Line = false;
-        App::Color ac;
-        ac.setValue<QColor>(ui->cpLineColor->color());
-        cl->m_format.m_color = ac;
-        cl->m_format.m_weight = ui->dsbWeight->value().getValue();
-        cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
-        cl->m_format.m_visible = true;
-        m_partFeat->addCenterLine(cl);
-    } else {
+    if (cl == nullptr) {
         Base::Console().Log("TCL::createCenterLine - CenterLine creation failed!\n");
         Gui::Command::abortCommand();
         return;
     }
+
+    double hShift = ui->qsbHorizShift->rawValue();
+    double vShift = ui->qsbVertShift->rawValue();
+    double rotate = ui->qsbRotate->rawValue();
+    double extendBy = ui->qsbExtend->rawValue();
+    cl->setShifts(hShift, vShift);
+    cl->setExtend(extendBy);
+    cl->setRotate(rotate);
+    cl->m_flip2Line = false;
+    App::Color ac;
+    ac.setValue<QColor>(ui->cpLineColor->color());
+    cl->m_format.m_color = ac;
+    cl->m_format.m_weight = ui->dsbWeight->value().getValue();
+    cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
+    cl->m_format.m_visible = true;
+    m_partFeat->addCenterLine(cl);
 
     m_partFeat->recomputeFeature();
     Gui::Command::updateActive();
