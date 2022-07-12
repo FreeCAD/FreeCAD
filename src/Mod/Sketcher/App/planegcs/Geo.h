@@ -279,7 +279,7 @@ namespace GCS
         BSpline(){periodic=false;degree=2;}
         ~BSpline() override{}
         // parameters
-        VEC_P poles;
+        VEC_P poles; // TODO: use better data structures so poles.x and poles.y
         VEC_pD weights;
         VEC_pD knots;
         // dependent parameters (depends on previous parameters,
@@ -292,12 +292,19 @@ namespace GCS
         int degree;
         bool periodic;
         VEC_I knotpointGeoids; // geoids of knotpoints as to index Geom array
+        VEC_D flattenedknots; // knot vector with repetitions for multiplicity and "padding" for periodic spline
         // interface helpers
         DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const override;
         DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
         int PushOwnParams(VEC_pD &pvec) override;
         void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
         BSpline* Copy() override;
+        /// finds the value B_i(x) such that spline(x) = sum(poles[i] * B_i(x))
+        /// i is index of control point
+        /// x is the point at which combination is needed
+        /// k is the range in `flattenedknots` that contains x
+        double getLinCombFactor(double x, size_t k, size_t i);
+        void setupFlattenedKnots();
     };
 
 } //namespace GCS

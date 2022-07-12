@@ -617,12 +617,7 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         const GeomPoint *point = static_cast<const GeomPoint*>(geo);
         auto pointf = GeometryFacade::getFacade(point);
         // create the definition struct for that geom
-        if( pointf->getInternalType() == InternalType::BSplineKnotPoint ) {
-            return addPoint(*point, true);
-        }
-        else {
-            return addPoint(*point, fixed);
-        }
+        return addPoint(*point, fixed);
     }
     else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
@@ -1257,12 +1252,10 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     double * p1x = new double(startPnt.x);
     double * p1y = new double(startPnt.y);
 
-    // if periodic, startpoint and endpoint do not play a role in the solver, this removes unnecessary DoF of determining where in the curve
-    // the start and the stop should be
-    if(!periodic) {
-        params.push_back(p1x);
-        params.push_back(p1y);
-    }
+    // If periodic, startpoint and endpoint do not play a role in the solver, this can remove unnecessary DoF of determining where in the curve
+    // the start and the stop should be. However, since start and end points are placed above knots, removing them leads to that knot being unusable.
+    params.push_back(p1x);
+    params.push_back(p1y);
 
     p1.x = p1x;
     p1.y = p1y;
@@ -1270,12 +1263,11 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     double * p2x = new double(endPnt.x);
     double * p2y = new double(endPnt.y);
 
-    // if periodic, startpoint and endpoint do not play a role in the solver, this removes unnecessary DoF of determining where in the curve
-    // the start and the stop should be
-    if(!periodic) {
-        params.push_back(p2x);
-        params.push_back(p2y);
-    }
+    // If periodic, startpoint and endpoint do not play a role in the solver, this can remove unnecessary DoF of determining where in the curve
+    // the start and the stop should be. However, since start and end points are placed above knots, removing them leads to that knot being unusable.
+    params.push_back(p2x);
+    params.push_back(p2y);
+
     p2.x = p2x;
     p2.y = p2y;
 
@@ -3311,16 +3303,14 @@ int Sketch::addInternalAlignmentKnotPoint(int geoId1, int geoId2, int knotindex)
     int pointId1 = getPointId(geoId2, PointPos::start);
 
     if (pointId1 >= 0 && pointId1 < int(Points.size())) {
-       // GCS::Point &p = Points[pointId1];
-
+        GCS::Point &p = Points[pointId1];
         GCS::BSpline &b = BSplines[Geoms[geoId1].index];
 
-        // no constraint is actually added, as knots are fixed geometry in this implementation
-        // indexing is added here.
-        // However, we need to advance the tag, so that the index after a knot constraint is accurate
-        ConstraintsCounter++;
+        assert(knotindex < static_cast<int>(b.knots.size()) && knotindex >= 0);
 
         b.knotpointGeoids[knotindex] = geoId2;
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentKnotPoint(b, p, knotindex, tag);
 
         return ConstraintsCounter;
     }
@@ -3374,12 +3364,9 @@ bool Sketch::updateGeometry()
                 GeomPoint *point = static_cast<GeomPoint*>(it->geo);
                 auto pointf = GeometryFacade::getFacade(point);
 
-                if(!(pointf->getInternalType() == InternalType::BSplineKnotPoint)) {
-                    point->setPoint(Vector3d(*Points[it->startPointId].x,
+                point->setPoint(Vector3d(*Points[it->startPointId].x,
                                          *Points[it->startPointId].y,
-                                         0.0)
-                               );
-                }
+                                         0.0));
             }
             else if (it->type == Line) {
                 GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo);
@@ -3527,38 +3514,6 @@ bool Sketch::updateGeometry()
                 }
 
                 bsp->setKnots(knots,mult);*/
-
-                // This is the code that needs to be here to take advantage of the current OCCT reliant implementation
-                // The current B-Spline implementation relies on OCCT for pole calculation, so the knots are set by the OCCT calculated values
-                auto occtknots = bsp->getKnots();
-
-                for(auto it3 = occtknots.begin() ; it3 != occtknots.end(); ++it3)
-                    knots.push_back(*it3);
-
-                int index = 0;
-                for(std::vector<int>::const_iterator it5 = mybsp.knotpointGeoids.begin(); it5 != mybsp.knotpointGeoids.end(); ++it5, index++) {
-                    if( *it5 != GeoEnum::GeoUndef) {
-                        if (Geoms[*it5].type == Point) {
-                            GeomPoint *point = static_cast<GeomPoint*>(Geoms[*it5].geo);
-
-                            auto pointf = GeometryFacade::getFacade(point);
-
-                            if(pointf->getInternalType() == InternalType::BSplineKnotPoint) {
-                                auto pointcoords = bsp->pointAtParameter(knots[index]);
-                                point->setPoint(pointcoords); // update the geompoint of the knot (geometry update)
-                                // Now we update the position of the points in the solver, so that any call to solve()
-                                // calculates constraints and positions based on the actual position of the knots.
-                                auto pointindex = getPointId(*it5, PointPos::start);
-
-                                if(pointindex >= 0) {
-                                    auto solverpoint = Points[pointindex];
-                                    *(solverpoint.x) = pointcoords.x;
-                                    *(solverpoint.y) = pointcoords.y;
-                                }
-                            }
-                        }
-                    }
-                }
             }
         } catch (Base::Exception &e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",

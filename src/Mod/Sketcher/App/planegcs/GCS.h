@@ -323,7 +323,8 @@ namespace GCS
         int addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentHyperbolaFocus(Hyperbola &e, Point &p1, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId=0, bool driving = true);
-        int addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tag=0, bool driving = true);
+        int addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, unsigned int poleindex, int tag=0, bool driving = true);
+        int addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsigned int knotindex, int tagId=0, bool driving=true);
 
         double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const;
         double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const;
