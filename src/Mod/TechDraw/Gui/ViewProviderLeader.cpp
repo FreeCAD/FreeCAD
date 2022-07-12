@@ -85,16 +85,15 @@ void ViewProviderLeader::attach(App::DocumentObject *pcFeat)
 bool ViewProviderLeader::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPL::setEdit(%d)\n",ModNum);
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgLeaderLine(this));
-        return true;
-    } else {
+    if (ModNum != ViewProvider::Default) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
+
+    if (Gui::Control().activeDialog()) {
+        return false; //TaskPanel already open!
+    }
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgLeaderLine(this));
     return true;
 }
 
@@ -182,10 +181,9 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
 
 double ViewProviderLeader::getDefLineWeight(void)
 {
-    double result = 0.0;
     int lgNumber = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    result = lg->getWeight("Thin");
+    double result = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
     return result;
 }
@@ -234,19 +232,18 @@ bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
     // get childs
     auto childs = claimChildren();
 
-    if (!childs.empty()) {
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage); 
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else {
+    if (childs.empty()) {
         return true;
     }
+
+    QString bodyMessage;
+    QTextStream bodyMessageStream(&bodyMessage); 
+    bodyMessageStream << qApp->translate("Std_Delete",
+        "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
+    QMessageBox::warning(Gui::getMainWindow(),
+        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+        QMessageBox::Ok);
+    return false;
 }
 
 bool ViewProviderLeader::canDelete(App::DocumentObject *obj) const
