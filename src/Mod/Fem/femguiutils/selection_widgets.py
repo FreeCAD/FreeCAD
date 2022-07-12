@@ -267,7 +267,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         )
 
     def initUI(self):
-        # auch ArchPanel ist coded ohne ui-file
+        # ArchPanel is coded without ui-file too
         # title
         self.setWindowTitle(
             self.tr("Geometry reference selector for a") + " " + self.sel_elem_text
