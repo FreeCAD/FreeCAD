@@ -54,7 +54,7 @@ DraftVecUtils = LazyLoader("DraftVecUtils", globals(), "DraftVecUtils")
 
 translate = FreeCAD.Qt.translate
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -768,7 +768,7 @@ class TaskPanel:
             ]
             try:
                 self.obj.SplitOutput = self.form.splitOutput.isChecked()
-                self.obj.OrderOutputBy = str(self.form.orderBy.currentText())
+                self.obj.OrderOutputBy = str(self.form.orderBy.currentData())
 
                 flist = []
                 for i in range(self.form.wcslist.count()):
@@ -778,7 +778,8 @@ class TaskPanel:
                     ):
                         flist.append(self.form.wcslist.item(i).text())
                 self.obj.Fixtures = flist
-            except Exception:
+            except Exception as e:
+                PathLog.debug(e)
                 FreeCAD.Console.PrintWarning(
                     "The Job was created without fixture support.  Please delete and recreate the job\r\n"
                 )
