@@ -575,43 +575,39 @@ QPointF TaskDetail::getAnchorScene()
 DrawViewPart* TaskDetail::getBaseFeat()
 {
 //    Base::Console().Message("TD::getBaseFeat()\n");
-    DrawViewPart* result = nullptr;
 
     if (m_doc != nullptr) {
         App::DocumentObject* baseObj = m_doc->getObject(m_baseName.c_str());
         if (baseObj != nullptr) {
-            result = static_cast<DrawViewPart*>(baseObj);
+            return static_cast<DrawViewPart*>(baseObj);
         }
     }
-    if (result == nullptr) {
-        std::string msg = "TaskDetail - base feature " +
-                          m_baseName +
-                          " not found \n";
-        throw Base::TypeError(msg);
-    }
-    return result;
+
+    std::string msg = "TaskDetail - base feature " +
+                        m_baseName +
+                        " not found \n";
+    throw Base::TypeError(msg);
+    return nullptr;
 }
 
 // protects against stale pointers
 DrawViewDetail* TaskDetail::getDetailFeat()
 {
 //    Base::Console().Message("TD::getDetailFeat()\n");
-    DrawViewDetail* result = nullptr;
 
     if (m_doc != nullptr) {
         App::DocumentObject* detailObj = m_doc->getObject(m_detailName.c_str());
         if (detailObj != nullptr) {
-            result = static_cast<DrawViewDetail*>(detailObj);
+            return static_cast<DrawViewDetail*>(detailObj);
         }
     }
-    if (result == nullptr) {
-        std::string msg = "TaskDetail - detail feature " +
-                          m_detailName +
-                          " not found \n";
+    
+    std::string msg = "TaskDetail - detail feature " +
+                        m_detailName +
+                        " not found \n";
 //        throw Base::TypeError("TaskDetail - detail feature not found\n");
-        throw Base::TypeError(msg);
-    }
-    return result;
+    throw Base::TypeError(msg);
+    return nullptr;
 }
 
 //******************************************************************************
