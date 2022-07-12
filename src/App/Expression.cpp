@@ -1749,10 +1749,6 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MINVERT:
     case STR:
     case HIDDENREF:
-    case HREF:
-        if (args.size() != 1)
-            EXPR_THROW("Invalid number of arguments: exactly one required.");
-        break;
     case MOD:
     case ATAN2:
     case POW:
@@ -2101,7 +2097,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         return res;
     } else if (f == STR) {
         return Py::String(args[0]->getPyValue().as_string());
-    } else if (f == HIDDENREF || f == HREF) {
+    } else if (f == HIDDENREF) {
         return args[0]->getPyValue();
     }
 
@@ -2439,8 +2435,6 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "str("; break;;
     case HIDDENREF:
         ss << "hiddenref("; break;;
-    case HREF:
-        ss << "href("; break;;
     default:
         ss << fname << "("; break;;
     }
@@ -2474,7 +2468,7 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
 {
     std::vector<Expression*>::const_iterator i = args.begin();
 
-    HiddenReference ref(f == HIDDENREF || f == HREF);
+    HiddenReference ref(f == HIDDENREF);
     while (i != args.end()) {
         (*i)->visit(v);
         ++i;
@@ -3263,7 +3257,6 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["create"] = FunctionExpression::CREATE;
         registered_functions["str"] = FunctionExpression::STR;
         registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
-        registered_functions["href"] = FunctionExpression::HREF;
 
         // Aggregates
         registered_functions["sum"] = FunctionExpression::SUM;

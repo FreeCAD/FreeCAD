@@ -130,8 +130,7 @@ App::Property *DlgSheetConf::prepare(CellAddress &from, CellAddress &to,
         auto expr = cell->getExpression();
         if(expr->isDerivedFrom(FunctionExpression::getClassTypeId())) {
             auto fexpr = Base::freecad_dynamic_cast<FunctionExpression>(cell->getExpression());
-            if(fexpr && (fexpr->getFunction()==FunctionExpression::HREF
-                            || fexpr->getFunction()==FunctionExpression::HIDDENREF)
+            if(fexpr && (fexpr->getFunction()==FunctionExpression::HIDDENREF)
                      && fexpr->getArgs().size()==1)
                 expr = fexpr->getArgs().front();
         }

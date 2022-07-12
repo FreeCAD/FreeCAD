@@ -274,7 +274,6 @@ public:
         CREATE, // create new object of a given type
         STR, // stringify
         HIDDENREF, // hidden reference that has no dependency check
-        HREF, // deprecated alias of HIDDENREF
 
         // Aggregates
         AGGREGATES,

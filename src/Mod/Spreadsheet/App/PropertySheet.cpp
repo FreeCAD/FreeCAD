@@ -1784,8 +1784,7 @@ PropertySheet::getBinding(const Range &range,
         {
             auto expr = static_cast<FunctionExpression*>(res.expression.get());
             if(href) {
-                if((expr->getFunction()!=FunctionExpression::HIDDENREF
-                            && expr->getFunction()!=FunctionExpression::HREF)
+                if((expr->getFunction()!=FunctionExpression::HIDDENREF)
                         || expr->getArgs().size()!=1 
                         || !expr->getArgs().front()->isDerivedFrom(FunctionExpression::getClassTypeId()))
                     continue;
