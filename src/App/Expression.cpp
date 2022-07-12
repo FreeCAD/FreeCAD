@@ -1749,6 +1749,9 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MINVERT:
     case STR:
     case HIDDENREF:
+        if (args.size() != 1)
+            EXPR_THROW("Invalid number of arguments: exactly one required.");
+        break;
     case MOD:
     case ATAN2:
     case POW:
