@@ -1326,11 +1326,61 @@ int System::addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, 
     return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
-int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tagId, bool driving)
+int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, unsigned int poleindex, int tagId, bool driving)
 {
     addConstraintEqual(b.poles[poleindex].x, c.center.x, tagId, driving, Constraint::Alignment::InternalAlignment);
     addConstraintEqual(b.poles[poleindex].y, c.center.y, tagId, driving, Constraint::Alignment::InternalAlignment);
     return addConstraintEqual(b.weights[poleindex], c.rad, tagId, driving, Constraint::Alignment::InternalAlignment);
+}
+
+int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsigned int knotindex, int tagId, bool driving)
+{
+    if (b.periodic && knotindex == 0) {
+        // This is done here since knotpoints themselves aren't stored
+        addConstraintP2PCoincident(p, b.start, tagId, driving);
+        addConstraintP2PCoincident(p, b.end, tagId, driving);
+    }
+
+    size_t numpoles = b.degree - b.mult[knotindex] + 1;
+    if (numpoles == 0)
+        numpoles = 1;
+
+    size_t startpole = 0;
+    std::vector<double *> pvec;
+    pvec.push_back(p.x);
+
+    std::vector<double> weights(numpoles, 1.0 / numpoles);
+
+    // TODO: Adjust for periodic knot
+    for (size_t j = 1; j <= knotindex; ++j)
+        startpole += b.mult[j];
+    if (!b.periodic && startpole >= b.poles.size())
+        startpole = b.poles.size() - 1;
+    for (size_t i = 0; i < numpoles; ++i) {
+        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
+        // FIXME: `getLinCombFactor` seg-faults for the last knot so this safeguard exists
+        if (numpoles > 2)
+            weights[i] = b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
+    }
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.weights[(startpole + i) % b.poles.size()]);
+
+    Constraint *constr = new ConstraintWeightedLinearCombination(numpoles, pvec, weights);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    addConstraint(constr);
+
+    pvec.clear();
+    pvec.push_back(p.y);
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.weights[(startpole + i) % b.poles.size()]);
+
+    constr = new ConstraintWeightedLinearCombination(numpoles, pvec, weights);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
 }
 
 //calculates angle between two curves at point of their intersection p. If two

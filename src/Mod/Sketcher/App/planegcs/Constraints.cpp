@@ -129,6 +129,171 @@ double ConstraintEqual::grad(double *param)
     return scale * deriv;
 }
 
+// Weighted Linear Combination
+
+const std::vector< std::vector<double> > ConstraintWeightedLinearCombination::defaultfactors =
+{{},
+ {1.0},
+ {0.5, 0.5},
+ {0.16666666666666666, 0.6666666666666667, 0.16666666666666669},
+ {0.041666666666666664, 0.45833333333333337, 0.4583333333333333, 0.04166666666666667},
+ {0.008333333333333333, 0.21666666666666667, 0.55, 0.2166666666666667, 0.008333333333333333},
+ {0.0013888888888888887, 0.07916666666666666, 0.41944444444444445, 0.41944444444444445, 0.07916666666666669, 0.0013888888888888885},
+ {0.0001984126984126984, 0.023809523809523815, 0.2363095238095238, 0.4793650793650793, 0.2363095238095238, 0.02380952380952381, 0.0001984126984126984},
+ {2.48015873015873e-05, 0.006125992063492064, 0.10647321428571428, 0.3873759920634921, 0.38737599206349216, 0.10647321428571431, 0.006125992063492064, 2.48015873015873e-05},
+ {2.7557319223985893e-06, 0.0013833774250440916, 0.04025573192239859, 0.24314925044091712, 0.43041776895943573, 0.24314925044091715, 0.04025573192239859, 0.0013833774250440916, 2.7557319223985905e-06}};
+
+
+ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(size_t givennumpoints, const std::vector<double *>& givenpvec)
+    : numpoints(givennumpoints)
+{
+    pvec = givenpvec;
+    setupInputs();
+}
+
+ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(size_t givennumpoints, const std::vector<double *>& givenpvec, const std::vector<double>& givenfactors)
+    : factors(givenfactors)
+    , numpoints(givennumpoints)
+{
+    pvec = givenpvec;
+    setupInputs();
+}
+
+void ConstraintWeightedLinearCombination::setupInputs()
+{
+    assert(pvec.size() == 2*numpoints + 1);
+    if (factors.empty())
+        factors = defaultfactors[numpoints];
+    assert(factors.size() == numpoints);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintWeightedLinearCombination::getTypeId()
+{
+    return WeightedLinearCombination;
+}
+
+void ConstraintWeightedLinearCombination::rescale(double coef)
+{
+    scale = coef * 1.;
+}
+
+double ConstraintWeightedLinearCombination::error()
+{
+    double offset = 1;
+    double woffset = 1 + numpoints;
+
+    double sum = 0;
+    double wsum = 0;
+
+    for (size_t i = 0; i < numpoints; ++i) {
+        double wcontrib = *pvec[woffset + i] * factors[i];
+        wsum += wcontrib;
+        sum += *pvec[offset + i] * wcontrib;
+    }
+
+    return scale * ((*pvec[0]) * wsum - sum);
+}
+
+double ConstraintWeightedLinearCombination::grad(double *param)
+{
+    double offset = 1;
+    double woffset = 1 + numpoints;
+
+    // TODO: Do we assume pvec are different so param can only be one?
+
+    double deriv=0.;
+    if (param == pvec[0]) {
+        double wsum = 0;
+        for (size_t i = 0; i < numpoints; ++i) {
+            wsum += *pvec[woffset + i] * factors[i];
+        }
+        deriv += wsum;
+    }
+
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (param == pvec[offset + i]) {
+            deriv += -(*pvec[woffset + i] * factors[i]);
+        }
+        if (param == pvec[woffset + i]) {
+            deriv += (*pvec[0] - *pvec[offset + i]) * factors[i];
+        }
+    }
+
+    return scale * deriv;
+}
+
+// Center of Gravity
+
+const std::vector< std::vector<double> > ConstraintCenterOfGravity::defaultweights =
+{{},
+ {1.0},
+ {0.5, 0.5},
+ {0.16666666666666666, 0.6666666666666667, 0.16666666666666669},
+ {0.041666666666666664, 0.45833333333333337, 0.4583333333333333, 0.04166666666666667},
+ {0.008333333333333333, 0.21666666666666667, 0.55, 0.2166666666666667, 0.008333333333333333},
+ {0.0013888888888888887, 0.07916666666666666, 0.41944444444444445, 0.41944444444444445, 0.07916666666666669, 0.0013888888888888885},
+ {0.0001984126984126984, 0.023809523809523815, 0.2363095238095238, 0.4793650793650793, 0.2363095238095238, 0.02380952380952381, 0.0001984126984126984},
+ {2.48015873015873e-05, 0.006125992063492064, 0.10647321428571428, 0.3873759920634921, 0.38737599206349216, 0.10647321428571431, 0.006125992063492064, 2.48015873015873e-05},
+ {2.7557319223985893e-06, 0.0013833774250440916, 0.04025573192239859, 0.24314925044091712, 0.43041776895943573, 0.24314925044091715, 0.04025573192239859, 0.0013833774250440916, 2.7557319223985905e-06}};
+
+
+ConstraintCenterOfGravity::ConstraintCenterOfGravity(const std::vector<double *>& givenpvec)
+{
+    pvec = givenpvec;
+    numpoints = pvec.size() - 1;
+    setupInputs();
+}
+
+ConstraintCenterOfGravity::ConstraintCenterOfGravity(const std::vector<double *>& givenpvec, const std::vector<double>& givenweights)
+    : weights(givenweights)
+{
+    pvec = givenpvec;
+    numpoints = pvec.size() - 1;
+    setupInputs();
+}
+
+void ConstraintCenterOfGravity::setupInputs()
+{
+    assert(pvec.size() > 1);
+    if (weights.empty())
+        weights = defaultweights[numpoints];
+    assert(weights.size() == numpoints);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintCenterOfGravity::getTypeId()
+{
+    return CenterOfGravity;
+}
+
+void ConstraintCenterOfGravity::rescale(double coef)
+{
+    scale = coef * 1.;
+}
+
+double ConstraintCenterOfGravity::error()
+{
+    double sum = 0;
+    for (size_t i = 1; i < pvec.size(); ++i)
+        sum += *pvec[i] * weights[i-1];
+
+    return scale * (*pvec[0] - sum);
+}
+
+double ConstraintCenterOfGravity::grad(double *param)
+{
+    double deriv=0.;
+    if (param == pvec[0]) deriv += 1;
+
+    for (size_t i = 1; i < pvec.size(); ++i)
+        if (param == pvec[i]) deriv += -weights[i-1];
+
+    return scale * deriv;
+}
+
 // Difference
 ConstraintDifference::ConstraintDifference(double *p1, double *p2, double *d)
 {

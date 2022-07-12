@@ -68,7 +68,9 @@ namespace GCS
         InternalAlignmentPoint2Hyperbola = 22,
         PointOnParabola = 23,
         EqualFocalDistance = 24,
-        EqualLineLength = 25
+        EqualLineLength = 25,
+        CenterOfGravity = 26,
+        WeightedLinearCombination = 27
     };
 
     enum InternalAlignmentType {
@@ -153,6 +155,47 @@ namespace GCS
         void rescale(double coef=1.) override;
         double error() override;
         double grad(double *) override;
+    };
+
+    // Center of Gravity
+    class ConstraintCenterOfGravity : public Constraint
+    {
+    public:
+        /// Constrains that the first parameter is center of gravity of rest
+        ConstraintCenterOfGravity(const std::vector<double *>& givenpvec);
+        ConstraintCenterOfGravity(const std::vector<double *>& givenpvec, const std::vector<double>& givenweights);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+    private:
+        void setupInputs();
+        static const std::vector< std::vector<double> > defaultweights;
+        std::vector<double> weights;
+        double numpoints;
+    };
+
+    // Weighted Linear Combination
+    class ConstraintWeightedLinearCombination : public Constraint
+    {
+    public:
+        /// Constrains that the first element in pvec is a linear combination
+        /// of the next numpoints elements in homogeneous coordinates with
+        /// weights given in the last numpoints elements.
+        /// Let pvec = [q, p_1, p_2,... w_1, w_2,...], and
+        /// givenfactors = [f_1, f_2,...], then this constraint ensures
+        /// q*sum(w_i*f_i) = sum(p_i*w_i*f_i).
+        ConstraintWeightedLinearCombination(size_t givennumpoints, const std::vector<double *>& givenpvec);
+        ConstraintWeightedLinearCombination(size_t givennumpoints, const std::vector<double *>& givenpvec, const std::vector<double>& givenfactors);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+    private:
+        void setupInputs();
+        static const std::vector< std::vector<double> > defaultfactors;
+        std::vector<double> factors;
+        size_t numpoints;
     };
 
     // Difference

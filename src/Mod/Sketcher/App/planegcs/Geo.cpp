@@ -704,13 +704,72 @@ void BSpline::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
     start.y=pvec[cnt]; cnt++;
     end.x=pvec[cnt]; cnt++;
     end.y=pvec[cnt]; cnt++;
-
 }
 
 BSpline* BSpline::Copy()
 {
     BSpline* crv = new BSpline(*this);
     return crv;
+}
+
+double BSpline::getLinCombFactor(double x, size_t k, size_t i)
+{
+    // Adapted to C++ from the python implementation in the Wikipedia page for de Boor algorithm
+    // https://en.wikipedia.org/wiki/De_Boor%27s_algorithm.
+
+    // FIXME: This should probably be guaranteed by now, and done somewhere else
+    if (flattenedknots.empty())
+        setupFlattenedKnots();
+
+    std::vector d(degree + 1, 0.0);
+    // TODO: Ensure this is within range
+    d[i + degree - k] = 1.0;
+
+    for (size_t r = 1; static_cast<int>(r) < degree + 1; ++r) {
+        for (size_t j = degree; j > r - 1; --j) {
+            double alpha =
+                (x - flattenedknots[j + k - degree]) /
+                (flattenedknots[j + 1 + k - r] - flattenedknots[j + k - degree]);
+            d[j] = (1.0 - alpha) * d[j-1] + alpha * d[j];
+        }
+    }
+
+    return d[degree];
+}
+
+void BSpline::setupFlattenedKnots()
+{
+    flattenedknots.clear();
+
+    for (size_t i = 0; i < knots.size(); ++i)
+        flattenedknots.insert(flattenedknots.end(), mult[i], *knots[i]);
+
+    // Adjust for periodic: see OCC documentation for explanation
+    if (periodic) {
+        double period = *knots.back() - *knots.front();
+        int c = degree + 1 - mult[0]; // number of knots to pad
+
+        // Add capacity so that iterators remain valid
+        flattenedknots.reserve(flattenedknots.size() + 2*c);
+
+        // get iterators first for convenience
+        auto frontStart = flattenedknots.end() - mult.back() - c;
+        auto frontEnd = flattenedknots.end() - mult.back();
+        auto backStart = flattenedknots.begin() + mult.front();
+        auto backEnd = flattenedknots.begin() + mult.front() + c;
+
+        // creating new vectors because above iterators can become invalidated upon insert
+        std::vector<double> frontNew(frontStart, frontEnd);
+        std::vector<double> backNew(backStart, backEnd);
+
+        flattenedknots.insert(flattenedknots.end(), backNew.begin(), backNew.end());
+        flattenedknots.insert(flattenedknots.begin(), frontNew.begin(), frontNew.end());
+
+        for (int i = 0; i < c; ++i) {
+            *(flattenedknots.begin() + i) -= period;
+            *(flattenedknots.end() - 1 - i) += period;
+        }
+    }
 }
 
 }//namespace GCS
