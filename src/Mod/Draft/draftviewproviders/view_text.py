@@ -222,7 +222,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
         import FreeCADGui
         if not hasattr(FreeCADGui, "draftToolBar"):
-            import Draft
+            import DraftGui
         self.text = ""
         FreeCADGui.draftToolBar.sourceCmd = self
         FreeCADGui.draftToolBar.taskUi()
