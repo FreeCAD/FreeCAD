@@ -65,7 +65,7 @@ App::DocumentObjectExecReturn *ConstraintBearing::execute(void)
 void ConstraintBearing::onChanged(const App::Property* prop)
 {
     //Base::Console().Error("ConstraintBearing: onChanged %s\n", prop->getName());
-    // Note: If we call this at the end, then the symbol ist not oriented correctly initially
+    // Note: If we call this at the end, then the symbol is not oriented correctly initially
     // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
 

@@ -738,4 +738,4 @@ class _TaskPanel:
             self.parameterWidget.cb_materials.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
             # the whole card path is added to the combo box to make it unique
             # see def choose_material:
-            # for assignment of self.card_path the path form the parameterWidget ist used
+            # for assignment of self.card_path the path form the parameterWidget is used
