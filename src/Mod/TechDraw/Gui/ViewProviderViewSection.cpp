@@ -139,17 +139,15 @@ void ViewProviderViewSection::updateGraphic(void)
 
 bool ViewProviderViewSection::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgSectionView(getViewObject()));
-        return true;
-    } else {
+    if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
+    if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+        return false;
+    }
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgSectionView(getViewObject()));
     return true;
 }
 
