@@ -148,15 +148,14 @@ bool ViewProviderTemplate::isShow(void) const
 
 QGITemplate* ViewProviderTemplate::getQTemplate(void)
 {
-    QGITemplate *result = nullptr;
     TechDraw::DrawTemplate* dt = getTemplate();
     if (dt) {
         MDIViewPage* mdi = getMDIViewPage();
         if (mdi != nullptr) {
-            result = mdi->getQGSPage()->getTemplate();
+            return mdi->getQGSPage()->getTemplate();
         }
     }
-    return result;
+    return nullptr;
 }
 
 void ViewProviderTemplate::setMarkers(bool state)
@@ -208,15 +207,14 @@ bool ViewProviderTemplate::onDelete(const std::vector<std::string> &)
 
 MDIViewPage* ViewProviderTemplate::getMDIViewPage(void) const
 {
-    MDIViewPage* myMdi = nullptr;
     auto t = getTemplate();
     auto page = t->getParentPage();
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);
     TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
     if (dvp) {
-        myMdi = dvp->getMDIViewPage();
+        return dvp->getMDIViewPage();
     }
-    return myMdi;
+    return nullptr;
 }
 
 Gui::MDIView *ViewProviderTemplate::getMDIView() const
