@@ -110,19 +110,17 @@ void ViewProviderBalloon::setupContextMenu(QMenu* menu, QObject* receiver, const
 
 bool ViewProviderBalloon::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {
-            return false;
-        }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-        auto qgivBalloon(dynamic_cast<QGIViewBalloon*>(getQView()));
-        if (qgivBalloon) {
-            Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, this));
-        }
-        return true;
-    } else {
+    if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog())  {
+        return false;
+    }
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    auto qgivBalloon(dynamic_cast<QGIViewBalloon*>(getQView()));
+    if (qgivBalloon) {
+        Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, this));
     }
     return true;
 }
