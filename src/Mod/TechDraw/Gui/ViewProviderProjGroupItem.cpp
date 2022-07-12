@@ -74,34 +74,35 @@ void ViewProviderProjGroupItem::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
     TechDraw::DrawProjGroupItem* proj = getObject();
+    if(!proj) {
+        return;
+    }
 
-    if(proj) {
-        // Set the icon pixmap depending on the orientation
-        std::string projType = proj->Type.getValueAsString();
+    // Set the icon pixmap depending on the orientation
+    std::string projType = proj->Type.getValueAsString();
 
-        //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
+    //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
 
-        if(strcmp(projType.c_str(), "Front") == 0) {
-            sPixmap = "TechDraw_ProjFront";
-        } else if(strcmp(projType.c_str(), "Rear") == 0) {
-            sPixmap = "TechDraw_ProjRear";
-        } else if(strcmp(projType.c_str(), "Right") == 0) {
-            sPixmap = "TechDraw_ProjRight";
-        } else if(strcmp(projType.c_str(), "Left") == 0) {
-           sPixmap = "TechDraw_ProjLeft";
-        } else if(strcmp(projType.c_str(), "Top") == 0) {
-           sPixmap = "TechDraw_ProjTop";
-        } else if(strcmp(projType.c_str(), "Bottom") == 0) {
-           sPixmap = "TechDraw_ProjBottom";
-        } else if(strcmp(projType.c_str(), "FrontTopLeft") == 0) {
-           sPixmap = "TechDraw_ProjFrontTopLeft";
-        } else if(strcmp(projType.c_str(), "FrontTopRight") == 0) {
-           sPixmap = "TechDraw_ProjFrontTopRight";
-        } else if(strcmp(projType.c_str(), "FrontBottomRight") == 0) {
-           sPixmap = "TechDraw_ProjFrontBottomRight";
-        } else if(strcmp(projType.c_str(), "FrontBottomLeft") == 0) {
-           sPixmap = "TechDraw_ProjFrontBottomLeft";
-        }
+    if(strcmp(projType.c_str(), "Front") == 0) {
+        sPixmap = "TechDraw_ProjFront";
+    } else if(strcmp(projType.c_str(), "Rear") == 0) {
+        sPixmap = "TechDraw_ProjRear";
+    } else if(strcmp(projType.c_str(), "Right") == 0) {
+        sPixmap = "TechDraw_ProjRight";
+    } else if(strcmp(projType.c_str(), "Left") == 0) {
+        sPixmap = "TechDraw_ProjLeft";
+    } else if(strcmp(projType.c_str(), "Top") == 0) {
+        sPixmap = "TechDraw_ProjTop";
+    } else if(strcmp(projType.c_str(), "Bottom") == 0) {
+        sPixmap = "TechDraw_ProjBottom";
+    } else if(strcmp(projType.c_str(), "FrontTopLeft") == 0) {
+        sPixmap = "TechDraw_ProjFrontTopLeft";
+    } else if(strcmp(projType.c_str(), "FrontTopRight") == 0) {
+        sPixmap = "TechDraw_ProjFrontTopRight";
+    } else if(strcmp(projType.c_str(), "FrontBottomRight") == 0) {
+        sPixmap = "TechDraw_ProjFrontBottomRight";
+    } else if(strcmp(projType.c_str(), "FrontBottomLeft") == 0) {
+        sPixmap = "TechDraw_ProjFrontBottomLeft";
     }
  }
 
