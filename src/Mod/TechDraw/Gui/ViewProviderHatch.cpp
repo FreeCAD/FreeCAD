@@ -92,17 +92,16 @@ std::vector<std::string> ViewProviderHatch::getDisplayModes(void) const
 
 bool ViewProviderHatch::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgHatch(this));
-        return true;
-    } else {
+    if (ModNum != ViewProvider::Default) {
         return Gui::ViewProviderDocumentObject::setEdit(ModNum);
     }
+    if (Gui::Control().activeDialog()) {
+        return false; //TaskPanel already open!
+    }
+    
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgHatch(this));
     return true;
 }
 
