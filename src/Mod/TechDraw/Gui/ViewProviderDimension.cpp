@@ -133,20 +133,17 @@ void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, con
 
 bool ViewProviderDimension::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
-        if (Gui::Control().activeDialog()) { // if TaskPanel already open
-            return false;
-        }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-        auto qgivDimension(dynamic_cast<QGIViewDimension*>(getQView()));
-        if (qgivDimension) {
-            Gui::Control().showDialog(new TaskDlgDimension(qgivDimension, this));
-        }
-        return true;
-    }
-    else {
+    if (ModNum != ViewProvider::Default) {
         return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog()) { // if TaskPanel already open
+        return false;
+    }
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    auto qgivDimension(dynamic_cast<QGIViewDimension*>(getQView()));
+    if (qgivDimension) {
+        Gui::Control().showDialog(new TaskDlgDimension(qgivDimension, this));
     }
     return true;
 }
