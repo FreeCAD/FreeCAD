@@ -405,7 +405,9 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     std::vector<std::string> subs;
 
     int edgeType = _isValidSingleEdge(this);
-    if (edgeType == isEllipse) {
+    if (edgeType == isCircle) {
+            // nothing to do
+    } else if (edgeType == isEllipse) {
         QMessageBox::StandardButton result =
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
                              QObject::tr("Selected edge is an Ellipse.  Diameter will be approximate. Continue?"),
@@ -426,7 +428,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
                              QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
         return;
     } else {
-      QMessageBox::warning(
+        QMessageBox::warning(
           Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
           QObject::tr("Selection for Diameter does not contain a circular edge "
                       "(edge type: %1)")
@@ -1479,7 +1481,7 @@ int _isValidSingleEdge(Gui::Command* cmd) {
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() != 1 ||
-        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
+        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) != "Edge") {
         return isInvalid;
     }
 
@@ -1560,9 +1562,9 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
         return isInvalid;
     }
 
-    //they both start with "Edge"
-    if(TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
-        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
+    //they both must start with "Edge"
+    if(TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) != "Edge" ||
+        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) != "Edge") {
         return isInvalid;
     }
 
@@ -1571,7 +1573,7 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
     TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
     TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
 
-    if ((!geom0) || (!geom1)) {                                         // missing gometry
+    if ((geom0 == nullptr) || (geom1 == nullptr)) {                                         // missing gometry
         Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
         return isInvalid;
     }
@@ -1626,7 +1628,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     }
     e = objFeat0->getGeomByIndex(eId);
     v = objFeat0->getProjVertexByIndex(vId);
-    if ((!e) || (!v)) {
+    if ((e == nullptr) || (v == nullptr)) {
         Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
         return false;
     }
