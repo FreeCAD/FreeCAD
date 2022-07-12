@@ -24,6 +24,7 @@
 # ***************************************************************************
 
 from __future__ import print_function
+import os
 import FreeCAD
 from FreeCAD import Units
 import datetime
@@ -81,7 +82,7 @@ COMMENT = ";"
 # gCode header with information about CAD-software, post-processor
 # and date/time
 if FreeCAD.ActiveDocument:
-    cam_file = FreeCAD.ActiveDocument.FileName
+    cam_file = os.path.basename(FreeCAD.ActiveDocument.FileName)
 else:
     cam_file = "<None>"
 
