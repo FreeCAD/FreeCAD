@@ -68,3 +68,7 @@ class ViewProviderDraftHatch:
     def doubleClicked(self,vobj):
 
         self.setEdit(vobj,None)
+
+    def setupContextMenu(self, viewObject, menu):
+
+        return True
