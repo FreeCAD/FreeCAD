@@ -142,12 +142,31 @@ def getopenscadversion(osfilename=None):
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetString('openscadexecutable')
     if osfilename and os.path.isfile(osfilename):
-        with subprocess.Popen([osfilename, '-v'],\
-            stdout = subprocess.PIPE,stderr=subprocess.PIPE, universal_newlines=True) as p:
+        env = os.environ.copy()
+        try:
+            env.pop('LD_LIBRARY_PATH')
+        except KeyError:
+            None
+        def check_output2(*args, **kwargs):
+            env = os.environ.copy()
+            try:
+                env.pop('LD_LIBRARY_PATH')
+            except KeyError:
+                None
+            kwargs.update({'stdout':subprocess.PIPE,'stderr':subprocess.PIPE,'env':env})
+            p = subprocess.Popen(*args, **kwargs)
             p.wait()
-            stdout = p.stdout.read().strip()
-            stderr = p.stderr.read().strip()
-            return (stdout or stderr)
+            stdoutd = p.stdout.read().decode("utf8")
+            stderrd = p.stderr.read().decode("utf8")
+            if p.returncode != 0:
+                raise OpenSCADError('%s %s\n' % (stdoutd.strip(),stderrd.strip()))
+                #raise Exception,'stdout %s\n stderr%s' %(stdoutd,stderrd)
+            if stderrd.strip():
+                FreeCAD.Console.PrintWarning(stderrd+u'\n')
+            if stdoutd.strip():
+                FreeCAD.Console.PrintMessage(stdoutd+u'\n')
+            return (stdoutd or stderrd)
+        return check_output2([osfilename, '-v'])
 
 
 def newtempfilename():
@@ -173,7 +192,12 @@ def callopenscad(inputfilename,outputfilename=None, outputext='csg', keepname=Fa
     import time
 
     def check_output2(*args, **kwargs):
-        kwargs.update({'stdout':subprocess.PIPE,'stderr':subprocess.PIPE})
+        env = os.environ.copy()
+        try:
+            env.pop('LD_LIBRARY_PATH')
+        except KeyError:
+            None
+        kwargs.update({'stdout':subprocess.PIPE,'stderr':subprocess.PIPE,'env':env})
         p = subprocess.Popen(*args, **kwargs)
         stdoutd, stderrd = p.communicate()
         stdoutd = stdoutd.decode("utf8")
