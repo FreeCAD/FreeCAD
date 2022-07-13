@@ -29,12 +29,12 @@ a few unrelated function useful at various places in the Fem module.
 """
 
 __title__ = "FEM Utilities"
-__author__ = 'Markus Hovorka, Bernd Hahnebach, Uwe Stöhr'
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 import os
-import sys
 import subprocess
+import sys
 from platform import system
 
 import FreeCAD
