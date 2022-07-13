@@ -85,10 +85,12 @@ def Startup():
             import camotics
 
             r = subprocess.run(
-                ["camotics", "--version"], capture_output=True, text=True
+                ["camotics", "--version"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
             ).stderr.strip()
 
-            v = parse(r)
+            v = parse(r.decode("utf-8"))
             if v >= Version("1.2.2"):
                 from PathScripts import PathCamoticsGui
         except (FileNotFoundError, ModuleNotFoundError):
