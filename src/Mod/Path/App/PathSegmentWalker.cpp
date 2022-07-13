@@ -342,9 +342,10 @@ void PathSegmentWalker::walk(PathSegmentVisitor &cb, const Base::Vector3d &start
             lrot = nrot;
 
 
-        } else if ((name=="G38.2")||(name=="38.3")||(name=="G38.4")||(name=="G38.5")){
+        } else if ((name=="G38.2")||(name=="G38.3")||(name=="G38.4")||(name=="G38.5")){
             // Straight probe
             cb.g38(i, last, next);
+            last = next;
         } else if(name=="G17") {
             pz = &Base::Vector3d::z;
         } else if(name=="G18") {

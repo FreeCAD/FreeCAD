@@ -38,7 +38,6 @@ class Fixture:
             QT_TRANSLATE_NOOP("App::Property", "Fixture Offset Number"),
         )
         obj.Fixture = [
-            "G53",
             "G54",
             "G55",
             "G56",
@@ -68,7 +67,6 @@ class Fixture:
 
     def execute(self, obj):
         fixlist = [
-            "G53",
             "G54",
             "G55",
             "G56",
