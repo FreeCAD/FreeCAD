@@ -53,7 +53,7 @@ using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 
-const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
+const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 1};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
     : pcBoundSwitch(nullptr)
@@ -61,7 +61,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool randomColor = hGrp->GetBool("RandomColor", false);
-    float r,g,b;
+    float r, g, b;
 
     if (randomColor){
         float fMax = (float)RAND_MAX;
@@ -94,10 +94,9 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     Selectable.setValue(enableSel);
 
     pcShapeMaterial = new SoMaterial;
+    pcShapeMaterial->diffuseColor.setValue(r, g, b);
+    pcShapeMaterial->transparency = float(initialTransparency);
     pcShapeMaterial->ref();
-    //ShapeMaterial.touch(); materials are rarely used, so better to initialize with default shape color
-    ShapeColor.touch();
-    Transparency.touch();
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();
@@ -125,16 +124,16 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         setSelectable(Sel);
     }
     else if (prop == &ShapeColor) {
-        const App::Color& c = ShapeColor.getValue();
-        pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
+        const App::Color &c = ShapeColor.getValue();
+        pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
         if (c != ShapeMaterial.getValue().diffuseColor)
-        ShapeMaterial.setDiffuseColor(c);
+            ShapeMaterial.setDiffuseColor(c);
     }
     else if (prop == &Transparency) {
-        const App::Material& Mat = ShapeMaterial.getValue();
-        long value = (long)(100*Mat.transparency);
+        const App::Material &Mat = ShapeMaterial.getValue();
+        long value = (long)(100 * Mat.transparency);
         if (value != Transparency.getValue()) {
-            float trans = Transparency.getValue()/100.0f;
+            float trans = Transparency.getValue() / 100.0f;
             pcShapeMaterial->transparency = trans;
             ShapeMaterial.setTransparency(trans);
         }
@@ -142,17 +141,17 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
     else if (prop == &ShapeMaterial) {
         if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
             getObject()->touch(true);
-        const App::Material& Mat = ShapeMaterial.getValue();
-        long value = (long)(100*Mat.transparency);
+        const App::Material &Mat = ShapeMaterial.getValue();
+        long value = (long)(100 * Mat.transparency);
         if (value != Transparency.getValue())
-        Transparency.setValue(value);
-        const App::Color& color = Mat.diffuseColor;
+            Transparency.setValue(value);
+        const App::Color &color = Mat.diffuseColor;
         if (color != ShapeColor.getValue())
-        ShapeColor.setValue(Mat.diffuseColor);
-        pcShapeMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
-        pcShapeMaterial->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
-        pcShapeMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
-        pcShapeMaterial->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
+            ShapeColor.setValue(Mat.diffuseColor);
+        pcShapeMaterial->ambientColor.setValue(Mat.ambientColor.r, Mat.ambientColor.g, Mat.ambientColor.b);
+        pcShapeMaterial->diffuseColor.setValue(Mat.diffuseColor.r, Mat.diffuseColor.g, Mat.diffuseColor.b);
+        pcShapeMaterial->specularColor.setValue(Mat.specularColor.r, Mat.specularColor.g, Mat.specularColor.b);
+        pcShapeMaterial->emissiveColor.setValue(Mat.emissiveColor.r, Mat.emissiveColor.g, Mat.emissiveColor.b);
         pcShapeMaterial->shininess.setValue(Mat.shininess);
         pcShapeMaterial->transparency.setValue(Mat.transparency);
     }
