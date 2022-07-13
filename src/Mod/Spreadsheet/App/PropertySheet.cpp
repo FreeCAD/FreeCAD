@@ -1755,7 +1755,7 @@ bool PropertySheet::isBindingPath(const ObjectIdentifier &path,
         return false;
     }
     if(href)
-        *href = ( comps[1].getName()=="BindHiddenRef");
+        *href = (comps[1].getName()=="BindHiddenRef");
     if(from)
         *from = CellAddress(comps[2].getName());
     if(to)
