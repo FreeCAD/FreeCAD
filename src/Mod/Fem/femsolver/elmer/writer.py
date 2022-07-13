@@ -226,8 +226,11 @@ class Writer(object):
                     "-out", self.directory]
             # hide the popups on Windows
             if system() == "Windows":
-                subprocess.call(args, stdout=subprocess.DEVNULL,
-                    startupinfo=femutils.startProgramInfo("hide"))
+                subprocess.call(
+                    args,
+                    stdout=subprocess.DEVNULL,
+                    startupinfo=femutils.startProgramInfo("hide")
+                )
             else:
                 subprocess.call(args, stdout=subprocess.DEVNULL)
 

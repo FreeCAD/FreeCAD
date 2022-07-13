@@ -124,15 +124,19 @@ class Solve(run.Solve):
             # hide the popups on Windows
             if system() == "Windows":
                 self._process = subprocess.Popen(
-                [binary], cwd=self.directory,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                startupinfo=femutils.startProgramInfo("hide"))
+                    [binary],
+                    cwd=self.directory,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    startupinfo=femutils.startProgramInfo("hide")
+                )
             else:
                 self._process = subprocess.Popen(
-                    [binary], cwd=self.directory,
+                    [binary],
+                    cwd=self.directory,
                     stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE)
+                    stderr=subprocess.PIPE
+                )
             self.signalAbort.add(self._process.terminate)
             output = self._observeSolver(self._process)
             self._process.communicate()

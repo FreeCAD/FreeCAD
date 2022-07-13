@@ -133,13 +133,15 @@ class Solve(run.Solve):
                 cwd=self.directory,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                startupinfo=femutils.startProgramInfo(state))
+                startupinfo=femutils.startProgramInfo(state)
+            )
         else:
             self._process = subprocess.Popen(
                 [binary, command, "-" + solver],
-                 cwd=self.directory,
-                 stdout=subprocess.PIPE,
-                 stderr=subprocess.PIPE)
+                cwd=self.directory,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
         self.signalAbort.add(self._process.terminate)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
