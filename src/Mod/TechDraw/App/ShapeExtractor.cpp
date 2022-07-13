@@ -128,17 +128,17 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     builder.MakeCompound(comp);
     bool found = false;
     for (auto& s:sourceShapes) {
-        if (s.ShapeType() < TopAbs_SOLID) {
+        if (s.IsNull()) {
+            continue;
+        } else if (s.ShapeType() < TopAbs_SOLID) {
             //clean up composite shapes
             TopoDS_Shape cleanShape = stripInfiniteShapes(s);
             if (!cleanShape.IsNull()) {
                 builder.Add(comp, cleanShape);
                 found = true;
             }
-        } else if (s.IsNull()) {
-            continue;    // has no shape
         } else if (Part::TopoShape(s).isInfinite()) {
-            continue;    //shape is infinite
+            continue;    //simple shape is infinite
         } else {
             //a simple shape - add to compound
             builder.Add(comp, s);
@@ -148,7 +148,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     //it appears that an empty compound is !IsNull(), so we need to check a different way
     //if we added anything to the compound.
     if (!found) {
-        Base::Console().Error("SE::getShapes - source shape is empty!\n");
+        Base::Console().Error("ShapeExtractor failed to get shape.\n");
     } else {
         result = comp;
     }
@@ -240,9 +240,24 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
     App::Property* sProp = docObj->getPropertyByName("Shape");
     if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         const Part::Feature* pf = static_cast<const Part::Feature*>(docObj);
-        Part::TopoShape ts = pf->Shape.getShape();
-        ts.setPlacement(pf->globalPlacement());
-        result.push_back(ts.getShape());
+        Part::TopoShape ts(pf->Shape.getShape());
+
+        //ts might be garbage, better check
+        try {
+            if (!ts.isNull()) {
+                ts.setPlacement(pf->globalPlacement());
+                result.push_back(ts.getShape());
+            }
+        }
+        catch (Standard_Failure& e) {
+            Base::Console().Error("ShapeExtractor - %s encountered OCC error: %s \n", docObj->getNameInDocument(), e.GetMessageString());
+            return result;
+        }
+        catch (...) {
+            Base::Console().Error("ShapeExtractor failed to retrieve shape from %s\n", docObj->getNameInDocument());
+            return result;
+        }
+
     } else if (gex != nullptr) {           //is a group extension
         std::vector<App::DocumentObject*> objs = gex->Group.getValues();
         std::vector<TopoDS_Shape> shapes;
