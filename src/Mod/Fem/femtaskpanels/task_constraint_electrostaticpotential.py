@@ -112,7 +112,6 @@ class _TaskPanel(object):
             not self._paramWidget.capacitanceBodyBox.isChecked())
 
     def _applyWidgetChanges(self):
-        # unit = "V"
         self._obj.PotentialEnabled = \
             not self._paramWidget.potentialBox.isChecked()
         if self._obj.PotentialEnabled:
