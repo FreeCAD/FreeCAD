@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,18 +24,20 @@
 # ***************************************************************************
 
 """
-These are a common functions and classes for creating custom post processors.
+These are common functions and classes for creating custom post processors.
 """
 
 from PySide import QtCore, QtGui
+
 import FreeCAD
-from PathMachineState import MachineState
+
 import Path
 import Part
+
+from PathMachineState import MachineState
 from PathScripts.PathGeom import CmdMoveArc, edgeForCmd, cmdsForEdge
 
 translate = FreeCAD.Qt.translate
-
 FreeCADGui = None
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -147,7 +150,7 @@ def stringsplit(commandline):
 
 
 def fmt(num, dec, units):
-    """used to format axis moves, feedrate, etc for decimal places and units"""
+    """Use to format axis moves, feedrate, etc for decimal places and units."""
     if units == "G21":  # metric
         fnum = "%.*f" % (dec, num)
     else:  # inch
@@ -156,8 +159,7 @@ def fmt(num, dec, units):
 
 
 def editor(gcode):
-    """pops up a handy little editor to look at the code output"""
-
+    """Pops up a handy little editor to look at the code output."""
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
     # default Max Highlighter Size = 512 Ko
     defaultMHS = 512 * 1024
@@ -190,7 +192,7 @@ def editor(gcode):
 
 
 def fcoms(string, commentsym):
-    """filter and rebuild comments with user preferred comment symbol"""
+    """Filter and rebuild comments with user preferred comment symbol."""
     if len(commentsym) == 1:
         s1 = string.replace("(", commentsym)
         comment = s1.replace(")", "")
@@ -200,8 +202,10 @@ def fcoms(string, commentsym):
 
 
 def splitArcs(path):
-    """filters a path object and replaces at G2/G3 moves with discrete G1
-    returns a Path object"""
+    """Filter a path object and replace all G2/G3 moves with discrete G1 moves.
+
+    Returns a Path object.
+    """
     prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
     deflection = prefGrp.GetFloat("LibAreaCurveAccuarcy", 0.01)
 

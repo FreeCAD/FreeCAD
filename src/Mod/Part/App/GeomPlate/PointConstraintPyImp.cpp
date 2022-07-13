@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <memory>
 # include <Standard_Failure.hxx>
 #endif
 

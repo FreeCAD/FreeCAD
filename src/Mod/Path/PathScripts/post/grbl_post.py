@@ -407,6 +407,8 @@ def export(objectslist, filename, argstring):
     gfile.write(final)
     gfile.close()
 
+    return final
+
 
 def linenumber():
     if not OUTPUT_LINE_NUMBERS:

@@ -142,6 +142,9 @@ SET(PathScripts_SRCS
     PathScripts/PathWaterline.py
     PathScripts/PathWaterlineGui.py
     PathScripts/PostUtils.py
+    PathScripts/PostUtilsArguments.py
+    PathScripts/PostUtilsExport.py
+    PathScripts/PostUtilsParse.py
     PathScripts/__init__.py
 )
 
@@ -174,6 +177,11 @@ SET(PathScripts_post_SRCS
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
     PathScripts/post/philips_post.py
+    PathScripts/post/refactored_centroid_post.py
+    PathScripts/post/refactored_grbl_post.py
+    PathScripts/post/refactored_linuxcnc_post.py
+    PathScripts/post/refactored_mach3_mach4_post.py
+    PathScripts/post/refactored_test_post.py
     PathScripts/post/rml_post.py
     PathScripts/post/rrf_post.py
     PathScripts/post/slic3r_pre.py
@@ -221,14 +229,19 @@ SET(Tools_Shape_SRCS
 SET(PathTests_SRCS
     PathTests/__init__.py
     PathTests/boxtest.fcstd
+    PathTests/boxtest1.fcstd
     PathTests/Drilling_1.FCStd
+    PathTests/drill_test1.FCStd
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd
     PathTests/test_centroid_00.ngc
     PathTests/test_filenaming.fcstd
     PathTests/test_geomop.fcstd
     PathTests/test_holes00.fcstd
-    PathTests/test_linuxcnc_00.ngc
+    PathTests/TestCentroidPost.py
+    PathTests/TestGrblPost.py
+    PathTests/TestLinuxCNCPost.py
+    PathTests/TestMach3Mach4Post.py
     PathTests/TestPathAdaptive.py
     PathTests/TestPathCore.py
     PathTests/TestPathDeburr.py
@@ -259,6 +272,11 @@ SET(PathTests_SRCS
     PathTests/TestPathUtil.py
     PathTests/TestPathVcarve.py
     PathTests/TestPathVoronoi.py
+    PathTests/TestRefactoredCentroidPost.py
+    PathTests/TestRefactoredGrblPost.py
+    PathTests/TestRefactoredLinuxCNCPost.py
+    PathTests/TestRefactoredMach3Mach4Post.py
+    PathTests/TestRefactoredTestPost.py
     PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
     PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
@@ -413,4 +431,3 @@ INSTALL(
     DESTINATION
         Mod/Path/Data/Threads
 )
-

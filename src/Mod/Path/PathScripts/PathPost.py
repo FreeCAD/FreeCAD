@@ -59,51 +59,15 @@ class _TempObject:
     Label = "Fixture"
 
 
-def resolveFileName(job, subpartname, sequencenumber):
-    PathLog.track(subpartname, sequencenumber)
-
-    validPathSubstitutions = ["D", "d", "M", "j"]
-    validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
-
-    # Look for preference default
-    outputpath, filename = os.path.split(PathPreferences.defaultOutputFile())
-    filename, ext = os.path.splitext(filename)
-
-    # Override with document default if it exists
-    if job.PostProcessorOutputFile:
-        matchstring = job.PostProcessorOutputFile
-        candidateOutputPath, candidateFilename = os.path.split(matchstring)
-
-        if candidateOutputPath:
-            outputpath = candidateOutputPath
-
-        if candidateFilename:
-            filename, ext = os.path.splitext(candidateFilename)
-
-    # Strip any invalid substitutions from the ouputpath
-    for match in re.findall("%(.)", outputpath):
-        if match not in validPathSubstitutions:
-            outputpath = outputpath.replace(f"%{match}", "")
-
-    # if nothing else, use current directory
-    if not outputpath:
-        outputpath = "."
-
-    # Strip any invalid substitutions from the filename
-    for match in re.findall("%(.)", filename):
-        if match not in validFilenameSubstitutions:
-            filename = filename.replace(f"%{match}", "")
-
-    # if no filename, use the active document label
-    if not filename:
-        filename = FreeCAD.ActiveDocument.Label
-
-    # if no extension, use something sensible
-    if not ext:
-        ext = ".nc"
-
-    # By now we should have a sanitized path, filename and extension to work with
-    PathLog.track(f"path: {outputpath} name: {filename} ext: {ext}")
+def processFileNameSubstitutions(
+    job,
+    subpartname,
+    sequencenumber,
+    outputpath,
+    filename,
+    ext,
+):
+    """Process any substitutions in the outputpath or filename."""
 
     # The following section allows substitution within the path part
     PathLog.track(f"path before substitution: {outputpath}")
@@ -187,13 +151,71 @@ def resolveFileName(job, subpartname, sequencenumber):
     fullPath = f"{outputpath}{os.path.sep}{filename}{ext}"
 
     PathLog.track(f"full filepath: {fullPath}")
+    return fullPath
+
+
+def resolveFileName(job, subpartname, sequencenumber):
+    PathLog.track(subpartname, sequencenumber)
+
+    validPathSubstitutions = ["D", "d", "M", "j"]
+    validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
+
+    # Look for preference default
+    outputpath, filename = os.path.split(PathPreferences.defaultOutputFile())
+    filename, ext = os.path.splitext(filename)
+
+    # Override with document default if it exists
+    if job.PostProcessorOutputFile:
+        matchstring = job.PostProcessorOutputFile
+        candidateOutputPath, candidateFilename = os.path.split(matchstring)
+
+        if candidateOutputPath:
+            outputpath = candidateOutputPath
+
+        if candidateFilename:
+            filename, ext = os.path.splitext(candidateFilename)
+
+    # Strip any invalid substitutions from the ouputpath
+    for match in re.findall("%(.)", outputpath):
+        if match not in validPathSubstitutions:
+            outputpath = outputpath.replace(f"%{match}", "")
+
+    # if nothing else, use current directory
+    if not outputpath:
+        outputpath = "."
+
+    # Strip any invalid substitutions from the filename
+    for match in re.findall("%(.)", filename):
+        if match not in validFilenameSubstitutions:
+            filename = filename.replace(f"%{match}", "")
+
+    # if no filename, use the active document label
+    if not filename:
+        filename = FreeCAD.ActiveDocument.Label
+
+    # if no extension, use something sensible
+    if not ext:
+        ext = ".nc"
+
+    # By now we should have a sanitized path, filename and extension to work with
+    PathLog.track(f"path: {outputpath} name: {filename} ext: {ext}")
+
+    fullPath = processFileNameSubstitutions(
+        job,
+        subpartname,
+        sequencenumber,
+        outputpath,
+        filename,
+        ext,
+    )
 
     # This section determines whether user interaction is necessary
     policy = PathPreferences.defaultOutputPolicy()
 
     openDialog = policy == "Open File Dialog"
     # if os.path.isdir(filename) or not os.path.isdir(os.path.dirname(filename)):
-    #     # Either the entire filename resolves into a directory or the parent directory doesn't exist.
+    #     # Either the entire filename resolves into a directory or the parent
+    #     # directory doesn't exist.
     #     # Either way I don't know what to do - ask for help
     #     openDialog = True
 
@@ -235,7 +257,7 @@ def resolveFileName(job, subpartname, sequencenumber):
 def buildPostList(job):
     """Takes the job and determines the specific objects and order to
     postprocess  Returns a list of objects which can be passed to
-    exportObjectsWith() for final posting"""
+    exportObjectsWith() for final posting."""
     wcslist = job.Fixtures
     orderby = job.OrderOutputBy
 
@@ -243,8 +265,8 @@ def buildPostList(job):
 
     if orderby == "Fixture":
         PathLog.debug("Ordering by Fixture")
-        # Order by fixture means all operations and tool changes will be completed in one
-        # fixture before moving to the next.
+        # Order by fixture means all operations and tool changes will be
+        # completed in one fixture before moving to the next.
 
         currTool = None
         for index, f in enumerate(wcslist):

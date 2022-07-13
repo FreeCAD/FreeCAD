@@ -80,7 +80,6 @@ G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.000000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
 G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
 
-
     def test00(self):
         """Test Basic Helix Generator Return"""
         args = _resetArgs()
@@ -118,7 +117,8 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         args["tool_diameter"] = 5.0
         self.assertRaises(ValueError, generator.generate, **args)
 
-        # require tool fit 2: hole diameter not greater than tool diam with zero inner radius
+        # require tool fit 2: hole diameter not greater than tool diam
+        # with zero inner radius
         args["hole_radius"] = 2.0
         args["inner_radius"] = 0.0
         args["tool_diameter"] = 5.0

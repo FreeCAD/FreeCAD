@@ -215,9 +215,9 @@ def importFrd(
         # see error message above for more information
         if not res_obj:
             if result_name_prefix:
-                results_name = ("{}_Results".format(result_name_prefix))
+                results_name = "{}_Results".format(result_name_prefix)
             else:
-                results_name = ("Results".format(result_name_prefix))
+                results_name = "Results"
             res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
             res_obj.Mesh = result_mesh_object
             # TODO, node numbers in result obj could be set

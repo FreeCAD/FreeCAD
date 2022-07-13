@@ -8,9 +8,10 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 
   ```bash
   # Find typos
-  codespell -q 2 -S *.ts -L childs,dof,dum,methode,nd,normaly,uint,vertexes,freez src/Mod/Fem/
+  codespell -q 2 -S *.ts -S *.dyn -S *.svg -L childs,dof,dum,freez,methode,nd,normaly,programm,som,uint,vertexes,inout  src/Mod/Fem/
+
   # Interactively fix said typos
-  codespell -i 3 -w -S *.ts -L childs,dof,dum,methode,nd,normaly,uint,vertexes,freez src/Mod/Fem/
+  codespell -i 3 -w -S *.ts -S *.dyn -S *.svg -L childs,dof,dum,freez,methode,nd,normaly,programm,som,uint,vertexes,inout  src/Mod/Fem/
   ```
 
   **Notes:**  
