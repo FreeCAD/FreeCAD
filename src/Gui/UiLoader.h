@@ -46,21 +46,6 @@ class QWidget;
 QT_END_NAMESPACE
 
 
-namespace Gui {
-
-class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
-{
-
-public:
-    PySideUicModule();
-    virtual ~PySideUicModule() {}
-
-private:
-    Py::Object loadUiType(const Py::Tuple& args);
-    Py::Object loadUi(const Py::Tuple& args);
-    Py::Object createCustomWidget(const Py::Tuple&);
-};
-
 #if !defined (HAVE_QT_UI_TOOLS)
 class QUiLoader : public QObject
 {
@@ -97,6 +82,21 @@ private:
     Py::Object uiloader;
 };
 #endif
+
+namespace Gui {
+
+class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
+{
+
+public:
+    PySideUicModule();
+    virtual ~PySideUicModule() {}
+
+private:
+    Py::Object loadUiType(const Py::Tuple& args);
+    Py::Object loadUi(const Py::Tuple& args);
+    Py::Object createCustomWidget(const Py::Tuple&);
+};
 
 /**
  * The UiLoader class provides the abitlity to use the widget factory
