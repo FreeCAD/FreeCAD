@@ -21,14 +21,19 @@
 #***************************************************************************
 
 
-"""This module contains FreeCAD commands for the Draft workbench"""
+"""Provides the viewprovider code for the Hatch object."""
+
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
+
+import FreeCADGui as Gui
 
 from draftguitools.gui_hatch import Draft_Hatch_TaskPanel
+from draftutils.translate import translate
 
 class ViewProviderDraftHatch:
 
-
-    def __init__(self,vobj):
+    def __init__(self, vobj):
 
         vobj.Proxy = self
 
@@ -40,29 +45,45 @@ class ViewProviderDraftHatch:
 
         return None
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
 
         return None
 
-    def setEdit(self,vobj,mode):
-        if mode != 0:
-            return None
+    def setEdit(self, vobj, mode):
+        # EditMode 1 and 2 are handled by the Part::FeaturePython code.
+        # EditMode 3 (Color) does not make sense for hatches (which do not
+        # have faces) and we let that default to EditMode 0.
 
-        import FreeCADGui
+        if mode == 1 or mode == 2:
+            return None
 
         taskd = Draft_Hatch_TaskPanel(vobj.Object)
         taskd.form.File.setFileName(vobj.Object.File)
         taskd.form.Pattern.setCurrentText(vobj.Object.Pattern)
         taskd.form.Scale.setValue(vobj.Object.Scale)
         taskd.form.Rotation.setValue(vobj.Object.Rotation)
-        FreeCADGui.Control.showDialog(taskd)
+        Gui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
-        if mode != 0:
+    def unsetEdit(self, vobj, mode):
+        # See setEdit.
+
+        if mode == 1 or mode == 2:
             return None
 
-        import FreeCADGui
-
-        FreeCADGui.Control.closeDialog()
         return True
+
+    def setupContextMenu(self, vobj, menu):
+        action1 = QtGui.QAction(Gui.getIcon("Std_TransformManip.svg"),
+                                translate("Command", "Transform"), # Context `Command` instead of `draft`.
+                                menu)
+        QtCore.QObject.connect(action1,
+                               QtCore.SIGNAL("triggered()"),
+                               self.transform)
+        menu.addAction(action1)
+
+        return True # Removes `Transform` and `Set colors` from the default
+                    # Part::FeaturePython context menu.
+
+    def transform(self):
+        Gui.runCommand("Std_TransformManip", 0)
