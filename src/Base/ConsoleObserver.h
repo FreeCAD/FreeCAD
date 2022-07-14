@@ -91,8 +91,7 @@ private:
     const char* conObs; //  Stores console observer name that blocker acts on
 };
 
-ILoggerBlocker::ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes):
-conObs(co)
+ILoggerBlocker::ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes) : conObs(co)
 {
     msgTypesBlocked = Console().SetEnabledMsgType(conObs, msgTypes, false);
 }
@@ -103,6 +102,8 @@ ILoggerBlocker::~ILoggerBlocker()
     auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
     if (debug != msgTypesBlocked)
         Console().Warning("Enabled message types have been changed while ILoggerBlocker was set\n");
+#else
+    Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
 #endif
 }
 
