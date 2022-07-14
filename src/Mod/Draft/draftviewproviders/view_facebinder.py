@@ -29,28 +29,32 @@
 # @{
 import FreeCADGui as Gui
 
-import DraftGui
-
 from draftviewproviders.view_base import ViewProviderDraft
 
-
 class ViewProviderFacebinder(ViewProviderDraft):
-    def __init__(self,vobj):
+
+    def __init__(self, vobj):
         super(ViewProviderFacebinder, self).__init__(vobj)
 
     def getIcon(self):
         return ":/icons/Draft_Facebinder_Provider.svg"
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        import DraftGui # Moving this to the top of the file results in a circular import.
         taskd = DraftGui.FacebinderTaskPanel()
         taskd.obj = vobj.Object
         taskd.update()
         Gui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
-        Gui.Control.closeDialog()
-        return False
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        return True
 
 
 # Alias for compatibility with v0.18 and earlier
