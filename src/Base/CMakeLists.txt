@@ -242,6 +242,7 @@ SET(FreeCADBase_CPP_SRCS
     Matrix.cpp
     MatrixPyImp.cpp
     MemDebug.cpp
+    Mutex.cpp
     Parameter.xsd
     Parameter.cpp
     ParameterPy.cpp
@@ -251,6 +252,7 @@ SET(FreeCADBase_CPP_SRCS
     PlacementPyImp.cpp
     PyExport.cpp
     PyObjectBase.cpp
+    QtTools.cpp
     Reader.cpp
     Rotation.cpp
     RotationPyImp.cpp
@@ -306,12 +308,14 @@ SET(FreeCADBase_HPP_SRCS
     Interpreter.h
     Matrix.h
     MemDebug.h
+    Mutex.h
     Observer.h
     Parameter.h
     Persistence.h
     Placement.h
     PyExport.h
     PyObjectBase.h
+    QtTools.h
     Reader.h
     Rotation.h
     Sequencer.h
