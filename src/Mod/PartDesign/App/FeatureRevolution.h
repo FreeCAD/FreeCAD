@@ -37,9 +37,11 @@ class PartDesignExport Revolution : public ProfileBased
 public:
     Revolution();
 
+    App::PropertyEnumeration Type;
     App::PropertyVector Base;
     App::PropertyVector Axis;
     App::PropertyAngle  Angle;
+    App::PropertyAngle  Angle2;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -65,11 +67,15 @@ public:
 
     /// suggests a value for Reversed flag so that material is always added to the support
     bool suggestReversed();
+
 protected:
     /// updates Axis from ReferenceAxis
     void updateAxis();
 
     static const App::PropertyAngle::Constraints floatAngle;
+
+private:
+    static const char* TypeEnums[];
 };
 
 } //namespace PartDesign

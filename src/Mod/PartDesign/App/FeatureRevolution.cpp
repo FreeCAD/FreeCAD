@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <BRepFeat_MakeRevol.hxx>
 # include <gp_Lin.hxx>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
@@ -42,6 +43,7 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
+const char* Revolution::TypeEnums[]= {"Angle", "UpToLast", "UpToFirst", "UpToFace", "TwoAngles", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::ProfileBased)
 
@@ -51,9 +53,14 @@ Revolution::Revolution()
 {
     addSubType = FeatureAddSub::Additive;
 
+    ADD_PROPERTY_TYPE(Type, (0L), "Revolution", App::Prop_None, "Revolution type");
+    Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
+    ADD_PROPERTY_TYPE(Angle2, (60.0), "Revolution", App::Prop_None, "Revolution length in 2nd direction");
+
     Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(nullptr),"Revolution",(App::Prop_None),"Reference axis of revolution");
 }
@@ -64,7 +71,9 @@ short Revolution::mustExecute() const
         ReferenceAxis.isTouched() ||
         Axis.isTouched() ||
         Base.isTouched() ||
-        Angle.isTouched())
+        UpToFace.isTouched() ||
+        Angle.isTouched() ||
+        Angle2.isTouched())
         return 1;
     return ProfileBased::mustExecute();
 }
@@ -140,11 +149,46 @@ App::DocumentObjectExecReturn *Revolution::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Revolve axis intersects the sketch"));
         }
 
-        // revolve the face to a solid
-        BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
+        TopoDS_Shape result;
 
-        if (RevolMaker.IsDone()) {
-            TopoDS_Shape result = RevolMaker.Shape();
+        std::string method(Type.getValueAsString());
+        if (method == "UpToFace") {
+            TopoDS_Face supportface = getSupportFace();
+            supportface.Move(invObjLoc);
+
+            TopoDS_Face upToFace;
+            if (method == "UpToFace") {
+                getFaceFromLinkSub(upToFace, UpToFace);
+                upToFace.Move(invObjLoc);
+            }
+            getUpToFace(upToFace, base, sketchshape, method, dir);
+
+            // TODO: Make enum
+            int mode = 2;
+            BRepFeat_MakeRevol RevolMaker;
+            for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
+                RevolMaker.Init(base, xp.Current(), supportface, gp_Ax1(pnt, dir), mode, Standard_True);
+                RevolMaker.Perform(upToFace);
+
+                if (!RevolMaker.IsDone())
+                    throw Base::RuntimeError("ProfileBased: Up to face: Could not revolve the sketch!");
+
+                base = RevolMaker.Shape();
+                if (mode == 2)
+                    mode = 1;
+            }
+
+            result = base;
+        }
+        else {
+            // revolve the face to a solid
+            BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
+
+            if (RevolMaker.IsDone())
+                result = RevolMaker.Shape();
+        }
+
+        if (!result.IsNull()) {
             result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
             this->AddSubShape.setValue(result);
