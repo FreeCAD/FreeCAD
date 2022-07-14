@@ -56,6 +56,11 @@ Gui::GuiNativeEvent::tdx_drv_handler(io_connect_t connection,
                                      natural_t messageType,
                                      void *messageArgument)
 {
+    static bool firstTime = true;
+    if (firstTime) {
+        firstTime = false;
+        Base::Console().Log("Call connexion handler\n");
+    }
     Q_UNUSED(connection)
     //printf("tdx_drv_handler\n");
     //printf("connection: %X\n", connection);
@@ -70,6 +75,8 @@ Gui::GuiNativeEvent::tdx_drv_handler(io_connect_t connection,
          * assigned id when the connection to the driver was established.
          */
         //printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);
+        Base::Console().Log("msg->client: %d, msg->command: %d\n", msg->client, msg->command);
+
         if (msg->client == tdxClientID) {
             switch (msg->command) {
             case kConnexionCmdHandleAxis:
