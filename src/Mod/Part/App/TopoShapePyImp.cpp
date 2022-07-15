@@ -20,81 +20,77 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
 # include <boost/regex.hpp>
-# include <BRepMesh_IncrementalMesh.hxx>
+
+# include <BRep_Tool.hxx>
+# include <BRepAlgo_NormalProjection.hxx>
+# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepFilletAPI_MakeFillet.hxx>
-# include <BRepFilletAPI_MakeChamfer.hxx>
-# include <BRepOffsetAPI_MakePipe.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <BRepProj_Projection.hxx>
-# include <BRepTools.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepExtrema_ShapeProximity.hxx>
 # include <BRepExtrema_SupportType.hxx>
-# include <BRepBndLib.hxx>
-# include <BRep_Tool.hxx>
+# include <BRepFilletAPI_MakeChamfer.hxx>
+# include <BRepFilletAPI_MakeFillet.hxx>
+# include <BRepGProp.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <BRepProj_Projection.hxx>
+# include <BRepTools.hxx>
+# include <Geom_Plane.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
 # include <gp_Pnt.hxx>
 # include <gp_Trsf.hxx>
-# include <gp_Pln.hxx>
+# include <GProp_GProps.hxx>
+# include <HLRAppli_ReflectLines.hxx>
+# include <Precision.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Poly_Triangulation.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopLoc_Location.hxx>
-# include <TopExp.hxx>
-# include <Precision.hxx>
-# include <Geom_Plane.hxx>
-# include <HLRAppli_ReflectLines.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <BRepAlgo_NormalProjection.hxx>
 # include <ShapeAnalysis_ShapeTolerance.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
 # include <Standard_Version.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopLoc_Location.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Iterator.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
 #endif
 
+#include <App/PropertyStandard.h>
 #include <Base/GeometryPyCXX.h>
-#include <Base/Matrix.h>
-#include <Base/Rotation.h>
 #include <Base/MatrixPy.h>
+#include <Base/Rotation.h>
 #include <Base/Stream.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
-#include <App/PropertyStandard.h>
-#include <CXX/Extensions.hxx>
 
-#include "TopoShape.h"
-#include "PartPyCXX.h"
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapePy.cpp>
 
-#include "OCCError.h"
 #include <Mod/Part/App/GeometryPy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeVertexPy.h>
-#include <Mod/Part/App/TopoShapeSolidPy.h>
-#include <Mod/Part/App/TopoShapeShellPy.h>
-#include <Mod/Part/App/TopoShapeCompSolidPy.h>
-#include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/PlanePy.h>
+#include <Mod/Part/App/TopoShapeCompoundPy.h>
+#include <Mod/Part/App/TopoShapeCompSolidPy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeShellPy.h>
+#include <Mod/Part/App/TopoShapeSolidPy.h>
+#include <Mod/Part/App/TopoShapeVertexPy.h>
+#include <Mod/Part/App/TopoShapeWirePy.h>
+
+#include "OCCError.h"
+#include "PartPyCXX.h"
+
 
 using namespace Part;
 

@@ -20,21 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <memory>
-# include <Precision.hxx>
 # include <Standard_Failure.hxx>
-#endif
 
 // Needed for OCCT 7.5.2
 #include <TopoDS_Edge.hxx>
+#endif
 
 #include "ShapeUpgrade/UnifySameDomainPy.h"
 #include "ShapeUpgrade/UnifySameDomainPy.cpp"
-#include "TopoShapePy.h"
 #include "PartPyCXX.h"
+#include "TopoShapePy.h"
+
 
 using namespace Part;
 

@@ -28,6 +28,7 @@
 #include <Mod/Part/App/TopoShapePy.h>
 #include "ProjectionAlgos.h"
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/VectorPy.h>
 #include <boost/regex.hpp>
 

@@ -20,26 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp.hxx>
-# include <gp_Lin.hxx>
+# include <GC_MakeSegment.hxx>
 # include <Geom_Line.hxx>
 # include <Geom_TrimmedCurve.hxx>
-# include <GC_MakeLine.hxx>
-# include <GC_MakeSegment.hxx>
-# include <Precision.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
+#include "LineSegmentPy.h"
+#include "LineSegmentPy.cpp"
+#include "LinePy.h"
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/LineSegmentPy.h>
-#include <Mod/Part/App/LineSegmentPy.cpp>
+
 
 using namespace Part;
 

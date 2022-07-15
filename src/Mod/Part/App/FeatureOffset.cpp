@@ -19,14 +19,15 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Precision.hxx>
 #endif
 
+#include <App/Link.h>
 
 #include "FeatureOffset.h"
-#include <App/Link.h>
 
 
 using namespace Part;

@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
 #endif
+
+#include <Base/PlacementPy.h>
 
 #include "ShapeFix/ShapeFix_WirePy.h"
 #include "ShapeFix/ShapeFix_WirePy.cpp"
 #include "ShapeFix/ShapeFix_EdgePy.h"
-#include <Base/PlacementPy.h>
-#include <Mod/Part/App/GeometrySurfacePy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
+#include "GeometrySurfacePy.h"
 #include "OCCError.h"
 #include "Tools.h"
+#include "TopoShapeFacePy.h"
+#include "TopoShapeWirePy.h"
+
 
 using namespace Part;
 

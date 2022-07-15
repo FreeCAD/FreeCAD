@@ -20,18 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FeatureGeometrySet_H
 #define PART_FeatureGeometrySet_H
 
+#include "PartFeature.h"
 #include "PropertyGeometryList.h"
 
-#include "PartFeature.h"
 
 namespace Part
 {
-
 
 class PartExport FeatureGeometrySet :public Part::Feature
 {

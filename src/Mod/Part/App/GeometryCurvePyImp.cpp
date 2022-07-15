@@ -25,56 +25,52 @@
 
 #ifndef _PreComp_
 # include <sstream>
+
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Vec.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Quaternion.hxx>
-# include <GCPnts_UniformAbscissa.hxx>
-# include <GCPnts_UniformDeflection.hxx>
-# include <GCPnts_TangentialDeflection.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
 # include <GCPnts_QuasiUniformAbscissa.hxx>
 # include <GCPnts_QuasiUniformDeflection.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <Geom2dAPI_InterCurveCurve.hxx>
-# include <GeomAPI.hxx>
-# include <Geom_Geometry.hxx>
+# include <GCPnts_TangentialDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <Geom_Curve.hxx>
+# include <Geom_Geometry.hxx>
 # include <Geom_Plane.hxx>
+# include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_Surface.hxx>
+# include <Geom2dAPI_InterCurveCurve.hxx>
 # include <GeomAdaptor_Curve.hxx>
+# include <GeomAPI.hxx>
+# include <GeomAPI_IntCS.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <GeomConvert_ApproxCurve.hxx>
 # include <GeomFill.hxx>
 # include <GeomLProp.hxx>
 # include <GeomLProp_CLProps.hxx>
-# include <Geom_RectangularTrimmedSurface.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <Precision.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
-# include <GeomConvert_ApproxCurve.hxx>
-# include <Standard_Failure.hxx>
-# include <Standard_NullValue.hxx>
-# include <ShapeConstruct_Curve.hxx>
-# include <GeomAPI_IntCS.hxx>
-# include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Quaternion.hxx>
+# include <gp_Vec.hxx>
 # include <IntRes2d_IntersectionSegment.hxx>
+# include <Precision.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
-#include "Geometry.h"
 #include "GeometryCurvePy.h"
 #include "GeometryCurvePy.cpp"
-#include "RectangularTrimmedSurfacePy.h"
+#include "BSplineCurvePy.h"
 #include "BSplineSurfacePy.h"
 #include "PlanePy.h"
 #include "PointPy.h"
-#include "BSplineCurvePy.h"
-
+#include "RectangularTrimmedSurfacePy.h"
 #include "OCCError.h"
 #include "TopoShape.h"
-#include "TopoShapePy.h"
 #include "TopoShapeEdgePy.h"
+
 
 namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);

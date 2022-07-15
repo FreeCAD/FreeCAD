@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Surface.hxx>
@@ -29,16 +28,15 @@
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepGProp_Face.hxx>
 # include <BRepPrimAPI_MakeHalfSpace.hxx>
 # include <gp_Pln.hxx>
 # include <Precision.hxx>
-# include <ShapeFix_Wire.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
+# include <ShapeFix_Wire.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Wire.hxx>
@@ -46,8 +44,8 @@
 
 #include "CrossSection.h"
 
-using namespace Part;
 
+using namespace Part;
 
 CrossSection::CrossSection(double a, double b, double c, const TopoDS_Shape& s)
   : a(a), b(b), c(c), s(s)

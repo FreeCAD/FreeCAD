@@ -4021,6 +4021,71 @@ void Sketch::resetInitMove()
     isInitMove = false;
 }
 
+int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint, bool fine)
+{
+    isFine = fine;
+
+    geoId = checkGeoId(geoId);
+
+    clearTemporaryConstraints();
+
+    // don't try to move sketches that contain conflicting constraints
+    if (hasConflicts()) {
+        isInitMove = false;
+        return -1;
+    }
+
+    // this is only meant for B-Splines
+    if (Geoms[geoId].type != BSpline || pos == PointPos::start || pos == PointPos::end) {
+        return -1;
+    }
+
+    GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
+
+    // If spline has too few poles, just move all
+    if (bsp.poles.size() <= std::size_t(bsp.degree + 1))
+        return initMove(geoId, pos, fine);
+
+    // Find the closest knot
+    auto partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId].geo);
+    double uNear;
+    partBsp->closestParameter(firstPoint, uNear);
+    auto& knots = bsp.knots;
+    auto upperknot = std::upper_bound(
+        knots.begin(), knots.end(), uNear,
+        [](double u, double* element) {
+            return u < *element;
+        });
+
+    size_t idx = 0;
+    // skipping the first knot for adjustment
+    // TODO: ensure this works for periodic as well
+    for (size_t i=1; i<bsp.mult.size() && knots[i]!=*upperknot; ++i)
+        idx += bsp.mult[i];
+
+    MoveParameters.resize(2*(bsp.degree+1)); // x[idx],y[idx],x[idx+1],y[idx+1],...
+
+    size_t mvindex = 0;
+    auto lastIt = (idx + bsp.degree + 1) % bsp.poles.size();
+    for (size_t i = idx; i != lastIt; i=(i+1)%bsp.poles.size(), ++mvindex) {
+        GCS::Point p1;
+        p1.x = &MoveParameters[mvindex];
+        ++mvindex;
+        p1.y = &MoveParameters[mvindex];
+
+        *p1.x = *bsp.poles[i].x;
+        *p1.y = *bsp.poles[i].y;
+
+        GCSsys.addConstraintP2PCoincident(p1,bsp.poles[i],GCS::DefaultTemporaryConstraint);
+    }
+
+    InitParameters = MoveParameters;
+
+    GCSsys.initSolution();
+    isInitMove = true;
+    return 0;
+}
+
 int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
 {
     geoId = checkGeoId(geoId);

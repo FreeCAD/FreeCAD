@@ -20,18 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "HLRBRep/PolyHLRToShapePy.h"
 #include "HLRBRep/PolyHLRToShapePy.cpp"
 #include "HLRBRep/HLRBRep_PolyAlgoPy.h"
-#include <Mod/Part/App/TopoShapePy.h>
+#include "TopoShapePy.h"
+
 
 using namespace Part;
-
 
 PyObject *PolyHLRToShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {

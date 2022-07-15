@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_OffsetCurve.hxx>
 #endif
 
-#include "OCCError.h"
-#include "Geometry.h"
+#include <Base/GeometryPyCXX.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+
 #include "OffsetCurvePy.h"
 #include "OffsetCurvePy.cpp"
+#include "Geometry.h"
+#include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/Vector3D.h>
 
 using namespace Part;
 

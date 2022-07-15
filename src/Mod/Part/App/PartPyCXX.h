@@ -24,7 +24,9 @@
 #define PART_PYCXX_H
 
 #include <CXX/Extensions.hxx>
+
 #include <Mod/Part/App/TopoShapePy.h>
+
 
 namespace Py {
     typedef ExtensionObject<Part::TopoShapePy> TopoShape;

@@ -21,14 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-
 #ifndef BASE_CONSOLEOBSERVER_H
 #define BASE_CONSOLEOBSERVER_H
 
 #include <Base/Console.h>
 #include <Base/Stream.h>
+
 
 namespace Base {
 
@@ -69,6 +67,45 @@ private:
     void Error  (const char *sErr);
     void Log    (const char *sErr);
 };
+
+/** The ILoggerBlocker class
+ *  This class allows to temporary block then automatically restore arbitrary message types
+ *  on a particular console observer.
+ */
+class BaseExport ILoggerBlocker
+{
+public:
+    // Constructor that will block message types passed as parameter. By default, all types are blocked.
+    inline explicit ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes =
+        ConsoleSingleton::MsgType_Txt | ConsoleSingleton::MsgType_Log | ConsoleSingleton::MsgType_Wrn | ConsoleSingleton::MsgType_Err);
+    // Disable copy & move constructors
+    ILoggerBlocker(ILoggerBlocker const&) = delete;
+    ILoggerBlocker(ILoggerBlocker const &&) = delete;
+    // Disable assignment & move-assignment operator
+    ILoggerBlocker& operator=(ILoggerBlocker const&) = delete;
+    ILoggerBlocker& operator=(ILoggerBlocker const&&) = delete;
+    // Destructor that will restore message type settings.
+    inline ~ILoggerBlocker();
+private:
+    ConsoleMsgFlags msgTypesBlocked = 0; // Stores message types blocked by the blocker
+    const char* conObs; //  Stores console observer name that blocker acts on
+};
+
+ILoggerBlocker::ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes) : conObs(co)
+{
+    msgTypesBlocked = Console().SetEnabledMsgType(conObs, msgTypes, false);
+}
+
+ILoggerBlocker::~ILoggerBlocker()
+{
+#ifdef FC_DEBUG
+    auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
+    if (debug != msgTypesBlocked)
+        Console().Warning("Enabled message types have been changed while ILoggerBlocker was set\n");
+#else
+    Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
+#endif
+}
 
 class BaseExport RedirectStdOutput : public std::streambuf
 {

@@ -35,6 +35,7 @@
 #include <Bnd_Box2d.hxx>
 #include <BndLib_Add2dCurve.hxx>
 #include <Bnd_Box.hxx>
+#include <BRep_Tool.hxx>
 #include <BRepBndLib.hxx>
 #include <Extrema_ExtCC2d.hxx>
 #include <Geom2dAdaptor_Curve.hxx>

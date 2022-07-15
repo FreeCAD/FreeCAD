@@ -20,24 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Parab.hxx>
-# include <Geom_Parabola.hxx>
 # include <GC_MakeArcOfParabola.hxx>
-# include <gce_MakeParab.hxx>
+# include <Geom_Parabola.hxx>
 # include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include "Geometry.h"
-#include <Mod/Part/App/ArcOfParabolaPy.h>
-#include <Mod/Part/App/ArcOfParabolaPy.cpp>
-#include <Mod/Part/App/ParabolaPy.h>
+#include "ArcOfParabolaPy.h"
+#include "ArcOfParabolaPy.cpp"
+#include "ParabolaPy.h"
 #include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
 

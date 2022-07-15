@@ -136,41 +136,28 @@ void QGIFace::draw()
             }
             m_image->hide();
             m_rect->hide();
-        } else if ((m_mode == FromFile) ||
-                   (m_mode == SvgFill)  ||
-                   (m_mode == BitmapFill)) {  
-            QFileInfo hfi(QString::fromUtf8(m_fileSpec.data(),m_fileSpec.size()));
-            if (hfi.isReadable()) {
-                QString ext = hfi.suffix();
-                if (ext.toUpper() == QString::fromUtf8("SVG")) {
-                    setFillMode(SvgFill);
-                    m_brush.setTexture(QPixmap());
-                    m_styleNormal = m_styleDef;
-                    m_fillStyleCurrent = m_styleNormal;
-                    loadSvgHatch(m_fileSpec);
-                    if (m_hideSvgTiles) {
-                        //bitmap hatch doesn't need clipping
-                        setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
-                        buildPixHatch();
-                        m_rect->hide();
-                        m_image->show();
-                    } else {
-                        //SVG tiles need to be clipped
-                        setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
-                        buildSvgHatch();
-                        m_image->hide();
-                        m_rect->show();
-                    }
-                } else if ((ext.toUpper() == QString::fromUtf8("JPG"))   ||
-                         (ext.toUpper() == QString::fromUtf8("PNG"))   ||
-                         (ext.toUpper() == QString::fromUtf8("JPEG"))  ||
-                         (ext.toUpper() == QString::fromUtf8("BMP")) ) {
-                    setFillMode(BitmapFill);
-                    m_fillStyleCurrent = Qt::TexturePattern;
-                    m_texture = textureFromBitmap(m_fileSpec);
-                    m_brush.setTexture(m_texture);
-                }
+        } else if (m_mode == SvgFill) {
+            m_brush.setTexture(QPixmap());
+            m_styleNormal = m_styleDef;
+            m_fillStyleCurrent = m_styleNormal;
+            loadSvgHatch(m_fileSpec);
+            if (m_hideSvgTiles) {
+                //bitmap hatch doesn't need clipping
+                setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
+                buildPixHatch();
+                m_rect->hide();
+                m_image->show();
+            } else {
+                //SVG tiles need to be clipped
+                setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
+                buildSvgHatch();
+                m_image->hide();
+                m_rect->show();
             }
+        } else if (m_mode == BitmapFill) {
+            m_fillStyleCurrent = Qt::TexturePattern;
+            m_texture = textureFromBitmap(m_fileSpec);
+            m_brush.setTexture(m_texture);
         } else if (m_mode == PlainFill) {
             setFill(m_colNormalFill, m_styleNormal);
             m_image->hide();
@@ -197,12 +184,14 @@ void QGIFace::setPrettyNormal() {
 
 void QGIFace::setPrettyPre() {
 //    Base::Console().Message("QGIF::setPrettyPre()\n");
+    m_fillStyleCurrent = Qt::SolidPattern;
     m_brush.setTexture(QPixmap());
     QGIPrimPath::setPrettyPre();
 }
 
 void QGIFace::setPrettySel() {
 //    Base::Console().Message("QGIF::setPrettySel()\n");
+    m_fillStyleCurrent = Qt::SolidPattern;
     m_brush.setTexture(QPixmap());
     QGIPrimPath::setPrettySel();
 }
@@ -699,13 +688,15 @@ void QGIFace::hideSvg(bool b)
 QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
 {
     QPixmap pix;
-    QString qs = QString::fromUtf8(fileSpec.data(),fileSpec.size());
-    QFileInfo ffi(qs);
-    if (ffi.isReadable()) {
-        QImage img = QImage(qs);
-        img = img.scaled(Rez::guiX(m_fillScale),Rez::guiX(m_fillScale));
-        pix = QPixmap::fromImage(img);
+
+    QString qfs(QString::fromUtf8(fileSpec.data(),fileSpec.size()));
+    QFile f(qfs);
+    if (!f.open(QFile::ReadOnly))  {
+        Base::Console().Error("QGIFace could not read %s\n",fileSpec.c_str());
+        return pix;
     }
+    QByteArray bytes = f.readAll();
+    pix.loadFromData(bytes);
     return pix;
 }
 

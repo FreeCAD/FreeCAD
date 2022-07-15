@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMCLIP_H
 #define DRAWINGGUI_QGCUSTOMCLIP_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QPointF>
 #include <QRectF>

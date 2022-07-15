@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Precision.hxx>
-# include <Standard_Failure.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_RootPy.h"
 #include "ShapeFix/ShapeFix_RootPy.cpp"
+
 
 using namespace Part;
 

@@ -302,3 +302,38 @@ std::string Preferences::patFile()
     }
     return result;
 }
+
+std::string Preferences::bitmapFill(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
+
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
+    std::string defaultFileName = defaultDir + "default.png";
+    std::string prefBitmapFile = hGrp->GetASCII("BitmapFill", defaultFileName.c_str());
+    std::string result = prefBitmapFile;
+    Base::FileInfo fi(result);
+    if (!fi.isReadable()) {
+        result = defaultFileName;
+        Base::Console().Warning("Bitmap Fill File: %s is not readable\n", prefBitmapFile.c_str());
+    }
+    return result;
+}
+
+double Preferences::ISOGap()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    double factor = hGrp->GetFloat("ISOGap", 8.0);
+    return factor;
+}
+
+double Preferences::ASMEGap()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    double factor = hGrp->GetFloat("ASMEGap", 6.0);
+    return factor;
+}

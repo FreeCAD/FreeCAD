@@ -2614,23 +2614,30 @@ bool Document::saveToFile(const char* filename) const
     bool policy = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetBool("BackupPolicy",true);
 
+    //realpath is canonical filename i.e. without symlink
+#ifdef FC_OS_WIN32
+    QString utf8Name = QString::fromUtf8(filename);
+    auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
+    std::string nativePath = QString::fromStdWString(realpath.native()).toStdString();
+#else
+    auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
+    std::string nativePath = realpath.native();
+#endif
+
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
     // fails so that the data of the work up to now isn't lost.
     std::string uuid = Base::Uuid::createUuid();
-    std::string fn = filename;
+    std::string fn = nativePath;
     if (policy) {
         fn += ".";
         fn += uuid;
     }
     Base::FileInfo tmp(fn);
+
+
     // In case some folders in the path do not exist
-#ifdef FC_OS_WIN32
-    QString utf8Name = QString::fromUtf8(filename);
-    auto parentPath = fs::absolute(fs::path(utf8Name.toStdWString())).parent_path();
-#else
-    auto parentPath = fs::absolute(fs::path(filename)).parent_path();
-#endif
+    auto parentPath = realpath.parent_path();
     fs::create_directories(parentPath);
 
     // open extra scope to close ZipWriter properly
@@ -2677,9 +2684,9 @@ bool Document::saveToFile(const char* filename) const
             count_bak = -1;
         }
         bool useFCBakExtension = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",false);
-        std::string	saveBackupDateFormat = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetASCII("SaveBackupDateFormat","%Y%m%d-%H%M%S");
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",false);
+        std::string saveBackupDateFormat = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetASCII("SaveBackupDateFormat","%Y%m%d-%H%M%S");
 
         BackupPolicy policy;
         if (useFCBakExtension) {
@@ -2691,7 +2698,7 @@ bool Document::saveToFile(const char* filename) const
             policy.setPolicy(BackupPolicy::Standard);
         }
         policy.setNumberOfFiles(count_bak);
-        policy.apply(fn, filename);
+        policy.apply(fn, nativePath);
     }
 
     signalFinishSave(*this, filename);

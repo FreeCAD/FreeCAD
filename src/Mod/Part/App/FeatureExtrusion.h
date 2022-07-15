@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATUREEXTRUSION_H
 #define PART_FEATUREEXTRUSION_H
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
-#include "PartFeature.h"
 #include "FaceMakerCheese.h"
+#include "PartFeature.h"
+
 
 namespace Part
 {

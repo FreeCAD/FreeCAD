@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include "Geometry.h"
-#include <Mod/Part/App/ArcOfConicPy.h>
-#include <Mod/Part/App/ArcOfConicPy.cpp>
-#include "OCCError.h"
-
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
+
+#include "ArcOfConicPy.h"
+#include "ArcOfConicPy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 

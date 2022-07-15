@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>380</height>
+    <height>498</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -46,21 +46,81 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_16">
+        <item row="8" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>0</height>
+            <height>22</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Arrowhead size</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ArrowSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
           <property name="text">
-           <string>Standard and Style</string>
+           <string>Dimension Format</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="Gui::PrefComboBox" name="pcbArrow">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Arrowhead style</string>
+          </property>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ArrowStyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Diameter Symbol</string>
           </property>
          </widget>
         </item>
@@ -109,33 +169,15 @@
           </item>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbGlobalDecimals">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_2">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
-          <property name="toolTip">
-           <string>Use system setting for number of decimals</string>
-          </property>
           <property name="text">
-           <string>Use Global Decimals</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseGlobalDecimals</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
+           <string>Font Size</string>
           </property>
          </widget>
         </item>
@@ -167,99 +209,23 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>Alternate Decimals</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefSpinBox" name="sbAltDecimals">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_16">
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>22</height>
+            <height>0</height>
            </size>
           </property>
-          <property name="toolTip">
-           <string>Number of decimals if 'Use Global Decimals' is not used</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AltDecimals</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
           <property name="text">
-           <string>Dimension Format</string>
+           <string>Standard and Style</string>
           </property>
          </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="Gui::PrefLineEdit" name="leFormatSpec">
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank for automatic dimension format.  Use %f, %g or %w specifiers to override.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>formatSpec</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-       <item row="4" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Font Size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="4" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
@@ -292,27 +258,27 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="lbl_LabelFont">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_12">
           <property name="font">
            <font>
-            <italic>false</italic>
+            <italic>true</italic>
            </font>
           </property>
           <property name="text">
-           <string>Tolerance Text Scale</string>
+           <string>Arrow Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Arrow Style</string>
           </property>
          </widget>
         </item>
@@ -360,10 +326,61 @@ Multiplier of 'Font Size'</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_8">
+        <item row="5" column="0">
+         <widget class="QLabel" name="lbl_LabelFont">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>false</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>Diameter Symbol</string>
+           <string>Tolerance Text Scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefSpinBox" name="sbAltDecimals">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Number of decimals if 'Use Global Decimals' is not used</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AltDecimals</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
@@ -403,90 +420,141 @@ Multiplier of 'Font Size'</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Arrow Style</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <widget class="Gui::PrefComboBox" name="pcbArrow">
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbGlobalDecimals">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
           </property>
           <property name="toolTip">
-           <string>Arrowhead style</string>
+           <string>Use system setting for number of decimals</string>
           </property>
-          <property name="currentIndex">
-           <number>-1</number>
+          <property name="text">
+           <string>Use Global Decimals</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ArrowStyle</cstring>
+           <cstring>UseGlobalDecimals</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Dimensions</cstring>
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label_12">
+        <item row="4" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Alternate Decimals</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_3">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Controls the size of gap between dimension point and start of extension line for ISO dimensions.</string>
+          </property>
           <property name="text">
-           <string>Arrow Size</string>
+           <string>Extension Gap Factor - ISO</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+        <item row="3" column="2">
+         <widget class="Gui::PrefLineEdit" name="leFormatSpec">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank for automatic dimension format.  Use %f, %g or %w specifiers to override.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>formatSpec</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
           </property>
           <property name="toolTip">
-           <string>Arrowhead size</string>
+           <string>Controls the size of gap between dimension point and start of extension line for ASME dimensions.</string>
+          </property>
+          <property name="text">
+           <string>Extension Gap Factor - ASME</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbISOGap">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
-           <double>5.000000000000000</double>
+           <double>8.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ArrowSize</cstring>
+           <cstring>GapISO</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
-        </layout>
+        <item row="10" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbASMEGap">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>6.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>GapASME</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -500,7 +568,7 @@ Multiplier of 'Font Size'</string>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Items in &lt;span style=" font-style:italic;"&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

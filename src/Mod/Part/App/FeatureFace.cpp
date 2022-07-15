@@ -20,32 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <gp_Pln.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <gp_Pln.hxx>
 #endif
-
-#include <Base/Placement.h>
 
 #include "FeatureFace.h"
 #include "FaceMaker.h"
-#include <Mod/Part/App/Part2DObject.h>
 
 
 using namespace Part;

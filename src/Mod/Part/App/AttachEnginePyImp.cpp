@@ -25,17 +25,15 @@
 # include <Standard_Failure.hxx>
 #endif
 
-#include "Mod/Part/App/Attacher.h"
-#include <Base/PlacementPy.h>
 #include <App/DocumentObjectPy.h>
-#include "AttachExtensionPy.h"
-#include "TopoShapePy.h"
+#include <Base/PlacementPy.h>
 
-#include "OCCError.h"
-
-// inclusion of the generated files (generated out of AttachableObjectPy.xml)
 #include "AttachEnginePy.h"
 #include "AttachEnginePy.cpp"
+#include "AttachExtensionPy.h"
+#include "OCCError.h"
+#include "TopoShapePy.h"
+
 
 using namespace Attacher;
 

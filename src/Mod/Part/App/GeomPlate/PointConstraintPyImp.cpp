@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <memory>
 # include <Standard_Failure.hxx>
 #endif
 
+#include <Base/VectorPy.h>
+
 #include "GeomPlate/PointConstraintPy.h"
 #include "GeomPlate/PointConstraintPy.cpp"
-#include "GeometryCurvePy.h"
-#include "GeometrySurfacePy.h"
-#include "Geometry2d.h"
-#include <Base/VectorPy.h>
+
 
 using namespace Part;
 

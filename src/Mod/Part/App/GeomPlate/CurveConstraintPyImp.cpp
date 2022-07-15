@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <GeomAdaptor_Curve.hxx>
@@ -37,8 +36,7 @@
 #include "GeomPlate/CurveConstraintPy.cpp"
 #include "Geom2d/Curve2dPy.h"
 #include "GeometryCurvePy.h"
-#include "GeometrySurfacePy.h"
-#include "Geometry2d.h"
+
 
 using namespace Part;
 

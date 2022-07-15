@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
-    <normaloff>:/icons/actions/techdraw-CosmeticVertex.svg</normaloff>:/icons/actions/techdraw-CosmeticVertex.svg</iconset>
+    <normaloff>:/icons/actions/TechDraw_CosmeticVertex.svg</normaloff>:/icons/actions/TechDraw_CosmeticVertex.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>

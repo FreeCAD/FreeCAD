@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>
@@ -28,6 +27,7 @@
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
+
 #include "FeaturePartImportStep.h"
 
 

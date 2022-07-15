@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS.hxx>
@@ -28,15 +27,16 @@
 # include <TopoDS_Face.hxx>
 #endif
 
+#include <Base/VectorPy.h>
+
 #include "BRepFeat/MakePrismPy.h"
 #include "BRepFeat/MakePrismPy.cpp"
 #include "Geometry.h"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeFacePy.h"
-#include <Base/VectorPy.h>
+
 
 using namespace Part;
-
 
 PyObject *MakePrismPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {

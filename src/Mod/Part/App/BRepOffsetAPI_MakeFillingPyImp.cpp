@@ -20,22 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <memory>
 # include <BRepOffsetAPI_MakeFilling.hxx>
-# include <gp_Pnt.hxx>
 # include <GeomAbs_Shape.hxx>
+# include <gp_Pnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 #endif
+
+#include <Base/VectorPy.h>
 
 #include "BRepOffsetAPI_MakeFillingPy.h"
 #include "BRepOffsetAPI_MakeFillingPy.cpp"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeFacePy.h"
-#include <Base/VectorPy.h>
+
 
 using namespace Part;
 /*!

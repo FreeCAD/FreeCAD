@@ -334,7 +334,7 @@ class _Writer(object):
 
     def _getOnlyElement(self, collection):
         it = iter(collection)
-        return it.next()
+        return next(it)
 
     def _isCollection(self, data):
         return (

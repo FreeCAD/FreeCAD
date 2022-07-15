@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Section.hxx>
@@ -29,7 +28,6 @@
 
 #include "FeaturePartSection.h"
 
-#include <Base/Exception.h>
 
 using namespace Part;
 

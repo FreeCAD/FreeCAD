@@ -25,12 +25,10 @@
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
-# include <BRepBuilderAPI_MakeShell.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepFeat_SplitShape.hxx>
 # include <BRepOffsetAPI_Sewing.hxx>
@@ -43,7 +41,6 @@
 # include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepFill.hxx>
 # include <BRepFill_Filling.hxx>
-# include <BRepFill_Generator.hxx>
 # include <BRepLib.hxx>
 # include <BSplCLib.hxx>
 # include <gp_Ax3.hxx>
@@ -61,7 +58,6 @@
 # include <ShapeFix.hxx>
 # include <ShapeBuild_ReShape.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
-# include <Standard_ConstructionError.hxx>
 # include <Standard_DomainError.hxx>
 # include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
@@ -72,8 +68,7 @@
 # include <TopoDS_Solid.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
-
-#include <BRepFill_Generator.hxx>
+# include <BRepFill_Generator.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -88,11 +83,6 @@
 #include "BSplineSurfacePy.h"
 #include "edgecluster.h"
 #include "FaceMaker.h"
-#include "FeaturePartBox.h"
-#include "FeaturePartCut.h"
-#include "FeaturePartImportStep.h"
-#include "FeaturePartImportIges.h"
-#include "FeaturePartImportBrep.h"
 #include "GeometryCurvePy.h"
 #include "GeometryPy.h"
 #include "ImportIges.h"
@@ -102,16 +92,14 @@
 #include "PartFeature.h"
 #include "PartPyCXX.h"
 #include "Tools.h"
-#include "TopoShape.h"
 #include "TopoShapeCompoundPy.h"
-#include "TopoShapeCompSolidPy.h"
 #include "TopoShapePy.h"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeFacePy.h"
 #include "TopoShapeShellPy.h"
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeWirePy.h"
-#include "TopoShapeVertexPy.h"
+
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"

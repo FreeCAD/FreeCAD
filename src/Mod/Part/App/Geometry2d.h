@@ -20,30 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_GEOMETRY2D_H
 #define PART_GEOMETRY2D_H
 
 #include <Adaptor2d_Curve2d.hxx>
-#include <Geom2d_CartesianPoint.hxx>
 #include <Geom2d_BezierCurve.hxx>
 #include <Geom2d_BSplineCurve.hxx>
+#include <Geom2d_CartesianPoint.hxx>
 #include <Geom2d_Circle.hxx>
 #include <Geom2d_Ellipse.hxx>
 #include <Geom2d_Hyperbola.hxx>
-#include <Geom2d_Parabola.hxx>
 #include <Geom2d_Line.hxx>
 #include <Geom2d_OffsetCurve.hxx>
+#include <Geom2d_Parabola.hxx>
 #include <Geom2d_TrimmedCurve.hxx>
-#include <Geom_Surface.hxx>
-#include <TopoDS_Shape.hxx>
 #include <gp_Ax22d.hxx>
+#include <TopoDS_Shape.hxx>
+
 #include <list>
-#include <vector>
 #include <memory>
+#include <vector>
+
 #include <Base/Persistence.h>
 #include <Base/Tools2D.h>
 #include <Mod/Part/PartGlobal.h>
+
 
 namespace Part {
 

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_GEOMETRYDEFAULTEXTENSION_H
 #define PART_GEOMETRYDEFAULTEXTENSION_H
 
 #include <string>
 #include "GeometryExtension.h"
+
 
 namespace Part {
 

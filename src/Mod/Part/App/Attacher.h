@@ -28,17 +28,16 @@
 #ifndef PARTATTACHER_H
 #define PARTATTACHER_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
+#include <gp_Vec.hxx>
+#include <GProp_GProps.hxx>
+
 #include <App/GeoFeature.h>
-#include <Base/Vector3D.h>
-#include <Base/Placement.h>
+#include <App/PropertyLinks.h>
 #include <Base/Exception.h>
+#include <Base/Placement.h>
 
 #include "PartFeature.h"
 
-#include <gp_Vec.hxx>
-#include <GProp_GProps.hxx>
 
 namespace Attacher
 {

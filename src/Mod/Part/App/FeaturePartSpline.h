@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FEATUREPARTSPLINE_H
 #define PART_FEATUREPARTSPLINE_H
 
 #include "PartFeature.h"
+
 
 namespace Part
 {

@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
+
 # include <gp_Ax2.hxx>
 # include <gp_Pnt.hxx>
+# include <HLRAlgo_Projector.hxx>
 # include <Standard_Version.hxx>
-# include <limits>
 #endif
+
+#include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "HLRBRep/HLRBRep_PolyAlgoPy.h"
 #include "HLRBRep/HLRBRep_PolyAlgoPy.cpp"
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/Tools.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+#include "TopoShapePy.h"
+#include "Tools.h"
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <HLRAlgo_Projector.hxx>
 
 using namespace Part;
-
 
 PyObject *HLRBRep_PolyAlgoPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {

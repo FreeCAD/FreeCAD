@@ -515,14 +515,18 @@ void DrawViewPart::extractFaces()
     const std::vector<TechDraw::BaseGeomPtr>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
     std::vector<TechDraw::BaseGeomPtr>::const_iterator itEdge = goEdges.begin();
-    std::vector<TopoDS_Edge> origEdges;
+
+    //make a copy of the input edges so the loose tolerances of face finding are
+    //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
+    std::vector<TopoDS_Edge> copyEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-        origEdges.push_back((*itEdge)->occEdge);
+        BRepBuilderAPI_Copy copier((*itEdge)->occEdge, true, true);
+        copyEdges.push_back(TopoDS::Edge(copier.Shape()));
     }
 
     std::vector<TopoDS_Edge> faceEdges;
     std::vector<TopoDS_Edge> nonZero;
-    for (auto& e:origEdges) {                            //drop any zero edges (shouldn't be any by now!!!)
+    for (auto& e:copyEdges) {                            //drop any zero edges (shouldn't be any by now!!!)
         if (!DrawUtil::isZeroEdge(e)) {
             nonZero.push_back(e);
         } else {

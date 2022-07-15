@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "PrecisionPy.h"
 #include "PrecisionPy.cpp"
+
 
 using namespace Part;
 

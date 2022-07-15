@@ -20,57 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
-# include <gp_Dir2d.hxx>
-# include <gp_Vec2d.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Hypr.hxx>
-# include <gp_Parab.hxx>
+
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeEdge2d.hxx>
+# include <BRepLib.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_TangentialDeflection.hxx>
 # include <GCPnts_QuasiUniformAbscissa.hxx>
 # include <GCPnts_QuasiUniformDeflection.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
-# include <Geom2dAPI_InterCurveCurve.hxx>
-# include <Geom2d_Geometry.hxx>
 # include <Geom2d_Curve.hxx>
+# include <Geom2d_Geometry.hxx>
 # include <Geom2dAdaptor_Curve.hxx>
-# include <Geom2dLProp_CLProps2d.hxx>
-# include <GeomAdaptor_Surface.hxx>
-# include <Precision.hxx>
+# include <Geom2dAPI_ExtremaCurveCurve.hxx>
+# include <Geom2dAPI_InterCurveCurve.hxx>
 # include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <Geom2dConvert_ApproxCurve.hxx>
+# include <Geom2dLProp_CLProps2d.hxx>
+# include <gp_Dir2d.hxx>
+# include <Precision.hxx>
+# include <ShapeConstruct_Curve.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_NullValue.hxx>
-# include <ShapeConstruct_Curve.hxx>
-# include <Geom2dAPI_ExtremaCurveCurve.hxx>
-# include <BRepBuilderAPI_MakeEdge2d.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepLib.hxx>
-# include <BRepAdaptor_Curve.hxx>
 # include <TopoDS.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/GeometrySurfacePy.h>
-#include <Mod/Part/App/Geom2d/BSplineCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/Curve2dPy.h>
-#include <Mod/Part/App/Geom2d/Curve2dPy.cpp>
+#include "Geom2d/Curve2dPy.h"
+#include "Geom2d/Curve2dPy.cpp"
+#include "Geom2d/BSplineCurve2dPy.h"
+#include "GeometrySurfacePy.h"
+#include "OCCError.h"
+#include "TopoShapeFacePy.h"
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
 
 namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);

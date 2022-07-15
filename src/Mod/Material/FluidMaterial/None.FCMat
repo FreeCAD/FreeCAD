@@ -12,5 +12,4 @@ KinematicViscosity = 0 m^2/s
 [Thermal]
 SpecificHeat = 0 J/kg/K
 ThermalConductivity = 0 W/m/K
-ThermalExpansionCoefficient = 0 um/m/K
-VolumetricThermalExpansionCoefficient = 0 m/m/K
+ThermalExpansionCoefficient = 0 1/K

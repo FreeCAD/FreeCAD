@@ -20,26 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_BezierCurve.hxx>
 # include <Geom_BezierSurface.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TColStd_Array2OfReal.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_Array2OfPnt.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TColStd_Array2OfReal.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
 #include "BezierCurvePy.h"
 #include "BezierSurfacePy.h"
 #include "BezierSurfacePy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 

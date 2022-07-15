@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _ImportStep_h_
 #define _ImportStep_h_
 
-#include <TopoDS_Shape.hxx>
 #include <Mod/Part/PartGlobal.h>
-#include <App/ComplexGeoData.h>
+
 
 namespace App {
 class Document;

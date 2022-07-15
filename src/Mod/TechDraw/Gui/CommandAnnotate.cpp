@@ -107,7 +107,7 @@ CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_LeaderLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-LeaderLine";
+    sPixmap         = "actions/TechDraw_LeaderLine";
 }
 
 void CmdTechDrawLeaderLine::activated(int iMsg)
@@ -260,7 +260,7 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-CosmeticVertex"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_CosmeticVertex"));
     p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertex"));
     QAction* p2 = pcAction->addAction(QString());
@@ -410,7 +410,7 @@ CmdTechDrawCosmeticVertex::CmdTechDrawCosmeticVertex()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_CosmeticVertex";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-CosmeticVertex";
+    sPixmap         = "actions/TechDraw_CosmeticVertex";
 }
 
 void CmdTechDrawCosmeticVertex::activated(int iMsg)
@@ -549,7 +549,7 @@ CmdTechDrawAnnotation::CmdTechDrawAnnotation()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_NewAnnotation";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-annotation";
+    sPixmap       = "actions/TechDraw_Annotation";
 }
 
 void CmdTechDrawAnnotation::activated(int iMsg)
@@ -630,11 +630,11 @@ Gui::Action * CmdTechDrawCenterLineGroup::createAction(void)
     p1->setObjectName(QString::fromLatin1("TechDraw_FaceCenterLine"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_FaceCenterLine"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-2linecenterline"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2LineCenterline"));
     p2->setObjectName(QString::fromLatin1("TechDraw_2LineCenterLine"));
     p2->setWhatsThis(QString::fromLatin1("TechDraw_2LineCenterLine"));
     QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-2pointcenterline"));
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2PointCenterline"));
     p3->setObjectName(QString::fromLatin1("TechDraw_2PointCenterLine"));
     p3->setWhatsThis(QString::fromLatin1("TechDraw_2PointCenterLine"));
 
@@ -802,7 +802,7 @@ CmdTechDraw2LineCenterLine::CmdTechDraw2LineCenterLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_2LineCenterLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-2linecenterline";
+    sPixmap         = "actions/TechDraw_2LineCenterline";
 }
 
 void CmdTechDraw2LineCenterLine::activated(int iMsg)
@@ -851,12 +851,11 @@ void exec2LineCenterLine(Gui::Command* cmd)
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a CenterLine."));
             return;
-        } else {
-            Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
-                                                            page,
-                                                            selectedEdges.front(),
-                                                            true));
         }
+        Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
+                                                page,
+                                                selectedEdges.front(),
+                                                true));
     } else {  //not create, not edit, what is this???
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection not understood."));
@@ -879,7 +878,7 @@ CmdTechDraw2PointCenterLine::CmdTechDraw2PointCenterLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_2PointCenterLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-2pointcenterline";
+    sPixmap         = "actions/TechDraw_2PointCenterline";
 }
 
 void CmdTechDraw2PointCenterLine::activated(int iMsg)
@@ -914,17 +913,17 @@ void exec2PointCenterLine(Gui::Command* cmd)
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-        if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                                 QObject::tr("No base View in Selection."));
-            return;
-        }
-    } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                                 QObject::tr("You must select a base View for the line."));
-            return;
+    if (selection.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                                QObject::tr("You must select a base View for the line."));
+        return;
+    }
+
+    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    if( baseFeat == nullptr ) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                                QObject::tr("No base View in Selection."));
+        return;
     }
 
     std::vector<std::string> subNames;
@@ -992,7 +991,7 @@ CmdTechDraw2PointCosmeticLine::CmdTechDraw2PointCosmeticLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_2PointCosmeticLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-line2points";
+    sPixmap         = "actions/TechDraw_Line2Points";
 }
 
 void CmdTechDraw2PointCosmeticLine::activated(int iMsg)
@@ -1030,27 +1029,27 @@ void execLine2Points(Gui::Command* cmd)
     TechDraw::DrawViewPart* baseFeat = nullptr;
     std::vector<std::string> subNames2D;
     std::vector< std::pair<Part::Feature*, std::string> > objs3D;
-    if (!selection.empty()) {
-        for (auto& so: selection) {
-            if (so.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-                baseFeat = static_cast<TechDraw::DrawViewPart*> (so.getObject());
-                subNames2D = so.getSubNames();
-            } else if (so.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
-                std::vector<std::string> subNames3D = so.getSubNames();
-                for (auto& sub3D: subNames3D) {
-                    std::pair<Part::Feature*, std::string> temp;
-                    temp.first = static_cast<Part::Feature*>(so.getObject());
-                    temp.second = sub3D;
-                    objs3D.push_back(temp);
-                }
-            } else {
-                //garbage
-            }
-        }
-    } else {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is empty."));
         return;
+    }
+
+    for (auto& so: selection) {
+        if (so.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            baseFeat = static_cast<TechDraw::DrawViewPart*> (so.getObject());
+            subNames2D = so.getSubNames();
+        } else if (so.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
+            std::vector<std::string> subNames3D = so.getSubNames();
+            for (auto& sub3D: subNames3D) {
+                std::pair<Part::Feature*, std::string> temp;
+                temp.first = static_cast<Part::Feature*>(so.getObject());
+                temp.second = sub3D;
+                objs3D.push_back(temp);
+            }
+        } else {
+            //garbage
+        }
     }
     
     if (baseFeat == nullptr) {
@@ -1133,6 +1132,10 @@ void execLine2Points(Gui::Command* cmd)
 // TechDraw_CosmeticEraser
 //===========================================================================
 
+#define GEOMETRYEDGE 0
+#define COSMETICEDGE 1
+#define CENTERLINE 2
+
 DEF_STD_CMD_A(CmdTechDrawCosmeticEraser)
 
 CmdTechDrawCosmeticEraser::CmdTechDrawCosmeticEraser()
@@ -1144,7 +1147,7 @@ CmdTechDrawCosmeticEraser::CmdTechDrawCosmeticEraser()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_CosmeticEraser";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-CosmeticEraser";
+    sPixmap         = "actions/TechDraw_CosmeticEraser";
 }
 
 void CmdTechDrawCosmeticEraser::activated(int iMsg)
@@ -1170,18 +1173,13 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
         return;
     }
 
-    bool selectionError = false;
     for (auto& s: selection) {
         TechDraw::DrawViewPart * objFeat = static_cast<TechDraw::DrawViewPart*> (s.getObject());
         if (!objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            selectionError = true;
-            break;
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                            QObject::tr("At least 1 object in selection is not a part view"));
+            return;
         }
-    }
-    if (selectionError) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                         QObject::tr("At least 1 object in selection is not a part view"));
-        return;
     }
 
     TechDraw::DrawViewPart * objFeat = nullptr;
@@ -1207,9 +1205,9 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                     (bg->cosmetic) ) {
                     int source = bg->source();
                     std::string tag = bg->getCosmeticTag();
-                    if (source == 1) {  //this is a "CosmeticEdge"
+                    if (source == COSMETICEDGE) {
                         ce2Delete.push_back(tag);
-                    } else if (source == 2) { //this is a "CenterLine"
+                    } else if (source == CENTERLINE) {
                         cl2Delete.push_back(tag);
                     } else {
                         Base::Console().Message(
@@ -1218,16 +1216,15 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                 }
             } else if (geomType == "Vertex") {
                 TechDraw::VertexPtr tdv = objFeat->getProjVertexByIndex(idx);
-                if (tdv != nullptr) {
-                    std::string delTag = tdv->cosmeticTag;
-                    if (!delTag.empty()) {
-                        cv2Delete.push_back(delTag);
-                    } else {
-                        Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
-                    }
-                } else {
+                if (tdv == nullptr) {
                     Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
                 }
+
+                std::string delTag = tdv->cosmeticTag;
+                if (delTag.empty()) {
+                    Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
+                }
+                cv2Delete.push_back(delTag);
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                            QObject::tr("Unknown object type in selection"));
@@ -1271,7 +1268,7 @@ CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
     sToolTipText    = QT_TR_NOOP("Change Appearance of selected Lines");
     sWhatsThis      = "TechDraw_DecorateLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-DecorateLine";
+    sPixmap         = "actions/TechDraw_DecorateLine";
 }
 
 void CmdTechDrawDecorateLine::activated(int iMsg)
@@ -1292,17 +1289,17 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-        if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                                 QObject::tr("No View in Selection."));
-            return;
-        }
-    } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                                 QObject::tr("You must select a View and/or lines."));
-            return;
+    if (selection.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                                QObject::tr("You must select a View and/or lines."));
+        return;
+    }
+
+    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    if( baseFeat == nullptr ) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                                QObject::tr("No View in Selection."));
+        return;
     }
 
     std::vector<std::string> subNames;
@@ -1370,18 +1367,18 @@ void CmdTechDrawShowAll::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-        if (baseFeat == nullptr)  {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("No Part Views in this selection"));
-            return;
-        } 
-    } else { //empty selection
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Nothing selected"));
         return;
     }
+
+    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    if (baseFeat == nullptr)  {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("No Part Views in this selection"));
+        return;
+    } 
 
     Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);

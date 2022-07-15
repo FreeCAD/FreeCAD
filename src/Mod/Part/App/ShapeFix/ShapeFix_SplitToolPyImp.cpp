@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Vertex.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_SplitToolPy.h"

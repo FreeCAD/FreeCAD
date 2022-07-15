@@ -44,7 +44,6 @@
 
 #include "ExtrusionHelper.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
-#include "FeatureExtrusion.h"
 
 
 using namespace Part;

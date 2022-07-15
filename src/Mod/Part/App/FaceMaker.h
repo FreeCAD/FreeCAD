@@ -24,13 +24,14 @@
 #define PART_FACEMAKER_H
 
 #include <BRepBuilderAPI_MakeShape.hxx>
-#include <Base/BaseClass.h>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
 
 #include <memory>
+#include <Base/BaseClass.h>
 #include <Mod/Part/PartGlobal.h>
+
 
 namespace Part
 {

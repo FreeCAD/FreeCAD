@@ -68,8 +68,8 @@ def insert(
 # ********* module specific methods *********
 def import_z88_disp(
     filename,
-    analysis = None,
-    result_name_prefix = None
+    analysis=None,
+    result_name_prefix=None
 ):
     """insert a FreeCAD FEM mechanical result object in the ActiveDocument
     pure usage:

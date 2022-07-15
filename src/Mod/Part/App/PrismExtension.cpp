@@ -25,8 +25,9 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 #endif
 
-#include "PrismExtension.h"
 #include <Base/Tools.h>
+
+#include "PrismExtension.h"
 
 
 using namespace Part;

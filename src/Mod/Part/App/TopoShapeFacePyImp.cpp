@@ -20,83 +20,75 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepTools.hxx>
 # include <BRepBuilderAPI_FindPlane.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
-# include <ShapeAnalysis.hxx>
-# include <BRepAdaptor_Surface.hxx>
+# include <BRepGProp.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
-# include <Geom_BezierSurface.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_CylindricalSurface.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
+# include <BRepTopAdaptor_FClass2d.hxx>
 # include <Geom_ConicalSurface.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom_Plane.hxx>
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SphericalSurface.hxx>
-# include <Geom_ToroidalSurface.hxx>
 # include <Geom_Surface.hxx>
+# include <Geom_ToroidalSurface.hxx>
 # include <Geom2d_Curve.hxx>
+# include <gp_Cylinder.hxx>
+# include <gp_Cone.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt2d.hxx>
+# include <gp_Sphere.hxx>
+# include <gp_Torus.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PrincipalProps.hxx>
 # include <Poly_Triangulation.hxx>
+# include <ShapeAnalysis.hxx>
+# include <ShapeFix_Shape.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <Standard_Version.hxx>
+# include <TColgp_Array1OfPnt2d.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopoDS_Edge.hxx>
-# include <gp_Pnt2d.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Cylinder.hxx>
-# include <gp_Cone.hxx>
-# include <gp_Sphere.hxx>
-# include <gp_Torus.hxx>
-# include <Standard_Version.hxx>
-# include <ShapeFix_Shape.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <TColgp_Array1OfPnt2d.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <BRepTopAdaptor_FClass2d.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <GProp_PrincipalProps.hxx>
-# include <BRepLProp_SurfaceTool.hxx>
-# include <BRepGProp_Face.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <BRep_Tool.hxx>
 #endif // _PreComp
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
-
-#include "TopoShape.h"
-#include "Geometry2d.h"
-#include <Mod/Part/App/TopoShapeSolidPy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeFacePy.cpp>
-#include <Mod/Part/App/TopoShapeCompoundPy.h>
+#include <Base/VectorPy.h>
 
 #include <Mod/Part/App/BezierSurfacePy.h>
 #include <Mod/Part/App/BSplineSurfacePy.h>
-#include <Mod/Part/App/PlanePy.h>
-#include <Mod/Part/App/CylinderPy.h>
 #include <Mod/Part/App/ConePy.h>
-#include <Mod/Part/App/SpherePy.h>
+#include <Mod/Part/App/CylinderPy.h>
 #include <Mod/Part/App/OffsetSurfacePy.h>
-#include <Mod/Part/App/SurfaceOfRevolutionPy.h>
+#include <Mod/Part/App/PlanePy.h>
+#include <Mod/Part/App/SpherePy.h>
 #include <Mod/Part/App/SurfaceOfExtrusionPy.h>
+#include <Mod/Part/App/SurfaceOfRevolutionPy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.cpp>
+#include <Mod/Part/App/TopoShapeSolidPy.h>
+#include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/Part/App/ToroidPy.h>
+
+#include "FaceMaker.h"
+#include "Geometry2d.h"
 #include "OCCError.h"
 #include "Tools.h"
-#include "FaceMaker.h"
+
 
 using namespace Part;
 

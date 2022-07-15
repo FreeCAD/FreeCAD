@@ -20,20 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopoDS.hxx>
-#endif
-
+#
 #include "ShapeFix/ShapeFix_SplitCommonVertexPy.h"
 #include "ShapeFix/ShapeFix_SplitCommonVertexPy.cpp"
-#include "ShapeFix/ShapeFix_EdgePy.h"
-#include "ShapeFix/ShapeFix_WirePy.h"
-#include "ShapeFix/ShapeFix_FacePy.h"
-#include "ShapeFix/ShapeFix_ShellPy.h"
-#include "ShapeFix/ShapeFix_SolidPy.h"
-#include <Mod/Part/App/TopoShapePy.h>
+#include "TopoShapePy.h"
+
 
 using namespace Part;
 

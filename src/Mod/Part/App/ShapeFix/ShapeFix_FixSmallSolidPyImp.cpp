@@ -20,19 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <ShapeBuild_ReShape.hxx>
-# include <TopoDS_Shape.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_FixSmallSolidPy.h"
 #include "ShapeFix/ShapeFix_FixSmallSolidPy.cpp"
 #include "TopoShapePy.h"
 
-using namespace Part;
 
+using namespace Part;
 
 std::string ShapeFix_FixSmallSolidPy::representation() const
 {

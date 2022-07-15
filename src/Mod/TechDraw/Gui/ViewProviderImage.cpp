@@ -40,7 +40,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderImage, TechDrawGui::ViewProviderDrawing
 
 ViewProviderImage::ViewProviderImage()
 {
-    sPixmap = "actions/techdraw-image";
+    sPixmap = "actions/TechDraw_Image";
 
     ADD_PROPERTY_TYPE(Crop ,(false),"Image", App::Prop_None, "Crop image to Width x Height");
 }
@@ -70,6 +70,15 @@ std::vector<std::string> ViewProviderImage::getDisplayModes(void) const
 
 void ViewProviderImage::updateData(const App::Property* prop)
 {
+    if (prop == &(getViewObject()->Width)  ||
+        prop == &(getViewObject()->Height)  ||
+        prop == &(getViewObject()->Scale) ) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->QGIView::updateView(true);
+        }
+    }
+
     ViewProviderDrawingView::updateData(prop);
 }
 

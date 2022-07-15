@@ -101,6 +101,11 @@ class ConsoleTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def testILoggerBlocker(self):
+        if FreeCAD.GuiUp:
+            import QtUnitGui
+            QtUnitGui.testILoggerBlocker()
+
 class ParameterTestCase(unittest.TestCase):
     def setUp(self):
         self.TestPar = FreeCAD.ParamGet("System parameter:Test")
@@ -213,6 +218,12 @@ class AlgebraTestCase(unittest.TestCase):
         v2 = FreeCAD.Vector(0,0.000001,0)
         self.assertAlmostEqual(v1.getAngle(v2), math.pi/2)
         self.assertAlmostEqual(v2.getAngle(v1), math.pi/2)
+
+    def testVector2d(self):
+        v = FreeCAD.Base.Vector2d(1.0, 1.0)
+        v.rotate(math.pi/2)
+        self.assertAlmostEqual(v.x, -1.0)
+        self.assertAlmostEqual(v.y, 1.0)
 
     def testAngleWithNullVector(self):
         v1 = FreeCAD.Vector(0,0,0)

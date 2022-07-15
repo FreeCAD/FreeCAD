@@ -406,17 +406,13 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
 
     int edgeType = _isValidSingleEdge(this);
     if (edgeType == isCircle) {
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
+            // nothing to do
     } else if (edgeType == isEllipse) {
         QMessageBox::StandardButton result =
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
                              QObject::tr("Selected edge is an Ellipse.  Diameter will be approximate. Continue?"),
                              QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result == QMessageBox::Ok) {
-            objs.push_back(objFeat);
-            subs.push_back(SubNames[0]);
-        } else {
+        if (result != QMessageBox::Ok) {
             return;
         }
     } else if (edgeType == isBSplineCircle) {
@@ -424,10 +420,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
                              QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
                              QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result == QMessageBox::Ok) {
-            objs.push_back(objFeat);
-            subs.push_back(SubNames[0]);
-        } else {
+        if (result != QMessageBox::Ok) {
             return;
         }
     } else if (edgeType == isBSpline) {
@@ -435,13 +428,16 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
                              QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
         return;
     } else {
-      QMessageBox::warning(
+        QMessageBox::warning(
           Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
           QObject::tr("Selection for Diameter does not contain a circular edge "
                       "(edge type: %1)")
               .arg(QString::fromStdString(_edgeTypeToText(edgeType))));
       return;
     }
+
+    objs.push_back(objFeat);
+    subs.push_back(SubNames[0]);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
@@ -827,16 +823,16 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
     std::vector<std::string> subs;
 
     int edgeType = _isValidEdgeToEdge(this);
-    if (edgeType == isAngle) {
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else {
+    if (edgeType != isAngle) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr("Need two straight edges to make an Angle Dimension"));
         return;
     }
+    
+    objs.push_back(objFeat);
+    objs.push_back(objFeat);
+    subs.push_back(SubNames[0]);
+    subs.push_back(SubNames[1]);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
@@ -914,18 +910,18 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidVertexes(this, 3))  {
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-        subs.push_back(SubNames[2]);
-    } else {
+    if (!_isValidVertexes(this, 3))  {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr("Need three points to make a 3 point Angle Dimension"));
         return;
     }
+
+    objs.push_back(objFeat);
+    objs.push_back(objFeat);
+    objs.push_back(objFeat);
+    subs.push_back(SubNames[0]);
+    subs.push_back(SubNames[1]);
+    subs.push_back(SubNames[2]);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
@@ -1176,17 +1172,17 @@ void execHExtent(Gui::Command* cmd)
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-        if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("No base View in Selection."));
-            return;
-        }
-    } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("Please select a View [and Edges]."));
-            return;
+    if (selection.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                QObject::tr("Please select a View [and Edges]."));
+        return;
+    }
+
+    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    if( baseFeat == nullptr ) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                QObject::tr("No base View in Selection."));
+        return;
     }
 
     std::vector<std::string> SubNames;
@@ -1263,17 +1259,18 @@ void execVExtent(Gui::Command* cmd)
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-        if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("No base View in Selection."));
-            return;
-        }
-    } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("Please select a View [and Edges]."));
-            return;
+    if (selection.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                QObject::tr("Please select a View [and Edges]."));
+        return;
+    }
+
+
+    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    if( baseFeat == nullptr ) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                QObject::tr("No base View in Selection."));
+        return;
     }
 
     std::vector<std::string> SubNames;
@@ -1475,7 +1472,6 @@ bool _checkPartFeature(Gui::Command* cmd) {
 
 //! verify that Selection contains a valid Geometry for a single Edge Dimension
 int _isValidSingleEdge(Gui::Command* cmd) {
-    auto edgeType( isInvalid );
     auto selection( cmd->getSelection().getSelectionEx() );
 
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
@@ -1484,65 +1480,68 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if (SubNames.size() == 1) {                                                 //only 1 subshape selected
-        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
-            int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-            TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
-            if (!geom) {
-                Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
-                return isInvalid;
-            }
+    if (SubNames.size() != 1 ||
+        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) != "Edge") {
+        return isInvalid;
+    }
 
-            if(geom->geomType == TechDraw::GENERIC) {
-                TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
-                if(gen1->points.size() > 2) {                                   //the edge is a polyline
-                    return isInvalid;
-                }
-                Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
-                if(fabs(line.y) < FLT_EPSILON ) {
-                    edgeType = isHorizontal;
-                } else if(fabs(line.x) < FLT_EPSILON) {
-                    edgeType = isVertical;
-                } else {
-                    edgeType = isDiagonal;
-                }
-            } else if (geom->geomType == TechDraw::CIRCLE ||
-                       geom->geomType == TechDraw::ARCOFCIRCLE ) {
-                edgeType = isCircle;
-            } else if (geom->geomType == TechDraw::ELLIPSE ||
-                       geom->geomType == TechDraw::ARCOFELLIPSE) {
-                edgeType = isEllipse;
-            } else if (geom->geomType == TechDraw::BSPLINE) {
-                TechDraw::BSplinePtr  spline = static_pointer_cast<TechDraw::BSpline> (geom);
-                if (spline->isCircle()) {
-                    edgeType = isBSplineCircle;
-                } else {
-                    edgeType = isBSpline;
-                }
-            } else {
-                edgeType = isInvalid;
-            }
+
+    //only 1 subshape selected
+    //the Name starts with "Edge"
+    int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
+    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
+    if (!geom) {
+        Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
+        return isInvalid;
+    }
+
+    if(geom->geomType == TechDraw::GENERIC) {
+        TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
+        if(gen1->points.size() > 2) {                                   //the edge is a polyline
+            return isInvalid;
+        }
+        Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
+        if(fabs(line.y) < FLT_EPSILON ) {
+            return isHorizontal;
+        } else if(fabs(line.x) < FLT_EPSILON) {
+            return isVertical;
+        } else {
+            return isDiagonal;
+        }
+    } else if (geom->geomType == TechDraw::CIRCLE ||
+                geom->geomType == TechDraw::ARCOFCIRCLE ) {
+        return isCircle;
+    } else if (geom->geomType == TechDraw::ELLIPSE ||
+                geom->geomType == TechDraw::ARCOFELLIPSE) {
+        return isEllipse;
+    } else if (geom->geomType == TechDraw::BSPLINE) {
+        TechDraw::BSplinePtr  spline = static_pointer_cast<TechDraw::BSpline> (geom);
+        if (spline->isCircle()) {
+            return isBSplineCircle;
+        } else {
+            return isBSpline;
         }
     }
-    return edgeType;
+
+    return isInvalid;
 }
 
 //! verify that Selection contains valid geometries for a Vertex based Dimensions
 bool _isValidVertexes(Gui::Command* cmd, int count) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    bool isValid = true;
-    if(SubNames.size() == (unsigned) count) {
-        for (auto& s: SubNames) {
-            if (TechDraw::DrawUtil::getGeomTypeFromName(s) != "Vertex") {
-                isValid = false;
-                break;
-            }
-        }
-    } else {
-        isValid = false;
+
+    if(SubNames.size() != (unsigned) count) {
+        return false;
     }
-    return isValid;
+
+    for (auto& s: SubNames) {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(s) != "Vertex") {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 //! verify that the Selection contains valid geometries for an Edge to Edge Dimension
@@ -1556,115 +1555,113 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
         return isInvalid;
     }
 
-    int edgeType = isInvalid;
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if(SubNames.size() == 2) {                                                   //there are 2
-        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&    //they both start with "Edge"
-            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
-            int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-            int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
-            TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
-            TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
 
-            if ((!geom0) || (!geom1)) {                                         // missing gometry
-                Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
-                return isInvalid;
-            }
+    //there has to be 2
+    if(SubNames.size() != 2) {                                                   
+        return isInvalid;
+    }
 
-            if(geom0->geomType == TechDraw::GENERIC &&
-               geom1->geomType == TechDraw::GENERIC) {
-                TechDraw::GenericPtr gen0 = std::static_pointer_cast<TechDraw::Generic> (geom0);
-                TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic> (geom1);
-                if(gen0->points.size() > 2 ||
-                   gen1->points.size() > 2) {                          //the edge is a polyline
-                    return isInvalid;                                  //not supported yet
-                }
-                Base::Vector3d line0 = gen0->points.at(1) - gen0->points.at(0);
-                Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
-                double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
-                if (xprod > FLT_EPSILON) {                              //edges are not parallel
-                    return isAngle;                                 //angle or distance
-                } else {
-                    return isDiagonal;                              //distance || line
-                }
-            } else {
-                return isDiagonal;                                  //two edges, not both straight lines
-            }
-        }  //edges
-    } // 2 sub objects
-    return edgeType;
+    //they both must start with "Edge"
+    if(TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) != "Edge" ||
+        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) != "Edge") {
+        return isInvalid;
+    }
+
+    int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
+    int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
+    TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
+    TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
+
+    if ((geom0 == nullptr) || (geom1 == nullptr)) {                                         // missing gometry
+        Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
+        return isInvalid;
+    }
+
+    if(geom0->geomType == TechDraw::GENERIC &&
+        geom1->geomType == TechDraw::GENERIC) {
+        TechDraw::GenericPtr gen0 = std::static_pointer_cast<TechDraw::Generic> (geom0);
+        TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic> (geom1);
+        if(gen0->points.size() > 2 ||
+            gen1->points.size() > 2) {                          //the edge is a polyline
+            return isInvalid;                                  //not supported yet
+        }
+        Base::Vector3d line0 = gen0->points.at(1) - gen0->points.at(0);
+        Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
+        double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
+        if (xprod > FLT_EPSILON) {                              //edges are not parallel
+            return isAngle;                                 //angle or distance
+        } else {
+            return isDiagonal;                              //distance || line
+        }
+    } else {
+        return isDiagonal;                                  //two edges, not both straight lines
+    }
+
+    return isInvalid;
 }
 
 //! verify that the Selection contains valid geometries for a Vertex to Edge Dimension
 bool _isValidVertexToEdge(Gui::Command* cmd) {
-    bool result = false;
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* objFeat0 = static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if(SubNames.size() == 2) {                                         //there are 2
-        int eId,vId;
-        TechDraw::BaseGeomPtr e;
-        TechDraw::VertexPtr v;
-        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
-            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
-            eId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            vId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-        } else if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge" &&
-            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex") {
-            eId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            vId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-        } else {
-            return false;
-        }
-        e = objFeat0->getGeomByIndex(eId);
-        v = objFeat0->getProjVertexByIndex(vId);
-        if ((!e) || (!v)) {
-            Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
-            return false;
-        }
-        result = true;
+    
+    //there has to be 2
+    if(SubNames.size() != 2) {
+        return false;
     }
-    return result;
+
+    int eId,vId;
+    TechDraw::BaseGeomPtr e;
+    TechDraw::VertexPtr v;
+    if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
+        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
+        eId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+        vId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+    } else if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge" &&
+        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex") {
+        eId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+        vId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+    } else {
+        return false;
+    }
+    e = objFeat0->getGeomByIndex(eId);
+    v = objFeat0->getProjVertexByIndex(vId);
+    if ((e == nullptr) || (v == nullptr)) {
+        Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
+        return false;
+    }
+
+    return true;
 }
 
 char* _edgeTypeToText(int e)
 {
-    char* result;
     switch(e) {
         case isInvalid:
-            result = "invalid";
-            break;
+            return "invalid";
         case isHorizontal:
-            result = "horizontal";
-            break;
+            return "horizontal";
         case isVertical:
-            result = "vertical";
-            break;
+            return "vertical";
         case isDiagonal:
-            result = "diagonal";
-            break;
+            return "diagonal";
         case isCircle:
-            result = "circle";
-            break;
+            return "circle";
         case isEllipse:
-            result = "ellipse";
-            break;
+            return "ellipse";
         case isBSpline:
-            result = "bspline";
-            break;
+            return "bspline";
         case isBSplineCircle:
-            result = "circular bspline";
-            break;
+            return "circular bspline";
         case isAngle:
-            result = "angle";
-            break;
+            return "angle";
         case isAngle3Pt:
-            result = "angle3";
-            break;
+            return "angle3";
         default:
-            result = "unknown";
+            return "unknown";
     }
-    return result;
 }
 
 

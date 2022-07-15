@@ -23,41 +23,12 @@
 #ifndef _OCCError_h_
 #define _OCCError_h_
 
-# include <Standard_Version.hxx>
 # include <Standard_Failure.hxx>
-# include <Standard_AbortiveTransaction.hxx>
-# include <Standard_ConstructionError.hxx>
-# include <Standard_DefineException.hxx>
-# include <Standard_DimensionError.hxx>
-# include <Standard_DimensionMismatch.hxx>
-# include <Standard_DivideByZero.hxx>
-# include <Standard_DomainError.hxx>
-# include <Standard_ImmutableObject.hxx>
-# include <Standard_LicenseError.hxx>
-# include <Standard_LicenseNotFound.hxx>
-# include <Standard_MultiplyDefined.hxx>
-# include <Standard_NegativeValue.hxx>
-# include <Standard_NoMoreObject.hxx>
-# include <Standard_NoSuchObject.hxx>
-# include <Standard_NotImplemented.hxx>
-# include <Standard_NullObject.hxx>
-# include <Standard_NullValue.hxx>
-# include <Standard_NumericError.hxx>
-# include <Standard_OutOfMemory.hxx>
-# include <Standard_OutOfRange.hxx>
-# include <Standard_Overflow.hxx>
-# include <Standard_ProgramError.hxx>
-# include <Standard_RangeError.hxx>
-# include <Standard_TooManyUsers.hxx>
-# include <Standard_TypeMismatch.hxx>
-# include <Standard_Underflow.hxx>
+# include <Standard_Version.hxx>
 
-#include <Mod/Part/PartGlobal.h>
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
 #include <Base/Exception.h>
-#include <App/Application.h>
+#include <Mod/Part/PartGlobal.h>
+
 
 namespace Part {
 PartExport extern PyObject* PartExceptionOCCError;
@@ -86,4 +57,3 @@ PartExport extern PyObject* PartExceptionOCCDimensionError;
 
 #define PY_CATCH_OCC _PY_CATCH_OCC(return(NULL))
 #endif  // _OCCError_h_
-

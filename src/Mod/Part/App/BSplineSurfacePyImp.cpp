@@ -20,31 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_BSplineCurve.hxx>
 # include <Geom_BSplineSurface.hxx>
-# include <Geom_BSplineCurve.hxx>
+# include <GeomAbs_Shape.hxx>
+# include <GeomAPI_PointsToBSplineSurface.hxx>
+# include <Precision.hxx>
+# include <TColgp_Array1OfPnt.hxx>
+# include <TColgp_Array2OfPnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array2OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <TColgp_Array2OfPnt.hxx>
-# include <Precision.hxx>
-# include <GeomAPI_PointsToBSplineSurface.hxx>
-# include <GeomAbs_Shape.hxx>
 #endif
 # include <GeomFill_NSections.hxx>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include "BSplineCurvePy.h"
 #include "BSplineSurfacePy.h"
 #include "BSplineSurfacePy.cpp"
+#include "BSplineCurvePy.h"
+#include "OCCError.h"
 
 
 using namespace Part;

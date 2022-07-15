@@ -42,6 +42,7 @@
 
 #include <App/Application.h>
 #include <Base/Console.h>
+#include <Base/ConsoleObserver.h>
 
 #include "BitmapFactory.h"
 
@@ -337,10 +338,12 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
     image.fill(0x00000000);
 
     QPainter p(&image);
-    // tmp. disable the report window to suppress some bothering warnings
-    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
-    QSvgRenderer svg(contents);
-    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
+    QSvgRenderer svg;
+    {
+        // tmp. disable the report window to suppress some bothering warnings
+        const Base::ILoggerBlocker blocker("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn);
+        svg.load(contents);
+    }
     svg.render(&p);
     p.end();
 

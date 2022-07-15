@@ -106,17 +106,13 @@ def insert(filename,docname=None,preferences=None):
     count = 0
 
     # process objects
-    while True:
-        item = iterator.get()
-        if item:
-            brep = item.geometry.brep_data
-            ifcproduct = ifcfile.by_id(item.guid)
-            obj = createProduct(ifcproduct,brep)
-            progressbar.next(True)
-            writeProgress(count,productscount,starttime)
-            count += 1
-        if not iterator.next():
-            break
+    for item in iterator:
+        brep = item.geometry.brep_data
+        ifcproduct = ifcfile.by_id(item.guid)
+        obj = createProduct(ifcproduct,brep)
+        progressbar.next(True)
+        writeProgress(count,productscount,starttime)
+        count += 1
 
     # process 2D annotations
     annotations = ifcfile.by_type("IfcAnnotation")

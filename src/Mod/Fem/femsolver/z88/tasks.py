@@ -31,6 +31,7 @@ __url__ = "https://www.freecadweb.org"
 import os
 import os.path
 import subprocess
+from platform import system
 
 import FreeCAD
 
@@ -43,6 +44,7 @@ from femtools import femutils
 from femtools import membertools
 
 SOLVER_TYPES = ["sorcg", "siccg", "choly"]
+
 
 class Check(run.Check):
 
@@ -103,7 +105,7 @@ class Solve(run.Solve):
         binary = settings.get_binary("Z88")
         if binary is None:
             self.fail()  # a print has been made in settings module
-        
+
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
         solver = SOLVER_TYPES
         solver = prefs.GetInt("Solver", 0)
@@ -117,23 +119,30 @@ class Solve(run.Solve):
         # TODO: search out for "Vector GS" and "Vector KOI" and print values
         # may be compare with the used ones
         self.pushStatus("Executing solver in test mode...\n")
-        self._process = subprocess.Popen(
-            [binary, "-t", "-" + solver],
-            cwd=self.directory,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        self.signalAbort.add(self._process.terminate)
-        self._process.communicate()
-        self.signalAbort.remove(self._process.terminate)
+        Solve.runZ88(self, "-t", binary, solver, "hide")
 
         # run solver real mode
         self.pushStatus("Executing solver in real mode...\n")
-        binary = settings.get_binary("Z88")
-        self._process = subprocess.Popen(
-            [binary, "-c", "-" + solver],
-            cwd=self.directory,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+        # starting normal because the user must see the z88 window
+        Solve.runZ88(self, "-c", binary, solver, "normal")
+
+    def runZ88(self, command, binary, solver, state):
+        # minimize or hide the popups on Windows
+        if system() == "Windows":
+            self._process = subprocess.Popen(
+                [binary, command, "-" + solver],
+                cwd=self.directory,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                startupinfo=femutils.startProgramInfo(state)
+            )
+        else:
+            self._process = subprocess.Popen(
+                [binary, command, "-" + solver],
+                cwd=self.directory,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
         self.signalAbort.add(self._process.terminate)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)

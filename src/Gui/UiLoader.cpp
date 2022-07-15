@@ -203,7 +203,6 @@ Py::Object PySideUicModule::createCustomWidget(const Py::Tuple& args)
 // ----------------------------------------------------
 
 #if !defined (HAVE_QT_UI_TOOLS)
-namespace Gui {
 QUiLoader::QUiLoader(QObject* parent)
 {
     Base::PyGILStateLocker lock;
@@ -481,7 +480,6 @@ QString QUiLoader::errorString() const
         e.clear();
         return QString();
     }
-}
 }
 #endif
 

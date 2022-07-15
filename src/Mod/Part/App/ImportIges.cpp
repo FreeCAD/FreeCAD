@@ -20,44 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>
 # include <BRep_Builder.hxx>
-# include <Interface_Static.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
+# include <IGESBasic_Group.hxx>
+# include <IGESBasic_SingularSubfigure.hxx>
 # include <IGESControl_Controller.hxx>
 # include <IGESControl_Reader.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Shell.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Message_MsgFile.hxx>
-# include <TColStd_HSequenceOfTransient.hxx>
-# include <TColStd_HSequenceOfTransient.hxx>
-# include <IGESBasic_Group.hxx>
 # include <IGESSolid_ManifoldSolid.hxx>
-# include <IGESBasic_SingularSubfigure.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <Interface_EntityIterator.hxx>
-# include <Quantity_Color.hxx>
-# include <TCollection_ExtendedString.hxx>
+# include <Message_MsgFile.hxx>
 # include <Standard_Version.hxx>
+# include <TColStd_HSequenceOfTransient.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Shape.hxx>
+# include <Transfer_TransientProcess.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <XSControl_WorkSession.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Sequencer.h>
 
 #include "ImportIges.h"
 #include "PartFeature.h"
 #include "ProgressIndicator.h"
+
 
 using namespace Part;
 

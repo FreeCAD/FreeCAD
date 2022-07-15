@@ -20,26 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_SurfaceOfLinearExtrusion.hxx>
 # include <Geom_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
+# include <Geom_SurfaceOfLinearExtrusion.hxx>
 #endif
-
-#include "Geometry.h"
-#include "SurfaceOfExtrusionPy.h"
-#include "SurfaceOfExtrusionPy.cpp"
-#include "GeometryCurvePy.h"
-#include "LinePy.h"
-#include "BezierCurvePy.h"
-#include "BSplineCurvePy.h"
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
+
+#include "SurfaceOfExtrusionPy.h"
+#include "SurfaceOfExtrusionPy.cpp"
+#include "GeometryCurvePy.h"
 #include "OCCError.h"
+
 
 using namespace Part;
 

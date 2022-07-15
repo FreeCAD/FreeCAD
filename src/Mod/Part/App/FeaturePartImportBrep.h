@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FEATUREPARTIMPORTBREP_H
 #define PART_FEATUREPARTIMPORTBREP_H
 
-
 #include "PartFeature.h"
+
 
 namespace Part
 {
-
 
 class ImportBrep :public Part::Feature
 {

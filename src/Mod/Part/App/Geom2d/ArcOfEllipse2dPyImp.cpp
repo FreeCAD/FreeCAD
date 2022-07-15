@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Elips2d.hxx>
-# include <Geom2d_Ellipse.hxx>
 # include <GCE2d_MakeArcOfEllipse.hxx>
-# include <GCE2d_MakeEllipse.hxx>
+# include <Geom2d_Ellipse.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
+# include <gp_Elips2d.hxx>
 #endif
 
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.cpp>
-#include <Mod/Part/App/Geom2d/Ellipse2dPy.h>
-#include <Mod/Part/App/OCCError.h>
+#include "Geom2d/ArcOfEllipse2dPy.h"
+#include "Geom2d/ArcOfEllipse2dPy.cpp"
+#include "Geom2d/Ellipse2dPy.h"
+#include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 

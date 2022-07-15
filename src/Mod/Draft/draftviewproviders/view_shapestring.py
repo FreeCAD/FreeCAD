@@ -39,6 +39,8 @@ class ViewProviderShapeString(ViewProviderDraft):
         return ":/icons/Draft_ShapeString.svg"
 
     def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         self.wb_before_edit = Gui.activeWorkbench()
         Gui.activateWorkbench("DraftWorkbench")
@@ -47,7 +49,9 @@ class ViewProviderShapeString(ViewProviderDraft):
 
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         self.task.finish()
         Gui.activateWorkbench(self.wb_before_edit.name())

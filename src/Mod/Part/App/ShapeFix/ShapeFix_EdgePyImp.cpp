@@ -20,21 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 #endif
 
+#include <Base/PlacementPy.h>
+
 #include "ShapeFix/ShapeFix_EdgePy.h"
 #include "ShapeFix/ShapeFix_EdgePy.cpp"
-#include <Base/PlacementPy.h>
-#include <Mod/Part/App/GeometrySurfacePy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include "GeometrySurfacePy.h"
 #include "Tools.h"
+#include "TopoShapeEdgePy.h"
+#include "TopoShapeFacePy.h"
+
 
 using namespace Part;
 

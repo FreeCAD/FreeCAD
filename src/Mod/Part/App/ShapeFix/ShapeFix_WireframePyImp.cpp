@@ -20,20 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopoDS.hxx>
-#endif
 
 #include "ShapeFix/ShapeFix_WireframePy.h"
 #include "ShapeFix/ShapeFix_WireframePy.cpp"
-#include "ShapeFix/ShapeFix_WirePy.h"
-#include <Mod/Part/App/GeometrySurfacePy.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include "TopoShapePy.h"
+
 
 using namespace Part;
-
 
 std::string ShapeFix_WireframePy::representation() const
 {

@@ -20,53 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_GTransform.hxx>
 # include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepTools.hxx>
 # include <BRepTools_ShapeSet.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopExp.hxx>
+# include <OSD_OpenFile.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-# include <gp_GTrsf.hxx>
-# include <gp_Trsf.hxx>
-
-# include <OSD_OpenFile.hxx>
-
+# include <TopoDS.hxx>
 #endif // _PreComp_
 
-#include <Base/Console.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/Reader.h>
+#include <Base/Stream.h>
+#include <Base/Writer.h>
 
 #include "PropertyTopoShape.h"
 #include "TopoShapePy.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeEdgePy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeVertexPy.h"
-#include "TopoShapeSolidPy.h"
-#include "TopoShapeShellPy.h"
-#include "TopoShapeCompSolidPy.h"
-#include "TopoShapeCompoundPy.h"
+
 
 using namespace Part;
 

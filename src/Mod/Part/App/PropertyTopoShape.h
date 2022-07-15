@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_PROPERTYTOPOSHAPE_H
 #define PART_PROPERTYTOPOSHAPE_H
 
-#include "TopoShape.h"
-#include <TopAbs_ShapeEnum.hxx>
-#include <App/DocumentObject.h>
-#include <App/PropertyGeo.h>
 #include <map>
 #include <vector>
+
+#include <App/PropertyGeo.h>
+
+#include "TopoShape.h"
+#include <TopAbs_ShapeEnum.hxx>
+
 
 namespace Part
 {

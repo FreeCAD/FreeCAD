@@ -26,6 +26,7 @@
 # include <QApplication>
 # include <QButtonGroup>
 # include <QCompleter>
+# include <QCryptographicHash>
 # include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
@@ -195,6 +196,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         urls << QUrl::fromLocalFile(QDir::currentPath());
 
         FileDialog dlg(parent);
+        dlg.setOptions(options);
         dlg.setWindowTitle(windowTitle);
         dlg.setSidebarUrls(urls);
         auto iconprov = std::make_unique<FileIconProvider>();
@@ -204,7 +206,6 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.setDirectory(dirName);
         if (hasFilename)
             dlg.selectFile(dirName);
-        dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
@@ -277,13 +278,14 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         urls << QUrl::fromLocalFile(QDir::currentPath());
 
         FileDialog dlg(parent);
+        dlg.setOptions(options);
         dlg.setWindowTitle(windowTitle);
         dlg.setSidebarUrls(urls);
-        dlg.setIconProvider(new FileIconProvider());
+        auto iconprov = std::make_unique<FileIconProvider>();
+        dlg.setIconProvider(iconprov.get());
         dlg.setFileMode(QFileDialog::ExistingFile);
         dlg.setAcceptMode(QFileDialog::AcceptOpen);
         dlg.setDirectory(dirName);
-        dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         if (selectedFilter && !selectedFilter->isEmpty())
@@ -338,13 +340,14 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         urls << QUrl::fromLocalFile(QDir::currentPath());
 
         FileDialog dlg(parent);
+        dlg.setOptions(options);
         dlg.setWindowTitle(windowTitle);
         dlg.setSidebarUrls(urls);
-        dlg.setIconProvider(new FileIconProvider());
+        auto iconprov = std::make_unique<FileIconProvider>();
+        dlg.setIconProvider(iconprov.get());
         dlg.setFileMode(QFileDialog::ExistingFiles);
         dlg.setAcceptMode(QFileDialog::AcceptOpen);
         dlg.setDirectory(dirName);
-        dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         if (selectedFilter && !selectedFilter->isEmpty())
@@ -595,9 +598,38 @@ QIcon FileIconProvider::icon(IconType type) const
 
 QIcon FileIconProvider::icon(const QFileInfo & info) const
 {
-    if (info.suffix().toLower() == QLatin1String("fcstd")) {
-        // return QApplication::windowIcon();
+    auto toUrl = [](const QFileInfo & info) {
+        QFileInfo fi(info);
+        fi.makeAbsolute();
+        QString fileName = fi.absoluteFilePath();
+        if (fi.isSymLink()) {
+            fileName = fi.symLinkTarget();
+        }
+
+        return QUrl::fromLocalFile(fileName).toString();
+    };
+
+    auto urlToThumbnail = [](const QString& filename) {
+        QString hash = QString::fromLatin1(QCryptographicHash::hash(filename.toUtf8(), QCryptographicHash::Md5).toHex());
+        QString cache = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+        return QString::fromLatin1("%1/thumbnails/normal/%2.png").arg(cache, hash);
+    };
+
+    auto iconFromFile = [](const QString& filename) {
+        if (QFile::exists(filename)) {
+            QIcon icon(filename);
+            if (!icon.isNull())
+                return icon;
+        }
+
         return QIcon(QString::fromLatin1(":/icons/freecad-doc.png"));
+    };
+
+    if (info.suffix().toLower() == QLatin1String("fcstd")) {
+        // Check if a thumbnail is available
+        QString fileName = toUrl(info);
+        QString thumb = urlToThumbnail(fileName);
+        return iconFromFile(thumb);
     }
     else if (info.suffix().toLower().startsWith(QLatin1String("fcstd"))) {
         QIcon icon(QString::fromLatin1(":/icons/freecad-doc.png"));

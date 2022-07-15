@@ -20,28 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <gp_Pnt.hxx>
-# include <gp_Ax1.hxx>
-# include <BRep_Tool.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Vertex.hxx>
 # include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <Standard_Failure.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Vertex.hxx>
 #endif
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Base/VectorPy.h>
 #include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
 
-#include "PointPy.h"
 #include "TopoShapeVertexPy.h"
 #include "TopoShapeVertexPy.cpp"
+#include "PointPy.h"
+
 
 using namespace Part;
 

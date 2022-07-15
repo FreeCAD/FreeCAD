@@ -115,8 +115,8 @@ class VPMeshGmsh:
             found_an_analysis = False
             for o in gui_doc.Document.Objects:
                 if o.isDerivedFrom("Fem::FemAnalysisPython"):
-                        found_an_analysis = True
-                        break
+                    found_an_analysis = True
+                    break
             if found_an_analysis:
                 if FemGui.getActiveAnalysis() is not None:
                     if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
@@ -206,12 +206,20 @@ class VPMeshGmsh:
         children = self.claimChildren()
         if len(children) > 0:
             # issue a warning
-            bodyMessage = "The mesh contains submesh objects, therefore the\nfollowing referencing objects might be lost:\n"
+            message_text = (
+                "The mesh contains submesh objects, therefore the\n"
+                "following referencing objects might be lost:\n"
+            )
             for obj in children:
-                bodyMessage += "\n" + obj.Label
-            bodyMessage += "\n\nAre you sure you want to continue?"
-            reply = QtGui.QMessageBox.warning(None, "Object dependencies", bodyMessage,
-            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+                message_text += "\n" + obj.Label
+            message_text += "\n\nAre you sure you want to continue?"
+            reply = QtGui.QMessageBox.warning(
+                None,
+                "Object dependencies",
+                message_text,
+                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                QtGui.QMessageBox.No
+            )
             if reply == QtGui.QMessageBox.Yes:
                 return True
             else:

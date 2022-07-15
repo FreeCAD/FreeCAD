@@ -30,7 +30,6 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief constraint electrostatic potential object
 
-from FreeCAD import Units
 from . import base_fempythonobject
 
 

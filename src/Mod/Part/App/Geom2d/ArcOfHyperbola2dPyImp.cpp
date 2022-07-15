@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Hypr2d.hxx>
-# include <Geom2d_Hyperbola.hxx>
 # include <GCE2d_MakeArcOfHyperbola.hxx>
-# include <GCE2d_MakeHyperbola.hxx>
+# include <Geom2d_Hyperbola.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
+# include <gp_Hypr2d.hxx>
 #endif
 
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.cpp>
-#include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
-#include <Mod/Part/App/OCCError.h>
+#include "Geom2d/ArcOfHyperbola2dPy.h"
+#include "Geom2d/ArcOfHyperbola2dPy.cpp"
+#include "Geom2d/Hyperbola2dPy.h"
+#include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 

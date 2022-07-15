@@ -20,21 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FEATUREPARTIMPORTSTEP_H
 #define PART_FEATUREPARTIMPORTSTEP_H
-
 
 #include <App/PropertyStandard.h>
 
 #include "PartFeature.h"
 
 
-
 namespace Part
 {
-
 
 class ImportStep :public Part::Feature
 {

@@ -23,23 +23,20 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cassert>
-# include <gp_Pln.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Quaternion.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
-# include <BRep_Tool.hxx>
 # include <CSLib.hxx>
 # include <Geom_BSplineSurface.hxx>
+# include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
+# include <Geom_Point.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Point.hxx>
 # include <GeomAdaptor_Curve.hxx>
 # include <GeomLib.hxx>
 # include <GeomLProp_SLProps.hxx>
@@ -48,14 +45,17 @@
 # include <GeomPlate_MakeApprox.hxx>
 # include <GeomPlate_PlateG0Criterion.hxx>
 # include <GeomPlate_PointConstraint.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Quaternion.hxx>
 # include <Poly_Connect.hxx>
 # include <Poly_Triangulation.hxx>
 # include <Precision.hxx>
 # include <Standard_Mutex.hxx>
 # include <Standard_TypeMismatch.hxx>
 # include <Standard_Version.hxx>
-# include <TColStd_ListOfTransient.hxx>
 # include <TColStd_ListIteratorOfListOfTransient.hxx>
+# include <TColStd_ListOfTransient.hxx>
 # include <TColgp_SequenceOfXY.hxx>
 # include <TColgp_SequenceOfXYZ.hxx>
 # include <TopoDS.hxx>
@@ -66,7 +66,9 @@
 #endif
 
 #include <Base/Vector3D.h>
+
 #include "Tools.h"
+
 
 void Part::closestPointsOnLines(const gp_Lin& lin1, const gp_Lin& lin2, gp_Pnt& p1, gp_Pnt& p2)
 {

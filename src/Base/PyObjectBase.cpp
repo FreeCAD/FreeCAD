@@ -63,7 +63,7 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
 #if PY_VERSION_HEX < 0x030b0000
     Py_TYPE(this) = T;
 #else
-    Py_SET_TYPE(this, T);
+    this->ob_type = T;
 #endif
     _Py_NewReference(this);
 #ifdef FC_LOGPYOBJECTS

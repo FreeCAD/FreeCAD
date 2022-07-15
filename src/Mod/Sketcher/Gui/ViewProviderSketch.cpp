@@ -1234,8 +1234,13 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                     drag.resetVector();
                 }
 
-                getSketchObject()->initTemporaryMove(drag.DragCurve, Sketcher::PointPos::none, false);
-
+                if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                    getSketchObject()->initTemporaryBSplinePieceMove(
+                        drag.DragCurve, Sketcher::PointPos::none,
+                        Base::Vector3d(drag.xInit, drag.yInit, 0.0), false);
+                } else {
+                    getSketchObject()->initTemporaryMove(drag.DragCurve, Sketcher::PointPos::none, false);
+                }
             } else {
                 Mode = STATUS_NONE;
             }

@@ -21,15 +21,10 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include "AttachExtension.h"
 
 #include <Base/Console.h>
-#include <App/Application.h>
 
-#include <App/FeaturePythonPyImp.h>
+#include "AttachExtension.h"
 #include "AttachExtensionPy.h"
 
 
