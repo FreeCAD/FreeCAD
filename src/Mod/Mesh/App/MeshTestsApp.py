@@ -201,6 +201,22 @@ class MeshSplitTestCases(unittest.TestCase):
         self.assertEqual(len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0, 1), math.pi/2)),
                          len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0,-1), math.pi/2)))
 
+    def testForaminate(self):
+        class FilterAngle:
+            def __init__(self, mesh, vec, limit):
+                self.myMesh = mesh
+                self.vec = vec
+                self.limit = limit
+
+            def check_angle(self, item):
+                angle = self.myMesh.Facets[item].Normal.getAngle(self.vec)
+                return angle < self.limit
+
+        results = self.mesh.foraminate((0.0, 0.0, 0.0), (0,1,1))
+        filtered_result = list(filter(FilterAngle(self.mesh, FreeCAD.Vector(0,1,1), math.pi/2).check_angle, results.keys()))
+
+        self.assertEqual(filtered_result, list(self.mesh.foraminate((0.0, 0.0, 0.0), (0,1,1), math.pi/2).keys()))
+
 class MeshGeoTestCases(unittest.TestCase):
     def setUp(self):
         # set up a planar face with 2 triangles
