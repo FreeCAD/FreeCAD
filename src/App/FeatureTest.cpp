@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <boost/core/ignore_unused.hpp>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Unit.h>
@@ -140,10 +143,10 @@ DocumentObjectExecReturn *FeatureTest::execute()
 
     Enumeration enumObj4("Single item");
     enumObj4.setEnums(enums);
-    std::ignore = enumObj4 == enumObj2;
+    boost::ignore_unused(enumObj4 == enumObj2);
     enumObj4.setEnums(nullptr);
     enumObj4 = enumObj2;
-    std::ignore = enumObj4 == enumObj4.getCStr();
+    boost::ignore_unused(enumObj4 == enumObj4.getCStr());
 
     Enumeration enumObj5(enums, enums[3]);
     enumObj5.isValue(enums[2]);

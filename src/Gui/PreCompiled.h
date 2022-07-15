@@ -84,6 +84,7 @@
 #include <boost_signals2.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/bind/bind.hpp>
+#include <boost/core/ignore_unused.hpp>
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>

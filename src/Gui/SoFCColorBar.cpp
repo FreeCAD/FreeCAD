@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/core/ignore_unused.hpp>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
@@ -221,7 +222,7 @@ SoFCColorBarBase* SoFCColorBar::getActiveBar() const
 
 void SoFCColorBar::setViewportSize( const SbVec2s& size )
 {
-    std::ignore = size;
+    boost::ignore_unused(size);
 }
 
 void SoFCColorBar::setRange( float fMin, float fMax, int prec )

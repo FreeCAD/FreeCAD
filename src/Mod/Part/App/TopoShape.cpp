@@ -162,6 +162,7 @@
 #endif // _PreComp_
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/core/ignore_unused.hpp>
 
 #include <App/Material.h>
 #include <Base/BoundBox.h>
@@ -4280,7 +4281,7 @@ TopoShape &TopoShape::makeTransform(const TopoShape &shape, const gp_Trsf &trsf,
 
 TopoShape &TopoShape::makeGTransform(const TopoShape &shape, const Base::Matrix4D &rclTrf, const char *op, bool copy)
 {
-    std::ignore = op;
+    boost::ignore_unused(op);
     _Shape = shape.transformGShape(rclTrf, copy);
     return *this;
 }

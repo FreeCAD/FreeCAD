@@ -42,6 +42,7 @@
 
 // Boost
 #include <boost/bind/bind.hpp>
+#include <boost/core/ignore_unused.hpp>
 
 // OCC
 #include <Standard_math.hxx>

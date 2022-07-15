@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <memory>
 # include <sstream>
+# include <boost/core/ignore_unused.hpp>
 #endif
 
 #include "Metadata.h"
@@ -61,7 +62,7 @@ namespace MetadataInternal {
         void warning(const SAXParseException& toCatch)
         {
             // Don't deal with warnings at all
-            std::ignore = toCatch;
+            boost::ignore_unused(toCatch);
         }
 
         void error(const SAXParseException& toCatch)
