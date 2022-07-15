@@ -1663,7 +1663,8 @@ PyObject*  MeshPy::foraminate(PyObject *args)
 {
     PyObject* pnt_p;
     PyObject* dir_p;
-    if (!PyArg_ParseTuple(args, "OO", &pnt_p, &dir_p))
+    double maxAngle = MeshCore::Mathd::PI;
+    if (!PyArg_ParseTuple(args, "OO|d", &pnt_p, &dir_p, &maxAngle))
         return nullptr;
 
     try {
@@ -1682,7 +1683,7 @@ PyObject*  MeshPy::foraminate(PyObject *args)
 
         Py::Dict dict;
         for (f_it.Begin(); f_it.More(); f_it.Next(), index++) {
-            if (f_it->Foraminate(pnt, dir, res)) {
+            if (f_it->Foraminate(pnt, dir, res, static_cast<float>(maxAngle))) {
                 Py::Tuple tuple(3);
                 tuple.setItem(0, Py::Float(res.x));
                 tuple.setItem(1, Py::Float(res.y));
