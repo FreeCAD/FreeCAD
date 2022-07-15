@@ -126,6 +126,17 @@ void TaskRevolutionParameters::setupDialog()
     translateModeList(index);
 }
 
+void TaskRevolutionParameters::translateModeList(int index)
+{
+    ui->changeMode->clear();
+    ui->changeMode->addItem(tr("Dimension"));
+    ui->changeMode->addItem(tr("To last"));
+    ui->changeMode->addItem(tr("To first"));
+    ui->changeMode->addItem(tr("Up to face"));
+    ui->changeMode->addItem(tr("Two dimensions"));
+    ui->changeMode->setCurrentIndex(index);
+}
+
 void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 {
     Base::StateLocker lock(blockUpdate, true);
@@ -204,19 +215,27 @@ void TaskRevolutionParameters::addAxisToCombo(App::DocumentObject* linkObj,
 
 void TaskRevolutionParameters::connectSignals()
 {
-    connect(ui->revolveAngle, qOverload<double>(&QuantitySpinBox::valueChanged), this,
-            &TaskRevolutionParameters::onAngleChanged);
-    connect(ui->axis, qOverload<int>(&QComboBox::activated), this,
-            &TaskRevolutionParameters::onAxisChanged);
-    connect(ui->checkBoxMidplane, &QCheckBox::toggled, this,
-            &TaskRevolutionParameters::onMidplane);
-    connect(ui->checkBoxReversed, &QCheckBox::toggled, this,
-            &TaskRevolutionParameters::onReversed);
-    connect(ui->checkBoxUpdateView, &QCheckBox::toggled, this,
-            &TaskRevolutionParameters::onUpdateView);
+    connect(ui->revolveAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskRevolutionParameters::onAngleChanged);
+    connect(ui->revolveAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskRevolutionParameters::onAngle2Changed);
+    connect(ui->axis, qOverload<int>(&QComboBox::activated),
+            this, &TaskRevolutionParameters::onAxisChanged);
+    connect(ui->checkBoxMidplane, &QCheckBox::toggled,
+            this, &TaskRevolutionParameters::onMidplane);
+    connect(ui->checkBoxReversed, &QCheckBox::toggled,
+            this, &TaskRevolutionParameters::onReversed);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskRevolutionParameters::onUpdateView);
+    connect(ui->changeMode, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskRevolutionParameters::onModeChanged);
+    connect(ui->buttonFace, &QPushButton::toggled,
+            this, &TaskRevolutionParameters::onButtonFace);
+    connect(ui->lineFaceName, &QLineEdit::textEdited,
+            this, &TaskRevolutionParameters::onFaceName);
 }
 
-void TaskRevolutionParameters::updateUI()
+void TaskRevolutionParameters::updateUI(int /*index*/)
 {
     if (blockUpdate)
         return;
@@ -227,35 +246,126 @@ void TaskRevolutionParameters::updateUI()
 void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (selectionFace) {
+            QString refText = onAddSelection(msg);
+            if (refText.length() > 0) {
+                QSignalBlocker block(ui->lineFaceName);
+                ui->lineFaceName->setText(refText);
+                ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
+                ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
+                // Turn off reference selection mode
+                ui->buttonFace->setChecked(false);
+            }
+            else {
+                clearFaceName();
+            }
+        }
+        else {
+            exitSelectionMode();
+            std::vector<std::string> axis;
+            App::DocumentObject* selObj;
+            if (getReferencedSelection(vp->getObject(), msg, selObj, axis) && selObj) {
+                propReferenceAxis->setValue(selObj, axis);
 
-        exitSelectionMode();
-        std::vector<std::string> axis;
-        App::DocumentObject* selObj;
-        if (getReferencedSelection(vp->getObject(), msg, selObj, axis) && selObj) {
-            propReferenceAxis->setValue(selObj, axis);
+                recomputeFeature();
+                updateUI();
+            }
+        }
+    }
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection && selectionFace) {
+        clearFaceName();
+    }
+}
 
-            recomputeFeature();
-            updateUI();
+void TaskRevolutionParameters::onButtonFace(const bool pressed)
+{
+    // to distinguish that this is the direction selection
+    selectionFace = true;
+
+    // only faces are allowed
+    TaskSketchBasedParameters::onSelectReference(pressed ? AllowSelection::FACE : AllowSelection::NONE);
+}
+
+void TaskRevolutionParameters::onFaceName(const QString& text)
+{
+    if (text.isEmpty()) {
+        // if user cleared the text field then also clear the properties
+        ui->lineFaceName->setProperty("FeatureName", QVariant());
+        ui->lineFaceName->setProperty("FaceName", QVariant());
+    }
+    else {
+        // expect that the label of an object is used
+        QStringList parts = text.split(QChar::fromLatin1(':'));
+        QString label = parts[0];
+        QVariant name = objectNameByLabel(label, ui->lineFaceName->property("FeatureName"));
+        if (name.isValid()) {
+            parts[0] = name.toString();
+            QString uptoface = parts.join(QString::fromLatin1(":"));
+            ui->lineFaceName->setProperty("FeatureName", name);
+            ui->lineFaceName->setProperty("FaceName", setUpToFace(uptoface));
+        }
+        else {
+            ui->lineFaceName->setProperty("FeatureName", QVariant());
+            ui->lineFaceName->setProperty("FaceName", QVariant());
         }
     }
 }
 
-void TaskRevolutionParameters::translateModeList(int index)
+void TaskRevolutionParameters::translateFaceName()
 {
-    // Must correspond to values from PartDesign::Revolution::TypeEnums
-    ui->changeMode->clear();
-    ui->changeMode->addItem(tr("Dimension"));
-    // ui->changeMode->addItem(tr("To last"));
-    // ui->changeMode->addItem(tr("To first"));
-    ui->changeMode->addItem(tr("Up to face"));
-    ui->changeMode->addItem(tr("Two dimensions"));
-    ui->changeMode->setCurrentIndex(index);
+    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+    QVariant featureName = ui->lineFaceName->property("FeatureName");
+    if (featureName.isValid()) {
+        QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
+        QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
+        int faceId = -1;
+        bool ok = false;
+        if (upToFace.indexOf("Face") == 0) {
+            faceId = upToFace.remove(0,4).toInt(&ok);
+        }
+
+        if (ok) {
+            ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+                                      .arg(parts[0])
+                                      .arg(tr("Face"))
+                                      .arg(faceId));
+        }
+        else {
+            ui->lineFaceName->setText(parts[0]);
+        }
+    }
 }
 
+QString TaskRevolutionParameters::getFaceName(void) const
+{
+    QVariant featureName = ui->lineFaceName->property("FeatureName");
+    if (featureName.isValid()) {
+        QString faceName = ui->lineFaceName->property("FaceName").toString();
+        return getFaceReference(featureName.toString(), faceName);
+    }
+
+    return QString::fromLatin1("None");
+}
+
+void TaskRevolutionParameters::clearFaceName()
+{
+    QSignalBlocker block(ui->lineFaceName);
+    ui->lineFaceName->clear();
+    ui->lineFaceName->setProperty("FeatureName", QVariant());
+    ui->lineFaceName->setProperty("FaceName", QVariant());
+}
 
 void TaskRevolutionParameters::onAngleChanged(double len)
 {
     propAngle->setValue(len);
+    exitSelectionMode();
+    recomputeFeature();
+}
+
+void TaskRevolutionParameters::onAngle2Changed(double len)
+{
+    if (propAngle2)
+        propAngle2->setValue(len);
     exitSelectionMode();
     recomputeFeature();
 }
@@ -336,6 +446,35 @@ void TaskRevolutionParameters::onReversed(bool on)
     recomputeFeature();
 }
 
+void TaskRevolutionParameters::onModeChanged(int index)
+{
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
+
+    switch (static_cast<Modes>(index)) {
+    case Modes::Dimension:
+        pcRevolution->Type.setValue("Angle");
+        // Avoid error message
+        // if (ui->revolveAngle->value() < Base::Quantity(Precision::Angular(), Base::Unit::Angle)) // TODO: Ensure radians/degree consistency
+        //     ui->revolveAngle->setValue(5.0);
+        break;
+    case Modes::ToLast:
+        pcRevolution->Type.setValue("UpToLast");
+        break;
+    case Modes::ToFirst:
+        pcRevolution->Type.setValue("UpToFirst");
+        break;
+    case Modes::ToFace:
+        pcRevolution->Type.setValue("UpToFace");
+        break;
+    case Modes::TwoDimensions:
+        pcRevolution->Type.setValue("TwoAngles");
+        break;
+    }
+
+    updateUI(index);
+    recomputeFeature();
+}
+
 void TaskRevolutionParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     if (axesInList.empty())
@@ -399,14 +538,22 @@ void TaskRevolutionParameters::apply()
 {
     //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Revolution changed"));
     ui->revolveAngle->apply();
+    ui->revolveAngle2->apply();
     std::vector<std::string> sub;
     App::DocumentObject* obj;
     getReferenceAxis(obj, sub);
     std::string axis = buildLinkSingleSubPythonStr(obj, sub);
     auto tobj = vp->getObject();
-    FCMD_OBJ_CMD(tobj,"ReferenceAxis = " << axis);
-    FCMD_OBJ_CMD(tobj,"Midplane = " << (getMidplane() ? 1 : 0));
-    FCMD_OBJ_CMD(tobj,"Reversed = " << (getReversed() ? 1 : 0));
+    FCMD_OBJ_CMD(tobj, "ReferenceAxis = " << axis);
+    FCMD_OBJ_CMD(tobj, "Midplane = " << (getMidplane() ? 1 : 0));
+    FCMD_OBJ_CMD(tobj, "Reversed = " << (getReversed() ? 1 : 0));
+    int mode = ui->changeMode->currentIndex();
+    FCMD_OBJ_CMD(tobj, "Type = " << mode);
+    QString facename = QString::fromLatin1("None");
+    if (static_cast<Modes>(mode) == Modes::ToFace) {
+        facename = getFaceName();
+    }
+    FCMD_OBJ_CMD(tobj, "UpToFace = " << facename.toLatin1().data());
 }
 
 //**************************************************************************
