@@ -336,9 +336,12 @@ measured along the specified direction</string>
    <item>
     <layout class="QGridLayout" name="gridLayout_5">
      <item row="0" column="0">
-      <widget class="QPushButton" name="buttonFace">
+      <widget class="QToolButton" name="buttonFace">
        <property name="text">
         <string>Face</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
