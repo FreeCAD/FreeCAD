@@ -76,6 +76,9 @@ class Prepare(run.Prepare):
     def run(self):
         # TODO print working dir to report console
         self.pushStatus("Preparing input files...\n")
+        num_cores = settings.get_cores("ElmerGrid")
+        self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
+                        .format(num_cores))
         if self.testmode:
             # test mode: neither gmsh, nor elmergrid nor elmersolver binaries needed
             FreeCAD.Console.PrintMessage("Machine testmode: {}\n".format(self.testmode))
@@ -124,6 +127,8 @@ class Solve(run.Solve):
                     os.environ["LD_LIBRARY_PATH"] = "$LD_LIBRARY_PATH:{}/modules".format(solvpath)
             # different call depending if with multithreading or not
             num_cores = settings.get_cores("ElmerSolver")
+            self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
+                            .format(num_cores))
             args = []
             if int(num_cores) > 1:
                 if system() != "Windows":

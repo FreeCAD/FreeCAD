@@ -114,7 +114,7 @@ def get_cores(name):
     if name in _SOLVER_PARAM:
         cores = _SOLVER_PARAM[name].get_cores()
         FreeCAD.Console.PrintMessage(
-            "Number of CPU cores to be used for the solver run: {} \n"
+            "Number of CPU cores to be used for the solver run: {}\n"
             .format(cores)
         )
         return cores
