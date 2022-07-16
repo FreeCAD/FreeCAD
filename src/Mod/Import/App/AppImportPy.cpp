@@ -406,7 +406,7 @@ private:
         char* Name;
         const char* DocName=nullptr;
         const char* optionSource = nullptr;
-        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
+        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Import";
         bool IgnoreErrors=true;
         if (!PyArg_ParseTuple(args.ptr(), "et|sbs","utf-8",&Name,&DocName,&IgnoreErrors,&optionSource))
             throw Py::Exception();
