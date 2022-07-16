@@ -18,13 +18,13 @@ void AreaDxfRead::StartCurveIfNecessary(const double* s)
 	}
 }
 
-void AreaDxfRead::OnReadLine(const double* s, const double* e)
+void AreaDxfRead::OnReadLine(const double* s, const double* e, bool /*hidden*/)
 {
 	StartCurveIfNecessary(s);
 	m_area->m_curves.back().m_vertices.push_back(Point(e));
 }
 
-void AreaDxfRead::OnReadArc(const double* s, const double* e, const double* c, bool dir)
+void AreaDxfRead::OnReadArc(const double* s, const double* e, const double* c, bool dir, bool /*hidden*/)
 {
 	StartCurveIfNecessary(s);
 	m_area->m_curves.back().m_vertices.emplace_back(dir?1:0, Point(e), Point(c));
