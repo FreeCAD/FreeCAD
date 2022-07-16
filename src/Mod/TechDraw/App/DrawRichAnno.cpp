@@ -71,18 +71,15 @@ void DrawRichAnno::onChanged(const App::Property* prop)
             requestPaint();
         }
     }
+    
     DrawView::onChanged(prop);
 
 }
 
 short DrawRichAnno::mustExecute() const
 {
-    bool result = 0;
-    if (!isRestoring()) {
-        result =  (AnnoText.isTouched());
-    }
-    if (result) {
-        return result;
+    if (!isRestoring() && AnnoText.isTouched()) {
+        return true;
     }
 
     return DrawView::mustExecute();
@@ -100,15 +97,13 @@ App::DocumentObjectExecReturn *DrawRichAnno::execute(void)
 DrawView* DrawRichAnno::getBaseView(void) const
 {
 //    Base::Console().Message("DRA::getBaseView() - %s\n", getNameInDocument());
-    DrawView* result = nullptr;
     App::DocumentObject* baseObj = AnnoParent.getValue();
-    if (baseObj != nullptr) {
-        DrawView* cast = dynamic_cast<DrawView*>(baseObj);
-        if (cast != nullptr) {
-            result = cast;
-        }
+    if (baseObj == nullptr) {
+        return nullptr;
     }
-    return result;
+    
+    DrawView* cast = dynamic_cast<DrawView*>(baseObj);
+    return cast;
 }
 
 
