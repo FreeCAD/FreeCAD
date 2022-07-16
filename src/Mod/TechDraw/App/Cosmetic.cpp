@@ -829,6 +829,24 @@ void CenterLine::dump(const char* title)
     Base::Console().Message("CL::dump - %s \n",toString().c_str());
 }
 
+std::tuple<Base::Vector3d, Base::Vector3d> CenterLine::rotatePointsAroundMid(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d mid, double rotate) {
+    //rotate p1, p2 about mid 
+    double revRotate = -rotate;
+    double cosTheta = cos(revRotate * M_PI / 180.0);
+    double sinTheta = sin(revRotate * M_PI / 180.0);
+    Base::Vector3d toOrg = p1 - mid;
+    double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+    double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+    Base::Vector3d newp1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+    toOrg = p2 - mid;
+    xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+    yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+    Base::Vector3d newp2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+
+    return std::make_tuple(newp1, newp2);
+}
+
+
 //end points for centerline with no geometry reference
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(
                                                       Base::Vector3d start,
@@ -852,17 +870,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(
     //rotate
     if (!DrawUtil::fpCompare(rotate, 0.0)) {
         //rotate p1, p2 about mid point
-        double revRotate = -rotate;
-        double cosTheta = cos(revRotate * M_PI / 180.0);
-        double sinTheta = sin(revRotate * M_PI / 180.0);
-        Base::Vector3d toOrg = p1 - mid;
-        double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-        double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
-        toOrg = p2 - mid;
-        xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-        yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+        tie(p1, p2) = rotatePointsAroundMid(p1, p2, mid, rotate);
     }
 
     //shift
@@ -958,17 +966,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     //rotate
     if (!DrawUtil::fpCompare(rotate, 0.0)) {
         //rotate p1, p2 about mid point
-        double revRotate = -rotate;
-        double cosTheta = cos(revRotate * M_PI / 180.0);
-        double sinTheta = sin(revRotate * M_PI / 180.0);
-        Base::Vector3d toOrg = p1 - mid;
-        double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-        double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
-        toOrg = p2 - mid;
-        xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-        yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+        tie(p1, p2) = rotatePointsAroundMid(p1, p2, mid, rotate);
     }
 
     //shift
@@ -1068,17 +1066,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     //rotate
     if (!DrawUtil::fpCompare(rotate, 0.0)) {
         //rotate p1, p2 about mid 
-        double revRotate = -rotate;
-        double cosTheta = cos(revRotate * M_PI / 180.0);
-        double sinTheta = sin(revRotate * M_PI / 180.0);
-        Base::Vector3d toOrg = p1 - mid;
-        double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-        double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
-        toOrg = p2 - mid;
-        xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-        yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+        tie(p1, p2) = rotatePointsAroundMid(p1, p2, mid, rotate);
     }
 
     //shift
@@ -1167,17 +1155,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
     //rotate
     if (!DrawUtil::fpCompare(rotate, 0.0)) {
         //rotate p1, p2 about mid
-        double revRotate = -rotate;
-        double cosTheta = cos(revRotate * M_PI / 180.0);
-        double sinTheta = sin(revRotate * M_PI / 180.0);
-        Base::Vector3d toOrg = p1 - mid;
-        double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-        double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
-        toOrg = p2 - mid;
-        xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-        yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+        tie(p1, p2) = rotatePointsAroundMid(p1, p2, mid, rotate);
     }
 
     //shift
