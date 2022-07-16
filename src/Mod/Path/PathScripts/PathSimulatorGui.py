@@ -290,7 +290,7 @@ class PathSimulation:
 
         if cmd.Name in ["G80"]:
             self.firstDrill = True
-        if cmd.Name in ["G81", "G82", "G83"]:
+        if cmd.Name in ["G73", "G81", "G82", "G83"]:
             if self.firstDrill:
                 extendcommand = Path.Command("G0", {"Z": cmd.r})
                 self.curpos = self.RapidMove(extendcommand, self.curpos)
@@ -372,7 +372,7 @@ class PathSimulation:
                 ) = self.voxSim.GetResultMesh()
         if cmd.Name in ["G80"]:
             self.firstDrill = True
-        if cmd.Name in ["G81", "G82", "G83"]:
+        if cmd.Name in ["G73", "G81", "G82", "G83"]:
             extendcommands = []
             if self.firstDrill:
                 extendcommands.append(Path.Command("G0", {"Z": cmd.r}))
