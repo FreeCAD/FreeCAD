@@ -357,41 +357,22 @@ CosmeticEdge::CosmeticEdge(CosmeticEdge* ce)
     initialize();
 }
 
-CosmeticEdge::CosmeticEdge(Base::Vector3d pt1, Base::Vector3d pt2)
+CosmeticEdge::CosmeticEdge(Base::Vector3d pt1, Base::Vector3d pt2) :
+//                             🠓 returns TopoDS_Edge
+    CosmeticEdge::CosmeticEdge(TopoDS_EdgeFromVectors(pt1, pt2))
 {
-//    Base::Console().Message("CE::CE(p1,p2)\n");
-    Base::Vector3d p1 = DrawUtil::invertY(pt1);
-    Base::Vector3d p2 = DrawUtil::invertY(pt2);
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
-    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    m_geometry = TechDraw::BaseGeom::baseFactory(e);
-    permaStart = p1;
-    permaEnd   = p2;
-    initialize();
 }
 
-CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
+//                                                       🠓 returns TechDraw::BaseGeomPtr
+CosmeticEdge::CosmeticEdge(TopoDS_Edge e) : CosmeticEdge(TechDraw::BaseGeom::baseFactory(e))
 {
-//    Base::Console().Message("CE::CE(TopoDS_Edge)\n");
-    m_geometry = TechDraw::BaseGeom::baseFactory(e);
-    //we assume input edge is already in Yinverted coordinates
-    permaStart = m_geometry->getStartPoint();
-    permaEnd   = m_geometry->getEndPoint();
-    if ((m_geometry->geomType == TechDraw::GeomType::CIRCLE) ||
-        (m_geometry->geomType == TechDraw::GeomType::ARCOFCIRCLE) ) {
-       TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(m_geometry);
-       permaStart  = circ->center;
-       permaEnd    = circ->center;
-       permaRadius = circ->radius;
-    } 
-    initialize();
 }
 
 CosmeticEdge::CosmeticEdge(TechDraw::BaseGeomPtr g)
 {
 //    Base::Console().Message("CE::CE(bg)\n");
     m_geometry = g;
+    //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
     if ((g->geomType == TechDraw::GeomType::CIRCLE) ||
@@ -418,6 +399,17 @@ void CosmeticEdge::initialize(void)
 
     createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
+}
+
+TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2)
+{
+    // Base::Console().Message("CE::CE(p1,p2)\n");
+    Base::Vector3d p1 = DrawUtil::invertY(pt1);
+    Base::Vector3d p2 = DrawUtil::invertY(pt2);
+    gp_Pnt gp1(p1.x,p1.y,p1.z);
+    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    return e;
 }
 
 TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(double scale)
