@@ -62,6 +62,9 @@ env:
   QT6Branch: master  # branch to check for QT6 Porting
   clazyQT6FailSilent: false
 
+  reportStepSummary: true
+  reportPRComment: false
+
 jobs:
   checks:
     name: Checks
@@ -780,13 +783,13 @@ jobs:
           path: ${{ env.fixesdir }}fixes.zip
 
       - name: Post Report to GITHUB_STEP_SUMMARY
-        if: always()
+        if: env.reportStepSummary == 'true' && always()
         id: post-report-to-github-step-summary
         run: |
           cat ${{ env.logdir }}checkReport.md  > $GITHUB_STEP_SUMMARY
 
       - name: Create Pull request comment
-        if: always()
+        if: env.reportPRComment == 'true' && always()
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: Check results
