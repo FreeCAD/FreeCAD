@@ -81,13 +81,16 @@ short Revolution::mustExecute() const
 App::DocumentObjectExecReturn *Revolution::execute()
 {
     // Validate parameters
-    double angle = Angle.getValue();
-    if (angle > 360.0)
+    // All angles are in radians unless explicitly stated
+    double angleDeg = Angle.getValue();
+    if (angleDeg > 360.0)
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle of revolution too large"));
 
-    angle = Base::toRadians<double>(angle);
+    double angle = Base::toRadians<double>(angleDeg);
     if (angle < Precision::Angular())
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle of revolution too small"));
+
+    double angle2 = Base::toRadians(Angle2.getValue());
 
     // Reverse angle if selected
     if (Reversed.getValue() && !Midplane.getValue())
@@ -126,12 +129,22 @@ App::DocumentObjectExecReturn *Revolution::execute()
         if (sketchshape.IsNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Creating a face from sketch failed"));
 
+        std::string method(Type.getValueAsString());
+
         // Rotate the face by half the angle to get Revolution symmetric to sketch plane
         if (Midplane.getValue()) {
             gp_Trsf mov;
             mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
             TopLoc_Location loc(mov);
             sketchshape.Move(loc);
+        }
+        else if (method == "TwoAngles") {
+            gp_Trsf mov;
+            mov.SetRotation(gp_Ax1(pnt, dir), angle2 * (-1.0));
+            TopLoc_Location loc(mov);
+            sketchshape.Move(loc);
+
+            angle = angle + angle2;
         }
 
         this->positionByPrevious();
@@ -150,17 +163,18 @@ App::DocumentObjectExecReturn *Revolution::execute()
         }
 
         TopoDS_Shape result;
+        TopoDS_Face supportface = getSupportFace();
+        supportface.Move(invObjLoc);
 
-        std::string method(Type.getValueAsString());
-        if (method == "UpToFace") {
-            TopoDS_Face supportface = getSupportFace();
-            supportface.Move(invObjLoc);
-
+        if (method == "UpToFace" || method == "UpToFirst" || method == "UpToLast") {
             TopoDS_Face upToFace;
             if (method == "UpToFace") {
                 getFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
+            else
+                throw Base::RuntimeError("ProfileBased: Revolution up to first/last is not yet supported");
+
             getUpToFace(upToFace, base, sketchshape, method, dir);
 
             // TODO: Make enum
@@ -181,8 +195,20 @@ App::DocumentObjectExecReturn *Revolution::execute()
             result = base;
         }
         else {
-            // revolve the face to a solid
-            BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
+            // TODO: Make enum
+            int mode = 2;
+            BRepFeat_MakeRevol RevolMaker;
+            for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
+                RevolMaker.Init(base, xp.Current(), supportface, gp_Ax1(pnt, dir), mode, Standard_True);
+                RevolMaker.Perform(angle);
+
+                if (!RevolMaker.IsDone())
+                    throw Base::RuntimeError("ProfileBased: Could not revolve the sketch!");
+
+                base = RevolMaker.Shape();
+                if (mode == 2)
+                    mode = 1;
+            }
 
             if (RevolMaker.IsDone())
                 result = RevolMaker.Shape();
