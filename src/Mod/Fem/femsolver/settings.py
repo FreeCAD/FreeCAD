@@ -107,7 +107,7 @@ def get_binary(name):
 def get_cores(name):
     """ Read number of CPU cores for solver *name* honoring user settings.
 
-    Returns number of CPU cores to be used for the solvier run
+    Returns number of CPU cores to be used for the solver run
 
     :param name: solver id as a ``str`` (see :mod:`femsolver.settings`)
     """
