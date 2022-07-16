@@ -120,6 +120,7 @@ class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::B
     TYPESYSTEM_HEADER();
 public:
     CosmeticEdge();
+    CosmeticEdge(TechDraw::BaseGeomPtr* geometry);
     CosmeticEdge(CosmeticEdge* ce);
     CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
     CosmeticEdge(TopoDS_Edge e);
@@ -127,6 +128,7 @@ public:
     virtual ~CosmeticEdge();
 
     void initialize(void);
+    TopoDS_Edge TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
     TechDraw::BaseGeomPtr scaledGeometry(double scale);
 
     virtual std::string toString(void) const;
