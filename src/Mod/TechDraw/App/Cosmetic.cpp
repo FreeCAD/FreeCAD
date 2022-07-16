@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2022 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -73,18 +74,10 @@ using namespace std;
 #define COSMETICEDGE 1
 #define CENTERLINE   2
 
-LineFormat::LineFormat()
-{
-    m_style = getDefEdgeStyle();
-    m_weight = getDefEdgeWidth();
-    m_color = getDefEdgeColor();
-    m_visible = true;
-}
-
 LineFormat::LineFormat(int style,
                double weight,
                App::Color color,
-               bool visible ) :
+               bool visible) :
     m_style(style),
     m_weight(weight),
     m_color(color),
