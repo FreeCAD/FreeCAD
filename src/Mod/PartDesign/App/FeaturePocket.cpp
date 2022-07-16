@@ -164,7 +164,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
             // Find a valid face or datum plane to extrude up to
             TopoDS_Face upToFace;
             if (method == "UpToFace") {
-                getUpToFaceFromLinkSub(upToFace, UpToFace);
+                getFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
             getUpToFace(upToFace, base, supportface, profileshape, method, dir);
