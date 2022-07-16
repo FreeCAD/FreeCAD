@@ -355,7 +355,7 @@ private:
             std::unique_ptr<Toolpath> path(new Toolpath);
             Area::toPath(*path,shapes,start?&pstart:nullptr, &pend,
                     PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
-            if (PyObject_IsTrue(return_end) ? false : true)
+            if (!Base::asBoolean(return_end))
                 return Py::asObject(new PathPy(path.release()));
             Py::Tuple tuple(2);
             tuple.setItem(0, Py::asObject(new PathPy(path.release())));
