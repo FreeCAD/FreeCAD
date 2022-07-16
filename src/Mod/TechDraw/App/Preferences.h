@@ -76,8 +76,8 @@ static std::string patFile();
 
 static std::string bitmapFill(void);
 
-static double      ISOGap();
-static double      ASMEGap();
+static double      GapISO();
+static double      GapASME();
 
 };
 

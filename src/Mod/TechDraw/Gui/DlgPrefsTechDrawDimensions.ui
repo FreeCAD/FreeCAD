@@ -517,7 +517,7 @@ Multiplier of 'Font Size'</string>
          </widget>
         </item>
         <item row="9" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbISOGap">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapISO">
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
@@ -536,7 +536,7 @@ Multiplier of 'Font Size'</string>
          </widget>
         </item>
         <item row="10" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbASMEGap">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapASME">
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
