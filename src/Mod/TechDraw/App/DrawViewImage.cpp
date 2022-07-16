@@ -88,15 +88,13 @@ void DrawViewImage::onChanged(const App::Property* prop)
 
 short DrawViewImage::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result  =  (Height.isTouched() ||
-                    Width.isTouched());
+        if (Height.isTouched() ||
+            Width.isTouched()) {
+            return true;
+        };
     }
 
-    if (result) {
-        return result;
-    }
     return App::DocumentObject::mustExecute();
 }
 
@@ -108,8 +106,7 @@ App::DocumentObjectExecReturn *DrawViewImage::execute(void)
 
 QRectF DrawViewImage::getRect() const
 {
-    QRectF result(0.0,0.0,Width.getValue(),Height.getValue());
-    return result;
+    return QRectF(0.0,0.0,Width.getValue(), Height.getValue());
 }
 
 void DrawViewImage::replaceImageIncluded(std::string newFileName)
@@ -138,14 +135,18 @@ void DrawViewImage::setupImageIncluded(void)
     DrawUtil::copyFile(std::string(), imageName);
     ImageIncluded.setValue(imageName.c_str());
 
-    if (!ImageFile.isEmpty()) {
-        Base::FileInfo fi(ImageFile.getValue());
-        if (fi.isReadable()) {
-            std::string exchName = ImageIncluded.getExchangeTempFile();
-            DrawUtil::copyFile(ImageFile.getValue(), exchName);
-            ImageIncluded.setValue(exchName.c_str(), special.c_str());
-        }
+    if (ImageFile.isEmpty()) {
+        return;
     }
+
+    Base::FileInfo fi(ImageFile.getValue());
+    if (!fi.isReadable()) {
+        return;
+    }
+
+    std::string exchName = ImageIncluded.getExchangeTempFile();
+    DrawUtil::copyFile(ImageFile.getValue(), exchName);
+    ImageIncluded.setValue(exchName.c_str(), special.c_str());
 }
 
 // Python Drawing feature ---------------------------------------------------------
