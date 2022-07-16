@@ -252,10 +252,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "MiterLimit": 0.1,
             "OffsetExtra": 0.0,
             "Side": "Outside",
-            "UseComp": True,
             "processCircles": False,
             "processHoles": False,
             "processPerimeter": True,
+            "CompensationType": "CAM"
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -284,7 +284,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """setOpEditorProperties(obj, porp) ... Process operation-specific changes to properties visibility."""
         fc = 2
         # ml = 0 if obj.JoinType == 'Miter' else 2
-        side = 0 if obj.UseComp else 2
+        side = 0 if obj.CompensationType in ("CAM", "Hybrid", "Dynamic") else 2
         opType = self._getOperationType(obj)
 
         if opType == "Contour":
@@ -340,7 +340,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
-        if prop in ["UseComp", "JoinType", "Base"]:
+        if prop in ["JoinType", "Base"]:
             if hasattr(self, "propertiesReady") and self.propertiesReady:
                 self.setOpEditorProperties(obj)
 
@@ -396,7 +396,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         else:
             params["orientation"] = 1
 
-        if not obj.UseComp:
+        if not obj.CompensationType in ("CAM", "Hybrid", "Dynamic"):
             if direction == "CCW":
                 params["orientation"] = 1
             else:
