@@ -248,8 +248,8 @@ private:
                 Base::Vector3d v = Py::Vector(t.getItem(1)).toVector();
                 pc.SetUV(u, v);
             }
-            pc.EnableSmoothing(PyObject_IsTrue(smooth) ? true : false, weight, grad, bend, curv);
-            hSurf = pc.CreateSurface(clPoints, iteration, PyObject_IsTrue(correction) ? true : false, factor);
+            pc.EnableSmoothing(Base::asBoolean(smooth), weight, grad, bend, curv);
+            hSurf = pc.CreateSurface(clPoints, iteration, Base::asBoolean(correction), factor);
             if (!hSurf.IsNull()) {
                 return Py::asObject(new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf)));
             }

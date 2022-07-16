@@ -122,7 +122,7 @@ PyObject* ExternalGeometryFacadePy::setFlag(PyObject *args)
         if( pos != ExternalGeometryExtension::flag2str.end()) {
             int index = std::distance( ExternalGeometryExtension::flag2str.begin(), pos );
 
-            this->getExternalGeometryFacadePtr()->setFlag(index,PyObject_IsTrue(bflag) ? true : false);
+            this->getExternalGeometryFacadePtr()->setFlag(index, Base::asBoolean(bflag));
             Py_Return;
         }
 

@@ -154,7 +154,7 @@ PyObject* GeometryFacadePy::setGeometryMode(PyObject *args)
         GeometryMode::GeometryMode mode;
 
         if(SketchGeometryExtension::getGeometryModeFromName(flag, mode)) {
-            getGeometryFacadePtr()->setGeometryMode(mode, PyObject_IsTrue(bflag) ? true : false);
+            getGeometryFacadePtr()->setGeometryMode(mode, Base::asBoolean(bflag));
             Py_Return;
         }
 

@@ -161,7 +161,7 @@ PyObject* SketchGeometryExtensionPy::setGeometryMode(PyObject *args)
         GeometryMode::GeometryMode mode;
 
         if(getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode)) {
-            getSketchGeometryExtensionPtr()->setGeometryMode(mode, PyObject_IsTrue(bflag) ? true : false);
+            getSketchGeometryExtensionPtr()->setGeometryMode(mode, Base::asBoolean(bflag));
             Py_Return;
         }
 
