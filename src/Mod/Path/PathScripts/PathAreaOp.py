@@ -229,7 +229,7 @@ class ObjectOp(PathOp.ObjectOp):
         area.add(baseobject)
 
         areaParams = self.areaOpAreaParams(obj, isHole)
-        areaParams['SectionTolerance'] = 1e-07
+        areaParams["SectionTolerance"] = 1e-07
 
         heights = [i for i in self.depthparams]
         PathLog.debug("depths: {}".format(heights))
@@ -445,6 +445,14 @@ class ObjectOp(PathOp.ObjectOp):
                     )
                 )
 
+        if getattr(obj, "CompensationType", "CAM") in (
+            "Hybrid",
+            "Controller",
+            "Dynamic",
+        ):
+            self.commandlist.append(Path.Command("G40"))
+
+        return shapes
         PathLog.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
 

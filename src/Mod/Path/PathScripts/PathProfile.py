@@ -450,6 +450,20 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             self.ofstRadius = self.offsetExtra
             self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
+
+        if obj.CompensationType == "Dynamic":
+            toolwear = getattr(obj.ToolController.Tool, "WearCompensation", 0.0)
+            if obj.Direction == 'CW':
+                self.commandlist.append(Path.Command("G41.1", {'D': toolwear}))
+            else:
+                self.commandlist.append(Path.Command("G42.1", {'D': toolwear}))
+        elif obj.CompensationType in ('Hybrid', 'Controller'):
+            if obj.Direction == 'CW':
+                self.commandlist.append(Path.Command("G41"))
+            else:
+                self.commandlist.append(Path.Command("G42"))
+
+
         # Pre-process Base Geometry to process edges
         if (
             obj.Base and len(obj.Base) > 0
