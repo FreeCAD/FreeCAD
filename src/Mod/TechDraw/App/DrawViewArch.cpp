@@ -77,20 +77,20 @@ DrawViewArch::~DrawViewArch()
 
 short DrawViewArch::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = (Source.isTouched() ||
-                AllOn.isTouched() ||
-                RenderMode.isTouched() ||
-                ShowHidden.isTouched() ||
-                ShowFill.isTouched() ||
-                LineWidth.isTouched() ||
-                FontSize.isTouched() ||
-                CutLineWidth.isTouched() ||
-                JoinArch.isTouched());
-    }
-    if ((bool) result) {
-        return result;
+        if (
+            Source.isTouched() ||
+            AllOn.isTouched() ||
+            RenderMode.isTouched() ||
+            ShowHidden.isTouched() ||
+            ShowFill.isTouched() ||
+            LineWidth.isTouched() ||
+            FontSize.isTouched() ||
+            CutLineWidth.isTouched() ||
+            JoinArch.isTouched()
+        ) {
+            return true;
+        }
     }
     return DrawViewSymbol::mustExecute();
 }
@@ -153,6 +153,5 @@ std::string DrawViewArch::getSVGHead(void)
 
 std::string DrawViewArch::getSVGTail(void)
 {
-    std::string tail = "\\n</svg>";
-    return tail;
+    return "\\n</svg>";
 }
