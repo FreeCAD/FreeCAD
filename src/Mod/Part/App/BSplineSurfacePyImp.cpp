@@ -1412,7 +1412,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Standard_Integer index = 1;
         for (Py::Sequence::iterator it = umultssq.begin(); it != umultssq.end() && index <= occumults.Length(); ++it) {
             Py::Long mult(*it);
-            if (index < occumults.Length() || PyObject_Not(uperiodic)) {
+            if (index < occumults.Length() || !Base::asBoolean(uperiodic)) {
                 sum_of_umults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
             }
             occumults(index++) = static_cast<int>(mult);
@@ -1421,7 +1421,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         index = 1;
         for (Py::Sequence::iterator it = vmultssq.begin(); it != vmultssq.end() && index <= occvmults.Length(); ++it) {
             Py::Long mult(*it);
-            if (index < occvmults.Length() || PyObject_Not(vperiodic)) {
+            if (index < occvmults.Length() || !Base::asBoolean(vperiodic)) {
                 sum_of_vmults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
             }
             occvmults(index++) = static_cast<int>(mult);
@@ -1454,9 +1454,9 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
             }
         }
         if ((Base::asBoolean(uperiodic) && sum_of_umults != lu) ||
-            ((PyObject_Not(uperiodic) ? true : false) && sum_of_umults - udegree -1 != lu) ||
+            (!Base::asBoolean(uperiodic) && sum_of_umults - udegree -1 != lu) ||
             (Base::asBoolean(vperiodic) && sum_of_vmults != lv) ||
-            ((PyObject_Not(vperiodic) ? true : false) && sum_of_vmults - vdegree -1 != lv)) {
+            (!Base::asBoolean(vperiodic) && sum_of_vmults - vdegree -1 != lv)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
         }
         // check multiplicity of inner knots

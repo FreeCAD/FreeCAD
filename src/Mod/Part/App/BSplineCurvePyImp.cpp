@@ -1244,7 +1244,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Standard_Integer index = 1;
             for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
                 Py::Long mult(*it);
-                if (index < occmults.Length() || PyObject_Not(periodic)) {
+                if (index < occmults.Length() || !Base::asBoolean(periodic)) {
                     sum_of_mults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
                 }
                 occmults(index++) = static_cast<int>(mult);
@@ -1254,7 +1254,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             for (int i=1; i<=occmults.Length(); i++){
                 occmults.SetValue(i,1);
             }
-            if (PyObject_Not(periodic) && occmults.Length() > 0) {
+            if (!Base::asBoolean(periodic) && occmults.Length() > 0) {
                 occmults.SetValue(1, degree+1);
                 occmults.SetValue(occmults.Length(), degree+1);
                 sum_of_mults = occmults.Length()+2*degree;
@@ -1301,7 +1301,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
         }
         // check if the number of poles matches the sum of mults
         if ((Base::asBoolean(periodic) && sum_of_mults != number_of_poles) ||
-                ((PyObject_Not(periodic) ? true : false) && sum_of_mults - degree -1 != number_of_poles)) {
+            (!Base::asBoolean(periodic) && sum_of_mults - degree -1 != number_of_poles)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
             return(nullptr);
         }
