@@ -408,7 +408,7 @@ PyObject*  MeshPy::crossSections(PyObject *args)
     }
 
     std::vector<MeshObject::TPolylines> sections;
-    getMeshObjectPtr()->crossSections(csPlanes, sections, min_eps, PyObject_IsTrue(poly) ? true : false);
+    getMeshObjectPtr()->crossSections(csPlanes, sections, min_eps, Base::asBoolean(poly));
 
     // convert to Python objects
     Py::List crossSections;
@@ -525,7 +525,7 @@ PyObject*  MeshPy::section(PyObject *args, PyObject *kwds)
 
     MeshPy* pcObject = static_cast<MeshPy*>(pcObj);
 
-    std::vector< std::vector<Base::Vector3f> > curves = getMeshObjectPtr()->section(*pcObject->getMeshObjectPtr(), PyObject_IsTrue(connectLines) ? true : false, fMinDist);
+    std::vector< std::vector<Base::Vector3f> > curves = getMeshObjectPtr()->section(*pcObject->getMeshObjectPtr(), Base::asBoolean(connectLines), fMinDist);
     Py::List outer;
     for (const auto& it : curves) {
         Py::List inner;
@@ -739,7 +739,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
             faces.push_back(face);
         }
 
-        getMeshObjectPtr()->addFacets(faces, vertices, PyObject_IsTrue(check) ? true : false);
+        getMeshObjectPtr()->addFacets(faces, vertices, Base::asBoolean(check));
 
         Py_Return;
     }
@@ -1152,7 +1152,7 @@ PyObject*  MeshPy::removePointsOnEdge(PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O!", keywords, &PyBool_Type, &fillBoundary))
         return nullptr;
     try {
-        getMeshObjectPtr()->removePointsOnEdge(PyObject_IsTrue(fillBoundary) ? true : false);
+        getMeshObjectPtr()->removePointsOnEdge(Base::asBoolean(fillBoundary));
     }
     catch (const Base::Exception& e) {
         e.setPyException();

@@ -495,8 +495,8 @@ private:
             mesher.setDeflection(lindeflection);
             mesher.setAngularDeflection(angdeflection);
             mesher.setRegular(true);
-            mesher.setRelative(PyObject_IsTrue(relative) ? true : false);
-            mesher.setSegments(PyObject_IsTrue(segment) ? true : false);
+            mesher.setRelative(Base::asBoolean(relative));
+            mesher.setSegments(Base::asBoolean(segment));
             if (groupColors) {
                 Py::Sequence list(groupColors);
                 std::vector<uint32_t> colors;
