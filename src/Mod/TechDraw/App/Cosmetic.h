@@ -218,6 +218,11 @@ public:
                                          bool flip = false);
     TechDraw::BaseGeomPtr scaledGeometry(TechDraw::DrawViewPart* partFeat);
 
+    static std::tuple<Base::Vector3d, Base::Vector3d> rotatePointsAroundMid(
+                                          Base::Vector3d p1,
+                                          Base::Vector3d p2,
+                                          Base::Vector3d mid,
+                                          double rotate);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPointsNoRef(
                                                           Base::Vector3d start,
                                                           Base::Vector3d end,
