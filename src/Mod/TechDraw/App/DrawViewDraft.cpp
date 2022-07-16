@@ -69,19 +69,17 @@ DrawViewDraft::~DrawViewDraft()
 
 short DrawViewDraft::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = Source.isTouched() ||
-                    LineWidth.isTouched() ||
-                    FontSize.isTouched() ||
-                    Direction.isTouched() ||
-                    Color.isTouched() ||
-                    LineStyle.isTouched() ||
-                    LineSpacing.isTouched() ||
-                    OverrideStyle.isTouched();
-    }
-    if ((bool) result) {
-        return result;
+        if(Source.isTouched() ||
+            LineWidth.isTouched() ||
+            FontSize.isTouched() ||
+            Direction.isTouched() ||
+            Color.isTouched() ||
+            LineStyle.isTouched() ||
+            LineSpacing.isTouched() ||
+            OverrideStyle.isTouched()) {
+            return true;
+        }
     }
     return DrawViewSymbol::mustExecute();
 }

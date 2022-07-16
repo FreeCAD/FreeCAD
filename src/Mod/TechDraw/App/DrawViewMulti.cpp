@@ -94,13 +94,10 @@ DrawViewMulti::~DrawViewMulti()
 
 short DrawViewMulti::mustExecute() const
 {
-    short result = 0;
-    if (!isRestoring()) {
-        result  = (Sources.isTouched());
+    if (!isRestoring() && Sources.isTouched()) {
+        return true;
     }
-    if (result) {
-        return result;
-    }
+
     return TechDraw::DrawViewPart::mustExecute();
 }
 
