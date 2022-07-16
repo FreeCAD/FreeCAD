@@ -170,6 +170,19 @@ class TechDrawExport CenterLine: public Base::Persistence
     TYPESYSTEM_HEADER();
 
 public:
+    enum CLMODE
+    {
+        VERTICAL,
+        HORIZONTAL,
+        ALIGNED
+    };
+    enum CLTYPE
+    {
+        FACE,
+        EDGE,
+        VERTEX
+    };
+
     CenterLine();
     CenterLine(CenterLine* cl);
     //set m_faces after using next 3 ctors
@@ -188,18 +201,6 @@ public:
     virtual ~CenterLine();
 
     TechDraw::BaseGeomPtr BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
-
-    enum CLMODE {
-        VERTICAL,
-        HORIZONTAL,
-        ALIGNED
-    };
-
-    enum CLTYPE {
-        FACE,
-        EDGE,
-        VERTEX
-    };
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
