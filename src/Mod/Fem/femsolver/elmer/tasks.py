@@ -86,6 +86,7 @@ class Prepare(run.Prepare):
         try:
             w.write_solver_input()
             self.checkHandled(w)
+            self.pushStatus("Writing solver input completed.")
         except writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
