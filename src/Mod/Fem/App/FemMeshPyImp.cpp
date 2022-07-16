@@ -635,7 +635,7 @@ PyObject* FemMeshPy::writeABAQUS(PyObject *args)
         return nullptr;
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
-    bool grpParam = PyObject_IsTrue(groupParam) ? true : false;
+    bool grpParam = Base::asBoolean(groupParam);
 
     try {
         getFemMeshPtr()->writeABAQUS(EncodedName.c_str(), elemParam, grpParam);
