@@ -501,19 +501,21 @@ private:
                     }
                 }
                 writer.endRun();
+                return Py::None();
             }
             catch (const Base::Exception& e) {
                 throw Py::RuntimeError(e.what());
             }
+        }
 
-        } else if (PyArg_ParseTuple(args.ptr(), "O!et|iOs",
-                                                &(Part::TopoShapePy::Type) ,
-                                                &shapeObj, 
-                                                "utf-8",
-                                                &fname, 
-                                                &versionParm,
-                                                &usePolyline,
-                                                &optionSource)) {
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args.ptr(), "O!et|iOs", &(Part::TopoShapePy::Type) ,
+                                                     &shapeObj,
+                                                     "utf-8",
+                                                     &fname,
+                                                     &versionParm,
+                                                     &usePolyline,
+                                                     &optionSource)) {
             filePath = std::string(fname);
             layerName = "none";
             PyMem_Free(fname);
@@ -543,14 +545,14 @@ private:
                 TopoDS_Shape shape = obj->getShape();
                 writer.exportShape(shape);
                 writer.endRun();
+                return Py::None();
             }
             catch (const Base::Exception& e) {
                 throw Py::RuntimeError(e.what());
             }
-        } else {
-            throw Py::TypeError("expected ([Shape],path");
-        } 
-        return Py::None();
+        }
+
+        throw Py::TypeError("expected ([Shape],path");
     }
 
     Py::Object writeDXFObject(const Py::Tuple& args)
@@ -573,7 +575,7 @@ private:
                                                       &versionParm,
                                                       &usePolyline,
                                                       &optionSource)) {
-           filePath = std::string(fname);
+            filePath = std::string(fname);
             layerName = "none";
             PyMem_Free(fname);
 
@@ -612,18 +614,21 @@ private:
                     }
                 }
                 writer.endRun();
+                return Py::None();
             }
             catch (const Base::Exception& e) {
                 throw Py::RuntimeError(e.what());
             }
-        } else if (PyArg_ParseTuple(args.ptr(), "O!et|iOs",
-                                                &(App::DocumentObjectPy::Type) ,
-                                                &docObj, 
-                                                "utf-8",
-                                                &fname, 
-                                                &versionParm,
-                                                &usePolyline,
-                                                &optionSource)) {
+        }
+
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args.ptr(), "O!et|iOs", &(App::DocumentObjectPy::Type) ,
+                                                     &docObj,
+                                                     "utf-8",
+                                                     &fname,
+                                                     &versionParm,
+                                                     &usePolyline,
+                                                     &optionSource)) {
             filePath = std::string(fname);
             layerName = "none";
             PyMem_Free(fname);
@@ -657,17 +662,15 @@ private:
                 const TopoDS_Shape& shape = part->Shape.getValue();
                 writer.exportShape(shape);
                 writer.endRun();
+                return Py::None();
             }
             catch (const Base::Exception& e) {
                 throw Py::RuntimeError(e.what());
             }
-        } else {
-            throw Py::TypeError("expected ([DocObject],path");
-        } 
-        return Py::None();
+        }
+
+        throw Py::TypeError("expected ([DocObject],path");
     }
-
-
 };
 /*
 static PyObject * importAssembly(PyObject *self, PyObject *args)
