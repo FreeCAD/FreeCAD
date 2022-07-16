@@ -622,54 +622,15 @@ CenterLine::CenterLine(TechDraw::CenterLine* cl)
     initialize();
 }
 
-CenterLine::CenterLine(TechDraw::BaseGeomPtr bg)
-{
-    m_start = bg->getStartPoint();
-    m_end = bg->getEndPoint();
-    m_mode = CLMODE::VERTICAL;
-    m_hShift = 0.0;
-    m_vShift = 0.0;
-    m_rotate = 0.0;
-    m_extendBy = 0.0;
-    m_type = CLTYPE::FACE;
-    m_flip2Line = false;
-
-    m_geometry = bg;
-
-    initialize();
-}
-
-CenterLine::CenterLine(Base::Vector3d pt1, Base::Vector3d pt2)
-{
-    m_start = pt1;
-    m_end = pt2;
-    m_mode = CLMODE::VERTICAL;
-    m_hShift = 0.0;
-    m_vShift = 0.0;
-    m_rotate = 0.0;
-    m_extendBy = 0.0;
-    m_type = CLTYPE::FACE;
-    m_flip2Line = false;
-
-    Base::Vector3d p1 = DrawUtil::invertY(pt1);
-    Base::Vector3d p2 = DrawUtil::invertY(pt2);
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
-    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    m_geometry = TechDraw::BaseGeom::baseFactory(e);
-
-    initialize();
-}
-
-CenterLine::CenterLine(Base::Vector3d pt1, Base::Vector3d pt2,
+CenterLine::CenterLine(TechDraw::BaseGeomPtr bg,
                        int m, 
                        double h,
                        double v,
                        double r,
                        double x)
 {
-    m_start = pt1;
-    m_end = pt2;
+    m_start = bg->getStartPoint();
+    m_end = bg->getEndPoint();
     m_mode = m;
     m_hShift = h;
     m_vShift = v;
@@ -678,15 +639,19 @@ CenterLine::CenterLine(Base::Vector3d pt1, Base::Vector3d pt2,
     m_type = CLTYPE::FACE;
     m_flip2Line = false;
 
-    //not sure this is right?
-    Base::Vector3d p1 = DrawUtil::invertY(pt1);
-    Base::Vector3d p2 = DrawUtil::invertY(pt2);
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
-    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    m_geometry = bg;
 
     initialize();
+}
+
+CenterLine::CenterLine(Base::Vector3d pt1,
+                       Base::Vector3d pt2,
+                       int m,
+                       double h,
+                       double v,
+                       double r,
+                       double x) : CenterLine(BaseGeomPtrFromVectors(pt1, pt2), m, h, v, r, x)
+{
 }
 
 CenterLine::~CenterLine()
@@ -702,6 +667,18 @@ void CenterLine::initialize()
 
     createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
+}
+
+TechDraw::BaseGeomPtr CenterLine::BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2)
+{
+    // Base::Console().Message("CE::CE(p1,p2)\n");
+    Base::Vector3d p1 = DrawUtil::invertY(pt1);
+    Base::Vector3d p2 = DrawUtil::invertY(pt2);
+    gp_Pnt gp1(p1.x,p1.y,p1.z);
+    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    TechDraw::BaseGeomPtr bg = TechDraw::BaseGeom::baseFactory(e);
+    return bg;
 }
 
 CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat, 
