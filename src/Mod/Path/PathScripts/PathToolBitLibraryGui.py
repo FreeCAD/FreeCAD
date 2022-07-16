@@ -932,32 +932,34 @@ class ToolBitLibrary(object):
             except Exception as e:
                 raise e
 
-            if bit:
-                PathLog.track(bit)
+            if not bit:
+                continue
+            
+            PathLog.track(bit)
 
-                toolitem = tooltemplate.copy()
+            toolitem = tooltemplate.copy()
 
-                toolitem["diameter"] = (
-                    float(bit.Diameter.getUserPreferred()[0].split()[0])
-                    if hasattr(bit, "Diameter")
-                    else 2
-                )
-                toolitem["description"] = bit.Label
-                toolitem["length"] = (
-                    float(bit.Length.getUserPreferred()[0].split()[0])
-                    if hasattr(bit, "Length")
-                    else 10
-                )
+            toolitem["diameter"] = (
+                float(bit.Diameter.getUserPreferred()[0].split()[0])
+                if hasattr(bit, "Diameter")
+                else 2
+            )
+            toolitem["description"] = bit.Label
+            toolitem["length"] = (
+                float(bit.Length.getUserPreferred()[0].split()[0])
+                if hasattr(bit, "Length")
+                else 10
+            )
 
-                if hasattr(bit, "Camotics"):
-                    toolitem["shape"] = bit.Camotics
-                else:
-                    toolitem["shape"] = SHAPEMAP.get(bit.ShapeName, "Cylindrical")
+            if hasattr(bit, "Camotics"):
+                toolitem["shape"] = bit.Camotics
+            else:
+                toolitem["shape"] = SHAPEMAP.get(bit.ShapeName, "Cylindrical")
 
-                toolitem["units"] = unitstring
-                FreeCAD.ActiveDocument.removeObject(bit.Name)
+            toolitem["units"] = unitstring
+            FreeCAD.ActiveDocument.removeObject(bit.Name)
 
-                toollist[toolNr] = toolitem
+            toollist[toolNr] = toolitem
 
         if len(toollist) > 0:
             with open(path, "w") as fp:
