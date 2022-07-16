@@ -450,18 +450,29 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 {
     init();
 
-    std::string completionPrefix;
+    // ExpressionParser::tokenize() only supports std::string but we need a tuple QString
+    // because due to UTF-8 encoding a std::string may be longer than a QString
+    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=69931
+    auto tokenizeExpression = [](const QString & expr) {
+        std::vector<std::tuple<int, int, std::string> > result = ExpressionParser::tokenize(expr.toStdString());
+        std::vector<std::tuple<int, int, QString> > tokens;
+        std::transform(result.cbegin(), result.cend(), std::back_inserter(tokens), [](const std::tuple<int, int, std::string>& item) {
+            return std::make_tuple(get<0>(item), get<1>(item), QString::fromStdString(get<2>(item)));
+        });
+
+        return tokens;
+    };
+
+    QString completionPrefix;
 
     // Compute start; if prefix starts with =, start parsing from offset 1.
     int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
 
-    std::string expression = Base::Tools::toStdString(prefix.mid(start));
-
     // Tokenize prefix
-    std::vector<std::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
+    std::vector<std::tuple<int, int, QString> > tokens = tokenizeExpression(prefix.mid(start));
 
     // No tokens
-    if (tokens.size() == 0) {
+    if (tokens.empty()) {
         if (auto p = popup())
             p->setVisible(false);
         return;
@@ -471,20 +482,20 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // Pop those trailing tokens depending on the given position, which may be
     // in the middle of a token, and we shall include that token.
-    for(auto it=tokens.begin();it!=tokens.end();++it) {
-        if(get<1>(*it) >= pos) {
+    for(auto it = tokens.begin(); it != tokens.end(); ++it) {
+        if (get<1>(*it) >= pos) {
             // Include the immediately followed '.' or '#', because we'll be
             // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
-            if(it!=tokens.begin() && get<0>(*it)!='.' && get<0>(*it)!='#')
-                it = it-1;
-            tokens.resize(it-tokens.begin()+1);
+            if (it != tokens.begin() && get<0>(*it) != '.' && get<0>(*it) != '#')
+                it = it - 1;
+            tokens.resize(it - tokens.begin() + 1);
             prefixEnd = start + get<1>(*it) + (int)get<2>(*it).size();
             break;
         }
     }
 
     int trim = 0;
-    if(prefixEnd > pos)
+    if (prefixEnd > pos)
         trim = prefixEnd - pos;
 
     // Extract last tokens that can be rebuilt to a variable
@@ -492,15 +503,14 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // First, check if we have unclosing string starting from the end
     bool stringing = false;
-    for(; i>=0; --i) {
+    for(; i >= 0; --i) {
         int token = get<0>(tokens[i]);
-        if(token == ExpressionParser::STRING) {
+        if (token == ExpressionParser::STRING) {
             stringing = false;
             break;
         }
-        if(token==ExpressionParser::LT
-            && i && get<0>(tokens[i-1])==ExpressionParser::LT)
-        {
+
+        if (token == ExpressionParser::LT && i > 0 && get<0>(tokens[i-1])==ExpressionParser::LT) {
             --i;
             stringing = true;
             break;
@@ -508,24 +518,25 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 
     // Not an unclosed string and the last character is a space
-    if(!stringing && prefix.size() && prefix[prefixEnd-1] == QChar(32)) {
+    if (!stringing && !prefix.isEmpty() && prefix[prefixEnd-1] == QChar(32)) {
         if (auto p = popup())
             p->setVisible(false);
         return;
     }
 
-    if(!stringing) {
+    if (!stringing) {
         i = static_cast<long>(tokens.size()) - 1;
-        for(;i>=0;--i) {
+        for (;i>=0;--i) {
             int token = get<0>(tokens[i]);
-            if (token != '.' && token != '#' &&
+            if (token != '.' &&
+                token != '#' &&
                 token != ExpressionParser::IDENTIFIER &&
                 token != ExpressionParser::STRING &&
                 token != ExpressionParser::UNIT)
                 break;
         }
-        ++i;
 
+        ++i;
     }
 
     // Set prefix start for use when replacing later
@@ -540,13 +551,13 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         ++i;
     }
 
-    if(trim && trim<(int)completionPrefix.size() )
-        completionPrefix.resize(completionPrefix.size()-trim);
+    if (trim && trim < int(completionPrefix.size()))
+        completionPrefix.resize(completionPrefix.size() - trim);
 
     // Set completion prefix
-    setCompletionPrefix(Base::Tools::fromStdString(completionPrefix));
+    setCompletionPrefix(completionPrefix);
 
-    if (!completionPrefix.empty() && widget()->hasFocus())
+    if (!completionPrefix.isEmpty() && widget()->hasFocus())
         complete();
     else {
         if (auto p = popup())
