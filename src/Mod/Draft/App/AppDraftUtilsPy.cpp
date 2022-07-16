@@ -49,7 +49,7 @@ public:
     virtual ~Module() {}
 
 private:
-    Py::Object readDXF(const Py::Tuple& args)
+    Py::Object readDXF(const Py::Tuple& /*args*/)
     {
         Base::Console().Warning("DraftUtils.readDXF is removed. "
                                 "Use Import.readDxf instead.\n");
