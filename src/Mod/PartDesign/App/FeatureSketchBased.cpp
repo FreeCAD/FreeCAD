@@ -333,7 +333,6 @@ const TopoDS_Face ProfileBased::getSupportFace() const {
         }
     }
     return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
-
 }
 
 int ProfileBased::getSketchAxisCount(void) const
@@ -396,14 +395,13 @@ void ProfileBased::onChanged(const App::Property* prop)
 }
 
 
-void ProfileBased::getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
-    const App::PropertyLinkSub& refFace)
+void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace)
 {
     App::DocumentObject* ref = refFace.getValue();
     std::vector<std::string> subStrings = refFace.getSubValues();
 
     if (ref == nullptr)
-        throw Base::ValueError("SketchBased: Up to face: No face selected");
+        throw Base::ValueError("SketchBased: No face selected");
 
     if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         upToFace = TopoDS::Face(makeShapeFromPlane(ref));
@@ -416,16 +414,16 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
     }
 
     if (!ref->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::TypeError("SketchBased: Up to face: Must be face of a feature");
+        throw Base::TypeError("SketchBased: Must be face of a feature");
     Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
 
     if (subStrings.empty() || subStrings[0].empty())
-        throw Base::ValueError("SketchBased: Up to face: No face selected");
+        throw Base::ValueError("SketchBased: No face selected");
     // TODO: Check for multiple UpToFaces?
 
     upToFace = TopoDS::Face(baseShape.getSubShape(subStrings[0].c_str()));
     if (upToFace.IsNull())
-        throw Base::ValueError("SketchBased: Up to face: Failed to extract face");
+        throw Base::ValueError("SketchBased: Failed to extract face");
 }
 
 void ProfileBased::getUpToFace(TopoDS_Face& upToFace,

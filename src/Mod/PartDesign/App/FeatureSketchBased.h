@@ -125,8 +125,8 @@ protected:
     void remapSupportShape(const TopoDS_Shape&);
 
     /// Extract a face from a given LinkSub
-    static void getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
-                                       const App::PropertyLinkSub& refFace);
+    static void getFaceFromLinkSub(TopoDS_Face& upToFace,
+                                   const App::PropertyLinkSub& refFace);
 
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoDS_Face& upToFace,
