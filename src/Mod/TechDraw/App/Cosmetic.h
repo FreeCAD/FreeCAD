@@ -173,15 +173,21 @@ public:
     CenterLine();
     CenterLine(CenterLine* cl);
     //set m_faces after using next 3 ctors
-    CenterLine(TechDraw::BaseGeomPtr bg);
-    CenterLine(Base::Vector3d p1, Base::Vector3d p2);
+    CenterLine(TechDraw::BaseGeomPtr bg,
+               int m = CLMODE::VERTICAL, 
+               double h = 0.0,
+               double v = 0.0,
+               double r = 0.0,
+               double x = 0.0);
     CenterLine(Base::Vector3d p1, Base::Vector3d p2,
-               int m, 
-               double h,
-               double v,
-               double r,
-               double x);
+               int m = CLMODE::VERTICAL, 
+               double h = 0.0,
+               double v = 0.0,
+               double r = 0.0,
+               double x = 0.0);
     virtual ~CenterLine();
+
+    TechDraw::BaseGeomPtr BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
 
     enum CLMODE {
         VERTICAL,
