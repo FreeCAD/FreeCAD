@@ -515,11 +515,11 @@ private:
 
             FC_DURATION_PLUS(d1,t);
             if (merge != Py_None)
-                ocaf.setMerge(PyObject_IsTrue(merge) ? true : false);
+                ocaf.setMerge(Base::asBoolean(merge));
             if (importHidden != Py_None)
-                ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden) ? true : false);
+                ocaf.setImportHiddenObject(Base::asBoolean(importHidden));
             if (useLinkGroup != Py_None)
-                ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup) ? true : false);
+                ocaf.setUseLinkGroup(Base::asBoolean(useLinkGroup));
             ocaf.setMode(mode);
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
@@ -592,11 +592,11 @@ private:
             }
 
             Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);
-            if ((PyObject_IsTrue(legacy) ? false : true) || !ocaf.canFallback(objs)) {
+            if (!Base::asBoolean(legacy) || !ocaf.canFallback(objs)) {
                 if (exportHidden != Py_None)
-                    ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden) ? true : false);
+                    ocaf.setExportHiddenObject(Base::asBoolean(exportHidden));
                 if (keepPlacement != Py_None)
-                    ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement) ? true : false);
+                    ocaf.setKeepPlacement(Base::asBoolean(keepPlacement));
                 ocaf.exportObjects(objs);
             }
             else {
