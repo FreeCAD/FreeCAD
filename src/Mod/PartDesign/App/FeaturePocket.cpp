@@ -39,7 +39,7 @@ using namespace PartDesign;
 
 /* TRANSLATOR PartDesign::Pocket */
 
-const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace","TwoLengths",nullptr};
+const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
@@ -236,6 +236,9 @@ App::DocumentObjectExecReturn *Pocket::execute()
             remapSupportShape(solRes);
             this->Shape.setValue(getSolid(solRes));
         }
+
+        // eventually disable some settings that are not valid for the current method
+        updateProperties(method);
 
         return App::DocumentObject::StdReturn;
     }
