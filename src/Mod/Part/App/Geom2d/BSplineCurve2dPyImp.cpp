@@ -212,7 +212,7 @@ PyObject* BSplineCurve2dPy::insertKnots(PyObject * args)
 
         Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
             (getGeometry2dPtr()->handle());
-        curve->InsertKnots(k,m,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
+        curve->InsertKnots(k, m, tol, Base::asBoolean(add));
         Py_Return;
     }
     catch (Standard_Failure& e) {
@@ -950,11 +950,11 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
         std::unique_ptr<Geom2dAPI_Interpolate> aBSplineInterpolation;
         if (parameters.IsNull()) {
             aBSplineInterpolation.reset(new Geom2dAPI_Interpolate(interpolationPoints,
-                PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
+                Base::asBoolean(periodic), tol3d));
         }
         else {
             aBSplineInterpolation.reset(new Geom2dAPI_Interpolate(interpolationPoints, parameters,
-                PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
+                Base::asBoolean(periodic), tol3d));
         }
 
         if (t1 && t2) {
@@ -1022,10 +1022,10 @@ PyObject* BSplineCurve2dPy::buildFromPoles(PyObject *args)
         if (poles.Length() <= degree)
             degree = poles.Length()-1;
 
-        if (PyObject_IsTrue(periodic) ? true : false) {
+        if (Base::asBoolean(periodic)) {
             int mult;
             int len;
-            if (PyObject_IsTrue(interpolate) ? true : false) {
+            if (Base::asBoolean(interpolate)) {
                 mult = degree;
                 len = poles.Length() - mult + 2;
             }
@@ -1126,7 +1126,7 @@ PyObject* BSplineCurve2dPy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
             else {
                 if (knots != Py_None) { number_of_knots = PyObject_Length(knots); }
                 else { //guess number of knots
-                    if (PyObject_IsTrue(periodic) ? true : false) {
+                    if (Base::asBoolean(periodic)) {
                         if (number_of_poles < degree) {degree = number_of_poles+1;}
                         number_of_knots = number_of_poles+1;
                     }
@@ -1193,14 +1193,14 @@ PyObject* BSplineCurve2dPy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
             }
         }
         // check if the number of poles matches the sum of mults
-        if (((PyObject_IsTrue(periodic) ? true : false) && sum_of_mults != number_of_poles) ||
+        if (((Base::asBoolean(periodic)) && sum_of_mults != number_of_poles) ||
                 ((PyObject_Not(periodic) ? true : false) && sum_of_mults - degree -1 != number_of_poles)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
             return(nullptr);
         }
 
-        Handle(Geom2d_BSplineCurve) spline = new Geom2d_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
-            PyObject_IsTrue(periodic) ? Standard_True : Standard_False);
+        Handle(Geom2d_BSplineCurve) spline = new Geom2d_BSplineCurve(occpoles, occweights, occknots,
+                                                                     occmults, degree, Base::asBoolean(periodic));
         if (!spline.IsNull()) {
             this->getGeom2dBSplineCurvePtr()->setHandle(spline);
             Py_Return;

@@ -331,7 +331,7 @@ private:
             throw Py::Exception();
 
         TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
-        bool ok = ShapeFix::SameParameter(sh, PyObject_IsTrue(enforce) ? Standard_True : Standard_False, prec);
+        bool ok = ShapeFix::SameParameter(sh, Base::asBoolean(enforce), prec);
         return Py::Boolean(ok);
     }
     Py::Object encodeRegularity(const Py::Tuple& args)
@@ -1346,7 +1346,7 @@ private:
                 Standard_Failure::Raise("Cannot create polygon because less than two vertices are given");
 
             // if the polygon should be closed
-            if (PyObject_IsTrue(pclosed) ? true : false) {
+            if (Base::asBoolean(pclosed)) {
                 if (!mkPoly.FirstVertex().IsSame(mkPoly.LastVertex())) {
                     mkPoly.Add(mkPoly.FirstVertex());
                 }
@@ -1527,8 +1527,8 @@ private:
 
         try {
             TopoShape helix;
-            Standard_Boolean anIsLeft = PyObject_IsTrue(pleft) ? Standard_True : Standard_False;
-            Standard_Boolean anIsVertHeight = PyObject_IsTrue(pvertHeight) ? Standard_True : Standard_False;
+            Standard_Boolean anIsLeft = Base::asBoolean(pleft);
+            Standard_Boolean anIsVertHeight = Base::asBoolean(pvertHeight);
             TopoDS_Shape wire = helix.makeHelix(pitch, height, radius, angle,
                                                 anIsLeft, anIsVertHeight);
             return Py::asObject(new TopoShapeWirePy(new TopoShape(wire)));
@@ -1548,7 +1548,7 @@ private:
 
         try {
             TopoShape helix;
-            Standard_Boolean anIsLeft = PyObject_IsTrue(pleft) ? Standard_True : Standard_False;
+            Standard_Boolean anIsLeft = Base::asBoolean(pleft);
             TopoDS_Shape wire = helix.makeLongHelix(pitch, height, radius, angle, anIsLeft);
             return Py::asObject(new TopoShapeWirePy(new TopoShape(wire)));
         }
@@ -1865,9 +1865,9 @@ private:
         }
 
         TopoShape myShape;
-        Standard_Boolean anIsSolid = PyObject_IsTrue(psolid) ? Standard_True : Standard_False;
-        Standard_Boolean anIsRuled = PyObject_IsTrue(pruled) ? Standard_True : Standard_False;
-        Standard_Boolean anIsClosed = PyObject_IsTrue(pclosed) ? Standard_True : Standard_False;
+        Standard_Boolean anIsSolid = Base::asBoolean(psolid);
+        Standard_Boolean anIsRuled = Base::asBoolean(pruled);
+        Standard_Boolean anIsClosed = Base::asBoolean(pclosed);
         TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled, anIsClosed, degMax);
         return Py::asObject(new TopoShapePy(new TopoShape(aResult)));
 #endif
@@ -1885,7 +1885,7 @@ private:
             TopoDS_Shape initShape = static_cast<TopoShapePy*>
                     (shape)->getTopoShapePtr()->getShape();
             BRepFeat_SplitShape splitShape(initShape);
-            splitShape.SetCheckInterior(PyObject_IsTrue(checkInterior) ? Standard_True : Standard_False);
+            splitShape.SetCheckInterior(Base::asBoolean(checkInterior));
 
             Py::Sequence seq(list);
             for (Py::Sequence::iterator it = seq.begin(); it != seq.end(); ++it) {
@@ -2283,10 +2283,10 @@ private:
         Base::Matrix4D mat;
         if(pyMat)
             mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
-        auto shape = Feature::getTopoShape(obj,subname,PyObject_IsTrue(needSubElement) ? true : false,
-                &mat,&subObj,retType==2,PyObject_IsTrue(transform) ? true : false,
-                PyObject_IsTrue(noElementMap) ? true : false);
-        if (PyObject_IsTrue(refine) ? true : false) {
+        auto shape = Feature::getTopoShape(obj,subname,Base::asBoolean(needSubElement),
+                &mat,&subObj,retType==2,Base::asBoolean(transform),
+                Base::asBoolean(noElementMap));
+        if (Base::asBoolean(refine)) {
             // shape = TopoShape(0,shape.Hasher).makERefine(shape);
             BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
             shape.setShape(mkRefine.Shape());

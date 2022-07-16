@@ -61,8 +61,8 @@ int ShapeFix_FreeBoundsPy::PyInit(PyObject* args, PyObject* /*kwds*/)
                                            &PyBool_Type, &splitclosed, &PyBool_Type, &splitopen)) {
         TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         setTwinPointer(new ShapeFix_FreeBounds(sh, sewtoler, closetoler,
-                                               PyObject_IsTrue(splitclosed) ? Standard_True : Standard_False,
-                                               PyObject_IsTrue(splitopen) ? Standard_True : Standard_False));
+                                               Base::asBoolean(splitclosed),
+                                               Base::asBoolean(splitopen)));
         return 0;
     }
 
@@ -71,8 +71,8 @@ int ShapeFix_FreeBoundsPy::PyInit(PyObject* args, PyObject* /*kwds*/)
                                           &PyBool_Type, &splitclosed, &PyBool_Type, &splitopen)) {
         TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         setTwinPointer(new ShapeFix_FreeBounds(sh, closetoler,
-                                               PyObject_IsTrue(splitclosed) ? Standard_True : Standard_False,
-                                               PyObject_IsTrue(splitopen) ? Standard_True : Standard_False));
+                                               Base::asBoolean(splitclosed),
+                                               Base::asBoolean(splitopen)));
         return 0;
     }
 

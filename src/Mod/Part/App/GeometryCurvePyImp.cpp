@@ -925,8 +925,8 @@ PyObject* GeometryCurvePy::continuityWith(PyObject *args)
     if (u2 < 0.0)
         u2 = c2->FirstParameter();
 
-    Standard_Boolean r1 = PyObject_IsTrue(rev1) ? Standard_True : Standard_False;
-    Standard_Boolean r2 = PyObject_IsTrue(rev2) ? Standard_True : Standard_False;
+    Standard_Boolean r1 = Base::asBoolean(rev1);
+    Standard_Boolean r2 = Base::asBoolean(rev2);
 
     try {
         if (!c1.IsNull() && !c2.IsNull()) {

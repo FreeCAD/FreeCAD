@@ -78,7 +78,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setFrenetMode(PyObject *args)
         return nullptr;
 
     try {
-        this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(PyObject_IsTrue(obj) ? Standard_True : Standard_False);
+        this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(Base::asBoolean(obj));
         Py_Return;
     }
     catch (Standard_Failure& e) {
@@ -169,7 +169,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
         }
         this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(
             TopoDS::Wire(s),
-            PyObject_IsTrue(curv) ? Standard_True : Standard_False,
+            Base::asBoolean(curv),
             typeOfCantact);
         Py_Return;
     }
@@ -189,9 +189,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args, PyObject *kwds)
                                         ,&PyBool_Type,&keep)) {
         try {
             const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
-            this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s,
-                PyObject_IsTrue(curv) ? Standard_True : Standard_False,
-                PyObject_IsTrue(keep) ? Standard_True : Standard_False);
+            this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s, Base::asBoolean(curv), Base::asBoolean(keep));
             Py_Return;
         }
         catch (Standard_Failure& e) {
@@ -211,9 +209,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args, PyObject *kwds)
         try {
             const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
             const TopoDS_Vertex& v = TopoDS::Vertex(static_cast<Part::TopoShapePy*>(loc)->getTopoShapePtr()->getShape());
-            this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s, v,
-                PyObject_IsTrue(curv) ? Standard_True : Standard_False,
-                PyObject_IsTrue(keep) ? Standard_True : Standard_False);
+            this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s, v, Base::asBoolean(curv), Base::asBoolean(keep));
             Py_Return;
         }
         catch (Standard_Failure& e) {
@@ -446,7 +442,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setForceApproxC1(PyObject *args)
         return nullptr;
 
     try {
-        this->getBRepOffsetAPI_MakePipeShellPtr()->SetForceApproxC1(PyObject_IsTrue(obj) ? Standard_True : Standard_False);
+        this->getBRepOffsetAPI_MakePipeShellPtr()->SetForceApproxC1(Base::asBoolean(obj));
         Py_Return;
     }
     catch (Standard_Failure& e) {

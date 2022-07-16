@@ -60,7 +60,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
         try {
             Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast
                 (static_cast<Hyperbola2dPy*>(o)->getGeom2dHyperbolaPtr()->handle());
-            GCE2d_MakeArcOfHyperbola arc(hyperbola->Hypr2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GCE2d_MakeArcOfHyperbola arc(hyperbola->Hypr2d(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;

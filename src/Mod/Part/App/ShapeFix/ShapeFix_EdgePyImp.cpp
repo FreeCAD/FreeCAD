@@ -116,7 +116,7 @@ PyObject* ShapeFix_EdgePy::fixAddPCurve(PyObject *args)
         TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
 
         bool ok = getShapeFix_EdgePtr()->FixAddPCurve(TopoDS::Edge(e), TopoDS::Face(f),
-                                                      PyObject_IsTrue(seam) ? Standard_True : Standard_False,
+                                                      Base::asBoolean(seam),
                                                       prec);
         return Py::new_reference_to(Py::Boolean(ok));
     }
@@ -133,7 +133,7 @@ PyObject* ShapeFix_EdgePy::fixAddPCurve(PyObject *args)
         TopLoc_Location loc = Tools::fromPlacement(*pm);
 
         bool ok = getShapeFix_EdgePtr()->FixAddPCurve(TopoDS::Edge(e), surf, loc,
-                                                      PyObject_IsTrue(seam) ? Standard_True : Standard_False,
+                                                      Base::asBoolean(seam),
                                                       prec);
         return Py::new_reference_to(Py::Boolean(ok));
     }

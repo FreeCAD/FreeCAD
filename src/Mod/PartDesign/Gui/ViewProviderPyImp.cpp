@@ -52,10 +52,10 @@ PyObject* ViewProviderPy::setBodyMode(PyObject* args)
     PyObject* b_mode;
     if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &b_mode)) {
         return nullptr;
-    };
+    }
 
     PartDesignGui::ViewProvider* base = getViewProviderPtr();
-    base->setBodyMode(PyObject_IsTrue(b_mode) ? true : false);
+    base->setBodyMode(Base::asBoolean(b_mode));
 
     return Py::new_reference_to(Py::None());
 }
@@ -65,10 +65,10 @@ PyObject* ViewProviderPy::makeTemporaryVisible(PyObject* args)
     PyObject* b_vis;
     if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &b_vis)) {
         return nullptr;
-    };
+    }
 
     PartDesignGui::ViewProvider* base = getViewProviderPtr();
-    base->makeTemporaryVisible(PyObject_IsTrue(b_vis) ? true : false);
+    base->makeTemporaryVisible(Base::asBoolean(b_vis));
 
     return Py::new_reference_to(Py::None());
 }

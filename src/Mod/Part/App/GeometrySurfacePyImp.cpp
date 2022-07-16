@@ -143,7 +143,7 @@ PyObject* GeometrySurfacePy::toShell(PyObject *args, PyObject* kwds)
     try {
         if (!s.IsNull()) {
             if (segm) {
-                Standard_Boolean segment = PyObject_IsTrue(segm) ? Standard_True : Standard_False;
+                Standard_Boolean segment = Base::asBoolean(segm);
                 BRepBuilderAPI_MakeShell mkBuilder(s, segment);
                 TopoDS_Shape sh = mkBuilder.Shape();
                 return new TopoShapeShellPy(new TopoShape(sh));

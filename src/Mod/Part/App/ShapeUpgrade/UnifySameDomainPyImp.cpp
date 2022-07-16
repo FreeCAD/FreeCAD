@@ -62,9 +62,9 @@ int UnifySameDomainPy::PyInit(PyObject* args, PyObject* kwds)
     try {
         TopoDS_Shape shp = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         std::unique_ptr<ShapeUpgrade_UnifySameDomain> ptr(new ShapeUpgrade_UnifySameDomain(shp,
-                                                          PyObject_IsTrue(unifyEdges) ? Standard_True : Standard_False,
-                                                          PyObject_IsTrue(unifyFaces) ? Standard_True : Standard_False,
-                                                          PyObject_IsTrue(concatBSpl) ? Standard_True : Standard_False));
+                                                          Base::asBoolean(unifyEdges),
+                                                          Base::asBoolean(unifyFaces),
+                                                          Base::asBoolean(concatBSpl)));
 
         setTwinPointer(ptr.release());
         return 0;
@@ -93,9 +93,9 @@ PyObject* UnifySameDomainPy::initialize(PyObject *args, PyObject* kwds)
     try {
         TopoDS_Shape shp = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         getShapeUpgrade_UnifySameDomainPtr()->Initialize(shp,
-            PyObject_IsTrue(unifyEdges) ? Standard_True : Standard_False,
-            PyObject_IsTrue(unifyFaces) ? Standard_True : Standard_False,
-            PyObject_IsTrue(concatBSpl) ? Standard_True : Standard_False);
+            Base::asBoolean(unifyEdges),
+            Base::asBoolean(unifyFaces),
+            Base::asBoolean(concatBSpl));
 
         Py_Return;
     }
@@ -118,7 +118,7 @@ PyObject* UnifySameDomainPy::allowInternalEdges(PyObject *args)
         return nullptr;
 
     try {
-        getShapeUpgrade_UnifySameDomainPtr()->AllowInternalEdges(PyObject_IsTrue(allow) ? Standard_True : Standard_False);
+        getShapeUpgrade_UnifySameDomainPtr()->AllowInternalEdges(Base::asBoolean(allow));
         Py_Return;
     }
     catch (const Standard_Failure& e) {
@@ -174,7 +174,7 @@ PyObject* UnifySameDomainPy::setSafeInputMode(PyObject *args)
         return nullptr;
 
     try {
-        getShapeUpgrade_UnifySameDomainPtr()->SetSafeInputMode(PyObject_IsTrue(mode) ? Standard_True : Standard_False);
+        getShapeUpgrade_UnifySameDomainPtr()->SetSafeInputMode(Base::asBoolean(mode));
         Py_Return;
     }
     catch (const Standard_Failure& e) {

@@ -100,7 +100,7 @@ int BRepOffsetAPI_MakeFillingPy::PyInit(PyObject* args, PyObject* kwds)
 
     try {
         std::unique_ptr<BRepOffsetAPI_MakeFilling> ptr(new BRepOffsetAPI_MakeFilling(degree, nbPtsOnCur, nbIter,
-                                                          PyObject_IsTrue(anisotropy) ? Standard_True : Standard_False,
+                                                          Base::asBoolean(anisotropy),
                                                           tol2d, tol3d, tolAng, tolCurv, maxDeg, maxSegments));
 
 
@@ -155,7 +155,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::setResolParam(PyObject *args, PyObject *k
 
     try {
         getBRepOffsetAPI_MakeFillingPtr()->SetResolParam(degree, nbPtsOnCur, nbIter,
-                                                         PyObject_IsTrue(anisotropy) ? Standard_True : Standard_False);
+                                                         Base::asBoolean(anisotropy));
         Py_Return;
     }
     catch (const Standard_Failure& e) {
@@ -273,7 +273,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
             }
 
             getBRepOffsetAPI_MakeFillingPtr()->Add(edge, static_cast<GeomAbs_Shape>(order),
-                                                   PyObject_IsTrue(isbound) ? Standard_True : Standard_False);
+                                                   Base::asBoolean(isbound));
             Py_Return;
         }
         catch (const Standard_Failure& e) {
@@ -307,7 +307,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
             }
 
             getBRepOffsetAPI_MakeFillingPtr()->Add(edge, face, static_cast<GeomAbs_Shape>(order),
-                                                   PyObject_IsTrue(isbound) ? Standard_True : Standard_False);
+                                                   Base::asBoolean(isbound));
             Py_Return;
         }
         catch (const Standard_Failure& e) {

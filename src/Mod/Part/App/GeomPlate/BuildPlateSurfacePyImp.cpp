@@ -103,7 +103,7 @@ int BuildPlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
     try {
         std::unique_ptr<GeomPlate_BuildPlateSurface> ptr(new GeomPlate_BuildPlateSurface
                                                          (degree, nbPtsOnCur, nbIter, tol2d, tol3d, tolAng, tolCurv,
-                                                          PyObject_IsTrue(anisotropy) ? Standard_True : Standard_False));
+                                                          Base::asBoolean(anisotropy)));
 
         if (surf) {
             GeomSurface* surface = static_cast<GeometrySurfacePy*>(surf)->getGeomSurfacePtr();
