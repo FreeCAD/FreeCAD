@@ -169,12 +169,21 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "Profile",
                 QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"),
             ),
+            # (
+            #     "App::PropertyBool",
+            #     "UseComp",
+            #     "Profile",
+            #     QT_TRANSLATE_NOOP(
+            #         "App::Property", "Make True, if using Cutter Radius Compensation"
+            #     ),
+            # ),
             (
-                "App::PropertyBool",
-                "UseComp",
+                "App::PropertyEnumeration",
+                "CompensationType",
                 "Profile",
                 QT_TRANSLATE_NOOP(
-                    "App::Property", "Make True, if using Cutter Radius Compensation"
+                    "App::Property",
+                    "Controls how Cutter Radius Compensation is Applied",
                 ),
             ),
         ]
@@ -210,6 +219,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Outside"), "Outside"),
                 (translate("PathProfile", "Inside"), "Inside"),
             ],  # side of profile that cutter is on in relation to direction of profile
+            "CompensationType": [
+                (translate("PathProfile", "CAM"), "CAM"),
+                (translate("PathProfile", "Controller"), "Controller"),
+                (translate("PathProfile", "Hybrid"), "Hybrid"),
+                (translate("PathProfile", "Dynamic"), "Dynamic"),
+            ],  # How CRC will be applied
         }
 
         if dataType == "raw":
@@ -302,6 +317,27 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
         self.setOpEditorProperties(obj)
 
+        useCRC = getattr(obj, "UseComp", False)
+
+        if hasattr(obj, "UseComp"):
+            obj.removeProperty("UseComp")
+
+        if not hasattr(obj, "CompensationType"):
+            # Add it
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "CompensationType",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Controls how Cutter Radius Compensation is Applied",
+                ),
+            )
+            if useCRC:
+                obj.CompensationType = "Controller"
+            else:
+                obj.CompensationType = "CAM"
+
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
         if prop in ["UseComp", "JoinType", "Base"]:
@@ -316,11 +352,18 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params["Coplanar"] = 0
         params["SectionCount"] = -1
 
-        offset = obj.OffsetExtra.Value  # 0.0
-        if obj.UseComp:
-            offset = self.radius + obj.OffsetExtra.Value
+        # if obj.UseComp:
+        #     offset = self.radius + obj.OffsetExtra.Value
+        if obj.CompensationType in ('CAM', 'Hybrid','Dynamic'):
+            offsetval = self.radius + obj.OffsetExtra.Value
+        elif obj.CompensationType == 'Controller':
+            offsetval = obj.OffsetExtra.Value  # 0.0
+
         if obj.Side == "Inside":
-            offset = 0 - offset
+            offset = 0 - offsetval
+        else:
+            offset = offsetval
+
         if isHole:
             offset = 0 - offset
         params["Offset"] = offset
@@ -394,7 +437,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             tmpGrpNm = self.tmpGrp.Name
         self.JOB = PathUtils.findParentJob(obj)
 
-        if obj.UseComp:
+        if obj.CompensationType in ("CAM", "Hybrid", "Dynamic"):
             self.useComp = True
             self.ofstRadius = self.radius + self.offsetExtra
             self.commandlist.append(

@@ -78,8 +78,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Direction = str(self.form.direction.currentData())
         PathGui.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
 
-        if obj.UseComp != self.form.useCompensation.isChecked():
-            obj.UseComp = self.form.useCompensation.isChecked()
+        # if obj.UseComp != self.form.useCompensation.isChecked():
+        #     obj.UseComp = self.form.useCompensation.isChecked()
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
@@ -103,7 +103,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ).UserString
         )
 
-        self.form.useCompensation.setChecked(obj.UseComp)
+        # self.form.useCompensation.setChecked(obj.UseComp)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         self.form.processHoles.setChecked(obj.processHoles)
         self.form.processPerimeter.setChecked(obj.processPerimeter)
@@ -119,7 +119,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutSide.currentIndexChanged)
         signals.append(self.form.direction.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
-        signals.append(self.form.useCompensation.stateChanged)
+        # signals.append(self.form.useCompensation.stateChanged)
         signals.append(self.form.useStartPoint.stateChanged)
         signals.append(self.form.processHoles.stateChanged)
         signals.append(self.form.processPerimeter.stateChanged)
@@ -151,7 +151,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.processPerimeter.hide()
 
     def registerSignalHandlers(self, obj):
-        self.form.useCompensation.stateChanged.connect(self.updateVisibility)
+        #self.form.useCompensation.stateChanged.connect(self.updateVisibility)
+        pass
 
 
 # Eclass
