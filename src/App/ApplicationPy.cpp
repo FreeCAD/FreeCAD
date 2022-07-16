@@ -250,7 +250,7 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObje
     PyMem_Free(Name);
     try {
         // return new document
-        return (GetApplication().openDocument(EncodedName.c_str(),PyObject_IsTrue(hidden) ? false : true)->getPyObject());
+        return (GetApplication().openDocument(EncodedName.c_str(), !Base::asBoolean(hidden))->getPyObject());
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_IOError, e.what());
@@ -275,9 +275,7 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
         return nullptr;
 
     PY_TRY {
-        App::Document* doc = GetApplication().newDocument(docName, usrName,
-                                                          PyObject_IsTrue(hidden) ? false : true,
-                                                          PyObject_IsTrue(temp) ? true : false);
+        App::Document* doc = GetApplication().newDocument(docName, usrName, !Base::asBoolean(hidden), Base::asBoolean(temp));
         PyMem_Free(docName);
         PyMem_Free(usrName);
         return doc->getPyObject();
@@ -701,7 +699,7 @@ PyObject* Application::sGetUserMacroPath(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     std::string macroDir = Application::getUserMacroDir();
-    if (PyObject_IsTrue(actual) ? true : false) {
+    if (Base::asBoolean(actual)) {
         macroDir = App::GetApplication().
             GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
             ->GetASCII("MacroPath",macroDir.c_str());
@@ -740,7 +738,7 @@ PyObject* Application::sListDocuments(PyObject * /*self*/, PyObject *args)
         Base::PyObjectBase* pValue;
 
         std::vector<Document*> docs = GetApplication().getDocuments();;
-        if(PyObject_IsTrue(sort) ? true : false)
+        if (Base::asBoolean(sort))
             docs = Document::getDependentDocuments(docs,true);
 
         for (auto doc : docs) {
@@ -946,7 +944,7 @@ PyObject *Application::sSetActiveTransaction(PyObject * /*self*/, PyObject *args
         return nullptr;
 
     PY_TRY {
-        Py::Int ret(GetApplication().setActiveTransaction(name,PyObject_IsTrue(persist) ? true : false));
+        Py::Int ret(GetApplication().setActiveTransaction(name, Base::asBoolean(persist)));
         return Py::new_reference_to(ret);
     }PY_CATCH;
 }
@@ -976,7 +974,7 @@ PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *ar
         return nullptr;
 
     PY_TRY {
-        GetApplication().closeActiveTransaction(PyObject_IsTrue(abort) ? true : false, id);
+        GetApplication().closeActiveTransaction(Base::asBoolean(abort), id);
         Py_Return;
     } PY_CATCH;
 }

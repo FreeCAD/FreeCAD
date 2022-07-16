@@ -256,7 +256,7 @@ PyObject* LinkBaseExtensionPy::cacheChildLabel(PyObject *args) {
     if(!PyArg_ParseTuple(args,"|O",&enable))
         return nullptr;
     PY_TRY {
-        getLinkBaseExtensionPtr()->cacheChildLabel(PyObject_IsTrue(enable)?-1:0);
+        getLinkBaseExtensionPtr()->cacheChildLabel(Base::asBoolean(enable) ? -1 : 0);
         Py_Return;
     }PY_CATCH;
 }

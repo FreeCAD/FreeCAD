@@ -269,7 +269,7 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
     if (!obj)
         return Py::None();
 
-    if (PyObject_IsTrue(resolve) ? true : false)
+    if (Base::asBoolean(resolve))
         return Py::asObject(obj->getPyObject());
 
     return Py::TupleN(

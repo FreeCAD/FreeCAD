@@ -885,13 +885,13 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
             float q1 = (float)Py::Float(tuple[1]);
             float q2 = (float)Py::Float(tuple[2]);
             float q3 = (float)Py::Float(tuple[3]);
-            getView3DIventorPtr()->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), PyObject_IsTrue(m) ? true : false);
+            getView3DIventorPtr()->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), Base::asBoolean(m));
         }
         else if (PyObject_TypeCheck(o, &Base::RotationPy::Type)) {
             Base::Rotation r = (Base::Rotation)Py::Rotation(o,false);
             double q0, q1, q2, q3;
             r.getValue(q0, q1, q2, q3);
-            getView3DIventorPtr()->getViewer()->setCameraOrientation(SbRotation((float)q0, (float)q1, (float)q2, (float)q3), PyObject_IsTrue(m) ? true : false);
+            getView3DIventorPtr()->getViewer()->setCameraOrientation(SbRotation((float)q0, (float)q1, (float)q2, (float)q3), Base::asBoolean(m));
         }
         else {
             throw Py::ValueError("Neither tuple nor rotation object");
@@ -1297,7 +1297,7 @@ Py::Object View3DInventorPy::dump(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getView3DIventorPtr()->dump(filename, PyObject_IsTrue(onlyVisible) ? true : false);
+        getView3DIventorPtr()->dump(filename, Base::asBoolean(onlyVisible));
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -2592,7 +2592,7 @@ Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
     if (!obj)
         return Py::None();
 
-    if (PyObject_IsTrue(resolve) ? true : false)
+    if (Base::asBoolean(resolve))
         return Py::asObject(obj->getPyObject());
 
     return Py::TupleN(
@@ -2660,8 +2660,8 @@ Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py
     Base::Placement pla;
     if(pyPla!=Py_None)
         pla = *static_cast<Base::PlacementPy*>(pyPla)->getPlacementPtr();
-    getView3DIventorPtr()->getViewer()->toggleClippingPlane(toggle,PyObject_IsTrue(beforeEditing) ? true : false,
-            PyObject_IsTrue(noManip) ? true : false,pla);
+    getView3DIventorPtr()->getViewer()->toggleClippingPlane(toggle, Base::asBoolean(beforeEditing),
+            Base::asBoolean(noManip), pla);
     return Py::None();
 }
 

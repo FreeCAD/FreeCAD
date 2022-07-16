@@ -414,7 +414,7 @@ Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
         throw Py::Exception();
     }
     try {
-        _viewer->resetEditingRoot(PyObject_IsTrue(updateLinks) ? true : false);
+        _viewer->resetEditingRoot(Base::asBoolean(updateLinks));
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -456,7 +456,7 @@ Py::Object View3DInventorViewerPy::setRedirectToSceneGraph(const Py::Tuple& args
     PyObject* m=Py_False;
     if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m))
         throw Py::Exception();
-    _viewer->setRedirectToSceneGraph(PyObject_IsTrue(m) ? true : false);
+    _viewer->setRedirectToSceneGraph(Base::asBoolean(m));
     return Py::None();
 }
 
@@ -473,7 +473,7 @@ Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)
     PyObject* m=Py_False;
     if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m))
         throw Py::Exception();
-    _viewer->setEnabledNaviCube(PyObject_IsTrue(m) ? true : false);
+    _viewer->setEnabledNaviCube(Base::asBoolean(m));
     return Py::None();
 }
 

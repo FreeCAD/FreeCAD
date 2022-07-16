@@ -96,7 +96,7 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
         Action* action = c->getAction();
         if (action) {
             QString spc = QString::fromLatin1(" ");
-            if (PyObject_IsTrue(bIsRegularExp) ? true : false) {
+            if (Base::asBoolean(bIsRegularExp)) {
                QRegExp re = QRegExp(QString::fromLatin1(shortcut_to_find));
                re.setCaseSensitivity(Qt::CaseInsensitive);
                if (!re.isValid()) {

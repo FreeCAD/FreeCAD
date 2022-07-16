@@ -178,7 +178,7 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
         return nullptr;
 
     //get the extension type asked for
-    bool derived = PyObject_IsTrue(deriv) ? true : false;
+    bool derived = Base::asBoolean(deriv);
     Base::Type extension =  Base::Type::fromName(type);
     if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
         std::stringstream str;

@@ -218,7 +218,7 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
 
     DocumentObject *pcFtr = nullptr;
 
-    if (!obj || (PyObject_IsTrue(attach) ? false : true)) {
+    if (!obj || !Base::asBoolean(attach)) {
         pcFtr = getDocumentPtr()->addObject(sType,sName,true,sViewType);
     }
     else {
@@ -248,7 +248,7 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
             }
             pyftr.setAttr("Proxy", pyobj);
 
-            if (PyObject_IsTrue(attach) ? true : false) {
+            if (Base::asBoolean(attach)) {
                 getDocumentPtr()->addObject(pcFtr,sName);
 
                 try {
@@ -333,7 +333,7 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
     }
 
     PY_TRY {
-        auto ret = getDocumentPtr()->copyObject(objs, PyObject_IsTrue(rec) ? true : false, PyObject_IsTrue(retAll) ? true : false);
+        auto ret = getDocumentPtr()->copyObject(objs, Base::asBoolean(rec), Base::asBoolean(retAll));
         if (ret.size()==1 && single)
             return ret[0]->getPyObject();
 
@@ -393,7 +393,7 @@ PyObject*  DocumentPy::moveObject(PyObject *args)
         return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(obj);
-    DocumentObject* move = getDocumentPtr()->moveObject(docObj->getDocumentObjectPtr(), PyObject_IsTrue(rec) ? true : false);
+    DocumentObject* move = getDocumentPtr()->moveObject(docObj->getDocumentObjectPtr(), Base::asBoolean(rec));
     if (move) {
         return move->getPyObject();
     }
@@ -485,7 +485,7 @@ PyObject* DocumentPy::setClosable(PyObject* args)
     PyObject* close;
     if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &close))
         return nullptr;
-    getDocumentPtr()->setClosable(PyObject_IsTrue(close) ? true : false);
+    getDocumentPtr()->setClosable(Base::asBoolean(close));
     Py_Return;
 }
 
@@ -525,10 +525,10 @@ PyObject*  DocumentPy::recompute(PyObject * args)
         }
 
         int options = 0;
-        if (PyObject_IsTrue(checkCycle) ? true : false)
+        if (Base::asBoolean(checkCycle))
             options = Document::DepNoCycle;
 
-        int objectCount = getDocumentPtr()->recompute(objs, PyObject_IsTrue(force) ? true : false, nullptr, options);
+        int objectCount = getDocumentPtr()->recompute(objs, Base::asBoolean(force), nullptr, options);
 
         // Document::recompute() hides possibly raised Python exceptions by its features
         // So, check if an error is set and return null if yes
@@ -904,7 +904,7 @@ PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &sort))
         return nullptr;
     PY_TRY {
-        auto docs = getDocumentPtr()->getDependentDocuments(PyObject_IsTrue(sort) ? true : false);
+        auto docs = getDocumentPtr()->getDependentDocuments(Base::asBoolean(sort));
         Py::List ret;
         for (auto doc : docs)
             ret.append(Py::Object(doc->getPyObject(), true));

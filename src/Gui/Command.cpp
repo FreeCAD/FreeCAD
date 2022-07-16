@@ -42,6 +42,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Tools.h>
 
 #include "Command.h"
@@ -1434,7 +1435,7 @@ bool PythonCommand::isChecked() const
     }
 
     if (PyBool_Check(item)) {
-        return PyObject_IsTrue(item) ? true : false;
+        return Base::asBoolean(item);
     }
     else {
         throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "
@@ -1726,7 +1727,7 @@ bool PythonGroupCommand::isExclusive() const
     }
 
     if (PyBool_Check(item)) {
-        return PyObject_IsTrue(item) ? true : false;
+        return Base::asBoolean(item);
     }
     else {
         throw Base::TypeError("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
@@ -1742,7 +1743,7 @@ bool PythonGroupCommand::hasDropDownMenu() const
     }
 
     if (PyBool_Check(item)) {
-        return PyObject_IsTrue(item) ? true : false;
+        return Base::asBoolean(item);
     }
     else {
         throw Base::TypeError("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "

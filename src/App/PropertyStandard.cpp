@@ -2066,7 +2066,7 @@ PyObject *PropertyBool::getPyObject()
 void PropertyBool::setPyObject(PyObject *value)
 {
     if (PyBool_Check(value) || PyLong_Check(value)) {
-        setValue(PyObject_IsTrue(value) ? true : false);
+        setValue(Base::asBoolean(value));
     }
     else {
         std::string error = std::string("type must be bool, not ");
@@ -2189,7 +2189,7 @@ void PropertyBoolList::setPyObject(PyObject *value)
 
 bool PropertyBoolList::getPyValue(PyObject *item) const {
     if (PyBool_Check(item)) {
-        return (PyObject_IsTrue(item) ? true : false);
+        return Base::asBoolean(item);
     } else if (PyLong_Check(item)) {
         return (PyLong_AsLong(item) ? true : false);
     } else {

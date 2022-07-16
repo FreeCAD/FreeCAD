@@ -57,7 +57,7 @@ PyObject* ViewProviderExtensionPy::setIgnoreOverlayIcon(PyObject *args)
         }
     }
 
-    ext->setIgnoreOverlayIcon(PyObject_IsTrue(ignore) ? true : false);
+    ext->setIgnoreOverlayIcon(Base::asBoolean(ignore));
     Py_Return;
 }
 

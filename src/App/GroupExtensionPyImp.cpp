@@ -261,7 +261,7 @@ PyObject*  GroupExtensionPy::hasObject(PyObject *args)
         return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    bool recursive = PyObject_IsTrue(recursivePy) ? true : false;
+    bool recursive = Base::asBoolean(recursivePy);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an invalid object");
         return nullptr;

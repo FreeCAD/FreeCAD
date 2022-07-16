@@ -463,7 +463,7 @@ PyObject* Gui::Application::sActivateView(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     Base::Type type = Base::Type::fromName(typeStr);
-    Instance->activateView(type, PyObject_IsTrue(create) ? true : false);
+    Instance->activateView(type, Base::asBoolean(create));
 
     Py_Return;
 }
@@ -831,7 +831,7 @@ PyObject* Application::sSendActiveView(PyObject * /*self*/, PyObject *args)
 
     const char* ppReturn = nullptr;
     if (!Instance->sendMsgToActiveView(psCommandStr,&ppReturn)) {
-        if (PyObject_IsTrue(suppress) ? false : true)
+        if (!Base::asBoolean(suppress))
             Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
     }
 
@@ -852,7 +852,7 @@ PyObject* Application::sSendFocusView(PyObject * /*self*/, PyObject *args)
 
     const char* ppReturn = nullptr;
     if (!Instance->sendMsgToFocusView(psCommandStr,&ppReturn)) {
-        if (PyObject_IsTrue(suppress) ? false : true)
+        if (!Base::asBoolean(suppress))
             Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
     }
 
