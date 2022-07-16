@@ -124,14 +124,12 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
 
 short DrawViewClip::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = ( Height.isTouched() ||
-                   Width.isTouched()  ||
-                   Views.isTouched());
-    }
-    if (result) {
-        return result;
+        if (Height.isTouched() ||
+            Width.isTouched() ||
+            Views.isTouched()) {
+            return true;
+        }
     }
     return TechDraw::DrawView::mustExecute();
 }
@@ -151,14 +149,13 @@ std::vector<std::string> DrawViewClip::getChildViewNames()
 
 bool DrawViewClip::isViewInClip(App::DocumentObject* view)
 {
-    bool result = false;
     std::vector<App::DocumentObject*> children = Views.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ((*it) == view) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 PyObject *DrawViewClip::getPyObject(void)
