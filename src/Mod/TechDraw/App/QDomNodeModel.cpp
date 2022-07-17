@@ -214,17 +214,18 @@ QVector<QXmlName> QDomNodeModel::namespaceBindings(const QXmlNodeModelIndex & ni
             else if (a.startsWith(QString::fromUtf8("xmlns:")))
                 p = a.mid(6);
 
-            if (!p.isNull())
-            {
-                int x;
-                for (x = 0; x < res.size(); ++x)
-                    if (res.at(x).prefix(m_Pool) == p) break;
+            if (p.isNull()) {
+                continue;
+            }
+            
+            int x;
+            for (x = 0; x < res.size(); ++x)
+                if (res.at(x).prefix(m_Pool) == p) break;
 
-                if (x >= res.size()) {
-                    res.append(QXmlName(m_Pool, QString::fromUtf8("xmlns"), attrs.item(i).nodeValue(), p));
-                    if (p == QString::fromLatin1("xml"))
-                        xmlNamespaceWasDefined = true;
-                }
+            if (x >= res.size()) {
+                res.append(QXmlName(m_Pool, QString::fromUtf8("xmlns"), attrs.item(i).nodeValue(), p));
+                if (p == QString::fromLatin1("xml"))
+                    xmlNamespaceWasDefined = true;
             }
         }
 
