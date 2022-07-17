@@ -67,17 +67,16 @@ void LineGroup::init()
 
 double LineGroup::getWeight(std::string s)
 {
-    double result = 0.55;
     if (s == "Thin") {
-       result = m_thin;
+       return m_thin;
     } else if (s == "Graphic") {
-       result = m_graphic;
+       return m_graphic;
     } else if (s == "Thick") {
-       result = m_thick;
+       return m_thick;
     } else if (s == "Extra") {
-       result = m_extra;
+       return m_extra;
     }
-    return result;
+    return 0.55;
 }
 
 void LineGroup::setWeight(std::string s, double weight)
@@ -131,12 +130,11 @@ std::vector<double> LineGroup::split(std::string line)
 //static support function: find group definition in file
 std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
 {
-    std::string record;
     Base::FileInfo fi(parmFile);
     Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
         Base::Console().Message( "Cannot open LineGroup file: %s\n",parmFile.c_str());
-        return record;
+        return std::string();
     }
     // parse file to get the groupNumber'th line
     int counter = 0; // the combobox enums begin with 0
@@ -146,8 +144,7 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
          std::string nameTag = line.substr(0, 1);
          if (nameTag == "*") { // we found a definition line
              if (counter == groupNumber) {
-                 record = line;
-                 return record;
+                 return line;
              }
              ++counter;
         }
@@ -162,21 +159,20 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
 //static LineGroup maker
 LineGroup* LineGroup::lineGroupFactory(int groupNumber)
 {
-    LineGroup* lg = new LineGroup();
-
     std::string lgFileName = Preferences::lineGroupFile();
-
     std::string lgRecord = LineGroup::getRecordFromFile(lgFileName, groupNumber);
 
     std::vector<double> values = LineGroup::split(lgRecord);
     if (values.size() < 4) {
         Base::Console().Error( "LineGroup::invalid entry in %s\n", lgFileName.c_str() );
-    } else {
-        lg->setWeight("Thin",values[0]);
-        lg->setWeight("Graphic",values[1]);
-        lg->setWeight("Thick",values[2]);
-        lg->setWeight("Extra",values[3]);
+        return new LineGroup();
     }
+
+    LineGroup* lg = new LineGroup();
+    lg->setWeight("Thin",values[0]);
+    lg->setWeight("Graphic",values[1]);
+    lg->setWeight("Thick",values[2]);
+    lg->setWeight("Extra",values[3]);
     return lg;
 }
 
@@ -214,12 +210,10 @@ std::string LineGroup::getGroupNamesFromFile(std::string FileName)
         std::string line;
         std::getline(inFile, line);
         std::string nameTag = line.substr(0, 1);
-        std::string found;
-        std::size_t commaPos;
         if (nameTag == "*") {
-            commaPos = line.find(',', 1);
+            std::size_t commaPos = line.find(',', 1);
             if (commaPos != std::string::npos) {
-                found = line.substr(1, commaPos - 1);
+                std::string found = line.substr(1, commaPos - 1);
                 record = record + found + ',';
             }
         }
