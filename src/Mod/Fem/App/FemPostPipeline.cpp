@@ -203,7 +203,7 @@ void FemPostPipeline::onChanged(const Property* prop)
         //if we have no input the filters are responsible of grabbing the pipeline data themself
         else {
             //the first filter must always grab the data
-            if (filter->Input.getValue() != nullptr)
+            if (filter->Input.getValue())
                 filter->Input.setValue(nullptr);
 
             //all the others need to be connected to the previous filter or grab the data, dependent on mode
@@ -216,7 +216,7 @@ void FemPostPipeline::onChanged(const Property* prop)
                         nextFilter->Input.setValue(filter);
                 }
                 else { //Parallel mode
-                    if (nextFilter->Input.getValue() != nullptr)
+                    if (nextFilter->Input.getValue())
                         nextFilter->Input.setValue(nullptr);
                 }
 

@@ -197,7 +197,7 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
-    if ((wizardWidget != nullptr) && (wizardSubLayout != nullptr) && (constraintDialog != nullptr)) {
+    if (wizardWidget && wizardSubLayout && constraintDialog) {
         wizardWidget = nullptr;
         wizardSubLayout = nullptr;
         delete constraintDialog;
@@ -489,7 +489,7 @@ QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const
             return *o;
         if (!(*o)->children().empty()) {
             QObject* result = findChildByName(*o, name);
-            if (result != nullptr)
+            if (result)
                 return result;
         }
     }
@@ -523,7 +523,7 @@ void ViewProviderFemConstraint::checkForWizard()
     if (wd == nullptr)
         return;
     QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
-    if (wiz != nullptr) {
+    if (wiz) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
         wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
     }

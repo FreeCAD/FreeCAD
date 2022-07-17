@@ -82,7 +82,7 @@ bool ViewProviderFemConstraintForce::setEdit(int ModNum)
                     Gui::Control().reject();
                 else
                     return false;
-            } else if (constraintDialog != nullptr) {
+            } else if (constraintDialog) {
                 // Another FemConstraint* dialog is already open inside the Shaft Wizard
                 // Ignore the request to open another dialog
                 return false;
