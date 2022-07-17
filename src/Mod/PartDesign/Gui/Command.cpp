@@ -299,7 +299,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
         PartDesignGui::setEdit(support.getValue());
     } else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-        if (pcActiveBody == nullptr)
+        if (!pcActiveBody)
             return;
 
         std::string FeatName = getUniqueObjectName("ShapeBinder",pcActiveBody);

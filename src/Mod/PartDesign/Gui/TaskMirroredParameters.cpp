@@ -230,7 +230,7 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
     setupTransaction();
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     try{
-        if(planeLinks.getCurrentLink().getValue() == nullptr){
+        if (!planeLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();

@@ -318,7 +318,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
     try{
-        if(axesLinks.getCurrentLink().getValue() == nullptr){
+        if (!axesLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();

@@ -498,7 +498,7 @@ int ComboLinks::addLink(const App::PropertyLinkSub &lnk, QString itemText)
     this->linksInList.push_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &newitem = *(linksInList[linksInList.size()-1]);
     newitem.Paste(lnk);
-    if (newitem.getValue() && this->doc == nullptr)
+    if (newitem.getValue() && !this->doc)
         this->doc = newitem.getValue()->getDocument();
     return linksInList.size()-1;
 }
@@ -511,7 +511,7 @@ int ComboLinks::addLink(App::DocumentObject *linkObj, std::string linkSubname, Q
     this->linksInList.push_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &newitem = *(linksInList[linksInList.size()-1]);
     newitem.setValue(linkObj,std::vector<std::string>(1,linkSubname));
-    if (newitem.getValue() && this->doc == nullptr)
+    if (newitem.getValue() && !this->doc)
         this->doc = newitem.getValue()->getDocument();
     return linksInList.size()-1;
 }

@@ -318,7 +318,7 @@ void TaskLinearPatternParameters::onDirectionChanged(int /*num*/)
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     try{
-        if(dirLinks.getCurrentLink().getValue() == nullptr){
+        if (!dirLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();
