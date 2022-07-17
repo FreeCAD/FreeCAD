@@ -107,6 +107,9 @@ void TaskPadParameters::onModeChanged(int index)
         break;
     case Modes::TwoDimensions:
         pcPad->Type.setValue("TwoLengths");
+        // symmetric is then not possible
+        if (ui->checkBoxMidplane->isChecked())
+            ui->checkBoxMidplane->setChecked(false);
         break;
     }
 
