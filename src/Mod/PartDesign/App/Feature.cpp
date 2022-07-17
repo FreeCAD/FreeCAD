@@ -197,7 +197,7 @@ bool Feature::isDatum(const App::DocumentObject* feature)
 gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
     const App::GeoFeature* plane = static_cast<const App::GeoFeature*>(obj);
-    if (plane == nullptr)
+    if (!plane)
         throw Base::ValueError("Feature: Null object");
 
     Base::Vector3d pos = plane->Placement.getValue().getPosition();

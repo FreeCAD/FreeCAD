@@ -155,7 +155,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
     // Neutral plane
     gp_Pln neutralPlane;
     App::DocumentObject* refPlane = NeutralPlane.getValue();
-    if (refPlane == nullptr) {
+    if (!refPlane) {
         // Try to guess a neutral plane from the first selected face
         // Get edges of first selected face
         TopoDS_Shape face = TopShape.getSubShape(SubVals[0].c_str());
@@ -255,7 +255,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         neutralPlane.Transform(invObjLoc.Transformation());
     }
 
-    if (refDirection == nullptr) {
+    if (!refDirection) {
         // Choose pull direction normal to neutral plane
         pullDirection = neutralPlane.Axis().Direction();
     }
