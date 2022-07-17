@@ -109,29 +109,28 @@ GeometryObject::~GeometryObject()
 const BaseGeomPtrVector GeometryObject::getVisibleFaceEdges(const bool smooth, const bool seam) const
 {
     BaseGeomPtrVector result;
-    bool smoothOK = smooth;
-    bool seamOK = seam;
 
     for (auto& e:edgeGeom) {
-        if (e->hlrVisible) {
-            switch (e->classOfEdge) {
-                case ecHARD:
-                case ecOUTLINE:
+        if (!e->hlrVisible) {
+            continue;
+        }
+        switch (e->classOfEdge) {
+            case ecHARD:
+            case ecOUTLINE:
+                result.push_back(e);
+                break;
+            case ecSMOOTH:
+                if (smooth) {
                     result.push_back(e);
-                    break;
-                case ecSMOOTH:
-                    if (smoothOK) {
-                        result.push_back(e);
-                    }
-                    break;
-                case ecSEAM:
-                    if (seamOK) {
-                        result.push_back(e);
-                    }
-                    break;
-                default:
+                }
+                break;
+            case ecSEAM:
+                if (seam) {
+                    result.push_back(e);
+                }
+                break;
+            default:
                 ;
-            }
         }
     }
     //debug
@@ -311,21 +310,18 @@ void GeometryObject::makeTDGeometry()
 //mirror a shape thru XZ plane for Qt's inverted Y coordinate
 TopoDS_Shape GeometryObject::invertGeometry(const TopoDS_Shape s)
 {
-    TopoDS_Shape result;
     if (s.IsNull()) {
-        result = s;
-        return result;
+        return s;
     }
 
-    gp_Trsf mirrorY;
     gp_Pnt org(0.0, 0.0, 0.0);
     gp_Dir Y(0.0, 1.0, 0.0);
     gp_Ax2 mirrorPlane(org,
                        Y);
+    gp_Trsf mirrorY;
     mirrorY.SetMirror(mirrorPlane);
     BRepBuilderAPI_Transform mkTrf(s, mirrorY, true);
-    result = mkTrf.Shape();
-    return result;
+    return mkTrf.Shape();
 }
 
 //!set up a hidden line remover and project a shape with it
@@ -450,9 +446,7 @@ TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape &face,
     HLRBRep_HLRToShape hlrToShape(brep_hlr);
     TopoDS_Shape hardEdges = hlrToShape.VCompound();
     BRepLib::BuildCurves3d(hardEdges);
-    hardEdges = invertGeometry(hardEdges);
-
-    return hardEdges;
+    return invertGeometry(hardEdges);
 }
 
 //!add edges meeting filter criteria for category, visibility
@@ -516,10 +510,8 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         return; // There is no OpenCascade Geometry to be calculated
     }
 
-    BaseGeomPtr base;
     TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
-    int i = 1;
-    for ( ; edges.More(); edges.Next(),i++) {
+    for (int i = 1; edges.More(); edges.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         if (edge.IsNull()) {
             Base::Console().Log("GO::addGeomFromCompound - edge: %d is NULL\n",i);
@@ -534,7 +526,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             continue;
         }
 
-        base = BaseGeom::baseFactory(edge);
+        BaseGeomPtr base = BaseGeom::baseFactory(edge);
         if (!base) {
             Base::Console().Log("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
             continue;
@@ -548,56 +540,62 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         edgeGeom.push_back(base);
 
         //add vertices of new edge if not already in list
-        if (hlrVisible) {
-            BaseGeomPtr lastAdded = edgeGeom.back();
-            bool v1Add = true, v2Add = true;
-            bool c1Add = true;
-            TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(lastAdded->getStartPoint());
-            TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(lastAdded->getEndPoint());
-            TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(lastAdded);
-            TechDraw::VertexPtr c1;
-            if (circle) {
-                c1 = std::make_shared<TechDraw::Vertex>(circle->center);
-                c1->isCenter = true;
+        if (!hlrVisible) {
+            continue;
+        }
+
+
+        BaseGeomPtr lastAdded = edgeGeom.back();
+        bool v1Add = true, v2Add = true;
+        bool c1Add = true;
+        TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(lastAdded->getStartPoint());
+        TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(lastAdded->getEndPoint());
+        TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(lastAdded);
+        TechDraw::VertexPtr c1;
+        if (circle) {
+            c1 = std::make_shared<TechDraw::Vertex>(circle->center);
+            c1->isCenter = true;
+            c1->hlrVisible = true;
+        }
+
+        std::vector<VertexPtr>::iterator itVertex = vertexGeom.begin();
+        for (; itVertex != vertexGeom.end(); itVertex++) {
+            if ((*itVertex)->isEqual(*v1,Precision::Confusion())) {
+                v1Add = false;
+            }
+            if ((*itVertex)->isEqual(*v2,Precision::Confusion())) {
+                v2Add = false;
+            }
+            if (circle ) {
+                if ((*itVertex)->isEqual(*c1,Precision::Confusion())) {
+                    c1Add = false;
+                }
+            }
+
+        }
+        if (v1Add) {
+            vertexGeom.push_back(v1);
+            v1->hlrVisible = true;
+        }
+        // else {
+        //     delete v1;
+        // }
+        if (v2Add) {
+            vertexGeom.push_back(v2);
+            v2->hlrVisible = true;
+        }
+        // else {
+        //     delete v2;
+        // }
+
+        if (circle) {
+            if (c1Add) {
+                vertexGeom.push_back(c1);
                 c1->hlrVisible = true;
             }
-
-            std::vector<VertexPtr>::iterator itVertex = vertexGeom.begin();
-            for (; itVertex != vertexGeom.end(); itVertex++) {
-                if ((*itVertex)->isEqual(*v1,Precision::Confusion())) {
-                    v1Add = false;
-                }
-                if ((*itVertex)->isEqual(*v2,Precision::Confusion())) {
-                    v2Add = false;
-                }
-                if (circle ) {
-                    if ((*itVertex)->isEqual(*c1,Precision::Confusion())) {
-                        c1Add = false;
-                    }
-                }
-
-            }
-            if (v1Add) {
-                vertexGeom.push_back(v1);
-                v1->hlrVisible = true;
-            } else {
-            //    delete v1;
-            }
-            if (v2Add) {
-                vertexGeom.push_back(v2);
-                v2->hlrVisible = true;
-            } else {
-            //    delete v2;
-            }
-
-            if (circle) {
-                if (c1Add) {
-                    vertexGeom.push_back(c1);
-                    c1->hlrVisible = true;
-                } else {
-                //    delete c1;
-                }
-            }
+            // else {
+            //     delete c1;
+            // }
         }
     }  //end TopExp
 }
@@ -622,14 +620,8 @@ int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
 //    Base::Console().Message("GO::addCosmeticVertex(%X)\n", cv);
     double scale = m_parent->getScale();
     Base::Vector3d pos = cv->scaled(scale);
-    TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
-    v->cosmetic = true;
-    v->cosmeticLink = -1;  //obs??
-    v->cosmeticTag = cv->getTagAsString();
-    v->hlrVisible = true;
-    int idx = vertexGeom.size();
-    vertexGeom.push_back(v);
-    return idx;
+    // Returns idx
+    return addCosmeticVertex(pos, cv->getTagAsString());
 }
 
 //adds a new GeomVert to list
@@ -637,13 +629,8 @@ int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 {
     Base::Console().Message("GO::addCosmeticVertex() 1 - deprec?\n");
-    TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
-    v->cosmetic = true;
-    v->cosmeticTag = "tbi";        //not connected to CV
-    v->hlrVisible = true;
-    int idx = vertexGeom.size();
-    vertexGeom.push_back(v);
-    return idx;
+    // Returns idx
+    return addCosmeticVertex(pos, "tbi"); // tagString = "tbi": not connected to CV
 }
 
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
@@ -651,7 +638,7 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 //    Base::Console().Message("GO::addCosmeticVertex() 2\n");
     TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->cosmetic = true;
-    v->cosmeticTag = tagString;     //connected to CV
+    v->cosmeticTag = tagString;
     v->hlrVisible = true;
     int idx = vertexGeom.size();
     vertexGeom.push_back(v);
@@ -756,14 +743,11 @@ void GeometryObject::addFaceGeom(FacePtr f)
 
 TechDraw::DrawViewDetail* GeometryObject::isParentDetail()
 {
-    TechDraw::DrawViewDetail* result = nullptr;
-    if (m_parent) {
-        TechDraw::DrawViewDetail* detail = dynamic_cast<TechDraw::DrawViewDetail*>(m_parent);
-        if (detail) {
-            result = detail;
-        }
+    if (!m_parent) {
+        return nullptr;
     }
-    return result;
+    TechDraw::DrawViewDetail* detail = dynamic_cast<TechDraw::DrawViewDetail*>(m_parent);
+    return detail;
 }
 
 
@@ -825,8 +809,7 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
     } else {
         testBox.Get(xMin,yMin,zMin,xMax,yMax,zMax);
     }
-    Base::BoundBox3d bbox(xMin,yMin,zMin,xMax,yMax,zMax);
-    return bbox;
+    return Base::BoundBox3d(xMin,yMin,zMin,xMax,yMax,zMax);
 }
 
 void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
@@ -848,16 +831,14 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 //! does this GeometryObject already have this vertex
 bool GeometryObject::findVertex(Base::Vector3d v)
 {
-    bool found = false;
     std::vector<VertexPtr>::iterator it = vertexGeom.begin();
     for (; it != vertexGeom.end(); it++) {
         double dist = (v - (*it)->pnt).Length();
         if (dist < Precision::Confusion()) {
-            found = true;
-            break;
+            return true;
         }
     }
-    return found;
+    return false;
 }
 
 /// utility non-class member functions
@@ -871,7 +852,6 @@ gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
 {
 //    Base::Console().Message("GO::getViewAxis() - 1 - use only with getLegacyX\n");
     (void) flip;
-    gp_Ax2 viewAxis;
     gp_Pnt inputCenter(origin.x,origin.y,origin.z);
     Base::Vector3d stdZ(0.0,0.0,1.0);
     Base::Vector3d stdOrg(0.0,0.0,0.0);
@@ -884,15 +864,13 @@ gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
     }
     
     if (cross.IsEqual(stdOrg,FLT_EPSILON)) {
-        viewAxis = gp_Ax2(inputCenter,
-                          gp_Dir(direction.x, direction.y, direction.z));
-        return viewAxis;
+        return gp_Ax2(inputCenter,
+                      gp_Dir(direction.x, direction.y, direction.z));
     }
     
-    viewAxis = gp_Ax2(inputCenter,
-                      gp_Dir(direction.x, direction.y, direction.z),
-                      gp_Dir(cross.x, cross.y, cross.z));
-    return viewAxis;
+    return gp_Ax2(inputCenter,
+                  gp_Dir(direction.x, direction.y, direction.z),
+                  gp_Dir(cross.x, cross.y, cross.z));
 }
 
 //! gets a coordinate system specified by Z and X directions
@@ -905,11 +883,9 @@ gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
 //    Base::Console().Message("GO::getViewAxis() - 2\n");
     (void) flip;
     gp_Pnt inputCenter(origin.x,origin.y,origin.z);
-    gp_Ax2 viewAxis;
-    viewAxis = gp_Ax2(inputCenter,
-                      gp_Dir(direction.x, direction.y, direction.z),
-                      gp_Dir(xAxis.x, xAxis.y, xAxis.z));
-    return viewAxis;
+    return gp_Ax2(inputCenter,
+                  gp_Dir(direction.x, direction.y, direction.z),
+                  gp_Dir(xAxis.x, xAxis.y, xAxis.z));
 }
 
 // was getViewAxis 1
@@ -919,7 +895,6 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin,
                                      const bool flip)
 {
 //    Base::Console().Message("GO::legacyViewAxis1()\n");
-    gp_Ax2 viewAxis;
     gp_Pnt inputCenter(origin.x,origin.y,origin.z);
     Base::Vector3d stdZ(0.0,0.0,1.0);
     Base::Vector3d stdOrg(0.0,0.0,0.0);
@@ -937,23 +912,20 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin,
     }
     
     if (cross.IsEqual(stdOrg,FLT_EPSILON)) {
-        viewAxis = gp_Ax2(inputCenter,
-                          gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
-        return viewAxis;
+        return gp_Ax2(inputCenter,
+                      gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
     }
     
-    viewAxis = gp_Ax2(inputCenter,
+    gp_Ax2 viewAxis = gp_Ax2(inputCenter,
                       gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
                       gp_Dir(cross.x, cross.y, cross.z));
 
     //this bit is to handle the old mirror Y logic, but it messes up
     //some old files.
-    gp_Trsf mirrorXForm;
     gp_Ax2 mirrorCS(inputCenter, gp_Dir(0, -1, 0));
+    gp_Trsf mirrorXForm;
     mirrorXForm.SetMirror( mirrorCS );
-    viewAxis = viewAxis.Transformed(mirrorXForm);
-
-    return viewAxis;
+    return viewAxis.Transformed(mirrorXForm);
 }
 
 //! Returns the centroid of shape, as viewed according to direction
@@ -1000,8 +972,7 @@ Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
 {
 //    Base::Console().Message("GO::findCentroidVec() - 1\n");
     gp_Pnt p = TechDraw::findCentroid(shape,direction);
-    Base::Vector3d result(p.X(),p.Y(),p.Z());
-    return result;
+    return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
 Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
@@ -1009,8 +980,7 @@ Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
 {
 //    Base::Console().Message("GO::findCentroidVec() - 2\n");
     gp_Pnt p = TechDraw::findCentroid(shape,cs);
-    Base::Vector3d result(p.X(),p.Y(),p.Z());
-    return result;
+    return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
 
@@ -1027,9 +997,8 @@ TopoDS_Shape TechDraw::mirrorShape(const TopoDS_Shape &input,
                              const gp_Pnt& inputCenter,
                              double scale)
 {
-    TopoDS_Shape transShape;
     if (input.IsNull()) {
-        return transShape;
+        return TopoDS_Shape();
     }
     try {
         // Make tempTransform scale the object around it's centre point and
@@ -1047,23 +1016,21 @@ TopoDS_Shape TechDraw::mirrorShape(const TopoDS_Shape &input,
 
         // Apply that transform to the shape.  This should preserve the centre.
         BRepBuilderAPI_Transform mkTrf(input, tempTransform);
-        transShape = mkTrf.Shape();
+        return mkTrf.Shape();
     }
     catch (...) {
         Base::Console().Log("GeometryObject::mirrorShape - mirror/scale failed.\n");
-        return transShape;
+        return TopoDS_Shape();
     }
-    return transShape;
 }
 
 //!rotates a shape about a viewAxis
 TopoDS_Shape TechDraw::rotateShape(const TopoDS_Shape &input,
-                             gp_Ax2& viewAxis,
-                             double rotAngle)
+                                   gp_Ax2& viewAxis,
+                                   double rotAngle)
 {
-    TopoDS_Shape transShape;
     if (input.IsNull()) {
-        return transShape;
+        return TopoDS_Shape();
     }
 
     gp_Ax1 rotAxis = viewAxis.Axis();
@@ -1073,49 +1040,44 @@ TopoDS_Shape TechDraw::rotateShape(const TopoDS_Shape &input,
         gp_Trsf tempTransform;
         tempTransform.SetRotation(rotAxis,rotation);
         BRepBuilderAPI_Transform mkTrf(input, tempTransform);
-        transShape = mkTrf.Shape();
+        return mkTrf.Shape();
     }
     catch (...) {
         Base::Console().Log("GeometryObject::rotateShape - rotate failed.\n");
-        return transShape;
+        return TopoDS_Shape();
     }
-    return transShape;
 }
 
 //!scales a shape about origin
 TopoDS_Shape TechDraw::scaleShape(const TopoDS_Shape &input,
                                           double scale)
 {
-    TopoDS_Shape transShape;
     try {
         gp_Trsf scaleTransform;
         scaleTransform.SetScale(gp_Pnt(0,0,0), scale);
 
         BRepBuilderAPI_Transform mkTrf(input, scaleTransform);
-        transShape = mkTrf.Shape();
+        return mkTrf.Shape();
     }
     catch (...) {
         Base::Console().Log("GeometryObject::scaleShape - scale failed.\n");
-        return transShape;
+        return TopoDS_Shape();
     }
-    return transShape;
 }
 
 //!moves a shape
 TopoDS_Shape TechDraw::moveShape(const TopoDS_Shape &input,
                                  const Base::Vector3d& motion)
 {
-    TopoDS_Shape transShape;
     try {
         gp_Trsf xlate;
         xlate.SetTranslation(gp_Vec(motion.x,motion.y,motion.z));
 
         BRepBuilderAPI_Transform mkTrf(input, xlate);
-        transShape = mkTrf.Shape();
+        return mkTrf.Shape();
     }
     catch (...) {
         Base::Console().Log("GeometryObject::moveShape - move failed.\n");
-        return transShape;
+        return TopoDS_Shape();
     }
-    return transShape;
 }
