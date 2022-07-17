@@ -125,39 +125,38 @@ TopoDS_Edge TechDrawOutput::asCircle(const BRepAdaptor_Curve& c) const
 
     TopLoc_Location location;
     Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(c.Edge(), location);
-    if (!polygon.IsNull()) {
-        const TColgp_Array1OfPnt& nodes = polygon->Nodes();
-        for (int i = nodes.Lower(); i <= nodes.Upper(); i++) {
-            gp_Pnt p = nodes(i);
-            double dist = p.Distance(center);
-            if (std::abs(dist - radius) > 0.001)
-                return TopoDS_Edge();
-        }
-
-        gp_Circ circ;
-        circ.SetLocation(center);
-        circ.SetRadius(radius);
-        gp_Pnt p1 = nodes(nodes.Lower());
-        gp_Pnt p2 = nodes(nodes.Upper());
-        double dist = p1.Distance(p2);
-
-        if (dist < Precision::Confusion()) {
-            BRepBuilderAPI_MakeEdge mkEdge(circ);
-            return mkEdge.Edge();
-        }
-        else {
-            gp_Vec dir1(center, p1);
-            dir1.Normalize();
-            gp_Vec dir2(center, p2);
-            dir2.Normalize();
-            p1 = gp_Pnt(center.XYZ() + radius * dir1.XYZ());
-            p2 = gp_Pnt(center.XYZ() + radius * dir2.XYZ());
-            BRepBuilderAPI_MakeEdge mkEdge(circ, p1, p2);
-            return mkEdge.Edge();
-        }
+    if (polygon.IsNull()) {
+        return TopoDS_Edge();
     }
 
-    return TopoDS_Edge();
+    const TColgp_Array1OfPnt& nodes = polygon->Nodes();
+    for (int i = nodes.Lower(); i <= nodes.Upper(); i++) {
+        gp_Pnt p = nodes(i);
+        double dist = p.Distance(center);
+        if (std::abs(dist - radius) > 0.001)
+            return TopoDS_Edge();
+    }
+
+    gp_Circ circ;
+    circ.SetLocation(center);
+    circ.SetRadius(radius);
+    gp_Pnt p1 = nodes(nodes.Lower());
+    gp_Pnt p2 = nodes(nodes.Upper());
+    double dist = p1.Distance(p2);
+
+    if (dist < Precision::Confusion()) {
+        BRepBuilderAPI_MakeEdge mkEdge(circ);
+        return mkEdge.Edge();
+    }
+
+    gp_Vec dir1(center, p1);
+    dir1.Normalize();
+    gp_Vec dir2(center, p2);
+    dir2.Normalize();
+    p1 = gp_Pnt(center.XYZ() + radius * dir1.XYZ());
+    p2 = gp_Pnt(center.XYZ() + radius * dir2.XYZ());
+    BRepBuilderAPI_MakeEdge mkEdge(circ, p1, p2);
+    return mkEdge.Edge();
 }
 
 TopoDS_Edge TechDrawOutput::asBSpline(const BRepAdaptor_Curve& c, int maxDegree) const
@@ -254,14 +253,8 @@ void SVGOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& out)
 {
     gp_Elips ellp = c.Ellipse();
-    const gp_Pnt& p= ellp.Location();
     double r1 = ellp.MajorRadius();
     double r2 = ellp.MinorRadius();
-    double f = c.FirstParameter();
-    double l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt m = c.Value((l+f)/2.0);
-    gp_Pnt e = c.Value(l);
 
     // If the minor radius is very small compared to the major radius
     // the geometry actually degenerates to a line
@@ -271,10 +264,11 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
         return;
     }
 
-    gp_Vec v1(m,s);
-    gp_Vec v2(m,e);
-    gp_Vec v3(0,0,1);
-    double a = v3.DotCross(v1,v2);
+    const gp_Pnt& p = ellp.Location();
+    double f = c.FirstParameter();
+    double l = c.LastParameter();
+    gp_Pnt s = c.Value(f);
+    gp_Pnt e = c.Value(l);
     
     // a full ellipse
     // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
@@ -289,6 +283,11 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     }
     // arc of ellipse
     else {
+        gp_Pnt m = c.Value((l+f)/2.0);
+        gp_Vec v1(m,s);
+        gp_Vec v2(m,e);
+        gp_Vec v3(0,0,1);
+        double a = v3.DotCross(v1,v2);
         char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
@@ -301,11 +300,8 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
 void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& out)
 {
     try {
-        std::stringstream str;
-        str << "<path d=\"M";
 
         Handle(Geom_BezierCurve) bezier = c.Bezier();
-        Standard_Integer poles = bezier->NbPoles();
 
         // if it's a bezier with degree higher than 3 convert it into a B-spline
         if (bezier->Degree() > 3 || bezier->IsRational()) {
@@ -321,8 +317,11 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
             return;
         }
 
-
+        std::stringstream str;
+        str << "<path d=\"M";
+        Standard_Integer poles = bezier->NbPoles();
         gp_Pnt p1 = bezier->Pole(1);
+
         str << p1.X() << "," << p1.Y();
         if (bezier->Degree() == 3) {
             if (poles != 4)
@@ -365,7 +364,6 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
 void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& out)
 {
     try {
-        std::stringstream str;
         Handle(Geom_BSplineCurve) spline;
         Standard_Real tol3D = 0.001;
         Standard_Integer maxDegree = 3, maxSegment = 100;
@@ -382,6 +380,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
 
         GeomConvert_BSplineCurveToBezierCurve crt(spline);
         Standard_Integer arcs = crt.NbArcs();
+        std::stringstream str;
         str << "<path d=\"M";
         for (Standard_Integer i=1; i<=arcs; i++) {
             Handle(Geom_BezierCurve) bezier = crt.Arc(i);
