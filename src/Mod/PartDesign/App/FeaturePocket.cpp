@@ -73,7 +73,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
     // Handle legacy features, these typically have Type set to 3 (previously NULL, now UpToFace),
     // empty FaceName (because it didn't exist) and a value for Length
     if (std::string(Type.getValueAsString()) == "UpToFace" &&
-        (UpToFace.getValue() == nullptr && Length.getValue() > Precision::Confusion()))
+        (!UpToFace.getValue() && Length.getValue() > Precision::Confusion()))
         Type.setValue("Length");
 
     // Validate parameters

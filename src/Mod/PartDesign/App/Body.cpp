@@ -173,9 +173,9 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
     }
 }
 
-bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
+bool Body::isMemberOfMultiTransform(const App::DocumentObject* obj)
 {
-    if (f == nullptr)
+    if (!obj)
         return false;
 
     // ORIGINAL COMMENT:
@@ -189,38 +189,38 @@ bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
     // to auto set it when the originals are not null. See:
     // App::DocumentObjectExecReturn *Transformed::execute(void)
     //
-    return (f->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
-            static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty());
+    return (obj->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
+            static_cast<const PartDesign::Transformed*>(obj)->Originals.getValues().empty());
 }
 
-bool Body::isSolidFeature(const App::DocumentObject* f)
+bool Body::isSolidFeature(const App::DocumentObject *obj)
 {
-    if (f == nullptr)
+    if (!obj)
         return false;
 
-    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
-        !PartDesign::Feature::isDatum(f)) {
+    if (obj->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
+        !PartDesign::Feature::isDatum(obj)) {
         // Transformed Features inside a MultiTransform are not solid features
-        return !isMemberOfMultiTransform(f);
+        return !isMemberOfMultiTransform(obj);
     }
     return false;//DeepSOIC: work-in-progress?
 }
 
-bool Body::isAllowed(const App::DocumentObject* f)
+bool Body::isAllowed(const App::DocumentObject *obj)
 {
-    if (f == nullptr)
+    if (!obj)
         return false;
 
     // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()
-    return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
+    return (obj->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
+            obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
-            f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
+            obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
+            obj->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
+            obj->getTypeId().isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
-            //f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
-            //f->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())
+            //obj->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
+            //obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())
             );
 }
 
