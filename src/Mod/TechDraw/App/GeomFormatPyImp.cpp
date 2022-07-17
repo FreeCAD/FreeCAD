@@ -109,8 +109,8 @@ PyObject* GeomFormatPy::copy(PyObject *args)
 
 Py::String GeomFormatPy::getTag(void) const
 {
-    std::string tmp = boost::uuids::to_string(getGeomFormatPtr()->getTag());
-    return Py::String(tmp);
+    std::string tag = boost::uuids::to_string(getGeomFormatPtr()->getTag());
+    return Py::String(tag);
 }
 
 PyObject *GeomFormatPy::getCustomAttributes(const char* /*attr*/) const
