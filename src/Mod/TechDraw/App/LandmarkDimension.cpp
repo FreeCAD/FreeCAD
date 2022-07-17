@@ -83,14 +83,14 @@ LandmarkDimension::~LandmarkDimension()
 
 void LandmarkDimension::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        //this is only good for new RD creation, not restore from disk?
-        if (prop == &References3D) {
-            //handled in base class
-        } else if (prop == &ReferenceTags) {
-            //???
-        }
-    }
+    // if (!isRestoring()) {
+    //     //this is only good for new RD creation, not restore from disk?
+    //     if (prop == &References3D) {
+    //         //handled in base class
+    //     } else if (prop == &ReferenceTags) {
+    //         //???
+    //     }
+    // }
 
     DrawViewDimension::onChanged(prop);
 }
@@ -170,8 +170,7 @@ Base::Vector3d LandmarkDimension::projectPoint(const Base::Vector3d& pt, DrawVie
     gp_Pnt2d prjPnt;
     projector.Project(gPt, prjPnt);
     Base::Vector3d result(prjPnt.X(),prjPnt.Y(), 0.0);
-    result = DrawUtil::invertY(result);
-    return result;
+    return DrawUtil::invertY(result);
 }
 
 std::vector<Base::Vector3d> LandmarkDimension::get2DPoints() const
@@ -191,12 +190,11 @@ std::vector<Base::Vector3d> LandmarkDimension::get2DPoints() const
 //! References2D are only used to store ParentView
 bool LandmarkDimension::has2DReferences() const
 {
-    bool result = false;
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
     if (!objects.empty()) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 //! References2D are only used to store ParentView
@@ -208,14 +206,15 @@ bool LandmarkDimension::checkReferences2D() const
 pointPair LandmarkDimension::getPointsTwoVerts()
 {
 //    Base::Console().Message("LD::getPointsTwoVerts() - %s\n",getNameInDocument());
-    pointPair result;
-
     TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp) {
-        std::vector<Base::Vector3d> points = get2DPoints();
-        result.first  = points.at(0) * dvp->getScale();
-        result.second = points.at(1) * dvp->getScale();
+    if (!dvp) {
+        return pointPair();
     }
+
+    std::vector<Base::Vector3d> points = get2DPoints();
+    pointPair result;
+    result.first  = points.at(0) * dvp->getScale();
+    result.second = points.at(1) * dvp->getScale();
     return result;
 }
 
@@ -227,14 +226,10 @@ int LandmarkDimension::getRefType() const
 
 DrawViewPart* LandmarkDimension::getViewPart() const
 {
-    DrawViewPart* result = nullptr;
     std::vector<App::DocumentObject*> refs2d = References2D.getValues();
     App::DocumentObject* obj = refs2d.front();
     DrawViewPart* dvp = dynamic_cast<DrawViewPart*>(obj);
-    if (dvp) {
-        result = dvp;
-    }
-    return result;
+    return dvp;
 }
 
 void LandmarkDimension::onDocumentRestored()
