@@ -81,15 +81,17 @@ int PropertyGeomFormatList::getSize() const
 
 void PropertyGeomFormatList::setValue(const GeomFormat* lValue)
 {
-    if (lValue) {
-        aboutToSetValue();
-        GeomFormat* newVal = lValue->clone();
-        for (unsigned int i = 0; i < _lValueList.size(); i++)
-            delete _lValueList[i];
-        _lValueList.resize(1);
-        _lValueList[0] = newVal;
-        hasSetValue();
+    if (!lValue) {
+        return;
     }
+
+    aboutToSetValue();
+    GeomFormat* newVal = lValue->clone();
+    for (unsigned int i = 0; i < _lValueList.size(); i++)
+        delete _lValueList[i];
+    _lValueList.resize(1);
+    _lValueList[0] = newVal;
+    hasSetValue();
 }
 
 void PropertyGeomFormatList::setValues(const std::vector<GeomFormat*>& lValue)
