@@ -45,7 +45,7 @@ BodyBase::BodyBase()
 BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
 {
     App::Document* doc = f->getDocument();
-    if (doc != nullptr) {
+    if (doc) {
         std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(BodyBase::getClassTypeId());
         for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
             BodyBase* body = static_cast<BodyBase*>(*b);

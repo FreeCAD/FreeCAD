@@ -207,7 +207,7 @@ ResultEntry::~ResultEntry()
 void ResultEntry::buildEntryName()
 {
   ResultEntry *parentEntry = this;
-  while(parentEntry->parent != nullptr)
+  while(parentEntry->parent)
   {
       ResultEntry *temp = parentEntry->parent;
       if (!temp->parent)
@@ -838,7 +838,7 @@ bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &obje
 QString PartGui::buildSelectionName(const ResultEntry *entry, const TopoDS_Shape &shape)
 {
     const ResultEntry *parentEntry = entry;
-    while(parentEntry->parent != nullptr)
+    while(parentEntry->parent)
     {
         ResultEntry *temp = parentEntry->parent;
         if (!temp->parent)

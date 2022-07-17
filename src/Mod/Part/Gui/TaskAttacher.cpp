@@ -99,7 +99,7 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     refnames = pcAttach->Support.getSubValues();
 
     for (size_t r = 0; r < 4; r++) {
-        if ((r < refs.size()) && (refs[r] != nullptr)) {
+        if ((r < refs.size()) && (refs[r])) {
             refstrings.push_back(makeRefString(refs[r], refnames[r]));
             // for Origin or Datum features refnames is empty but we need a non-empty return value
             if (refnames[r].empty())
@@ -419,7 +419,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         QLineEdit* line = getLine(iActiveRef);
-        if (line != nullptr) {
+        if (line) {
             line->blockSignals(true);
             line->setText(makeRefString(selObj, subname));
             line->setProperty("RefName", QByteArray(subname.c_str()));
