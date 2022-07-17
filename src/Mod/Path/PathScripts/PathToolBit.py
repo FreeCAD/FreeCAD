@@ -286,6 +286,9 @@ class ToolBit(object):
                 break
         if doc is None:
             p = findToolShape(p, path if path else obj.File)
+            if p is None:
+                raise FileNotFoundError
+
             if not path and p != obj.BitShape:
                 obj.BitShape = p
             PathLog.debug("ToolBit {} using shape file: {}".format(obj.Label, p))
@@ -482,6 +485,9 @@ class ToolBitFactory(object):
 
     def CreateFrom(self, path, name="ToolBit"):
         PathLog.track(name, path)
+
+        if not os.path.isfile(path):
+            raise FileNotFoundError(f"{path} not found")
         try:
             data = Declaration(path)
             bit = Factory.CreateFromAttrs(data, name, path)
