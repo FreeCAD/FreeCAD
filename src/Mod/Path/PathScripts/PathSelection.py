@@ -133,11 +133,9 @@ class DRILLGate(PathBaseGate):
         return drillableLib.isDrillable(shape, subobj, vector=None)
 
 
-class FACEGate(
-    PathBaseGate
-):  # formerly PROFILEGate class using allow_ORIG method as allow()
+class FACEGate(PathBaseGate):
     def allow(self, doc, obj, sub):
-        profileable = False
+        isFace = False
 
         try:
             obj = obj.Shape
@@ -146,49 +144,16 @@ class FACEGate(
 
         if obj.ShapeType == "Compound":
             if sub and sub[0:4] == "Face":
-                profileable = True
+                isFace = True
 
         elif obj.ShapeType == "Face":  # 3D Face, not flat, planar?
-            profileable = True  # Was False
+            isFace = True
 
         elif obj.ShapeType == "Solid":
             if sub and sub[0:4] == "Face":
-                profileable = True
+                isFace = True
 
-        return profileable
-
-    def allow_ORIG(self, doc, obj, sub):
-
-        profileable = False
-        try:
-            obj = obj.Shape
-        except Exception:
-            return False
-
-        if obj.ShapeType == "Edge":
-            profileable = False
-
-        elif obj.ShapeType == "Compound":
-            if sub and sub[0:4] == "Face":
-                profileable = True
-
-            if sub and sub[0:4] == "Edge":
-                profileable = False
-
-        elif obj.ShapeType == "Face":
-            profileable = False
-
-        elif obj.ShapeType == "Solid":
-            if sub and sub[0:4] == "Face":
-                profileable = True
-
-            if sub and sub[0:4] == "Edge":
-                profileable = False
-
-        elif obj.ShapeType == "Wire":
-            profileable = False
-
-        return profileable
+        return isFace
 
 
 class PROFILEGate(PathBaseGate):
