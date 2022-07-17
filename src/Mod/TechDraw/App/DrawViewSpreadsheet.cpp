@@ -81,19 +81,20 @@ DrawViewSpreadsheet::~DrawViewSpreadsheet()
 
 short DrawViewSpreadsheet::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result  =  (Source.isTouched()  ||
-                    CellStart.isTouched() ||
-                    CellEnd.isTouched() ||
-                    Font.isTouched() ||
-                    TextSize.isTouched() ||
-                    TextColor.isTouched() ||
-                    LineWidth.isTouched() );
+        if (
+            Source.isTouched()  ||
+            CellStart.isTouched() ||
+            CellEnd.isTouched() ||
+            Font.isTouched() ||
+            TextSize.isTouched() ||
+            TextColor.isTouched() ||
+            LineWidth.isTouched()
+        ) {
+            return 1;
+        }
     }
-    if (result) {
-        return result;
-    }
+
     return TechDraw::DrawView::mustExecute();
 }
 
@@ -111,7 +112,7 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute(void)
         return new App::DocumentObjectExecReturn("No spreadsheet linked");
     if (!link->getTypeId().isDerivedFrom(Spreadsheet::Sheet::getClassTypeId()))
         return new App::DocumentObjectExecReturn("The linked object is not a spreadsheet");
-    if ( (scellstart.empty()) || (scellend.empty()) )
+    if (scellstart.empty() || scellend.empty())
         return new App::DocumentObjectExecReturn("Empty cell value");
 
     Symbol.setValue(getSheetImage());
@@ -141,22 +142,18 @@ std::vector<std::string> DrawViewSpreadsheet::getAvailColumns(void)
 
 std::string DrawViewSpreadsheet::getSVGHead(void)
 {
-    std::string head = std::string("<svg\n") +
-                       std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n") +
-                       std::string("	xmlns:freecad=\"http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace\">\n");
-    return head;
+    return std::string("<svg\n") +
+           std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n") +
+           std::string("	xmlns:freecad=\"http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace\">\n");
 }
 
 std::string DrawViewSpreadsheet::getSVGTail(void)
 {
-    std::string tail = "\n</svg>";
-    return tail;
+    return "\n</svg>";
 }
 
 std::string DrawViewSpreadsheet::getSheetImage(void)
 {
-    std::stringstream result;
-
     App::DocumentObject* link = Source.getValue();
     link->recomputeFeature();   //make sure s/s is up to date
 
@@ -177,19 +174,19 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
     if (boost::regex_search(scellstart, what, re)) {
         if (what.size() < 3) {
             Base::Console().Error("%s - start cell (%s) is invalid\n",getNameInDocument(),CellStart.getValue());
-            return result.str();
-        } else {
-            colPart = what[1];
-            sColStart = colPart;
-            rowPart = what[2];
-            try {
-                iRowStart = std::stoi(rowPart);
-            }
-            catch (...) {
-                Base::Console().Error("%s - start cell (%s) invalid row\n",
-                                      getNameInDocument(), rowPart.c_str());
-                return result.str();
-            }
+            return std::string();
+        }
+
+        colPart = what[1];
+        sColStart = colPart;
+        rowPart = what[2];
+        try {
+            iRowStart = std::stoi(rowPart);
+        }
+        catch (...) {
+            Base::Console().Error("%s - start cell (%s) invalid row\n",
+                                    getNameInDocument(), rowPart.c_str());
+            return std::string();
         }
     }
 
@@ -206,7 +203,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             catch (...) {
                 Base::Console().Error("%s - end cell (%s) invalid row\n",
                                       getNameInDocument(), rowPart.c_str());
-                return result.str();
+                return std::string();
             }
         }
     }
@@ -218,7 +215,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
     if (iAvailColStart < 0) {               //not found range start column in availcolumns list
         Base::Console().Error("DVS - %s - start Column (%s) is invalid\n",
                                getNameInDocument(), sColStart.c_str());
-        return result.str();
+        return std::string();
     }
 
     //validate range end column in sheet's available columns
@@ -226,14 +223,14 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
     if (iAvailColEnd < 0) {
         Base::Console().Error("DVS - %s - end Column (%s) is invalid\n",
                               getNameInDocument(), sColEnd.c_str());
-        return result.str();
+        return std::string();
     }
 
     //check for logical range
     if ( (iAvailColStart > iAvailColEnd) ||
          (iRowStart > iRowEnd) ) {
         Base::Console().Error("%s - cell range is illogical\n",getNameInDocument());
-        return result.str();
+        return std::string();
     }
 
     // build row and column ranges
@@ -251,10 +248,11 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
     }
 
     // create the Svg code
-    std::string ViewName = Label.getValue();
 
+    std::stringstream result;
     result << getSVGHead();
 
+    std::string ViewName = Label.getValue();
     App::Color c = TextColor.getValue();
     result  << "<g id=\"" << ViewName << "\">" << endl;
 
@@ -283,18 +281,16 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
             if (prop && cell) {
-                if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId()))) {
+                if (
+                    prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId()) ||
+                    prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
+                    prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())
+                ) {
                     field << cell->getFormattedQuantity();
-                } else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId()))) {
-                    field << cell->getFormattedQuantity();
-                } else if (prop->isDerivedFrom((App::PropertyInteger::getClassTypeId()))) {
-                    field << cell->getFormattedQuantity();
-                } else if (prop->isDerivedFrom((App::PropertyString::getClassTypeId()))) {
+                } else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
                     field << static_cast<App::PropertyString*>(prop)->getValue();
                 } else {
                     Base::Console().Error("DVSS: Unknown property type\n");
-                    celltext = "???";
-//                    assert(0);
                 }
                 celltext = field.str();
             }
@@ -376,12 +372,12 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
 int DrawViewSpreadsheet::colInList(const std::vector<std::string>& list,
                                    const std::string& toFind)
 {
-    int result = -1;
     auto match = std::find(std::begin(list), std::end(list), toFind);
-    if (match != std::end(list)) {
-        result = match - std::begin(list);
+    if (match == std::end(list)) {
+        return -1; // Error value
     }
-    return result;
+
+    return match - std::begin(list);
 }
 
 // Python Drawing feature ---------------------------------------------------------
