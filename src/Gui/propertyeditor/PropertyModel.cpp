@@ -35,6 +35,8 @@ using namespace Gui;
 using namespace Gui::PropertyEditor;
 
 
+/* TRANSLATOR Gui::PropertyEditor::PropertyModel */
+
 PropertyModel::PropertyModel(QObject* parent)
     : QAbstractItemModel(parent)
 {

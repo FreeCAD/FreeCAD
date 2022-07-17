@@ -232,6 +232,13 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         }
         Py::Object obj(eval, true);
 
+        // Checks whether the type is a subclass of PyObjectBase because to get the doc string
+        // of a member we must get it by its type instead of its instance otherwise we get the
+        // wrong string, namely that of the type of the member.
+        // Note: 3rd party libraries may use their own type object classes so that we cannot
+        // reliably use Py::Type. To be on the safe side we should use Py::Object to assign
+        // the used type object to.
+        //Py::Object type = obj.type();
         Py::Object type(PyObject_Type(obj.ptr()), true);
         Py::Object inst = obj; // the object instance
         PyObject* typeobj = Base::getTypeAsObject(&Base::PyObjectBase::Type);

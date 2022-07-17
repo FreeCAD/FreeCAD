@@ -45,6 +45,12 @@ using namespace std;
 namespace bp = boost::placeholders;
 
 
+/* TRANSLATOR Gui::Dialog::DlgDisplayPropertiesImp */
+
+#if 0 // needed for Qt's lupdate utility
+    qApp->translate("QDockWidget", "Display properties");
+#endif
+
 class DlgDisplayPropertiesImp::Private
 {
     typedef boost::signals2::connection DlgDisplayPropertiesImp_Connection;
@@ -507,6 +513,7 @@ void DlgDisplayPropertiesImp::setShapeColor(const std::vector<Gui::ViewProvider*
             break;
         }
     }
+
     d->ui.buttonColor->setEnabled(shapeColor);
 }
 
@@ -526,6 +533,7 @@ void DlgDisplayPropertiesImp::setLineColor(const std::vector<Gui::ViewProvider*>
             break;
         }
     }
+
     d->ui.buttonLineColor->setEnabled(shapeColor);
 }
 
@@ -542,6 +550,7 @@ void DlgDisplayPropertiesImp::setPointSize(const std::vector<Gui::ViewProvider*>
             break;
         }
     }
+
     d->ui.spinPointSize->setEnabled(pointSize);
 }
 
@@ -558,6 +567,7 @@ void DlgDisplayPropertiesImp::setLineWidth(const std::vector<Gui::ViewProvider*>
             break;
         }
     }
+
     d->ui.spinLineWidth->setEnabled(lineWidth);
 }
 
@@ -578,6 +588,7 @@ void DlgDisplayPropertiesImp::setTransparency(const std::vector<Gui::ViewProvide
             break;
         }
     }
+
     d->ui.spinTransparency->setEnabled(transparency);
     d->ui.horizontalSlider->setEnabled(transparency);
 }
@@ -599,6 +610,7 @@ void DlgDisplayPropertiesImp::setLineTransparency(const std::vector<Gui::ViewPro
             break;
         }
     }
+
     d->ui.spinLineTransparency->setEnabled(transparency);
     d->ui.sliderLineTransparency->setEnabled(transparency);
 }
@@ -613,6 +625,7 @@ std::vector<Gui::ViewProvider*> DlgDisplayPropertiesImp::getSelection() const
         Gui::ViewProvider* view = Application::Instance->getDocument(it->pDoc)->getViewProvider(it->pObject);
         views.push_back(view);
     }
+
     return views;
 }
 

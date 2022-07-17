@@ -119,6 +119,8 @@
 
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
+//#define FC_LOGGING_CB
+
 using namespace Gui;
 
 /*** zoom-style cursor ******/
@@ -479,6 +481,7 @@ void View3DInventorViewer::init()
     this->getSoRenderManager()->setGLRenderAction(new SoBoxSelectionRenderAction);
     this->getSoRenderManager()->getGLRenderAction()->setCacheContext(id);
 
+    // set the transparency and antialiasing settings
     getSoRenderManager()->getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
 
     // Settings
@@ -1402,6 +1405,7 @@ void View3DInventorViewer::setAxisCross(bool on)
             axisCross->scaleFactor = 1.0f;
             axisGroup = new SoSkipBoundingGroup;
             axisGroup->addChild(axisCross);
+
             sep->addChild(axisGroup);
         }
     }
@@ -2161,6 +2165,7 @@ void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
     if (this->axiscrossEnabled) {
         this->drawAxisCross();
     }
+
     fbo->release();
 }
 
@@ -2253,6 +2258,9 @@ void View3DInventorViewer::renderGLImage()
     glEnable(GL_DEPTH_TEST);
 }
 
+// #define ENABLE_GL_DEPTH_RANGE
+// The calls of glDepthRange inside renderScene() causes problems with transparent objects
+// so that's why it is disabled now: http://forum.freecadweb.org/viewtopic.php?f=3&t=6037&hilit=transparency
 
 // Documented in superclass. Overrides this method to be able to draw
 // the axis cross, if selected, and to keep a continuous animation
@@ -2272,6 +2280,11 @@ void View3DInventorViewer::renderScene(void)
     glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+
+#if defined(ENABLE_GL_DEPTH_RANGE)
+    // using 90% of the z-buffer for the background and the main node
+    glDepthRange(0.1,1.0);
+#endif
 
     // Render our scenegraph with the image.
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
@@ -2307,12 +2320,22 @@ void View3DInventorViewer::renderScene(void)
         state->pop();
     }
 
+#if defined (ENABLE_GL_DEPTH_RANGE)
+    // using 10% of the z-buffer for the foreground node
+    glDepthRange(0.0,0.1);
+#endif
+
     // Render overlay front scenegraph.
     glra->apply(this->foregroundroot);
 
     if (this->axiscrossEnabled) {
         this->drawAxisCross();
     }
+
+#if defined (ENABLE_GL_DEPTH_RANGE)
+    // using the main portion of z-buffer again (for frontbuffer highlighting)
+    glDepthRange(0.1,1.0);
+#endif
 
     // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
@@ -2406,6 +2429,7 @@ void View3DInventorViewer::selectAll()
             if (obj) objs.push_back(obj);
         }
     }
+
     if (!objs.empty())
         Gui::Selection().setSelection(objs.front()->getDocument()->getName(), objs);
 }
@@ -2435,6 +2459,7 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
             break;
         }
     }
+
     return navigation->processEvent(ev);
 }
 
@@ -3221,11 +3246,8 @@ void View3DInventorViewer::drawAxisCross(void)
     // Set the viewport in the OpenGL canvas. Dimensions are calculated
     // as a percentage of the total canvas size.
     SbVec2s view = this->getSoRenderManager()->getSize();
-    const int pixelarea =
-        int(float(this->axiscrossSize)/100.0f * std::min(view[0], view[1]));
-
+    const int pixelarea = int(float(this->axiscrossSize)/100.0f * std::min(view[0], view[1]));
     SbVec2s origin(view[0] - pixelarea, 0);
-
     glViewport(origin[0], origin[1], pixelarea, pixelarea);
 
     // Set up the projection matrix.

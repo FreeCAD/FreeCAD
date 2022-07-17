@@ -694,6 +694,7 @@ bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
             ret = true;
         }
     }
+
     return ret;
 }
 

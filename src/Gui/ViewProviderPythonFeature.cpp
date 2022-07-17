@@ -147,6 +147,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
             e.ReportException();
         }
     }
+
     return QIcon();
 }
 

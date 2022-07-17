@@ -68,6 +68,31 @@
 
 using namespace Gui;
 
+/*!
+\code
+
+s="""
+  #Inventor V2.1 ascii
+
+  Annotation {
+    Translation { translation 4 0 0 }
+    FontStyle {
+        size 20
+        style BOLD
+    }
+    BaseColor {
+        rgb 0.0 0.0 0.0
+    }
+
+
+    SoTextLabel { string ["Text label", "Second line"] backgroundColor 1.0 0.447059 0.337255}
+  }
+"""
+
+App.ActiveDocument.addObject("App::InventorObject","iv").Buffer=s
+
+\endcode
+*/
 
 SO_NODE_SOURCE(SoTextLabel)
 
@@ -116,6 +141,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         const SbViewportRegion & vp = SoViewportRegionElement::get(state);
         SbVec2s vpsize = vp.getViewportSizePixels();
 
+        // font stuff
         SbName fontname = SoFontNameElement::get(state);
         int lines = this->string.getNum();
 
@@ -124,7 +150,6 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         projmatrix.multVecMatrix(nilpoint, nilpoint);
         nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
         nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];
-
 
         // Unfortunately, the size of the label is stored in the pimpl class of
         // SoText2 which cannot be accessed directly. However, there is a trick
