@@ -201,7 +201,7 @@ int ImageBase::_setColorFormat(int format, unsigned short numSigBitsPerSample)
 int ImageBase::_allocate()
 {
     // Check that pixel data pointer is null
-    if (_pPixelData != nullptr)
+    if (_pPixelData)
         return -1;
 
     // Allocate the space needed to store the pixel data
@@ -296,7 +296,7 @@ int ImageBase::pointTo(void* pSrcPixelData, unsigned long width, unsigned long h
 // if there is no image data
 int ImageBase::getSample(int x, int y, unsigned short sampleIndex, double &value)
 {
-    if ((_pPixelData == nullptr) || 
+    if ((!_pPixelData) || 
         (sampleIndex >= _numSamples) ||
         (x < 0) || (x >= (int)_width) || 
         (y < 0) || (y >= (int)_height))

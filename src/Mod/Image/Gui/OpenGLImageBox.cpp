@@ -243,7 +243,7 @@ void GLImageBox::drawImage()
         glPixelTransferf(GL_BLUE_SCALE, (float)scale);
 
         // Load the color map if present
-        if (_pColorMap != nullptr)
+        if (_pColorMap)
         {
             if (!haveMesa) glPixelTransferf(GL_MAP_COLOR, 1.0);
             glPixelMapfv(GL_PIXEL_MAP_R_TO_R, _numMapEntries, _pColorMap);
@@ -851,7 +851,7 @@ int GLImageBox::setColorMapAlphaValue(int index, float value)
 // Helper function to convert a pixel's value (of a sample) to the color map index (i.e. the map index that will be used for that pixel value)
 unsigned int GLImageBox::pixValToMapIndex(double PixVal)
 {
-    if (_pColorMap != nullptr)
+    if (_pColorMap)
     {
         double MaxVal = pow(2.0, _image.getNumBitsPerSample()) - 1.0;
         double Scale = (pow(2.0, _image.getNumBitsPerSample()) - 1.0) / (pow(2.0, _image.getNumSigBitsPerSample()) - 1.0);
