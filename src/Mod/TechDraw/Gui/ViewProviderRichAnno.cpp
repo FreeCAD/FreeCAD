@@ -33,6 +33,8 @@
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskRichAnno.h"
+#include "QGSPage.h"
+#include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
@@ -104,6 +106,15 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
             LineColor.setStatus(App::Property::ReadOnly, true);
         }
     }
+
+    if (p == &(getViewObject()->AnnoParent)) {
+//        Base::Console().Message("VPRA::updateData(AnnoParent) - vpp: %X\n", getViewProviderPage());
+        if (getViewProviderPage() &&
+            getViewProviderPage()->getGraphicsScene()) {
+            getViewProviderPage()->getGraphicsScene()->setRichAnnoGroups();
+        }
+    }
+
     ViewProviderDrawingView::updateData(p);
 }
 

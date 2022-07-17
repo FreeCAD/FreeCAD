@@ -128,7 +128,8 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
             Gui::MDIView* mv = w->activeWindow();
             MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
             if (mvp) {
-                QGSPage* qp = mvp->getQGSPage();
+                QString windowTitle = mvp->windowTitle();
+                QGSPage* qp = mvp->getViewProviderPage()->getGraphicsScene();
                 page = qp->getDrawPage();
             }
             else {

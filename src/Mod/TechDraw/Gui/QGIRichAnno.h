@@ -32,6 +32,7 @@
 #include <QPen>
 #include <QStyleOptionGraphicsItem>
 
+#include "QGIView.h"
 
 namespace TechDraw {
 class DrawRichAnno;
@@ -57,8 +58,7 @@ class TechDrawGuiExport QGIRichAnno : public QGIView
 public:
     enum {Type = QGraphicsItem::UserType + 233};
 
-    explicit QGIRichAnno(QGraphicsItem* myParent = nullptr,
-                           TechDraw::DrawRichAnno* lead = nullptr);
+    explicit QGIRichAnno();
     ~QGIRichAnno() = default;
 
     int type() const override { return Type;}

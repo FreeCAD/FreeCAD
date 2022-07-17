@@ -112,6 +112,8 @@ public:
 
     void pseudoContextEvent();
 
+    void centerOnPage(void);
+
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
 

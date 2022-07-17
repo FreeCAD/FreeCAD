@@ -45,14 +45,12 @@ class DrawViewPart;
 namespace TechDrawGui
 {
 class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGEPath;
 class QGIDetail;
 class QGIGhostHighlight;
-class ViewProviderLeader;
+class ViewProviderPage;
 class Ui_TaskDetail;
 
 class TaskDetail : public QWidget
@@ -109,9 +107,7 @@ private:
 
     QGIGhostHighlight* m_ghost;
 
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
+    ViewProviderPage* m_vpp;
     TechDraw::DrawViewDetail* m_detailFeat;
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
