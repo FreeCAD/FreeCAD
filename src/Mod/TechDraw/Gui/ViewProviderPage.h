@@ -28,10 +28,10 @@
 
 #include <boost_signals2.hpp>
 #include <QPointer>
+#include <QObject>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>
-
 
 namespace TechDraw{
     class DrawPage;
@@ -82,6 +82,8 @@ public:
     bool isRestoring() {return !m_docReady;}
 
     TechDraw::DrawPage* getDrawPage() const;
+
+    //slots & connections
     void onGuiRepaint(const TechDraw::DrawPage* dp); 
     typedef boost::signals2::scoped_connection Connection;
     Connection connectGuiRepaint;
@@ -99,13 +101,17 @@ public:
     void setTemplateMarkers(bool state);
     QGVPage *getGraphicsView() { return m_graphicsView; }
     QGSPage* getGraphicsScene() { return m_graphicsScene; }
-    void setGraphicsView(QGVPage* gv);
-    void setGraphicsScene(QGSPage* gs);
+
     bool canDelete(App::DocumentObject* obj) const override;
+
     void  setGrid();
+
+    QGSPage* getQGSPage(void) {return m_graphicsScene;}
+    QGVPage* getQGVPage(void) {return m_graphicsView;}
 
 protected:
     bool setEdit(int ModNum) override;
+    void createMDIViewPage();
 
 private:
     QPointer<MDIViewPage> m_mdiView;

@@ -46,14 +46,13 @@ class DrawCosVertex;
 namespace TechDrawGui
 {
 class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
 class QGICosVertex;
+class ViewProviderPage;
 class ViewProviderLeader;
 class Ui_TaskCosVertex;
 
@@ -99,9 +98,6 @@ private:
 
     QGTracker* m_tracker;
     
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
     QGIView* m_qgParent;
@@ -117,6 +113,8 @@ private:
     int m_pbTrackerState;
     QPointF m_savePoint;
     bool pointFromTracker;
+
+    ViewProviderPage* m_vpp;
 };
 
 class TaskDlgCosVertex : public Gui::TaskView::TaskDialog

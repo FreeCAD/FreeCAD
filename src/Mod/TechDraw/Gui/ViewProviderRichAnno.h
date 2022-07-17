@@ -67,7 +67,9 @@ protected:
     std::string getDefFont();
     double getDefFontSize();
     double getDefLineWeight();
-    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader,
+                                   const char *TypeName,
+                                   App::Property * prop) override;
 
 private:
     static App::PropertyIntegerConstraint::Constraints LineStyleRange;

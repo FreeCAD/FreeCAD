@@ -23,11 +23,12 @@
 #ifndef _TechDraw_DrawRichAnno_h_
 #define _TechDraw_DrawRichAnno_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 
 #include "DrawView.h"
-
 
 namespace TechDraw
 {
@@ -54,6 +55,8 @@ public:
     PyObject *getPyObject() override;
     QRectF getRect() const override { return QRectF(0,0,1,1);}
     DrawView* getBaseView() const;
+
+    DrawPage* findParentPage() const override;
 
 protected:
     void onChanged(const App::Property* prop) override;

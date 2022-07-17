@@ -46,15 +46,13 @@ class DrawLeaderLine;
 
 namespace TechDrawGui
 {
-class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
 class QGILeaderLine;
+class ViewProviderPage;
 class ViewProviderLeader;
 class Ui_TaskLeaderLine;
 
@@ -128,9 +126,7 @@ private:
 
     QGTracker* m_tracker;
     
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
+    ViewProviderPage* m_vpp;
     ViewProviderLeader* m_lineVP;
     TechDraw::DrawView* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
