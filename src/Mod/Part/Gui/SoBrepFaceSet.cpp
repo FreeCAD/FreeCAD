@@ -1052,14 +1052,15 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
         }
         else {
             tbind = PER_VERTEX_INDEXED;
-            if (tindices == nullptr) tindices = cindices;
+            if (!tindices)
+                tindices = cindices;
         }
     }
 
-    if (nbind == PER_VERTEX_INDEXED && nindices == nullptr) {
+    if (nbind == PER_VERTEX_INDEXED && !nindices) {
         nindices = cindices;
     }
-    if (mbind == PER_VERTEX_INDEXED && mindices == nullptr) {
+    if (mbind == PER_VERTEX_INDEXED && !mindices) {
         mindices = cindices;
     }
 

@@ -210,7 +210,7 @@ void ResultEntry::buildEntryName()
   while(parentEntry->parent != nullptr)
   {
       ResultEntry *temp = parentEntry->parent;
-      if (temp->parent == nullptr)
+      if (!temp->parent)
         break;
       parentEntry = parentEntry->parent;
   }
@@ -841,7 +841,7 @@ QString PartGui::buildSelectionName(const ResultEntry *entry, const TopoDS_Shape
     while(parentEntry->parent != nullptr)
     {
         ResultEntry *temp = parentEntry->parent;
-        if (temp->parent == nullptr)
+        if (!temp->parent)
           break;
         parentEntry = parentEntry->parent;
     }

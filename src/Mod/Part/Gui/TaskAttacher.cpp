@@ -68,7 +68,7 @@ namespace bp = boost::placeholders;
 // Create reference name from PropertyLinkSub values in a translatable fashion
 const QString makeRefString(const App::DocumentObject* obj, const std::string& sub)
 {
-    if (obj == nullptr)
+    if (!obj)
         return QObject::tr("No reference selected");
 
     if (obj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
@@ -563,7 +563,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         return;
 
     QLineEdit* line = getLine(idx);
-    if (line == nullptr)
+    if (!line)
         return;
 
     if (text.length() == 0) {
@@ -607,7 +607,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         parts.push_back(QString::fromLatin1(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (obj == nullptr)
+    if (!obj)
         return;
 
     std::string subElement;
