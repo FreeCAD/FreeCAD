@@ -73,26 +73,22 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
         if (gex) {
             std::vector<App::DocumentObject*> objs = gex->Group.getValues();
             for (auto& d: objs) {
-                if (is2dObject(d)) {
-                    if (d->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                        //need to apply global placement here.  ??? because 2d shapes (Points so far)
-                        //don't get gp from Part::feature::getShape() ????
-                        const Part::Feature* pf = static_cast<const Part::Feature*>(d);
-                        Part::TopoShape ts = pf->Shape.getShape();
-                        ts.setPlacement(pf->globalPlacement());
-                        shapes2d.push_back(ts.getShape());
-                    }
-                }
-            }
-        } else {
-            if (is2dObject(l)) {
-                if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                    //need to apply placement here
-                    const Part::Feature* pf = static_cast<const Part::Feature*>(l);
+                if (is2dObject(d) && d->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                    //need to apply global placement here.  ??? because 2d shapes (Points so far)
+                    //don't get gp from Part::feature::getShape() ????
+                    const Part::Feature* pf = static_cast<const Part::Feature*>(d);
                     Part::TopoShape ts = pf->Shape.getShape();
                     ts.setPlacement(pf->globalPlacement());
                     shapes2d.push_back(ts.getShape());
                 }
+            }
+        } else {
+            if (is2dObject(l) && l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                //need to apply placement here
+                const Part::Feature* pf = static_cast<const Part::Feature*>(l);
+                Part::TopoShape ts = pf->Shape.getShape();
+                ts.setPlacement(pf->globalPlacement());
+                shapes2d.push_back(ts.getShape());
             }
         }
     }
@@ -299,23 +295,24 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
 {
 //    Base::Console().Message("SE::getShapesFused()\n");
     TopoDS_Shape baseShape = getShapes(links);
-    if (!baseShape.IsNull()) {
-        TopoDS_Iterator it(baseShape);
-        TopoDS_Shape fusedShape = it.Value();
-        it.Next();
-        for (; it.More(); it.Next()) {
-            const TopoDS_Shape& aChild = it.Value();
-            BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
-            // Let's check if the fusion has been successful
-            if (!mkFuse.IsDone()) {
-                Base::Console().Error("SE - Fusion failed\n");
-                return baseShape;
-            }
-            fusedShape = mkFuse.Shape();
-        }
-        baseShape = fusedShape;
+    if (baseShape.IsNull()) {
+        return baseShape;
     }
-    return baseShape;
+
+    TopoDS_Iterator it(baseShape);
+    TopoDS_Shape fusedShape = it.Value();
+    it.Next();
+    for (; it.More(); it.Next()) {
+        const TopoDS_Shape& aChild = it.Value();
+        BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
+        // Let's check if the fusion has been successful
+        if (!mkFuse.IsDone()) {
+            Base::Console().Error("SE - Fusion failed\n");
+            return baseShape;
+        }
+        fusedShape = mkFuse.Shape();
+    }
+    return fusedShape;
 }
 
 //inShape is a compound
@@ -346,94 +343,92 @@ TopoDS_Shape ShapeExtractor::stripInfiniteShapes(TopoDS_Shape inShape)
 
 bool ShapeExtractor::is2dObject(App::DocumentObject* obj)
 {
-    bool result = false;
     if (isEdgeType(obj) || isPointType(obj)) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 //skip edges for now.
 bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 {
     (void) obj;
-    bool result = false;
 //    Base::Type t = obj->getTypeId();
 //    if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
-//        result = true;
+//        return true;
 //    } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
-//        result = true;
+//        return true;
 //    } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
-//        result = true;
+//        return true;
 //    } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
-//        result = true;
+//        return true;
 //    }
-    return result;
+    return false;
 }
 
 bool ShapeExtractor::isPointType(App::DocumentObject* obj)
 {
 //    Base::Console().Message("SE::isPointType(%s)\n", obj->getNameInDocument());
-    bool result = false;
-    if (obj) {
-        Base::Type t = obj->getTypeId();
-        if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
-            result = true;
-        } else if (isDraftPoint(obj)) {
-            result = true;
-        }
+    if (!obj) {
+        return false;
     }
-    return result;
+
+    Base::Type t = obj->getTypeId();
+    if (t.isDerivedFrom(Part::Vertex::getClassTypeId()) || isDraftPoint(obj)) {
+        return true;
+    }
+
+    return false;
 }
 
 bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
 {
 //    Base::Console().Message("SE::isDraftPoint()\n");
-    bool result = false;
     //if the docObj doesn't have a Proxy property, it definitely isn't a Draft point
     App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
     if (proxy) {
         std::string  pp = proxy->toString();
 //        Base::Console().Message("SE::isDraftPoint - pp: %s\n", pp.c_str());
         if (pp.find("Point") != std::string::npos) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 {
 //    Base::Console().Message("SE::getLocation3dFromFeat()\n");
-    Base::Vector3d result(0.0, 0.0, 0.0);
+    Base::Vector3d errorValue(0.0, 0.0, 0.0);
     if (!isPointType(obj)) {
-        return result;
+        return errorValue;
     }
 //    if (isDraftPoint(obj) {
 //        //Draft Points are not necc. Part::PartFeature??
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
 
     Part::Feature* pf = dynamic_cast<Part::Feature*>(obj);
-    if (pf) {
-        Part::TopoShape pts = pf->Shape.getShape();
-        pts.setPlacement(pf->globalPlacement());
-        TopoDS_Shape ts = pts.getShape();
-        if (ts.ShapeType() == TopAbs_VERTEX)  {
-            TopoDS_Vertex v = TopoDS::Vertex(ts);
-            result = DrawUtil::vertex2Vector(v);
-        }
+    if (!pf) {
+        return errorValue;
+    }
+
+    Part::TopoShape pts = pf->Shape.getShape();
+    pts.setPlacement(pf->globalPlacement());
+    TopoDS_Shape ts = pts.getShape();
+    if (ts.ShapeType() == TopAbs_VERTEX)  {
+        TopoDS_Vertex v = TopoDS::Vertex(ts);
+        return DrawUtil::vertex2Vector(v);
     }
 
 //    Base::Console().Message("SE::getLocation3dFromFeat - returns: %s\n",
 //                            DrawUtil::formatVector(result).c_str());
-    return result;
+    return errorValue;
 }
 
 bool ShapeExtractor::prefAdd2d()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("ShowLoose2d", false);
-    return result;
+    return hGrp->GetBool("ShowLoose2d", false);
 }
 
