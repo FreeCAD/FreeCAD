@@ -220,7 +220,7 @@ void TaskExtrudeParameters::connectSlots()
         this, &TaskExtrudeParameters::onReversedChanged);
     connect(ui->changeMode, qOverload<int>(&QComboBox::currentIndexChanged),
         this, &TaskExtrudeParameters::onModeChanged);
-    connect(ui->buttonFace, &QPushButton::clicked,
+    connect(ui->buttonFace, &QPushButton::toggled,
         this, &TaskExtrudeParameters::onButtonFace);
     connect(ui->lineFaceName, &QLineEdit::textEdited,
         this, &TaskExtrudeParameters::onFaceName);
@@ -255,7 +255,7 @@ void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
                 ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
                 // Turn off reference selection mode
-                onButtonFace(false);
+                ui->buttonFace->setChecked(false);
             }
             else {
                 clearFaceName();
@@ -468,7 +468,7 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
-            onButtonFace(true);
+            ui->buttonFace->setChecked(true);
     }
     else if (mode == Modes::TwoDimensions) {
         isLengthEditVisible = true;
@@ -507,7 +507,7 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     ui->buttonFace->setEnabled(isFaceEditEnabled);
     ui->lineFaceName->setEnabled(isFaceEditEnabled);
     if (!isFaceEditEnabled) {
-        onButtonFace(false);
+        ui->buttonFace->setChecked(false);
     }
 }
 
@@ -681,16 +681,18 @@ void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vec
     }
 }
 
-void TaskExtrudeParameters::onButtonFace(const bool pressed)
+void TaskExtrudeParameters::onButtonFace(const bool checked)
 {
+    if (!checked && ui->lineFaceName->text().isEmpty())
+        ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+    else if (checked && ui->lineFaceName->text().isEmpty())
+        handleLineFaceName(); // sets placeholder text
+
     // to distinguish that this is the direction selection
     selectionFace = true;
 
     // only faces are allowed
-    TaskSketchBasedParameters::onSelectReference(pressed ? AllowSelection::FACE : AllowSelection::NONE);
-
-    // Update button if onButtonFace() is called explicitly
-    ui->buttonFace->setChecked(pressed);
+    TaskSketchBasedParameters::onSelectReference(checked ? AllowSelection::FACE : AllowSelection::NONE);
 }
 
 void TaskExtrudeParameters::onFaceName(const QString& text)
@@ -888,6 +890,11 @@ void TaskExtrudeParameters::updateUI(int)
 void TaskExtrudeParameters::translateModeList(int)
 {
     // implement in sub-class
+}
+
+void TaskExtrudeParameters::handleLineFaceName(void)
+{
+    ui->lineFaceName->setPlaceholderText(tr("Click on a face in the model"));
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
