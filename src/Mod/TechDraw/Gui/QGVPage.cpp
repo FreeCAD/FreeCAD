@@ -89,6 +89,7 @@
 
 #include "Rez.h"
 #include "PreferencesGui.h"
+#include "DrawGuiUtil.h"
 #include "QGIDrawingTemplate.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
@@ -241,7 +242,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     m_vpPage = vp;
     const char* name = vp->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
-    m_vpPage->setGraphicsView(this);
 
     setScene(s);
     setMouseTracking(true);
@@ -269,6 +269,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
 //    setDragMode(ScrollHandDrag);
     setDragMode(QGraphicsView::NoDrag);
     resetCursor();
+    setRenderer(Native);
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     bkgBrush = new QBrush(getBackgroundColor());
@@ -288,6 +289,12 @@ QGVPage::~QGVPage()
 {
     delete bkgBrush;
     delete m_navStyle;
+}
+
+void QGVPage::centerOnPage(void)
+{
+//    Base::Console().Message("QGVP::centerOnPage()\n");
+    centerOn(m_scene->getTemplateCenter());
 }
 
 void QGVPage::initNavigationStyle()
@@ -367,13 +374,14 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     }
 
     if (!m_vpPage->getDrawPage()) {
-        //Base::Console().Log("TROUBLE - QGVP::drawBackground - no Page Object!\n");
+//        Base::Console().Message("QGVP::drawBackground - no Page Feature!\n");
         return;
     }
 
     p->save();
     p->resetTransform();
 
+    resetCachedContent();
 
     p->setBrush(*bkgBrush);
     p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
@@ -396,10 +404,10 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     p->setBrush(pageBrush);
 
     p->drawRect(poly.boundingRect());
+    resetCachedContent();
 
     p->restore();
 }
-
 
 void QGVPage::setRenderer(RendererType type)
 {

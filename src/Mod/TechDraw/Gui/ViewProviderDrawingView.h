@@ -39,6 +39,7 @@ class DrawView;
 namespace TechDrawGui {
 class QGIView;
 class MDIViewPage;
+class ViewProviderPage;
 
 class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
 {
@@ -66,6 +67,7 @@ public:
     QGIView* getQView();
     MDIViewPage* getMDIViewPage() const;
     Gui::MDIView *getMDIView() const override;
+    ViewProviderPage* getViewProviderPage() const;
 
     /** @name Restoring view provider from document load */
     //@{

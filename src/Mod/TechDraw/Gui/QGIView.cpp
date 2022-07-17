@@ -617,12 +617,15 @@ Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
 QGVPage* QGIView::getGraphicsView(TechDraw::DrawView* dv)
 {
     QGVPage* graphicsView = nullptr;
-    Gui::ViewProvider* vp = getViewProvider(dv);
-    ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
-    if (vpdv) {
-        MDIViewPage* mdi = vpdv->getMDIViewPage();
-        if (mdi) {
-            graphicsView = mdi->getQGVPage();
+    if (dv != nullptr) {
+        TechDraw::DrawPage* page = dv->findParentPage();
+        if (page != nullptr) {
+            Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+            Gui::ViewProvider* vp = activeGui->getViewProvider(page);
+            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+            if (vpp != nullptr) {
+                graphicsView = vpp->getGraphicsView();
+            }
         }
     }
     return graphicsView;
@@ -631,12 +634,15 @@ QGVPage* QGIView::getGraphicsView(TechDraw::DrawView* dv)
 QGSPage* QGIView::getGraphicsScene(TechDraw::DrawView* dv)
 {
     QGSPage* graphicsScene = nullptr;
-    Gui::ViewProvider* vp = getViewProvider(dv);
-    ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
-    if (vpdv) {
-        MDIViewPage* mdi = vpdv->getMDIViewPage();
-        if (mdi) {
-            graphicsScene = mdi->getQGSPage();
+    if (dv != nullptr) {
+        TechDraw::DrawPage* page = dv->findParentPage();
+        if (page != nullptr) {
+            Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+            Gui::ViewProvider* vp = activeGui->getViewProvider(page);
+            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+            if (vpp != nullptr) {
+                graphicsScene = vpp->getGraphicsScene();
+            }
         }
     }
     return graphicsScene;
@@ -644,8 +650,19 @@ QGSPage* QGIView::getGraphicsScene(TechDraw::DrawView* dv)
 
 MDIViewPage* QGIView::getMDIViewPage() const
 {
-    QGSPage* qgsp = static_cast<QGSPage*>(scene());
-    return MDIViewPage::getFromScene(qgsp);
+    MDIViewPage* mdi = nullptr;
+    if (getViewObject() != nullptr) {
+        TechDraw::DrawPage* page = getViewObject()->findParentPage();
+        if (page != nullptr) {
+            Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+            Gui::ViewProvider* vp = activeGui->getViewProvider(page);
+            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+            if (vpp != nullptr) {
+                mdi = vpp->getMDIViewPage();
+            }
+        }
+    }
+    return mdi;
 }
 
 //remove a child of this from scene while keeping scene indexes valid

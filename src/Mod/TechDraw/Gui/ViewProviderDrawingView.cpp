@@ -29,6 +29,8 @@
 #endif
 
 #include <App/DocumentObject.h>
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -40,7 +42,6 @@
 #include "MDIViewPage.h"
 #include "QGIView.h"
 #include "QGSPage.h"
-#include "QGVPage.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -93,11 +94,7 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
     }
 
     if (prop == &Visibility) {
-//       if(Visibility.getValue()) {
-//            show();
-//        } else {
-//            hide();
-//        }
+        //handled by ViewProviderDocumentObject
     } else if (prop == &KeepLabel) {
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -152,20 +149,15 @@ void ViewProviderDrawingView::hide()
 QGIView* ViewProviderDrawingView::getQView()
 {
     QGIView *qView = nullptr;
-    if (m_docReady){
-        TechDraw::DrawView* dv = getViewObject();
-        if (dv) {
-            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-            if (guiDoc) {
-                Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
-                ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
-                if (dvp) {
-                    if (dvp->getMDIViewPage()) {
-                        if (dvp->getMDIViewPage()->getQGSPage()) {
-                            qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
-                                                   getQGSPage()->findQViewForDocObj(getViewObject()));
-                        }
-                    }
+    TechDraw::DrawView* dv = getViewObject();
+    if (dv) {
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
+        if (guiDoc != nullptr) {
+            Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+            if (vpp) {
+                if (vpp->getQGSPage()) {
+                    qView = dynamic_cast<QGIView *>(vpp->getQGSPage()->findQViewForDocObj(getViewObject()));
                 }
             }
         }
@@ -215,9 +207,9 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
     if (guiDoc) {
         Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
-        ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
-        if (dvp) {
-            result = dvp->getMDIViewPage();
+        ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+        if (vpp) {
+            result = vpp->getMDIViewPage();
         }
     }
     return result;
@@ -231,11 +223,13 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
 //    Base::Console().Message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
+    if (guiDoc == nullptr) {
+        return;
+    }
+
     std::vector<TechDraw::DrawPage*> pages = getViewObject()->findAllParentPages();
     if (pages.size() > 1) {
-        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-        if (!guiDoc)
-            return;
         for (auto& p : pages) {
             std::vector<App::DocumentObject*> views = p->Views.getValues();
             for (auto& v: views) {
@@ -244,13 +238,10 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
                     Gui::ViewProvider* vp = guiDoc->getViewProvider(p);
                     ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
                     if (vpPage) {
-                        if (vpPage->getMDIViewPage()) {
-                            if (vpPage->getMDIViewPage()->getQGSPage()) {
-                                QGIView* qView = dynamic_cast<QGIView *>(vpPage->getMDIViewPage()->
-                                                           getQGSPage()->findQViewForDocObj(v));
-                                if (qView) {
-                                    qView->updateView(true);
-                                }
+                        if (vpPage->getQGSPage()) {
+                            QGIView* qView = dynamic_cast<QGIView *>(vpPage->getQGSPage()->findQViewForDocObj(v));
+                            if (qView != nullptr) {
+                                qView->updateView(true);
                             }
                         }
                     }
@@ -265,14 +256,12 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
             if (qgiv) {
                 qgiv->updateView(true);
             } else {                                //we are not part of the Gui page yet. ask page to add us.
-                //TODO: this bit causes trouble.  Should move QGIV creation to attach?
-                //      is MDIVP/QGVP available at attach time?
-                // wf: mdivp/qgvp is not necessarily directly available at attach time.  It should be available
-                //     via the parent DrawPage since the DP is created before any views.
-//                Base::Console().Message("VPDV::onGuiRepaint - no QGIV for: %s\n",dv->getNameInDocument());
-                MDIViewPage* page = getMDIViewPage();
-                if (page) {
-                    page->addView(dv);
+                Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+                ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+                if (vpPage) {
+                    if (vpPage->getQGSPage()) {
+                        vpPage->getQGSPage()->addView(dv);
+                    }
                 }
             }
         }
