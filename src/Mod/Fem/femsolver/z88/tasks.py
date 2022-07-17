@@ -45,6 +45,7 @@ from femtools import membertools
 
 SOLVER_TYPES = ["sorcg", "siccg", "choly"]
 
+
 class Check(run.Check):
 
     def run(self):
@@ -103,8 +104,10 @@ class Solve(run.Solve):
         self.pushStatus("Get solver binary...\n")
         binary = settings.get_binary("Z88")
         if binary is None:
-            self.fail()  # a print has been made in settings module
-        
+            self.pushStatus("Error: The z88r binary has not been found!")
+            self.fail()
+            return
+
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
         solver = SOLVER_TYPES
         solver = prefs.GetInt("Solver", 0)
