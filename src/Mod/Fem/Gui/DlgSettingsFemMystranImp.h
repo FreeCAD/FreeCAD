@@ -40,6 +40,9 @@ public:
     DlgSettingsFemMystranImp( QWidget* parent = nullptr );
     ~DlgSettingsFemMystranImp();
 
+protected Q_SLOTS:
+    void onfileNameChanged(QString FileName);
+
 protected:
     void saveSettings();
     void loadSettings();
