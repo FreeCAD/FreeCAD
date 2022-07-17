@@ -410,7 +410,7 @@ void ProfileBased::onChanged(const App::Property* prop)
 {
     if (prop == &Profile) {
         // if attached to a sketch then mark it as read-only
-        this->Placement.setStatus(App::Property::ReadOnly, Profile.getValue() != nullptr);
+        this->Placement.setStatus(App::Property::ReadOnly, Profile.getValue());
     }
 
     FeatureAddSub::onChanged(prop);

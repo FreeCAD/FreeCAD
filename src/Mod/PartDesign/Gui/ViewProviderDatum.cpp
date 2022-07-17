@@ -289,7 +289,7 @@ bool ViewProviderDatum::doubleClicked(void)
     PartDesign::Body* activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     auto datumBody = PartDesignGui::getBodyFor(pcDatum, false);
 
-    if (datumBody != nullptr) {
+    if (datumBody) {
         if (datumBody != activeBody) {
             Gui::Command::doCommand(Gui::Command::Gui,
                     "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",

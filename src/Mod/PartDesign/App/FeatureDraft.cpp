@@ -118,7 +118,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
     // Pull direction
     gp_Dir pullDirection;
     App::DocumentObject* refDirection = PullDirection.getValue();    
-    if (refDirection != nullptr) {
+    if (refDirection) {
         if (refDirection->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                     PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
                     Base::Vector3d d = line->getDirection();
@@ -229,7 +229,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
 
                 neutralPlane = adapt.Plane();
             } else if (ref.ShapeType() == TopAbs_EDGE) {
-                if (refDirection != nullptr) {
+                if (refDirection) {
                     // Create neutral plane through edge normal to pull direction
                     TopoDS_Edge refEdge = TopoDS::Edge(ref);
                     if (refEdge.IsNull())

@@ -93,7 +93,7 @@ void ViewProviderHelix::unsetEdit(int ModNum)
 std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren(void) const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
-    if (sketch != nullptr && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(sketch);
 
     return temp;
