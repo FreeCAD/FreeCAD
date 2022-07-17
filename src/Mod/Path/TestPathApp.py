@@ -46,6 +46,7 @@ from PathTests.TestPathPost import TestOutputNameSubstitution
 from PathTests.TestPathPreferences import TestPathPreferences
 from PathTests.TestPathPropertyBag import TestPathPropertyBag
 from PathTests.TestPathRotationGenerator import TestPathRotationGenerator
+from PathTests.TestPathSelection import TestGateCombinator, TestSelectionGates
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathStock import TestPathStock
 from PathTests.TestPathThreadMilling import TestPathThreadMilling
@@ -76,6 +77,8 @@ False if TestBuildPostList.__name__ else True
 False if TestDressupDogbone.__name__ else True
 False if TestHoldingTags.__name__ else True
 False if TestOutputNameSubstitution.__name__ else True
+False if TestGateCombinator.__name__ else True
+False if TestSelectionGates.__name__ else True
 False if TestPathAdaptive.__name__ else True
 False if TestPathCore.__name__ else True
 False if TestPathDeburr.__name__ else True
@@ -114,3 +117,4 @@ False if TestRefactoredGrblPost.__name__ else True
 False if TestRefactoredLinuxCNCPost.__name__ else True
 False if TestRefactoredMach3Mach4Post.__name__ else True
 False if TestRefactoredTestPost.__name__ else True
+

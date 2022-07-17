@@ -288,6 +288,19 @@ class ALLGate(PathBaseGate):
         return False
 
 
+class GateCombinator(PathBaseGate):
+    def __init__(self, *gates):
+        self.gates = gates
+
+    def allow(self, *args):
+        return any((gate.allow(*args) for gate in self.gates))
+
+
+class SURFACEGate(GateCombinator):
+    def __init__(self):
+        super().__init__(FACEGate(), MESHGate())
+
+
 def contourselect():
     FreeCADGui.Selection.addSelectionGate(CONTOURGate())
     if not PathPreferences.suppressSelectionModeWarning():
@@ -349,10 +362,7 @@ def slotselect():
 
 
 def surfaceselect():
-    gate = False
-    if MESHGate() or FACEGate():
-        gate = True
-    FreeCADGui.Selection.addSelectionGate(gate)
+    FreeCADGui.Selection.addSelectionGate(SURFACEGate())
     if not PathPreferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
 
