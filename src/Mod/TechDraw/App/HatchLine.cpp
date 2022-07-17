@@ -76,40 +76,36 @@ double LineSet::getMaxY()
 
 bool LineSet::isDashed()
 {
-    bool result = m_hatchLine.isDashed();
-    return result;
+    return m_hatchLine.isDashed();
 }
 
 //! calculates the apparent start point (ie start of overlay line) for dashed lines
 Base::Vector3d LineSet::calcApparentStart(TechDraw::BaseGeomPtr g)
 {
-    Base::Vector3d result;
     Base::Vector3d start(g->getStartPoint().x,g->getStartPoint().y,0.0);
     double angle = getPATLineSpec().getAngle();
     if (angle == 0.0) {             //horizontal
-        result = Base::Vector3d(getMinX(),start.y,0.0);
-    } else if ((angle == 90.0) ||
-               (angle == -90.0)) {  //vertical
-        result = Base::Vector3d(start.x,getMinY(),0.0);
-    } else {
-        double slope = getPATLineSpec().getSlope();
-        double y     = getMinY();
-        double x = ((y - start.y) / slope) + start.x;
-        result = Base::Vector3d(x,y,0);
+        return Base::Vector3d(getMinX(),start.y,0.0);
+    } else if (angle == 90.0 ||
+               angle == -90.0) {  //vertical
+        return Base::Vector3d(start.x,getMinY(),0.0);
     }
-    return result;
+
+    double slope = getPATLineSpec().getSlope();
+    double y     = getMinY();
+    double x = ((y - start.y) / slope) + start.x;
+    return Base::Vector3d(x,y,0);
 }
 
 Base::Vector3d LineSet::getUnitDir()
 {
-    Base::Vector3d result;
     Base::Vector3d start(m_geoms.at(0)->getStartPoint().x,
                          m_geoms.at(0)->getStartPoint().y,
                          0.0);
     Base::Vector3d end(m_geoms.at(0)->getEndPoint().x,
                          m_geoms.at(0)->getEndPoint().y,
                          0.0);
-    result = end - start;
+    Base::Vector3d result = end - start;
     result.Normalize();
     return result;
 }
@@ -136,41 +132,35 @@ Base::Vector3d LineSet::getUnitOrtho()
 
 Base::Vector3d LineSet::findAtomStart()
 {
-    Base::Vector3d result;
     Base::Vector3d origin = getOrigin();
     double angle = getAngle();
     if (angle == 0.0) {
-        result = Base::Vector3d(getMinX(),origin.y,0.0);
-    } else if ( (angle == 90.0) ||
-                (angle == -90.0) ) {
-        result = Base::Vector3d(origin.x,getMinY(),0.0);
-    } else {
-        double minY = getMinY();
-        double x = origin.x - (origin.y - minY)/getSlope();
-        result = Base::Vector3d(x,minY,0.0);
+        return Base::Vector3d(getMinX(),origin.y,0.0);
+    } else if (angle == 90.0 ||
+               angle == -90.0) {
+        return Base::Vector3d(origin.x,getMinY(),0.0);
     }
-    return result;
+
+    double minY = getMinY();
+    double x = origin.x - (origin.y - minY)/getSlope();
+    return Base::Vector3d(x,minY,0.0);
 }
 
 Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &offset, double scale)
 {
-    Base::Vector3d result = getOrigin();
     Base::Vector3d atomStart = findAtomStart();
     Base::Vector3d thisStart = calcApparentStart(g);
-    double angle = getAngle();
-    double patternLength = scale * getPatternLength();
     Base::Vector3d lineOrigin;
-    double distX,distY;
     int overlayIndex = 0;
     //interval & offset are not patternscaled
 
 //figure out which line this is in the overlay
-    if (angle == 0.0) {      //odd case - horizontal line
-        distY = (thisStart.y - atomStart.y);                                       //this is patternscaled
+    if (getAngle() == 0.0) {      //odd case - horizontal line
+        double distY = (thisStart.y - atomStart.y);                                       //this is patternscaled
         overlayIndex = (int) round(distY/(scale * getIntervalY()));                //this is +/-
         lineOrigin = getOrigin() + distY * Base::Vector3d(0.0,1.0,0.0);                    //move u/d
     } else {
-        distX = (thisStart.x - atomStart.x);                                       //this is patternscaled
+        double distX = (thisStart.x - atomStart.x);                                       //this is patternscaled
         overlayIndex = (int) round(distX/(scale * getIntervalX()));
         lineOrigin = getOrigin() + overlayIndex * (scale * getInterval()) * getUnitOrtho();
     }
@@ -187,40 +177,41 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &of
     double lenStartOrg = (gStart - lineOrigin).Length();
     double lenEndOrg = (gEnd   - lineOrigin).Length();
     double lenStartEnd = (gStart - gEnd).Length();
-    if ( (lenStartOrg <= lenStartEnd) &&
-         (lenEndOrg <= lenStartEnd) )  {                                //origin is in g
-        result = lineOrigin;
+    if (lenStartOrg <= lenStartEnd &&
+        lenEndOrg <= lenStartEnd)  {                                //origin is in g
         offset = 0.0;
-    } else {
-        //find a point where pattern repeats within g
-        double patsStartOrg = lenStartOrg/patternLength;                   //# pattern repeats from lineOrigin to start
-        double patsEndOrg = lenEndOrg/patternLength;
-        if (lenStartOrg < lenEndOrg) {                                  //origin is before start
-            double c = ceil(patsStartOrg);
-            if (c <= patsEndOrg) {                                      //c is an integer pattern count in [patsStartOrg,patsEndOrg]
-                result = lineOrigin + c*patternLength*getUnitDir();
-                offset = 0.0;
-            } else {
-//                //ugly case - partial pattern
-                result = gStart;
-                offset = patsStartOrg - (int)patsStartOrg;        //fraction of a patternLength
-                offset = offset * patternLength;
-            }
-        } else if (lenStartOrg > lenEndOrg) {                          //origin is after end
-            double c = ceil(patsEndOrg);
-            if (c <= patsStartOrg) {                      //c is an integer pattern count in [patsStartOrg,patsEndOrg]
-                result = lineOrigin - c*patternLength*getUnitDir();
-                offset = 0.0;
-            } else {
-                result = gStart;
-                offset = ceil(patsStartOrg) - patsStartOrg;      //fraction of a patternLength patstartorg to repeat point
-                offset = offset * patternLength;
-            }
+        return lineOrigin;
+    }
+
+    //find a point where pattern repeats within g
+    double patternLength = scale * getPatternLength();
+    double patsStartOrg = lenStartOrg/patternLength;                   //# pattern repeats from lineOrigin to start
+    double patsEndOrg = lenEndOrg/patternLength;
+    if (lenStartOrg < lenEndOrg) {                                  //origin is before start
+        double c = ceil(patsStartOrg);
+        if (c <= patsEndOrg) {                                      //c is an integer pattern count in [patsStartOrg,patsEndOrg]
+            offset = 0.0;
+            return lineOrigin + c*patternLength*getUnitDir();
         } else {
-            Base::Console().Log("ERROR - HL::getPatternStart - something has gone wrong!\n");
+//                //ugly case - partial pattern
+            offset = patsStartOrg - (int)patsStartOrg;        //fraction of a patternLength
+            offset = offset * patternLength;
+            return gStart;
+        }
+    } else if (lenStartOrg > lenEndOrg) {                          //origin is after end
+        double c = ceil(patsEndOrg);
+        if (c <= patsStartOrg) {                      //c is an integer pattern count in [patsStartOrg,patsEndOrg]
+            offset = 0.0;
+            return lineOrigin - c*patternLength*getUnitDir();
+        } else {
+            offset = ceil(patsStartOrg) - patsStartOrg;      //fraction of a patternLength patstartorg to repeat point
+            offset = offset * patternLength;
+            return gStart;
         }
     }
-    return result;
+    
+    Base::Console().Log("ERROR - HL::getPatternStart - something has gone wrong!\n");
+    return getOrigin();
 }
 
 //*******************************************
@@ -316,13 +307,13 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
 
     //get all the definition lines for this pattern
     bool status = findPatternStart(inFile, parmName);
-    if (status) {
-        lineSpecs = loadPatternDef(inFile);
-    } else {
+    if (!status) {
         //this message can come up when changing PAT file or pattern name
         Base::Console().Log( "Could not find pattern: %s\n",parmName.c_str() );
         return result;
     }
+
+    lineSpecs = loadPatternDef(inFile);
 
     //decode definition lines into PATLineSpec objects
     for (auto& l: lineSpecs) {
@@ -335,18 +326,17 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
 bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName)
 {
 //    Base::Console().Message("HL::findPatternStart() - parmName: %s\n", parmName.c_str());
-    bool result = false;
     while ( inFile.good() ){
          std::string line;
          std::getline(inFile,line);
          std::string nameTag = line.substr(0,1);
-         std::string patternName;
-         std::size_t commaPos;
-         if ((nameTag == ";")  ||
-             (nameTag == " ")  ||
-             (line.empty()) )  {           //is cr/lf empty?
+         if (nameTag == ";" ||
+             nameTag == " " ||
+             line.empty()) {           //is cr/lf empty?
              continue;
          } else if (nameTag == "*") {
+             std::size_t commaPos;
+             std::string patternName;
              commaPos = line.find(',',1);
              if (commaPos != std::string::npos) {
                   patternName = line.substr(1,commaPos-1);
@@ -355,12 +345,11 @@ bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName
              }
              if (patternName == parmName) {
                  //this is our pattern
-                 result = true;
-                 break;
+                 return true;
              }
         }
     }  //endwhile
-    return result;
+    return false;
 }
 
 //get the definition lines for this pattern
@@ -371,10 +360,9 @@ std::vector<std::string> PATLineSpec::loadPatternDef(std::ifstream& inFile)
         std::string line;
         std::getline(inFile,line);
         std::string nameTag = line.substr(0,1);
-        if ((nameTag == ";")  ||
-             (nameTag == " ") ||
-             (line.empty()) )  {           //is cr/lf empty?
-            continue;
+        if (nameTag == ";" ||
+            nameTag == " " ||
+            line.empty()) {           //is cr/lf empty?
         } else if (nameTag == "*") {
             break;
         } else {             //dataline
@@ -424,14 +412,13 @@ double PATLineSpec::getSlope()
     } else if (angle < -90.0) {
         angle = (180 + angle);
     }
-    double slope = tan(angle * M_PI/180.0);
-    return slope;
+
+    return tan(angle * M_PI/180.0);
 }
 
 bool PATLineSpec::isDashed()
 {
-    bool result = !m_dashParms.empty();
-    return result;
+    return !m_dashParms.empty();
 }
 
 //! X component of distance between lines
@@ -439,7 +426,7 @@ double PATLineSpec::getIntervalX()
 {
     if (getAngle() == 0.0) {
         return 0.0;
-    } else if ((getAngle() == 90.0) || (getAngle() == -90.0)) {
+    } else if (getAngle() == 90.0 || getAngle() == -90.0) {
         return getInterval();
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
@@ -452,7 +439,7 @@ double PATLineSpec::getIntervalY()
 {
     if (getAngle() == 0.0) {
         return getInterval();
-    } else if ((getAngle() == 90.0) || (getAngle() == -90.0)) {
+    } else if (getAngle() == 90.0 || getAngle() == -90.0) {
         return 0.0;
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
@@ -476,8 +463,7 @@ DashSpec DashSpec::reversed()
 {
     std::vector<double> p = get();
     std::reverse(p.begin(),p.end());
-    DashSpec result(p);
-    return result;
+    return DashSpec(p);
 }
 
 void DashSpec::dump(const char* title)
