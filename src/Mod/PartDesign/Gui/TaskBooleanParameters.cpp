@@ -107,13 +107,13 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (body.empty())
             return;
         App::DocumentObject* pcBody = pcBoolean->getDocument()->getObject(body.c_str());
-        if (pcBody == nullptr)
+        if (!pcBody)
             return;
 
         // if the selected object is not a body then get the body it is part of
         if (!pcBody->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
             pcBody = PartDesign::Body::findBodyOf(pcBody);
-            if (pcBody == nullptr)
+            if (!pcBody)
                 return;
             body = pcBody->getNameInDocument();
         }

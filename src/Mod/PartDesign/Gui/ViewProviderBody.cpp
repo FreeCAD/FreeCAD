@@ -505,7 +505,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
             e.ReportException();
         }
     }
-    else if (body->BaseFeature.getValue() == nullptr) {
+    else if (!body->BaseFeature.getValue()) {
         body->BaseFeature.setValue(obj);
     }
 
