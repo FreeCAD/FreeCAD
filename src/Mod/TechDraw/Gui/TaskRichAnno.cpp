@@ -467,9 +467,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
     if (!points.empty()) {
         QPointF lastPoint(points.back().x, points.back().y);
         QPointF firstPoint(points.front().x, points.front().y);
-        QPointF lastOffset = lastPoint;
-        lastPoint = m_qgParent->mapFromScene(lastPoint) * scale;
-        firstPoint = m_qgParent->mapFromScene(firstPoint) * scale;
+        QPointF lastOffset = lastPoint - firstPoint;
 
         if (lastPoint.x() < firstPoint.x()) {                 //last is left of first
             tPosX = lastOffset.x() - horizGap - textWidth;    //left of last
