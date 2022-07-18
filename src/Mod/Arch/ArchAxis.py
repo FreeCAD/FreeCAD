@@ -398,7 +398,7 @@ class _ViewProviderAxis:
                                 center = p2.add(Vector(dv).multiply(rad))
                                 normal = vobj.Object.Placement.Rotation.multVec(Vector(0,0,1))
                                 chord = dv.cross(normal)
-                                if arrow == True:
+                                if arrow:
                                     p3 = p2.add(Vector(chord).multiply(rad/2).negative())
                                     if vobj.BubblePosition.startswith("Arrow"):
                                         p4 = p3.add(Vector(dv).multiply(rad*2).negative())

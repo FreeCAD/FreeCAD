@@ -520,7 +520,7 @@ class _CommandSite:
             if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcType") and obj.IfcType == "Building"):
                 siteobj.append(obj)
             else :
-                if link == True :
+                if link :
                     siteobj.append(obj)
                 else:
                     warning = True

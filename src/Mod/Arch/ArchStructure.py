@@ -1379,7 +1379,7 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
                 if hasattr(obj,"Align"):
                     if obj.Align == False :
                         apl = self.getAxisPlacement(obj)
-                    if obj.Align == True :
+                    if obj.Align:
                         apl = None
                 else :
                     apl = self.getAxisPlacement(obj)
@@ -1419,7 +1419,7 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
         pts = []
         if len(obj.Axes) == 1:
             if hasattr(obj,"Align"):
-                if obj.Align == True :
+                if obj.Align:
                     p0 = obj.Axes[0].Shape.Edges[0].Vertexes[1].Point
                     for e in obj.Axes[0].Shape.Edges:
                         p = e.Vertexes[1].Point

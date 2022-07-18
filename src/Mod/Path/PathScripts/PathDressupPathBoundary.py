@@ -174,7 +174,7 @@ class PathBoundary:
         lastExit = None
         for cmd in self.baseOp.Path.Commands[1:]:
             if cmd.Name in PathGeom.CmdMoveAll:
-                if bogusX == True:
+                if bogusX:
                     bogusX = "X" not in cmd.Parameters
                 if bogusY:
                     bogusY = "Y" not in cmd.Parameters
