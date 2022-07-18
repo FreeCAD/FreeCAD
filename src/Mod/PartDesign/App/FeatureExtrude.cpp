@@ -144,12 +144,9 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
 
 
         if (method == "TwoLengths") {
-            // midplane makes no sense here
             Ltotal += L2;
             if (reversed)
                 Loffset = -L;
-            else if (midplane)
-                Loffset = -0.5 * (L2 + L);
             else
                 Loffset = -L2;
         }
@@ -277,7 +274,7 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
 void FeatureExtrude::updateProperties(const std::string &method)
 {
     // disable settings that are not valid on the current method
-    // disable everything unless we are sure we don't need it
+    // disable everything unless we are sure we need it
     bool isLengthEnabled = false;
     bool isLength2Enabled = false;
     bool isOffsetEnabled = false;
