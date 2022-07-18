@@ -124,7 +124,7 @@ void PointsGrid::Rebuild (int iCtGridPerAxis)
 
 void PointsGrid::InitGrid ()
 {
-  assert(_pclPoints != nullptr);
+  assert(_pclPoints);
 
   unsigned long i, j;
 

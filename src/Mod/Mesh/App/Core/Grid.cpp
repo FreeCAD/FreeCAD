@@ -91,7 +91,7 @@ void MeshGrid::Rebuild (int iCtGridPerAxis)
 
 void MeshGrid::InitGrid ()
 {
-  assert(_pclMesh != nullptr);
+  assert(_pclMesh);
 
   unsigned long i, j;
 

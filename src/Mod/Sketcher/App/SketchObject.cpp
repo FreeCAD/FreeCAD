@@ -7685,10 +7685,10 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, 
 
     auto deps = expr->getDeps();
     auto it = deps.find(this);
-    if(it!=deps.end()) {
+    if (it!=deps.end()) {
         auto it2 = it->second.find("Constraints");
-        if(it2 != it->second.end()) {
-            for(auto &oid : it2->second) {
+        if (it2 != it->second.end()) {
+            for (auto &oid : it2->second) {
                 const Constraint * constraint = Constraints.getConstraint(oid);
 
                 if (!constraint->isDriving)
@@ -7710,7 +7710,7 @@ double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, d
     const Part::Geometry *p1=this->getGeometry(GeoId1);
     const Part::Geometry *p2=this->getGeometry(GeoId2);
 
-    if(p1!=nullptr && p2!=nullptr) {
+    if (p1 && p2) {
         int i1 = sk.addGeometry(this->getGeometry(GeoId1));
         int i2 = sk.addGeometry(this->getGeometry(GeoId2));
 

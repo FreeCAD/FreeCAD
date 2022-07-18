@@ -79,14 +79,14 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
         }
         else if (PyList_Check(pcObj)) {
             PyObject* ret = addFacets(args);
-            bool ok = (ret!=nullptr);
+            bool ok = (ret != nullptr);
             Py_XDECREF(ret);
             if (!ok)
                 return -1;
         }
         else if (PyTuple_Check(pcObj)) {
             PyObject* ret = addFacets(args);
-            bool ok = (ret!=nullptr);
+            bool ok = (ret != nullptr);
             Py_XDECREF(ret);
             if (!ok)
                 return -1;

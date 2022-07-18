@@ -578,14 +578,14 @@ Cell * PropertySheet::nonNullCellAt(CellAddress address)
 void PropertySheet::setContent(CellAddress address, const char *value)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setContent(value);
 }
 
 void PropertySheet::setAlignment(CellAddress address, int _alignment)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     if (cell->address != address) //Reject alignment change for merged cell except top-left one
         return;
     cell->setAlignment(_alignment);
@@ -594,7 +594,7 @@ void PropertySheet::setAlignment(CellAddress address, int _alignment)
 void PropertySheet::setStyle(CellAddress address, const std::set<std::string> &_style)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setStyle(_style);
 }
 
@@ -608,14 +608,14 @@ void PropertySheet::setForeground(CellAddress address, const App::Color &color)
 void PropertySheet::setBackground(CellAddress address, const App::Color &color)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setBackground(color);
 }
 
 void PropertySheet::setDisplayUnit(CellAddress address, const std::string &unit)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setDisplayUnit(unit);
 }
 
@@ -627,7 +627,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 
     const Cell * aliasedCell = getValueFromAlias(alias);
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
 
     if(aliasedCell == cell)
         return;
@@ -671,14 +671,14 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setComputedUnit(unit);
 }
 
 void PropertySheet::setSpans(CellAddress address, int rows, int columns)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setSpans(rows, columns);
 }
 

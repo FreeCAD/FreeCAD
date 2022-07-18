@@ -46,7 +46,7 @@ GeometryFacade::GeometryFacade(): Geo(nullptr), OwnerGeo(false), SketchGeoExtens
 GeometryFacade::GeometryFacade(const Part::Geometry * geometry, bool owner)
 : Geo(geometry), OwnerGeo(owner)
 {
-    assert(geometry != nullptr); // This should never be nullptr, as this constructor is protected
+    assert(geometry); // This should never be nullptr, as this constructor is protected
 
     initExtension();
 }
