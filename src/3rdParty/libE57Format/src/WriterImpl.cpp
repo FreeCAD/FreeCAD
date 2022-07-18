@@ -950,69 +950,69 @@ namespace e57
       StructureNode proto( points.prototype() );
 
       std::vector<SourceDestBuffer> sourceBuffers;
-      if ( proto.isDefined( "cartesianX" ) && ( buffers.cartesianX != nullptr ) )
+      if ( proto.isDefined( "cartesianX" ) && buffers.cartesianX )
       {
          sourceBuffers.emplace_back( imf_, "cartesianX", buffers.cartesianX, count, true, true );
       }
-      if ( proto.isDefined( "cartesianY" ) && ( buffers.cartesianY != nullptr ) )
+      if ( proto.isDefined( "cartesianY" ) && buffers.cartesianY )
       {
          sourceBuffers.emplace_back( imf_, "cartesianY", buffers.cartesianY, count, true, true );
       }
-      if ( proto.isDefined( "cartesianZ" ) && ( buffers.cartesianZ != nullptr ) )
+      if ( proto.isDefined( "cartesianZ" ) && buffers.cartesianZ )
       {
          sourceBuffers.emplace_back( imf_, "cartesianZ", buffers.cartesianZ, count, true, true );
       }
 
-      if ( proto.isDefined( "sphericalRange" ) && ( buffers.sphericalRange != nullptr ) )
+      if ( proto.isDefined( "sphericalRange" ) && buffers.sphericalRange )
       {
          sourceBuffers.emplace_back( imf_, "sphericalRange", buffers.sphericalRange, count, true, true );
       }
-      if ( proto.isDefined( "sphericalAzimuth" ) && ( buffers.sphericalAzimuth != nullptr ) )
+      if ( proto.isDefined( "sphericalAzimuth" ) && buffers.sphericalAzimuth )
       {
          sourceBuffers.emplace_back( imf_, "sphericalAzimuth", buffers.sphericalAzimuth, count, true, true );
       }
-      if ( proto.isDefined( "sphericalElevation" ) && ( buffers.sphericalElevation != nullptr ) )
+      if ( proto.isDefined( "sphericalElevation" ) && buffers.sphericalElevation )
       {
          sourceBuffers.emplace_back( imf_, "sphericalElevation", buffers.sphericalElevation, count, true, true );
       }
 
-      if ( proto.isDefined( "intensity" ) && ( buffers.intensity != nullptr ) )
+      if ( proto.isDefined( "intensity" ) && buffers.intensity )
       {
          sourceBuffers.emplace_back( imf_, "intensity", buffers.intensity, count, true, true );
       }
 
-      if ( proto.isDefined( "colorRed" ) && ( buffers.colorRed != nullptr ) )
+      if ( proto.isDefined( "colorRed" ) && buffers.colorRed )
       {
          sourceBuffers.emplace_back( imf_, "colorRed", buffers.colorRed, count, true );
       }
-      if ( proto.isDefined( "colorGreen" ) && ( buffers.colorGreen != nullptr ) )
+      if ( proto.isDefined( "colorGreen" ) && buffers.colorGreen )
       {
          sourceBuffers.emplace_back( imf_, "colorGreen", buffers.colorGreen, count, true );
       }
-      if ( proto.isDefined( "colorBlue" ) && ( buffers.colorBlue != nullptr ) )
+      if ( proto.isDefined( "colorBlue" ) && buffers.colorBlue )
       {
          sourceBuffers.emplace_back( imf_, "colorBlue", buffers.colorBlue, count, true );
       }
 
-      if ( proto.isDefined( "returnIndex" ) && ( buffers.returnIndex != nullptr ) )
+      if ( proto.isDefined( "returnIndex" ) && buffers.returnIndex )
       {
          sourceBuffers.emplace_back( imf_, "returnIndex", buffers.returnIndex, count, true );
       }
-      if ( proto.isDefined( "returnCount" ) && ( buffers.returnCount != nullptr ) )
+      if ( proto.isDefined( "returnCount" ) && buffers.returnCount )
       {
          sourceBuffers.emplace_back( imf_, "returnCount", buffers.returnCount, count, true );
       }
 
-      if ( proto.isDefined( "rowIndex" ) && ( buffers.rowIndex != nullptr ) )
+      if ( proto.isDefined( "rowIndex" ) && buffers.rowIndex )
       {
          sourceBuffers.emplace_back( imf_, "rowIndex", buffers.rowIndex, count, true );
       }
-      if ( proto.isDefined( "columnIndex" ) && ( buffers.columnIndex != nullptr ) )
+      if ( proto.isDefined( "columnIndex" ) && buffers.columnIndex )
       {
          sourceBuffers.emplace_back( imf_, "columnIndex", buffers.columnIndex, count, true );
       }
 
-      if ( proto.isDefined( "timeStamp" ) && ( buffers.timeStamp != nullptr ) )
+      if ( proto.isDefined( "timeStamp" ) && buffers.timeStamp )
       {
          sourceBuffers.emplace_back( imf_, "timeStamp", buffers.timeStamp, count, true, true );
       }
@@ -1021,19 +1021,19 @@ namespace e57
       {
          sourceBuffers.emplace_back( imf_, "cartesianInvalidState", buffers.cartesianInvalidState, count, true );
       }
-      if ( proto.isDefined( "sphericalInvalidState" ) && ( buffers.sphericalInvalidState != nullptr ) )
+      if ( proto.isDefined( "sphericalInvalidState" ) && buffers.sphericalInvalidState )
       {
          sourceBuffers.emplace_back( imf_, "sphericalInvalidState", buffers.sphericalInvalidState, count, true );
       }
-      if ( proto.isDefined( "isIntensityInvalid" ) && ( buffers.isIntensityInvalid != nullptr ) )
+      if ( proto.isDefined( "isIntensityInvalid" ) && buffers.isIntensityInvalid )
       {
          sourceBuffers.emplace_back( imf_, "isIntensityInvalid", buffers.isIntensityInvalid, count, true );
       }
-      if ( proto.isDefined( "isColorInvalid" ) && ( buffers.isColorInvalid != nullptr ) )
+      if ( proto.isDefined( "isColorInvalid" ) && buffers.isColorInvalid )
       {
          sourceBuffers.emplace_back( imf_, "isColorInvalid", buffers.isColorInvalid, count, true );
       }
-      if ( proto.isDefined( "isTimeStampInvalid" ) && ( buffers.isTimeStampInvalid != nullptr ) )
+      if ( proto.isDefined( "isTimeStampInvalid" ) && buffers.isTimeStampInvalid )
       {
          sourceBuffers.emplace_back( imf_, "isTimeStampInvalid", buffers.isTimeStampInvalid, count, true );
       }
@@ -1042,15 +1042,15 @@ namespace e57
       ustring norExtUri;
       if ( imf_.extensionsLookupPrefix( "nor", norExtUri ) )
       {
-         if ( proto.isDefined( "nor:normalX" ) && ( buffers.normalX != nullptr ) )
+         if ( proto.isDefined( "nor:normalX" ) && buffers.normalX )
          {
             sourceBuffers.emplace_back( imf_, "nor:normalX", buffers.normalX, count, true, true );
          }
-         if ( proto.isDefined( "nor:normalY" ) && ( buffers.normalY != nullptr ) )
+         if ( proto.isDefined( "nor:normalY" ) && buffers.normalY )
          {
             sourceBuffers.emplace_back( imf_, "nor:normalY", buffers.normalY, count, true, true );
          }
-         if ( proto.isDefined( "nor:normalZ" ) && ( buffers.normalZ != nullptr ) )
+         if ( proto.isDefined( "nor:normalZ" ) && buffers.normalZ )
          {
             sourceBuffers.emplace_back( imf_, "nor:normalZ", buffers.normalZ, count, true, true );
          }

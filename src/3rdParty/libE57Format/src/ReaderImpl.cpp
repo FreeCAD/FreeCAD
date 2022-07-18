@@ -1254,19 +1254,19 @@ namespace e57
          ustring name = lineGroupRecord.get( protoIndex ).elementName();
 
          if ( ( name.compare( "idElementValue" ) == 0 ) && lineGroupRecord.isDefined( "idElementValue" ) &&
-              ( idElementValue != nullptr ) )
+              idElementValue )
          {
             groupSDBuffers.emplace_back( imf_, "idElementValue", idElementValue, groupCount, true );
          }
 
          if ( ( name.compare( "startPointIndex" ) == 0 ) && lineGroupRecord.isDefined( "startPointIndex" ) &&
-              ( startPointIndex != nullptr ) )
+              startPointIndex )
          {
             groupSDBuffers.emplace_back( imf_, "startPointIndex", startPointIndex, groupCount, true );
          }
 
          if ( ( name.compare( "pointCount" ) == 0 ) && lineGroupRecord.isDefined( "pointCount" ) &&
-              ( pointCount != nullptr ) )
+              pointCount )
          {
             groupSDBuffers.emplace_back( imf_, "pointCount", pointCount, groupCount, true );
          }
