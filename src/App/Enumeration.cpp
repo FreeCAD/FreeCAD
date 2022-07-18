@@ -274,7 +274,7 @@ bool Enumeration::operator==(const Enumeration &other) const
     for (size_t i = 0; i < enumArray.size(); ++i) {
         if (enumArray[i]->data() == other.enumArray[i]->data())
             continue;
-        if (enumArray[i]->data() == nullptr || other.enumArray[i]->data() == nullptr)
+        if (!enumArray[i]->data() || !other.enumArray[i]->data())
             return false;
         if (!enumArray[i]->isEqual(other.enumArray[i]->data()))
             return false;
@@ -284,7 +284,7 @@ bool Enumeration::operator==(const Enumeration &other) const
 
 bool Enumeration::operator==(const char *other) const
 {
-    if (getCStr() == nullptr) {
+    if (!getCStr()) {
         return false;
     }
 

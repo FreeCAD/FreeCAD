@@ -1721,7 +1721,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     _lSubList.resize(lSubNames.size());
     int i = 0;
     for (std::vector<const char*>::const_iterator it = lSubNames.begin();it!=lSubNames.end();++it,++i) {
-        if (*it != nullptr)
+        if (*it)
             _lSubList[i] = *it;
     }
     updateElementReference(nullptr);
@@ -1923,7 +1923,7 @@ DocumentObject *PropertyLinkSubList::getValue() const
     App::DocumentObject* ret = nullptr;
     //FIXME: cache this to avoid iterating each time, to improve speed
     for (std::size_t i = 0; i < this->_lValueList.size(); i++) {
-        if (ret == nullptr)
+        if (!ret)
             ret = this->_lValueList[i];
         if (ret != this->_lValueList[i])
             return nullptr;

@@ -43,7 +43,7 @@ std::string ExtensionContainerPy::representation(void) const
 
 int  ExtensionContainerPy::initialization() {
 
-    if (this->ob_type->tp_dict == nullptr) {
+    if (!this->ob_type->tp_dict) {
         if (PyType_Ready(this->ob_type) < 0)
             return 0;
     }
@@ -61,7 +61,7 @@ int  ExtensionContainerPy::initialization() {
         // make sure to do the initialization only once
         if (meth->ml_name) {
             PyObject* item = PyDict_GetItemString(dict, meth->ml_name);
-            if (item == nullptr) {
+            if (!item) {
                 // Note: this adds the methods to the type object to make sure
                 // it appears in the call tips. The function will not be bound
                 // to an instance
@@ -69,7 +69,7 @@ int  ExtensionContainerPy::initialization() {
                 while (meth->ml_name) {
                     PyObject *func;
                     func = PyCFunction_New(meth, 0);
-                    if (func == nullptr)
+                    if (!func)
                         break;
                     if (PyDict_SetItemString(dict, meth->ml_name, func) < 0)
                         break;
@@ -238,7 +238,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     // make sure to do the initialization only once
     if (meth->ml_name) {
         PyObject* item = PyDict_GetItemString(dict, meth->ml_name);
-        if (item == nullptr) {
+        if (!item) {
             // Note: this adds the methods to the type object to make sure
             // it appears in the call tips. The function will not be bound
             // to an instance
@@ -246,7 +246,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
             while (meth->ml_name) {
                 PyObject *func;
                 func = PyCFunction_New(meth, 0);
-                if (func == nullptr)
+                if (!func)
                     break;
                 if (PyDict_SetItemString(dict, meth->ml_name, func) < 0)
                     break;

@@ -44,7 +44,7 @@ Range::Range(const char * range, bool normalize)
 
     assert(range != nullptr);
 
-    if (strchr(range, ':') == nullptr) {
+    if (!strchr(range, ':')) {
         from = range;
         to = range;
     }
