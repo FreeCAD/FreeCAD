@@ -32,6 +32,7 @@
 
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Shape.hxx>
+#include <gp_Ax2.hxx>
 
 #include "DrawViewPart.h"
 
@@ -121,7 +122,8 @@ public:
 
     std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
 
-    bool showSectionEdges();
+    bool showSectionEdges(void);
+    void postHlrTasks(void) override;
 
 protected:
     TopoDS_Compound sectionFaces;    //tSectionFaces
@@ -145,6 +147,8 @@ protected:
     void replaceSvgIncluded(std::string newSvgFile);
     void replacePatIncluded(std::string newPatFile);
 
+    TopoDS_Shape m_rawShape;
+    gp_Ax2 m_viewAxis;
 
 };
 

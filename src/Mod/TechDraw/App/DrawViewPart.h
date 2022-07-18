@@ -25,6 +25,12 @@
 #ifndef _DrawViewPart_h_
 #define _DrawViewPart_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QObject>
+
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 
@@ -78,6 +84,7 @@ class DrawViewSection;
 class TechDrawExport DrawViewPart : public DrawView, public CosmeticExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(TechDraw::DrawViewPart);
+    Q_OBJECT
 
 public:
     DrawViewPart();
@@ -163,6 +170,7 @@ public:
     virtual TopoDS_Shape getSourceShapeFused() const;
     virtual std::vector<TopoDS_Shape> getSourceShape2d() const;
 
+    virtual void postHlrTasks(void);
 
     bool isIso() const;
 
@@ -197,6 +205,17 @@ public:
 
     std::vector<App::DocumentObject*> getAllSources() const;
 
+    bool waitingForFaces() const { return m_waitingForFaces; }
+    void waitingForFaces(bool s) { m_waitingForFaces = s;}
+    bool waitingForHlr() const { return m_waitingForHlr; }
+    void waitingForHlr(bool s) { m_waitingForHlr = s; }
+    bool waitingForResult() const;
+
+    void progressValueChanged(int v);
+
+public Q_SLOTS:
+    void onHlrFinished(void);
+    void onFacesFinished(void);
 
 protected:
     bool checkXDirection() const;
@@ -238,6 +257,13 @@ protected:
 
 private:
     bool nowUnsetting;
+    bool m_waitingForFaces;
+    bool m_waitingForHlr;
+
+    QFutureWatcher<void> m_hlrWatcher;
+    QFuture<void> m_hlrFuture;
+    QFutureWatcher<void> m_faceWatcher;
+    QFuture<void> m_faceFuture;
 
 };
 

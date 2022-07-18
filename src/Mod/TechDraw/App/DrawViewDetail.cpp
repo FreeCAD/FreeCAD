@@ -283,11 +283,15 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
                                 DrawViewPart* dvp,
                                 DrawViewSection* dvs)
 {
+    if (waitingForResult()) {
+        Base::Console().Message("DVD::detailExec - waiting for result\n");
+        return;
+    }
+
     Base::Vector3d anchor = AnchorPoint.getValue();    //this is a 2D point (in unrotated coords)
     Base::Vector3d dirDetail = dvp->Direction.getValue();
 
     double radius = getFudgeRadius();
-    double scale = getScale();
 
     int solidCount = DrawUtil::countSubShapes(shape, TopAbs_SOLID);
     int shellCount = DrawUtil::countSubShapes(shape, TopAbs_SHELL);
@@ -469,33 +473,17 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     }
 
     geometryObject =  buildGeometryObject(scaledShape,viewAxis);
-    geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),
-                                    Radius.getValue() * scale);      //remove vertices beyond clipradius
-
-#if MOD_TECHDRAW_HANDLE_FACES
-    if (handleFaces()) {
-        try {
-            extractFaces();
-        }
-        catch (Standard_Failure& e4) {
-            Base::Console().Log("LOG - DVD::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
-            return;
-        }
-    }
-
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
     }
     catch (Standard_Failure& e1) {
         Base::Console().Message("LOG - DVD::execute - failed to create detail %s - %s **\n",getNameInDocument(),e1.GetMessageString());
         return;
     }
+}
 
-    addCosmeticVertexesToGeom();
-    addCosmeticEdgesToGeom();
-    addCenterLinesToGeom();
-
-    addReferencesToGeom();   //what if landmarks are outside detail area??
-
+void DrawViewDetail::postHlrTasks(void)
+{
+    geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),
+                                    Radius.getValue() * getScale());      //remove vertices beyond clipradius
 }
 
 TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir)

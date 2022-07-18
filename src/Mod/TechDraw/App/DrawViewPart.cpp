@@ -28,6 +28,8 @@
 #ifndef _PreComp_
 # include <sstream>
 
+#include "QtConcurrent/qtconcurrentrun.h"
+
 #include <Bnd_Box.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
@@ -126,8 +128,10 @@ using namespace std;
 PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, 
                                 TechDraw::DrawView)
 
-DrawViewPart::DrawViewPart() :
-    geometryObject(nullptr)
+DrawViewPart::DrawViewPart(void) :
+    geometryObject(nullptr),
+    m_waitingForFaces(false),
+    m_waitingForHlr(false)
 {
     static const char *group = "Projection";
     static const char *sgroup = "HLR Parameters";
@@ -246,7 +250,37 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
     return result;
 }
 
-App::DocumentObjectExecReturn *DrawViewPart::execute()
+void DrawViewPart::addShapes2d(void)
+{
+    std::vector<TopoDS_Shape> shapes = getSourceShape2d();
+    for (auto& s: shapes) {
+        //just vertices for now
+        if (s.ShapeType() == TopAbs_VERTEX) {
+            gp_Pnt gp = BRep_Tool::Pnt(TopoDS::Vertex(s));
+            Base::Vector3d vp(gp.X(), gp.Y(), gp.Z());
+            vp = vp - m_saveCentroid;
+            //need to offset the point to match the big projection
+            Base::Vector3d projected = projectPoint(vp * getScale());
+            TechDraw::VertexPtr v1(std::make_shared<TechDraw::Vertex>(projected));
+            geometryObject->addVertex(v1);
+        } else if (s.ShapeType() == TopAbs_EDGE) {
+              //not supporting edges yet.
+//            Base::Console().Message("DVP::add2dShapes - found loose edge - isNull: %d\n", s.IsNull());
+//            TopoDS_Shape sTrans = TechDraw::moveShape(s,
+//                                                      m_saveCentroid * -1.0);
+//            TopoDS_Shape sScale = TechDraw::scaleShape(sTrans,
+//                                                       getScale());
+//            TopoDS_Shape sMirror = TechDraw::mirrorShape(sScale);
+//            TopoDS_Edge edge = TopoDS::Edge(sMirror);
+//            BaseGeomPtr bg = projectEdge(edge);
+
+//            geometryObject->addEdge(bg);
+            //save connection between source feat and this edge
+        }
+    }
+}
+
+App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -302,7 +336,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute()
         }
     }
 
-//#endif //#if MOD_TECHDRAW_HANDLE_FACES
     return DrawView::execute();
 }
 
@@ -353,60 +386,16 @@ void DrawViewPart::onChanged(const App::Property* prop)
 void DrawViewPart::partExec(TopoDS_Shape shape)
 {
 //    Base::Console().Message("DVP::partExec()\n");
+    if (waitingForResult()) {
+//        Base::Console().Message("DVP::partExec - %s - GO is waiting for result\n", getNameInDocument());
+        return;
+    }
+
     if (geometryObject) {
         delete geometryObject;
         geometryObject = nullptr;
     }
     geometryObject = makeGeometryForShape(shape);
-    if (!geometryObject)
-        return;
-
-#if MOD_TECHDRAW_HANDLE_FACES
-    if (handleFaces() && !geometryObject->usePolygonHLR()) {
-        try {
-            extractFaces();
-        }
-        catch (Standard_Failure& e4) {
-            Base::Console().Log("LOG - DVP::partExec - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
-        }
-    }
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
-//    std::vector<TechDraw::Vertex*> verts = getVertexGeometry();
-    addCosmeticVertexesToGeom();
-    addCosmeticEdgesToGeom();
-    addCenterLinesToGeom();
-
-    addReferencesToGeom();
-}
-
-void DrawViewPart::addShapes2d()
-{
-    std::vector<TopoDS_Shape> shapes = getSourceShape2d();
-    for (auto& s: shapes) {
-        //just vertices for now
-        if (s.ShapeType() == TopAbs_VERTEX) {
-            gp_Pnt gp = BRep_Tool::Pnt(TopoDS::Vertex(s));
-            Base::Vector3d vp(gp.X(), gp.Y(), gp.Z());
-            vp = vp - m_saveCentroid;
-            //need to offset the point to match the big projection
-            Base::Vector3d projected = projectPoint(vp * getScale());
-            TechDraw::VertexPtr v1(std::make_shared<TechDraw::Vertex>(projected));
-            geometryObject->addVertex(v1);
-        } else if (s.ShapeType() == TopAbs_EDGE) {
-              //not supporting edges yet. 
-//            Base::Console().Message("DVP::add2dShapes - found loose edge - isNull: %d\n", s.IsNull());
-//            TopoDS_Shape sTrans = TechDraw::moveShape(s,
-//                                                      m_saveCentroid * -1.0);
-//            TopoDS_Shape sScale = TechDraw::scaleShape(sTrans,
-//                                                       getScale());
-//            TopoDS_Shape sMirror = TechDraw::mirrorShape(sScale);
-//            TopoDS_Edge edge = TopoDS::Edge(sMirror);
-//            BaseGeomPtr bg = projectEdge(edge);
-
-//            geometryObject->addEdge(bg);
-            //save connection between source feat and this edge
-        }
-    }
 }
 
 GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
@@ -452,62 +441,67 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
     go->setFocus(Focus.getValue());
     go->usePolygonHLR(CoarseView.getValue());
 
-    if (go->usePolygonHLR()){
+    if (CoarseView.getValue()){
         go->projectShapeWithPolygonAlgo(shape,
-            viewAxis);
-    }
-    else{
-        go->projectShape(shape,
-            viewAxis);
-    }
-
-    go->extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
-                        true);
-    go->extractGeometry(TechDraw::ecOUTLINE,
-                        true);
-    if (SmoothVisible.getValue()) {
-        go->extractGeometry(TechDraw::ecSMOOTH,
-                            true);
-    }
-    if (SeamVisible.getValue()) {
-        go->extractGeometry(TechDraw::ecSEAM,
-                            true);
-    }
-    if ((IsoVisible.getValue()) && (IsoCount.getValue() > 0)) {
-        go->extractGeometry(TechDraw::ecUVISO,
-                            true);
-    }
-    if (HardHidden.getValue()) {
-        go->extractGeometry(TechDraw::ecHARD,
-                            false);
-        go->extractGeometry(TechDraw::ecOUTLINE,
-                            false);
-    }
-    if (SmoothHidden.getValue()) {
-        go->extractGeometry(TechDraw::ecSMOOTH,
-                            false);
-    }
-    if (SeamHidden.getValue()) {
-        go->extractGeometry(TechDraw::ecSEAM,
-                            false);
-    }
-    if (IsoHidden.getValue() && (IsoCount.getValue() > 0)) {
-        go->extractGeometry(TechDraw::ecUVISO,
-                            false);
+                                        viewAxis);
+        onHlrFinished();    //poly algo does not run in separate thread, so we need to invoke
+                            //the post hlr processing manually
+    } else {
+        waitingForHlr(true);
+        QObject::connect(&m_hlrWatcher, SIGNAL(finished()), this, SLOT(onHlrFinished()));
+        m_hlrFuture = QtConcurrent::run(go, &GeometryObject::projectShape, shape, viewAxis);
+        m_hlrWatcher.setFuture(m_hlrFuture);
     }
 
-    const BaseGeomPtrVector& edges = go->getEdgeGeometry();
-    if (edges.empty())
-        Base::Console().Log("DVP::buildGO - NO extracted edges!\n");
-    bbox = go->calcBoundingBox();
     return go;
+}
+
+//continue processing after hlr thread completes
+void DrawViewPart::onHlrFinished(void)
+{
+    waitingForHlr(false);
+
+    bbox = geometryObject->calcBoundingBox();
+
+    if (handleFaces() && !CoarseView.getValue()) {
+        try {
+            QObject::connect(&m_faceWatcher, SIGNAL(finished()), this, SLOT(onFacesFinished()));
+            m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
+            m_faceWatcher.setFuture(m_faceFuture);
+        }
+        catch (Standard_Failure& e4) {
+            Base::Console().Message("DVP::partExec - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
+        }
+    }
+
+    addCosmeticVertexesToGeom();
+    addCosmeticEdgesToGeom();
+    addCenterLinesToGeom();
+
+    addReferencesToGeom();
+
+    postHlrTasks();
+
+    requestPaint();
+}
+
+void DrawViewPart::postHlrTasks(void)
+{
+    //nothing to do here. DVDetail and DVSection have special needs.
 }
 
 //! make faces from the existing edge geometry
 void DrawViewPart::extractFaces()
 {
-    if (!geometryObject)
+    if (!geometryObject) {
         return;
+    }
+
+    if (waitingForFaces()) {
+        return;
+    }
+
+    waitingForFaces(true);
     geometryObject->clearFaceGeom();
     const std::vector<TechDraw::BaseGeomPtr>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
@@ -598,10 +592,11 @@ void DrawViewPart::extractFaces()
 
     if (newEdges.empty()) {
         Base::Console().Log("DVP::extractFaces - no newEdges\n");
+        waitingForFaces(false);
         return;
     }
 
-    newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);        //<<< here
+    newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);
 
 //find all the wires in the pile of faceEdges
     EdgeWalker ew;
@@ -609,6 +604,7 @@ void DrawViewPart::extractFaces()
     bool success = ew.perform();
     if (!success) {
         Base::Console().Warning("DVP::extractFaces - %s -Can't make faces from projected edges\n", getNameInDocument());
+        waitingForFaces(false);
         return;
     }
     std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
@@ -631,6 +627,15 @@ void DrawViewPart::extractFaces()
         f->wires.push_back(w);
         geometryObject->addFaceGeom(f);
     }
+    waitingForFaces(false);
+}
+
+//continue processing after extractFaces thread completes
+void DrawViewPart::onFacesFinished(void)
+{
+//    Base::Console().Message("DVP::onFacesFinished()\n");
+    waitingForFaces(false);
+    requestPaint();
 }
 
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
@@ -704,7 +709,10 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 {
     std::vector<TechDraw::FacePtr> result;
-    if (geometryObject) {
+    if (waitingForFaces()) {
+        return result;
+    }
+    if (geometryObject != nullptr) {
         result = geometryObject->getFaceGeometry();
     }
     return result;
@@ -724,11 +732,11 @@ TechDraw::BaseGeomPtr DrawViewPart::getGeomByIndex(int idx) const
 {
     const std::vector<TechDraw::BaseGeomPtr> &geoms = getEdgeGeometry();
     if (geoms.empty()) {
-        Base::Console().Log("INFO - getGeomByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
+        Base::Console().Log("DVP::getGeomByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
         return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Log("INFO - getGeomByIndex(%d) - invalid index\n",idx);
+        Base::Console().Error("DVP::getGeomByIndex(%d) - invalid index - size: %d\n", idx, geoms.size());
         return nullptr;
     }
     return geoms.at(idx);
@@ -739,11 +747,11 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
 {
     const std::vector<TechDraw::VertexPtr> &geoms = getVertexGeometry();
     if (geoms.empty()) {
-        Base::Console().Log("INFO - getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
+        Base::Console().Log("DVP::getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
         return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Log("INFO - getProjVertexByIndex(%d) - invalid index\n",idx);
+        Base::Console().Error("DVP::getProjVertexByIndex(%d) - invalid index\n",idx);
         return nullptr;
     }
     return geoms.at(idx);
@@ -871,11 +879,28 @@ BaseGeomPtr DrawViewPart::projectEdge(const TopoDS_Edge& e) const
     return result;
 }
 
-bool DrawViewPart::hasGeometry() const
+bool DrawViewPart::waitingForResult() const
+{
+    bool result(false);
+    if (waitingForHlr()) {
+        result = true;
+    }
+//    if (waitingForFaces()) {
+//        result = true;
+//    }
+    return result;
+}
+
+bool DrawViewPart::hasGeometry(void) const
 {
     bool result = false;
-    if (!geometryObject)
+    if (!geometryObject) {
         return result;
+    }
+
+    if (waitingForResult()) {
+        return result;
+    }
     const std::vector<TechDraw::VertexPtr> &verts = getVertexGeometry();
     const std::vector<TechDraw::BaseGeomPtr> &edges = getEdgeGeometry();
     if (verts.empty() &&
@@ -1516,6 +1541,7 @@ int DrawViewPart::prefIsoCount()
     return result;
 }
 
+#include <Mod/TechDraw/App/moc_DrawViewPart.cpp>
 
 // Python Drawing feature ---------------------------------------------------------
 

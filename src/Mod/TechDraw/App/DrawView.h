@@ -23,15 +23,17 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <boost_signals2.hpp>
 
 #include <QCoreApplication>
+#include <QObject>
 #include <QRectF>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace TechDraw
@@ -44,7 +46,7 @@ class DrawLeaderLine;
 
 /** Base class of all View Features in the drawing module
  */
-class TechDrawExport DrawView : public App::DocumentObject
+class TechDrawExport DrawView : public App::DocumentObject, public QObject
 {
     Q_DECLARE_TR_FUNCTIONS(TechDraw::DrawView)
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawView);

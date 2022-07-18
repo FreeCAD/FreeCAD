@@ -75,6 +75,8 @@ public:
 
     std::vector<DrawViewDetail*> getDetailRefs() const override;
 
+    void postHlrTasks(void) override;
+
 protected:
     Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
     void getParameters();
