@@ -443,7 +443,7 @@ std::vector<bool> ParameterGrp::GetBools(const char * sFilter) const
     while ( pcTemp) {
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter)!= std::string::npos) {
             if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(),"1"))
                 vrValues.push_back(false);
             else
@@ -464,7 +464,7 @@ std::vector<std::pair<std::string,bool> > ParameterGrp::GetBoolMap(const char * 
     while ( pcTemp) {
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(),"1"))
                 vrValues.emplace_back(Name, false);
             else
@@ -510,7 +510,7 @@ std::vector<long> ParameterGrp::GetInts(const char * sFilter) const
     while ( pcTemp ) {
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             vrValues.push_back(atol(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str()) );
         }
         pcTemp = FindNextElement(pcTemp,"FCInt") ;
@@ -528,7 +528,7 @@ std::vector<std::pair<std::string,long> > ParameterGrp::GetIntMap(const char * s
     while ( pcTemp ) {
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             vrValues.emplace_back(Name,
                                ( atol (StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str())));
         }
@@ -572,7 +572,7 @@ std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char * sFilter) cons
     while ( pcTemp ) {
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             vrValues.push_back( strtoul (StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(),nullptr,10) );
         }
         pcTemp = FindNextElement(pcTemp,"FCUInt") ;
@@ -590,7 +590,7 @@ std::vector<std::pair<std::string,unsigned long> > ParameterGrp::GetUnsignedMap(
     while ( pcTemp ) {
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             vrValues.emplace_back(Name,
                                ( strtoul (StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(),nullptr,10) ));
         }
@@ -634,7 +634,7 @@ std::vector<double> ParameterGrp::GetFloats(const char * sFilter) const
     while ( pcTemp ) {
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             vrValues.push_back( atof (StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str()) );
         }
         pcTemp = FindNextElement(pcTemp,"FCFloat");
@@ -652,7 +652,7 @@ std::vector<std::pair<std::string,double> > ParameterGrp::GetFloatMap(const char
     while ( pcTemp ) {
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             vrValues.emplace_back(Name,
                                ( atof (StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str())));
         }
@@ -722,7 +722,7 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
     while ( pcTemp  ) {
         Name = StrXUTF8(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             // retrieve the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
@@ -745,7 +745,7 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
     while ( pcTemp) {
         Name = StrXUTF8(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
-        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
+        if (!sFilter || Name.find(sFilter) != std::string::npos) {
             // retrieve the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
