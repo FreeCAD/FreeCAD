@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>400</height>
+    <width>400</width>
+    <height>282</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,8 +29,8 @@
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
-         <widget class="Gui::PrefColorButton" name="dim3dColorButton" native="true">
-          <property name="color" stdset="0">
+         <widget class="Gui::PrefColorButton" name="dim3dColorButton">
+          <property name="color">
            <color>
             <red>255</red>
             <green>0</green>
@@ -48,7 +48,7 @@
         <item row="0" column="1">
          <widget class="QLabel" name="label_1">
           <property name="text">
-           <string>3d Color</string>
+           <string>3D color</string>
           </property>
          </widget>
         </item>
@@ -66,8 +66,8 @@
          </spacer>
         </item>
         <item row="1" column="0">
-         <widget class="Gui::PrefColorButton" name="dimDeltaColorButton" native="true">
-          <property name="color" stdset="0">
+         <widget class="Gui::PrefColorButton" name="dimDeltaColorButton">
+          <property name="color">
            <color>
             <red>0</red>
             <green>255</green>
@@ -85,13 +85,13 @@
         <item row="1" column="1">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Delta Color</string>
+           <string>Delta color</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="Gui::PrefColorButton" name="dimAngularColorButton" native="true">
-          <property name="color" stdset="0">
+         <widget class="Gui::PrefColorButton" name="dimAngularColorButton">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -109,7 +109,7 @@
         <item row="2" column="1">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Angular Color</string>
+           <string>Angular color</string>
           </property>
          </widget>
         </item>
@@ -142,7 +142,7 @@
         <item row="4" column="1">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Font Size</string>
+           <string>Font size</string>
           </property>
          </widget>
         </item>
@@ -185,13 +185,8 @@
         </item>
         <item row="5" column="0" colspan="2">
          <widget class="Gui::PrefFontBox" name="fontNameComboBox">
-          <property name="writingSystem">
-           <enum>QFontDatabase::Latin</enum>
-          </property>
-          <property name="currentFont">
-           <font>
-            <family>Serif</family>
-           </font>
+          <property name="currentText">
+           <string>defaultFont</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DimensionsFontName</cstring>
@@ -204,23 +199,33 @@
         <item row="5" column="2">
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Font Name</string>
+           <string>Font name</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1" colspan="2" alignment="Qt::AlignHCenter">
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
          <widget class="QPushButton" name="pushButtonRefresh">
           <property name="text">
-           <string>Measure Refresh</string>
+           <string>Refresh existing measures</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -244,9 +249,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefSpinBox</class>
@@ -254,13 +259,18 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefFontBox</class>
-   <extends>QFontComboBox</extends>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFontBox</class>
+   <extends>QFontComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
