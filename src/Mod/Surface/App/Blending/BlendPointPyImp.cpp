@@ -27,12 +27,13 @@
 #include <TColgp_Array1OfPnt.hxx>
 #include <TopoDS.hxx>
 #endif
+#include "Blending/BlendPoint.h"
+#include "Blending/BlendPointPy.h"
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/TopoShapePy.h>
-#include "Blending/BlendPoint.h"
-#include "Blending/BlendPointPy.h"
 #include "Blending/BlendPointPy.cpp"
+
 
 using namespace Surface;
 
@@ -51,7 +52,7 @@ PyObject *BlendPointPy::PyMake(struct _typeobject *, PyObject *, PyObject *)// P
     return new BlendPointPy(new BlendPoint);
 }
 
-int BlendPointPy::PyInit(PyObject* args, PyObject*)
+int BlendPointPy::PyInit(PyObject *args, PyObject *)
 {
     PyObject *plist;
     std::vector<Base::Vector3d> vecs;
@@ -89,6 +90,11 @@ int BlendPointPy::PyInit(PyObject* args, PyObject*)
             TopoDS_Shape shape = static_cast<Part::TopoShapePy *>(pcObj)->getTopoShapePtr()->getShape();
             const TopoDS_Edge &e = TopoDS::Edge(shape);
             BRepAdaptor_Curve adapt(e);
+            if (param < adapt.FirstParameter() || param > adapt.LastParameter()) {
+                PyErr_Warn(PyExc_UserWarning, "BlendPoint: edge is not a closed curve");
+                Base::Console().Message("fp=%f\n", adapt.FirstParameter());
+                Base::Console().Message("lp=%f\n", adapt.LastParameter());
+            }
 
             adapt.D0(param, Pt);
             Base::Vector3d bv(Pt.X(), Pt.Y(), Pt.Z());

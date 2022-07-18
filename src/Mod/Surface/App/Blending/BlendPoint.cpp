@@ -45,7 +45,7 @@ BlendPoint::BlendPoint(std::vector<Base::Vector3d> vectorList)
 
 BlendPoint::BlendPoint()
 {
-    vectors.emplace_back(Base::Vector3d(0, 0, 0));   
+    vectors.emplace_back(Base::Vector3d(0, 0, 0));
 }
 
 BlendPoint::~BlendPoint()
