@@ -53,13 +53,13 @@ GeometryFacade::GeometryFacade(const Part::Geometry * geometry, bool owner)
 
 GeometryFacade::~GeometryFacade()
 {
-    if (OwnerGeo && Geo != nullptr)
+    if (OwnerGeo && Geo)
         delete Geo;
 }
 
 std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geometry, bool owner)
 {
-    if(geometry != nullptr)
+    if(geometry)
         return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry, owner));
     else
         return std::unique_ptr<GeometryFacade>(nullptr);
@@ -68,7 +68,7 @@ std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geome
 
 std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry * geometry)
 {
-    if(geometry != nullptr)
+    if(geometry)
         return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
      else
         return std::unique_ptr<const GeometryFacade>(nullptr);
@@ -79,7 +79,7 @@ void GeometryFacade::setGeometry(Part::Geometry *geometry)
 {
     Geo = geometry;
 
-    if(geometry != nullptr)
+    if(geometry)
         initExtension();
     else
         THROWM(Base::ValueError, "GeometryFacade initialized with Geometry null pointer");
@@ -113,7 +113,7 @@ void GeometryFacade::initExtension() const
 
 void GeometryFacade::throwOnNullPtr(const Part::Geometry * geo)
 {
-    if(geo == nullptr)
+    if(!geo)
         THROWM(Base::ValueError, "Geometry is nullptr!");
 }
 

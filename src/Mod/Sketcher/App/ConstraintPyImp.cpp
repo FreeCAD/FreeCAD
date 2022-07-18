@@ -105,13 +105,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = Equal;
                 valid = true;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) {
+            else if (strstr(ConstraintType,"InternalAlignment")) {
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
-                if(strstr(ConstraintType,"EllipseMajorDiameter") != nullptr)
+                if(strstr(ConstraintType,"EllipseMajorDiameter"))
                     this->getConstraintPtr()->AlignmentType=EllipseMajorDiameter;
-                else if(strstr(ConstraintType,"EllipseMinorDiameter") != nullptr)
+                else if(strstr(ConstraintType,"EllipseMinorDiameter"))
                     this->getConstraintPtr()->AlignmentType=EllipseMinorDiameter;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
@@ -198,14 +198,14 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = PointOnObject;
                 valid = true;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) {
+            else if (strstr(ConstraintType,"InternalAlignment")) {
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
 
-                if(strstr(ConstraintType,"EllipseFocus1") != nullptr)
+                if(strstr(ConstraintType,"EllipseFocus1"))
                     this->getConstraintPtr()->AlignmentType=EllipseFocus1;
-                else if(strstr(ConstraintType,"EllipseFocus2") != nullptr)
+                else if(strstr(ConstraintType,"EllipseFocus2"))
                     this->getConstraintPtr()->AlignmentType=EllipseFocus2;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
@@ -313,12 +313,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
                 return 0;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) { // InteralAlignment with InternalElementIndex argument
+            else if (strstr(ConstraintType,"InternalAlignment")) { // InteralAlignment with InternalElementIndex argument
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
 
-                if(strstr(ConstraintType,"BSplineControlPoint") != nullptr) {
+                if(strstr(ConstraintType,"BSplineControlPoint")) {
                     this->getConstraintPtr()->AlignmentType=BSplineControlPoint;
                 }
                 else {

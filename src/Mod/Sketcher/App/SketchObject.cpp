@@ -3343,7 +3343,7 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
-        if (body_this == nullptr) {
+        if (!body_this) {
             return true;
         } else if (body_this == body_obj) {
             return true;
@@ -3402,7 +3402,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
-        if (body_this != nullptr) {
+        if (body_this) {
             if (body_this != body_obj) {
                 if (!this->allowOtherBody) {
                     if (rsn)

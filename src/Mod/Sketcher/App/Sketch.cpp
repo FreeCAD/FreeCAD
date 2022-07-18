@@ -416,7 +416,7 @@ bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &block
             continue;
         }
         // 4.2. satisfiable and not satisfied
-        if(prop_groups[i].blocking_param_in_group == nullptr) {
+        if(!prop_groups[i].blocking_param_in_group) {
             unsatisfied_groups = true;
         }
     }
@@ -2677,7 +2677,7 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
         l2p2 = &Points[Geoms[geoId2].startPointId];
     }
 
-    if (l1p1 == nullptr || l2p1 == nullptr)
+    if (!l1p1 || !l2p1)
         return -1;
 
     int tag = ++ConstraintsCounter;
