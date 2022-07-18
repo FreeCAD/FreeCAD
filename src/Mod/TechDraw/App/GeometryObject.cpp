@@ -158,29 +158,19 @@ void GeometryObject::clear()
     edgeGeom.clear();
 }
 
-//!set up a hidden line remover and project a shape with it
-void GeometryObject::projectShape(const TopoDS_Shape& input,
+void GeometryObject::projectShape(const TopoDS_Shape& inShape,
                                   const gp_Ax2& viewAxis)
 {
-//    Base::Console().Message("GO::projectShape() - %s\n", m_parentName.c_str());
-   // Clear previous Geometry
     clear();
-//    DrawUtil::dumpCS("GO::projectShape - VA in", viewAxis);    //debug
 
-    auto start = chrono::high_resolution_clock::now();
 
     Handle(HLRBRep_Algo) brep_hlr;
     try {
         brep_hlr = new HLRBRep_Algo();
-        brep_hlr->Add(input, m_isoCount);
-        if (m_isPersp) {
-            double fLength = std::max(Precision::Confusion(),m_focus);
-            HLRAlgo_Projector projector( viewAxis, fLength );
-            brep_hlr->Projector(projector);
-        } else {
-            HLRAlgo_Projector projector( viewAxis );
-            brep_hlr->Projector(projector);
-        }
+//        brep_hlr->Debug(true);
+        brep_hlr->Add(inShape);
+        HLRAlgo_Projector projector( viewAxis );
+        brep_hlr->Projector(projector);
         brep_hlr->Update();
         brep_hlr->Hide();
 
@@ -188,77 +178,120 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
                               e.GetMessageString());
+        throw Base::RuntimeError("GeometryObject::hlrExecute - OCC error");
         }
     catch (...) {
-        Base::Console().Error("GeometryObject::projectShape - unknown error occurred while projecting shape\n");
-//        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
+        throw Base::RuntimeError("GeometryObject::hlrExecute - unknown error");
     }
-
-    auto end   = chrono::high_resolution_clock::now();
-    auto diff  = end - start;
-    double diffOut = chrono::duration <double, milli> (diff).count();
-    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_Algo & co\n",m_parentName.c_str(),diffOut);
-
-    start = chrono::high_resolution_clock::now();
 
     try {
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
 
-        visHard    = hlrToShape.VCompound();
-        BRepLib::BuildCurves3d(visHard);
-        visHard = invertGeometry(visHard);
-//        BRepTools::Write(visHard, "GOvisHardi.brep");            //debug
+        if (!hlrToShape.VCompound().IsNull()) {
+            visHard    = hlrToShape.VCompound();
+            BRepLib::BuildCurves3d(visHard);
+            visHard = invertGeometry(visHard);
+        }
 
-        visSmooth  = hlrToShape.Rg1LineVCompound();
-        BRepLib::BuildCurves3d(visSmooth);
-        visSmooth = invertGeometry(visSmooth);
+        if (!hlrToShape.Rg1LineVCompound().IsNull()) {
+            visSmooth  = hlrToShape.Rg1LineVCompound();
+            BRepLib::BuildCurves3d(visSmooth);
+            visSmooth = invertGeometry(visSmooth);
+        }
 
-        visSeam    = hlrToShape.RgNLineVCompound();
-        BRepLib::BuildCurves3d(visSeam);
-        visSeam = invertGeometry(visSeam);
+        if (!hlrToShape.RgNLineVCompound().IsNull()) {
+            visSeam    = hlrToShape.RgNLineVCompound();
+            BRepLib::BuildCurves3d(visSeam);
+            visSeam = invertGeometry(visSeam);
+        }
 
-        visOutline    = hlrToShape.OutLineVCompound();
-        BRepLib::BuildCurves3d(visOutline);
-        visOutline = invertGeometry(visOutline);
+        if (!hlrToShape.OutLineVCompound().IsNull()) {
+//            BRepTools::Write(hlrToShape.OutLineVCompound(), "GOOutLineVCompound.brep");            //debug
+            visOutline    = hlrToShape.OutLineVCompound();
+            BRepLib::BuildCurves3d(visOutline);
+            visOutline = invertGeometry(visOutline);
+        }
 
-        visIso     = hlrToShape.IsoLineVCompound();
-        BRepLib::BuildCurves3d(visIso);
-        visIso = invertGeometry(visIso);
+        if (!hlrToShape.IsoLineVCompound().IsNull()) {
+            visIso     = hlrToShape.IsoLineVCompound();
+            BRepLib::BuildCurves3d(visIso);
+            visIso = invertGeometry(visIso);
+        }
 
-        hidHard    = hlrToShape.HCompound();
-        BRepLib::BuildCurves3d(hidHard);
-        hidHard = invertGeometry(hidHard);
-//        BRepTools::Write(hidHard, "GOhidHardi.brep");            //debug
+        if (!hlrToShape.HCompound().IsNull()) {
+            hidHard    = hlrToShape.HCompound();
+            BRepLib::BuildCurves3d(hidHard);
+            hidHard = invertGeometry(hidHard);
+        }
 
-        hidSmooth  = hlrToShape.Rg1LineHCompound();
-        BRepLib::BuildCurves3d(hidSmooth);
-        hidSmooth = invertGeometry(hidSmooth);
+        if (!hlrToShape.Rg1LineHCompound().IsNull()) {
+            hidSmooth  = hlrToShape.Rg1LineHCompound();
+            BRepLib::BuildCurves3d(hidSmooth);
+            hidSmooth = invertGeometry(hidSmooth);
+        }
 
-        hidSeam    = hlrToShape.RgNLineHCompound();
-        BRepLib::BuildCurves3d(hidSeam);
-        hidSeam = invertGeometry(hidSeam);
+        if (!hlrToShape.RgNLineHCompound().IsNull()) {
+            hidSeam    = hlrToShape.RgNLineHCompound();
+            BRepLib::BuildCurves3d(hidSeam);
+            hidSeam = invertGeometry(hidSeam);
+        }
 
-        hidOutline = hlrToShape.OutLineHCompound();
-        BRepLib::BuildCurves3d(hidOutline);
-        hidOutline = invertGeometry(hidOutline);
+        if (!hlrToShape.OutLineHCompound().IsNull()) {
+            hidOutline = hlrToShape.OutLineHCompound();
+            BRepLib::BuildCurves3d(hidOutline);
+            hidOutline = invertGeometry(hidOutline);
+        }
 
-        hidIso     = hlrToShape.IsoLineHCompound();
-        BRepLib::BuildCurves3d(hidIso);
-        hidIso = invertGeometry(hidIso);
-
+        if (!hlrToShape.IsoLineHCompound().IsNull()) {
+            hidIso     = hlrToShape.IsoLineHCompound();
+            BRepLib::BuildCurves3d(hidIso);
+            hidIso = invertGeometry(hidIso);
+        }
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error("GO::projectShape - OCC error - %s - while extracting edges\n",
-                              e.GetMessageString());
+        throw Base::RuntimeError("GeometryObject::hlrExecute - OCC error occurred while extracting edges");
     }
     catch (...) {
-        Base::Console().Error("GO::projectShape - unknown error while extracting edges\n");
-//        throw Base::RuntimeError("GeometryObject::projectShape - error occurred while extracting edges");
+        throw Base::RuntimeError("GeometryObject::hlrExecute - unknown error occurred while extracting edges");
     }
-    end   = chrono::high_resolution_clock::now();
-    diff  = end - start;
-    diffOut = chrono::duration <double, milli> (diff).count();
-    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in hlrToShape and BuildCurves\n",m_parentName.c_str(),diffOut);
+
+    //convert the hlr output into TD Geometry
+    const DrawViewPart* dvp = static_cast<const DrawViewPart*>(m_parent);
+    extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
+                        true);
+    extractGeometry(TechDraw::ecOUTLINE,
+                        true);
+    if (dvp->SmoothVisible.getValue()) {
+        extractGeometry(TechDraw::ecSMOOTH,
+                            true);
+    }
+    if (dvp->SeamVisible.getValue()) {
+        extractGeometry(TechDraw::ecSEAM,
+                            true);
+    }
+    if ((dvp->IsoVisible.getValue()) && (dvp->IsoCount.getValue() > 0)) {
+        extractGeometry(TechDraw::ecUVISO,
+                            true);
+    }
+    if (dvp->HardHidden.getValue()) {
+        extractGeometry(TechDraw::ecHARD,
+                            false);
+        extractGeometry(TechDraw::ecOUTLINE,
+                            false);
+    }
+    if (dvp->SmoothHidden.getValue()) {
+        extractGeometry(TechDraw::ecSMOOTH,
+                            false);
+    }
+    if (dvp->SeamHidden.getValue()) {
+        extractGeometry(TechDraw::ecSEAM,
+                            false);
+    }
+    if (dvp->IsoHidden.getValue() && (dvp->IsoCount.getValue() > 0)) {
+        extractGeometry(TechDraw::ecUVISO,
+                            false);
+    }
+
 }
 
 //mirror a shape thru XZ plane for Qt's inverted Y coordinate
