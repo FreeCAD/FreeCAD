@@ -299,7 +299,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
     } else {
         dvp = static_cast<TechDraw::DrawViewPart*>(base);
     }
-    
+
     TopoDS_Shape baseShape;
     if (FuseBeforeCut.getValue()) {
         baseShape = dvp->getSourceShapeFused();
@@ -346,12 +346,17 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
         }
     }
 
-    dvp->requestPaint();  //to refresh section line
     return DrawView::execute();
 }
 
 void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 {
+//    Base::Console().Message("DVS::sectionExec() - %s\n", getNameInDocument());
+    if (waitingForResult()) {
+//        Base::Console().Message("DVS::sectionExec - waiting for result\n");
+        return;
+    }
+
 // cut base shape with tool
     //is SectionOrigin valid?
     Bnd_Box centerBox;
@@ -452,11 +457,10 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 //            DrawUtil::dumpCS("DVS::execute - CS to GO", viewAxis);
         }
 
-        geometryObject = buildGeometryObject(scaledShape,viewAxis);
+        m_rawShape = rawShape;  //save for postHlrTasks
+        m_viewAxis= viewAxis;   //save for postHlrTasks
 
-#if MOD_TECHDRAW_HANDLE_FACES
-        extractFaces();
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
+        geometryObject = buildGeometryObject(scaledShape,viewAxis);
     }
     catch (Standard_Failure& e1) {
         Base::Console().Warning("DVS::execute - failed to build base shape %s - %s **\n",
@@ -464,78 +468,84 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
         return;
     }
 //display geometry for cut shape is in geometryObject as in DVP
+}
 
-// build section face geometry
-        TopoDS_Compound faceIntersections = findSectionPlaneIntersections(rawShape);
-        TopoDS_Shape centeredShapeF = TechDraw::moveShape(faceIntersections,
-                                                           m_saveCentroid * -1.0);
+void DrawViewSection::postHlrTasks(void)
+{
+//    Base::Console().Message("DVS::postHlrTasks() - %s\n", getNameInDocument());
+    // build section face geometry
+    TopoDS_Compound faceIntersections = findSectionPlaneIntersections(m_rawShape);
+    TopoDS_Shape centeredShapeF = TechDraw::moveShape(faceIntersections,
+                                                       m_saveCentroid * -1.0);
 
-        TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShapeF,
-                                                          getScale());
-        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-            scaledSection = TechDraw::rotateShape(scaledSection,
-                                                  viewAxis,
-                                                  Rotation.getValue());
-        }
-        if (debugSection()) {
-            BRepTools::Write(scaledSection, "DVSScaledFaces.brep");            //debug
-        }
-// scaledSection is compound of TopoDS_Face intersections, but aligned to pln(origin, sectionNormal)
-// needs to be aligned to pln (origin, stdZ);
-        gp_Ax3 R3;
-        gp_Ax2 projCS = getSectionCS();
-        gp_Ax3 proj3 = gp_Ax3(gp_Pnt(0.0, 0.0, 0.0),
-                       projCS.Direction(),
-                       projCS.XDirection());
-        gp_Trsf fromR3;
-        fromR3.SetTransformation(R3, proj3);
-        BRepBuilderAPI_Transform xformer(fromR3);
-        xformer.Perform(scaledSection, true);
-        if (xformer.IsDone()) {
-            sectionFaces = TopoDS::Compound(xformer.Shape());
+    TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShapeF,
+                                                      getScale());
+    if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+        scaledSection = TechDraw::rotateShape(scaledSection,
+                                              m_viewAxis,
+                                              Rotation.getValue());
+    }
+    if (debugSection()) {
+        BRepTools::Write(scaledSection, "DVSScaledFaces.brep");            //debug
+    }
+
+    // scaledSection is compound of TopoDS_Face intersections, but aligned to pln(origin, sectionNormal)
+    // needs to be aligned to pln (origin, stdZ);
+    gp_Ax3 R3;
+    gp_Ax2 projCS = getSectionCS();
+    gp_Ax3 proj3 = gp_Ax3(gp_Pnt(0.0, 0.0, 0.0),
+                   projCS.Direction(),
+                   projCS.XDirection());
+    gp_Trsf fromR3;
+    fromR3.SetTransformation(R3, proj3);
+    BRepBuilderAPI_Transform xformer(fromR3);
+    xformer.Perform(scaledSection, true);
+    if (xformer.IsDone()) {
+        sectionFaces = TopoDS::Compound(xformer.Shape());
 //            BRepTools::Write(sectionFaces, "DVSXFaces.brep");    //debug
-        } else {
-            Base::Console().Message("DVS::sectionExec - face xform failed\n");
-        }
+    } else {
+        Base::Console().Message("DVS::sectionExec - face xform failed\n");
+    }
 
-        sectionFaces = TopoDS::Compound(GeometryObject::invertGeometry(sectionFaces));     //handle Qt -y
+    sectionFaces = TopoDS::Compound(GeometryObject::invertGeometry(sectionFaces));     //handle Qt -y
 
     //turn section faces into something we can draw
-        tdSectionFaces.clear();
-        TopExp_Explorer sectionExpl(sectionFaces, TopAbs_FACE);
-        int iface = 0;
-        for (; sectionExpl.More(); sectionExpl.Next()) {
-            iface++;
-            const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
-            TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
-            TopExp_Explorer expFace(face, TopAbs_WIRE);
-            int iwire = 0;
-            for ( ; expFace.More(); expFace.Next()) {
-                iwire++;
-                TechDraw::Wire* w = new TechDraw::Wire();
-                const TopoDS_Wire& wire = TopoDS::Wire(expFace.Current());
-                int iedge = 0;
-                TopExp_Explorer expWire(wire, TopAbs_EDGE);
-                for ( ; expWire.More(); expWire.Next()) {
-                    iedge++;
-                    const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
-                    TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
-                    if (e) {
-                        w->geoms.push_back(e);
-                    }
+    tdSectionFaces.clear();
+    TopExp_Explorer sectionExpl(sectionFaces, TopAbs_FACE);
+    int iface = 0;
+    for (; sectionExpl.More(); sectionExpl.Next()) {
+        iface++;
+        const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
+        TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
+        TopExp_Explorer expFace(face, TopAbs_WIRE);
+        int iwire = 0;
+        for ( ; expFace.More(); expFace.Next()) {
+            iwire++;
+            TechDraw::Wire* w = new TechDraw::Wire();
+            const TopoDS_Wire& wire = TopoDS::Wire(expFace.Current());
+            int iedge = 0;
+            TopExp_Explorer expWire(wire, TopAbs_EDGE);
+            for ( ; expWire.More(); expWire.Next()) {
+                iedge++;
+                const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
+                TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
+                if (e) {
+                    w->geoms.push_back(e);
                 }
-                sectionFace->wires.push_back(w);
             }
-            tdSectionFaces.push_back(sectionFace);
+            sectionFace->wires.push_back(w);
         }
+        tdSectionFaces.push_back(sectionFace);
+    }
 
-// add cosmetic entities to view
-    addCosmeticVertexesToGeom();
-    addCosmeticEdgesToGeom();
-    addCenterLinesToGeom();
-
-// add landmark dim reference points to view
-    addReferencesToGeom();
+    App::DocumentObject* base = BaseView.getValue();
+    if (base != nullptr) {
+        if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(base);
+            dvp->requestPaint();  //to refresh section line
+        }
+    }
+    requestPaint();
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
