@@ -656,7 +656,7 @@ void PointsGrid::Validate (const PointKernel &rclPoints)
 
 void PointsGrid::Validate ()
 {
-  if (_pclPoints == nullptr)
+  if (!_pclPoints)
     return;
 
   if (_pclPoints->size() != _ulCtElements)
