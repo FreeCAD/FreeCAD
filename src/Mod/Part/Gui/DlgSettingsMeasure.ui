@@ -161,7 +161,7 @@
            <cstring>DimensionsFontStyleBold</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>
@@ -179,7 +179,7 @@
            <cstring>DimensionsFontStyleItalic</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>
