@@ -224,6 +224,21 @@ void PartGui::dumpLinearResults(const BRepExtrema_DistShapeShape &measure)
   Base::Console().Message(out.str().c_str());
 }
 
+auto PartGui::getDimensionsFontName()
+{
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  std::string fontName = group->GetASCII("DimensionsFontName", "defaultFont")
+    + (group->GetBool("DimensionsFontStyleBold",   false) ? " :Bold"   : "")
+    + (group->GetBool("DimensionsFontStyleItalic", false) ? " :Italic" : "");
+  return fontName;
+}
+
+auto PartGui::getDimensionsFontSize()
+{
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  return group->GetInt("DimensionsFontSize", 30);
+}
+
 Gui::View3DInventorViewer * PartGui::getViewer()
 {
   Gui::Document *doc = Gui::Application::Instance->activeDocument();
@@ -240,12 +255,9 @@ Gui::View3DInventorViewer * PartGui::getViewer()
 
 void PartGui::addLinearDimensions(const BRepExtrema_DistShapeShape &measure)
 {
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-  App::Color c(1.0,0.0,0.0);
-  c.fromHexString(group->GetASCII("Dimensions3dColor", c.asHexString().c_str()));
-  App::Color d(0.0,1.0,0.0);
-  d.fromHexString(group->GetASCII("DimensionsDeltaColor", d.asHexString().c_str()));
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  App::Color c((uint32_t) group->GetUnsigned("Dimensions3dColor",    0xFF000000));
+  App::Color d((uint32_t) group->GetUnsigned("DimensionsDeltaColor", 0x00FF0000));
 
   Gui::View3DInventorViewer *viewer = getViewer();
   if (!viewer)
@@ -503,8 +515,8 @@ void PartGui::DimensionLinear::setupDimension()
   textSep->addChild(textTransform);
 
   SoFont *fontNode = new SoFont();
-  fontNode->name.setValue("defaultFont");
-  fontNode->size.setValue(30);
+  fontNode->name.setValue(getDimensionsFontName().c_str());
+  fontNode->size.setValue(getDimensionsFontSize());
   textSep->addChild(fontNode);
 
   SoText2 *textNode = new SoText2();
@@ -1106,10 +1118,8 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     dimSys = dimSys.transpose();
   }
 
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-  App::Color c(0.0,0.0,1.0);
-  c.fromHexString(group->GetASCII("DimensionsAngularColor", c.asHexString().c_str()));
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  App::Color c((uint32_t) group->GetUnsigned("DimensionsAngularColor", 0x0000FF00));
 
   DimensionAngular *dimension = new DimensionAngular();
   dimension->ref();
@@ -1288,8 +1298,8 @@ void PartGui::DimensionAngular::setupDimension()
   textSep->addChild(textTransform);
 
   SoFont *fontNode = new SoFont();
-  fontNode->name.setValue("defaultFont");
-  fontNode->size.setValue(30);
+  fontNode->name.setValue(getDimensionsFontName().c_str());
+  fontNode->size.setValue(getDimensionsFontSize());
   textSep->addChild(fontNode);
 
   SoText2 *textNode = new SoText2();
