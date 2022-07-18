@@ -1704,7 +1704,7 @@ class _ToggleSubs:
                         if mode is None:
                             # take the first sub as base
                             mode = sub.ViewObject.isVisible()
-                        if mode == True:
+                        if mode:
                             sub.ViewObject.hide()
                         else:
                             sub.ViewObject.show()

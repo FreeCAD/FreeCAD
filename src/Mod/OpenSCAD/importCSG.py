@@ -484,9 +484,9 @@ def p_offset_action(p):
 #            newobj.ViewObject.Proxy = 0
     p[0] = [newobj]
 
-def checkObjShape(obj) :
+def checkObjShape(obj):
     if printverbose: print('Check Object Shape')
-    if obj.Shape.isNull() == True :
+    if obj.Shape.isNull():
        if printverbose: print('Shape is Null - recompute')
        obj.recompute()
 
