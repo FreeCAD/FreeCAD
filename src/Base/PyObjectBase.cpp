@@ -107,7 +107,7 @@ static void
 PyBaseProxy_dealloc(PyObject* self)
 {
     /* Clear weakrefs first before calling any destructors */
-    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist != nullptr)
+    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist)
         PyObject_ClearWeakRefs(self);
     Py_TYPE(self)->tp_free(self);
 }
@@ -413,7 +413,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
         // As fallback solution use Python's default method to get generic attributes
         PyObject *w, *res;
         w = PyUnicode_InternFromString(attr);
-        if (w != nullptr) {
+        if (w) {
             res = PyObject_GenericGetAttr(this, w);
             Py_XDECREF(w);
             return res;
@@ -433,7 +433,7 @@ int PyObjectBase::_setattr(const char *attr, PyObject *value)
     PyObject *w;
     // As fallback solution use Python's default method to get generic attributes
     w = PyUnicode_InternFromString(attr); // new reference
-    if (w != nullptr) {
+    if (w) {
         // call methods from tp_getset if defined
         int res = PyObject_GenericSetAttr(this, w, value);
         Py_DECREF(w);

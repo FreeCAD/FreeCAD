@@ -390,7 +390,7 @@ std::vector<Base::Reference<ParameterGrp> > ParameterGrp::GetGroups(void)
 /// test if this group is empty
 bool ParameterGrp::IsEmpty() const
 {
-    if ( _pGroupNode->getFirstChild() )
+    if (_pGroupNode->getFirstChild())
         return false;
     else
         return true;
@@ -399,10 +399,10 @@ bool ParameterGrp::IsEmpty() const
 /// test if a special sub group is in this group
 bool ParameterGrp::HasGroup(const char* Name) const
 {
-    if ( _GroupMap.find(Name) != _GroupMap.end() )
+    if (_GroupMap.find(Name) != _GroupMap.end())
         return true;
 
-    if ( FindElement(_pGroupNode,"FCParamGroup",Name) != nullptr )
+    if (FindElement(_pGroupNode,"FCParamGroup",Name))
         return true;
 
     return false;
