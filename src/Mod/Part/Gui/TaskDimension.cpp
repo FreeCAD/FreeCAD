@@ -1454,7 +1454,7 @@ void PartGui::SteppedSelection::buildPixmaps()
 void PartGui::SteppedSelection::selectionSlot(bool checked)
 {
   QPushButton *sender = qobject_cast<QPushButton*>(QObject::sender());
-  assert(sender);
+  assert(sender != nullptr);
   std::vector<ButtonIconPairType>::iterator it;
   for (it = buttons.begin(); it != buttons.end(); ++it)
     if (it->first == sender)

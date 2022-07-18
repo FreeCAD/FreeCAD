@@ -384,7 +384,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 
 void Sheet::setCell(const char * address, const char * contents)
 {
-    assert(address && contents);
+    assert(address != nullptr && contents != nullptr);
 
     setCell(CellAddress(address), contents);
 }
@@ -400,7 +400,7 @@ void Sheet::setCell(const char * address, const char * contents)
 
 void Sheet::setCell(CellAddress address, const char * value)
 {
-    assert(value);
+    assert(value != nullptr);
 
 
     if (*value == '\0') {

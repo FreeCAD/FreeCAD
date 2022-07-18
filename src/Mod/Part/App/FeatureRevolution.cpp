@@ -71,8 +71,8 @@ void Revolution::onChanged(const App::Property* prop)
 {
     if(! this->isRestoring()){
         if(prop == &AxisLink){
-            Base.setReadOnly(AxisLink.getValue());
-            Axis.setReadOnly(AxisLink.getValue());
+            Base.setReadOnly(AxisLink.getValue() != nullptr);
+            Axis.setReadOnly(AxisLink.getValue() != nullptr);
         }
     }
     Part::Feature::onChanged(prop);

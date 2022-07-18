@@ -200,7 +200,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
                 if ( docHaveBodies ) {
                     bool addMoveFeature = true;
-                    bool addMoveFeatureInTree = body;
+                    bool addMoveFeatureInTree = (body != nullptr);
                     for (auto sel: selection) {
                         // if at least one selected feature cannot be moved to a body
                         // disable the entry

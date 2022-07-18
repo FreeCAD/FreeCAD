@@ -207,13 +207,12 @@ ResultEntry::~ResultEntry()
 void ResultEntry::buildEntryName()
 {
   ResultEntry *parentEntry = this;
-  while(parentEntry->parent)
-  {
-      ResultEntry *temp = parentEntry->parent;
-      if (!temp->parent)
-        break;
-      parentEntry = parentEntry->parent;
-  }
+    while (parentEntry->parent != nullptr) {
+        ResultEntry *temp = parentEntry->parent;
+        if (!temp->parent)
+            break;
+        parentEntry = parentEntry->parent;
+    }
 
   QString stringOut;
   QTextStream stream(&stringOut);

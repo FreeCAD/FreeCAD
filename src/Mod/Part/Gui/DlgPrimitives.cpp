@@ -334,7 +334,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         ui->widgetStack2->setCurrentIndex(index);
 
         // if existing, the primitive type can not be changed by the user
-        ui->PrimitiveTypeCB->setDisabled(feature);
+        ui->PrimitiveTypeCB->setDisabled(feature != nullptr);
 
         // ToDo: connect signal if there is a preview of primitives available
         // read values from the properties
