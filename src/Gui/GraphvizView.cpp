@@ -164,8 +164,7 @@ GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* paren
 
 void GraphvizGraphicsView::mousePressEvent(QMouseEvent* e)
 {
-  if(e && e->button() == Qt::LeftButton)
-  {
+  if (e && e->button() == Qt::LeftButton) {
     isPanning = true;
     panStart = e->pos();
     e->accept();
@@ -179,20 +178,14 @@ void GraphvizGraphicsView::mousePressEvent(QMouseEvent* e)
 
 void GraphvizGraphicsView::mouseMoveEvent(QMouseEvent *e)
 {
-  if(e == nullptr)
-  {
+  if (!e)
     return;
-  }
 
-  if(isPanning)
-  {
-    auto* horizontalScrollbar = horizontalScrollBar();
-    auto* verticalScrollbar = verticalScrollBar();
-    if(horizontalScrollbar == nullptr ||
-       verticalScrollbar   == nullptr)
-    {
+  if (isPanning) {
+    auto *horizontalScrollbar = horizontalScrollBar();
+    auto *verticalScrollbar = verticalScrollBar();
+    if (!horizontalScrollbar || !verticalScrollbar)
       return;
-    }
 
     auto direction = e->pos() - panStart;
     horizontalScrollbar->setValue(horizontalScrollbar->value() - direction.x());

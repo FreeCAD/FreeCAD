@@ -2772,7 +2772,7 @@ void View3DInventorViewer::setCameraType(SoType t)
         // close camera but we don't have this other ugly effect.
         SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-        if(cam == nullptr)
+        if(!cam)
             return;
 
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
@@ -2814,7 +2814,7 @@ namespace Gui {
 void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return;
 
     CameraAnimation anim(cam, rot, pos);

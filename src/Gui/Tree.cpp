@@ -3306,7 +3306,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
                 pdata->updateChildren(true);
             entry.insert(pdata);
         }
-        else if (pdata->rootItem && parent == nullptr) {
+        else if (pdata->rootItem && !parent) {
             Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
             return false;
         }

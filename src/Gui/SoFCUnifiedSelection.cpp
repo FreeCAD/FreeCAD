@@ -1203,7 +1203,7 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
 bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbColor color)
 {
     auto data = (SoFCBBoxRenderInfo*) so_bbox_storage->get();
-    if (data->bboxaction == nullptr) {
+    if (!data->bboxaction) {
         // The viewport region will be replaced every time the action is
         // used, so we can just feed it a dummy here.
         data->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());

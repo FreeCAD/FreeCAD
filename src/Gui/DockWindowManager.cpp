@@ -102,7 +102,7 @@ DockWindowManager* DockWindowManager::_instance = nullptr;
 
 DockWindowManager* DockWindowManager::instance()
 {
-    if ( _instance == nullptr )
+    if (!_instance)
         _instance = new DockWindowManager;
     return _instance;
 }

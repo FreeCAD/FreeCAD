@@ -325,7 +325,7 @@ void NavigationStyle::seekToPoint(const SbVec3f& scenepos)
 SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return false;
 
     SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
@@ -348,7 +348,7 @@ SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 void NavigationStyle::lookAtPoint(const SbVec3f& pos)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return;
     PRIVATE(this)->rotationCenterFound = false;
 
@@ -407,7 +407,7 @@ void NavigationStyle::lookAtPoint(const SbVec3f& pos)
 void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToCenter)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return;
 
     // Find global coordinates of focal point.
@@ -597,7 +597,7 @@ void NavigationStyle::viewAll()
  */
 void NavigationStyle::reorientCamera(SoCamera * cam, const SbRotation & rot)
 {
-    if (cam == nullptr)
+    if (!cam)
         return;
 
     // Find global coordinates of focal point.
@@ -617,7 +617,7 @@ void NavigationStyle::reorientCamera(SoCamera * cam, const SbRotation & rot)
 void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane & panplane,
                                 const SbVec2f & currpos, const SbVec2f & prevpos)
 {
-    if (cam == nullptr) // can happen for empty scenegraph
+    if (!cam) // can happen for empty scenegraph
         return;
     if (currpos == prevpos) // useless invocation
         return;
@@ -648,7 +648,7 @@ void NavigationStyle::pan(SoCamera* camera)
     // The plane we're projecting the mouse coordinates to get 3D
     // coordinates should stay the same during the whole pan
     // operation, so we should calculate this value here.
-    if (camera == nullptr) { // can happen for empty scenegraph
+    if (!camera) { // can happen for empty scenegraph
         this->panningplane = SbPlane(SbVec3f(0, 0, 1), 0);
     }
     else {
@@ -678,7 +678,7 @@ void NavigationStyle::panToCenter(const SbPlane & pplane, const SbVec2f & currpo
  */
 void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
 {
-    if (cam == nullptr) // can happen for empty scenegraph
+    if (!cam) // can happen for empty scenegraph
         return;
     SoType t = cam->getTypeId();
     SbName tname = t.getName();
@@ -860,7 +860,7 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
 SbVec3f NavigationStyle::getFocalPoint() const
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return SbVec3f(0,0,0);
 
     // Find global coordinates of focal point.

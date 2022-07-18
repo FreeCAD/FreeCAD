@@ -256,7 +256,7 @@ bool ControlSingleton::isAllowedAlterSelection(void) const
 
 ControlSingleton& ControlSingleton::instance(void)
 {
-    if (_pcSingleton == nullptr)
+    if (!_pcSingleton)
         _pcSingleton = new ControlSingleton;
     return *_pcSingleton;
 }

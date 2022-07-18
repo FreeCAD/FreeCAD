@@ -45,7 +45,7 @@ KeyboardP::KeyboardP(Keyboard * publ)
   PUBLIC(this) = publ;
   this->keyboard = new SoKeyboardEvent;
 
-  if (keyboardmap == nullptr) {
+  if (!keyboardmap) {
     keyboardmap = new KeyMap;
     keypadmap = new KeyMap;
     this->initKeyMap();

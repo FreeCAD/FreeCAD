@@ -337,7 +337,7 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
 
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == nullptr) {
+            if (!point) {
                 Base::Console().Message("No point picked.\n");
                 return;
             }

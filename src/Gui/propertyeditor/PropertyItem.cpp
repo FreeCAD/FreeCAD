@@ -69,7 +69,7 @@ Gui::PropertyEditor::PropertyItemFactory* Gui::PropertyEditor::PropertyItemFacto
 
 PropertyItemFactory& PropertyItemFactory::instance()
 {
-    if (_singleton == nullptr)
+    if (!_singleton)
         _singleton = new PropertyItemFactory;
     return *_singleton;
 }

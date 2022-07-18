@@ -443,7 +443,7 @@ Application::Application(bool GUIenabled)
     for (; meth->ml_name != nullptr; meth++) {
         PyObject *descr;
         descr = PyCFunction_NewEx(meth,nullptr,nullptr);
-        if (descr == nullptr)
+        if (!descr)
             break;
         if (PyDict_SetItemString(dict, meth->ml_name, descr) != 0)
             break;

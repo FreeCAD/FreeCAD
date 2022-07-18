@@ -1818,7 +1818,7 @@ SelectionSingleton* SelectionSingleton::_pcSingleton = nullptr;
 
 SelectionSingleton& SelectionSingleton::instance(void)
 {
-    if (_pcSingleton == nullptr)
+    if (!_pcSingleton)
         _pcSingleton = new SelectionSingleton;
     return *_pcSingleton;
 }
