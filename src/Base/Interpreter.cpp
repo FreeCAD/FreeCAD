@@ -106,7 +106,7 @@ void PyException::ThrowException()
 
 void PyException::raiseException() {
     PyGILStateLocker locker;
-    if (PP_PyDict_Object!=nullptr) {
+    if (PP_PyDict_Object) {
         // delete the Python dict upon destruction of edict
         Py::Dict edict(PP_PyDict_Object, true);
         PP_PyDict_Object = nullptr;

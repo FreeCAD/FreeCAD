@@ -42,7 +42,7 @@ Range::Range(const char * range, bool normalize)
     std::string from;
     std::string to;
 
-    assert(range != nullptr);
+    assert(range);
 
     if (!strchr(range, ':')) {
         from = range;
@@ -221,7 +221,7 @@ int App::validColumn(const std::string &colstr)
 
 App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
 {
-    assert(strAddress != nullptr);
+    assert(strAddress);
 
     static boost::regex e("(\\$?[A-Z]{1,2})(\\$?[0-9]{1,5})");
     boost::cmatch cm;
