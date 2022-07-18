@@ -41,7 +41,7 @@
            <cstring>Dimensions3dColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>
@@ -78,7 +78,7 @@
            <cstring>DimensionsDeltaColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>
@@ -102,7 +102,7 @@
            <cstring>DimensionsAngularColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>
@@ -135,7 +135,7 @@
            <cstring>DimensionsFontSize</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>
@@ -192,7 +192,7 @@
            <cstring>DimensionsFontName</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <cstring>Mod/Part</cstring>
           </property>
          </widget>
         </item>

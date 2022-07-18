@@ -6,6 +6,7 @@ SET(PreferencePackTemplates_Files
     Editor_Colors.cfg
     Editor_Font.cfg
     Main_window_layout.cfg
+    Part_Colors.cfg
     Path_Colors.cfg
     Sketcher_Colors.cfg
     Start_Colors.cfg

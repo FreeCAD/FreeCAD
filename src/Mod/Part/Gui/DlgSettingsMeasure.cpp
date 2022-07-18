@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#include <Gui/Command.h>
 
 #include "DlgSettingsMeasure.h"
 #include "ui_DlgSettingsMeasure.h"
-#include <Gui/PrefWidgets.h>
 
-#include <Gui/Command.h>
 
 using namespace PartGui;
 
@@ -85,7 +84,6 @@ void DlgSettingsMeasure::changeEvent(QEvent *e)
         QWidget::changeEvent(e);
     }
 }
-
 
 void DlgSettingsMeasure::onMeasureRefresh()
 {

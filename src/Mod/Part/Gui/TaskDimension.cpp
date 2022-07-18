@@ -226,7 +226,7 @@ void PartGui::dumpLinearResults(const BRepExtrema_DistShapeShape &measure)
 
 auto PartGui::getDimensionsFontName()
 {
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
   std::string fontName = group->GetASCII("DimensionsFontName", "defaultFont")
     + (group->GetBool("DimensionsFontStyleBold",   false) ? " :Bold"   : "")
     + (group->GetBool("DimensionsFontStyleItalic", false) ? " :Italic" : "");
@@ -235,7 +235,7 @@ auto PartGui::getDimensionsFontName()
 
 auto PartGui::getDimensionsFontSize()
 {
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
   return group->GetInt("DimensionsFontSize", 30);
 }
 
@@ -255,7 +255,7 @@ Gui::View3DInventorViewer * PartGui::getViewer()
 
 void PartGui::addLinearDimensions(const BRepExtrema_DistShapeShape &measure)
 {
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
   App::Color c((uint32_t) group->GetUnsigned("Dimensions3dColor",    0xFF000000));
   App::Color d((uint32_t) group->GetUnsigned("DimensionsDeltaColor", 0x00FF0000));
 
@@ -1118,7 +1118,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     dimSys = dimSys.transpose();
   }
 
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
   App::Color c((uint32_t) group->GetUnsigned("DimensionsAngularColor", 0x0000FF00));
 
   DimensionAngular *dimension = new DimensionAngular();

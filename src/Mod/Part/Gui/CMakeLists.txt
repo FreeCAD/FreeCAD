@@ -62,7 +62,6 @@ set(PartGui_UIC_SRCS
     DlgSettingsGeneral.ui
     DlgSettingsMeasure.ui
     DlgSettingsObjectColor.ui
-    DlgSettingsMeasure.ui
     DlgProjectionOnSurface.ui
     SectionCutting.ui
     ShapeFromMesh.ui
