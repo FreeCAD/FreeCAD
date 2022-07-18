@@ -46,9 +46,9 @@ PathSim::PathSim()
 
 PathSim::~PathSim()
 {
-	if (m_stock != nullptr)
+	if (m_stock)
 	    delete m_stock;
-	if (m_tool != nullptr)
+	if (m_tool)
 		delete m_tool;
 }
 
@@ -68,7 +68,7 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 	Point3D fromPos(*pos);
 	Point3D toPos(*pos);
 	toPos.UpdateCmd(*cmd);
-	if (m_tool != nullptr)
+	if (m_tool)
 	{
 		if (cmd->Name == "G0" || cmd->Name == "G1")
 		{
