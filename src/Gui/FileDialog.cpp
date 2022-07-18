@@ -156,7 +156,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         // get the suffix for the filter: use the selected filter if there is one,
         // otherwise find the first valid suffix in the complete list of filters
         const QString *filterToSearch;
-        if (selectedFilter != nullptr) {
+        if (selectedFilter) {
             filterToSearch = selectedFilter;
         }
         else {

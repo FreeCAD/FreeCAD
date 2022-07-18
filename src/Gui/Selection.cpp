@@ -1825,7 +1825,7 @@ SelectionSingleton& SelectionSingleton::instance(void)
 
 void SelectionSingleton::destruct (void)
 {
-    if (_pcSingleton != nullptr)
+    if (_pcSingleton)
         delete _pcSingleton;
     _pcSingleton = nullptr;
 }

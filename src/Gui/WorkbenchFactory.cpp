@@ -32,14 +32,14 @@ Gui::WorkbenchFactoryInst* Gui::WorkbenchFactoryInst::_pcSingleton = nullptr;
 
 WorkbenchFactoryInst& WorkbenchFactoryInst::instance()
 {
-  if (_pcSingleton == nullptr)
+  if (!_pcSingleton)
     _pcSingleton = new WorkbenchFactoryInst;
   return *_pcSingleton;
 }
 
 void WorkbenchFactoryInst::destruct ()
 {
-  if ( _pcSingleton != nullptr )
+  if (_pcSingleton)
     delete _pcSingleton;
   _pcSingleton = nullptr;
 }

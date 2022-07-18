@@ -553,7 +553,7 @@ void ProgressBar::setupTaskBarProgress()
 
 bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 {
-    if (sequencer->isRunning() && e != nullptr) {
+    if (sequencer->isRunning() && e) {
         QThread* currentThread = QThread::currentThread();
         QThread* thr = this->thread(); // this is the main thread
         if (thr != currentThread) {

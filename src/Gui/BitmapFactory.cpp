@@ -115,7 +115,7 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
 
 void BitmapFactoryInst::destruct (void)
 {
-    if (_pcSingleton != nullptr)
+    if (_pcSingleton)
     delete _pcSingleton;
     _pcSingleton = nullptr;
 }

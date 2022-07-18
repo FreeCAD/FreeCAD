@@ -681,7 +681,7 @@ QuarterWidget::setSoRenderManager(SoRenderManager * manager)
   SoNode * scene = nullptr;
   SoCamera * camera = nullptr;
   SbViewportRegion vp;
-  if (PRIVATE(this)->sorendermanager && (manager != nullptr)) {
+  if (PRIVATE(this)->sorendermanager && manager) {
     scene = PRIVATE(this)->sorendermanager->getSceneGraph();
     camera = PRIVATE(this)->sorendermanager->getCamera();
     vp = PRIVATE(this)->sorendermanager->getViewportRegion();
@@ -726,7 +726,7 @@ QuarterWidget::setSoEventManager(SoEventManager * manager)
   SoNode * scene = nullptr;
   SoCamera * camera = nullptr;
   SbViewportRegion vp;
-  if (PRIVATE(this)->soeventmanager && (manager != nullptr)) {
+  if (PRIVATE(this)->soeventmanager && manager) {
     scene = PRIVATE(this)->soeventmanager->getSceneGraph();
     camera = PRIVATE(this)->soeventmanager->getCamera();
     vp = PRIVATE(this)->soeventmanager->getViewportRegion();

@@ -137,7 +137,7 @@ SoFCUnifiedSelection::~SoFCUnifiedSelection()
 {
     // If we're being deleted and we're the current highlight,
     // NULL out that variable
-    if (currenthighlight != nullptr) {
+    if (currenthighlight) {
         currenthighlight->unref();
         currenthighlight = nullptr;
     }

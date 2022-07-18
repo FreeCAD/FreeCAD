@@ -57,7 +57,7 @@ QuarterP::~QuarterP()
   delete QuarterP::statecursormap;
 
   // FIXME: Why not use an atexit mechanism for this?
-  if (KeyboardP::keyboardmap != nullptr) {
+  if (KeyboardP::keyboardmap) {
     KeyboardP::keyboardmap->clear();
     KeyboardP::keypadmap->clear();
     delete KeyboardP::keyboardmap;

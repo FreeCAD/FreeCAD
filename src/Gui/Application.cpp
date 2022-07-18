@@ -530,7 +530,7 @@ void Application::open(const char* FileName, const char* Module)
         qApp->processEvents(); // an update is needed otherwise the new view isn't shown
     }
 
-    if (Module != nullptr) {
+    if (Module) {
         try {
             if (File.hasExtension("FCStd")) {
                 bool handled = false;
@@ -592,7 +592,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
-    if (Module != nullptr) {
+    if (Module) {
         try {
             // issue module loading
             Command::doCommand(Command::App, "import %s", Module);
@@ -683,7 +683,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
-    if (Module != nullptr) {
+    if (Module) {
         try {
             std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
                 (App::DocumentObject::getClassTypeId(),DocName);

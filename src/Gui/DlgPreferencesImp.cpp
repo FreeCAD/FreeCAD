@@ -208,7 +208,7 @@ void DlgPreferencesImp::addPage(const std::string& className, const std::string&
         _pages.push_back(std::make_pair(group, pages));
     }
 
-    if (DlgPreferencesImp::_activeDialog != nullptr) {
+    if (DlgPreferencesImp::_activeDialog) {
         // If the dialog is currently showing, tell it to insert the new page
         _activeDialog->reloadPages();
     }

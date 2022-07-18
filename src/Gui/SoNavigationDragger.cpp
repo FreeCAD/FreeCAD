@@ -374,7 +374,7 @@ RotTransDragger::invalidateSurroundScaleCB(void *parent, SoDragger *)
    // Invalidate the surroundScale, if it exists.
    SoSurroundScale *mySS = SO_CHECK_PART(
             myParentDragger, "surroundScale", SoSurroundScale);
-   if (mySS != nullptr)
+   if (mySS)
       mySS->invalidate();
 }
 

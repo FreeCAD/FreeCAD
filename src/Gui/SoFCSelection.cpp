@@ -117,7 +117,7 @@ SoFCSelection::~SoFCSelection()
 {
     // If we're being deleted and we're the current highlight,
     // NULL out that variable
-    if (currenthighlight != nullptr &&
+    if (currenthighlight &&
         (!currenthighlight->getTail()->isOfType(SoFCSelection::getClassTypeId()))) {
         currenthighlight->unref();
         currenthighlight = nullptr;
