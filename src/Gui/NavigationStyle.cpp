@@ -878,7 +878,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
 {
     if (this->log.historysize < 2)
         return;
-    assert(this->spinprojector != nullptr);
+    assert(this->spinprojector);
 
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s glsize(vp.getViewportSizePixels());
@@ -956,7 +956,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
  * \param prevpos  previous normalized position of mouse pointer
  */
 void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos){
-    assert(this->spinprojector != nullptr);
+    assert(this->spinprojector);
 
     // 0000333: Turntable camera rotation
     SbMatrix mat;

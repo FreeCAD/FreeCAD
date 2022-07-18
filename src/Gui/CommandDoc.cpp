@@ -1472,7 +1472,7 @@ void StdCmdTransform::activated(int iMsg)
 
 bool StdCmdTransform::isActive(void)
 {
-    return (Gui::Control().activeDialog()==nullptr);
+    return (Gui::Control().activeDialog() == nullptr);
 }
 
 //===========================================================================

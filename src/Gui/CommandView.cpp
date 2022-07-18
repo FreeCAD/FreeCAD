@@ -1942,7 +1942,7 @@ void StdCmdViewCreate::activated(int iMsg)
 
 bool StdCmdViewCreate::isActive(void)
 {
-    return (getActiveGuiDocument()!=nullptr);
+    return (getActiveGuiDocument() != nullptr);
 }
 
 //===========================================================================
@@ -2995,7 +2995,7 @@ bool StdCmdTreeSelectAllInstances::isActive(void)
     if(!obj || !obj->getNameInDocument())
         return false;
     return dynamic_cast<ViewProviderDocumentObject*>(
-            Application::Instance->getViewProvider(obj))!=nullptr;
+            Application::Instance->getViewProvider(obj)) != nullptr;
 }
 
 void StdCmdTreeSelectAllInstances::activated(int iMsg)
@@ -3170,7 +3170,7 @@ bool StdCmdTextureMapping::isActive(void)
 {
     Gui::MDIView* view = getMainWindow()->activeWindow();
     return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())
-                && (Gui::Control().activeDialog()==nullptr);
+                && (Gui::Control().activeDialog() == nullptr);
 }
 
 DEF_STD_CMD(StdCmdDemoMode)

@@ -162,7 +162,7 @@ void FCCmdTest2::activated(int iMsg)
 
 bool FCCmdTest2::isActive(void)
 {
-    return (getDocument()!=nullptr);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -192,7 +192,7 @@ void FCCmdTest3::activated(int iMsg)
 
 bool FCCmdTest3::isActive(void)
 {
-    return (getDocument()!=nullptr);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -223,7 +223,7 @@ void FCCmdTest4::activated(int iMsg)
 
 bool FCCmdTest4::isActive(void)
 {
-    return (getDocument()!=nullptr);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -252,7 +252,7 @@ void FCCmdTest5::activated(int iMsg)
 
 bool FCCmdTest5::isActive(void)
 {
-  return (getDocument()!=nullptr);
+  return (getDocument() != nullptr);
 }
 
 
@@ -282,7 +282,7 @@ void FCCmdTest6::activated(int iMsg)
 
 bool FCCmdTest6::isActive(void)
 {
-    return (getDocument()!=nullptr);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -332,7 +332,7 @@ void CmdTestCmdFuncs::activated(int iMsg)
 
 bool CmdTestCmdFuncs::isActive(void)
 {
-    return (getDocument()!=nullptr);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================

@@ -165,9 +165,9 @@ RotTransDragger::RotTransDragger()
 
 RotTransDragger::~RotTransDragger()
 {
-   if (rotFieldSensor!=nullptr)
+   if (rotFieldSensor)
      delete rotFieldSensor;
-   if (translFieldSensor!=nullptr)
+   if (translFieldSensor)
      delete translFieldSensor;
 }
 
@@ -315,9 +315,9 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
       unregisterChildDragger(ZD);
 
      // Disconnect the field sensors.
-     if (translFieldSensor->getAttachedField()!=nullptr)
+     if (translFieldSensor->getAttachedField())
         translFieldSensor->detach();
-     if (rotFieldSensor->getAttachedField()!=nullptr)
+     if (rotFieldSensor->getAttachedField())
         rotFieldSensor->detach();
 
      SoDragger::setUpConnections(onOff, doItAlways);

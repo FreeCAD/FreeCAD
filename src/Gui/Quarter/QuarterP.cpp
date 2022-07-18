@@ -43,7 +43,7 @@ QuarterP::QuarterP()
 {
   this->sensormanager = new SensorManager;
   this->imagereader = new ImageReader;
-  assert(QuarterP::statecursormap == nullptr);
+  assert(!QuarterP::statecursormap);
   QuarterP::statecursormap = new StateCursorMap;
 
 }
@@ -53,7 +53,7 @@ QuarterP::~QuarterP()
   delete this->imagereader;
   delete this->sensormanager;
 
-  assert(QuarterP::statecursormap != nullptr);
+  assert(QuarterP::statecursormap);
   delete QuarterP::statecursormap;
 
   // FIXME: Why not use an atexit mechanism for this?

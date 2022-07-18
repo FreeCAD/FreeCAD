@@ -51,7 +51,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
   , impliedUnit(_impliedUnit)
   , minimumWidth(10)
 {
-    assert(path.getDocumentObject() != nullptr);
+    assert(path.getDocumentObject());
 
     // Setup UI
     ui->setupUi(this);
