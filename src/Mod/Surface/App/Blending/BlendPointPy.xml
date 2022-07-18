@@ -40,7 +40,7 @@
 			<Documentation>
 				<UserDocu>
 					Resizes the BlendPoint vectors,
-					by setting the lenght of the first derivative.
+					by setting the length of the first derivative.
 					theBlendPoint.setSize(new_size)
 				</UserDocu>
 			</Documentation>

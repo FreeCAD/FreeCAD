@@ -29,9 +29,9 @@
 #include "Blending/BlendPointPy.h"
 // #include "Mod/Part/App/Geometry.h"
 // #include <Base/GeometryPyCXX.h>
+#include "Blending/BlendCurvePy.cpp"
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/BezierCurvePy.h>
-#include "Blending/BlendCurvePy.cpp"
 
 using namespace Surface;
 
@@ -48,30 +48,10 @@ PyObject *BlendCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)// P
 
 int BlendCurvePy::PyInit(PyObject *args, PyObject * /*kwds*/)
 {
-    PyObject *plist;
-    if (PyArg_ParseTuple(args, "O", &plist)) {
-        Py::Sequence list(plist);
-        if (list.size() != 2) {
-            PyErr_SetString(PyExc_TypeError, "Currently BlendCurve need exactly 2 BlendPoints");
-            return -1;
-        }
-        std::vector<BlendPoint> bpList;
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            Py::Object obj(*it);
-            if (PyObject_TypeCheck(obj.ptr(), &BlendPointPy::Type)) {
-                BlendPoint *geom = static_cast<BlendPointPy *>(obj.ptr())->getBlendPointPtr();
-                bpList.emplace_back(*geom);
-            }
-        }
-        this->getBlendCurvePtr()->blendPoints = bpList;
-        return 0;
-    }
-
-    PyErr_Clear();
     PyObject *b1;
     PyObject *b2;
     std::vector<BlendPoint> bpList;
-    
+
     if (PyArg_ParseTuple(args, "O!O!", &(Surface::BlendPointPy::Type), &b1, &(Surface::BlendPointPy::Type), &b2)) {
         BlendPoint *geom1 = static_cast<BlendPointPy *>(b1)->getBlendPointPtr();
         BlendPoint *geom2 = static_cast<BlendPointPy *>(b2)->getBlendPointPtr();
@@ -94,7 +74,7 @@ PyObject *BlendCurvePy::setSize(PyObject *args)
 {
     int i;
     double size;
-    PyObject* relative = Py_True;
+    PyObject *relative = Py_True;
     if (!PyArg_ParseTuple(args, "idO!", &i, &size, &PyBool_Type, &relative)) {
         return nullptr;
     }

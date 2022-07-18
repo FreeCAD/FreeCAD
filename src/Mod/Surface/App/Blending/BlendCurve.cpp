@@ -33,10 +33,10 @@
 #include <math_Gauss.hxx>
 #include <math_Matrix.hxx>
 #endif
-#include <Base/Vector3D.h>
-#include <Mod/Part/App/Geometry.h>
 #include "Blending/BlendCurve.h"
 #include "Blending/BlendCurvePy.h"
+#include <Base/Vector3D.h>
+#include <Mod/Part/App/Geometry.h>
 
 using namespace Surface;
 
@@ -47,7 +47,7 @@ BlendCurve::BlendCurve()
 BlendCurve::BlendCurve(std::vector<BlendPoint> blendPointsList)
 {
     // Retrieve number of blendPoints and push them into blendPoints.
-    int nb_pts = blendPointsList.size();
+    size_t nb_pts = blendPointsList.size();
 
     if (nb_pts > 2) {
         throw Base::ValueError("Not implemented");
@@ -64,23 +64,23 @@ BlendCurve::~BlendCurve()
 
 Handle(Geom_BezierCurve) BlendCurve::compute()
 {
-    int nb_pts = blendPoints.size();
+    size_t nb_pts = blendPoints.size();
     try {
         // Uniform Parametrization
         TColStd_Array1OfReal params(1, nb_pts);
         for (int i = 0; i < nb_pts; ++i) {
             params(i + 1) = (double)i / ((double)nb_pts - 1);
         }
-        
+
         int num_poles = 0;
         for (int i = 0; i < nb_pts; ++i) {
             num_poles += blendPoints[i].nbVectors();
         }
 
         Handle(Geom_BezierCurve) curve;
-        if (num_poles > (curve->MaxDegree()+1))// use Geom_BezierCurve max degree
+        if (num_poles > (curve->MaxDegree() + 1))// use Geom_BezierCurve max degree
             Standard_Failure::Raise("number of constraints exceeds bezier curve capacity");
-        
+
         TColStd_Array1OfReal knots(1, 2 * num_poles);
         for (int i = 1; i <= num_poles; ++i) {
             knots(i) = params(1);
@@ -127,7 +127,7 @@ Handle(Geom_BezierCurve) BlendCurve::compute()
         Handle(Geom_BezierCurve) bezier = new Geom_BezierCurve(poles);
         return bezier;
     }
-    
+
     catch (Standard_Failure &e) {
         PyErr_SetString(PyExc_Exception, "Failed to compute bezier curve");
     }
@@ -140,7 +140,7 @@ void BlendCurve::setSize(int i, double f, bool relative)
     try {
         if (relative) {
             double nb_poles = blendPoints.front().nbVectors() + blendPoints[1].nbVectors();
-            Base::Vector3d diff =  blendPoints[1].vectors[0] - blendPoints[0].vectors[0];
+            Base::Vector3d diff = blendPoints[1].vectors[0] - blendPoints[0].vectors[0];
             size = size * diff.Length() / nb_poles;
         }
         blendPoints[i].setSize(size);

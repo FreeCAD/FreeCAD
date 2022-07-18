@@ -17,8 +17,7 @@
 		<Documentation>
 			<Author Licence="LGPL" Name="Mattéo Grellier" EMail="matteogrellier@gmail.com" />
 			<UserDocu>
-				Create a BlendCurve that interpolate a list of BlendPoints.
-				curve = BlendCurve([BlendPoint1, BlendPoint2])
+				Create a BlendCurve that interpolate 2 BlendPoints.
 				curve = BlendCurve(BlendPoint1, BlendPoint2)
 			</UserDocu>
 		</Documentation>
