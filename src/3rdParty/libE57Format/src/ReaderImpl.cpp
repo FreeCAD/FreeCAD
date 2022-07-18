@@ -1303,117 +1303,117 @@ namespace e57
          bool haveNormalsExt = imf_.extensionsLookupPrefix( "nor", norExtUri );
 
          if ( ( name.compare( "cartesianX" ) == 0 ) && proto.isDefined( "cartesianX" ) &&
-              ( buffers.cartesianX != nullptr ) )
+              buffers.cartesianX )
          {
             destBuffers.emplace_back( imf_, "cartesianX", buffers.cartesianX, count, true, scaled );
          }
          else if ( ( name.compare( "cartesianY" ) == 0 ) && proto.isDefined( "cartesianY" ) &&
-                   ( buffers.cartesianY != nullptr ) )
+                   buffers.cartesianY )
          {
             destBuffers.emplace_back( imf_, "cartesianY", buffers.cartesianY, count, true, scaled );
          }
          else if ( ( name.compare( "cartesianZ" ) == 0 ) && proto.isDefined( "cartesianZ" ) &&
-                   ( buffers.cartesianZ != nullptr ) )
+                   buffers.cartesianZ )
          {
             destBuffers.emplace_back( imf_, "cartesianZ", buffers.cartesianZ, count, true, scaled );
          }
          else if ( ( name.compare( "cartesianInvalidState" ) == 0 ) && proto.isDefined( "cartesianInvalidState" ) &&
-                   ( buffers.cartesianInvalidState != nullptr ) )
+                   buffers.cartesianInvalidState )
          {
             destBuffers.emplace_back( imf_, "cartesianInvalidState", buffers.cartesianInvalidState, count, true );
          }
          else if ( ( name.compare( "sphericalRange" ) == 0 ) && proto.isDefined( "sphericalRange" ) &&
-                   ( buffers.sphericalRange != nullptr ) )
+                   buffers.sphericalRange )
          {
             destBuffers.emplace_back( imf_, "sphericalRange", buffers.sphericalRange, count, true, scaled );
          }
          else if ( ( name.compare( "sphericalAzimuth" ) == 0 ) && proto.isDefined( "sphericalAzimuth" ) &&
-                   ( buffers.sphericalAzimuth != nullptr ) )
+                   buffers.sphericalAzimuth )
          {
             destBuffers.emplace_back( imf_, "sphericalAzimuth", buffers.sphericalAzimuth, count, true, scaled );
          }
          else if ( ( name.compare( "sphericalElevation" ) == 0 ) && proto.isDefined( "sphericalElevation" ) &&
-                   ( buffers.sphericalElevation != nullptr ) )
+                   buffers.sphericalElevation )
          {
             destBuffers.emplace_back( imf_, "sphericalElevation", buffers.sphericalElevation, count, true, scaled );
          }
          else if ( ( name.compare( "sphericalInvalidState" ) == 0 ) && proto.isDefined( "sphericalInvalidState" ) &&
-                   ( buffers.sphericalInvalidState != nullptr ) )
+                   buffers.sphericalInvalidState )
          {
             destBuffers.emplace_back( imf_, "sphericalInvalidState", buffers.sphericalInvalidState, count, true );
          }
          else if ( ( name.compare( "rowIndex" ) == 0 ) && proto.isDefined( "rowIndex" ) &&
-                   ( buffers.rowIndex != nullptr ) )
+                   buffers.rowIndex )
          {
             destBuffers.emplace_back( imf_, "rowIndex", buffers.rowIndex, count, true );
          }
          else if ( ( name.compare( "columnIndex" ) == 0 ) && proto.isDefined( "columnIndex" ) &&
-                   ( buffers.columnIndex != nullptr ) )
+                   buffers.columnIndex )
          {
             destBuffers.emplace_back( imf_, "columnIndex", buffers.columnIndex, count, true );
          }
          else if ( ( name.compare( "returnIndex" ) == 0 ) && proto.isDefined( "returnIndex" ) &&
-                   ( buffers.returnIndex != nullptr ) )
+                   buffers.returnIndex )
          {
             destBuffers.emplace_back( imf_, "returnIndex", buffers.returnIndex, count, true );
          }
          else if ( ( name.compare( "returnCount" ) == 0 ) && proto.isDefined( "returnCount" ) &&
-                   ( buffers.returnCount != nullptr ) )
+                   buffers.returnCount )
          {
             destBuffers.emplace_back( imf_, "returnCount", buffers.returnCount, count, true );
          }
          else if ( ( name.compare( "timeStamp" ) == 0 ) && proto.isDefined( "timeStamp" ) &&
-                   ( buffers.timeStamp != nullptr ) )
+                   buffers.timeStamp )
          {
             destBuffers.emplace_back( imf_, "timeStamp", buffers.timeStamp, count, true, scaled );
          }
          else if ( ( name.compare( "isTimeStampInvalid" ) == 0 ) && proto.isDefined( "isTimeStampInvalid" ) &&
-                   ( buffers.isTimeStampInvalid != nullptr ) )
+                   buffers.isTimeStampInvalid )
          {
             destBuffers.emplace_back( imf_, "isTimeStampInvalid", buffers.isTimeStampInvalid, count, true );
          }
          else if ( ( name.compare( "intensity" ) == 0 ) && proto.isDefined( "intensity" ) &&
-                   ( buffers.intensity != nullptr ) )
+                   buffers.intensity )
          {
             destBuffers.emplace_back( imf_, "intensity", buffers.intensity, count, true, scaled );
          }
          else if ( ( name.compare( "isIntensityInvalid" ) == 0 ) && proto.isDefined( "isIntensityInvalid" ) &&
-                   ( buffers.isIntensityInvalid != nullptr ) )
+                   buffers.isIntensityInvalid )
          {
             destBuffers.emplace_back( imf_, "isIntensityInvalid", buffers.isIntensityInvalid, count, true );
          }
          else if ( ( name.compare( "colorRed" ) == 0 ) && proto.isDefined( "colorRed" ) &&
-                   ( buffers.colorRed != nullptr ) )
+                   buffers.colorRed )
          {
             destBuffers.emplace_back( imf_, "colorRed", buffers.colorRed, count, true, scaled );
          }
          else if ( ( name.compare( "colorGreen" ) == 0 ) && proto.isDefined( "colorGreen" ) &&
-                   ( buffers.colorGreen != nullptr ) )
+                   buffers.colorGreen )
          {
             destBuffers.emplace_back( imf_, "colorGreen", buffers.colorGreen, count, true, scaled );
          }
          else if ( ( name.compare( "colorBlue" ) == 0 ) && proto.isDefined( "colorBlue" ) &&
-                   ( buffers.colorBlue != nullptr ) )
+                   buffers.colorBlue )
          {
             destBuffers.emplace_back( imf_, "colorBlue", buffers.colorBlue, count, true, scaled );
          }
          else if ( ( name.compare( "isColorInvalid" ) == 0 ) && proto.isDefined( "isColorInvalid" ) &&
-                   ( buffers.isColorInvalid != nullptr ) )
+                   buffers.isColorInvalid )
          {
             destBuffers.emplace_back( imf_, "isColorInvalid", buffers.isColorInvalid, count, true );
          }
          else if ( haveNormalsExt && ( name.compare( "nor:normalX" ) == 0 ) && proto.isDefined( "nor:normalX" ) &&
-                   ( buffers.normalX != nullptr ) )
+                   buffers.normalX )
          {
             destBuffers.emplace_back( imf_, "nor:normalX", buffers.normalX, count, true, scaled );
          }
          else if ( haveNormalsExt && ( name.compare( "nor:normalY" ) == 0 ) && proto.isDefined( "nor:normalY" ) &&
-                   ( buffers.normalY != nullptr ) )
+                   buffers.normalY )
          {
             destBuffers.emplace_back( imf_, "nor:normalY", buffers.normalY, count, true, scaled );
          }
          else if ( haveNormalsExt && ( name.compare( "nor:normalZ" ) == 0 ) && proto.isDefined( "nor:normalZ" ) &&
-                   ( buffers.normalZ != nullptr ) )
+                   buffers.normalZ )
          {
             destBuffers.emplace_back( imf_, "nor:normalZ", buffers.normalZ, count, true, scaled );
          }

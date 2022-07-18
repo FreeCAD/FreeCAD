@@ -1017,7 +1017,7 @@ namespace e57
          sourceBuffers.emplace_back( imf_, "timeStamp", buffers.timeStamp, count, true, true );
       }
 
-      if ( proto.isDefined( "cartesianInvalidState" ) && ( buffers.cartesianInvalidState != nullptr ) )
+      if ( proto.isDefined( "cartesianInvalidState" ) && buffers.cartesianInvalidState )
       {
          sourceBuffers.emplace_back( imf_, "cartesianInvalidState", buffers.cartesianInvalidState, count, true );
       }

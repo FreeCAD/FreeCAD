@@ -252,7 +252,7 @@ void E57XmlParser::init()
 
    xmlReader = XMLReaderFactory::createXMLReader(); //??? auto_ptr?
 
-   if ( xmlReader == nullptr )
+   if ( !xmlReader )
    {
       throw E57_EXCEPTION2( E57_ERROR_XML_PARSER_INIT, "could not create the xml reader" );
    }
