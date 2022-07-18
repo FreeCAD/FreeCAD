@@ -44,3 +44,4 @@ def make_hatch(baseobject, filename, pattern, scale, rotation):
     obj.Rotation = rotation
     if FreeCAD.GuiUp:
         ViewProviderDraftHatch(obj.ViewObject)
+    return obj
