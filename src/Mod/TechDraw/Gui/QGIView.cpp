@@ -145,7 +145,7 @@ void QGIView::isVisible(bool state)
         auto vp = QGIView::getViewProvider(feat);
         if (vp) {
             Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
-            if (vpdo != nullptr) {
+            if (vpdo) {
                 vpdo->Visibility.setValue(state);
             }
         }
@@ -160,7 +160,7 @@ bool QGIView::isVisible(void)
         auto vp = QGIView::getViewProvider(feat);
         if (vp) {
             Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
-            if (vpdo != nullptr) {
+            if (vpdo) {
                 result = vpdo->Visibility.getValue();
             }
         }
@@ -620,7 +620,7 @@ QGVPage* QGIView::getGraphicsView(TechDraw::DrawView* dv)
     QGVPage* graphicsView = nullptr;
     Gui::ViewProvider* vp = getViewProvider(dv);
     ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
-    if (vpdv != nullptr) {
+    if (vpdv) {
         MDIViewPage* mdi = vpdv->getMDIViewPage();
         if (mdi) {
             graphicsView = mdi->getQGVPage();
@@ -634,7 +634,7 @@ QGSPage* QGIView::getGraphicsScene(TechDraw::DrawView* dv)
     QGSPage* graphicsScene = nullptr;
     Gui::ViewProvider* vp = getViewProvider(dv);
     ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
-    if (vpdv != nullptr) {
+    if (vpdv) {
         MDIViewPage* mdi = vpdv->getMDIViewPage();
         if (mdi) {
             graphicsScene = mdi->getQGSPage();
