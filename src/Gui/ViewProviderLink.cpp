@@ -2874,19 +2874,25 @@ void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     Gui::Control().closeDialog();
 }
 
-Base::Placement ViewProviderLink::currentDraggingPlacement() const{
-    assert(pcDragger);
+Base::Placement ViewProviderLink::currentDraggingPlacement() const
+{
+    // if there isn't an active dragger return a default placement
+    if (!pcDragger)
+        return Base::Placement();
+
     SbVec3f v;
     SbRotation r;
-    if(useCenterballDragger) {
+    if (useCenterballDragger) {
         SoCenterballDragger *dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
         v = dragger->center.getValue();
         r = dragger->rotation.getValue();
-    }else{
+    }
+    else {
         SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
         v = dragger->translation.getValue();
         r = dragger->rotation.getValue();
     }
+
     float q1,q2,q3,q4;
     r.getValue(q1,q2,q3,q4);
     return Base::Placement(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
