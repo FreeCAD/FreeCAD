@@ -144,7 +144,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
         Gui::Application::Instance->getViewProvider(obj));
-    if (svp == nullptr)
+    if (!svp)
         return;
 
     if (on) {

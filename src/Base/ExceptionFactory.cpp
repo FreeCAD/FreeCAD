@@ -32,14 +32,14 @@ ExceptionFactory* ExceptionFactory::_pcSingleton = nullptr;
 
 ExceptionFactory& ExceptionFactory::Instance()
 {
-    if (_pcSingleton == nullptr)
+    if (!_pcSingleton)
         _pcSingleton = new ExceptionFactory;
     return *_pcSingleton;
 }
 
 void ExceptionFactory::Destruct ()
 {
-    if (_pcSingleton != nullptr)
+    if (_pcSingleton)
         delete _pcSingleton;
     _pcSingleton = nullptr;
 }

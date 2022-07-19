@@ -588,7 +588,7 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setDocumentObject(currentDocObj, checkInList);
         return;
     }
-    if (currentDocObj != nullptr) {
+    if (currentDocObj) {
         completer = new ExpressionCompleter(currentDocObj, this, noProperty, checkInList);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -701,7 +701,7 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
         return;
     }
 
-    if (currentDocObj != nullptr) {
+    if (currentDocObj) {
         completer = new ExpressionCompleter(currentDocObj, this);
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);

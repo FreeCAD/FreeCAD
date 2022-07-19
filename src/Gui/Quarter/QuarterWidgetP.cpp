@@ -136,7 +136,7 @@ QuarterWidgetP::getCacheContextId() const
 QuarterWidgetP_cachecontext *
 QuarterWidgetP::findCacheContext(QuarterWidget * widget, const QtGLWidget * sharewidget)
 {
-  if (cachecontext_list == nullptr) {
+  if (!cachecontext_list) {
     // FIXME: static memory leak
     cachecontext_list = new SbList <QuarterWidgetP_cachecontext*>;
   }

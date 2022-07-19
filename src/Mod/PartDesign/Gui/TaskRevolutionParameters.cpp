@@ -248,7 +248,7 @@ void TaskRevolutionParameters::onAxisChanged(int num)
         oldRefName = oldSubRefAxis.front();
 
     App::PropertyLinkSub &lnk = *(axesInList[num]);
-    if (lnk.getValue() == nullptr) {
+    if (!lnk.getValue()) {
         // enter reference selection mode
         TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE |
                                                      AllowSelection::PLANAR |
@@ -317,7 +317,7 @@ void TaskRevolutionParameters::getReferenceAxis(App::DocumentObject*& obj, std::
 
     int num = ui->axis->currentIndex();
     const App::PropertyLinkSub &lnk = *(axesInList[num]);
-    if (lnk.getValue() == nullptr) {
+    if (!lnk.getValue()) {
         throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
     } else {
         PartDesign::ProfileBased* pcRevolution = static_cast<PartDesign::ProfileBased*>(vp->getObject());

@@ -368,7 +368,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 {
      Cell * cell = getCell(address);
 
-    if (cell == nullptr)
+    if (!cell)
         cell = cells.createCell(address);
 
     return cell;
@@ -384,7 +384,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 
 void Sheet::setCell(const char * address, const char * contents)
 {
-    assert(address != nullptr &&  contents != nullptr);
+    assert(address && contents);
 
     setCell(CellAddress(address), contents);
 }
@@ -400,7 +400,7 @@ void Sheet::setCell(const char * address, const char * contents)
 
 void Sheet::setCell(CellAddress address, const char * value)
 {
-    assert(value != nullptr);
+    assert(value);
 
 
     if (*value == '\0') {
@@ -672,7 +672,7 @@ void Sheet::updateProperty(CellAddress key)
 {
     Cell * cell = getCell(key);
 
-    if (cell != nullptr) {
+    if (cell) {
         std::unique_ptr<Expression> output;
         const Expression * input = cell->getExpression();
 

@@ -299,7 +299,7 @@ void QGVPage::initNavigationStyle()
 void QGVPage::setNavigationStyle(std::string navParm)
 {
 //    Base::Console().Message("QGVP::setNavigationStyle(%s)\n", navParm.c_str());
-    if (m_navStyle != nullptr) {
+    if (m_navStyle) {
         delete m_navStyle;
     }
 
@@ -451,7 +451,7 @@ void QGVPage::contextMenuEvent(QContextMenuEvent *event)
 
     //delete the old saved event before creating a new one to avoid memory leak
     //NOTE: saving the actual event doesn't work as the event gets deleted somewhere in Qt
-    if (m_saveContextEvent != nullptr) {
+    if (m_saveContextEvent) {
         delete m_saveContextEvent;
     }
     m_saveContextEvent = new QContextMenuEvent(QContextMenuEvent::Mouse,
@@ -461,7 +461,7 @@ void QGVPage::contextMenuEvent(QContextMenuEvent *event)
 
 void QGVPage::pseudoContextEvent()
 {
-    if (m_saveContextEvent != nullptr) {
+    if (m_saveContextEvent) {
         m_parentMDI->contextMenuEvent(m_saveContextEvent);
     }
 }

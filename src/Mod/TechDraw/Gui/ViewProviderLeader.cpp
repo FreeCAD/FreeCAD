@@ -121,7 +121,7 @@ void ViewProviderLeader::updateData(const App::Property* p)
         if (p == &getFeature()->LeaderParent)  {
             App::DocumentObject* docObj = getFeature()->LeaderParent.getValue();
             TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(docObj);
-            if (dv != nullptr) {
+            if (dv) {
                 QGIView* qgiv = getQView();
                 if (qgiv) {
                     qgiv->onSourceChange(dv);

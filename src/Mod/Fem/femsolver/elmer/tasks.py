@@ -159,7 +159,8 @@ class Solve(run.Solve):
             if not self.aborted:
                 self._updateOutput(output)
         else:
-            self.report.error("ElmerSolver executable not found.")
+            self.report.error("ElmerSolver binary not found.")
+            self.pushStatus("Error: ElmerSolver binary has not been found!")
             self.fail()
 
     def _updateOutput(self, output):

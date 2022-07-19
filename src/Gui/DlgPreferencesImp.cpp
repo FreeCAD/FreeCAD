@@ -208,7 +208,7 @@ void DlgPreferencesImp::addPage(const std::string& className, const std::string&
         _pages.push_back(std::make_pair(group, pages));
     }
 
-    if (DlgPreferencesImp::_activeDialog != nullptr) {
+    if (DlgPreferencesImp::_activeDialog) {
         // If the dialog is currently showing, tell it to insert the new page
         _activeDialog->reloadPages();
     }
@@ -321,14 +321,7 @@ void DlgPreferencesImp::restoreDefaults()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                               SetBool("SaveUserParameter", saveParameter);
 
-#if 0
-        QList<PreferencePage*> pages = this->findChildren<PreferencePage*>();
-        for (QList<PreferencePage*>::iterator it = pages.begin(); it != pages.end(); ++it) {
-            (*it)->loadSettings();
-        }
-#else
         reject();
-#endif
     }
 }
 
@@ -435,7 +428,6 @@ void DlgPreferencesImp::applyChanges()
 
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
-    //canEmbedScrollArea = false;
     this->adjustSize();
     QDialog::showEvent(ev);
 }

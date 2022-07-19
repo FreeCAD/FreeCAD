@@ -473,7 +473,7 @@ class ViewProviderArchReference:
                 if vobj.DiffuseColor and vobj.UpdateColors:
                     vobj.DiffuseColor = vobj.DiffuseColor
         elif prop == "Visibility":
-            if vobj.Visibility == True:
+            if vobj.Visibility:
                 if (not vobj.Object.Shape) or vobj.Object.Shape.isNull():
                     vobj.Object.Proxy.reload = True
                     vobj.Object.Proxy.execute(vobj.Object)

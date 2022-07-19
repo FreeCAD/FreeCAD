@@ -75,7 +75,7 @@ void SheetObserver::slotChangedObject(const DocumentObject &Obj, const Property 
     else {
         const char * name = Obj.getPropertyName(&Prop);
 
-        if (name == nullptr)
+        if (!name)
             return;
 
         if (isUpdating.find(name) != isUpdating.end())

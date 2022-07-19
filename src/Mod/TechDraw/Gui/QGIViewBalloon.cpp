@@ -183,7 +183,7 @@ void QGIBalloonLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void QGIBalloonLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView *view = dynamic_cast<QGIView *> (parentItem());
-    assert(view != nullptr);
+    assert(view);
     Q_UNUSED(view);
 
     Q_EMIT hover(false);

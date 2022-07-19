@@ -466,7 +466,7 @@ void TaskSectionView::updateSectionView(void)
     }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
-    if (m_section != nullptr) {
+    if (m_section) {
         Command::doCommand(Command::Doc,"App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(),m_dirName.c_str());
         Command::doCommand(Command::Doc,

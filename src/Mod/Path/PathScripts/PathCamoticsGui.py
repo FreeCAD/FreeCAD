@@ -32,7 +32,6 @@ import PathScripts.PathPost as PathPost
 import camotics
 import io
 import json
-import os
 import queue
 import subprocess
 
@@ -244,7 +243,6 @@ class CamoticsSimulation(QtCore.QObject):
 
     def cancel(self):
         pass
-
 
     def buildproject(self):  # , files=[]):
         PathLog.track()

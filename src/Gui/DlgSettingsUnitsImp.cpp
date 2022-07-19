@@ -68,7 +68,6 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
         ui->comboBox_ViewSystem->addItem(item, i);
     }
 
-    //fillUpListBox();
     ui->tableWidget->setVisible(false);
     //
     // Enable/disable the fractional inch option depending on system

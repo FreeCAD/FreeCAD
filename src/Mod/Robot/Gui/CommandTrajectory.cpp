@@ -178,16 +178,16 @@ void CmdRobotInsertWaypointPreselect::activated(int)
 
 
     Robot::TrajectoryObject *pcTrajectoryObject;
-    if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
+    if (Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
-    else  {
+    else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one Trajectory object."));
         return;
     }
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
-    if(PreSel.pDocName == nullptr){
+    if (!PreSel.pDocName) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No preselection"),
             QObject::tr("You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details."));
         return;

@@ -1675,7 +1675,7 @@ void CmdFemPostFunctions::activated(int iMsg)
 
         this->updateActive();
         //most of the times functions are added inside of a filter, make sure this still works
-        if (Gui::Application::Instance->activeDocument()->getInEdit() == nullptr)
+        if (!Gui::Application::Instance->activeDocument()->getInEdit())
             doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
     else {

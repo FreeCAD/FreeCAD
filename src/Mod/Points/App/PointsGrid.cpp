@@ -124,7 +124,7 @@ void PointsGrid::Rebuild (int iCtGridPerAxis)
 
 void PointsGrid::InitGrid ()
 {
-  assert(_pclPoints != nullptr);
+  assert(_pclPoints);
 
   unsigned long i, j;
 
@@ -656,7 +656,7 @@ void PointsGrid::Validate (const PointKernel &rclPoints)
 
 void PointsGrid::Validate ()
 {
-  if (_pclPoints == nullptr)
+  if (!_pclPoints)
     return;
 
   if (_pclPoints->size() != _ulCtElements)

@@ -95,7 +95,7 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     // negative kink length is allowed, thus no minimum
     ui->qsbKinkLength->setUnit(Base::Unit::Length);
 
-    if (balloonVP != nullptr) {
+    if (balloonVP) {
         ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());
         connect(ui->textColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
         ui->qsbFontSize->setValue(balloonVP->Fontsize.getValue());

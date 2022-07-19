@@ -427,7 +427,8 @@ def getCutVolume(cutplane,shapes,clip=False,depth=None):
         return None,None,None
     ce = p.CenterOfMass
     ax = p.normalAt(0,0)
-    u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
+    prm_range = p.ParameterRange # (uMin, uMax, vMin, vMax)
+    u = p.valueAt(prm_range[0], 0).sub(p.valueAt(prm_range[1], 0)).normalize()
     v = u.cross(ax)
     if not bb.isCutPlane(ce,ax):
         #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane)+"\n")
@@ -1703,7 +1704,7 @@ class _ToggleSubs:
                         if mode is None:
                             # take the first sub as base
                             mode = sub.ViewObject.isVisible()
-                        if mode == True:
+                        if mode:
                             sub.ViewObject.hide()
                         else:
                             sub.ViewObject.show()

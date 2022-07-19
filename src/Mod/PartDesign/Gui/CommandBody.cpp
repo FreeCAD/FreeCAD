@@ -128,7 +128,7 @@ void CmdPartDesignBody::activated(int iMsg)
             }
             else {
                 partOfBaseFeature = App::Part::getPartOfObject(baseFeature);
-                if (partOfBaseFeature != nullptr  &&  partOfBaseFeature != actPart){
+                if (partOfBaseFeature  &&  partOfBaseFeature != actPart){
                     //prevent cross-part mess
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
                             QObject::tr("Base feature (%1) belongs to other part.")

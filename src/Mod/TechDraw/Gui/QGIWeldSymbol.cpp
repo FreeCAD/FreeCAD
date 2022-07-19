@@ -171,11 +171,11 @@ void QGIWeldSymbol::draw()
 
     removeQGITiles();
 
-    if (m_arrowFeat != nullptr) {
+    if (m_arrowFeat) {
         drawTile(m_arrowFeat);
     }
 
-    if (m_otherFeat != nullptr) {
+    if (m_otherFeat) {
         drawTile(m_otherFeat);
     }
 

@@ -130,7 +130,7 @@ void TaskCosVertex::setUiPrimary()
 //    Base::Console().Message("TCV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("New Cosmetic Vertex"));
 
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
     }
@@ -242,7 +242,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 
     DrawViewPart* dvp = m_baseFeat;
     DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
-    if (dpgi != nullptr) {
+    if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
         if (dpg == nullptr) {
             Base::Console().Message("TCV:onTrackerFinished - projection group is confused\n");
@@ -275,8 +275,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 void TaskCosVertex::removeTracker(void)
 {
 //    Base::Console().Message("TCV::removeTracker()\n");
-    if ((m_tracker != nullptr) &&
-        (m_tracker->scene() != nullptr)) {
+    if (m_tracker && m_tracker->scene()) {
         m_scene->removeItem(m_tracker);
         delete m_tracker;
         m_tracker = nullptr;
@@ -285,7 +284,7 @@ void TaskCosVertex::removeTracker(void)
 
 void TaskCosVertex::setEditCursor(QCursor c)
 {
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         QGIView* qgivBase = m_scene->findQViewForDocObj(m_baseFeat);
         qgivBase->setCursor(c);
     }
@@ -345,7 +344,7 @@ bool TaskCosVertex::reject()
 
     removeTracker();
     m_trackerMode = QGTracker::TrackerMode::None;
-    if (m_mdi != nullptr) {
+    if (m_mdi) {
         m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     }
 

@@ -903,7 +903,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	// FIXME actually now that we have Qt5, we could probably do this earlier (as we do not need the opengl context)
 	if (!m_NaviCubeInitialised) {
 		QtGLWidget* gl = static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport());
-		if (gl == nullptr)
+		if (!gl)
 			return;
 		initNaviCube(gl);
 		m_NaviCubeInitialised = true;

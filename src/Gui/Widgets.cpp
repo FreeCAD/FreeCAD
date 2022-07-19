@@ -652,10 +652,8 @@ ColorButton::ColorButton(QWidget* parent)
     d->col = palette().color(QPalette::Active,QPalette::Midlight);
     connect(this, SIGNAL(clicked()), SLOT(onChooseColor()));
 
-#if 1
     int e = style()->pixelMetric(QStyle::PM_ButtonIconSize);
     setIconSize(QSize(2*e, e));
-#endif
 }
 
 /**
@@ -744,36 +742,6 @@ bool ColorButton::autoChangeColor() const
  */
 void ColorButton::paintEvent (QPaintEvent * e)
 {
-#if 0
-    // first paint the complete button
-    QPushButton::paintEvent(e);
-
-    // repaint the rectangle area
-    QPalette::ColorGroup group = isEnabled() ? hasFocus() ? QPalette::Active : QPalette::Inactive : QPalette::Disabled;
-    QColor pen = palette().color(group,QPalette::ButtonText);
-    {
-        QPainter paint(this);
-        paint.setPen(pen);
-
-        if (d->drawFrame) {
-            paint.setBrush(QBrush(d->col));
-            paint.drawRect(5, 5, width()-10, height()-10);
-        }
-        else {
-            paint.fillRect(5, 5, width()-10, height()-10, QBrush(d->col));
-        }
-    }
-
-    // overpaint the rectangle to paint icon and text
-    QStyleOptionButton opt;
-    opt.init(this);
-    opt.text = text();
-    opt.icon = icon();
-    opt.iconSize = iconSize();
-
-    QStylePainter p(this);
-    p.drawControl(QStyle::CE_PushButtonLabel, opt);
-#else
     if (d->dirty) {
         QSize isize = iconSize();
         QPixmap pix(isize);
@@ -797,7 +765,6 @@ void ColorButton::paintEvent (QPaintEvent * e)
     }
 
     QPushButton::paintEvent(e);
-#endif
 }
 
 /**
@@ -1222,7 +1189,6 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
 StatusWidget::StatusWidget(QWidget* parent)
   : QDialog(parent, Qt::Dialog | Qt::FramelessWindowHint)
 {
-    //setWindowModality(Qt::ApplicationModal);
     label = new QLabel(this);
     label->setAlignment(Qt::AlignCenter);
 

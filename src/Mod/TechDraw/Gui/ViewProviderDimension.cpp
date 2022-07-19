@@ -209,7 +209,7 @@ void ViewProviderDimension::onChanged(const App::Property* p)
         QGIView* qgiv = getQView();
         if (qgiv) {
             QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(qgiv);
-            if (qgivd != nullptr) {
+            if (qgivd) {
                 qgivd->setNormalColorAll();
             }
         }

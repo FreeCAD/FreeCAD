@@ -619,12 +619,12 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent() const
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     DIR* dp(nullptr);
     struct dirent* dentry(nullptr);
-    if ((dp = opendir(FileName.c_str())) == nullptr)
+    if (!(dp = opendir(FileName.c_str())))
     {
         return List;
     }
 
-    while ((dentry = readdir(dp)) != nullptr)
+    while ((dentry = readdir(dp)))
     {
         std::string dir = dentry->d_name;
         if (dir != "." && dir != "..")

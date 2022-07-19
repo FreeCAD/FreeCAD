@@ -56,7 +56,7 @@ VoronoiVertex::~VoronoiVertex() {
 }
 
 bool VoronoiVertex::isBound(void) const {
-  if (ptr != nullptr && dia.isValid() && index != Voronoi::InvalidIndex) {
+  if (ptr && dia.isValid() && index != Voronoi::InvalidIndex) {
     if (&(dia->vertices()[index]) == ptr) {
       return true;
     }

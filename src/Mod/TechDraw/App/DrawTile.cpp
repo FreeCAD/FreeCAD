@@ -103,9 +103,9 @@ DrawView* DrawTile::getParent(void) const
 //    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
     DrawView* result = nullptr;
     App::DocumentObject* baseObj = TileParent.getValue();
-    if (baseObj != nullptr) {
+    if (baseObj) {
         DrawView* cast = dynamic_cast<DrawView*>(baseObj);
-        if (cast != nullptr) {
+        if (cast) {
             result = cast;
         }
     }

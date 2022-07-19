@@ -295,7 +295,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
                     std::set<VertexIds, VertexID_Less> *tempGrp = nullptr;
                     for (auto it = coincVertexGrps.begin(); it < coincVertexGrps.end(); ++it) {
                         if ( (it->find(v1) != it->end()) || (it->find(v2) != it->end()) ) {
-                            if (tempGrp == nullptr) {
+                            if (!tempGrp) {
                                 tempGrp = &*it;
                             }
                             else {

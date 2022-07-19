@@ -80,7 +80,7 @@ void ConstraintBearing::onChanged(const App::Property* prop)
         Height.setValue(height);
         // Update base point
         base = base + axis * height/2;
-        if (Location.getValue() != nullptr) {
+        if (Location.getValue()) {
             base = getBasePoint(base, axis, Location, Dist.getValue());
         }
         BasePoint.setValue(base);

@@ -107,7 +107,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     //m_baseFeat can be null
     App::DocumentObject* obj = m_annoFeat->AnnoParent.getValue();
-    if (obj != nullptr) {
+    if (obj) {
         if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
             m_baseFeat = static_cast<TechDraw::DrawView*>(m_annoFeat->AnnoParent.getValue());
         }
@@ -120,9 +120,9 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_mdi = dvp->getMDIViewPage();
     m_qgParent = nullptr;
     m_haveMdi = true;
-    if (m_mdi != nullptr) {
+    if (m_mdi) {
         m_scene = m_mdi->getQGSPage();
-        if (m_baseFeat != nullptr) {
+        if (m_baseFeat) {
             m_qgParent = m_scene->findQViewForDocObj(m_baseFeat);
         }
     } else {
@@ -175,7 +175,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_qgParent = nullptr;
     m_haveMdi = true;
     m_mdi = dvp->getMDIViewPage();
-    if (m_mdi != nullptr) {
+    if (m_mdi) {
         m_scene= m_mdi->getQGSPage();
         m_qgParent = m_scene->findQViewForDocObj(baseFeat);
     } else {
@@ -214,7 +214,7 @@ void TaskRichAnno::setUiPrimary()
     enableVPUi(false);
     setWindowTitle(m_title);
 
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
     }
@@ -253,10 +253,10 @@ void TaskRichAnno::setUiEdit()
     setWindowTitle(m_title);
     enableTextUi(true);
 
-    if (m_annoFeat != nullptr) {
+    if (m_annoFeat) {
         std::string baseName("None");
         App::DocumentObject* docObj = m_annoFeat->AnnoParent.getValue();
-        if (docObj != nullptr) {
+        if (docObj) {
             baseName = docObj->getNameInDocument();
         }
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
@@ -265,7 +265,7 @@ void TaskRichAnno::setUiEdit()
         ui->cbShowFrame->setChecked(m_annoFeat->ShowFrame.getValue());
     }
 
-    if (m_annoVP != nullptr) {
+    if (m_annoVP) {
         ui->cpFrameColor->setColor(m_annoVP->LineColor.getValue().asValue<QColor>());
         ui->dsbWidth->setValue(m_annoVP->LineWidth.getValue());
         ui->cFrameStyle->setCurrentIndex(m_annoVP->LineStyle.getValue());
@@ -347,7 +347,7 @@ void TaskRichAnno::createAnnoFeature()
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
                        PageName.c_str(),annoName.c_str());
 
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         Command::doCommand(Command::Doc,"App.activeDocument().%s.AnnoParent = App.activeDocument().%s",
                                annoName.c_str(),m_baseFeat->getNameInDocument());
     }
@@ -370,10 +370,10 @@ void TaskRichAnno::createAnnoFeature()
         }
     }
 
-    if (m_annoFeat != nullptr) {
+    if (m_annoFeat) {
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_annoFeat);
         auto annoVP = dynamic_cast<ViewProviderRichAnno*>(vp);
-        if (annoVP != nullptr) {
+        if (annoVP) {
             App::Color ac;
             ac.setValue<QColor>(ui->cpFrameColor->color());
             annoVP->LineColor.setValue(ac);
@@ -386,13 +386,13 @@ void TaskRichAnno::createAnnoFeature()
     Gui::Command::commitCommand();
 
     //trigger collectChildren in tree
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         m_baseFeat->touch();
     }
 
     m_basePage->touch();
 
-    if (m_annoFeat != nullptr) {
+    if (m_annoFeat) {
         m_annoFeat->requestPaint();
     }
 }
@@ -467,7 +467,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
     }
 
     std::vector<Base::Vector3d> points;
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         if (m_baseFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
             TechDraw::DrawLeaderLine* dll = static_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
@@ -477,7 +477,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
         }
     } else {
 //        Base::Console().Message("TRA::calcStartPos - no m_baseFeat\n");
-        if (m_basePage != nullptr) {
+        if (m_basePage) {
             double w = Rez::guiX(m_basePage->getPageWidth() / 2.0);
             double h = Rez::guiX(m_basePage->getPageHeight() / 2.0);
             return QPointF(w,h);
@@ -551,13 +551,12 @@ bool TaskRichAnno::reject()
         return false;
     }
 
-    if (m_basePage != nullptr) {
+    if (m_basePage) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
         if (!doc) {
             return false;
         }
-        if (getCreateMode() &&
-            (m_annoFeat != nullptr) )  {
+        if (getCreateMode() && m_annoFeat)  {
             removeFeature();
         }
     }

@@ -308,7 +308,7 @@ QModelIndexList SheetTableView::selectedIndexesRaw() const
 
 void SheetTableView::insertRows()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
 
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
@@ -345,7 +345,7 @@ void SheetTableView::insertRows()
 
 void SheetTableView::insertRowsAfter()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
     const auto rows = selectionModel()->selectedRows();
     const auto & [min, max] = selectedMinMaxRows(rows);
     assert(max - min == rows.size() - 1);
@@ -359,7 +359,7 @@ void SheetTableView::insertRowsAfter()
 
 void SheetTableView::removeRows()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
 
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
@@ -380,7 +380,7 @@ void SheetTableView::removeRows()
 
 void SheetTableView::insertColumns()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
 
     QModelIndexList cols = selectionModel()->selectedColumns();
     std::vector<int> sortedColumns;
@@ -418,7 +418,7 @@ void SheetTableView::insertColumns()
 
 void SheetTableView::insertColumnsAfter()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
     const auto columns = selectionModel()->selectedColumns();
     const auto& [min, max] = selectedMinMaxColumns(columns);
     assert(max - min == columns.size() - 1);
@@ -432,7 +432,7 @@ void SheetTableView::insertColumnsAfter()
 
 void SheetTableView::removeColumns()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
 
     QModelIndexList cols = selectionModel()->selectedColumns();
     std::vector<int> sortedColumns;

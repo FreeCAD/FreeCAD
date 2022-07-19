@@ -108,7 +108,10 @@ namespace PartGui
   void ensure3dDimensionVisible();
   /*convert a vertex to vector*/
   gp_Vec convert(const TopoDS_Vertex &vertex);
-  
+
+  auto getDimensionsFontName();
+  auto getDimensionsFontSize();
+
 class DimensionLinear : public SoSeparatorKit
 {
   SO_KIT_HEADER(DimensionLinear);

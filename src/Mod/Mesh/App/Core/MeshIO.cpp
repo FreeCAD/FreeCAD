@@ -262,8 +262,8 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
     boost::algorithm::to_upper(szBuf);
 
     try {
-        if ((strstr(szBuf, "SOLID") == nullptr)  && (strstr(szBuf, "FACET") == nullptr)    && (strstr(szBuf, "NORMAL") == nullptr) &&
-            (strstr(szBuf, "VERTEX") == nullptr) && (strstr(szBuf, "ENDFACET") == nullptr) && (strstr(szBuf, "ENDLOOP") == nullptr)) {
+        if (!strstr(szBuf, "SOLID") && !strstr(szBuf, "FACET") && !strstr(szBuf, "NORMAL") &&
+            !strstr(szBuf, "VERTEX") && !strstr(szBuf, "ENDFACET") && !strstr(szBuf, "ENDLOOP")) {
             // probably binary STL
             buf->pubseekoff(0, std::ios::beg, std::ios::in);
             return LoadBinarySTL(rstrIn);

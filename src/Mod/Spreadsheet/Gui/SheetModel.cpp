@@ -85,7 +85,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     int col = index.column();
     const Cell * cell = sheet->getCell(CellAddress(row, col));
 
-    if (cell == nullptr)
+    if (!cell)
         cell = emptyCell;
 
 //#define DEBUG_DEPS

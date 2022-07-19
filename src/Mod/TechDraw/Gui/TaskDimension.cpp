@@ -119,7 +119,7 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     connect(ui->cbArbitraryTolerances, SIGNAL(stateChanged(int)), this, SLOT(onArbitraryTolerancesChanged()));
 
     // Display Style
-    if (dimensionVP != nullptr) {
+    if (dimensionVP) {
         ui->cbArrowheads->setChecked(dimensionVP->FlipArrowheads.getValue());
         connect(ui->cbArrowheads, SIGNAL(stateChanged(int)), this, SLOT(onFlipArrowheadsChanged()));
         ui->dimensionColor->setColor(dimensionVP->Color.getValue().asValue<QColor>());

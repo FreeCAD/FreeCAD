@@ -23,9 +23,6 @@
 #ifndef SOMOUSEWHEELEVENT_H_FC
 #define SOMOUSEWHEELEVENT_H_FC
 
-//#ifndef GuiExport
-//#define GuiExport
-//#endif
 
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoSubEvent.h>

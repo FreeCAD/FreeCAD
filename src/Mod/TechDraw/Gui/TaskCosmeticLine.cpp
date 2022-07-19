@@ -117,7 +117,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 
 TaskCosmeticLine::~TaskCosmeticLine()
 {
-    if (m_saveCE != nullptr) {
+    if (m_saveCE) {
         delete m_saveCE;
     }
 }

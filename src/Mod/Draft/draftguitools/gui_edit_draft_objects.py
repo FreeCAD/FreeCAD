@@ -194,7 +194,7 @@ class DraftBSplineGuiTools(DraftWireGuiTools):
             return
 
         pts = obj.Points
-        if (obj.Closed == True):
+        if obj.Closed:
             curve = obj.Shape.Edges[0].Curve
         else:
             curve = obj.Shape.Curve
@@ -455,7 +455,7 @@ class DraftCircleGuiTools(GuiTools):
             px = obj.Radius * math.cos(math.radians(angle))
             py = obj.Radius * math.sin(math.radians(angle))
             p = App.Vector(px, py, 0.0)
-            if global_placement == True:
+            if global_placement:
                 p = obj.getGlobalPlacement().multVec(p)
             return p
         return None

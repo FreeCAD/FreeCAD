@@ -197,7 +197,7 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
-    if ((wizardWidget != nullptr) && (wizardSubLayout != nullptr) && (constraintDialog != nullptr)) {
+    if (wizardWidget && wizardSubLayout && constraintDialog) {
         wizardWidget = nullptr;
         wizardSubLayout = nullptr;
         delete constraintDialog;
@@ -489,7 +489,7 @@ QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const
             return *o;
         if (!(*o)->children().empty()) {
             QObject* result = findChildByName(*o, name);
-            if (result != nullptr)
+            if (result)
                 return result;
         }
     }
@@ -502,28 +502,28 @@ void ViewProviderFemConstraint::checkForWizard()
     wizardWidget= nullptr;
     wizardSubLayout = nullptr;
     Gui::MainWindow* mw = Gui::getMainWindow();
-    if (mw == nullptr)
+    if (!mw)
         return;
     QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
-    if (dw == nullptr)
+    if (!dw)
         return;
     QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
-    if (cw == nullptr)
+    if (!cw)
         return;
     QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
-    if (tw == nullptr)
+    if (!tw)
         return;
     QStackedWidget* sw = tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
-    if (sw == nullptr)
+    if (!sw)
         return;
     QScrollArea* sa = sw->findChild<QScrollArea*>();
-    if (sa== nullptr)
+    if (!sa)
         return;
     QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
-    if (wd == nullptr)
+    if (!wd)
         return;
     QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
-    if (wiz != nullptr) {
+    if (wiz) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
         wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
     }

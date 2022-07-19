@@ -248,7 +248,7 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
     // find surrounding features in the tree
     Part::BodyBase* body = PartDesign::Body::findBodyOf(getObject());
 
-    if (body != nullptr) {
+    if (body) {
         // Deletion from the tree of a feature is handled by Document.removeObject, which has no clue
         // about what a body is. Therefore, Bodies, although an "activable" container, know nothing
         // about what happens at Document level with the features they contain.

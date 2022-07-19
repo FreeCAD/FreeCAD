@@ -81,7 +81,7 @@ std::istream *DirectoryCollection::getInputStream( const string &entry_name,
 
     ConstEntryPointer ent = getEntry( entry_name, matchpath ) ;
     
-    if ( ent == nullptr )
+    if ( !ent )
       return nullptr ;
     else {
       string real_path( _filepath + entry_name ) ;

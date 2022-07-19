@@ -204,12 +204,12 @@ short int ExtensionContainer::getPropertyType(const char* name) const {
 const char* ExtensionContainer::getPropertyName(const Property* prop) const {
 
     const char* res = App::PropertyContainer::getPropertyName(prop);
-    if(res != nullptr)
+    if (res)
         return res;
 
-    for(const auto& entry : _extensions) {
+    for (const auto& entry : _extensions) {
         res = entry.second->extensionGetPropertyName(prop);
-        if(res != nullptr)
+        if (res)
             return res;
     }
 
@@ -219,12 +219,12 @@ const char* ExtensionContainer::getPropertyName(const Property* prop) const {
 const char* ExtensionContainer::getPropertyGroup(const Property* prop) const {
 
     const char* res = App::PropertyContainer::getPropertyGroup(prop);
-    if(res != nullptr)
+    if (res)
         return res;
 
-    for(const auto& entry : _extensions) {
+    for (const auto& entry : _extensions) {
         res = entry.second->extensionGetPropertyGroup(prop);
-        if(res != nullptr)
+        if (res)
             return res;
     }
 
@@ -234,12 +234,12 @@ const char* ExtensionContainer::getPropertyGroup(const Property* prop) const {
 const char* ExtensionContainer::getPropertyGroup(const char* name) const {
 
     const char* res = App::PropertyContainer::getPropertyGroup(name);
-    if(res != nullptr)
+    if (res)
         return res;
 
-    for(const auto& entry : _extensions) {
+    for (const auto& entry : _extensions) {
         res = entry.second->extensionGetPropertyGroup(name);
-        if(res != nullptr)
+        if (res)
             return res;
     }
 
@@ -250,12 +250,12 @@ const char* ExtensionContainer::getPropertyGroup(const char* name) const {
 const char* ExtensionContainer::getPropertyDocumentation(const Property* prop) const {
 
     const char* res = App::PropertyContainer::getPropertyDocumentation(prop);
-    if(res != nullptr)
+    if (res)
         return res;
 
-    for(const auto& entry : _extensions) {
+    for (const auto& entry : _extensions) {
         res = entry.second->extensionGetPropertyDocumentation(prop);
-        if(res != nullptr)
+        if (res)
             return res;
     }
 
@@ -265,12 +265,12 @@ const char* ExtensionContainer::getPropertyDocumentation(const Property* prop) c
 const char* ExtensionContainer::getPropertyDocumentation(const char* name) const {
 
     const char* res = App::PropertyContainer::getPropertyDocumentation(name);
-    if(res != nullptr)
+    if (res)
         return res;
 
     for(const auto& entry : _extensions) {
         res = entry.second->extensionGetPropertyDocumentation(name);
-        if(res != nullptr)
+        if (res)
             return res;
     }
 

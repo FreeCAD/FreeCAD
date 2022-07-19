@@ -136,8 +136,7 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 
     TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
     TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
-    if (v0 == nullptr ||
-        v1 != nullptr) {
+    if (!v0 || !v1) {
         return DrawViewDimension::execute();
     }
 
@@ -196,7 +195,7 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
     
     TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
     TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
-    if (v0 == nullptr || v1 == nullptr ) {
+    if (!v0 || !v1) {
         return errorValue;
     }
 
@@ -208,7 +207,7 @@ bool DrawViewDimExtent::checkReferences2D() const
 {
 //    Base::Console().Message("DVDE::checkReFerences2d() - %s\n",getNameInDocument());
     TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp == nullptr) {
+    if (!dvp) {
         return false;
     }
 
@@ -219,7 +218,7 @@ bool DrawViewDimExtent::checkReferences2D() const
     
     CosmeticVertex* cv0 = dvp->getCosmeticVertex(cTags[0]);
     CosmeticVertex* cv1 = dvp->getCosmeticVertex(cTags[1]);
-    if (cv0 == nullptr || cv1 == nullptr) {
+    if (!cv0 || !cv1) {
         return false;
     }
 

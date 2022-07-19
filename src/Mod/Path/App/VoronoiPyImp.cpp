@@ -188,7 +188,7 @@ static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, c
 #endif
       Py_DECREF(arglist);
       Py_DECREF(vx);
-      if (result == nullptr) {
+      if (!result) {
         bail = true;
       } else {
         rc = result == Py_True;

@@ -85,7 +85,7 @@ void QGVNavStyle::initialize()
 
 void QGVNavStyle::setAnchor()
 {
-    if (m_viewer != nullptr) {
+    if (m_viewer) {
         if (zoomAtCursor) {
             m_viewer->setResizeAnchor(QGraphicsView::AnchorUnderMouse);
             m_viewer->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);

@@ -273,3 +273,57 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
         prism = comp;
     }
 }
+
+void FeatureExtrude::updateProperties(const std::string &method)
+{
+    // disable settings that are not valid on the current method
+    // disable everything unless we are sure we need it
+    bool isLengthEnabled = false;
+    bool isLength2Enabled = false;
+    bool isOffsetEnabled = false;
+    bool isMidplaneEnabled = false;
+    bool isReversedEnabled = false;
+    bool isUpToFaceEnabled = false;
+    bool isTaperVisible = false;
+    bool isTaper2Visible = false;
+    if (method == "Length") {
+        isLengthEnabled = true;
+        isTaperVisible = true;
+        isMidplaneEnabled = true;
+        isReversedEnabled = !Midplane.getValue();
+    }
+    else if (method == "UpToLast") {
+        isOffsetEnabled = true;
+        isReversedEnabled = true;
+    }
+    else if (method == "ThroughAll") {
+        isMidplaneEnabled = true;
+        isReversedEnabled = !Midplane.getValue();
+    }
+    else if (method == "UpToFirst") {
+        isOffsetEnabled = true;
+        isReversedEnabled = true;
+    }
+    else if (method == "UpToFace") {
+        isOffsetEnabled = true;
+        isReversedEnabled = true;
+        isUpToFaceEnabled = true;
+    }
+    else if (method == "TwoLengths") {
+        isLengthEnabled = true;
+        isLength2Enabled = true;
+        isTaperVisible = true;
+        isTaper2Visible = true;
+        isReversedEnabled = true;
+    }
+
+    Length.setReadOnly(!isLengthEnabled);
+    AlongSketchNormal.setReadOnly(!isLengthEnabled);
+    Length2.setReadOnly(!isLength2Enabled);
+    Offset.setReadOnly(!isOffsetEnabled);
+    TaperAngle.setReadOnly(!isTaperVisible);
+    TaperAngle2.setReadOnly(!isTaper2Visible);
+    Midplane.setReadOnly(!isMidplaneEnabled);
+    Reversed.setReadOnly(!isReversedEnabled);
+    UpToFace.setReadOnly(!isUpToFaceEnabled);
+}

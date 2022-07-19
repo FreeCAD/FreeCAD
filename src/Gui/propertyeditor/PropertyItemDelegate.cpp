@@ -130,38 +130,13 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
         PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
         auto widget = qobject_cast<QWidget*>(o);
         if (widget && parentEditor && parentEditor->activeEditor
-                   && widget != parentEditor->activeEditor)
-        {
-#if 1
+                   && widget != parentEditor->activeEditor) {
             // All the attempts to ignore the focus-out event has been approved to not work
             // reliably because there are still cases that cannot be handled.
             // So, the best for now is to always ignore this event.
             // See https://forum.freecadweb.org/viewtopic.php?p=579530#p579530 why this is not
             // possible.
             return false;
-#else
-            // We event filter child QAbstractButton and QLabel of an editor,
-            // which requires special focus change in order to not mess up with
-            // QItemDelegate's logic.
-            QWidget *w = QApplication::focusWidget();
-            // For some reason, Qt (5.15) on Windows will remove current focus
-            // before bringing up a modal dialog.
-            if (!w)
-                return false;
-            while (w) { // don't worry about focus changes internally in the editor
-                if (w == widget || w == parentEditor->activeEditor)
-                    return false;
-
-                // ignore focus change to 3D view or tree view, because, for
-                // example DlgPropertyLink is implemented as modeless dialog
-                // to allow selection in 3D and tree view.
-                if (qobject_cast<MDIView*>(w))
-                    return false;
-                if (qobject_cast<TreeWidget*>(w))
-                    return false;
-                w = w->parentWidget();
-            }
-#endif
         }
     }
     return QItemDelegate::eventFilter(o, ev);

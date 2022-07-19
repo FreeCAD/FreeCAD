@@ -1255,7 +1255,7 @@ DockEvaluateMeshImp* DockEvaluateMeshImp::instance()
 
 void DockEvaluateMeshImp::destruct ()
 {
-    if (_instance != nullptr) {
+    if (_instance) {
         DockEvaluateMeshImp *pTmp = _instance;
         _instance = nullptr;
         delete pTmp;

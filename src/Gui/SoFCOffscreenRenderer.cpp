@@ -68,7 +68,7 @@ SoFCOffscreenRenderer* SoFCOffscreenRenderer::inst = nullptr;
 
 SoFCOffscreenRenderer& SoFCOffscreenRenderer::instance()
 {
-    if (inst==nullptr)
+    if (!inst)
         inst = new SoFCOffscreenRenderer(SbViewportRegion());
     return *inst;
 }

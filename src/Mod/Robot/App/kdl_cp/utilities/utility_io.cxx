@@ -46,7 +46,7 @@ namespace KDL {
         count++;
         _check_istream(is);
     } while (ch!='\n');
-    if (countp!=nullptr) *countp = count;
+    if (countp) *countp = count;
     return ch;
 }
 
@@ -66,7 +66,7 @@ namespace KDL {
             break;
         }
     } while (true);
-    if (countp!=nullptr) *countp = count;
+    if (countp) *countp = count;
     ch = is.get();
     return ch;
 }
@@ -97,7 +97,7 @@ int _EatSpace( std::istream& is,int* countp=nullptr) {
             }
         }
     } while ((ch==' ')||(ch=='\n')||(ch=='\t'));
-    if (countp!=nullptr) *countp =  count;
+    if (countp) *countp =  count;
     return ch;
 }
 
@@ -189,7 +189,7 @@ void EatWord(std::istream& is,const char* delim,char* storage,int maxsize)
     p = storage;
     size=0;
     int count = 0;
-    while ((count==0)&&(strchr(delim,ch)==nullptr)) {
+    while ((count==0)&&(strchr(delim,ch) == nullptr)) {
         *p = (char) toupper(ch);
         ++p;
         if (size==maxsize) {

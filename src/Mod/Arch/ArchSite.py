@@ -516,15 +516,15 @@ class _CommandSite:
         link = p.GetBool("FreeLinking",False)
         siteobj = []
         warning = False
-        for obj in sel :
+        for obj in sel:
             if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcType") and obj.IfcType == "Building"):
                 siteobj.append(obj)
-            else :
-                if link == True :
+            else:
+                if link:
                     siteobj.append(obj)
                 else:
                     warning = True
-        if warning :
+        if warning:
             message = translate( "Arch" ,  "Please either select only Building objects or nothing at all!\n\
 Site is not allowed to accept any other object besides Building.\n\
 Other objects will be removed from the selection.\n\
@@ -534,7 +534,7 @@ Note: You can change that in the preferences.")
             message = translate( "Arch" ,  "There is no valid object in the selection.\n\
 Site creation aborted.") + "\n"
             ArchCommands.printMessage( message )
-        else :
+        else:
             ss = "[ "
             for o in siteobj:
                 ss += "FreeCAD.ActiveDocument." + o.Name + ", "

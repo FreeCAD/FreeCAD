@@ -1514,7 +1514,7 @@ bool DrawViewDimension::has2DReferences(void) const
     }
 
     App::DocumentObject* testRef = objects.at(0);
-    if (testRef == nullptr) { // Why this guard clause?
+    if (!testRef) { // Why this guard clause?
         return false;
     }
 

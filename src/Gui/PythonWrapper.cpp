@@ -363,7 +363,7 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return reinterpret_cast<QObject*>(ptr);
 #endif
 
-#if 0 // Unwrapping using sip/PyQt
+#ifdef HAVE_PYQT // Unwrapping using sip/PyQt
     void* ptr = qt_getCppPointer(pyobject, "sip", "unwrapinstance");
     return reinterpret_cast<QObject*>(ptr);
 #endif
@@ -499,7 +499,7 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
     //
     return qt_wrapInstance<QObject*>(object, className, "shiboken2", "PySide2.QtCore", "wrapInstance");
 #endif
-#if 0 // Unwrapping using sip/PyQt
+#ifdef HAVE_PYQT // Unwrapping using sip/PyQt
     Q_UNUSED(className);
     return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt5.QtCore", "wrapinstance");
 #endif
@@ -529,7 +529,7 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     return qt_wrapInstance<QWidget*>(widget, className, "shiboken2", "PySide2.QtWidgets", "wrapInstance");
 #endif
 
-#if 0 // Unwrapping using sip/PyQt
+#ifdef HAVE_PYQT // Unwrapping using sip/PyQt
     Q_UNUSED(className);
     return qt_wrapInstance<QWidget*>(widget, "QWidget", "sip", "PyQt5.QtWidgets", "wrapinstance");
 #endif

@@ -141,7 +141,7 @@ the sketch plane's normal vector will be used</string>
            </property>
           </widget>
          </item>
-        <item row="0" column="1">
+         <item row="0" column="1">
           <widget class="Gui::DoubleSpinBox" name="XDirectionEdit">
            <property name="toolTip">
             <string>x-component of direction vector</string>
@@ -224,7 +224,7 @@ the sketch plane's normal vector will be used</string>
            </property>
           </widget>
          </item>
-         </layout>
+        </layout>
        </widget>
       </item>
       <item row="3" column="0">
@@ -336,14 +336,27 @@ measured along the specified direction</string>
    <item>
     <layout class="QGridLayout" name="gridLayout_5">
      <item row="0" column="0">
-      <widget class="QPushButton" name="buttonFace">
+      <widget class="QToolButton" name="buttonFace">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Face</string>
+        <string>Select face</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineFaceName"/>
+      <widget class="QLineEdit" name="lineFaceName">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

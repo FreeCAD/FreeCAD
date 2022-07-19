@@ -192,20 +192,6 @@ void TaskHeader::fold()
 {
   if (myExpandable) {
     Q_EMIT activated();
-    // Toggling the 'm_fold' member here may lead to inconsistencies with its ActionGroup.
-    // Thus, the method setFold() was added and called from ActionGroup when required.
-#if 0
-    m_fold = !m_fold;
-    changeIcons();
-    if (myButton) {
-      myButton->setProperty("fold", m_fold);
-      if (myButton->style()) {
-        myButton->style()->unpolish(myButton);
-        myButton->style()->polish(myButton);
-        myButton->update();
-      }
-    }
-#endif
   }
 }
 

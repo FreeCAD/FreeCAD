@@ -139,7 +139,7 @@ class _CommandFloor:
             if not Draft.getType(obj) in ["Site", "Building"] :
                 floorobj.append(obj)
             else :
-                if link == True :
+                if link:
                     floorobj.append(obj)
                 else:
                     warning = True

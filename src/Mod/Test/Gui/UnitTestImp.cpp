@@ -58,7 +58,7 @@ UnitTestDialog* UnitTestDialog::instance()
  */
 void UnitTestDialog::destruct ()
 {
-    if (_instance != nullptr) {
+    if (_instance) {
         UnitTestDialog *pTmp = _instance;
         _instance = nullptr;
         delete pTmp;

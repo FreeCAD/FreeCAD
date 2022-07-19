@@ -344,7 +344,7 @@ PyObject * FileException::getPyObject()
 
 void FileException::setPyObject( PyObject * pydict)
 {
-    if (pydict!=nullptr) {
+    if (pydict) {
         Exception::setPyObject(pydict);
 
         Py::Dict edict(pydict);

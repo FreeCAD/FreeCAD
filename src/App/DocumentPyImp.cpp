@@ -808,7 +808,7 @@ PyObject *DocumentPy::getCustomAttributes(const char* attr) const
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop)
         return nullptr;
-    if (this->ob_type->tp_dict == nullptr) {
+    if (!this->ob_type->tp_dict) {
         if (PyType_Ready(this->ob_type) < 0)
             return nullptr;
     }
@@ -830,7 +830,7 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop)
         return 0;
-    if (this->ob_type->tp_dict == nullptr) {
+    if (!this->ob_type->tp_dict) {
         if (PyType_Ready(this->ob_type) < 0)
             return 0;
     }

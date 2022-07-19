@@ -1430,7 +1430,7 @@ void TaskSketcherConstraints::slotConstraintsChanged(void)
     for (int i = 0; i <  ui->listWidgetConstraints->count(); ++i) {
         ConstraintItem * it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
 
-        assert(it != nullptr);
+        assert(it);
 
         it->ConstraintNbr = i;
         it->value = QVariant();

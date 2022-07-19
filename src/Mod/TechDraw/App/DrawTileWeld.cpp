@@ -74,8 +74,7 @@ void DrawTileWeld::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         App::Document* doc = getDocument();
-        if ((prop == &SymbolFile) &&
-            (doc != nullptr) ) {
+        if ((prop == &SymbolFile) && doc) {
             if (!SymbolFile.isEmpty()) {
                 Base::FileInfo fi(SymbolFile.getValue());
                 if (fi.isReadable()) {
