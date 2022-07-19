@@ -72,6 +72,7 @@
 #include "ViewProviderViewPart.h"
 #include "QGIView.h"
 #include "QGVPage.h"
+#include "TaskSurfaceFinishSymbols.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -1454,6 +1455,50 @@ bool CmdTechDrawWeldSymbol::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_SurfaceFinishSymbols
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawSurfaceFinishSymbols)
+
+CmdTechDrawSurfaceFinishSymbols::CmdTechDrawSurfaceFinishSymbols()
+  : Command("TechDraw_SurfaceFinishSymbols")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Create a Surface Finish Symbol");
+    sToolTipText    = QT_TR_NOOP("Select a view<br>\
+    - click this button<br>\
+    - select surface finish symbol attributes in opened panel");
+    sWhatsThis      = "TechDraw_SurfaceFinishSymbols";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/TechDraw_SurfaceFinishSymbols";
+}
+
+void CmdTechDrawSurfaceFinishSymbols::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<Gui::SelectionObject> selection = this->getSelection().getSelectionEx();
+    if (selection.empty())
+    {
+        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("SurfaceFinishSymbols"),QObject::tr("Selection is empty"));
+        return;
+    }
+    TechDraw::DrawViewPart* objFeat = dynamic_cast<TechDraw::DrawViewPart*> (selection[0].getObject());
+    if(!objFeat)
+    {
+        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("SurfaceFinishSymbols"),QObject::tr("No object selected"));
+        return;
+    }
+    Gui::Control().showDialog(new TechDrawGui::TaskDlgSurfaceFinishSymbols(objFeat));
+}
+
+bool CmdTechDrawSurfaceFinishSymbols::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return havePage && haveView;
+}
 
 void CreateTechDrawCommandsAnnotate(void)
 {
@@ -1475,6 +1520,7 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawDecorateLine());
     rcCmdMgr.addCommand(new CmdTechDrawShowAll());
     rcCmdMgr.addCommand(new CmdTechDrawWeldSymbol());
+    rcCmdMgr.addCommand(new CmdTechDrawSurfaceFinishSymbols());
 }
 
 //===========================================================================
