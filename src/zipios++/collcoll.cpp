@@ -31,7 +31,7 @@ bool CollectionCollection::addCollection( const FileCollection &collection ) {
 bool CollectionCollection::addCollection( FileCollection *collection ) {
   if ( ! _valid )
     throw InvalidStateException( "Attempt to add a FileCollection to an invalid CollectionCollection" ) ;
-  if ( collection == nullptr || this == collection || ! collection->isValid() )
+  if ( !collection || this == collection || ! collection->isValid() )
     return false ;
   _collections.push_back( collection ) ;
   return true ;
@@ -87,7 +87,7 @@ istream *CollectionCollection::getInputStream( const string &entry_name,
 
   getEntry( entry_name, cep, it, matchpath ) ; 
   
-  if ( cep == nullptr )
+  if ( !cep )
     return nullptr ;
   else
     return (*it)->getInputStream( entry_name ) ;

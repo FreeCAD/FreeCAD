@@ -85,7 +85,7 @@ struct boost::filesystem::dir_it::representation
 			{
 				m_stat_p = false;
 				dirent *rc = readdir(m_handle);
-				if (rc != nullptr)
+				if (rc)
 					m_current = rc->d_name;
 				else
 					{
@@ -183,14 +183,14 @@ namespace boost
 		template <> std::string get<uname>(dir_it const &it)
 			{
 				struct passwd *pw = getpwuid(it.rep->get_stat().st_uid);
-				if (pw == nullptr)
+				if (!pw)
 					throw unknown_uid(it.rep->get_stat().st_uid);
 				return pw->pw_name;
 			}
 		template <> void set<uname>(dir_it const &it, std::string name)
 			{
 				struct passwd *pw = getpwnam(name.c_str());
-				if (pw != nullptr)
+				if (pw)
 					it.rep->change_owner(pw->pw_uid);
 				else
 					throw unknown_uname(name);
@@ -201,14 +201,14 @@ namespace boost
 		template <> std::string get<gname>(dir_it const &it)
 			{
 				struct group *grp = getgrgid(it.rep->get_stat().st_gid);
-				if (grp == nullptr)
+				if (!grp)
 					throw unknown_gid(it.rep->get_stat().st_gid);
 				return grp->gr_name;
 			}
 		template <> void set<gname>(dir_it const &it, std::string name)
 			{
 				struct group *grp = getgrnam(name.c_str());
-				if (grp != nullptr)
+				if (grp)
 					it.rep->change_group(grp->gr_gid);
 				else
 					throw unknown_gname(name);
