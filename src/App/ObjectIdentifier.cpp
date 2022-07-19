@@ -855,7 +855,7 @@ App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * 
     for (std::vector<DocumentObject*>::iterator j = docObjects.begin(); j != docObjects.end(); ++j) {
         if (strcmp((*j)->Label.getValue(), static_cast<const char*>(name)) == 0) {
             // Found object with matching label
-            if (objectByLabel != nullptr)  {
+            if (objectByLabel)  {
                 FC_WARN("duplicate object label " << doc->getName() << '#' << name);
                 return nullptr;
             }
@@ -863,13 +863,13 @@ App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * 
         }
     }
 
-    if (objectByLabel == nullptr && objectById == nullptr) // Not found at all
+    if (!objectByLabel && !objectById) // Not found at all
         return nullptr;
-    else if (objectByLabel == nullptr) { // Found by name
+    else if (!objectByLabel) { // Found by name
         flags.set(ResolveByIdentifier);
         return objectById;
     }
-    else if (objectById == nullptr) { // Found by label
+    else if (!objectById) { // Found by label
         flags.set(ResolveByLabel);
         return objectByLabel;
     }
@@ -913,7 +913,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
     results.propertyIndex = 0;
 
     // Assume document name and object name from owner if not found
-    if (results.resolvedDocument == nullptr) {
+    if (!results.resolvedDocument) {
         if (documentName.getString().size() > 0) {
             if(docAmbiguous)
                 results.flags.set(ResolveAmbiguous);
@@ -921,7 +921,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
         }
 
         results.resolvedDocument = owner->getDocument();
-        if (results.resolvedDocument == nullptr)
+        if (!results.resolvedDocument)
             return;
     }
 
@@ -1029,7 +1029,7 @@ Document * ObjectIdentifier::getDocument(String name, bool *ambiguous) const
     for (std::vector<App::Document*>::const_iterator i = docs.begin(); i != docs.end(); ++i) {
         if ((*i)->Label.getValue() == name.getString()) {
             /* Multiple hits for same label? */
-            if (docByLabel != nullptr) {
+            if (docByLabel) {
                 if(ambiguous) *ambiguous = true;
                 return nullptr;
             }
@@ -1038,17 +1038,18 @@ Document * ObjectIdentifier::getDocument(String name, bool *ambiguous) const
     }
 
     /* Not found on id? */
-    if (docById == nullptr)
+    if (!docById)
         return docByLabel; // Either not found at all, or on label
     else {
         /* Not found on label? */
-        if (docByLabel == nullptr) /* Then return doc by id */
+        if (!docByLabel) /* Then return doc by id */
             return docById;
 
         /* docByLabel and docById could be equal; that is ok */
-        if(docByLabel==docById)
+        if (docByLabel == docById)
             return docById;
-        if(ambiguous) *ambiguous = true;
+        if (ambiguous)
+            *ambiguous = true;
         return nullptr;
     }
 }
@@ -1979,23 +1980,23 @@ ObjectIdentifier::ResolveResults::ResolveResults(const ObjectIdentifier &oi)
 std::string ObjectIdentifier::ResolveResults::resolveErrorString() const
 {
     std::ostringstream ss;
-    if (resolvedDocument == nullptr) {
+    if (!resolvedDocument) {
         if(flags.test(ResolveAmbiguous))
             ss << "Ambiguous document name/label '"
                << resolvedDocumentName.getString() << "'";
         else
             ss << "Document '" << resolvedDocumentName.toString() << "' not found";
-    } else if (resolvedDocumentObject == nullptr) {
+    } else if (!resolvedDocumentObject) {
         if(flags.test(ResolveAmbiguous))
             ss << "Ambiguous document object name '"
                 << resolvedDocumentObjectName.getString() << "'";
         else
             ss << "Document object '" << resolvedDocumentObjectName.toString()
                 << "' not found";
-    } else if (subObjectName.getString().size() && resolvedSubObject == nullptr) {
+    } else if (subObjectName.getString().size() && !resolvedSubObject) {
         ss << "Sub-object '" << resolvedDocumentObjectName.getString()
             << '.' << subObjectName.toString() << "' not found";
-    } else if (resolvedProperty == nullptr) {
+    } else if (!resolvedProperty) {
         if(propertyType != PseudoShape &&
            subObjectName.getString().size() &&
            !boost::ends_with(subObjectName.getString(),"."))

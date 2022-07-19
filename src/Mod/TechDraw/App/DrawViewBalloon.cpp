@@ -204,7 +204,7 @@ short DrawViewBalloon::mustExecute() const
     }
 
     auto dvp = getViewPart();
-    if (dvp != nullptr && dvp->isTouched()) {
+    if (dvp && dvp->isTouched()) {
         return true;
     }
 

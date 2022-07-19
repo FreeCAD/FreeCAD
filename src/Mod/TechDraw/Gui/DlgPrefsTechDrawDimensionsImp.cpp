@@ -69,8 +69,8 @@ void DlgPrefsTechDrawDimensionsImp::saveSettings()
     ui->pcbArrow->onSave();
     ui->plsb_ArrowSize->onSave();
     ui->leFormatSpec->onSave();
-    ui->pdsbISOGap->onSave();
-    ui->pdsbASMEGap->onSave();
+    ui->pdsbGapISO->onSave();
+    ui->pdsbGapASME->onSave();
 }
 
 void DlgPrefsTechDrawDimensionsImp::loadSettings()
@@ -100,8 +100,8 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     ui->leFormatSpec->setText(Base::Tools::fromStdString(Preferences::formatSpec()));
     ui->leFormatSpec->onRestore();
 
-    ui->pdsbISOGap->onRestore();
-    ui->pdsbASMEGap->onRestore();
+    ui->pdsbGapISO->onRestore();
+    ui->pdsbGapASME->onRestore();
 }
 
 /**

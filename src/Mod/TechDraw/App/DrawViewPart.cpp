@@ -698,7 +698,7 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
 const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 {
     std::vector<TechDraw::VertexPtr> result;
-    if (geometryObject != nullptr) {
+    if (geometryObject) {
         result = geometryObject->getVertexGeometry();
     }
     return result;
@@ -707,7 +707,7 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 {
     std::vector<TechDraw::FacePtr> result;
-    if (geometryObject != nullptr) {
+    if (geometryObject) {
         result = geometryObject->getFaceGeometry();
     }
     return result;
@@ -716,7 +716,7 @@ const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 const BaseGeomPtrVector DrawViewPart::getEdgeGeometry() const
 {
     BaseGeomPtrVector result;
-    if (geometryObject != nullptr) {
+    if (geometryObject) {
         result = geometryObject->getEdgeGeometry();
     }
     return result;
@@ -1010,7 +1010,7 @@ void DrawViewPart::unsetupObject()
     // Remove Dimensions which reference this DVP
     // must use page->removeObject first
     TechDraw::DrawPage* page = findParentPage();
-    if (page != nullptr) {
+    if (page) {
         std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
         std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
         for (; it3 != dims.end(); it3++) {
@@ -1026,7 +1026,7 @@ void DrawViewPart::unsetupObject()
     // Remove Balloons which reference this DVP
     // must use page->removeObject first
     page = findParentPage();
-    if (page != nullptr) {
+    if (page) {
         std::vector<TechDraw::DrawViewBalloon*> balloons = getBalloons();
         std::vector<TechDraw::DrawViewBalloon*>::iterator it3 = balloons.begin();
         for (; it3 != balloons.end(); it3++) {
@@ -1075,7 +1075,7 @@ Base::Vector3d DrawViewPart::getXDirection(void) const
 //    Base::Console().Message("DVP::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
     App::Property* prop = getPropertyByName("XDirection");
-    if (prop != nullptr) {                              //have an XDirection property
+    if (prop) {                              //have an XDirection property
         Base::Vector3d propVal = XDirection.getValue();
         if (DrawUtil::fpCompare(propVal.Length(), 0.0))  {   //but it has no value
             Base::Vector3d dir = Direction.getValue();       //make a sensible default

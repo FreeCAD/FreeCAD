@@ -45,7 +45,7 @@ KeyboardP::KeyboardP(Keyboard * publ)
   PUBLIC(this) = publ;
   this->keyboard = new SoKeyboardEvent;
 
-  if (keyboardmap == nullptr) {
+  if (!keyboardmap) {
     keyboardmap = new KeyMap;
     keypadmap = new KeyMap;
     this->initKeyMap();
@@ -235,15 +235,6 @@ KeyboardP::initKeyMap()
   keypadmap->insert(Qt::Key_Delete,   SoKeyboardEvent::PAD_DELETE);
   keypadmap->insert(Qt::Key_Period,   SoKeyboardEvent::PAD_PERIOD);
 
-
-#if 0 // FIXME: don't know what to do with these (20070306 frodo)
-  keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_SHIFT);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_CONTROL);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_ALT);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::PRIOR);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::NEXT);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::SHIFT_LOCK);
-#endif
 }
 
 #undef PUBLIC

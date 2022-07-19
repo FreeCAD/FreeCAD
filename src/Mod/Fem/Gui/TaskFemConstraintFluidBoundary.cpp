@@ -195,7 +195,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         Base::Console().Log("FemAnalysis object is not activated or no FemAnalysis in the active document, mesh dimension is unknown\n");
         dimension = -1;  // unknown dimension of mesh
     }
-    if (pcMesh != nullptr) {
+    if (pcMesh) {
         App::Property* prop = pcMesh->getPropertyByName("Shape");  // PropertyLink
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
             App::PropertyLink* pcLink = static_cast<App::PropertyLink*>(prop);
@@ -226,7 +226,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
 
     pHeatTransferring = nullptr;
     pTurbulenceModel = nullptr;
-    if (pcSolver != nullptr) {
+    if (pcSolver) {
         //if only it is CFD solver, otherwise exit by SIGSEGV error, detect getPropertyByName() !=  NULL
         if (pcSolver->getPropertyByName("HeatTransferring")) {
             pHeatTransferring = static_cast<App::PropertyBool*>(pcSolver->getPropertyByName("HeatTransferring"));

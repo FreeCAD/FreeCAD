@@ -477,7 +477,7 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 
     App::Part *actPart = PartDesignGui::getActivePart();
     App::Part* partOfBaseFeature = App::Part::getPartOfObject(obj);
-    if (partOfBaseFeature != nullptr && partOfBaseFeature != actPart)
+    if (partOfBaseFeature && partOfBaseFeature != actPart)
         return false;
 
     return true;
@@ -505,7 +505,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
             e.ReportException();
         }
     }
-    else if (body->BaseFeature.getValue() == nullptr) {
+    else if (!body->BaseFeature.getValue()) {
         body->BaseFeature.setValue(obj);
     }
 

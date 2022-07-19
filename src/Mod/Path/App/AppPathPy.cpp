@@ -407,7 +407,7 @@ private:
 
         try {
             bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
-            std::list<TopoDS_Shape> wires = Area::sortWires(shapes,start!=nullptr,&pstart,
+            std::list<TopoDS_Shape> wires = Area::sortWires(shapes, start != nullptr, &pstart,
                     &pend, nullptr, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
             Py::List list;
             for(auto &wire : wires) {

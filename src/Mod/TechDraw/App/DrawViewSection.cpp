@@ -192,7 +192,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
         } else if (prop == &SectionOrigin) {
             App::DocumentObject* base = BaseView.getValue();
             TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(base);
-            if (dv != nullptr) {
+            if (dv) {
                 dv->requestPaint();
             }
         } else if (prop == &CutSurfaceDisplay) {
@@ -201,8 +201,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
             }
         }
 
-        if ((prop == &FileHatchPattern) &&
-            (doc != nullptr) ) {
+        if ((prop == &FileHatchPattern) && doc) {
             if (!FileHatchPattern.isEmpty()) {
                 Base::FileInfo fi(FileHatchPattern.getValue());
                 if (fi.isReadable()) {
@@ -211,8 +210,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
             }
         }
 
-        if ( (prop == &FileGeomPattern) &&
-             (doc != nullptr) ) {
+        if ((prop == &FileGeomPattern) && doc) {
             if (!FileGeomPattern.isEmpty()) {
                 Base::FileInfo fi(FileGeomPattern.getValue());
                 if (fi.isReadable()) {
@@ -340,7 +338,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
             double newScale = autoScale();
             Scale.setValue(newScale);
             Scale.purgeTouched();
-            if (geometryObject != nullptr) {
+            if (geometryObject) {
                 delete geometryObject;
                 geometryObject = nullptr;
                 sectionExec(baseShape);
@@ -522,7 +520,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
                     iedge++;
                     const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
                     TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
-                    if (e != nullptr) {
+                    if (e) {
                         w->geoms.push_back(e);
                     }
                 }
@@ -646,7 +644,7 @@ Base::Vector3d DrawViewSection::getXDirection(void) const
 //    Base::Console().Message("DVS::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
     App::Property* prop = getPropertyByName("XDirection");
-    if (prop != nullptr) {                              //have an XDirection property
+    if (prop) {                              //have an XDirection property
         Base::Vector3d propVal = XDirection.getValue();
         if (DrawUtil::fpCompare(propVal.Length(), 0.0))  {   //but it has no value
             std::string sectName = SectionDirection.getValueAsString();
@@ -810,7 +808,7 @@ TopoDS_Face DrawViewSection::getSectionTFace(int i)
 void DrawViewSection::unsetupObject()
 {
     TechDraw::DrawViewPart* base = getBaseDVP();
-    if (base != nullptr) {
+    if (base) {
         base->touch();
     }
     DrawViewPart::unsetupObject();
@@ -820,7 +818,7 @@ TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
 {
     TechDraw::DrawViewPart* baseDVP = nullptr;
     App::DocumentObject* base = BaseView.getValue();
-    if (base != nullptr) {
+    if (base) {
         if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
         }
@@ -832,7 +830,7 @@ TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
 {
     TechDraw::DrawProjGroupItem* baseDPGI = nullptr;
     App::DocumentObject* base = BaseView.getValue();
-    if (base != nullptr) {
+    if (base) {
         if (base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
             baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
         }

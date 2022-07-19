@@ -264,21 +264,8 @@ bool ApplicationCache::performAction(qint64 total)
  */
 qint64 ApplicationCache::size() const
 {
-    // QDirIterator lists some directories twice
-#if 0
-    QDir cache = QString::fromStdString(App::Application::getUserCachePath());
-    QDirIterator it(cache, QDirIterator::Subdirectories);
-    qint64 total = 0;
-    while (it.hasNext()) {
-        it.next();
-        total += it.fileInfo().size();
-    }
-
-    return total;
-#else
     qint64 total = dirSize(QString::fromStdString(App::Application::getUserCachePath()));
     return total;
-#endif
 }
 
 /*!

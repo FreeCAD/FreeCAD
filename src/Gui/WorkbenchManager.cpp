@@ -37,7 +37,7 @@ WorkbenchManager* WorkbenchManager::_instance = nullptr;
 
 WorkbenchManager* WorkbenchManager::instance()
 {
-    if (_instance == nullptr)
+    if (!_instance)
         _instance = new WorkbenchManager;
     return _instance;
 }

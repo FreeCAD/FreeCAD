@@ -141,11 +141,11 @@ void QGIView::onSourceChange(TechDraw::DrawView* newParent)
 void QGIView::isVisible(bool state)
 {
     auto feat = getViewObject();
-    if (feat != nullptr) {
+    if (feat) {
         auto vp = QGIView::getViewProvider(feat);
-        if (vp != nullptr) {
+        if (vp) {
             Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
-            if (vpdo != nullptr) {
+            if (vpdo) {
                 vpdo->Visibility.setValue(state);
             }
         }
@@ -156,11 +156,11 @@ bool QGIView::isVisible(void)
 {
     bool result = false;
     auto feat = getViewObject();
-    if (feat != nullptr) {
+    if (feat) {
         auto vp = QGIView::getViewProvider(feat);
-        if (vp != nullptr) {
+        if (vp) {
             Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
-            if (vpdo != nullptr) {
+            if (vpdo) {
                 result = vpdo->Visibility.getValue();
             }
         }
@@ -198,7 +198,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
-            if (dpg != nullptr) {
+            if (dpg) {
                 if(alignHash.size() == 1) {   //if aligned.
                     QGraphicsItem* item = alignHash.begin().value();
                     QString alignMode   = alignHash.begin().key();
@@ -377,7 +377,7 @@ double QGIView::getScale()
 {
     double result = 1.0;
     TechDraw::DrawView* feat = getViewObject();
-    if (feat != nullptr) {
+    if (feat) {
         result = feat->getScale();
     }
     return result;
@@ -422,7 +422,7 @@ void QGIView::draw()
 {
 //    Base::Console().Message("QGIV::draw()\n");
     double xFeat, yFeat;
-    if (getViewObject() != nullptr) {
+    if (getViewObject()) {
         xFeat = Rez::guiX(getViewObject()->X.getValue());
         yFeat = Rez::guiX(getViewObject()->Y.getValue());
         if (!getViewObject()->LockPosition.getValue()) {
@@ -608,7 +608,7 @@ QGIView* QGIView::getQGIVByName(std::string name)
 Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
 {
     Gui::ViewProvider* result = nullptr;
-    if (obj != nullptr) {
+    if (obj) {
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
         result = guiDoc->getViewProvider(obj);
     }
@@ -620,9 +620,9 @@ QGVPage* QGIView::getGraphicsView(TechDraw::DrawView* dv)
     QGVPage* graphicsView = nullptr;
     Gui::ViewProvider* vp = getViewProvider(dv);
     ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
-    if (vpdv != nullptr) {
+    if (vpdv) {
         MDIViewPage* mdi = vpdv->getMDIViewPage();
-        if (mdi != nullptr) {
+        if (mdi) {
             graphicsView = mdi->getQGVPage();
         }
     }
@@ -634,9 +634,9 @@ QGSPage* QGIView::getGraphicsScene(TechDraw::DrawView* dv)
     QGSPage* graphicsScene = nullptr;
     Gui::ViewProvider* vp = getViewProvider(dv);
     ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
-    if (vpdv != nullptr) {
+    if (vpdv) {
         MDIViewPage* mdi = vpdv->getMDIViewPage();
-        if (mdi != nullptr) {
+        if (mdi) {
             graphicsScene = mdi->getQGSPage();
         }
     }
@@ -652,8 +652,7 @@ MDIViewPage* QGIView::getMDIViewPage(void) const
 //remove a child of this from scene while keeping scene indexes valid
 void QGIView::removeChild(QGIView* child)
 {
-    if ( (child != nullptr) &&
-         (child->parentItem() == this) ) {
+    if (child && (child->parentItem() == this) ) {
         prepareGeometryChange();
         scene()->removeItem(child);
     }
@@ -664,13 +663,13 @@ bool QGIView::getFrameState(void)
 //    Base::Console().Message("QGIV::getFrameState() - %s\n",getViewName());
     bool result = true;
     TechDraw::DrawView* dv = getViewObject();
-    if (dv != nullptr) {
+    if (dv) {
         TechDraw::DrawPage* page = dv->findParentPage();
-        if (page != nullptr) {
+        if (page) {
             Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
             Gui::ViewProvider* vp = activeGui->getViewProvider(page);
             ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
-            if (vpp != nullptr) {
+            if (vpp) {
                 result = vpp->getFrameState();
             }
         }
@@ -680,7 +679,7 @@ bool QGIView::getFrameState(void)
 
 void QGIView::addArbitraryItem(QGraphicsItem* qgi)
 {
-    if (qgi != nullptr) {
+    if (qgi) {
 //        m_randomItems.push_back(qgi); 
         addToGroup(qgi);
         qgi->show();

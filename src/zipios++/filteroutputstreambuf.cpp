@@ -9,14 +9,14 @@ FilterOutputStreambuf::FilterOutputStreambuf( streambuf *outbuf, bool del_outbuf
   : _outbuf( outbuf),
     _del_outbuf( del_outbuf )
 {
-  if ( _outbuf == nullptr ) {
+  if (!_outbuf) {
     // throw an exception
   }
 }
 
 
 FilterOutputStreambuf::~FilterOutputStreambuf() {
-  if ( _del_outbuf )
+  if (_del_outbuf)
     delete _outbuf ;
 }
 

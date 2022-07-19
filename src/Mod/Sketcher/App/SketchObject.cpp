@@ -3343,7 +3343,7 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
-        if (body_this == nullptr) {
+        if (!body_this) {
             return true;
         } else if (body_this == body_obj) {
             return true;
@@ -3402,7 +3402,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
-        if (body_this != nullptr) {
+        if (body_this) {
             if (body_this != body_obj) {
                 if (!this->allowOtherBody) {
                     if (rsn)
@@ -7671,7 +7671,7 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, 
 {
     const App::Property * prop = path.getProperty();
 
-    assert(expr != nullptr);
+    assert(expr);
 
     if (!prop)
         return "Property not found";
@@ -7685,10 +7685,10 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, 
 
     auto deps = expr->getDeps();
     auto it = deps.find(this);
-    if(it!=deps.end()) {
+    if (it!=deps.end()) {
         auto it2 = it->second.find("Constraints");
-        if(it2 != it->second.end()) {
-            for(auto &oid : it2->second) {
+        if (it2 != it->second.end()) {
+            for (auto &oid : it2->second) {
                 const Constraint * constraint = Constraints.getConstraint(oid);
 
                 if (!constraint->isDriving)
@@ -7710,7 +7710,7 @@ double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, d
     const Part::Geometry *p1=this->getGeometry(GeoId1);
     const Part::Geometry *p2=this->getGeometry(GeoId2);
 
-    if(p1!=nullptr && p2!=nullptr) {
+    if (p1 && p2) {
         int i1 = sk.addGeometry(this->getGeometry(GeoId1));
         int i2 = sk.addGeometry(this->getGeometry(GeoId2));
 

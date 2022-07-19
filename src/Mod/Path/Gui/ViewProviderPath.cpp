@@ -588,7 +588,7 @@ private:
           colorindex.push_back(color);
         }
 
-        if (next != nullptr) {
+        if (next) {
             points.push_back(*next);
             markers.push_back(*next);
             colorindex.push_back(color);

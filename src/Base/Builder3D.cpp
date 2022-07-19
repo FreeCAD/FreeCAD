@@ -304,7 +304,7 @@ void Builder3D::saveToLog()
     // So, we send the string directly to the observer that handles the Inventor stuff.
     //Console().Log("Vdbg: %s \n",result.str().c_str());
     ILogger* obs = Base::Console().Get("StatusBar");
-    if (obs != nullptr){
+    if (obs){
         obs->SendLog(result.str().c_str(), Base::LogStyle::Log);
     }
 }

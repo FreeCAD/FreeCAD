@@ -66,7 +66,7 @@ public:
      */
     ComboLinks(QComboBox &combo);
     ComboLinks() {_combo = nullptr; doc = nullptr;}
-    void setCombo(QComboBox &combo) {assert(_combo == nullptr); this->_combo = &combo; _combo->clear();}
+    void setCombo(QComboBox &combo) {assert(!_combo); this->_combo = &combo; _combo->clear();}
 
     /**
      * @brief addLink adds an item to the combo. Doesn't check for duplicates.

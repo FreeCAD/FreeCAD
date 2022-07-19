@@ -734,7 +734,7 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
 }
 
 bool StdCmdLinkSelectLinked::isActive() {
-    return getSelectedLink(false)!=nullptr;
+    return getSelectedLink(false) != nullptr;
 }
 
 void StdCmdLinkSelectLinked::activated(int)
@@ -779,7 +779,7 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
 }
 
 bool StdCmdLinkSelectLinkedFinal::isActive() {
-    return getSelectedLink(true)!=nullptr;
+    return getSelectedLink(true) != nullptr;
 }
 
 void StdCmdLinkSelectLinkedFinal::activated(int) {

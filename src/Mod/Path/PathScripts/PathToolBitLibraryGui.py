@@ -73,7 +73,10 @@ def checkWorkingDir():
 
     qm = PySide.QtGui.QMessageBox
     ret = qm.question(
-        None, "", translate("Path_ToolBit","Toolbit working directory not set up. Do that now?"), qm.Yes | qm.No
+        None,
+        "",
+        translate("Path_ToolBit", "Toolbit working directory not set up. Do that now?"),
+        qm.Yes | qm.No,
     )
 
     if ret == qm.No:
@@ -117,9 +120,10 @@ def checkWorkingDir():
         ret = qm.question(
             None,
             "",
-            translate("Path_ToolBit","Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?").format(
-                workingdir, needed
-            ),
+            translate(
+                "Path_ToolBit",
+                "Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?",
+            ).format(workingdir, needed),
             qm.Yes | qm.No,
         )
 
@@ -136,7 +140,9 @@ def checkWorkingDir():
                     ret = qm.question(
                         None,
                         "",
-                        translate("Path_ToolBit","Copy example files to new {} directory?").format(dir),
+                        translate(
+                            "Path_ToolBit", "Copy example files to new {} directory?"
+                        ).format(dir),
                         qm.Yes | qm.No,
                     )
                     if ret == qm.Yes:
@@ -788,12 +794,15 @@ class ToolBitLibrary(object):
 
         TooltableTypeJSON = translate("Path_ToolBit", "Tooltable JSON (*.fctl)")
         TooltableTypeLinuxCNC = translate("Path_ToolBit", "LinuxCNC tooltable (*.tbl)")
+        TooltableTypeCamotics = translate("Path_ToolBit", "Camotics tooltable (*.json)")
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
             translate("Path_ToolBit", "Save toolbit library"),
             PathPreferences.lastPathToolLibrary(),
-            "{};;{}".format(TooltableTypeJSON, TooltableTypeLinuxCNC),
+            "{};;{};;{}".format(
+                TooltableTypeJSON, TooltableTypeLinuxCNC, TooltableTypeCamotics
+            ),
         )
         if filename and filename[0]:
             if filename[1] == TooltableTypeLinuxCNC:
@@ -803,6 +812,13 @@ class ToolBitLibrary(object):
                     else "{}.tbl".format(filename[0])
                 )
                 self.libararySaveLinuxCNC(path)
+            elif filename[1] == TooltableTypeCamotics:
+                path = (
+                    filename[0]
+                    if filename[0].endswith(".json")
+                    else "{}.json".format(filename[0])
+                )
+                self.libararySaveCamotics(path)
             else:
                 path = (
                     filename[0]
@@ -878,3 +894,73 @@ class ToolBitLibrary(object):
 
                 else:
                     PathLog.error("Could not find tool #{} ".format(toolNr))
+
+    def libararySaveCamotics(self, path):
+
+        SHAPEMAP = {
+            "ballend": "Ballnose",
+            "endmill": "Cylindrical",
+            "v-bit": "Conical",
+            "chamfer": "Snubnose",
+        }
+
+        tooltemplate = {
+            "units": "metric",
+            "shape": "cylindrical",
+            "length": 10,
+            "diameter": 3.125,
+            "description": "",
+        }
+        toollist = {}
+
+        unitstring = (
+            "imperial" if FreeCAD.Units.getSchema() in [2, 3, 5, 7] else "metric"
+        )
+
+        for row in range(self.toolModel.rowCount()):
+            toolNr = self.toolModel.data(
+                self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole
+            )
+
+            toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
+            PathLog.debug(toolPath)
+            try:
+                bit = PathToolBit.Factory.CreateFrom(toolPath)
+            except FileNotFoundError as e:
+                FreeCAD.Console.PrintError(e)
+                continue
+            except Exception as e:
+                raise e
+
+            if not bit:
+                continue
+            
+            PathLog.track(bit)
+
+            toolitem = tooltemplate.copy()
+
+            toolitem["diameter"] = (
+                float(bit.Diameter.getUserPreferred()[0].split()[0])
+                if hasattr(bit, "Diameter")
+                else 2
+            )
+            toolitem["description"] = bit.Label
+            toolitem["length"] = (
+                float(bit.Length.getUserPreferred()[0].split()[0])
+                if hasattr(bit, "Length")
+                else 10
+            )
+
+            if hasattr(bit, "Camotics"):
+                toolitem["shape"] = bit.Camotics
+            else:
+                toolitem["shape"] = SHAPEMAP.get(bit.ShapeName, "Cylindrical")
+
+            toolitem["units"] = unitstring
+            FreeCAD.ActiveDocument.removeObject(bit.Name)
+
+            toollist[toolNr] = toolitem
+
+        if len(toollist) > 0:
+            with open(path, "w") as fp:
+                fp.write(json.dumps(toollist, indent=2))

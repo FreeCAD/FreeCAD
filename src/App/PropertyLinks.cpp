@@ -115,7 +115,7 @@ void PropertyLinkBase::unregisterLabelReferences()
 
 void PropertyLinkBase::getLabelReferences(std::vector<std::string> &subs,const char *subname) {
     const char *dot;
-    for(;(subname=strchr(subname,'$'))!=nullptr; subname=dot+1) {
+    for (; (subname = strchr(subname, '$')) != nullptr; subname = dot + 1) {
         ++subname;
         dot = strchr(subname,'.');
         if(!dot) break;
@@ -154,7 +154,7 @@ std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject *pa
     // hierarchies, we have to search for all occurrences, and make sure the
     // referenced sub-object at the found hierarchy is actually the given
     // object.
-    for(const char *pos=subname; ((pos=strstr(pos,ref.c_str()))!=nullptr); pos+=ref.size()) {
+    for (const char *pos = subname; ((pos = strstr(pos, ref.c_str())) != nullptr); pos += ref.size()) {
         auto sub = std::string(subname,pos+ref.size()-subname);
         auto sobj = parent->getSubObject(sub.c_str());
         if(sobj == obj) {
@@ -1721,7 +1721,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     _lSubList.resize(lSubNames.size());
     int i = 0;
     for (std::vector<const char*>::const_iterator it = lSubNames.begin();it!=lSubNames.end();++it,++i) {
-        if (*it != nullptr)
+        if (*it)
             _lSubList[i] = *it;
     }
     updateElementReference(nullptr);
@@ -1923,7 +1923,7 @@ DocumentObject *PropertyLinkSubList::getValue() const
     App::DocumentObject* ret = nullptr;
     //FIXME: cache this to avoid iterating each time, to improve speed
     for (std::size_t i = 0; i < this->_lValueList.size(); i++) {
-        if (ret == nullptr)
+        if (!ret)
             ret = this->_lValueList[i];
         if (ret != this->_lValueList[i])
             return nullptr;

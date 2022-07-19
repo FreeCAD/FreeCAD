@@ -98,7 +98,7 @@ DrawView* DrawRichAnno::getBaseView(void) const
 {
 //    Base::Console().Message("DRA::getBaseView() - %s\n", getNameInDocument());
     App::DocumentObject* baseObj = AnnoParent.getValue();
-    if (baseObj == nullptr) {
+    if (baseObj) {
         return nullptr;
     }
     

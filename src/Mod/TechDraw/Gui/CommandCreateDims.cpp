@@ -516,10 +516,12 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    if ( (_isValidSingleEdge(this) == isVertical) ||
+         (_isValidSingleEdge(this) == isHorizontal) ||
+         (_isValidSingleEdge(this) == isDiagonal) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
+    } else if (  _isValidVertexes(this) ||
                 (_isValidEdgeToEdge(this) == isVertical)   ||
                 (_isValidEdgeToEdge(this) == isHorizontal) ||
                 (_isValidEdgeToEdge(this) == isDiagonal) ||
@@ -531,8 +533,8 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     } else {
       QMessageBox::warning(Gui::getMainWindow(),
                            QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
-                                       "and 1 Edge for Distance Dimension"));
+                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
+                                       "1 Vertex and 1 Edge for Distance Dimension"));
       return;
     }
 
@@ -619,10 +621,12 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    if ( (_isValidSingleEdge(this) == isVertical) ||
+         (_isValidSingleEdge(this) == isHorizontal) ||
+         (_isValidSingleEdge(this) == isDiagonal) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
+    } else if (  _isValidVertexes(this) ||
                 (_isValidEdgeToEdge(this) == isVertical)   ||
                 (_isValidEdgeToEdge(this) == isHorizontal) ||
                 (_isValidEdgeToEdge(this) == isDiagonal) ||
@@ -634,8 +638,8 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     } else {
       QMessageBox::warning(Gui::getMainWindow(),
                            QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
-                                       "and 1 Edge for Horizontal Dimension"));
+                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
+                                       "1 Vertex and 1 Edge for Horizontal Dimension"));
       return;
     }
 
@@ -722,7 +726,9 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    if ( (_isValidSingleEdge(this) == isVertical) ||
+         (_isValidSingleEdge(this) == isHorizontal) ||
+         (_isValidSingleEdge(this) == isDiagonal) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
     } else if (  _isValidVertexes(this) || 
@@ -737,8 +743,8 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     } else {
       QMessageBox::warning(Gui::getMainWindow(),
                            QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
-                                       "and 1 Edge for Vertical Dimension"));
+                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
+                                       "1 Vertex and 1 Edge for Vertical Dimension"));
       return;
     }
 
@@ -1053,7 +1059,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
 {
 //    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1147,7 +1153,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1234,7 +1240,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;

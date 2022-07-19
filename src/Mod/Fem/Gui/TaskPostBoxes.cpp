@@ -830,7 +830,7 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
-        if (point == nullptr) {
+        if (!point) {
             Base::Console().Message("No point picked.\n");
             return;
         }
@@ -1059,7 +1059,7 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
-        if (point == nullptr) {
+        if (!point) {
             Base::Console().Message("No point picked.\n");
             return;
         }

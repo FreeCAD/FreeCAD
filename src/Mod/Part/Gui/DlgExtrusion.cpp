@@ -702,7 +702,7 @@ void DlgExtrusion::writeParametersToFeature(App::DocumentObject &feature, App::D
     App::PropertyLinkSub lnk;
     this->getAxisLink(lnk);
     std::stringstream linkstr;
-    if(lnk.getValue() == nullptr){
+    if (!lnk.getValue()) {
         linkstr << "None";
     } else {
         linkstr << "(App.getDocument(\"" << lnk.getValue()->getDocument()->getName() <<"\")." << lnk.getValue()->getNameInDocument();

@@ -20,6 +20,7 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/DlgPreferencesImp.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
@@ -32,6 +33,7 @@
 #include "TaskDimension.h"
 #include "DlgSettings3DViewPartImp.h"
 #include "DlgSettingsGeneral.h"
+#include "DlgSettingsMeasure.h"
 #include "DlgSettingsObjectColor.h"
 #include "ViewProvider.h"
 #include "ViewProvider2DObject.h"
@@ -206,13 +208,14 @@ PyMOD_INIT_FUNC(PartGui)
         err.ReportException();
     }
 
-
     // register preferences pages
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>   ( QT_TRANSLATE_NOOP("QObject","Part design") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Part design") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
+    Gui::Dialog::DlgPreferencesImp::setGroupData("Part/Part Design", "Part design", QObject::tr("Part and Part Design workbench"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsMeasure>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
     Gui::ViewProviderBuilder::add(
         Part::PropertyPartShape::getClassTypeId(),
         PartGui::ViewProviderPart::getClassTypeId());

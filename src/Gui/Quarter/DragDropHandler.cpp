@@ -155,7 +155,7 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
 
   // attempt to import it
   root = SoDB::readAll(&in);
-  if (root == nullptr)
+  if (!root)
       return;
 
   // set new scenegraph

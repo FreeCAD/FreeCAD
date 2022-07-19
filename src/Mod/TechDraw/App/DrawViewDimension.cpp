@@ -1538,7 +1538,7 @@ bool DrawViewDimension::has2DReferences(void) const
     const std::vector<std::string> &SubNames         = References2D.getSubValues();
     if (!objects.empty()) {
         App::DocumentObject* testRef = objects.at(0);
-        if (testRef != nullptr) {
+        if (testRef) {
             if (!SubNames.empty()) {
                 result = true;              //not empty is good
                 for (auto& s: SubNames) {   //but check individual entries

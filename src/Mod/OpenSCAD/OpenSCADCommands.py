@@ -93,7 +93,7 @@ class ExplodeGroup:
                             import FreeCADGui
                             oo.ViewObject.show()
                             if color and isdefault(oo.ViewObject.DiffuseColor):
-                                if color == True:
+                                if color:
                                     oo.ViewObject.DiffuseColor=randomcolor()
                                 else:
                                     oo.ViewObject.DiffuseColor=color

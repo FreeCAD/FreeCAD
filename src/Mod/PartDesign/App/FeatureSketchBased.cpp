@@ -296,14 +296,24 @@ std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
 // Note: We cannot return a reference, because it will become Null.
 // Not clear where, because we check for IsNull() here, but as soon as it is passed out of
 // this method, it becomes null!
-const TopoDS_Face ProfileBased::getSupportFace() const {
-    const Part::Part2DObject* sketch = getVerifiedSketch();
-    if (sketch->MapMode.getValue() == Attacher::mmFlatFace && sketch->Support.getValue()) {
+const TopoDS_Face ProfileBased::getSupportFace() const
+{
+    const Part::Part2DObject* sketch = getVerifiedSketch(true);
+    if (sketch) {
+        return getSupportFace(sketch);
+    }
+
+    return getSupportFace(Profile);
+}
+
+TopoDS_Face ProfileBased::getSupportFace(const Part::Part2DObject* sketch) const
+{
+    if (sketch && sketch->MapMode.getValue() == Attacher::mmFlatFace && sketch->Support.getValue()) {
         const auto& Support = sketch->Support;
         App::DocumentObject* ref = Support.getValue();
 
-        Part::Feature* part = static_cast<Part::Feature*>(ref);
-        if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        Part::Feature* part = dynamic_cast<Part::Feature*>(ref);
+        if (part) {
             const std::vector<std::string>& sub = Support.getSubValues();
             assert(sub.size() == 1);
 
@@ -333,6 +343,18 @@ const TopoDS_Face ProfileBased::getSupportFace() const {
         }
     }
     return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
+}
+
+TopoDS_Face ProfileBased::getSupportFace(const App::PropertyLinkSub& link) const
+{
+    App::DocumentObject* result = link.getValue();
+    if (!result) {
+        throw Base::RuntimeError("No support linked");
+    }
+
+    TopoDS_Face face;
+    getFaceFromLinkSub(face, link);
+    return face;
 }
 
 int ProfileBased::getSketchAxisCount(void) const
@@ -400,7 +422,7 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
     App::DocumentObject* ref = refFace.getValue();
     std::vector<std::string> subStrings = refFace.getSubValues();
 
-    if (ref == nullptr)
+    if (!ref)
         throw Base::ValueError("SketchBased: No face selected");
 
     if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {

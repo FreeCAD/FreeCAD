@@ -98,7 +98,7 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         offset = radians / (occurrences - 1);
 
     App::DocumentObject* refObject = Axis.getValue();
-    if (refObject == nullptr)
+    if (!refObject)
         throw Base::ValueError("No axis reference specified");
     std::vector<std::string> subStrings = Axis.getSubValues();
     if (subStrings.empty())

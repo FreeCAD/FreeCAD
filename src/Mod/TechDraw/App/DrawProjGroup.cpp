@@ -359,7 +359,7 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 {
     for( auto it : Views.getValues() ) {
         auto projPtr( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (projPtr == nullptr) {
+        if (!projPtr) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::getProjObj - non DPGI entry in Views! %s / %s\n",
                                     getNameInDocument(),viewProjType);
@@ -376,8 +376,7 @@ DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
 {
     App::DocumentObject* docObj = getProjObj(viewProjType);
     auto result( dynamic_cast<TechDraw::DrawProjGroupItem *>(docObj) );
-    if ( (result == nullptr) &&
-         (docObj != nullptr) ) {
+    if (!result && docObj) {
         //should never have a item in DPG that is not a DPGI.
         Base::Console().Log("PROBLEM - DPG::getProjItem finds non-DPGI in Group %s / %s\n",
                                 getNameInDocument(),viewProjType);
@@ -439,14 +438,13 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
                                                FeatName.c_str() ) );
         view = dynamic_cast<TechDraw::DrawProjGroupItem *>(docObj);
-        if ( (view == nullptr) &&
-             (docObj != nullptr) ) {
+        if (!view && docObj) {
             //should never happen that we create a DPGI that isn't a DPGI!!
             Base::Console().Log("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
                                     getNameInDocument(),viewProjType);
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
-        if (view != nullptr) {                        //coverity CID 151722
+        if (view) {                        //coverity CID 151722
             // the label must be set before the view is added
             view->Label.setValue(viewProjType);
             addView(view);                            //from DrawViewCollection
@@ -484,16 +482,16 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 int DrawProjGroup::removeProjection(const char *viewProjType)
 {
     // TODO: shouldn't be able to delete "Front" unless deleting whole group
-    if ( checkViewProjType(viewProjType) ) {
-        if( !hasProjection(viewProjType) ) {
+    if (checkViewProjType(viewProjType)) {
+        if (!hasProjection(viewProjType)) {
             throw Base::RuntimeError("The projection doesn't exist in the group");
         }
 
         // Iterate through the child views and find the projection type
-        for( auto it : Views.getValues() ) {
+        for (auto it : Views.getValues()) {
             auto projPtr( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
-            if( projPtr != nullptr) {
-                if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
+            if (projPtr) {
+                if (strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0) {
                     removeView(projPtr);                                           // Remove from collection
                     getDocument()->removeObject( it->getNameInDocument() );        // Remove from the document
                     return Views.getValues().size();
@@ -518,7 +516,7 @@ int DrawProjGroup::purgeProjections()
         DrawProjGroupItem* dpgi;
         DocumentObject* dObj =  views.back();
         dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
-        if (dpgi != nullptr) {
+        if (dpgi) {
             std::string itemName = dpgi->Type.getValueAsString();
             removeProjection(itemName.c_str());
         } else {
@@ -529,7 +527,7 @@ int DrawProjGroup::purgeProjections()
         }
     }
     auto page = findParentPage();
-    if (page != nullptr) {
+    if (page) {
         page->requestPaint();
     }
 
@@ -793,7 +791,7 @@ int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
     const char* projType;
     DrawPage* dp = findParentPage();
     if (ProjectionType.isValue("Default")) {
-        if (dp != nullptr) {
+        if (dp) {
             projType = dp->ProjectionType.getValueAsString();
         } else {
             Base::Console().Warning("DPG: %s - can not find parent page. Using default Projection Type. (1)\n",
@@ -855,7 +853,7 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
     const char* projType;
     if (ProjectionType.isValue("Default")) {
         DrawPage* dp = findParentPage();
-        if (dp != nullptr) {
+        if (dp) {
             projType = dp->ProjectionType.getValueAsString();
         } else {
             Base::Console().Error("DPG:arrangeViewPointers - %s - DPG is not on a page!\n",
@@ -1066,7 +1064,7 @@ App::Enumeration DrawProjGroup::usedProjectionType(void)
     App::Enumeration ret(ProjectionTypeEnums, ProjectionType.getValueAsString());
     if (ret.isValue("Default")) {
         TechDraw::DrawPage * page = getPage();
-        if ( page != nullptr ) {
+        if (page) {
             ret.setValue(page->ProjectionType.getValueAsString());
         }
     }
@@ -1077,7 +1075,7 @@ bool DrawProjGroup::hasAnchor(void)
 {
     bool result = false;
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj != nullptr) {
+    if (docObj) {
         result = true;
     }
     return result;
@@ -1087,7 +1085,7 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
 {
     DrawProjGroupItem* result = nullptr;
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj != nullptr) {
+    if (docObj) {
         result = static_cast<DrawProjGroupItem*>(docObj);
     }
     return result;
@@ -1104,7 +1102,7 @@ Base::Vector3d DrawProjGroup::getAnchorDirection(void)
 {
     Base::Vector3d result;
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj != nullptr) {
+    if (docObj) {
         DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
         result = item->Direction.getValue();
     } else {

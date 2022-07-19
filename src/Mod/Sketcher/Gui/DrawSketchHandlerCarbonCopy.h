@@ -124,7 +124,7 @@ public:
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
-            if (obj == nullptr)
+            if (!obj)
                 throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
 
             if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {

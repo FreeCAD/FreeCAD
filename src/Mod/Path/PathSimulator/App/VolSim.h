@@ -119,7 +119,7 @@ public:
 
 	~Array2D()
 	{
-		if (data != nullptr)
+		if (data)
 			delete[] data;
 	}
 

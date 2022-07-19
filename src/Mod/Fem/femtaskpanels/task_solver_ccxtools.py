@@ -244,7 +244,7 @@ class _TaskPanel:
     def calculixStarted(self):
         # print("calculixStarted()")
         FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
-        self.form.pb_run_ccx.setText("Break CalculiX")
+        self.form.pb_run_ccx.setText("Stop CalculiX")
 
     def calculixStateChanged(self, newState):
         if newState == QtCore.QProcess.ProcessState.Starting:

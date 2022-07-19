@@ -831,7 +831,7 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
                         continue;
                     }
                 }
-                if (before != nullptr) {
+                if (before) {
                     QList<QAction*> group = getActionGroup(*it);
                     bars.front()->removeAction(*it);
                     bars.front()->insertAction(before, *it);

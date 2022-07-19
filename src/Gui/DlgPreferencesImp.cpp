@@ -52,6 +52,8 @@ const int DlgPreferencesImp::GroupNameRole = Qt::UserRole;
 /* TRANSLATOR Gui::Dialog::DlgPreferencesImp */
 
 std::list<DlgPreferencesImp::TGroupPages> DlgPreferencesImp::_pages;
+std::map<std::string, DlgPreferencesImp::Group> DlgPreferencesImp::_groupMap;
+
 DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
 
 /**
@@ -116,6 +118,10 @@ QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
 {
     QString groupNameQString = QString::fromStdString(groupName);
 
+    std::string fileName = groupName;
+    QString tooltip;
+    getGroupData(groupName, fileName, tooltip);
+
     QTabWidget* tabWidget = new QTabWidget;
     ui->tabWidgetStack->addWidget(tabWidget);
     tabWidget->setProperty("GroupName", QVariant(groupNameQString));
@@ -123,8 +129,8 @@ QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
     QListWidgetItem* item = new QListWidgetItem(ui->listBox);
     item->setData(GroupNameRole, QVariant(groupNameQString));
     item->setText(QObject::tr(groupNameQString.toLatin1()));
-    item->setToolTip(QObject::tr(groupNameQString.toLatin1()));
-    std::string fileName = groupName;
+    item->setToolTip(tooltip);
+
     for (auto &ch : fileName) {
         if (ch == ' ')
             ch = '_';
@@ -202,7 +208,7 @@ void DlgPreferencesImp::addPage(const std::string& className, const std::string&
         _pages.push_back(std::make_pair(group, pages));
     }
 
-    if (DlgPreferencesImp::_activeDialog != nullptr) {
+    if (DlgPreferencesImp::_activeDialog) {
         // If the dialog is currently showing, tell it to insert the new page
         _activeDialog->reloadPages();
     }
@@ -229,6 +235,36 @@ void DlgPreferencesImp::removePage(const std::string& className, const std::stri
             }
         }
     }
+}
+
+/**
+ * Sets a custom icon name or tool tip for a given group.
+ */
+void DlgPreferencesImp::setGroupData(const std::string& name, const std::string& icon, const QString& tip)
+{
+    Group group;
+    group.iconName = icon;
+    group.tooltip = tip;
+    _groupMap[name] = group;
+}
+
+/**
+ * Gets the icon name or tool tip for a given group. If no custom name or tool tip is given
+ * they are determined from the group name.
+ */
+void DlgPreferencesImp::getGroupData(const std::string& group, std::string& icon, QString& tip)
+{
+    auto it = _groupMap.find(group);
+    if (it != _groupMap.end()) {
+        icon = it->second.iconName;
+        tip = it->second.tooltip;
+    }
+
+    if (icon.empty())
+        icon = group;
+
+    if (tip.isEmpty())
+        tip = QObject::tr(group.c_str());
 }
 
 /**
@@ -285,14 +321,7 @@ void DlgPreferencesImp::restoreDefaults()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                               SetBool("SaveUserParameter", saveParameter);
 
-#if 0
-        QList<PreferencePage*> pages = this->findChildren<PreferencePage*>();
-        for (QList<PreferencePage*>::iterator it = pages.begin(); it != pages.end(); ++it) {
-            (*it)->loadSettings();
-        }
-#else
         reject();
-#endif
     }
 }
 
@@ -399,7 +428,6 @@ void DlgPreferencesImp::applyChanges()
 
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
-    //canEmbedScrollArea = false;
     this->adjustSize();
     QDialog::showEvent(ev);
 }

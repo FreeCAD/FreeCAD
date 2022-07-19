@@ -35,8 +35,8 @@ int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int 
         throw Base::RuntimeError(str.str());
     }
     
-    *ptr = SWIG_NewPointerObj(obj,swig_type,own);
-    if (*ptr == nullptr)
+    *ptr = SWIG_NewPointerObj(obj, swig_type, own);
+    if (!*ptr)
         throw Base::RuntimeError("Cannot convert into requested type");
 
     // success
@@ -77,13 +77,13 @@ void cleanupSWIG_T(const char* TypeName)
     PyObject *module, *dict;
     PyObject *modules = PyImport_GetModuleDict();
     module = PyDict_GetItemString(modules, "__builtin__");
-    if (module != nullptr && PyModule_Check(module)) {
+    if (module && PyModule_Check(module)) {
         dict = PyModule_GetDict(module);
         PyDict_SetItemString(dict, "_", Py_None);
     }
 
     module = PyDict_GetItemString(modules, "__main__");
-    if (module != nullptr && PyModule_Check(module)) {
+    if (module && PyModule_Check(module)) {
         PyObject* dict = PyModule_GetDict(module);
         if (!dict) return;
 

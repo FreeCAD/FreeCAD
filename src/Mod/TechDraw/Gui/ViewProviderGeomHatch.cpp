@@ -133,7 +133,7 @@ void ViewProviderGeomHatch::onChanged(const App::Property* p)
     if ((p == &WeightPattern)  ||
         (p == &ColorPattern) ) {
         auto gHatch = getViewObject();
-        if (gHatch != nullptr) {
+        if (gHatch) {
             TechDraw::DrawViewPart* parent = gHatch->getSourceView();
             if (parent) {
                 parent->requestPaint();

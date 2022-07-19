@@ -163,7 +163,7 @@ void DrawViewDetail::onChanged(const App::Property* prop)
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly, true);
                 // apply the page-wide Scale
-                if (page != nullptr) {
+                if (page) {
                     if (std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                         Scale.setValue(page->Scale.getValue());
                         Scale.purgeTouched();
@@ -228,11 +228,13 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     }
 
     TopoDS_Shape shape;
-    if (dvs != nullptr) {
+    if (dvs) {
         shape = dvs->getCutShape();
-    } else if (dpgi != nullptr) {
+    }
+    else if (dpgi) {
         shape = dpgi->getSourceShapeFused();
-    } else {
+    }
+    else {
         shape = dvp->getSourceShapeFused();
     }
 
@@ -266,7 +268,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
             double newScale = autoScale();
             Scale.setValue(newScale);
             Scale.purgeTouched();
-            if (geometryObject != nullptr) {
+            if (geometryObject) {
                 delete geometryObject;
                 geometryObject = nullptr;
                 detailExec(shape, dvp, dvs);
@@ -300,7 +302,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
     m_saveCentroid = shapeCenter;              //centroid of original shape
 
-    if (dvs != nullptr) {
+    if (dvs) {
         //section cutShape should already be on origin
     } else {
         myShape = TechDraw::moveShape(myShape,                     //centre shape on origin
@@ -547,7 +549,7 @@ void DrawViewDetail::unsetupObject()
 //    Base::Console().Message("DVD::unsetupObject()\n");
     App::DocumentObject* baseObj = BaseView.getValue();
     DrawView* base = dynamic_cast<DrawView*>(baseObj);
-    if (base != nullptr) {
+    if (base) {
         base->requestPaint();
     }
 }

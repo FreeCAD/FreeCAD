@@ -148,7 +148,7 @@ void TaskPolarPatternParameters::setupUI()
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
         const App::DocumentObject* obj = *i;
-        if (obj != nullptr) {
+        if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -318,7 +318,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
     try{
-        if(axesLinks.getCurrentLink().getValue() == nullptr){
+        if (!axesLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();

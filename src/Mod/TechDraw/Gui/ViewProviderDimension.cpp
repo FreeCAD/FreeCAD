@@ -81,9 +81,9 @@ ViewProviderDimension::ViewProviderDimension()
     RenderingExtent.setEnums(RenderingExtentEnums);
     ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,
                                           "Reverses usual direction of dimension line terminators");
-    ADD_PROPERTY_TYPE(GapFactorISO, (Preferences::ISOGap()), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(GapFactorISO, (Preferences::GapISO()), group, App::Prop_None,
                       "Adjusts the gap between dimension point and extension line");
-    ADD_PROPERTY_TYPE(GapFactorASME, (Preferences::ASMEGap()), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(GapFactorASME, (Preferences::GapASME()), group, App::Prop_None,
                       "Adjusts the gap between dimension point and extension line");
 }
 
@@ -209,7 +209,7 @@ void ViewProviderDimension::onChanged(const App::Property* p)
         QGIView* qgiv = getQView();
         if (qgiv) {
             QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(qgiv);
-            if (qgivd != nullptr) {
+            if (qgivd) {
                 qgivd->setNormalColorAll();
             }
         }

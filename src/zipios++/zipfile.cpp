@@ -73,7 +73,7 @@ istream *ZipFile::getInputStream( const string &entry_name,
 
   ConstEntryPointer ent = getEntry( entry_name, matchpath ) ;
   
-  if ( ent == nullptr )
+  if ( !ent )
     return nullptr ;
   else
     return new ZipInputStream( _filename,	

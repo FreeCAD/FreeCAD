@@ -792,18 +792,6 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     if (!pSubName) pSubName = "";
 
     if (DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
-        // MovePreselect is likely going to slow down large scene rendering.
-        // Disable it for now.
-#if 0
-        if(hx!=x || hy!=y || hz!=z) {
-            hx = x;
-            hy = y;
-            hz = z;
-            SelectionChanges Chng(SelectionChanges::MovePreselect,
-                    DocName,FeatName,SubName,std::string(),x,y,z);
-            notify(Chng);
-        }
-#endif
         return -1;
     }
 
@@ -972,7 +960,6 @@ void SelectionSingleton::rmvPreselect(bool signal)
 
     // notify observing objects
     notify(std::move(Chng));
-
 }
 
 const SelectionChanges &SelectionSingleton::getPreselection(void) const
@@ -1831,14 +1818,14 @@ SelectionSingleton* SelectionSingleton::_pcSingleton = nullptr;
 
 SelectionSingleton& SelectionSingleton::instance(void)
 {
-    if (_pcSingleton == nullptr)
+    if (!_pcSingleton)
         _pcSingleton = new SelectionSingleton;
     return *_pcSingleton;
 }
 
 void SelectionSingleton::destruct (void)
 {
-    if (_pcSingleton != nullptr)
+    if (_pcSingleton)
         delete _pcSingleton;
     _pcSingleton = nullptr;
 }
@@ -2116,7 +2103,6 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
                                              docObj->getNameInDocument(),
                                              subname.c_str(), 0, 0, 0, nullptr, Base::asBoolean(clearPreselect));
                 }
-
                 Py_Return;
             }
         }

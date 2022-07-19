@@ -478,7 +478,7 @@ private:
             if (usePolyline == Py_True) {
                polyOverride = true; 
             }
-            if (optionSource != nullptr) {
+            if (optionSource) {
                 defaultOptions = optionSource;
             }
 
@@ -527,7 +527,7 @@ private:
             if (usePolyline == Py_True) {
                polyOverride = true; 
             }
-            if (optionSource != nullptr) {
+            if (optionSource) {
                 defaultOptions = optionSource;
             }
 
@@ -587,7 +587,7 @@ private:
                polyOverride = true; 
             }
 
-            if (optionSource != nullptr) {
+            if (optionSource) {
                 defaultOptions = optionSource;
             }
 
@@ -641,7 +641,7 @@ private:
                polyOverride = true; 
             }
 
-            if (optionSource != nullptr) {
+            if (optionSource) {
                 defaultOptions = optionSource;
             }
             

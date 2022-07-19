@@ -716,9 +716,9 @@ void GeometryObject::addFaceGeom(FacePtr f)
 TechDraw::DrawViewDetail* GeometryObject::isParentDetail()
 {
     TechDraw::DrawViewDetail* result = nullptr;
-    if (m_parent != nullptr) {
+    if (m_parent) {
         TechDraw::DrawViewDetail* detail = dynamic_cast<TechDraw::DrawViewDetail*>(m_parent);
-        if (detail != nullptr) {
+        if (detail) {
             result = detail;
         }
     }

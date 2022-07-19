@@ -666,9 +666,9 @@ def HEIDEN_Line(
         H_Line += " " + H_Line_Params[1][0]
 
     # F parameter (check rapid o feed)
-    if line_rapid == True:
+    if line_rapid:
         H_Line_Params[1][1] = FEED_MAX_SPEED
-    if MACHINE_USE_FMAX == True and line_rapid == True:
+    if MACHINE_USE_FMAX and line_rapid:
         H_Line += " FMAX"
     else:
         if (
@@ -837,9 +837,9 @@ def HEIDEN_Arc(
         H_ArcPoint += " " + H_Arc_Params[1][0]
 
     # F parameter
-    if arc_rapid == True:
+    if arc_rapid:
         H_Arc_Params[1][1] = FEED_MAX_SPEED
-    if MACHINE_USE_FMAX == True and arc_rapid == True:
+    if MACHINE_USE_FMAX and arc_rapid:
         H_ArcPoint += " FMAX"
     else:
         if (

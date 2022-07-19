@@ -99,7 +99,7 @@ QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
 
-    if (myParent != nullptr) {
+    if (myParent) {
         setParentItem(myParent);
     }
 

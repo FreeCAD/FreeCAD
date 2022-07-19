@@ -114,6 +114,8 @@ class GuiExport DlgPreferencesImp : public QDialog
 public:
     static void addPage(const std::string& className, const std::string& group);
     static void removePage(const std::string& className, const std::string& group);
+    static void setGroupData(const std::string& group, const std::string& icon, const QString& tip);
+    static void getGroupData(const std::string& group, std::string& icon, QString& tip);
     static void reloadSettings();
 
     DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
@@ -148,6 +150,11 @@ private:
 private:
     typedef std::pair<std::string, std::list<std::string>> TGroupPages;
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
+    struct Group {
+        std::string iconName;
+        QString tooltip;
+    };
+    static std::map<std::string, Group> _groupMap;
     std::unique_ptr<Ui_DlgPreferences> ui;
     bool invalidParameter;
     bool canEmbedScrollArea;

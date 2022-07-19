@@ -295,7 +295,7 @@ class PathArray:
         CmdMoveStraight = ["G1", "G01"]
         CmdMoveCW = ["G2", "G02"]
         CmdMoveCCW = ["G3", "G03"]
-        CmdDrill = ["G81", "G82", "G83"]
+        CmdDrill = ["G73", "G81", "G82", "G83"]
         CmdMoveArc = CmdMoveCW + CmdMoveCCW
         CmdMove = CmdMoveStraight + CmdMoveArc
 

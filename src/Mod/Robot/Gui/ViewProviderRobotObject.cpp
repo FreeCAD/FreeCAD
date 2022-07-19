@@ -92,7 +92,7 @@ ViewProviderRobotObject::~ViewProviderRobotObject()
 
 void ViewProviderRobotObject::setDragger()
 {
-    assert(pcDragger==nullptr);
+    assert(!pcDragger);
     pcDragger = new SoJackDragger();
     pcDragger->addMotionCallback(sDraggerMotionCallback,this);
     pcTcpRoot->addChild(pcDragger);

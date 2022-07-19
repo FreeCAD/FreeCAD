@@ -134,12 +134,10 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
         v0 = dvp->getProjVertexByIndex(idx0);
         v1 = dvp->getProjVertexByIndex(idx1);
-        if ( (v0 != nullptr) &&
-             (!v0->cosmeticTag.empty()) ) {
+        if (v0 && !v0->cosmeticTag.empty()) {
             tag0 = v0->cosmeticTag;
         }
-        if ( (v1 != nullptr) &&
-             (!v1->cosmeticTag.empty()) ) {
+        if (v1 && !v1->cosmeticTag.empty()) {
             tag1 = v1->cosmeticTag;
         }
         cvTags.push_back(tag0);
@@ -175,7 +173,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
                 if (!n.empty() && (geomType == "Edge")) {
                     int i = DrawUtil::getIndexFromName(n);
                     BaseGeomPtr bg = dvp->getGeomByIndex(i);
-                    if (bg != nullptr) {
+                    if (bg) {
                         bgList.push_back(bg);
                     }
                 }

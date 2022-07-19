@@ -256,24 +256,24 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
            getPlacementProperty())
         {
             bool transform = getLinkTransformValue();
-            getPlacementProperty()->setStatus(Property::Hidden,transform);
-            getLinkPlacementProperty()->setStatus(Property::Hidden,!transform);
+            getPlacementProperty()->setStatus(Property::Hidden, transform);
+            getLinkPlacementProperty()->setStatus(Property::Hidden, !transform);
         }
         break;
     case PropElementList:
         getElementListProperty()->setScope(LinkScope::Global);
-        getElementListProperty()->setStatus(Property::Hidden,true);
+        getElementListProperty()->setStatus(Property::Hidden, true);
         // fall through
     case PropLinkedObject:
         // Make ElementList as read-only if we are not a group (i.e. having
         // LinkedObject property), because it is for holding array elements.
         if(getElementListProperty())
             getElementListProperty()->setStatus(
-                    Property::Immutable,getLinkedObjectProperty()!=nullptr);
+                Property::Immutable, getLinkedObjectProperty() != nullptr);
         break;
     case PropVisibilityList:
-        getVisibilityListProperty()->setStatus(Property::Immutable,true);
-        getVisibilityListProperty()->setStatus(Property::Hidden,true);
+        getVisibilityListProperty()->setStatus(Property::Immutable, true);
+        getVisibilityListProperty()->setStatus(Property::Hidden, true);
         break;
     }
 
@@ -1624,16 +1624,16 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
             // touch the property again to make sure view provider has been
             // signaled before clearing the elements
-            getShowElementProperty()->setStatus(App::Property::User3,true);
+            getShowElementProperty()->setStatus(App::Property::User3, true);
             getShowElementProperty()->touch();
-            getShowElementProperty()->setStatus(App::Property::User3,false);
+            getShowElementProperty()->setStatus(App::Property::User3, false);
 
             getElementListProperty()->setValues(std::vector<App::DocumentObject*>());
 
             if(getPlacementListProperty()) {
-                getPlacementListProperty()->setStatus(Property::User3,getScaleListProperty()!=nullptr);
+                getPlacementListProperty()->setStatus(Property::User3, getScaleListProperty() != nullptr);
                 getPlacementListProperty()->setValue(placements);
-                getPlacementListProperty()->setStatus(Property::User3,false);
+                getPlacementListProperty()->setStatus(Property::User3, false);
             }
             if(getScaleListProperty())
                 getScaleListProperty()->setValue(scales);
@@ -1884,34 +1884,33 @@ void LinkBaseExtension::syncElementList() {
     auto owner = getContainer();
     auto ownerID = owner?owner->getID():0;
     auto elements = getElementListValue();
-    for(size_t i=0;i<elements.size();++i) {
+    for (size_t i = 0; i < elements.size(); ++i) {
         auto element = freecad_dynamic_cast<LinkElement>(elements[i]);
-        if(!element
-                || (element->_LinkOwner.getValue()
-                    && element->_LinkOwner.getValue()!=ownerID))
+        if (!element
+            || (element->_LinkOwner.getValue()
+                && element->_LinkOwner.getValue() != ownerID))
             continue;
 
         element->_LinkOwner.setValue(ownerID);
 
-        element->LinkTransform.setStatus(Property::Hidden,transform!=nullptr);
-        element->LinkTransform.setStatus(Property::Immutable,transform!=nullptr);
-        if(transform && element->LinkTransform.getValue()!=transform->getValue())
+        element->LinkTransform.setStatus(Property::Hidden, transform != nullptr);
+        element->LinkTransform.setStatus(Property::Immutable, transform != nullptr);
+        if (transform && element->LinkTransform.getValue() != transform->getValue())
             element->LinkTransform.setValue(transform->getValue());
 
-        element->LinkedObject.setStatus(Property::Hidden,link!=nullptr);
-        element->LinkedObject.setStatus(Property::Immutable,link!=nullptr);
-        if(element->LinkCopyOnChange.getValue()==2)
+        element->LinkedObject.setStatus(Property::Hidden, link != nullptr);
+        element->LinkedObject.setStatus(Property::Immutable, link != nullptr);
+        if (element->LinkCopyOnChange.getValue() == 2)
             continue;
-        if(xlink) {
-            if(element->LinkedObject.getValue()!=xlink->getValue() ||
-               element->LinkedObject.getSubValues()!=xlink->getSubValues())
-            {
+        if (xlink) {
+            if (element->LinkedObject.getValue() != xlink->getValue()
+                || element->LinkedObject.getSubValues() != xlink->getSubValues()) {
                 element->LinkedObject.setValue(xlink->getValue(), xlink->getSubValues());
             }
-        } else if(element->LinkedObject.getValue()!=link->getValue() ||
-                  element->LinkedObject.getSubValues().size())
-        {
-            element->setLink(-1,link->getValue());
+        }
+        else if (element->LinkedObject.getValue() != link->getValue()
+                 || element->LinkedObject.getSubValues().size()) {
+            element->setLink(-1, link->getValue());
         }
     }
 }

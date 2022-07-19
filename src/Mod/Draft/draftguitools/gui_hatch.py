@@ -106,6 +106,7 @@ class Draft_Hatch_TaskPanel:
         import FreeCADGui
 
         FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.recompute()
 
     def onFileChanged(self,filename):

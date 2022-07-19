@@ -126,7 +126,7 @@ public:
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
-            if (obj == nullptr)
+            if (!obj)
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             std::string subName(msg.pSubName);
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||

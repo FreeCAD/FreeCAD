@@ -488,7 +488,7 @@ App::TransactionFactory* App::TransactionFactory::self = nullptr;
 
 TransactionFactory& TransactionFactory::instance()
 {
-    if (self == nullptr)
+    if (!self)
         self = new TransactionFactory;
     return *self;
 }

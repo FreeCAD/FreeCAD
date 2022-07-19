@@ -87,14 +87,16 @@ def get_binary(name):
     Return the specific path set by the user in FreeCADs settings/parameter
     system if set or the default binary name if no specific path is set. If no
     path was found because the solver *name* is not supported ``None`` is
-    returned. This method does not check whether the binary actually exists
-    and is callable.
+    returned.
+    This method does not check whether the binary actually exists and is callable.
+    That check is done in DlgSettingsFem_Solver_Imp.cpp
 
     :param name: solver id as a ``str`` (see :mod:`femsolver.settings`)
     """
     if name in _SOLVER_PARAM:
         binary = _SOLVER_PARAM[name].get_binary()
-        FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
+        if binary is not None:
+            FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
         return binary
     else:
         FreeCAD.Console.PrintError(
@@ -114,7 +116,7 @@ def get_cores(name):
     if name in _SOLVER_PARAM:
         cores = _SOLVER_PARAM[name].get_cores()
         FreeCAD.Console.PrintMessage(
-            'Number of CPU cores to be used for the solvier run: {} \n'
+            "Number of CPU cores to be used for the solver run: {}\n"
             .format(cores)
         )
         return cores
@@ -236,7 +238,8 @@ class _SolverDlg(object):
                 "The binary has not been found. Full binary search path: {}\n"
                 .format(binary)
             )
-        FreeCAD.Console.PrintLog("Solver binary found path: {}\n".format(the_found_binary))
+        else:
+            FreeCAD.Console.PrintLog("Found solver binary path: {}\n".format(the_found_binary))
         return the_found_binary
 
     def get_cores(self):

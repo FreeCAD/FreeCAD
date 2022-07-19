@@ -184,7 +184,7 @@ void TaskCenterLine::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Center Line"));
 
-    if (m_partFeat != nullptr) {
+    if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
         for (auto& s: m_subNames) {
@@ -213,7 +213,7 @@ void TaskCenterLine::setUiPrimary()
 void TaskCenterLine::setUiEdit()
 {
     setWindowTitle(QObject::tr("Edit Center Line"));
-    if (m_partFeat != nullptr) {
+    if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
         QString listItem = Base::Tools::fromStdString(m_edgeName);
@@ -322,7 +322,7 @@ void TaskCenterLine::createCenterLine(void)
 
     if (cl == nullptr) { // try a horizontal line
         cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, CenterLine::CLMODE::HORIZONTAL, false);
-        if (cl != nullptr) {
+        if (cl) {
             m_mode = CenterLine::CLMODE::HORIZONTAL;
             ui->rbHorizontal->blockSignals(true);
             ui->rbHorizontal->setChecked(true);
@@ -385,7 +385,7 @@ void TaskCenterLine::updateOrientation(void)
         else if (orientation == CenterLine::CLMODE::HORIZONTAL)
             orientation = CenterLine::CLMODE::VERTICAL;
         cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, orientation, m_cl->m_flip2Line);
-        if (cl != nullptr) {
+        if (cl) {
             if (orientation == CenterLine::CLMODE::VERTICAL) {
                 m_cl->m_mode = CenterLine::CLMODE::VERTICAL;
                 ui->rbVertical->blockSignals(true);
@@ -404,7 +404,7 @@ void TaskCenterLine::updateOrientation(void)
         }
     }
 
-    if (cl != nullptr) { // we succeeded
+    if (cl) { // we succeeded
         // reset the flip for existing centerline that might use the flip feature (when created with FC 0.19)
         m_cl->m_flip2Line = false;
         m_partFeat->recomputeFeature();
@@ -433,7 +433,7 @@ double TaskCenterLine::getCenterWidth()
     delete lg;
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-    if ( partVP != nullptr ) {
+    if (partVP) {
         width = partVP->IsoWidth.getValue();
     }
     return width;

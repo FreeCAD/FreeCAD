@@ -55,7 +55,7 @@ VoronoiCell::~VoronoiCell() {
 }
 
 bool VoronoiCell::isBound(void) const {
-  if (ptr != nullptr && dia.isValid() && index != Voronoi::InvalidIndex) {
+  if (ptr && dia.isValid() && index != Voronoi::InvalidIndex) {
     if (&(dia->cells()[index]) == ptr) {
       return true;
     }

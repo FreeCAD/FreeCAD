@@ -148,7 +148,7 @@ std::vector<QGIView *> QGSPage::getViews() const
     QList<QGraphicsItem*> items = this->items();
     for (auto& v:items) {
         QGIView* qv = dynamic_cast<QGIView*>(v);
-        if (qv != nullptr) {
+        if (qv) {
             result.push_back(qv);
         }
     }
@@ -186,7 +186,7 @@ int QGSPage::addQView(QGIView *view)
 
 int QGSPage::removeQView(QGIView *view)
 {
-    if (view != nullptr) {
+    if (view) {
         removeQViewFromScene(view);
         delete view;
     }
@@ -224,7 +224,7 @@ int QGSPage::removeQViewByName(const char* name)
 void QGSPage::removeQViewFromScene(QGIView *view)
 {
     QGIView* qgParent = dynamic_cast<QGIView*>(view->parentItem());
-    if (qgParent != nullptr) {
+    if (qgParent) {
         qgParent->removeChild(view);
     } else {
         removeItem(view);
@@ -236,7 +236,7 @@ QGIView * QGSPage::addViewPart(TechDraw::DrawViewPart *part)
 {
 //    Base::Console().Message("QGSP::addViewPart(%s)\n", part->getNameInDocument());
     QGIView* existing = findQViewForDocObj(part);
-    if (existing != nullptr) {
+    if (existing) {
        return existing;
     }
 
@@ -470,10 +470,10 @@ QGIView * QGSPage::addRichAnno(TechDraw::DrawRichAnno* anno)
     TechDraw::DrawView*  parentDV = nullptr;
     
     App::DocumentObject* parentObj = anno->AnnoParent.getValue();
-    if (parentObj != nullptr) {
+    if (parentObj) {
         parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
     }
-    if (parentDV != nullptr) {
+    if (parentDV) {
         QGIView* parentQV = findQViewForDocObj(parentObj);
         annoGroup = new QGIRichAnno(parentQV, anno);
         annoGroup->updateView(true);
@@ -492,15 +492,15 @@ QGIView * QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weld)
     TechDraw::DrawView*  parentDV = nullptr;
     
     App::DocumentObject* parentObj = weld->Leader.getValue();
-    if (parentObj != nullptr) {
+    if (parentObj) {
         parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
     } else {
 //        Base::Console().Message("QGVP::addWeldSymbol - no parent doc obj\n");
     }
-    if (parentDV != nullptr) {
+    if (parentDV) {
         QGIView* parentQV = findQViewForDocObj(parentObj);
         QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
-        if (leadParent != nullptr) {
+        if (leadParent) {
             weldGroup = new QGIWeldSymbol(leadParent);
             weldGroup->setFeature(weld);       //for QGIWS
             weldGroup->setViewFeature(weld);   //for QGIV
@@ -546,7 +546,7 @@ QGIView* QGSPage::getQGIVByName(std::string name)
 }
 
 //find the parent of a QGIV based on the corresponding feature's parentage
-QGIView * QGSPage::findParent(QGIView *view) const
+QGIView *QGSPage::findParent(QGIView *view) const
 {
     const std::vector<QGIView *> qviews = getViews();
     TechDraw::DrawView *myFeat = view->getViewObject();
@@ -554,14 +554,14 @@ QGIView * QGSPage::findParent(QGIView *view) const
     //If type is dimension we check references first
     TechDraw::DrawViewDimension *dim = nullptr;
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(myFeat);
-    if(dim) {
+    if (dim) {
         std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
 
-        if(objs.size() > 0) {
+        if (objs.size() > 0) {
             std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
             // Attach the dimension to the first object's group
-            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-                if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
+            for (std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+                if (strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
                     return *it;
                 }
             }
@@ -572,13 +572,13 @@ QGIView * QGSPage::findParent(QGIView *view) const
     TechDraw::DrawViewBalloon *balloon = nullptr;
     balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myFeat);
 
-    if(balloon) {
-        App::DocumentObject* obj = balloon->SourceView.getValue();
+    if (balloon) {
+        App::DocumentObject *obj = balloon->SourceView.getValue();
 
-        if(obj) {
+        if (obj) {
             // Attach the dimension to the first object's group
-            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-                if(strcmp((*it)->getViewName(), obj->getNameInDocument()) == 0) {
+            for (std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+                if (strcmp((*it)->getViewName(), obj->getNameInDocument()) == 0) {
                     return *it;
                 }
             }
@@ -586,16 +586,16 @@ QGIView * QGSPage::findParent(QGIView *view) const
     }
 
     // Check if part of view collection
-    for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+    for (std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
         QGIViewCollection *grp = nullptr;
         grp = dynamic_cast<QGIViewCollection *>(*it);
-        if(grp) {
+        if (grp) {
             TechDraw::DrawViewCollection *collection = nullptr;
             collection = dynamic_cast<TechDraw::DrawViewCollection *>(grp->getViewObject());
-            if(collection) {
+            if (collection) {
                 std::vector<App::DocumentObject *> objs = collection->Views.getValues();
-                for( std::vector<App::DocumentObject *>::iterator it = objs.begin(); it != objs.end(); ++it) {
-                    if(strcmp(myFeat->getNameInDocument(), (*it)->getNameInDocument()) == 0)
+                for (std::vector<App::DocumentObject *>::iterator it = objs.begin(); it != objs.end(); ++it) {
+                    if (strcmp(myFeat->getNameInDocument(), (*it)->getNameInDocument()) == 0)
 
                         return grp;
                 }
@@ -603,16 +603,16 @@ QGIView * QGSPage::findParent(QGIView *view) const
         }
     }
 
-     //If type is LeaderLine we check LeaderParent
+    //If type is LeaderLine we check LeaderParent
     TechDraw::DrawLeaderLine *lead = nullptr;
     lead = dynamic_cast<TechDraw::DrawLeaderLine *>(myFeat);
 
-    if(lead) {
-        App::DocumentObject* obj = lead->LeaderParent.getValue();
-        if(obj != nullptr) {
+    if (lead) {
+        App::DocumentObject *obj = lead->LeaderParent.getValue();
+        if (obj) {
             std::string parentName = obj->getNameInDocument();
-            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-                if(strcmp((*it)->getViewName(), parentName.c_str()) == 0) {
+            for (std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+                if (strcmp((*it)->getViewName(), parentName.c_str()) == 0) {
                     return *it;
                 }
             }
@@ -626,9 +626,10 @@ void QGSPage::setPageTemplate(TechDraw::DrawTemplate *obj)
 {
     removeTemplate();
 
-    if(obj->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
+    if (obj->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
         pageTemplate = new QGIDrawingTemplate(this);
-    } else if(obj->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+    }
+    else if (obj->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
         pageTemplate = new QGISVGTemplate(this);
     }
     pageTemplate->setTemplate(obj);

@@ -91,7 +91,7 @@ BitmapFactoryInst* BitmapFactoryInst::_pcSingleton = nullptr;
 
 BitmapFactoryInst& BitmapFactoryInst::instance(void)
 {
-    if (_pcSingleton == nullptr)
+    if (!_pcSingleton)
     {
         _pcSingleton = new BitmapFactoryInst;
         std::map<std::string,std::string>::const_iterator it;
@@ -115,7 +115,7 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
 
 void BitmapFactoryInst::destruct (void)
 {
-    if (_pcSingleton != nullptr)
+    if (_pcSingleton)
     delete _pcSingleton;
     _pcSingleton = nullptr;
 }

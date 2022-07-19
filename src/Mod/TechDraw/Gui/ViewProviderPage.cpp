@@ -107,7 +107,7 @@ void ViewProviderPage::attach(App::DocumentObject *pcFeat)
 
     auto bnd = boost::bind(&ViewProviderPage::onGuiRepaint, this, bp::_1);
     auto feature = getDrawPage();
-    if (feature != nullptr) {
+    if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         m_pageName = feature->getNameInDocument();
     } else {
@@ -260,7 +260,7 @@ bool ViewProviderPage::setEdit(int ModNum)
         return false;  //finished editing
     } else if (ModNum == _TOGGLEUPDATE) {
          auto page = getDrawPage();
-         if (page != nullptr) {
+         if (page) {
              page->KeepUpdated.setValue(!page->KeepUpdated.getValue());
              page->recomputeFeature();
          }
@@ -337,7 +337,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
             App::DocumentObject *docObj = *it;
             //DrawRichAnno with no parent is child of Page
             TechDraw::DrawRichAnno* dra = dynamic_cast<TechDraw::DrawRichAnno*> (*it);
-            if (dra != nullptr) {
+            if (dra) {
                 if (dra->AnnoParent.getValue() == nullptr) {
                     temp.push_back(*it); //no parent, belongs to page
                 }
@@ -425,7 +425,7 @@ void ViewProviderPage::setFrameState(bool state)
 void ViewProviderPage::toggleFrameState(void)
 {
 //    Base::Console().Message("VPP::toggleFrameState()\n");
-    if (m_graphicsScene != nullptr) {
+    if (m_graphicsScene) {
         setFrameState(!getFrameState());
         m_graphicsScene->refreshViews();
         setTemplateMarkers(getFrameState());
@@ -443,7 +443,7 @@ void ViewProviderPage::setTemplateMarkers(bool state)
     if (vpt) {
         vpt->setMarkers(state);
         QGITemplate* t = vpt->getQTemplate();
-        if (t != nullptr) {
+        if (t) {
             t->updateView(true);
         }
     }

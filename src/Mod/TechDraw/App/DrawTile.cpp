@@ -102,7 +102,7 @@ DrawView* DrawTile::getParent(void) const
 {
 //    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
     App::DocumentObject* baseObj = TileParent.getValue();
-    if (baseObj == nullptr) {
+    if (baseObj) {
         return nullptr;
     }
     
