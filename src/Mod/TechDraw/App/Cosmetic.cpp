@@ -427,7 +427,7 @@ std::string CosmeticEdge::toString(void) const
 {
     std::stringstream ss;
     ss << getTagAsString() << ", $$$, ";
-    if (m_geometry != nullptr) {
+    if (m_geometry) {
         ss << m_geometry->geomType << 
             ",$$$," <<
             m_geometry->toString() <<
@@ -721,7 +721,7 @@ CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat,
         return nullptr;
     }
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
-    if (cl != nullptr) {
+    if (cl) {
         cl->m_type = type;
         cl->m_mode = mode;
         cl->m_faces = faces;
@@ -1013,7 +1013,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(en);
         TechDraw::BaseGeomPtr bg = partFeat->getGeomByIndex(idx);
-        if (bg != nullptr) {
+        if (bg) {
             edges.push_back(bg);
         } else {
             Base::Console().Message("CL::calcEndPoints2Lines - no geom for index: %d\n", idx);
@@ -1108,7 +1108,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(vn);
         TechDraw::VertexPtr v = partFeat->getProjVertexByIndex(idx);
-        if (v != nullptr) {
+        if (v) {
             points.push_back(v);
         }
     }

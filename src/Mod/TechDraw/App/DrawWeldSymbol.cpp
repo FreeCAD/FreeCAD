@@ -91,14 +91,14 @@ void DrawWeldSymbol::onSettingDocument()
     std::string tileName1 = doc->getUniqueObjectName("TileWeld");
     auto tile1Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName1.c_str() ) );
     DrawTileWeld* tile1 = dynamic_cast<DrawTileWeld*>(tile1Obj);
-    if (tile1 != nullptr) {
+    if (tile1) {
         tile1->TileParent.setValue(this);
     }
 
     std::string tileName2 = doc->getUniqueObjectName("TileWeld");
     auto tile2Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName2.c_str() ) );
     DrawTileWeld* tile2 = dynamic_cast<DrawTileWeld*>(tile2Obj);
-    if (tile2 != nullptr) {
+    if (tile2) {
         tile2->TileParent.setValue(this);
         tile2->TileRow.setValue(-1);   //other side is row -1
     }
@@ -152,7 +152,7 @@ bool DrawWeldSymbol::isTailRightSide()
     bool result = true;
     App::DocumentObject* obj = Leader.getValue();
     TechDraw::DrawLeaderLine* realLeader = dynamic_cast<TechDraw::DrawLeaderLine*>(obj);
-    if (realLeader != nullptr) {
+    if (realLeader) {
         Base::Vector3d tail = realLeader->getTailPoint();
         Base::Vector3d kink = realLeader->getKinkPoint();
         if (tail.x < kink.x)  {   //tail is to left

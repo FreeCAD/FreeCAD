@@ -123,15 +123,13 @@ void DrawGeomHatch::onChanged(const App::Property* prop)
             DrawGeomHatch::execute();
         }
         App::Document* doc = getDocument();
-        if ((prop == &FilePattern) &&
-            (doc != nullptr) ) {
+        if ((prop == &FilePattern) && doc) {
             if (!FilePattern.isEmpty()) {
                 replacePatIncluded(FilePattern.getValue());
                 DrawGeomHatch::execute();         //remake the line sets
             }
         }
-        if ((prop == &NamePattern) &&
-                (doc != nullptr)) {
+        if ((prop == &NamePattern) && doc) {
             DrawGeomHatch::execute();            //remake the line sets
         }
     } else {
@@ -166,7 +164,7 @@ App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
 //    Base::Console().Message("DGH::execute()\n");
     makeLineSets();
     DrawViewPart* parent = getSourceView();
-    if (parent != nullptr) {
+    if (parent) {
         parent->requestPaint();
     }
     return App::DocumentObject::StdReturn;
@@ -608,7 +606,7 @@ void DrawGeomHatch::unsetupObject(void)
 //    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
     DrawView* dv = dynamic_cast<DrawView*>(source);
-    if (dv != nullptr) {
+    if (dv) {
         dv->requestPaint();
     }
     App::DocumentObject::unsetupObject();

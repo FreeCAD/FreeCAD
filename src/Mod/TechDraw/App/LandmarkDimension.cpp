@@ -209,7 +209,7 @@ pointPair LandmarkDimension::getPointsTwoVerts()
     pointPair result;
 
     TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp != nullptr) {
+    if (dvp) {
         std::vector<Base::Vector3d> points = get2DPoints();
         result.first  = points.at(0) * dvp->getScale();
         result.second = points.at(1) * dvp->getScale();
@@ -229,7 +229,7 @@ DrawViewPart* LandmarkDimension::getViewPart() const
     std::vector<App::DocumentObject*> refs2d = References2D.getValues();
     App::DocumentObject* obj = refs2d.front();
     DrawViewPart* dvp = dynamic_cast<DrawViewPart*>(obj);
-    if (dvp != nullptr) {
+    if (dvp) {
         result = dvp;
     }
     return result;

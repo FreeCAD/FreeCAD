@@ -73,8 +73,7 @@ void DrawViewImage::onChanged(const App::Property* prop)
 {
     App::Document* doc = getDocument();
     if (!isRestoring()) {
-        if ((prop == &ImageFile) &&
-            (doc != nullptr) ) {
+        if ((prop == &ImageFile) && doc) {
             if (!ImageFile.isEmpty()) {
                 replaceImageIncluded(ImageFile.getValue());
             }
