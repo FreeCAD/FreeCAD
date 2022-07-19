@@ -7671,7 +7671,7 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, 
 {
     const App::Property * prop = path.getProperty();
 
-    assert(expr != nullptr);
+    assert(expr);
 
     if (!prop)
         return "Property not found";

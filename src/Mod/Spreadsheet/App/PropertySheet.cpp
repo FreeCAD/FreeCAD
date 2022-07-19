@@ -601,7 +601,7 @@ void PropertySheet::setStyle(CellAddress address, const std::set<std::string> &_
 void PropertySheet::setForeground(CellAddress address, const App::Color &color)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setForeground(color);
 }
 
