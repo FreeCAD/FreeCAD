@@ -45,6 +45,21 @@
         <file>icons/actions/TechDraw_ToggleFrame.svg</file>
         <file>icons/actions/TechDraw_View.svg</file>
         <file>icons/actions/TechDraw_WeldSymbol.svg</file>
+<<<<<<< HEAD
+=======
+        <file>icons/actions/TechDraw_SurfaceFinishSymbols.svg</file>
+        <file>icons/actions/TechDraw_MoveView.svg</file>
+        <file>icons/actions/TechDraw_ShareView.svg</file>
+        <file>icons/actions/TechDraw_ProjectShape.svg</file>
+        <file>icons/actions/section-up.svg</file>  
+        <file>icons/actions/section-down.svg</file>
+        <file>icons/actions/section-left.svg</file>
+        <file>icons/actions/section-right.svg</file>
+        <file>icons/arrow-right.svg</file>
+        <file>icons/arrow-left.svg</file>
+        <file>icons/arrow-up.svg</file>
+        <file>icons/arrow-down.svg</file>
+>>>>>>> [TD] Add command to TechDraw
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/arrow-down.svg</file>
