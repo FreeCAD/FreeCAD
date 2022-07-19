@@ -277,7 +277,7 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
 void FeatureExtrude::updateProperties(const std::string &method)
 {
     // disable settings that are not valid on the current method
-    // disable everything unless we are sure we don't need it
+    // disable everything unless we are sure we need it
     bool isLengthEnabled = false;
     bool isLength2Enabled = false;
     bool isOffsetEnabled = false;
