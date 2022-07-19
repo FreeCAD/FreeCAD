@@ -726,6 +726,7 @@ void DlgPrimitives::on_buttonCircleFromThreePoints_clicked()
 
 QString DlgPrimitives::createPlane(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Plane\",\"%1\")\n"
         "App.ActiveDocument.%1.Length=%2\n"
@@ -733,15 +734,16 @@ QString DlgPrimitives::createPlane(const QString& objectName, const QString& pla
         "App.ActiveDocument.%1.Placement=%4\n"
         "App.ActiveDocument.%1.Label='%5'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->planeLength->value()))
-        .arg(Base::UnitsApi::toNumber(ui->planeWidth->value()))
+        .arg(Base::UnitsApi::toNumber(ui->planeLength->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->planeWidth->value(), format))
         .arg(placement)
         .arg(tr("Plane"));
 }
 
 QString DlgPrimitives::createBox(const QString& objectName, const QString& placement) const
 {
-   return QString::fromLatin1(
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
+    return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Box\",\"%1\")\n"
         "App.ActiveDocument.%1.Length=%2\n"
         "App.ActiveDocument.%1.Width=%3\n"
@@ -749,15 +751,16 @@ QString DlgPrimitives::createBox(const QString& objectName, const QString& place
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->boxLength->value()))
-        .arg(Base::UnitsApi::toNumber(ui->boxWidth->value()))
-        .arg(Base::UnitsApi::toNumber(ui->boxHeight->value()))
+        .arg(Base::UnitsApi::toNumber(ui->boxLength->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->boxWidth->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->boxHeight->value(), format))
         .arg(placement)
         .arg(tr("Box"));
 }
 
 QString DlgPrimitives::createCylinder(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Cylinder\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius=%2\n"
@@ -768,17 +771,18 @@ QString DlgPrimitives::createCylinder(const QString& objectName, const QString& 
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->cylinderRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->cylinderHeight->value()))
-        .arg(Base::UnitsApi::toNumber(ui->cylinderAngle->value()))
-        .arg(Base::UnitsApi::toNumber(ui->cylinderXSkew->value()))
-        .arg(Base::UnitsApi::toNumber(ui->cylinderYSkew->value()))
+        .arg(Base::UnitsApi::toNumber(ui->cylinderRadius->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->cylinderHeight->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->cylinderAngle->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->cylinderXSkew->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->cylinderYSkew->value(), format))
         .arg(placement)
         .arg(tr("Cylinder"));
 }
 
 QString DlgPrimitives::createCone(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Cone\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius1=%2\n"
@@ -788,16 +792,17 @@ QString DlgPrimitives::createCone(const QString& objectName, const QString& plac
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->coneRadius1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->coneRadius2->value()))
-        .arg(Base::UnitsApi::toNumber(ui->coneHeight->value()))
-        .arg(Base::UnitsApi::toNumber(ui->coneAngle->value()))
+        .arg(Base::UnitsApi::toNumber(ui->coneRadius1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->coneRadius2->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->coneHeight->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->coneAngle->value(), format))
         .arg(placement)
         .arg(tr("Cone"));
 }
 
 QString DlgPrimitives::createSphere(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Sphere\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius=%2\n"
@@ -807,16 +812,17 @@ QString DlgPrimitives::createSphere(const QString& objectName, const QString& pl
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->sphereRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->sphereAngle1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->sphereAngle2->value()))
-        .arg(Base::UnitsApi::toNumber(ui->sphereAngle3->value()))
+        .arg(Base::UnitsApi::toNumber(ui->sphereRadius->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->sphereAngle1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->sphereAngle2->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->sphereAngle3->value(), format))
         .arg(placement)
         .arg(tr("Sphere"));
 }
 
 QString DlgPrimitives::createEllipsoid(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Ellipsoid\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius1=%2\n"
@@ -828,18 +834,19 @@ QString DlgPrimitives::createEllipsoid(const QString& objectName, const QString&
         "App.ActiveDocument.%1.Placement=%8\n"
         "App.ActiveDocument.%1.Label='%9'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius2->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius3->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle2->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle3->value()))
+        .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius2->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius3->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle2->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle3->value(), format))
         .arg(placement)
         .arg(tr("Ellipsoid"));
 }
 
 QString DlgPrimitives::createTorus(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius1=%2\n"
@@ -850,17 +857,18 @@ QString DlgPrimitives::createTorus(const QString& objectName, const QString& pla
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->torusRadius1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->torusRadius2->value()))
-        .arg(Base::UnitsApi::toNumber(ui->torusAngle1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->torusAngle2->value()))
-        .arg(Base::UnitsApi::toNumber(ui->torusAngle3->value()))
+        .arg(Base::UnitsApi::toNumber(ui->torusRadius1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->torusRadius2->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->torusAngle1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->torusAngle2->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->torusAngle3->value(), format))
         .arg(placement)
         .arg(tr("Torus"));
 }
 
 QString DlgPrimitives::createPrism(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
         "App.ActiveDocument.%1.Polygon=%2\n"
@@ -872,16 +880,17 @@ QString DlgPrimitives::createPrism(const QString& objectName, const QString& pla
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName)
         .arg(ui->prismPolygon->value())
-        .arg(Base::UnitsApi::toNumber(ui->prismCircumradius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->prismHeight->value()))
-        .arg(Base::UnitsApi::toNumber(ui->prismXSkew->value()))
-        .arg(Base::UnitsApi::toNumber(ui->prismYSkew->value()))
+        .arg(Base::UnitsApi::toNumber(ui->prismCircumradius->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->prismHeight->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->prismXSkew->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->prismYSkew->value(), format))
         .arg(placement)
         .arg(tr("Prism"));
 }
 
 QString DlgPrimitives::createWedge(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Wedge\",\"%1\")\n"
         "App.ActiveDocument.%1.Xmin=%2\n"
@@ -897,22 +906,23 @@ QString DlgPrimitives::createWedge(const QString& objectName, const QString& pla
         "App.ActiveDocument.%1.Placement=%12\n"
         "App.ActiveDocument.%1.Label='%13'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->wedgeXmin->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeYmin->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeZmin->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeX2min->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeZ2min->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeXmax->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeYmax->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeZmax->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value()))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeZ2max->value()))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeXmin->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format))
         .arg(placement)
         .arg(tr("Wedge"));
 }
 
 QString DlgPrimitives::createHelix(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Helix\",\"%1\")\n"
         "App.ActiveDocument.%1.Pitch=%2\n"
@@ -924,10 +934,10 @@ QString DlgPrimitives::createHelix(const QString& objectName, const QString& pla
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->helixPitch->value()))
-        .arg(Base::UnitsApi::toNumber(ui->helixHeight->value()))
-        .arg(Base::UnitsApi::toNumber(ui->helixRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->helixAngle->value()))
+        .arg(Base::UnitsApi::toNumber(ui->helixPitch->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->helixHeight->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->helixRadius->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->helixAngle->value(), format))
         .arg(ui->helixLocalCS->currentIndex())
         .arg(placement)
         .arg(tr("Helix"));
@@ -935,6 +945,7 @@ QString DlgPrimitives::createHelix(const QString& objectName, const QString& pla
 
 QString DlgPrimitives::createSpiral(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Spiral\",\"%1\")\n"
         "App.ActiveDocument.%1.Growth=%2\n"
@@ -943,15 +954,16 @@ QString DlgPrimitives::createSpiral(const QString& objectName, const QString& pl
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->spiralGrowth->value()))
-        .arg(Base::UnitsApi::toNumber(ui->spiralRotation->value()))
-        .arg(Base::UnitsApi::toNumber(ui->spiralRadius->value()))
+        .arg(Base::UnitsApi::toNumber(ui->spiralGrowth->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->spiralRotation->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->spiralRadius->value(), format))
         .arg(placement)
         .arg(tr("Spiral"));
 }
 
 QString DlgPrimitives::createCircle(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius=%2\n"
@@ -960,15 +972,16 @@ QString DlgPrimitives::createCircle(const QString& objectName, const QString& pl
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->circleRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->circleAngle1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->circleAngle2->value()))
+        .arg(Base::UnitsApi::toNumber(ui->circleRadius->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->circleAngle1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->circleAngle2->value(), format))
         .arg(placement)
         .arg(tr("Circle"));
 }
 
 QString DlgPrimitives::createEllipse(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
         "App.ActiveDocument.%1.MajorRadius=%2\n"
@@ -978,16 +991,17 @@ QString DlgPrimitives::createEllipse(const QString& objectName, const QString& p
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->ellipseMajorRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipseMinorRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle2->value()))
+        .arg(Base::UnitsApi::toNumber(ui->ellipseMajorRadius->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->ellipseMinorRadius->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle2->value(), format))
         .arg(placement)
         .arg(tr("Ellipse"));
 }
 
 QString DlgPrimitives::createVertex(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
         "App.ActiveDocument.%1.X=%2\n"
@@ -996,15 +1010,16 @@ QString DlgPrimitives::createVertex(const QString& objectName, const QString& pl
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->vertexX->value()))
-        .arg(Base::UnitsApi::toNumber(ui->vertexY->value()))
-        .arg(Base::UnitsApi::toNumber(ui->vertexZ->value()))
+        .arg(Base::UnitsApi::toNumber(ui->vertexX->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->vertexY->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->vertexZ->value(), format))
         .arg(placement)
         .arg(tr("Vertex"));
 }
 
 QString DlgPrimitives::createLine(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
         "App.ActiveDocument.%1.X1=%2\n"
@@ -1016,18 +1031,19 @@ QString DlgPrimitives::createLine(const QString& objectName, const QString& plac
         "App.ActiveDocument.%1.Placement=%8\n"
         "App.ActiveDocument.%1.Label='%9'\n")
         .arg(objectName)
-        .arg(Base::UnitsApi::toNumber(ui->edgeX1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->edgeY1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->edgeZ1->value()))
-        .arg(Base::UnitsApi::toNumber(ui->edgeX2->value()))
-        .arg(Base::UnitsApi::toNumber(ui->edgeY2->value()))
-        .arg(Base::UnitsApi::toNumber(ui->edgeZ2->value()))
+        .arg(Base::UnitsApi::toNumber(ui->edgeX1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->edgeY1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->edgeZ1->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->edgeX2->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->edgeY2->value(), format))
+        .arg(Base::UnitsApi::toNumber(ui->edgeZ2->value(), format))
         .arg(placement)
         .arg(tr("Line"));
 }
 
 QString DlgPrimitives::createRegularPolygon(const QString& objectName, const QString& placement) const
 {
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
         "App.ActiveDocument.%1.Polygon=%2\n"
@@ -1036,7 +1052,7 @@ QString DlgPrimitives::createRegularPolygon(const QString& objectName, const QSt
         "App.ActiveDocument.%1.Label='%5'\n")
         .arg(objectName)
         .arg(ui->regularPolygonPolygon->value())
-        .arg(Base::UnitsApi::toNumber(ui->regularPolygonCircumradius->value()))
+        .arg(Base::UnitsApi::toNumber(ui->regularPolygonCircumradius->value(), format))
         .arg(placement)
         .arg(tr("Regular polygon"));
 }
