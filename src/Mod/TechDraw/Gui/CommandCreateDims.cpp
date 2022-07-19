@@ -1059,7 +1059,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
 {
 //    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1153,7 +1153,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1240,7 +1240,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;

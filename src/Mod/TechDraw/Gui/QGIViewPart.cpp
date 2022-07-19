@@ -496,7 +496,7 @@ void QGIViewPart::drawViewPart()
                         newFace->setHatchFile(fGeom->PatIncluded.getValue());
                         Gui::ViewProvider* gvp = QGIView::getViewProvider(fGeom);
                         ViewProviderGeomHatch* geomVp = dynamic_cast<ViewProviderGeomHatch*>(gvp);
-                        if (geomVp != nullptr) {
+                        if (geomVp) {
                             newFace->setHatchColor(geomVp->ColorPattern.getValue());
                             newFace->setLineWeight(geomVp->WeightPattern.getValue());
                         }
@@ -515,7 +515,7 @@ void QGIViewPart::drawViewPart()
                         newFace->setHatchFile(fHatch->SvgIncluded.getValue());
                         Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
                         ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
-                        if (hatchVp != nullptr) {
+                        if (hatchVp) {
                             double hatchScale = hatchVp->HatchScale.getValue();
                             if (hatchScale > 0.0) {
                                 newFace->setHatchScale(hatchVp->HatchScale.getValue());
@@ -582,7 +582,7 @@ void QGIViewPart::drawViewPart()
                 }
             } else {
                 TechDraw::GeomFormat* gf = viewPart->getGeomFormatBySelection(i);
-                if (gf != nullptr) {
+                if (gf) {
                     item->setNormalColor(gf->m_format.m_color.asValue<QColor>());
                     item->setWidth(gf->m_format.m_weight * lineScaleFactor);
                     item->setStyle(gf->m_format.m_style);
@@ -662,7 +662,7 @@ void QGIViewPart::drawViewPart()
                 QGIVertex *item = new QGIVertex(i);
                 TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexBySelection(i);
 //                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByGeom(i);
-                if (cv != nullptr) {
+                if (cv) {
                     item->setNormalColor(cv->color.asValue<QColor>());
                     item->setRadius(Rez::guiX(cv->size));
                 } else {
@@ -691,7 +691,7 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
     bool result = true;
     auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     TechDraw::CosmeticEdge* ce = partFeat ? partFeat->getCosmeticEdge(cTag) : nullptr;
-    if (ce != nullptr) {
+    if (ce) {
         item->setNormalColor(ce->m_format.m_color.asValue<QColor>());
         item->setWidth(ce->m_format.m_weight * lineScaleFactor);
         item->setStyle(ce->m_format.m_style);
@@ -707,7 +707,7 @@ bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
     bool result = true;
     auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     TechDraw::CenterLine* cl = partFeat ? partFeat->getCenterLine(cTag) : nullptr;
-    if (cl != nullptr) {
+    if (cl) {
         item->setNormalColor(cl->m_format.m_color.asValue<QColor>());
         item->setWidth(cl->m_format.m_weight * lineScaleFactor);
         item->setStyle(cl->m_format.m_style);
@@ -773,7 +773,7 @@ void QGIViewPart::removePrimitives()
 {
     QList<QGraphicsItem*> children = childItems();
     MDIViewPage* mdi = getMDIViewPage();
-    if (mdi != nullptr) {
+    if (mdi) {
         getMDIViewPage()->blockSceneSelection(true);
     }
     for (auto& c:children) {
@@ -784,7 +784,7 @@ void QGIViewPart::removePrimitives()
             delete prim;
          }
      }
-    if (mdi != nullptr) {
+    if (mdi) {
         getMDIViewPage()->blockSceneSelection(false);
     }
 }

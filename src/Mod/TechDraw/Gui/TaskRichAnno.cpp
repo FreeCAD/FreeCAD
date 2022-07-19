@@ -107,7 +107,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     //m_baseFeat can be null
     App::DocumentObject* obj = m_annoFeat->AnnoParent.getValue();
-    if (obj != nullptr) {
+    if (obj) {
         if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
             m_baseFeat = static_cast<TechDraw::DrawView*>(m_annoFeat->AnnoParent.getValue());
         }
@@ -120,7 +120,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_mdi = dvp->getMDIViewPage();
     m_qgParent = nullptr;
     m_haveMdi = true;
-    if (m_mdi != nullptr) {
+    if (m_mdi) {
         m_scene = m_mdi->getQGSPage();
         if (m_baseFeat != nullptr) {
             m_qgParent = m_scene->findQViewForDocObj(m_baseFeat);
@@ -175,7 +175,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_qgParent = nullptr;
     m_haveMdi = true;
     m_mdi = dvp->getMDIViewPage();
-    if (m_mdi != nullptr) {
+    if (m_mdi) {
         m_scene= m_mdi->getQGSPage();
         m_qgParent = m_scene->findQViewForDocObj(baseFeat);
     } else {
@@ -256,7 +256,7 @@ void TaskRichAnno::setUiEdit()
     if (m_annoFeat != nullptr) {
         std::string baseName("None");
         App::DocumentObject* docObj = m_annoFeat->AnnoParent.getValue();
-        if (docObj != nullptr) {
+        if (docObj) {
             baseName = docObj->getNameInDocument();
         }
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
@@ -373,7 +373,7 @@ void TaskRichAnno::createAnnoFeature()
     if (m_annoFeat != nullptr) {
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_annoFeat);
         auto annoVP = dynamic_cast<ViewProviderRichAnno*>(vp);
-        if (annoVP != nullptr) {
+        if (annoVP) {
             App::Color ac;
             ac.setValue<QColor>(ui->cpFrameColor->color());
             annoVP->LineColor.setValue(ac);
@@ -556,8 +556,7 @@ bool TaskRichAnno::reject()
         if (!doc) {
             return false;
         }
-        if (getCreateMode() &&
-            (m_annoFeat != nullptr) )  {
+        if (getCreateMode() && m_annoFeat)  {
             removeFeature();
         }
     }

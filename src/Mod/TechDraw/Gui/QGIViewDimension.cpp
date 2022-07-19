@@ -2373,7 +2373,7 @@ QColor QGIViewDimension::prefNormalColor()
 //    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
     TechDraw::DrawViewDimension* dim = nullptr;
     TechDraw::DrawView* dv = getViewObject();
-    if (dv != nullptr) {
+    if (dv) {
         dim = dynamic_cast<TechDraw::DrawViewDimension*>(dv);
         if( dim == nullptr ) {
             return m_colNormal;
@@ -2384,7 +2384,7 @@ QColor QGIViewDimension::prefNormalColor()
 
     ViewProviderDimension* vpDim = nullptr;
     Gui::ViewProvider* vp = getViewProvider(dim);
-    if ( vp != nullptr ) {
+    if (vp) {
         vpDim = dynamic_cast<ViewProviderDimension*>(vp);
         if (vpDim == nullptr) {
             return m_colNormal;

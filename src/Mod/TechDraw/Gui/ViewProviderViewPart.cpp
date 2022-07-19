@@ -166,9 +166,9 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
-    if (dvm != nullptr) {
+    if (dvm) {
         sPixmap = "TechDraw_TreeMulti";
-    } else if (dvd != nullptr) {
+    } else if (dvd) {
         sPixmap = "actions/TechDraw_DetailView";
     }
 
@@ -244,7 +244,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     }
     TechDraw::DrawViewPart* dvp = getViewObject();
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
-    if (dvd != nullptr) { 
+    if (dvd) { 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgDetail(dvd));

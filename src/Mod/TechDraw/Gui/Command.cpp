@@ -363,7 +363,7 @@ void CmdTechDrawView::activated(int iMsg)
         //not a Link and not null.  assume to be drawable.  Undrawables will be 
         // skipped later.
         shapes.push_back(obj);
-        if (partObj != nullptr) {
+        if (partObj) {
             continue;
         }
         //don't know if this works for an XLink
@@ -642,7 +642,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         //not a Link and not null.  assume to be drawable.  Undrawables will be 
         // skipped later.
         shapes.push_back(obj);
-        if (partObj != nullptr) {
+        if (partObj) {
             continue;
         }
         for (auto& sub : sel.getSubNames()) {

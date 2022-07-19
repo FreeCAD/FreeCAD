@@ -184,13 +184,13 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     m_detailName = m_detailFeat->getNameInDocument();
 
     m_basePage = m_detailFeat->findParentPage();
-    if (m_basePage != nullptr) {
+    if (m_basePage) {
         m_pageName = m_basePage->getNameInDocument();
     }
 
     App::DocumentObject* baseObj = m_detailFeat->BaseView.getValue();
     m_baseFeat = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         m_baseName = m_baseFeat->getNameInDocument();
     } else {
         Base::Console().Error("TaskDetail - no BaseView.  Can not proceed.\n");
@@ -276,7 +276,7 @@ void TaskDetail::restoreDetailState()
 void TaskDetail::setUiFromFeat()
 {
 //    Base::Console().Message("TD::setUIFromFeat()\n");
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         std::string baseName = getBaseFeat()->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
     }
@@ -357,7 +357,7 @@ void TaskDetail::onScaleTypeEdit()
          ui->qsbScale->setEnabled(false);
          detailFeat->ScaleType.setValue(0.0);
          // set the page scale if there is a valid page
-         if (m_basePage != nullptr) {
+         if (m_basePage) {
              // set the page scale
              detailFeat->Scale.setValue(m_basePage->Scale.getValue());
              ui->qsbScale->setValue(m_basePage->Scale.getValue());
@@ -429,7 +429,7 @@ void TaskDetail::onHighlightMoved(QPointF dragEnd)
 
     DrawViewPart* dvp = getBaseFeat();
     DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
-    if (dpgi != nullptr) {
+    if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
         if (dpg == nullptr) {
             Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
@@ -576,9 +576,9 @@ DrawViewPart* TaskDetail::getBaseFeat()
 {
 //    Base::Console().Message("TD::getBaseFeat()\n");
 
-    if (m_doc != nullptr) {
+    if (m_doc) {
         App::DocumentObject* baseObj = m_doc->getObject(m_baseName.c_str());
-        if (baseObj != nullptr) {
+        if (baseObj) {
             return static_cast<DrawViewPart*>(baseObj);
         }
     }
@@ -595,9 +595,9 @@ DrawViewDetail* TaskDetail::getDetailFeat()
 {
 //    Base::Console().Message("TD::getDetailFeat()\n");
 
-    if (m_doc != nullptr) {
+    if (m_doc) {
         App::DocumentObject* detailObj = m_doc->getObject(m_detailName.c_str());
-        if (detailObj != nullptr) {
+        if (detailObj) {
             return static_cast<DrawViewDetail*>(detailObj);
         }
     }

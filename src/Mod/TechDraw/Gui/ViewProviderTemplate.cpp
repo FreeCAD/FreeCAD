@@ -92,7 +92,7 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
         auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
         if (prop == &(t->Template)) {
             MDIViewPage* mdi = getMDIViewPage();
-            if (mdi != nullptr) {
+            if (mdi) {
                 mdi->attachTemplate(t);
                 mdi->viewAll();
                 mdi->getViewProviderPage()->setGrid();
@@ -124,7 +124,7 @@ void ViewProviderTemplate::onChanged(const App::Property *prop)
 void ViewProviderTemplate::show(void)
 {
     QGITemplate* qTemplate = getQTemplate();
-    if (qTemplate != nullptr) {
+    if (qTemplate) {
         qTemplate->show();
     }
 
@@ -134,7 +134,7 @@ void ViewProviderTemplate::show(void)
 void ViewProviderTemplate::hide(void)
 {
     QGITemplate* qTemplate = getQTemplate();
-    if (qTemplate != nullptr) {
+    if (qTemplate) {
         qTemplate->hide();
     }
     
@@ -151,7 +151,7 @@ QGITemplate* ViewProviderTemplate::getQTemplate(void)
     TechDraw::DrawTemplate* dt = getTemplate();
     if (dt) {
         MDIViewPage* mdi = getMDIViewPage();
-        if (mdi != nullptr) {
+        if (mdi) {
             return mdi->getQGSPage()->getTemplate();
         }
     }
@@ -163,7 +163,7 @@ void ViewProviderTemplate::setMarkers(bool state)
 //    Base::Console().Message("VPT::setMarkers(%d)\n",state);
     QGITemplate* qTemplate = getQTemplate();
     QGISVGTemplate* qSvgTemplate = dynamic_cast<QGISVGTemplate*> (qTemplate);
-    if (qSvgTemplate != nullptr) {
+    if (qSvgTemplate) {
         std::vector<TemplateTextField *> textFields = qSvgTemplate->getTextFields();
         for (auto& t:textFields) {
             if (state) {

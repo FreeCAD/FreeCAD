@@ -112,7 +112,7 @@ bool ViewProviderRichAnno::doubleClicked(void)
 void ViewProviderRichAnno::updateData(const App::Property* p)
 {
     // only if there is a frame we can enable the frame line parameters
-    if (getViewObject() != nullptr) {
+    if (getViewObject()) {
         if (getViewObject()->ShowFrame.getValue()) {
             LineWidth.setStatus(App::Property::ReadOnly, false);
             LineStyle.setStatus(App::Property::ReadOnly, false);

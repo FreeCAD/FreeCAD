@@ -536,7 +536,7 @@ void MRichTextEdit::slotCursorPositionChanged() {
 
     if (m_lastBlockList && 
         (l == m_lastBlockList || 
-        (l != nullptr && m_lastBlockList != nullptr && l->format().style() == m_lastBlockList->format().style()) ) ) {
+        (l && m_lastBlockList && l->format().style() == m_lastBlockList->format().style()) ) ) {
         return;
     }
     m_lastBlockList = l;

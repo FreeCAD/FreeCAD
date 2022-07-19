@@ -149,7 +149,7 @@ bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
     // get the projection
     TechDraw::DrawProjGroupItem* proj = getObject();
     // check if it is the anchor projection
-    if ((dpg != nullptr) && (dpg->hasProjection(proj->Type.getValueAsString()))
+    if (dpg && (dpg->hasProjection(proj->Type.getValueAsString()))
         && (dpg->getAnchor() == dpgi))
         isAnchor = true;
 

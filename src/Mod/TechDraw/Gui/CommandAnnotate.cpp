@@ -115,7 +115,7 @@ void CmdTechDrawLeaderLine::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -176,7 +176,7 @@ void CmdTechDrawRichTextAnnotation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -228,7 +228,7 @@ void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
 {
 //    Base::Console().Message("CMD::CosmeticVertexGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -417,7 +417,7 @@ void CmdTechDrawCosmeticVertex::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -478,7 +478,7 @@ void CmdTechDrawMidpoints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1201,8 +1201,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
                 TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
-                if ((bg != nullptr) &&
-                    (bg->cosmetic) ) {
+                if (bg && bg->cosmetic) {
                     int source = bg->source();
                     std::string tag = bg->getCosmeticTag();
                     if (source == COSMETICEDGE) {
@@ -1382,7 +1381,7 @@ void CmdTechDrawShowAll::activated(int iMsg)
 
     Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-    if ( partVP != nullptr ) {
+    if (partVP) {
         bool state = partVP->ShowAllEdges.getValue();
         state = !state;
         partVP->ShowAllEdges.setValue(state);

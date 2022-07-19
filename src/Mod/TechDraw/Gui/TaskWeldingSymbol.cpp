@@ -225,7 +225,7 @@ void TaskWeldingSymbol::setUiEdit()
     ui->leTailText->setText(QString::fromUtf8(m_weldFeat->TailText.getValue()));
 
     getTileFeats();
-    if (m_arrowFeat != nullptr) {
+    if (m_arrowFeat) {
         QString qTemp = QString::fromUtf8(m_arrowFeat->LeftText.getValue());
         ui->leArrowTextL->setText(qTemp);
         qTemp = QString::fromUtf8(m_arrowFeat->RightText.getValue());
@@ -247,7 +247,7 @@ void TaskWeldingSymbol::setUiEdit()
         }
     }
 
-    if (m_otherFeat != nullptr) {
+    if (m_otherFeat) {
         QString qTemp = QString::fromUtf8(m_otherFeat->LeftText.getValue());
         ui->leOtherTextL->setText(qTemp);
         qTemp = QString::fromUtf8(m_otherFeat->RightText.getValue());
