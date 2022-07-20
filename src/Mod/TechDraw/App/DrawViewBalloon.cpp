@@ -197,15 +197,16 @@ void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const c
     }
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewBalloon::mustExecute() const
 {
     if (!isRestoring() && Text.isTouched()) {
-        return true;
+        return 1;
     }
 
     auto dvp = getViewPart();
     if (dvp && dvp->isTouched()) {
-        return true;
+        return 1;
     }
 
     return DrawView::mustExecute();

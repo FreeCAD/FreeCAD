@@ -101,13 +101,7 @@ void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
 DrawView* DrawTile::getParent(void) const
 {
 //    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
-    App::DocumentObject* baseObj = TileParent.getValue();
-    if (baseObj) {
-        return nullptr;
-    }
-    
-    DrawView* cast = dynamic_cast<DrawView*>(baseObj);
-    return cast;
+    return dynamic_cast<DrawView*>(TileParent.getValue());
 }
 
 PyObject *DrawTile::getPyObject(void)

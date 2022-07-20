@@ -75,6 +75,7 @@ DrawViewArch::~DrawViewArch()
 {
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewArch::mustExecute() const
 {
     if (!isRestoring()) {
@@ -89,7 +90,7 @@ short DrawViewArch::mustExecute() const
             CutLineWidth.isTouched() ||
             JoinArch.isTouched()
         ) {
-            return true;
+            return 1;
         }
     }
     return DrawViewSymbol::mustExecute();
