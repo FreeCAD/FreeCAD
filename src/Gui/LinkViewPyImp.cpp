@@ -308,23 +308,23 @@ PyObject* LinkViewPy::getDetailPath(PyObject* args)
     }PY_CATCH
 }
 
-PyObject* LinkViewPy::getBoundBox(PyObject* args) {
+PyObject* LinkViewPy::getBoundBox(PyObject* args)
+{
     PyObject *vobj = Py_None;
     if (!PyArg_ParseTuple(args, "O",&vobj))
         return nullptr;
-    ViewProviderDocumentObject *vpd = nullptr;
-    if(vobj!=Py_None) {
-        if(!PyObject_TypeCheck(vobj,&ViewProviderDocumentObjectPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "exepcting a type of ViewProviderDocumentObject");
-            return nullptr;
-        }
-        vpd = static_cast<ViewProviderDocumentObjectPy*>(vobj)->getViewProviderDocumentObjectPtr();
-    }
+
     PY_TRY {
+        Base::PyTypeCheck(&vobj, &ViewProviderDocumentObjectPy::Type);
+        ViewProviderDocumentObject *vpd = nullptr;
+        if (vobj)
+            vpd = static_cast<ViewProviderDocumentObjectPy*>(vobj)->getViewProviderDocumentObjectPtr();
+
         auto bbox = getLinkViewPtr()->getBoundBox(vpd);
         Py::Object ret(new Base::BoundBoxPy(new Base::BoundBox3d(bbox)));
         return Py::new_reference_to(ret);
-    }PY_CATCH
+    }
+    PY_CATCH
 }
 
 PyObject *LinkViewPy::getCustomAttributes(const char*) const

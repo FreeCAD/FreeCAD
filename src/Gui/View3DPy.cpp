@@ -2566,17 +2566,18 @@ Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
         throw Py::Exception();
 
-    if (docObject == Py_None) {
-        getView3DIventorPtr()->setActiveObject(nullptr, name);
-    }
-    else {
-        if (!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))
-            throw Py::TypeError("Expect the second argument to be a document object or None");
-        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+    try {
+        Base::PyTypeCheck(&docObject, &App::DocumentObjectPy::Type,
+            "Expect the second argument to be a document object or None");
+        App::DocumentObject* obj = docObject ?
+            static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr() : nullptr;
         getView3DIventorPtr()->setActiveObject(obj, name, subname);
-    }
 
-    return Py::None();
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.getPyExceptionType(), e.what());
+    }
 }
 
 Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
