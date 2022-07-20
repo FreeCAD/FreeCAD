@@ -249,13 +249,11 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
 {
     prepareGeometryChange();
     QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
-    if( qgivd == nullptr ) {
+    if (!qgivd)
         return;
-    }
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(qgivd->getViewObject()) );
-    if( dim == nullptr ) {
+    if (!dim)
         return;
-    }
 
     //set label's Qt position(top,left) given boundingRect center point
     setPos(xCenter - m_dimText->boundingRect().width() / 2., yCenter - m_dimText->boundingRect().height() / 2.);
@@ -337,9 +335,8 @@ void QGIDatumLabel::setToleranceString()
 {
     prepareGeometryChange();
     QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
-    if( qgivd == nullptr ) {
+    if (!qgivd)
         return;
-    }
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(qgivd->getViewObject()) );
     if( dim == nullptr ) {
         return;

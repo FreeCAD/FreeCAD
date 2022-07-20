@@ -805,14 +805,12 @@ void QGIViewPart::removeDecorations()
 void QGIViewPart::drawAllSectionLines(void)
 {
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
-    if (!viewPart)  {
+    if (!viewPart)
         return;
-    }
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     if (vp->ShowSectionLine.getValue()) {
         auto refs = viewPart->getSectionRefs();
         for (auto& r:refs) {
@@ -824,20 +822,17 @@ void QGIViewPart::drawAllSectionLines(void)
 void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
-    if (!viewPart)  {
+    if (!viewPart)
         return;
-    }
     if (!viewSection)
         return;
 
-    if (!viewSection->hasGeometry()) {
+    if (!viewSection->hasGeometry())
         return;
-    }
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
 
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
@@ -882,14 +877,12 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 void QGIViewPart::drawCenterLines(bool b)
 {
     TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
-    if (!viewPart)  {
+    if (!viewPart)
         return;
-    }
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
 
     if (b) {
         bool horiz = vp->HorizCenterLine.getValue();
@@ -946,9 +939,8 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
     }
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
 
     if (b) {
 //        double fontSize = getPrefFontSize();

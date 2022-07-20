@@ -102,7 +102,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     m_basePage = m_baseFeat->findParentPage();
     //it is possible that the basePage could be unparented and have no corresponding Page
-    if (m_basePage == nullptr) {
+    if (!m_basePage) {
         Base::Console().Error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
         return;
     }
@@ -174,7 +174,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     m_mode(EDITMODE),
     m_created(false)
 {
-    if (m_detailFeat == nullptr)  {
+    if (!m_detailFeat)  {
         //should be caught in CMD caller
         Base::Console().Error("TaskDetail - bad parameters.  Can not proceed.\n");
         return;
@@ -402,7 +402,7 @@ void TaskDetail::onDraggerClicked(bool b)
 void TaskDetail::editByHighlight()
 {
 //    Base::Console().Message("TD::editByHighlight()\n");
-    if (m_ghost == nullptr) {
+    if (!m_ghost) {
         Base::Console().Error("TaskDetail::editByHighlight - no ghost object\n");
         return;
     }
@@ -431,7 +431,7 @@ void TaskDetail::onHighlightMoved(QPointF dragEnd)
     DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
     if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
-        if (dpg == nullptr) {
+        if (!dpg) {
             Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
             //TODO::throw something.
             return;
@@ -543,7 +543,7 @@ QPointF TaskDetail::getAnchorScene()
     Base::Vector3d basePos;
     double scale = 1;
 
-    if (dpgi == nullptr) {          //base is normal view
+    if (!dpgi) {          //base is normal view
         double x = dvp->X.getValue();
         double y = dvp->Y.getValue();
         basePos = Base::Vector3d (x, -y, 0.0);
@@ -551,7 +551,7 @@ QPointF TaskDetail::getAnchorScene()
     } else {                       //part of projection group
 
         DrawProjGroup* dpg = dpgi->getPGroup();
-        if (dpg == nullptr) {
+        if (!dpg) {
             Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
             //TODO::throw something.
             return QPointF(0.0, 0.0);

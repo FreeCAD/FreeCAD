@@ -194,13 +194,11 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
     }
 
     const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return;
-    }
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     std::string fontName = vp->Font.getValue();
     double      sizeMM = vp->TileFontSize.getValue();
     double      fontSize = QGIView::calculateFontPixelSize(sizeMM);
@@ -270,13 +268,11 @@ void QGIWeldSymbol::drawTailText(void)
         m_tailText->show();
     }
     const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return;
-    }
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     std::string fontName = vp->Font.getValue();
     QString qFontName = Base::Tools::fromStdString(fontName);
     double sizeMM = vp->FontSize.getValue();

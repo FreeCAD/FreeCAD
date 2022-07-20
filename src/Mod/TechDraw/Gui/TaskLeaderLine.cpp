@@ -103,7 +103,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     m_lineFeat = m_lineVP->getFeature();
 
     m_basePage = m_lineFeat->findParentPage();
-    if ( m_basePage == nullptr ) {
+    if (!m_basePage) {
         Base::Console().Error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
         return;
     }
@@ -132,8 +132,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     }
 
     //TODO: when/if leaders are allowed to be parented to Page, check for m_baseFeat will be removed
-    if ( (m_baseFeat == nullptr) ||
-         (m_basePage == nullptr) ) {
+    if (!m_baseFeat || !m_basePage) {
         Base::Console().Error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
         return;
     }
@@ -401,9 +400,8 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     }
 
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(m_leaderName.c_str());
-    if (obj == nullptr) {
+    if (!obj)
         throw Base::RuntimeError("TaskLeaderLine - new markup object not found");
-    }
     if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
         m_lineFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
@@ -475,7 +473,7 @@ void TaskLeaderLine::commonFeatureUpdate(void)
 void TaskLeaderLine::removeFeature(void)
 {
 //    Base::Console().Message("TTL::removeFeature()\n");
-    if (m_lineFeat == nullptr)
+    if (!m_lineFeat)
         return;
     
     if (m_createMode) {
@@ -564,7 +562,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
             QGIView* qgiv = qgsp->findQViewForDocObj(m_lineFeat);
             QGILeaderLine* qgLead = dynamic_cast<QGILeaderLine*>(qgiv);
 
-            if (qgLead == nullptr) {
+            if (!qgLead) {
                 //tarfu
                 Base::Console().Error("TaskLeaderLine - can't find leader graphic\n");
                 //now what? throw will generate "unknown unhandled exception"
@@ -612,7 +610,7 @@ void TaskLeaderLine::startTracker(void)
         return;
     }
 
-    if (m_tracker == nullptr) {
+    if (!m_tracker) {
         m_tracker = new QGTracker(m_scene, m_trackerMode);
         QObject::connect(
             m_tracker, SIGNAL(drawingFinished(std::vector<QPointF>, QGIView*)),
@@ -696,12 +694,12 @@ void TaskLeaderLine::onCancelEditClicked(bool b)
 
 QGIView* TaskLeaderLine::findParentQGIV()
 {
-    if (m_baseFeat == nullptr)
+    if (!m_baseFeat)
         return nullptr;
 
     Gui::ViewProvider* gvp = QGIView::getViewProvider(m_baseFeat);
     ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(gvp);
-    if (vpdv == nullptr)
+    if (!vpdv)
         return nullptr;
     
     return vpdv->getQView();;
@@ -709,9 +707,8 @@ QGIView* TaskLeaderLine::findParentQGIV()
 
 void TaskLeaderLine::setEditCursor(QCursor c)
 {
-    if (!m_haveMdi || m_baseFeat == nullptr) {
+    if (!m_haveMdi || !m_baseFeat)
         return;
-    }
     QGIView* qgivBase = m_scene->findQViewForDocObj(m_baseFeat);
     qgivBase->setCursor(c);
 }

@@ -358,9 +358,8 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
         geometryObject = nullptr;
     }
     geometryObject = makeGeometryForShape(shape);
-    if (geometryObject == nullptr) {
+    if (!geometryObject)
         return;
-    }
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
@@ -1205,7 +1204,7 @@ int DrawViewPart::add1CVToGV(std::string tag)
 {
 //    Base::Console().Message("DVP::add1CVToGV(%s) 2\n", tag.c_str());
     TechDraw::CosmeticVertex* cv = getCosmeticVertex(tag);
-    if (cv == nullptr) {
+    if (!cv) {
         Base::Console().Message("DVP::add1CVToGV 2 - cv %s not found\n", tag.c_str());
         return 0;
     }
@@ -1283,9 +1282,8 @@ void DrawViewPart::addCosmeticEdgesToGeom(void)
     const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& ce: cEdges) {
         TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getScale());
-        if (scaledGeom == nullptr) {
+        if (!scaledGeom)
             continue;
-        }
 //        int iGE = 
         geometryObject->addCosmeticEdge(scaledGeom,
                                         ce->getTagAsString());
@@ -1296,7 +1294,7 @@ int DrawViewPart::add1CEToGE(std::string tag)
 {
 //    Base::Console().Message("CEx::add1CEToGE(%s) 2\n", tag.c_str());
     TechDraw::CosmeticEdge* ce = getCosmeticEdge(tag);
-    if (ce == nullptr) {
+    if (!ce) {
         Base::Console().Message("CEx::add1CEToGE 2 - ce %s not found\n", tag.c_str());
         return -1;
     }
@@ -1334,7 +1332,7 @@ int DrawViewPart::add1CLToGE(std::string tag)
 {
 //    Base::Console().Message("CEx::add1CLToGE(%s) 2\n", tag.c_str());
     TechDraw::CenterLine* cl = getCenterLine(tag);
-    if (cl == nullptr) {
+    if (!cl) {
         Base::Console().Message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
         return -1;
     }
@@ -1367,7 +1365,7 @@ void DrawViewPart::addCenterLinesToGeom(void)
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
     for (auto& cl: lines) {
         TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(this);
-        if (scaledGeom == nullptr) {
+        if (!scaledGeom) {
             Base::Console().Error("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
         }
