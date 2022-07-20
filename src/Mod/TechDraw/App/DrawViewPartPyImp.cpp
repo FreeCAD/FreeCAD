@@ -310,11 +310,10 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     if (ce) {
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
-        if (pColor == nullptr) {
+        if (!pColor)
             ce->m_format.m_color = defCol;
-        } else {
+        else
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
     } else {
         std::string msg = "DVPPI:makeCosmeticLine - line creation failed";
         Base::Console().Message("%s\n",msg.c_str());
@@ -358,11 +357,10 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
     if (ce) {
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
-        if (pColor == nullptr) {
+        if (!pColor)
             ce->m_format.m_color = defCol;
-        } else {
+        else
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
     } else {
         std::string msg = "DVPPI:makeCosmeticLine - line creation failed";
         Base::Console().Message("%s\n",msg.c_str());
@@ -398,11 +396,10 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
         ce->permaRadius = radius;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
-        if (pColor == nullptr) {
+        if (!pColor)
             ce->m_format.m_color = defCol;
-        } else {
+        else
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
     } else {
         std::string msg = "DVPPI:makeCosmeticCircle - circle creation failed";
         Base::Console().Message("%s\n",msg.c_str());
@@ -441,11 +438,10 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
         ce->permaRadius = radius;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
-        if (pColor == nullptr) {
+        if (!pColor)
             ce->m_format.m_color = defCol;
-        } else {
+        else
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
     } else {
         std::string msg = "DVPPI:makeCosmeticCircleArc - arc creation failed";
         Base::Console().Message("%s\n",msg.c_str());
@@ -690,17 +686,15 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
 {
     int edgeIndex = 0;
-    if (!PyArg_ParseTuple(args, "i", &edgeIndex)) {
+    if (!PyArg_ParseTuple(args, "i", &edgeIndex))
         throw Py::TypeError("expected (edgeIndex)");
-    }
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
     TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
-    if (geom == nullptr) {
+    if (!geom)
         throw Py::ValueError("wrong edgeIndex");
-    }
 
     TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
                                       Base::Vector3d(0.0, 0.0, 0.0),

@@ -263,7 +263,7 @@ TechDraw::DrawPage * DrawProjGroup::getPage(void) const
 double DrawProjGroup::calculateAutomaticScale() const
 {
     TechDraw::DrawPage *page = getPage();
-    if (page == nullptr)
+    if (!page)
       throw Base::RuntimeError("No page is assigned to this feature");
 
     DrawProjGroupItem *viewPtrs[10];
@@ -405,7 +405,7 @@ bool DrawProjGroup::hasProjection(const char *viewProjType) const
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //should never have a item in DPG that is not a DPGI.
             Base::Console().Log("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
                                     getNameInDocument(),viewProjType);
@@ -942,11 +942,10 @@ void DrawProjGroup::recomputeChildren(void)
 //    Base::Console().Message("DPG::recomputeChildren()\n");
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view)
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        else
             view->recomputeFeature();
-        }
     }
 }
 
@@ -954,11 +953,10 @@ void DrawProjGroup::autoPositionChildren(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view)
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        else
             view->autoPosition();
-        }
     }
 }
 
@@ -970,7 +968,7 @@ void DrawProjGroup::updateChildrenScale(void)
 //    Base::Console().Message("DPG::updateChildrenScale\n");
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
@@ -988,7 +986,7 @@ void DrawProjGroup::updateChildrenSource(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::updateChildrenSource - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
@@ -1012,7 +1010,7 @@ void DrawProjGroup::updateChildrenLock(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
@@ -1027,7 +1025,7 @@ void DrawProjGroup::updateViews(void) {
     // this is intended to update the views in general, e.g. when the spacing changed
     for (const auto it : Views.getValues()) {
         auto view(dynamic_cast<DrawProjGroupItem *>(it));
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::updateViews - non DPGI entry in Views! %s\n",
                 getNameInDocument());
@@ -1042,7 +1040,7 @@ void DrawProjGroup::updateChildrenEnforce(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::updateChildrenEnforce - non DPGI entry in Views! %s\n",
                                     getNameInDocument());

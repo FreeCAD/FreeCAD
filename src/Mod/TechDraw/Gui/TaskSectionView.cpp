@@ -215,9 +215,8 @@ void TaskSectionView::setUiEdit()
 void TaskSectionView::saveSectionState()
 {
 //    Base::Console().Message("TSV::saveSectionState()\n");
-    if (m_section == nullptr) {
+    if (!m_section)
         return;
-    }
 
     m_saveSymbol = m_section->SectionSymbol.getValue();
     m_saveScale  = m_section->getScale();
@@ -233,9 +232,8 @@ void TaskSectionView::saveSectionState()
 void TaskSectionView::restoreSectionState()
 {
 //    Base::Console().Message("TSV::restoreSectionState()\n");
-    if (m_section == nullptr) {
+    if (!m_section)
         return;
-    }
 
     m_section->SectionSymbol.setValue(m_saveSymbol);
     m_section->Scale.setValue(m_saveScale);
@@ -376,9 +374,8 @@ void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
     m_dirName = dir;
-    if (m_section == nullptr) {
+    if (!m_section)
         createSectionView();
-    }
 
     if (!isSectionValid()) {
         failNoObject(m_sectionName);
@@ -389,9 +386,8 @@ void TaskSectionView::applyQuick(std::string dir)
     enableAll(true);
 
     m_section->recomputeFeature();
-    if (isBaseValid()) {
+    if (isBaseValid())
         m_base->requestPaint();
-    }
 }
 
 void TaskSectionView::applyAligned(void) 
@@ -417,7 +413,7 @@ void TaskSectionView::createSectionView(void)
     std::string baseName = m_base->getNameInDocument();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
-    if (m_section == nullptr) {
+    if (!m_section) {
         m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";
 

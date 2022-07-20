@@ -130,7 +130,7 @@ void CmdTechDrawLeaderLine::activated(int iMsg)
     TechDraw::DrawView* baseFeat = nullptr;
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
-        if( baseFeat == nullptr ) {
+        if (!baseFeat) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("Can not attach leader.  No base View selected."));
             return;
@@ -347,10 +347,8 @@ void execMidpoints(Gui::Command* cmd)
     TechDraw::DrawViewPart * dvp = nullptr;
     std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
 
-    if ( (dvp == nullptr) || 
-         (selectedEdges.empty()) ) {
+    if (!dvp || selectedEdges.empty())
         return;
-    }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpoint Vertices"));
 
@@ -375,10 +373,8 @@ void execQuadrants(Gui::Command* cmd)
     TechDraw::DrawViewPart* dvp = nullptr;
     std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
 
-    if ( (dvp == nullptr) || 
-         (selectedEdges.empty()) ) {
+    if (!dvp || selectedEdges.empty())
         return;
-    }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant Vertices"));
 
@@ -438,7 +434,7 @@ void CmdTechDrawCosmeticVertex::activated(int iMsg)
 
     TechDraw::DrawViewPart* baseFeat = nullptr;
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart*>((*shapes.begin()));
-    if (baseFeat == nullptr) {
+    if (!baseFeat) {
         Base::Console().Message("CMD::CosmeticVertex - 1st shape is not DVP.  WTF?\n");
         return;
     }
@@ -1052,7 +1048,7 @@ void execLine2Points(Gui::Command* cmd)
         }
     }
     
-    if (baseFeat == nullptr) {
+    if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("You must select a base View for the line."));
         return;
@@ -1215,14 +1211,12 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                 }
             } else if (geomType == "Vertex") {
                 TechDraw::VertexPtr tdv = objFeat->getProjVertexByIndex(idx);
-                if (tdv == nullptr) {
+                if (!tdv)
                     Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
-                }
 
                 std::string delTag = tdv->cosmeticTag;
-                if (delTag.empty()) {
+                if (delTag.empty())
                     Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
-                }
                 cv2Delete.push_back(delTag);
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1295,7 +1289,7 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
     }
 
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if( baseFeat == nullptr ) {
+    if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                 QObject::tr("No View in Selection."));
         return;
@@ -1504,7 +1498,7 @@ std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
             break;
         }
     }
-    if (dvp == nullptr) {
+    if (!dvp) {
       QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                            QObject::tr("No Part View in Selection"));
       return selectedSubs;

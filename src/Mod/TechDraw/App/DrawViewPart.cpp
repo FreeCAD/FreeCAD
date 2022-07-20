@@ -497,9 +497,8 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
     }
 
     const BaseGeomPtrVector& edges = go->getEdgeGeometry();
-    if (edges.empty()) {
+    if (edges.empty())
         Base::Console().Log("DVP::buildGO - NO extracted edges!\n");
-    }
     bbox = go->calcBoundingBox();
     return go;
 }
@@ -507,9 +506,8 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
 //! make faces from the existing edge geometry
 void DrawViewPart::extractFaces()
 {
-    if (geometryObject == nullptr) {
+    if (!geometryObject)
         return;
-    }
     geometryObject->clearFaceGeom();
     const std::vector<TechDraw::BaseGeomPtr>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
@@ -876,9 +874,8 @@ BaseGeomPtr DrawViewPart::projectEdge(const TopoDS_Edge& e) const
 bool DrawViewPart::hasGeometry(void) const
 {
     bool result = false;
-    if (geometryObject == nullptr) {
+    if (!geometryObject)
         return result;
-    }
     const std::vector<TechDraw::VertexPtr> &verts = getVertexGeometry();
     const std::vector<TechDraw::BaseGeomPtr> &edges = getEdgeGeometry();
     if (verts.empty() &&
@@ -1390,7 +1387,7 @@ void DrawViewPart::clearGeomFormats(void)
 
 void DrawViewPart::dumpVerts(std::string text)
 {
-    if (geometryObject == nullptr) {
+    if (!geometryObject) {
         Base::Console().Message("no verts to dump yet\n");
         return;
     }

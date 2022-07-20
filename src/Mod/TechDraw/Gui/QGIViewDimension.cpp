@@ -177,13 +177,13 @@ void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void QGIDatumLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
     QGIViewDimension* qgivDimension = dynamic_cast<QGIViewDimension*>(parentItem());
-    if (qgivDimension == nullptr) {
+    if (!qgivDimension) {
         qWarning() << "QGIDatumLabel::mouseDoubleClickEvent: No parent item";
         return;
     }
 
     auto ViewProvider = dynamic_cast<ViewProviderDimension*>(qgivDimension->getViewProvider(qgivDimension->getViewObject()));
-    if (ViewProvider == nullptr) {
+    if (!ViewProvider) {
         qWarning() << "QGIDatumLabel::mouseDoubleClickEvent: No valid view provider";
         return;
     }
@@ -338,7 +338,7 @@ void QGIDatumLabel::setToleranceString()
     if (!qgivd)
         return;
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(qgivd->getViewObject()) );
-    if( dim == nullptr ) {
+    if (!dim) {
         return;
         // don't show if both are zero or if EqualTolerance is true
     } else if (!dim->hasOverUnderTolerance() || dim->EqualTolerance.getValue() || dim->TheoreticalExact.getValue()) {
@@ -645,18 +645,15 @@ void QGIViewDimension::updateView(bool update)
 void QGIViewDimension::updateDim()
 {
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject()) );
-    if( dim == nullptr ) {
+    if (!dim)
         return;
-    }
     auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
  
     QString labelText= QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); // pre value [unit] post
-    if (dim->isMultiValueSchema()) {
+    if (dim->isMultiValueSchema())
         labelText = QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str()); //don't format multis
-    }
 
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
@@ -682,9 +679,8 @@ void QGIViewDimension::datumLabelDragFinished()
 {
     auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject()) );
 
-    if( dim == nullptr ) {
+    if (!dim)
         return;
-    }
 
     double x = Rez::appX(datumLabel->X()),
            y = Rez::appX(datumLabel->Y());
@@ -718,26 +714,25 @@ void QGIViewDimension::draw()
     }
 
     TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
-    if((!dim) ||                                                       //nothing to draw, don't try
-       (!dim->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) ||
-       (!dim->has2DReferences()) ) {
+    if (!dim ||//nothing to draw, don't try
+        !dim->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ||
+        !dim->has2DReferences()) {
         datumLabel->hide();
         hide();
         return;
     }
 
     const TechDraw::DrawViewPart *refObj = dim->getViewPart();
-    if (refObj == nullptr) {
+    if (!refObj)
         return;
-    }
-    if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
+    if (!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
         datumLabel->hide();
         hide();
         return;
     }
 
     auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
-    if (vp == nullptr) {
+    if (!vp) {
         datumLabel->show();
         show();
         return;
@@ -1253,7 +1248,7 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
 void QGIViewDimension::arrowPositionsToFeature(const Base::Vector2d positions[]) const
 {
     auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
-    if( dim == nullptr )
+    if (!dim)
         return;
 
     dim->saveArrowPositions(positions);
@@ -2371,9 +2366,8 @@ QColor QGIViewDimension::prefNormalColor()
     TechDraw::DrawView* dv = getViewObject();
     if (dv) {
         dim = dynamic_cast<TechDraw::DrawViewDimension*>(dv);
-        if( dim == nullptr ) {
+        if (!dim)
             return m_colNormal;
-        }
     } else {
         return m_colNormal;
     }
@@ -2382,9 +2376,8 @@ QColor QGIViewDimension::prefNormalColor()
     Gui::ViewProvider* vp = getViewProvider(dim);
     if (vp) {
         vpDim = dynamic_cast<ViewProviderDimension*>(vp);
-        if (vpDim == nullptr) {
+        if (!vpDim)
             return m_colNormal;
-        }
     } else {
         return m_colNormal;
     }
