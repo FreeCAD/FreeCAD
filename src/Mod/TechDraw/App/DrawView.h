@@ -94,16 +94,22 @@ public:
     virtual bool checkFit() const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y, bool force = false);
-    virtual bool keepUpdated();
-    boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
-    virtual double getScale() const;
-    void checkScale();
-    void requestPaint();
-    virtual void handleXYLock();
-    virtual bool isLocked() const;
-    virtual bool showLock() const;
+    virtual bool keepUpdated(void);
 
-    std::vector<TechDraw::DrawLeaderLine*> getLeaders() const;
+    boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
+    boost::signals2::signal<void (const DrawView*, std::string, std::string)> signalProgressMessage;
+    void requestPaint(void);
+    void showProgressMessage(std::string featureName, std::string text);
+
+    virtual double getScale(void) const;
+    void checkScale(void);
+
+    virtual void handleXYLock(void);
+    virtual bool isLocked(void) const;
+    virtual bool showLock(void) const;
+
+    std::vector<TechDraw::DrawLeaderLine*> getLeaders(void) const;
+
     void setScaleAttribute();
 
 protected:

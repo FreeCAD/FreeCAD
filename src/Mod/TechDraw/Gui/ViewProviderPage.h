@@ -77,9 +77,6 @@ public:
     bool onDelete(const std::vector<std::string> &) override;
     void onChanged(const App::Property *prop) override;
     void updateData(const App::Property* prop) override;
-    void startRestoring() override;
-    void finishRestoring() override;
-    bool isRestoring() {return !m_docReady;}
 
     TechDraw::DrawPage* getDrawPage() const;
 
@@ -115,7 +112,6 @@ protected:
 
 private:
     QPointer<MDIViewPage> m_mdiView;
-    bool m_docReady;
     std::string m_pageName;
     QGVPage* m_graphicsView;
     QGSPage* m_graphicsScene;

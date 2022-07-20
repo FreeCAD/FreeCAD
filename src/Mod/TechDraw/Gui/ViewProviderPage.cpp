@@ -78,7 +78,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
 ViewProviderPage::ViewProviderPage()
   : m_mdiView(nullptr),
-    m_docReady(true),
+    m_pageName(""),
     m_graphicsView(nullptr),
     m_graphicsScene(nullptr)
 {
@@ -416,23 +416,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     }
 }
 
-void ViewProviderPage::startRestoring()
-{
-//    Base::Console().Message("VPP::startRestoring()\n");
-    //VPDO::startRestoring hides this VPP
-    Gui::ViewProviderDocumentObject::startRestoring();
-}
-
-//note this is called when this ViewProvider has been restored, not
-//when the whole document has been restored.
-void ViewProviderPage::finishRestoring()
-{
-//    Base::Console().Message("VPP::finishRestoring() - canUpdate: %d viz: %d\n",
-//                            getDrawPage()->canUpdate(), Visibility.getValue());
-    Gui::ViewProviderDocumentObject::finishRestoring();
-}
-
-bool ViewProviderPage::isShow() const
+bool ViewProviderPage::isShow(void) const
 {
     return Visibility.getValue();
 }

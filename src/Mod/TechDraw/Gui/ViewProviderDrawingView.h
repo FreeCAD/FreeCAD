@@ -76,14 +76,17 @@ public:
     //@}
 
     virtual TechDraw::DrawView* getViewObject() const;
+    void showProgressMessage(const std::string featureName, const std::string text) const;
     
-    void onGuiRepaint(const TechDraw::DrawView* dv); 
+    void onGuiRepaint(const TechDraw::DrawView* dv);
+    void onProgressMessage(const TechDraw::DrawView* dv,
+                         const std::string featureName,
+                         const std::string text);
     typedef boost::signals2::scoped_connection Connection;
     Connection connectGuiRepaint;
-    
+    Connection connectProgressMessage;
 
 private:
-    bool m_docReady;                                                   //sb MDI + QGraphicsScene ready
 
 };
 

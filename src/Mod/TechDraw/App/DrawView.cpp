@@ -581,7 +581,12 @@ void DrawView::requestPaint()
     signalGuiPaint(this);
 }
 
-PyObject *DrawView::getPyObject()
+void DrawView::showProgressMessage(std::string featureName, std::string text)
+{    
+    signalProgressMessage(this, featureName, text);
+}
+
+PyObject *DrawView::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -589,6 +594,8 @@ PyObject *DrawView::getPyObject()
     }
     return Py::new_reference_to(PythonObject);
 }
+
+#include <Mod/TechDraw/App/moc_DrawView.cpp>
 
 // Python Drawing feature ---------------------------------------------------------
 

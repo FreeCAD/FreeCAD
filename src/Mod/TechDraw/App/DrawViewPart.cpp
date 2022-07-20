@@ -282,6 +282,8 @@ void DrawViewPart::addShapes2d(void)
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+//    Base::Console().Message("DVP::execute() - %s\n", getNameInDocument());
+
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -387,7 +389,8 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
 {
 //    Base::Console().Message("DVP::partExec()\n");
     if (waitingForResult()) {
-//        Base::Console().Message("DVP::partExec - %s - GO is waiting for result\n", getNameInDocument());
+        //finish what we are already doing before starting over
+//        Base::Console().Message("DVP::partExec - %s - waiting for result\n", getNameInDocument());
         return;
     }
 
@@ -395,11 +398,13 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
         delete geometryObject;
         geometryObject = nullptr;
     }
+    showProgressMessage(getNameInDocument(), "is finding hidden lines");
     geometryObject = makeGeometryForShape(shape);
 }
 
 GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
 {
+//    Base::Console().Message("DVP::makeGeometryForShape()\n");
     gp_Pnt inputCenter;
     Base::Vector3d stdOrg(0.0,0.0,0.0);
 
@@ -435,6 +440,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
+//    Base::Console().Message("DVP::buildGeometryObject()\n");
     TechDraw::GeometryObject* go = new TechDraw::GeometryObject(getNameInDocument(), this);
     go->setIsoCount(IsoCount.getValue());
     go->isPerspective(Perspective.getValue());
@@ -447,6 +453,7 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
         onHlrFinished();    //poly algo does not run in separate thread, so we need to invoke
                             //the post hlr processing manually
     } else {
+//        Base::Console().Message("DVP::buildGeometryObject - starting projectShape\n");
         waitingForHlr(true);
         QObject::connect(&m_hlrWatcher, SIGNAL(finished()), this, SLOT(onHlrFinished()));
         m_hlrFuture = QtConcurrent::run(go, &GeometryObject::projectShape, shape, viewAxis);
@@ -459,17 +466,27 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
 //continue processing after hlr thread completes
 void DrawViewPart::onHlrFinished(void)
 {
-    waitingForHlr(false);
+//    Base::Console().Message("DVP::onHlrFinished()\n");
 
+    //the last hlr task is to make a bbox of the results
     bbox = geometryObject->calcBoundingBox();
+
+    waitingForHlr(false);
+    QObject::disconnect(&m_hlrWatcher, SIGNAL(finished()), this, SLOT(onHlrFinished()));
+
+    showProgressMessage(getNameInDocument(), "has finished finding hidden lines");
+
+    postHlrTasks();
 
     if (handleFaces() && !CoarseView.getValue()) {
         try {
+//            Base::Console().Message("DVP::onHlrFinished - starting extractFaces\n");
             QObject::connect(&m_faceWatcher, SIGNAL(finished()), this, SLOT(onFacesFinished()));
             m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
             m_faceWatcher.setFuture(m_faceFuture);
         }
         catch (Standard_Failure& e4) {
+            waitingForFaces(false);
             Base::Console().Message("DVP::partExec - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
         }
     }
@@ -480,28 +497,42 @@ void DrawViewPart::onHlrFinished(void)
 
     addReferencesToGeom();
 
-    postHlrTasks();
-
     requestPaint();
 }
 
 void DrawViewPart::postHlrTasks(void)
 {
-    //nothing to do here. DVDetail and DVSection have special needs.
+    //DVDetail and DVSection have special needs.
+    //dimensions and balloons need to be recomputed here to get their references sorted
+
+    std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
+    for (auto& d : dims) {
+        d->recomputeFeature();
+    }
+    std::vector<TechDraw::DrawViewBalloon*> bals = getBalloons();
+    for (auto& b : bals) {
+        b->recomputeFeature();
+    }
 }
 
 //! make faces from the existing edge geometry
 void DrawViewPart::extractFaces()
 {
-    if (!geometryObject) {
+//    Base::Console().Message("DVP::extractFaces()\n");
+
+    if (geometryObject == nullptr) {
+        //no geometry yet so don't bother
+//        Base::Console().Message("DVP::extractFaces - GO is null\n");
         return;
     }
 
-    if (waitingForFaces()) {
-        return;
-    }
+//    if (waitingForFaces()) {
+//        Base::Console().Message("DVP::extractFaces - already extracting faces\n");
+//    }
 
     waitingForFaces(true);
+    showProgressMessage(getNameInDocument(), "is extracting faces");
+
     geometryObject->clearFaceGeom();
     const std::vector<TechDraw::BaseGeomPtr>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
@@ -635,6 +666,8 @@ void DrawViewPart::onFacesFinished(void)
 {
 //    Base::Console().Message("DVP::onFacesFinished()\n");
     waitingForFaces(false);
+    QObject::disconnect(&m_faceWatcher, SIGNAL(finished()), this, SLOT(onFacesFinished()));
+    showProgressMessage(getNameInDocument(), "has finished extracting faces");
     requestPaint();
 }
 
