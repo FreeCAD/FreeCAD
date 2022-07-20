@@ -289,7 +289,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
 
     App::DocumentObject* base = BaseView.getValue();
-    if (base == nullptr) {
+    if (!base) {
         return new App::DocumentObjectExecReturn("BaseView object not found");
     }
 

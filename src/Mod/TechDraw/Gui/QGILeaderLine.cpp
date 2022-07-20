@@ -201,7 +201,7 @@ void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
 //    Base::Console().Message("QGILL::onSoureChange(%s)\n",newParent->getNameInDocument());
     std::string parentName = newParent->getNameInDocument();
     QGIView* qgiParent = getQGIVByName(parentName);
-    if (qgiParent != nullptr) {
+    if (qgiParent) {
         m_parentItem = qgiParent;
         setParentItem(m_parentItem);
         draw();
@@ -246,7 +246,7 @@ void QGILeaderLine::setPrettySel() {
 void QGILeaderLine::closeEdit(void)
 {
 //    Base::Console().Message("QGIL::closeEdit()\n");
-    if (m_editPath != nullptr) {
+    if (m_editPath) {
         m_editPath->onEndEdit();   //tell QEPath that edit session ended 
     }
 }
@@ -314,7 +314,7 @@ void QGILeaderLine::saveState(void)
 {
 //    Base::Console().Message("QGILL::saveState()\n");
     auto featLeader = getFeature();
-    if (featLeader != nullptr) {
+    if (featLeader) {
         m_savePoints = featLeader->WayPoints.getValues();
         m_saveX = featLeader->X.getValue();
         m_saveY = featLeader->Y.getValue();
@@ -325,7 +325,7 @@ void QGILeaderLine::restoreState(void)
 {
 //    Base::Console().Message("QGILL::restoreState()\n");
     auto featLeader = getFeature();
-    if (featLeader != nullptr) {
+    if (featLeader) {
         featLeader->WayPoints.setValues(m_savePoints);
         featLeader->X.setValue(m_saveX);
         featLeader->Y.setValue(m_saveY);
@@ -340,7 +340,7 @@ void QGILeaderLine::updateView(bool update)
 //    Base::Console().Message("QGIL::updateView() %s\n",getViewObject()->getNameInDocument());
     Q_UNUSED(update);
     auto featLeader( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
-    if ( featLeader == nullptr ) {
+    if (!featLeader) {
         Base::Console().Warning("QGILL::updateView - no feature!\n");
         return;
     }
@@ -372,7 +372,7 @@ void QGILeaderLine::draw()
 
     double scale = 1.0;
     TechDraw::DrawView* parent = featLeader->getBaseView();
-    if (parent != nullptr) {
+    if (parent) {
         scale = parent->getScale();
     }
 
@@ -600,7 +600,7 @@ QColor QGILeaderLine::getNormalColor()
     m_colNormal = PreferencesGui::leaderQColor();
 
     auto lead( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
-    if( lead == nullptr ) {
+    if (!lead) {
 //        Base::Console().Message("QGILL::getNormalColor - no feature\n");
         return m_colNormal;
     }

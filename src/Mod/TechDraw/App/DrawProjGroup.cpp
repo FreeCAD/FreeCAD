@@ -167,26 +167,22 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
 //    Base::Console().Message("DPG::execute() - %s\n", getNameInDocument());
-    if (!keepUpdated()) {
+    if (!keepUpdated())
         return App::DocumentObject::StdReturn;
-    }
 
     //if group hasn't been added to page yet, can't scale or distribute projItems
     TechDraw::DrawPage *page = getPage();
-    if (!page) {
+    if (!page)
         return DrawViewCollection::execute();
-    }
 
     std::vector<App::DocumentObject*> docObjs = getAllSources();
-    if (docObjs.empty()) {
+    if (docObjs.empty())
         return DrawViewCollection::execute();
-    }
 
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj == nullptr) {
+    if (!docObj)
         //no anchor yet.  nothing to do.
         return DrawViewCollection::execute();
-    }
 
     if (ScaleType.isValue("Automatic")) {
         if (!checkFit()) {
@@ -230,7 +226,7 @@ Base::BoundBox3d DrawProjGroup::getBoundingBox() const
 
     std::vector<App::DocumentObject*> views = Views.getValues();
     TechDraw::DrawProjGroupItem *anchorView = dynamic_cast<TechDraw::DrawProjGroupItem *>(Anchor.getValue());
-    if (anchorView == nullptr) {
+    if (!anchorView) {
         //if an element in Views is not a DPGI, something really bad has happened somewhere
         Base::Console().Log("PROBLEM - DPG::getBoundingBox - non DPGI entry in Views! %s\n",
                                 getNameInDocument());
@@ -429,9 +425,8 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
     std::pair<Base::Vector3d,Base::Vector3d> vecs;
 
     DrawPage* dp = findParentPage();
-    if (dp == nullptr) {
+    if (!dp)
         Base::Console().Error("DPG:addProjection - %s - DPG is not on a page!\n",getNameInDocument());
-    }
 
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
@@ -549,7 +544,7 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
 
     Base::Vector3d projDir, rotVec;
     DrawProjGroupItem* anch = getAnchor();
-    if (anch == nullptr) {
+    if (!anch) {
         Base::Console().Warning("DPG::getDirsFromFront - %s - No Anchor!\n",Label.getValue());
         throw Base::RuntimeError("Project Group missing Anchor projection item");
     }
@@ -881,7 +876,7 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
         bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
         for (auto it : Views.getValues()) {
             auto oView( dynamic_cast<DrawProjGroupItem *>(it) );
-            if (oView == nullptr) {
+            if (!oView) {
                 //if an element in Views is not a DPGI, something really bad has happened somewhere
                 Base::Console().Log("PROBLEM - DPG::arrangeViewPointers - non DPGI in Views! %s\n",
                                     getNameInDocument());

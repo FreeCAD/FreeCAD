@@ -79,19 +79,19 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
     //get the active view
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(appDoc);
     Gui::MDIView* mdiView = guiDoc->getActiveView();
-    if (mdiView == nullptr) {
+    if (!mdiView) {
         Base::Console().Warning("G3d::copyActiveViewToSvgFile - no ActiveView - returning\n");
         return result;
     }
 
     View3DInventor* view3d = qobject_cast<View3DInventor*>(mdiView);
-    if (view3d == nullptr) {
+    if (!view3d) {
         Base::Console().Warning("G3d::copyActiveViewToSvgFile - no viewer for ActiveView - returning\n");
         return result;
     }
 
     View3DInventorViewer* viewer = view3d->getViewer();
-    if (viewer == nullptr) {
+    if (!viewer) {
         Base::Console().Warning("G3d::copyActiveViewToSvgFile - could not create viewer - returning\n");
         return result;
     }

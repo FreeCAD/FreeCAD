@@ -1254,7 +1254,7 @@ void CenterLine::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
 
 //stored geometry
-    if (m_geometry == nullptr) {
+    if (!m_geometry) {
         return Base::Console().Error("CL::Save - m_geometry is null\n");
     }
 

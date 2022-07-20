@@ -161,7 +161,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 {
 //    Base::Console().Message("SE::getXShapes(%X) - %s\n", xLink, xLink->getNameInDocument());
     std::vector<TopoDS_Shape> xSourceShapes;
-    if (xLink == nullptr) {
+    if (!xLink) {
         return xSourceShapes;
     }
 

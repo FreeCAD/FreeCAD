@@ -108,7 +108,7 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute(void)
     }
 
     DrawViewPart* dvp = getViewPart();
-    if (dvp == nullptr) {
+    if (!dvp) {
         return App::DocumentObject::StdReturn;
     }
     References2D.setValue(dvp);

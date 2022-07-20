@@ -474,7 +474,7 @@ void MDIViewPage::fixOrphans(bool force)
             continue;
         }
         QGIView* qv = m_scene->findQViewForDocObj(dv);
-        if (qv == nullptr) {
+        if (!qv) {
             attachView(dv);
         }
     }
@@ -490,7 +490,7 @@ void MDIViewPage::fixOrphans(bool force)
         if (!qv)
             continue; // already deleted?
         App::DocumentObject* obj = doc->getObject(qv->getViewName());
-        if (obj == nullptr) {
+        if (!obj) {
             //no DrawView anywhere in Document
             m_scene->removeQView(qv);
         } else {
@@ -1019,11 +1019,11 @@ void MDIViewPage::clearSceneSelection()
 
         //handle oddballs
         QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>(*it);
-        if (dim != nullptr) {
+        if (dim) {
             state = dim->getDatumLabel()->isSelected();
         } else {
             QGIViewBalloon* bal = dynamic_cast<QGIViewBalloon*>(*it);
-                if (bal != nullptr) {
+                if (bal) {
                     state = bal->getBalloonLabel()->isSelected();
                 }
         }
@@ -1157,7 +1157,7 @@ void MDIViewPage::setTreeToSceneSelect(void)
     QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
     for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
-        if(itemView == nullptr) {
+        if (!itemView) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge) {
                 QGraphicsItem*parent = edge->parentItem();
@@ -1330,25 +1330,27 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
     std::sort(treeNames.begin(),treeNames.end());
     treeCount = treeNames.size();
 
-    for (auto sn:sceneSel){
+    for (auto sn : sceneSel) {
         QGIView *itemView = dynamic_cast<QGIView *>(sn);
-        if(itemView == nullptr) {
-            QGIDatumLabel* dl = dynamic_cast<QGIDatumLabel*>(sn);
-            QGIPrimPath* pp = dynamic_cast<QGIPrimPath*>(sn);   //count Vertex/Edge/Face
-            if (pp != nullptr) {
+        if (!itemView) {
+            QGIDatumLabel *dl = dynamic_cast<QGIDatumLabel *>(sn);
+            QGIPrimPath *pp = dynamic_cast<QGIPrimPath *>(sn);//count Vertex/Edge/Face
+            if (pp) {
                 ppCount++;
-            } else if (dl != nullptr) {
+            }
+            else if (dl) {
                 //get dim associated with this label
-                QGraphicsItem* qgi = dl->parentItem();
-                if (qgi != nullptr) {
-                    QGIViewDimension* vd = dynamic_cast<QGIViewDimension*>(qgi);
-                    if (vd != nullptr) {
+                QGraphicsItem *qgi = dl->parentItem();
+                if (qgi) {
+                    QGIViewDimension *vd = dynamic_cast<QGIViewDimension *>(qgi);
+                    if (vd) {
                         std::string s = vd->getViewNameAsString();
                         sceneNames.push_back(s);
                     }
                 }
             }
-        } else {
+        }
+        else {
             std::string s = itemView->getViewNameAsString();
             sceneNames.push_back(s);
         }
@@ -1397,7 +1399,7 @@ void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) 
 //return the MDIViewPage that owns the scene
 MDIViewPage *MDIViewPage::getFromScene(const QGSPage *scene)
 {
-    if (scene != nullptr && scene->parent() != nullptr) {
+    if (scene && scene->parent()) {
         return dynamic_cast<MDIViewPage *>(scene->parent());
     }
 

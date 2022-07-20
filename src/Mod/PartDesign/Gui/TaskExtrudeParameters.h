@@ -118,7 +118,8 @@ protected:
     virtual void updateUI(int index);
     void updateDirectionEdits(void);
     void setDirectionMode(int index);
-    void handleLineFaceName(void);
+    void handleLineFaceNameClick(void);
+    void handleLineFaceNameNo(void);
 
 private:
     void tryRecomputeFeature();

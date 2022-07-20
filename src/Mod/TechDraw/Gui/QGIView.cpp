@@ -399,7 +399,7 @@ TechDraw::DrawView * QGIView::getViewObject() const
 
 void QGIView::setViewFeature(TechDraw::DrawView *obj)
 {
-    if(obj == nullptr)
+    if (!obj)
         return;
 
     viewObj = obj;
@@ -465,9 +465,8 @@ void QGIView::drawBorder()
 {
 //    Base::Console().Message("QGIV::drawBorder() - %s\n",getViewName());
     auto feat = getViewObject();
-    if (feat == nullptr) {
+    if (!feat)
         return;
-    }
 
     drawCaption();   //always draw caption
 

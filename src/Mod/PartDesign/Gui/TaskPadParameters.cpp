@@ -106,14 +106,11 @@ void TaskPadParameters::onModeChanged(int index)
         pcPad->Type.setValue("UpToFace");
         if (ui->lineFaceName->text().isEmpty()) {
             ui->buttonFace->setChecked(true);
-            handleLineFaceName(); // sets placeholder text
+            handleLineFaceNameClick(); // sets placeholder text
         }
         break;
     case Modes::TwoDimensions:
         pcPad->Type.setValue("TwoLengths");
-        // symmetric is then not possible
-        if (ui->checkBoxMidplane->isChecked())
-            ui->checkBoxMidplane->setChecked(false);
         break;
     }
 

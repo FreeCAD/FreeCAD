@@ -59,7 +59,7 @@ QVariant QGITemplate::itemChange(GraphicsItemChange change, const QVariant &valu
 
 void QGITemplate::setTemplate(TechDraw::DrawTemplate *obj)
 {
-    if(obj == nullptr)
+    if (!obj)
         return;
 
     pageTemplate = obj;

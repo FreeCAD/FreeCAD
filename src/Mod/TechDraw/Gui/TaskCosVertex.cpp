@@ -208,7 +208,7 @@ void TaskCosVertex::startTracker(void)
         return;
     }
 
-    if (m_tracker == nullptr) {
+    if (!m_tracker) {
         m_tracker = new QGTracker(m_scene, m_trackerMode);
         QObject::connect(
             m_tracker, SIGNAL(drawingFinished(std::vector<QPointF>, QGIView*)),
@@ -244,7 +244,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
     if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
-        if (dpg == nullptr) {
+        if (!dpg) {
             Base::Console().Message("TCV:onTrackerFinished - projection group is confused\n");
             //TODO::throw something.
             return;

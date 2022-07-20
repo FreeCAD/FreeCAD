@@ -389,9 +389,8 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         return App::DocumentObject::StdReturn;
     }
     DrawViewPart* dvp = getViewPart();
-    if (dvp == nullptr) {
+    if (!dvp)
         return App::DocumentObject::StdReturn;
-    }
 
     if (!has2DReferences()) {                                            //too soon?
         if (isRestoring() ||
@@ -1163,13 +1162,11 @@ double DrawViewDimension::getDimValue()
         }
         return result;
     }
-    if  (getViewPart() == nullptr) {
+    if  (!getViewPart())
         return result;
-    }
 
-    if  (!getViewPart()->hasGeometry() ) {                              //happens when loading saved document
+    if  (!getViewPart()->hasGeometry())            //happens when loading saved document
         return result;
-    }
 
     if (MeasureType.isValue("True")) {
         // True Values
@@ -1278,8 +1275,7 @@ pointPair DrawViewDimension::getPointsTwoEdges()
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
     TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(idx0);
     TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeomByIndex(idx1);
-    if ((geom0 == nullptr) ||
-        (geom1 == nullptr) ) {
+    if (!geom0 || !geom1) {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt (2)\n",getNameInDocument());
         return result;
     }
@@ -1297,8 +1293,7 @@ pointPair DrawViewDimension::getPointsTwoVerts()
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
     TechDraw::VertexPtr v0 = getViewPart()->getProjVertexByIndex(idx0);
     TechDraw::VertexPtr v1 = getViewPart()->getProjVertexByIndex(idx1);
-    if ((v0 == nullptr) ||
-        (v1 == nullptr) ) {
+    if (!v0 || !v1) {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt (3)\n",getNameInDocument());
         return result;
     }
@@ -1322,7 +1317,7 @@ pointPair DrawViewDimension::getPointsEdgeVert()
         e = getViewPart()->getGeomByIndex(idx1);
         v = getViewPart()->getProjVertexByIndex(idx0);
     }
-    if ((v == nullptr) || (e == nullptr) ) {
+    if (!v || !e) {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt (4)\n", getNameInDocument());
         return result;
     }
@@ -1378,13 +1373,13 @@ bool DrawViewDimension::checkReferences2D() const
                     int idx = DrawUtil::getIndexFromName(s);
                     if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
                         TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(idx);
-                        if (geom == nullptr) {
+                        if (!geom) {
                             result = false;
                             break;
                         }
                     } else if (DrawUtil::getGeomTypeFromName(s) == "Vertex") {
                         TechDraw::VertexPtr v = getViewPart()->getProjVertexByIndex(idx);
-                        if (v == nullptr) {
+                        if (!v) {
                             result = false;
                             break;
                         }
@@ -1512,7 +1507,7 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
 
 void DrawViewDimension::saveArrowPositions(const Base::Vector2d positions[])
 {
-    if (positions == nullptr) {
+    if (!positions) {
         m_arrowPositions.first = Base::Vector3d(0.0, 0.0, 0.0);
         m_arrowPositions.second = Base::Vector3d(0.0, 0.0, 0.0);
     } else {

@@ -320,7 +320,7 @@ void TaskCenterLine::createCenterLine(void)
     // the centerline creation can fail if m_type is edge and both selected edges are horizontal
     // because we attempt by default to create a vertical centerline
 
-    if (cl == nullptr) { // try a horizontal line
+    if (!cl) { // try a horizontal line
         cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, CenterLine::CLMODE::HORIZONTAL, false);
         if (cl) {
             m_mode = CenterLine::CLMODE::HORIZONTAL;
@@ -330,7 +330,7 @@ void TaskCenterLine::createCenterLine(void)
         }
     }
 
-    if (cl == nullptr) {
+    if (!cl) {
         Base::Console().Log("TCL::createCenterLine - CenterLine creation failed!\n");
         Gui::Command::abortCommand();
         return;
@@ -379,7 +379,7 @@ void TaskCenterLine::updateOrientation(void)
 
     CenterLine* cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, orientation, m_cl->m_flip2Line);
 
-    if (cl == nullptr) { // try another orientation
+    if (!cl) { // try another orientation
         if (orientation == CenterLine::CLMODE::VERTICAL)
             orientation = CenterLine::CLMODE::HORIZONTAL;
         else if (orientation == CenterLine::CLMODE::HORIZONTAL)

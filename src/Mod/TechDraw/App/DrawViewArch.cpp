@@ -106,7 +106,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
     if (sourceObj) {
         //if (sourceObj is not ArchSection) return
         App::Property* proxy = sourceObj->getPropertyByName("Proxy");
-        if (proxy == nullptr) {
+        if (!proxy) {
             Base::Console().Error("DVA::execute - %s is not an ArchSection\n", sourceObj->Label.getValue());
             //this is definitely not an ArchSection
             return DrawView::execute();

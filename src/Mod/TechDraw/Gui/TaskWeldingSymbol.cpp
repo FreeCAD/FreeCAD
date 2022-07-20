@@ -126,7 +126,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     //                                or ViewProviderWeld.setEdit
 
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
-    if (obj == nullptr ||
+    if (!obj ||
         !obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) )  {
         Base::Console().Error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
         return;
@@ -524,10 +524,8 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
 
     App::DocumentObject* newObj = m_leadFeat->getDocument()->getObject(symbolName.c_str());
     TechDraw::DrawWeldSymbol* newSym = dynamic_cast<TechDraw::DrawWeldSymbol*>(newObj);
-    if ( (newObj == nullptr) ||
-         (newSym == nullptr) ) {
+    if (!newObj || !newSym)
         throw Base::RuntimeError("TaskWeldingSymbol - new symbol object not found");
-    }
 
     return newSym;
 }
@@ -563,7 +561,7 @@ void TaskWeldingSymbol::updateTiles(void)
 //    Base::Console().Message("TWS::updateTiles()\n");
     getTileFeats();
 
-    if (m_arrowFeat == nullptr) {
+    if (!m_arrowFeat) {
         Base::Console().Message("TWS::updateTiles - no arrow tile!\n");
     } else {
         collectArrowData();
@@ -587,7 +585,7 @@ void TaskWeldingSymbol::updateTiles(void)
         }
     }
 
-    if (m_otherFeat == nullptr) {
+    if (!m_otherFeat) {
 //        Base::Console().Message("TWS::updateTiles - no other tile!\n");
     } else {
         if (m_otherDirty) {

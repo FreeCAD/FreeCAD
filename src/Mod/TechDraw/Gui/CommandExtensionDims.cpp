@@ -2260,7 +2260,7 @@ namespace TechDrawGui {
         // check selection of getSelectionEx() and selection[0].getObject()
         if (_checkSelection(cmd, selection, message)) {
             objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
-            if (objFeat == nullptr) {
+            if (!objFeat) {
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr(message.c_str()),
                     QObject::tr("No object selected"));

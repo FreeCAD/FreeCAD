@@ -180,7 +180,7 @@ QGIView * QGIProjGroup::getAnchorQItem() const
     // Get the currently assigned anchor view
     App::DocumentObject *anchorObj = getDrawView()->Anchor.getValue();
     auto anchorView( dynamic_cast<TechDraw::DrawView *>(anchorObj) );
-    if( anchorView == nullptr ) {
+    if (!anchorView) {
         return nullptr;
     }
 

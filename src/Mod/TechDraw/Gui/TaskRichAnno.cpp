@@ -100,7 +100,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_annoFeat = m_annoVP->getFeature();
 
     m_basePage = m_annoFeat->findParentPage();
-    if ( m_basePage == nullptr ) {
+    if (!m_basePage) {
         Base::Console().Error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
         return;
     }
@@ -352,7 +352,7 @@ void TaskRichAnno::createAnnoFeature()
                                annoName.c_str(),m_baseFeat->getNameInDocument());
     }
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
-    if (obj == nullptr) {
+    if (!obj) {
         throw Base::RuntimeError("TaskRichAnno - new RichAnno object not found");
     }
     if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
@@ -424,7 +424,7 @@ void TaskRichAnno::commonFeatureUpdate(void)
 void TaskRichAnno::removeFeature(void)
 {
 //    Base::Console().Message("TRA::removeFeature()\n");
-    if (m_annoFeat == nullptr)
+    if (!m_annoFeat)
         return;
 
     if (m_createMode) {
