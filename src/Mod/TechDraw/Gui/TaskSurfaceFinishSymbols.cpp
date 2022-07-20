@@ -276,22 +276,23 @@ void TaskSurfaceFinishSymbols::onIconChanged()
 {
     QObject* senderObj(this->sender());
     QPushButton* pressedButton = qobject_cast<QPushButton*>(senderObj);
-    if (pressedButton)
-    {
-        if (ui->pbIcon01 == pressedButton) activeIcon = anyMethod;
-        if (ui->pbIcon02 == pressedButton) activeIcon = removeProhibit;
-        if (ui->pbIcon03 == pressedButton) activeIcon = removeRequired;
-        if (ui->pbIcon04 == pressedButton) activeIcon = anyMethodAll;
-        if (ui->pbIcon05 == pressedButton) activeIcon = removeProhibitAll;
-        if (ui->pbIcon06 == pressedButton) activeIcon = removeRequiredAll;
-        
-        QIcon symbolIcon = pressedButton->icon();
-        QGraphicsPixmapItem* pixmapItem = new(QGraphicsPixmapItem);
-        pixmapItem->setPixmap(symbolIcon.pixmap(50,64));
-        pixmapItem->setPos(-50,-130);
-        pixmapItem->setZValue(-1);
-        symbolScene->addItem(pixmapItem);
+    if (!pressedButton) {
+        return;
     }
+
+    if (ui->pbIcon01 == pressedButton) activeIcon = anyMethod;
+    if (ui->pbIcon02 == pressedButton) activeIcon = removeProhibit;
+    if (ui->pbIcon03 == pressedButton) activeIcon = removeRequired;
+    if (ui->pbIcon04 == pressedButton) activeIcon = anyMethodAll;
+    if (ui->pbIcon05 == pressedButton) activeIcon = removeProhibitAll;
+    if (ui->pbIcon06 == pressedButton) activeIcon = removeRequiredAll;
+    
+    QIcon symbolIcon = pressedButton->icon();
+    QGraphicsPixmapItem* pixmapItem = new(QGraphicsPixmapItem);
+    pixmapItem->setPixmap(symbolIcon.pixmap(50,64));
+    pixmapItem->setPos(-50,-130);
+    pixmapItem->setZValue(-1);
+    symbolScene->addItem(pixmapItem);
 }
 
 void TaskSurfaceFinishSymbols::onISO()
