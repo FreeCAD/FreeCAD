@@ -347,13 +347,13 @@ void QGEPath::onEndEdit(void)
 std::vector<QPointF> QGEPath::getDeltasFromLeader(void)
 {
     std::vector<QPointF> qDeltas;
-    if (m_parentLeader == nullptr) {
+    if (!m_parentLeader) {
         Base::Console().Message("QGEP::getDeltasFromLeader - m_parentLeader is nullptr\n");
         return qDeltas;
     }
 
     DrawLeaderLine* featLeader = m_parentLeader->getFeature();
-    if (featLeader == nullptr) {
+    if (!featLeader) {
         Base::Console().Message("QGEP::getDeltasFromLeader - featLeader is nullptr\n");
         return  qDeltas;
     }
@@ -385,7 +385,7 @@ void QGEPath::updateParent(void)
 void QGEPath::drawGhost(void)
 {
 //    Base::Console().Message("QGEPath::drawGhost()\n");
-    if (m_ghost->scene() == nullptr) {
+    if (!m_ghost->scene()) {
         m_ghost->setParentItem(this);
     }
     QPainterPath qpp;

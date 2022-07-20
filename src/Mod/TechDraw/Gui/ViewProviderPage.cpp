@@ -157,7 +157,7 @@ void ViewProviderPage::removeMDIView(void)
     
     Gui::getMainWindow()->removeWindow(m_mdiView);
     Gui::MDIView* aw = Gui::getMainWindow()->activeWindow();  //WF: this bit should be in the remove window logic, not here.
-    if (aw == nullptr) {
+    if (!aw) {
         return;
     }
     aw->showMaximized();
@@ -338,7 +338,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
             //DrawRichAnno with no parent is child of Page
             TechDraw::DrawRichAnno* dra = dynamic_cast<TechDraw::DrawRichAnno*> (*it);
             if (dra) {
-                if (dra->AnnoParent.getValue() == nullptr) {
+                if (!dra->AnnoParent.getValue()) {
                     temp.push_back(*it); //no parent, belongs to page
                 }
                 continue; //has a parent somewhere else

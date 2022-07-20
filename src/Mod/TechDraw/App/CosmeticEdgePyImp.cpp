@@ -363,7 +363,7 @@ void CosmeticEdgePy::setCenter(Py::Object arg)
     pNew = DrawUtil::invertY(pNew);
     auto oldGeom = getCosmeticEdgePtr()->m_geometry;
     TechDraw::CirclePtr oldCircle = std::dynamic_pointer_cast<TechDraw::Circle> (oldGeom);
-    if (oldCircle == nullptr) {
+    if (!oldCircle) {
         throw Py::TypeError("Edge geometry is not a circle");
     }
 

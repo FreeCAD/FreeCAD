@@ -103,7 +103,7 @@ void CmdTechDrawHatch::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( partFeat == nullptr ) {
+    if (!partFeat) {
         return;
     }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
@@ -201,7 +201,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( objFeat == nullptr ) {
+    if (!objFeat) {
         return;
     }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
@@ -326,7 +326,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
     ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
 
-    if (vpp == nullptr) {
+    if (!vpp) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
             QObject::tr("Need a TechDraw Page for this command"));
         return;
