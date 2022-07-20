@@ -74,6 +74,39 @@ protected:
 
     static const App::PropertyAngle::Constraints floatAngle;
 
+    /**
+     * Generates a revolution of the input sketchshape and stores it in the given \a revol.
+     */
+    void generateRevolution(TopoDS_Shape& revol,
+                            const TopoDS_Shape& sketchshape,
+                            const std::string& method,
+                            const gp_Ax1& ax1,
+                            const double angle,
+                            const double angle2,
+                            const bool midplane,
+                            const bool reversed);
+
+    // See BRepFeat_MakeRevol
+    enum RevolMode {
+        CutFromBase = 0,
+        FuseWithBase = 1,
+        None = 2
+    };
+
+    /**
+     * Generates a revolution of the input \a profileshape.
+     * It will be a stand-alone solid created with BRepFeat_MakeRevol.
+     */
+    void generateRevolution(TopoDS_Shape& revol,
+                            const std::string& method,
+                            const TopoDS_Shape& baseshape,
+                            const TopoDS_Shape& profileshape,
+                            const TopoDS_Face& supportface,
+                            const TopoDS_Face& uptoface,
+                            const gp_Ax1& ax1,
+                            RevolMode Mode,
+                            Standard_Boolean Modify);
+
 private:
     static const char* TypeEnums[];
 };

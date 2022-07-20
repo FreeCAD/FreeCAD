@@ -92,10 +92,6 @@ App::DocumentObjectExecReturn *Revolution::execute()
 
     double angle2 = Base::toRadians(Angle2.getValue());
 
-    // Reverse angle if selected
-    if (Reversed.getValue() && !Midplane.getValue())
-        angle *= (-1.0);
-
     TopoDS_Shape sketchshape;
     try {
         sketchshape = getVerifiedFace();
@@ -131,22 +127,6 @@ App::DocumentObjectExecReturn *Revolution::execute()
 
         std::string method(Type.getValueAsString());
 
-        // Rotate the face by half the angle to get Revolution symmetric to sketch plane
-        if (Midplane.getValue()) {
-            gp_Trsf mov;
-            mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
-            TopLoc_Location loc(mov);
-            sketchshape.Move(loc);
-        }
-        else if (method == "TwoAngles") {
-            gp_Trsf mov;
-            mov.SetRotation(gp_Ax1(pnt, dir), angle2 * (-1.0));
-            TopLoc_Location loc(mov);
-            sketchshape.Move(loc);
-
-            angle = angle + angle2;
-        }
-
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
@@ -162,6 +142,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Revolve axis intersects the sketch"));
         }
 
+        // Create a fresh support even when base exists so that it can be used for patterns
         TopoDS_Shape result;
         TopoDS_Face supportface = getSupportFace();
         supportface.Move(invObjLoc);
@@ -175,43 +156,25 @@ App::DocumentObjectExecReturn *Revolution::execute()
             else
                 throw Base::RuntimeError("ProfileBased: Revolution up to first/last is not yet supported");
 
+            // TODO: This method is designed for extrusions. needs to be adapted for revolutions.
             getUpToFace(upToFace, base, sketchshape, method, dir);
 
-            // TODO: Make enum
-            int mode = 2;
-            BRepFeat_MakeRevol RevolMaker;
-            for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
-                RevolMaker.Init(base, xp.Current(), supportface, gp_Ax1(pnt, dir), mode, Standard_True);
-                RevolMaker.Perform(upToFace);
+            TopoDS_Face supportface = getSupportFace();
+            supportface.Move(invObjLoc);
 
-                if (!RevolMaker.IsDone())
-                    throw Base::RuntimeError("ProfileBased: Up to face: Could not revolve the sketch!");
+            if (Reversed.getValue())
+                dir.Reverse();
 
-                base = RevolMaker.Shape();
-                if (mode == 2)
-                    mode = 1;
-            }
-
-            result = base;
+            TopExp_Explorer Ex(supportface,TopAbs_WIRE);
+            if (!Ex.More())
+                supportface = TopoDS_Face();
+            RevolMode mode = RevolMode::None;
+            generateRevolution(result, method, base, sketchshape, supportface, upToFace, gp_Ax1(pnt, dir), mode, Standard_True);
         }
         else {
-            // TODO: Make enum
-            int mode = 2;
-            BRepFeat_MakeRevol RevolMaker;
-            for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
-                RevolMaker.Init(base, xp.Current(), supportface, gp_Ax1(pnt, dir), mode, Standard_True);
-                RevolMaker.Perform(angle);
-
-                if (!RevolMaker.IsDone())
-                    throw Base::RuntimeError("ProfileBased: Could not revolve the sketch!");
-
-                base = RevolMaker.Shape();
-                if (mode == 2)
-                    mode = 1;
-            }
-
-            if (RevolMaker.IsDone())
-                result = RevolMaker.Shape();
+            bool midplane = Midplane.getValue();
+            bool reversed = Reversed.getValue();
+            generateRevolution(result, sketchshape, method, gp_Ax1(pnt, dir), angle, angle2, midplane, reversed);
         }
 
         if (!result.IsNull()) {
@@ -270,6 +233,97 @@ void Revolution::updateAxis()
 
     Base.setValue(base.x,base.y,base.z);
     Axis.setValue(dir.x,dir.y,dir.z);
+}
+
+void Revolution::generateRevolution(TopoDS_Shape& revol,
+                                    const TopoDS_Shape& sketchshape,
+                                    const std::string& method,
+                                    const gp_Ax1& axis,
+                                    const double angle,
+                                    const double angle2,
+                                    const bool midplane,
+                                    const bool reversed)
+{
+    if (method == "Angle" || method == "TwoAngles" || method == "ThroughAll") {
+    double angleTotal = angle;
+    double angleOffset = 0.;
+
+    if (method == "TwoAngles") {
+        // Rotate the face by `angle2`/`angle` to get "second" angle
+        angleTotal += angle2;
+        angleOffset = angle2 * -1.0;
+    }
+    else if (midplane) {
+        // Rotate the face by half the angle to get Revolution symmetric to sketch plane
+        angleOffset = -angle / 2;
+    }
+
+    if (fabs(angleTotal) < Precision::Angular())
+        throw Base::ValueError("Cannot create a revolution with zero angle.");
+
+    gp_Ax1 revolAx(axis);
+    if (reversed) {
+        revolAx.Reverse();
+    }
+
+    TopoDS_Shape from = sketchshape;
+    if (method == "TwoAngles" || midplane) {
+        gp_Trsf mov;
+        mov.SetRotation(revolAx, angleOffset);
+        TopLoc_Location loc(mov);
+        from.Move(loc);
+    }
+
+    // revolve the face to a solid
+    // BRepPrimAPI is the only option that allows use of this shape for patterns.
+    // See https://forum.freecadweb.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
+    BRepPrimAPI_MakeRevol RevolMaker(from, revolAx, angleTotal);
+
+    if (!RevolMaker.IsDone())
+        throw Base::RuntimeError("ProfileBased: RevolMaker failed! Could not revolve the sketch!");
+    else
+        revol = RevolMaker.Shape();
+    }
+    else {
+        std::stringstream str;
+        str << "ProfileBased: Internal error: Unknown method '"
+            << method << "' for generateRevolution()";
+        throw Base::RuntimeError(str.str());
+    }
+}
+
+void Revolution::generateRevolution(TopoDS_Shape& revol,
+                                    const std::string& method,
+                                    const TopoDS_Shape& baseshape,
+                                    const TopoDS_Shape& profileshape,
+                                    const TopoDS_Face& supportface,
+                                    const TopoDS_Face& uptoface,
+                                    const gp_Ax1& axis,
+                                    RevolMode Mode,
+                                    Standard_Boolean Modify)
+{
+    if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
+        BRepFeat_MakeRevol RevolMaker;
+        TopoDS_Shape base = baseshape;
+        for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
+            RevolMaker.Init(base, xp.Current(), supportface, axis, Mode, Modify);
+            RevolMaker.Perform(uptoface);
+            if (!RevolMaker.IsDone())
+                throw Base::RuntimeError("ProfileBased: Up to face: Could not revolve the sketch!");
+
+            base = RevolMaker.Shape();
+            if (Mode == RevolMode::None)
+                Mode = RevolMode::FuseWithBase;
+        }
+
+        revol = base;
+    }
+    else {
+        std::stringstream str;
+        str << "ProfileBased: Internal error: Unknown method '"
+            << method << "' for generateRevolution()";
+        throw Base::RuntimeError(str.str());
+    }
 }
 
 }
