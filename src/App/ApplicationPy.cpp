@@ -845,21 +845,20 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&pyobj, &DocumentObjectPy::Type, "Expect the first argument of type App.DocumentObject or None");
         DocumentObject *obj = nullptr;
-        if(pyobj!=Py_None) {
-            if(!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
-                PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
-                return nullptr;
-            }
+        if (pyobj)
             obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
-        }
+
         auto links = GetApplication().getLinksTo(obj,options,count);
         Py::Tuple ret(links.size());
         int i=0;
         for(auto o : links)
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
+
         return Py::new_reference_to(ret);
-    }PY_CATCH;
+    }
+    PY_CATCH;
 }
 
 PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)

@@ -581,31 +581,30 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
                 &PyBool_Type,&recursive,&pyMat,&PyBool_Type,&transform,&depth))
         return nullptr;
 
-    Base::Matrix4D _mat;
-    Base::Matrix4D *mat = nullptr;
-    if(pyMat!=Py_None) {
-        if(!PyObject_TypeCheck(pyMat,&Base::MatrixPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "expect argument 'matrix' to be of type Base.Matrix");
-            return nullptr;
-        }
-        _mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
-        mat = &_mat;
-    }
-
     PY_TRY {
+        Base::PyTypeCheck(&pyMat, &Base::MatrixPy::Type, "expect argument 'matrix' to be of type Base.Matrix");
+        Base::Matrix4D _mat;
+        Base::Matrix4D *mat = nullptr;
+        if (pyMat) {
+            _mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
+            mat = &_mat;
+        }
+
         auto linked = getDocumentObjectPtr()->getLinkedObject(
                 Base::asBoolean(recursive), mat, Base::asBoolean(transform), depth);
-        if(!linked)
+        if (!linked)
             linked = getDocumentObjectPtr();
         auto pyObj = Py::Object(linked->getPyObject(),true);
-        if(mat) {
+        if (mat) {
             Py::Tuple ret(2);
             ret.setItem(0,pyObj);
             ret.setItem(1,Py::asObject(new Base::MatrixPy(*mat)));
             return Py::new_reference_to(ret);
         }
+
         return Py::new_reference_to(pyObj);
-    } PY_CATCH;
+    }
+    PY_CATCH;
 }
 
 PyObject*  DocumentObjectPy::isElementVisible(PyObject *args)
