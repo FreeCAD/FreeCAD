@@ -287,7 +287,7 @@ int DrawPage::removeView(App::DocumentObject *docObj)
         return -1;
 
     App::Document* doc = docObj->getDocument();
-    if (doc == nullptr) {
+    if (!doc) {
         return -1;
     }
 
@@ -300,7 +300,7 @@ int DrawPage::removeView(App::DocumentObject *docObj)
     std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
     for (; it != currViews.end(); it++) {
         App::Document* viewDoc = (*it)->getDocument();
-        if (viewDoc == nullptr) {
+        if (!viewDoc) {
             continue;
         }
 

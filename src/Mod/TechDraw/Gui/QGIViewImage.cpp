@@ -90,9 +90,8 @@ void QGIViewImage::setViewImageFeature(TechDraw::DrawViewImage *obj)
 void QGIViewImage::updateView(bool update)
 {
     auto viewImage( dynamic_cast<TechDraw::DrawViewImage *>(getViewObject()) );
-    if( viewImage == nullptr ) {
+    if (!viewImage)
         return;
-    }
 
     if (update ||
         viewImage->isTouched() ||
@@ -120,9 +119,8 @@ void QGIViewImage::draw()
         return;
 
     auto vp = static_cast<ViewProviderImage*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     bool crop = vp->Crop.getValue();
 
     drawImage();
@@ -141,9 +139,8 @@ void QGIViewImage::draw()
 void QGIViewImage::drawImage()
 {
     auto viewImage( dynamic_cast<TechDraw::DrawViewImage *>(getViewObject()) );
-    if( viewImage == nullptr ) {
+    if (!viewImage)
         return;
-    }
 
     if (!viewImage->ImageIncluded.isEmpty()) {
         QString fileSpec = QString::fromUtf8(viewImage->ImageIncluded.getValue(),strlen(viewImage->ImageIncluded.getValue()));

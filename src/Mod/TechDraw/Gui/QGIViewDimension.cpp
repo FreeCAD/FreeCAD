@@ -566,7 +566,7 @@ void QGIViewDimension::hover(bool state)
 void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 {
 //    Base::Console().Message("QGIVD::setViewPartFeature()\n");
-    if(obj == nullptr)
+    if (!obj)
         return;
 
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
@@ -617,14 +617,13 @@ void QGIViewDimension::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void QGIViewDimension::updateView(bool update)
 {
     Q_UNUSED(update);
-    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
-    if( dim == nullptr )
+    auto dim(dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()));
+    if (!dim)
         return;
 
     auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
 
     if (update||
         dim->X.isTouched() ||

@@ -99,7 +99,7 @@ DrawView::~DrawView()
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
 //    Base::Console().Message("DV::execute() - %s touched: %d\n", getNameInDocument(), isTouched());
-    if (findParentPage() == nullptr) {
+    if (!findParentPage()) {
         return App::DocumentObject::execute();
     }
     handleXYLock();

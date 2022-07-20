@@ -95,7 +95,7 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
 {
 //    Base::Console().Message("DDH::makeExtentDim() - dvp: %s edgeNames: %d\n",
 //                            dvp->Label.getValue(), edgeNames.size());
-    if (dvp == nullptr) {
+    if (!dvp) {
 //        Base::Console().Message("DDH::makeExtentDim - dvp: %X\n", dvp);
         return;
     }

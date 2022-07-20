@@ -154,9 +154,8 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
     Q_UNUSED(rot);
     QPainterPath path;
 
-    if (baseGeom == nullptr) {
+    if (!baseGeom)
         return path;
-    }
 
     switch(baseGeom->geomType) {
         case CIRCLE: {
@@ -411,24 +410,20 @@ void QGIViewPart::updateView(bool update)
 {
 //    Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
-    if( viewPart == nullptr ) {
+    if (!viewPart)
         return;
-    }
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
 
-    if (update ) {
+    if (update)
         draw();
-    }
     QGIView::updateView(update);
 }
 
 void QGIViewPart::draw() {
-    if (!isVisible()) {
+    if (!isVisible())
         return;
-    }
 
     drawViewPart();
     drawMatting();
@@ -440,9 +435,8 @@ void QGIViewPart::draw() {
 void QGIViewPart::drawViewPart()
 {
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
-    if ( viewPart == nullptr ) {
+    if (!viewPart)
         return;
-    }
 //    Base::Console().Message("QGIVP::DVP() - %s / %s\n", viewPart->getNameInDocument(), viewPart->Label.getValue());
     if (!viewPart->hasGeometry()) {
         removePrimitives();                      //clean the slate
@@ -451,9 +445,8 @@ void QGIViewPart::drawViewPart()
     }
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
 
     float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = vp->HiddenWidth.getValue() * lineScaleFactor;
@@ -834,9 +827,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     if (!viewPart)  {
         return;
     }
-    if (viewSection == nullptr) {
+    if (!viewSection)
         return;
-    }
 
     if (!viewSection->hasGeometry()) {
         return;

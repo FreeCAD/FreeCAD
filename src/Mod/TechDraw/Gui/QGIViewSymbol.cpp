@@ -91,9 +91,8 @@ void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol *obj)
 void QGIViewSymbol::updateView(bool update)
 {
     auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
-    if( viewSymbol == nullptr ) {
+    if (!viewSymbol)
         return;
-    }
 
     if (update ||
         viewSymbol->isTouched() ||
@@ -121,9 +120,8 @@ void QGIViewSymbol::draw()
 void QGIViewSymbol::drawSvg()
 {
     auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
-    if( viewSymbol == nullptr ) {
+    if (!viewSymbol)
         return;
-    }
 
     double rezfactor = Rez::getRezFactor();
     double scaling = viewSymbol->getScale();

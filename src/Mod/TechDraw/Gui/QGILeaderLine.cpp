@@ -340,7 +340,7 @@ void QGILeaderLine::updateView(bool update)
 //    Base::Console().Message("QGIL::updateView() %s\n",getViewObject()->getNameInDocument());
     Q_UNUSED(update);
     auto featLeader( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
-    if ( featLeader == nullptr ) {
+    if (!featLeader) {
         Base::Console().Warning("QGILL::updateView - no feature!\n");
         return;
     }
@@ -600,7 +600,7 @@ QColor QGILeaderLine::getNormalColor()
     m_colNormal = PreferencesGui::leaderQColor();
 
     auto lead( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
-    if( lead == nullptr ) {
+    if (!lead) {
 //        Base::Console().Message("QGILL::getNormalColor - no feature\n");
         return m_colNormal;
     }

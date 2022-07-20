@@ -159,7 +159,7 @@ int QGSPage::addQView(QGIView *view)
 {
     //don't add twice!
     QGIView* existing = getQGIVByName(view->getViewName());
-    if (existing == nullptr) {
+    if (!existing) {
         addItem(view);
 
         // Find if it belongs to a parent

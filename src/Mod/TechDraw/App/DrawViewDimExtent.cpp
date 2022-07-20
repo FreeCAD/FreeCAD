@@ -109,13 +109,11 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
     }
 
     App::DocumentObject* docObj = Source.getValue();
-    if (docObj == nullptr) {
+    if (!docObj)
         return App::DocumentObject::StdReturn;
-    }
     DrawViewPart* dvp = dynamic_cast<DrawViewPart*>(docObj);
-     if (dvp == nullptr) {
+     if (!dvp)
         return App::DocumentObject::StdReturn;
-    }
 
     double tolerance = 0.00001;
     std::vector<std::string> edgeNames = getSubNames();
@@ -186,9 +184,8 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
     TechDraw::VertexPtr v0 = nullptr;
     TechDraw::VertexPtr v1 = nullptr;
     TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
     if (cTags.size() > 1) {

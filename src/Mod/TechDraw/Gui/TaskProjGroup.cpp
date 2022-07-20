@@ -144,9 +144,8 @@ TaskProjGroup::~TaskProjGroup()
 void TaskProjGroup::saveGroupState()
 {
 //    Base::Console().Message("TPG::saveGroupState()\n");
-    if (multiView == nullptr) {
+    if (!multiView)
         return;
-    }
 
     m_saveSource   = multiView->Source.getValues();
     m_saveProjType = multiView->ProjectionType.getValueAsString();
@@ -170,9 +169,8 @@ void TaskProjGroup::saveGroupState()
 void TaskProjGroup::restoreGroupState()
 {
     Base::Console().Message("TPG::restoreGroupState()\n");
-    if (multiView == nullptr) {
+    if (!multiView)
         return;
-    }
 
     multiView->ProjectionType.setValue(m_saveProjType.c_str());
     multiView->ScaleType.setValue(m_saveScaleType.c_str());
@@ -460,9 +458,8 @@ const char * TaskProjGroup::viewChkIndexToCStr(int index)
 }
 void TaskProjGroup::setupViewCheckboxes(bool addConnections)
 {
-    if ( multiView == nullptr ) {
+    if (!multiView)
         return;
-    }
 
     // There must be a better way to construct this list...
     QCheckBox * viewCheckboxes[] = { ui->chkView0,

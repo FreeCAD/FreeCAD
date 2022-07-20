@@ -393,7 +393,7 @@ void QGIViewBalloon::hover(bool state)
 void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
 {
 //    Base::Console().Message("QGIVB::setViewPartFeature()\n");
-    if(balloon == nullptr)
+    if (!balloon)
         return;
 
     setViewFeature(static_cast<TechDraw::DrawView *>(balloon));

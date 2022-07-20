@@ -149,11 +149,10 @@ void QGIWeldSymbol::updateView(bool update)
 //    Base::Console().Message("QGIWS::updateView()\n");
     Q_UNUSED(update);
     auto viewWeld( dynamic_cast<TechDraw::DrawWeldSymbol*>(getViewObject()) );
-    if( viewWeld == nullptr ) {
+    if (!viewWeld)
         return;
-    }
 
-    if ( getFeature() == nullptr ) {
+    if (!getFeature()) {
         Base::Console().Warning("QGIWS::updateView - no feature!\n");
         return;
     }
@@ -189,7 +188,7 @@ void QGIWeldSymbol::draw()
 void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
 {
 //    Base::Console().Message("QGIWS::drawTile() - tileFeat: %X\n", tileFeat);
-    if (tileFeat == nullptr) {
+    if (!tileFeat) {
         Base::Console().Message("QGIWS::drawTile - tile is null\n");
         return;
     }
