@@ -494,13 +494,8 @@ PyObject* SheetPy::setAlias(PyObject *args)
 
     try {
         address = stringToAddress(strAddress);
-        if (PyUnicode_Check(value))
-            getSheetPtr()->setAlias(address, PyUnicode_AsUTF8(value));
-        else if (value == Py_None)
-            getSheetPtr()->setAlias(address, "");
-        else
-            throw Base::TypeError("String or None expected");
-
+        Base::PyTypeCheck(&value, &PyUnicode_Type, "String or None expected");
+        getSheetPtr()->setAlias(address, value ? PyUnicode_AsUTF8(value) : "");
         Py_Return;
     }
     catch (const Base::Exception & e) {
@@ -523,10 +518,8 @@ PyObject* SheetPy::getAlias(PyObject *args)
 
         if (cell && cell->getAlias(alias))
             return Py::new_reference_to( Py::String( alias ) );
-        else {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
+        else
+            Py_Return;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -546,10 +539,8 @@ PyObject* SheetPy::getCellFromAlias(PyObject *args)
 
         if (!address.empty())
             return Py::new_reference_to( Py::String( address ) );
-        else {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
+        else
+            Py_Return;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
