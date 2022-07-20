@@ -1201,11 +1201,11 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     QDomDocument exportDoc(QString::fromUtf8("SvgDoc"));
     QFile file(temporaryFile.fileName());
     if (!file.open(QIODevice::ReadOnly)) {
-        Base::Console().Message("QGSPage::ppsvg - tempfile open error\n");
+        Base::Console().Error("QGSPage::ppsvg - tempfile open error\n");
         return;
     }
     if (!exportDoc.setContent(&file)) {
-        Base::Console().Message("QGSPage::ppsvg - xml error\n");
+        Base::Console().Error("QGSPage::ppsvg - xml error\n");
         file.close();
         return;
     }
