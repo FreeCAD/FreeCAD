@@ -122,9 +122,6 @@ void TaskPocketParameters::onModeChanged(int index)
         case Modes::TwoDimensions:
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("TwoLengths");
-            // symmetric is then not possible
-            if (ui->checkBoxMidplane->isChecked())
-                ui->checkBoxMidplane->setChecked(false);
             break;
     }
 
