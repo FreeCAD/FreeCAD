@@ -460,17 +460,13 @@ PyObject *PropertyLink::getPyObject()
 
 void PropertyLink::setPyObject(PyObject *value)
 {
-    if (PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
-        DocumentObjectPy  *pcObject = static_cast<DocumentObjectPy*>(value);
+    Base::PyTypeCheck(&value, &DocumentObjectPy::Type);
+    if (value) {
+        DocumentObjectPy *pcObject = static_cast<DocumentObjectPy*>(value);
         setValue(pcObject->getDocumentObjectPtr());
     }
-    else if (Py_None == value) {
-        setValue(nullptr);
-    }
     else {
-        std::string error = std::string("type must be 'DocumentObject' or 'NoneType', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
+        setValue(nullptr);
     }
 }
 
@@ -708,16 +704,9 @@ PyObject *PropertyLinkList::getPyObject()
 
 DocumentObject *PropertyLinkList::getPyValue(PyObject *item) const
 {
-    if (item == Py_None) {
-        return nullptr;
-    }
-    else if (PyObject_TypeCheck(item, &(DocumentObjectPy::Type))) {
-        return static_cast<DocumentObjectPy*>(item)->getDocumentObjectPtr();
-    }
+    Base::PyTypeCheck(&item, &DocumentObjectPy::Type);
 
-    std::string error = std::string("type must be 'DocumentObject', list of 'DocumentObject', or NoneType, not ");
-    error += item->ob_type->tp_name;
-    throw Base::TypeError(error);
+    return item ? static_cast<DocumentObjectPy*>(item)->getDocumentObjectPtr() : nullptr;
 }
 
 void PropertyLinkList::Save(Base::Writer &writer) const
