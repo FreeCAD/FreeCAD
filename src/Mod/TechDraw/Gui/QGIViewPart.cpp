@@ -458,8 +458,7 @@ void QGIViewPart::drawViewPart()
     removePrimitives();                      //clean the slate
     removeDecorations();
 
-#if MOD_TECHDRAW_HANDLE_FACES
-    if (viewPart->handleFaces()) {
+    if (viewPart->handleFaces() && !viewPart->CoarseView.getValue()) {
         // Draw Faces
         std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
         std::vector<TechDraw::DrawGeomHatch*> geomObjs = viewPart->getGeomHatches();
@@ -529,7 +528,6 @@ void QGIViewPart::drawViewPart()
             newFace->draw();
         }
     }
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     // Draw Edges
     QColor edgeColor = PreferencesGui::normalQColor();
