@@ -924,20 +924,8 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="toolTip">
-      <string>Enable draft statusbar customization</string>
-     </property>
      <property name="title">
       <string>Draft Statusbar</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <string notr="true">DisplayStatusbar</string>
-     </property>
-     <property name="prefPath" stdset="0">
-      <string notr="true">Mod/Draft</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
