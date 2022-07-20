@@ -56,7 +56,7 @@ class ViewProviderViewPart;
 class Ui_TaskSurfaceFinishSymbols;
 
 class SvgString
-// Class to reate a SVG as a string
+// Class to create an SVG as a string
 {
     std::stringstream svgStream;
 
