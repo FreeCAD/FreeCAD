@@ -642,6 +642,19 @@ void InputField::focusInEvent(QFocusEvent *event)
 
 void InputField::focusOutEvent(QFocusEvent *event)
 {
+    try {
+        if (Quantity::parse(this->text()).getUnit().isEmpty()) {
+            // if user didn't enter a unit, we virtually compensate
+            // the multiplication factor induced by user unit system
+            double factor;
+            QString unitStr;
+            actQuantity.getUserString(factor, unitStr);
+            actQuantity = actQuantity * factor;
+        }
+    }
+    catch (const Base::ParserError& e) {
+        // do nothing, let apply the last known good value
+    }
     this->setText(actQuantity.getUserString());
     QLineEdit::focusOutEvent(event);
 }
