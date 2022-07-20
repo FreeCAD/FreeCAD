@@ -1491,7 +1491,7 @@ void CmdTechDrawSurfaceFinishSymbols::activated(int iMsg)
         return;
     }
     TechDraw::DrawViewPart* objFeat = dynamic_cast<TechDraw::DrawViewPart*> (selection[0].getObject());
-    if(objFeat == nullptr)
+    if(!objFeat)
     {
         QMessageBox::warning(Gui::getMainWindow(),QObject::tr("SurfaceFinishSymbols"),QObject::tr("No object selected"));
         return;
