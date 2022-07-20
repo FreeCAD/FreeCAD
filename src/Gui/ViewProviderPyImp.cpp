@@ -161,11 +161,12 @@ PyObject*  ViewProviderPy::isVisible(PyObject *args)
 
 PyObject*  ViewProviderPy::canDragObject(PyObject *args)
 {
-    PyObject *obj = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &App::DocumentObjectPy::Type, &obj))
+    PyObject *obj = Py_None;
+    if (!PyArg_ParseTuple(args, "|O", &obj))
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&obj, &App::DocumentObjectPy::Type);
         bool ret;
         if (!obj)
             ret = getViewProviderPtr()->canDragObjects();
@@ -180,17 +181,20 @@ PyObject*  ViewProviderPy::canDragObject(PyObject *args)
 
 PyObject*  ViewProviderPy::canDropObject(PyObject *args, PyObject *kw)
 {
-    PyObject *obj = nullptr;
-    PyObject *owner = nullptr;
-    PyObject *pyElements = nullptr;
+    PyObject *obj = Py_None;
+    PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
     const char *subname = nullptr;
     static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "|O!O!sO", kwlist,
-            &App::DocumentObjectPy::Type,&obj, &App::DocumentObjectPy::Type, &owner,
-            &subname, &pyElements))
+    if (!PyArg_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist,
+            &obj, &owner, &subname, &pyElements))
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&obj, &App::DocumentObjectPy::Type, "expecting 'obj' to be of type App.DocumentObject or None");
+        Base::PyTypeCheck(&owner, &App::DocumentObjectPy::Type, "expecting 'owner' to be of type App.DocumentObject or None");
+        Base::PyTypeCheck(&pyElements, PySequence_Check, "expecting 'elem' to be sequence or None");
+
         bool ret;
         App::DocumentObject* pcObject;
         App::DocumentObject* pcOwner = nullptr;
@@ -238,16 +242,18 @@ PyObject*  ViewProviderPy::canDragAndDropObject(PyObject *args)
 PyObject*  ViewProviderPy::dropObject(PyObject *args, PyObject *kw)
 {
     PyObject *obj;
-    PyObject *owner = nullptr;
-    PyObject *pyElements = nullptr;
+    PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
     const char *subname = nullptr;
     static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "O!|O!sO", kwlist,
-            &App::DocumentObjectPy::Type,&obj, &App::DocumentObjectPy::Type, &owner,
-            &subname, &pyElements))
+    if (!PyArg_ParseTupleAndKeywords(args, kw, "O!|OsO", kwlist,
+            &App::DocumentObjectPy::Type, &obj, &owner, &subname, &pyElements))
         return nullptr;
 
     PY_TRY {
+        Base::PyTypeCheck(&owner, &App::DocumentObjectPy::Type, "expecting 'owner' to be of type App.DocumentObject or None");
+        Base::PyTypeCheck(&pyElements, PySequence_Check, "expecting 'elem' to be sequence or None");
+
         auto pcObject = static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr();
         App::DocumentObject *pcOwner = nullptr;
         App::PropertyStringList elements;

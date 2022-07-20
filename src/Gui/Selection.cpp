@@ -2523,17 +2523,10 @@ PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PY_TRY {
-        VisibleState vis;
-        if(visible == Py_None) {
-            vis = VisToggle;
-        }
-        else if (PyBool_Check(visible)) {
-            vis = Base::asBoolean(visible) ? VisShow : VisHide;
-        }
-        else {
-            PyErr_SetString(PyExc_ValueError, "Argument is neither None nor Bool");
-            return nullptr;
-        }
+        VisibleState vis = VisToggle;
+        Base::PyTypeCheck(&visible, &PyBool_Type);
+        if (visible)
+            vis = PyObject_IsTrue(visible) ? VisShow : VisHide;
 
         Selection().setVisible(vis);
         Py_Return;
