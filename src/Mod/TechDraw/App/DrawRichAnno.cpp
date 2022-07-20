@@ -76,10 +76,11 @@ void DrawRichAnno::onChanged(const App::Property* prop)
 
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawRichAnno::mustExecute() const
 {
     if (!isRestoring() && AnnoText.isTouched()) {
-        return true;
+        return 1;
     }
 
     return DrawView::mustExecute();

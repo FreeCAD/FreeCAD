@@ -122,13 +122,14 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
     return DrawView::execute();
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewClip::mustExecute() const
 {
     if (!isRestoring()) {
         if (Height.isTouched() ||
             Width.isTouched() ||
             Views.isTouched()) {
-            return true;
+            return 1;
         }
     }
     return TechDraw::DrawView::mustExecute();
