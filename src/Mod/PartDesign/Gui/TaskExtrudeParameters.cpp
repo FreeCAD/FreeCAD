@@ -722,7 +722,7 @@ void TaskExtrudeParameters::onFaceName(const QString& text)
 
 void TaskExtrudeParameters::translateFaceName()
 {
-    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+    handleLineFaceNameNo();
     QVariant featureName = ui->lineFaceName->property("FeatureName");
     if (featureName.isValid()) {
         QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
