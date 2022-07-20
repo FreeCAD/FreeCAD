@@ -1503,7 +1503,7 @@ bool CmdTechDrawSurfaceFinishSymbols::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return havePage && haveView;
 }
 
 void CreateTechDrawCommandsAnnotate(void)
