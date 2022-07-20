@@ -50,7 +50,7 @@ TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderSketchBased *SketchBase
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+    handleLineFaceNameNo();
 
     Gui::ButtonGroup* group = new Gui::ButtonGroup(this);
     group->addButton(ui->checkBoxMidplane);
@@ -683,10 +683,10 @@ void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vec
 
 void TaskExtrudeParameters::onButtonFace(const bool checked)
 {
-    if (!checked && ui->lineFaceName->text().isEmpty())
-        ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-    else if (checked && ui->lineFaceName->text().isEmpty())
-        handleLineFaceName(); // sets placeholder text
+    if (!checked)
+        handleLineFaceNameNo();
+    else
+        handleLineFaceNameClick(); // sets placeholder text
 
     // to distinguish that this is the direction selection
     selectionFace = true;
@@ -892,9 +892,14 @@ void TaskExtrudeParameters::translateModeList(int)
     // implement in sub-class
 }
 
-void TaskExtrudeParameters::handleLineFaceName(void)
+void TaskExtrudeParameters::handleLineFaceNameClick(void)
 {
     ui->lineFaceName->setPlaceholderText(tr("Click on a face in the model"));
+}
+
+void TaskExtrudeParameters::handleLineFaceNameNo(void)
+{
+    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
 }
 
 #include "moc_TaskExtrudeParameters.cpp"

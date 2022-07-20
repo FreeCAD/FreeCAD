@@ -116,7 +116,7 @@ void TaskPocketParameters::onModeChanged(int index)
             ui->lengthEdit->setValue(0.0);
             if (ui->lineFaceName->text().isEmpty()) {
                 ui->buttonFace->setChecked(true);
-                handleLineFaceName(); // sets placeholder text
+                handleLineFaceNameClick(); // sets placeholder text
             }
             break;
         case Modes::TwoDimensions:

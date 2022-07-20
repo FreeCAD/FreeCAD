@@ -106,7 +106,7 @@ void TaskPadParameters::onModeChanged(int index)
         pcPad->Type.setValue("UpToFace");
         if (ui->lineFaceName->text().isEmpty()) {
             ui->buttonFace->setChecked(true);
-            handleLineFaceName(); // sets placeholder text
+            handleLineFaceNameClick(); // sets placeholder text
         }
         break;
     case Modes::TwoDimensions:
