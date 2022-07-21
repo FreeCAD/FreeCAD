@@ -54,6 +54,7 @@ class SoIndexedLineSet;
 class SoIndexedTriangleStripSet;
 
 namespace Gui {
+  class SelectionChanges;
   class SoFCColorBar;
 }
 
@@ -144,6 +145,10 @@ protected:
     vtkSmartPointer<vtkOutlineCornerFilter>     m_outline;
     vtkSmartPointer<vtkExtractEdges>            m_wireframe, m_wireframeSurface;
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
+
+    void selectionChanged(const Gui::SelectionChanges &);
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connectSelection;
 
 private:
     void updateProperties();

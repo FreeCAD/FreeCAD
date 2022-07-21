@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <functional>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -48,6 +49,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -56,6 +59,7 @@
 
 
 using namespace FemGui;
+namespace sp = std::placeholders;
 
 #ifdef VTK_CELL_ARRAY_V2
 typedef const vtkIdType* vtkIdTypePtr;
@@ -130,6 +134,9 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_currentAlgorithm = m_outline;
 
     updateProperties();  // initialize the enums
+
+    this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
+        std::bind(&ViewProviderFemPostObject::selectionChanged, this, sp::_1));
 }
 
 ViewProviderFemPostObject::~ViewProviderFemPostObject()
@@ -710,3 +717,23 @@ bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
     Q_UNUSED(obj)
         return true;
 }
+
+void ViewProviderFemPostObject::selectionChanged(const Gui::SelectionChanges &sel)
+{
+    // If a FemPostObject is selected in the document tree we must refresh its
+    // Field property to update the color bar.
+    // But don't do this if the object is invisible because otherobjects with a
+    // color bar might be visible and the color bar is then wrong.
+    if (sel.Type == sel.AddSelection) {
+        Gui::SelectionObject obj(sel);
+        if (obj.getObject() == this->getObject()) {
+            if (!this->getObject()->Visibility.getValue())
+                return;
+            auto propField = Base::freecad_dynamic_cast<App::PropertyEnumeration>(
+                getPropertyByName("Field"));
+            if (propField)
+                propField->touch();
+        }
+    }
+}
+
