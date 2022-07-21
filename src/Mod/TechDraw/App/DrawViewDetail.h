@@ -23,6 +23,9 @@
 #ifndef _DrawViewDetail_h_
 #define _DrawViewDetail_h_
 
+#include <gp_Ax2.hxx>
+#include <TopoDS_Shape.hxx>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/FeaturePython.h>
@@ -47,6 +50,7 @@ namespace TechDraw
 class TechDrawExport DrawViewDetail : public DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewDetail);
+    Q_OBJECT
 
 public:
     /// Constructor
@@ -67,22 +71,37 @@ public:
     void unsetupObject() override;
 
 
-    void detailExec(TopoDS_Shape s, 
+    void detailExec(TopoDS_Shape& s,
                     DrawViewPart* baseView,
                     DrawViewSection* sectionAlias);
-    double getFudgeRadius();
-    TopoDS_Shape projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir);
+    void makeDetailShape(TopoDS_Shape& shape,
+                         DrawViewPart* dvp,
+                         DrawViewSection* dvs);
+    void postHlrTasks(void) override;
+    void waitingForDetail(bool s) { m_waitingForDetail = s; }
+    bool waitingForDetail(void) { return m_waitingForDetail; }
+
+    double getFudgeRadius(void);
+    TopoDS_Shape projectEdgesOntoFace(TopoDS_Shape& edgeShape,
+                                      TopoDS_Face& projFace,
+                                      gp_Dir& projDir);
 
     std::vector<DrawViewDetail*> getDetailRefs() const override;
 
-    void postHlrTasks(void) override;
+public Q_SLOTS:
+    void onMakeDetailFinished(void);
 
 protected:
-    Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
-    void getParameters();
+    void getParameters(void);
     double m_fudge;
     bool debugDetail() const;
 
+    TopoDS_Shape m_scaledShape;
+    gp_Ax2 m_viewAxis;
+
+    QFutureWatcher<void> m_detailWatcher;
+    QFuture<void> m_detailFuture;
+    bool m_waitingForDetail;
 };
 
 typedef App::FeaturePythonT<DrawViewDetail> DrawViewDetailPython;

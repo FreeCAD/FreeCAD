@@ -287,36 +287,26 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+
+    if (waitingForResult()) {
+        return DrawView::execute();
+    }
     
-    App::Document* doc = getDocument();
-    bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
     const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty())  {
-        if (isRestoring) {
-            Base::Console().Warning("DVP::execute - No Sources (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVP::execute - No Source(s) linked. - %s\n",
-                                  getNameInDocument());
-        }
-        return App::DocumentObject::StdReturn;
+        Base::Console().Log("DVP::execute - %s - No Source(s) linked.\n",
+                            getNameInDocument());
+        return DrawView::execute();
     }
 
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
-        if (isRestoring) {
-            Base::Console().Warning("DVP::execute - source shape is invalid - (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVP::execute - Source shape is Null. - %s\n",
-                                  getNameInDocument());
-        }
-        return App::DocumentObject::StdReturn;
+        Base::Console().Log("DVP::execute - %s - Source shape is Null.\n",
+                            getNameInDocument());
+        return DrawView::execute();
     }
 
-
-    bool haveX = checkXDirection();
-    if (!haveX) {
+    if (!checkXDirection()) {
         //block touch/onChanged stuff
         Base::Vector3d newX = getXDirection();
         XDirection.setValue(newX);
@@ -381,11 +371,9 @@ void DrawViewPart::onChanged(const App::Property* prop)
     }
 
     DrawView::onChanged(prop);
-
-//TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
 }
 
-void DrawViewPart::partExec(TopoDS_Shape shape)
+void DrawViewPart::partExec(TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVP::partExec()\n");
     if (waitingForResult()) {
@@ -402,19 +390,15 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
     geometryObject = makeGeometryForShape(shape);
 }
 
-GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
+GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVP::makeGeometryForShape()\n");
+//    BRepTools::Write(shape, "DVPShape.brep");            //debug
     gp_Pnt inputCenter;
     Base::Vector3d stdOrg(0.0,0.0,0.0);
-
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
-
-//    BRepTools::Write(shape, "DVPShape.brep");            //debug
-
     inputCenter = TechDraw::findCentroid(shape,
                                          viewAxis);
-
     Base::Vector3d centroid(inputCenter.X(),
                             inputCenter.Y(),
                             inputCenter.Z());
@@ -438,7 +422,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
 }
 
 //note: slightly different than routine with same name in DrawProjectSplit
-TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
+TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, gp_Ax2& viewAxis)
 {
 //    Base::Console().Message("DVP::buildGeometryObject()\n");
     TechDraw::GeometryObject* go = new TechDraw::GeometryObject(getNameInDocument(), this);
@@ -454,12 +438,12 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
                             //the post hlr processing manually
     } else {
 //        Base::Console().Message("DVP::buildGeometryObject - starting projectShape\n");
-        waitingForHlr(true);
+        //project shape runs in a separate thread since if can take a long time
         QObject::connect(&m_hlrWatcher, SIGNAL(finished()), this, SLOT(onHlrFinished()));
         m_hlrFuture = QtConcurrent::run(go, &GeometryObject::projectShape, shape, viewAxis);
         m_hlrWatcher.setFuture(m_hlrFuture);
+        waitingForHlr(true);
     }
-
     return go;
 }
 
@@ -473,11 +457,11 @@ void DrawViewPart::onHlrFinished(void)
 
     waitingForHlr(false);
     QObject::disconnect(&m_hlrWatcher, SIGNAL(finished()), this, SLOT(onHlrFinished()));
-
     showProgressMessage(getNameInDocument(), "has finished finding hidden lines");
 
     postHlrTasks();
 
+    //start face finding in a separate thread
     if (handleFaces() && !CoarseView.getValue()) {
         try {
 //            Base::Console().Message("DVP::onHlrFinished - starting extractFaces\n");
@@ -485,26 +469,25 @@ void DrawViewPart::onHlrFinished(void)
             m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
             m_faceWatcher.setFuture(m_faceFuture);
         }
-        catch (Standard_Failure& e4) {
+        catch (Standard_Failure& e) {
             waitingForFaces(false);
-            Base::Console().Message("DVP::partExec - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
+            Base::Console().Error("DVP::partExec - %s - extractFaces failed - %s **\n",getNameInDocument(), e.GetMessageString());
+            throw Base::RuntimeError("DVP::onHlrFinished - error extracting faces");
         }
     }
+}
 
+//run any tasks that need to been done after geometry is available
+void DrawViewPart::postHlrTasks(void)
+{
+    //add geometry that doesn't come from HLR
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addCenterLinesToGeom();
-
     addReferencesToGeom();
 
-    requestPaint();
-}
-
-void DrawViewPart::postHlrTasks(void)
-{
-    //DVDetail and DVSection have special needs.
-    //dimensions and balloons need to be recomputed here to get their references sorted
-
+    //dimensions and balloons need to be recomputed here because their
+    //references will be invalid until the geometry exists
     std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
     for (auto& d : dims) {
         d->recomputeFeature();
@@ -513,6 +496,8 @@ void DrawViewPart::postHlrTasks(void)
     for (auto& b : bals) {
         b->recomputeFeature();
     }
+
+    requestPaint();
 }
 
 //! make faces from the existing edge geometry
