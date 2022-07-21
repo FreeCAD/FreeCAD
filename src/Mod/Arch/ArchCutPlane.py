@@ -24,7 +24,7 @@ import FreeCAD,ArchCommands
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):

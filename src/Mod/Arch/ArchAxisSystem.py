@@ -23,7 +23,7 @@ import FreeCAD, DraftGeomUtils
 if FreeCAD.GuiUp:
     import FreeCADGui, Draft
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from pivy import coin
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:

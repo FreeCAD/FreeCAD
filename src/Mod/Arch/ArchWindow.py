@@ -30,7 +30,7 @@ from draftutils.messages import _wrn
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui, QtSvg
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import draftguitools.gui_trackers as DraftTrackers
 else:

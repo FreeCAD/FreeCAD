@@ -21,7 +21,7 @@
 
 import FreeCAD, Mesh, os, numpy, MeshPart, Arch, Draft
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(context,text):
