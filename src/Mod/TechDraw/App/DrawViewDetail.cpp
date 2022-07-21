@@ -484,6 +484,7 @@ void DrawViewDetail::postHlrTasks(void)
 {
     geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),
                                     Radius.getValue() * getScale());      //remove vertices beyond clipradius
+    DrawViewPart::postHlrTasks();
 }
 
 TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir)

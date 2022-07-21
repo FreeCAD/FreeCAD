@@ -546,6 +546,7 @@ void DrawViewSection::postHlrTasks(void)
         }
     }
     requestPaint();
+    DrawViewPart::postHlrTasks();
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
