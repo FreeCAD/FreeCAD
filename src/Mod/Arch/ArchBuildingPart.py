@@ -30,7 +30,7 @@ import tempfile
 import os
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import draftutils.units as units
 else:

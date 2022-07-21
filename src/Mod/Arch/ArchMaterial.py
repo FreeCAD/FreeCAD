@@ -24,7 +24,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui, os
     import Arch_rc # Needed for access to icons # lgtm [py/unused_import]
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond

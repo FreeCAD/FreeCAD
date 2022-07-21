@@ -42,7 +42,7 @@ import textwrap
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     FreeCADGui = None
     def translate(ctxt, txt): return txt
