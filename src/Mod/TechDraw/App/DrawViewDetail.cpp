@@ -66,8 +66,9 @@
 
 #include <chrono>
 
-# include <QFile>
-# include <QFileInfo>
+#include <QFile>
+#include <QFileInfo>
+#include "QtConcurrent/qtconcurrentrun.h"
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -102,7 +103,8 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewDetail, TechDraw::DrawViewPart)
 
-DrawViewDetail::DrawViewDetail()
+DrawViewDetail::DrawViewDetail() :
+    m_waitingForDetail(false)
 {
     static const char *dgroup = "Detail";
 
@@ -192,30 +194,25 @@ void DrawViewDetail::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewDetail::execute()
 {
-//    Base::Console().Message("DVD::execute() - %s\n", Label.getValue());
+//    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
 
     App::DocumentObject* baseObj = BaseView.getValue();
     if (!baseObj)  {
-        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-        if (isRestoring) {
-            Base::Console().Warning("DVD::execute - No BaseView (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVD::execute - No BaseView(s) linked. - %s\n",
+        Base::Console().Log("DVD::execute - No BaseView(s) linked. - %s\n",
                                   getNameInDocument());
-        }
         return DrawView::execute();
     }
 
-    DrawViewPart* dvp = nullptr;
     if (!baseObj->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
+        Base::Console().Log("DVD::execute - %s - BaseView object is not a DrawViewPart object\n",
+                             getNameInDocument());
+        return DrawView::execute();
     }
     
-    dvp = static_cast<DrawViewPart*>(baseObj);
+    DrawViewPart* dvp = static_cast<DrawViewPart*>(baseObj);
 
     DrawProjGroupItem* dpgi = nullptr;
     if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -239,14 +236,8 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute()
     }
 
     if (shape.IsNull()) {
-        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-        if (isRestoring) {
-            Base::Console().Warning("DVD::execute - source shape is invalid - (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVD::execute - Source shape is Null. - %s\n",
-                                  getNameInDocument());
-        }
+        Base::Console().Log("DVD::execute - %s - Source shape is Null\n",
+                              getNameInDocument());
         return DrawView::execute();
     }
 
@@ -279,14 +270,32 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute()
 
 //try to create a detail of the solids & shells in shape
 //if there are no solids/shells in shape, use the edges in shape
-void DrawViewDetail::detailExec(TopoDS_Shape shape,
+void DrawViewDetail::detailExec(TopoDS_Shape& shape,
                                 DrawViewPart* dvp,
                                 DrawViewSection* dvs)
 {
     if (waitingForResult()) {
-        Base::Console().Message("DVD::detailExec - waiting for result\n");
+//        Base::Console().Message("DVD::detailExec - waiting for result\n");
         return;
     }
+    QObject::connect(&m_detailWatcher, SIGNAL(finished()), this, SLOT(onMakeDetailFinished()));
+    m_detailFuture = QtConcurrent::run(this, &DrawViewDetail::makeDetailShape, shape, dvp, dvs);
+    m_detailWatcher.setFuture(m_detailFuture);
+}
+
+//this runs in a separate thread since it can sometimes take a long time
+void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
+                                     DrawViewPart* dvp,
+                                     DrawViewSection* dvs)
+{
+    if (waitingForDetail()) {
+//        Base::Console().Message("DVD::makeDetailShape - already in progress. returning\n");
+        return;
+    }
+    waitingForDetail(true);
+    showProgressMessage(getNameInDocument(), "is making detail shape");
+
+//    auto start = chrono::high_resolution_clock::now();
 
     Base::Vector3d anchor = AnchorPoint.getValue();    //this is a 2D point (in unrotated coords)
     Base::Vector3d dirDetail = dvp->Direction.getValue();
@@ -314,11 +323,9 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     shapeCenter = Base::Vector3d(0.0, 0.0, 0.0);
 
 
-    gp_Ax2 viewAxis;
-
-    viewAxis = dvp->getProjectionCS(shapeCenter);
+    m_viewAxis = dvp->getProjectionCS(shapeCenter);
     anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);   //anchor coord in projection CS
-    Base::Vector3d anchorOffset3d = DrawUtil::toR3(viewAxis, anchor);     //actual anchor coords in R3
+    Base::Vector3d anchorOffset3d = DrawUtil::toR3(m_viewAxis, anchor);     //actual anchor coords in R3
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
@@ -434,59 +441,77 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
         //centroid of result
         inputCenter = TechDraw::findCentroid(pieces,
                                              dirDetail);
-    Base::Vector3d centroid(inputCenter.X(),
-                            inputCenter.Y(),
-                            inputCenter.Z());
-    m_saveCentroid += centroid;              //center of massaged shape
+        Base::Vector3d centroid(inputCenter.X(),
+                                inputCenter.Y(),
+                                inputCenter.Z());
+        m_saveCentroid += centroid;              //center of massaged shape
 
-    TopoDS_Shape scaledShape;
-    if ((solidCount > 0) ||
-        (shellCount > 0)) {
-        //align shape with detail anchor
-        TopoDS_Shape centeredShape = TechDraw::moveShape(pieces,
-                                                         anchorOffset3d * -1.0);
-        scaledShape = TechDraw::scaleShape(centeredShape,
-                                           getScale());
-        if (debugDetail()) {
-            BRepTools::Write(scaledShape, "DVDScaled.brep");            //debug
+        if ((solidCount > 0) ||
+            (shellCount > 0)) {
+            //align shape with detail anchor
+            TopoDS_Shape centeredShape = TechDraw::moveShape(pieces,
+                                                             anchorOffset3d * -1.0);
+            m_scaledShape = TechDraw::scaleShape(centeredShape,
+                                                 getScale());
+            if (debugDetail()) {
+                BRepTools::Write(m_scaledShape, "DVDScaled.brep");            //debug
+            }
+        } else {
+            //no solids, no shells, do what you can with edges
+            TopoDS_Shape projectedEdges = projectEdgesOntoFace(myShape, aProjFace, gdir);
+            TopoDS_Shape centeredShape = TechDraw::moveShape(projectedEdges,
+                                                             anchorOffset3d * -1.0);
+            if (debugDetail()) {
+                BRepTools::Write(projectedEdges, "DVDProjectedEdges.brep");            //debug
+                BRepTools::Write(centeredShape, "DVDCenteredShape.brep");            //debug
+            }
+            m_scaledShape = TechDraw::scaleShape(centeredShape,
+                                                 getScale());
         }
-    } else {
-        //no solids, no shells, do what you can with edges
-        TopoDS_Shape projectedEdges = projectEdgesOntoFace(myShape, aProjFace, gdir);
-        TopoDS_Shape centeredShape = TechDraw::moveShape(projectedEdges,
-                                                         anchorOffset3d * -1.0);
-        if (debugDetail()) {
-            BRepTools::Write(projectedEdges, "DVDProjectedEdges.brep");            //debug
-            BRepTools::Write(centeredShape, "DVDCenteredShape.brep");            //debug
+
+        Base::Vector3d stdOrg(0.0,0.0,0.0);
+        m_viewAxis = dvp->getProjectionCS(stdOrg);
+
+        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+            m_scaledShape = TechDraw::rotateShape(m_scaledShape,
+                                                  m_viewAxis,
+                                                  Rotation.getValue());
         }
-        scaledShape = TechDraw::scaleShape(centeredShape,
-                                           getScale());
-    }
+    }  //end try block
 
-    Base::Vector3d stdOrg(0.0,0.0,0.0);
-    gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);
-
-    if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-        scaledShape = TechDraw::rotateShape(scaledShape,
-                                            viewAxis,
-                                            Rotation.getValue());
-    }
-
-    geometryObject =  buildGeometryObject(scaledShape,viewAxis);
-    }
     catch (Standard_Failure& e1) {
-        Base::Console().Message("LOG - DVD::execute - failed to create detail %s - %s **\n",getNameInDocument(),e1.GetMessageString());
+        Base::Console().Message("DVD::makeDetailShape - failed to create detail %s - %s **\n",getNameInDocument(),e1.GetMessageString());
         return;
     }
+
+//    auto end = chrono::high_resolution_clock::now();
+//    auto diff = end - start;
+//    double diffOut = chrono::duration <double, milli>(diff).count();
+//    Base::Console().Message("DVD::makeDetailShape - %s spent: %.3f millisecs making detail shape\n", getNameInDocument(), diffOut);
+    showProgressMessage(getNameInDocument(), "has finished making detail shape");
 }
 
 void DrawViewDetail::postHlrTasks(void)
 {
+//    Base::Console().Message("DVD::postHlrTasks()\n");
     geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),
                                     Radius.getValue() * getScale());      //remove vertices beyond clipradius
+    DrawViewPart::postHlrTasks();
 }
 
-TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir)
+//continue processing after makeDetailShape thread is finished
+void DrawViewDetail::onMakeDetailFinished(void)
+{
+    waitingForDetail(false);
+    QObject::disconnect(&m_detailWatcher, SIGNAL(finished()), this, SLOT(onMakeDetailFinished()));
+
+    //ancestor's buildGeometryObject will run HLR and face finding in a separate thread
+    geometryObject =  buildGeometryObject(m_scaledShape, m_viewAxis);
+
+}
+TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape &edgeShape,
+                                                  TopoDS_Face &projFace,
+                                                  gp_Dir& projDir)
 {
     BRep_Builder builder;
     TopoDS_Compound edges;

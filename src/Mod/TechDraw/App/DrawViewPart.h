@@ -226,10 +226,10 @@ protected:
     void onChanged(const App::Property* prop) override;
     void unsetupObject() override;
 
-    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis); //const??
-    virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape shape);   //const??
-    void partExec(TopoDS_Shape shape);
-    virtual void addShapes2d();
+    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape& shape, gp_Ax2& viewAxis);
+    virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape& shape);   //const??
+    void partExec(TopoDS_Shape& shape);
+    virtual void addShapes2d(void);
 
     void extractFaces();
 

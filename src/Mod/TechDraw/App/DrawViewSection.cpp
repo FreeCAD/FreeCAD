@@ -65,8 +65,9 @@
 
 #include <chrono>
 
-# include <QFile>
-# include <QFileInfo>
+#include <QFile>
+#include <QFileInfo>
+#include "QtConcurrent/qtconcurrentrun.h"
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -115,7 +116,8 @@ const char* DrawViewSection::CutSurfaceEnums[]= {"Hide",
 
 PROPERTY_SOURCE(TechDraw::DrawViewSection, TechDraw::DrawViewPart)
 
-DrawViewSection::DrawViewSection()
+DrawViewSection::DrawViewSection()  :
+    m_waitingForCut(false)
 {
     static const char *sgroup = "Section";
     static const char *fgroup = "Cut Surface Format";
@@ -349,21 +351,42 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
     return DrawView::execute();
 }
 
-void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
+void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 {
 //    Base::Console().Message("DVS::sectionExec() - %s\n", getNameInDocument());
     if (waitingForResult()) {
 //        Base::Console().Message("DVS::sectionExec - waiting for result\n");
         return;
     }
+    try {
+        QObject::connect(&m_cutWatcher, SIGNAL(finished()), this, SLOT(onSectionCutFinished()));
+        m_cutFuture = QtConcurrent::run(this, &DrawViewSection::makeSectionCut, baseShape);
+        m_cutWatcher.setFuture(m_cutFuture);
+    }
+    catch (...) {
+        Base::Console().Message("DVS::sectionExec - failed to make section cut");
+        return;
+    }
+}
+
+void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
+{
+//    Base::Console().Message("DVS::makeSectionCut()\n");
+    if (waitingForCut()) {
+//        Base::Console().Message("DVS::makeSectionCut - waiting for cut - returning\n");
+        return;
+    }
+
+    waitingForCut(true);
+    showProgressMessage(getNameInDocument(), "is making section cut");
+
+    //    auto start = chrono::high_resolution_clock::now();
 
 // cut base shape with tool
     //is SectionOrigin valid?
     Bnd_Box centerBox;
     BRepBndLib::AddOptimal(baseShape, centerBox);
     centerBox.SetGap(0.0);
-
-// make tool
     gp_Pln pln = getSectionPlane();
     gp_Dir gpNormal = pln.Axis().Direction();
     Base::Vector3d orgPnt = SectionOrigin.getValue();
@@ -372,6 +395,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
         Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n",getNameInDocument());
     }
 
+    // make cutting tool
     // Make the extrusion face
     double dMax = sqrt(centerBox.SquareExtent());
     BRepBuilderAPI_MakeFace mkFace(pln, -dMax,dMax,-dMax,dMax);
@@ -420,20 +444,19 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
     BRepBndLib::AddOptimal(rawShape, testBox);
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {           //prism & input don't intersect.  rawShape is garbage, don't bother.
-        Base::Console().Warning("DVS::execute - prism & input don't intersect - %s\n", Label.getValue());
+        Base::Console().Warning("DVS::makeSectionCut - prism & input don't intersect - %s\n", Label.getValue());
         return;
 
     }
 
 // build display geometry as in DVP, with minor mods
-    gp_Ax2 viewAxis;
     TopoDS_Shape centeredShape;
     try {
         Base::Vector3d origin(0.0, 0.0, 0.0);
-        viewAxis = getProjectionCS(origin);
+        m_viewAxis = getProjectionCS(origin);
         gp_Pnt inputCenter;
         inputCenter = TechDraw::findCentroid(rawShape,
-                                             viewAxis);
+                                             m_viewAxis);
         Base::Vector3d centroid(inputCenter.X(),
                                 inputCenter.Y(),
                                 inputCenter.Z());
@@ -443,36 +466,49 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
         m_cutShape = centeredShape;
         m_saveCentroid = centroid;
 
-        TopoDS_Shape scaledShape   = TechDraw::scaleShape(centeredShape,
-                                                          getScale());
+        m_scaledShape   = TechDraw::scaleShape(centeredShape,
+                                             getScale());
 
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-            scaledShape = TechDraw::rotateShape(scaledShape,
-                                                viewAxis,
-                                                Rotation.getValue());
+            m_scaledShape = TechDraw::rotateShape(m_scaledShape,
+                                                  m_viewAxis,
+                                                  Rotation.getValue());
         }
         if (debugSection()) {
             BRepTools::Write(m_cutShape, "DVSmCutShape.brep");         //debug
-            BRepTools::Write(scaledShape, "DVSScaled.brep");              //debug
-//            DrawUtil::dumpCS("DVS::execute - CS to GO", viewAxis);
+            BRepTools::Write(m_scaledShape, "DVSScaled.brep");              //debug
+//            DrawUtil::dumpCS("DVS::makeSectionCut - CS to GO", viewAxis);
         }
 
         m_rawShape = rawShape;  //save for postHlrTasks
-        m_viewAxis= viewAxis;   //save for postHlrTasks
 
-        geometryObject = buildGeometryObject(scaledShape,viewAxis);
     }
     catch (Standard_Failure& e1) {
-        Base::Console().Warning("DVS::execute - failed to build base shape %s - %s **\n",
+        Base::Console().Warning("DVS::makeSectionCut - failed to build base shape %s - %s **\n",
                                 getNameInDocument(),e1.GetMessageString());
         return;
     }
-//display geometry for cut shape is in geometryObject as in DVP
+
+//    auto end = chrono::high_resolution_clock::now();
+//    auto diff = end - start;
+//    double diffOut = chrono::duration <double, milli>(diff).count();
+//    Base::Console().Message("DVS::makeSectionCut - %s spent: %.3f millisecs making section cut\n", getNameInDocument(), diffOut);
+}
+
+void DrawViewSection::onSectionCutFinished()
+{
+    waitingForCut(false);
+    QObject::disconnect(&m_cutWatcher, SIGNAL(finished()), this, SLOT(onSectionCutFinished()));
+
+    //display geometry for cut shape is in geometryObject as in DVP
+    geometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
 }
 
 void DrawViewSection::postHlrTasks(void)
 {
 //    Base::Console().Message("DVS::postHlrTasks() - %s\n", getNameInDocument());
+//    auto start = chrono::high_resolution_clock::now();
+
     // build section face geometry
     TopoDS_Compound faceIntersections = findSectionPlaneIntersections(m_rawShape);
     TopoDS_Shape centeredShapeF = TechDraw::moveShape(faceIntersections,
@@ -538,6 +574,11 @@ void DrawViewSection::postHlrTasks(void)
         tdSectionFaces.push_back(sectionFace);
     }
 
+//    auto end = chrono::high_resolution_clock::now();
+//    auto diff = end - start;
+//    double diffOut = chrono::duration <double, milli>(diff).count();
+//    Base::Console().Message("DVS::sectionExec - %s spent: %.3f millisecs finding section faces\n", getNameInDocument(), diffOut);
+
     App::DocumentObject* base = BaseView.getValue();
     if (base != nullptr) {
         if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
@@ -546,6 +587,7 @@ void DrawViewSection::postHlrTasks(void)
         }
     }
     requestPaint();
+    DrawViewPart::postHlrTasks();
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
@@ -561,14 +603,14 @@ gp_Pln DrawViewSection::getSectionPlane() const
 TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVS::findSectionPlaneIntersections()\n");
-    TopoDS_Compound result;
     if(shape.IsNull()){
         Base::Console().Warning("DrawViewSection::getSectionSurface - Sectional View shape is Empty\n");
-        return result;
+        return TopoDS_Compound();
     }
 
     gp_Pln plnSection = getSectionPlane();
     BRep_Builder builder;
+    TopoDS_Compound result;
     builder.MakeCompound(result);
 
     TopExp_Explorer expFaces(shape, TopAbs_FACE);
@@ -775,23 +817,6 @@ gp_Ax2 DrawViewSection::getSectionCS() const
     return sectionCS;
 }
 
-gp_Ax2 DrawViewSection::rotateCSArbitrary(gp_Ax2 oldCS,
-                                          Base::Vector3d axis,
-                                          double degAngle) const
-{
-    gp_Ax2 newCS;
-
-    gp_Pnt oldOrg  = oldCS.Location();
-
-    gp_Dir gAxis(axis.x, axis.y, axis.z);
-    gp_Ax1 rotAxis = gp_Ax1(oldOrg, gAxis);
-
-    double radAngle = degAngle * M_PI / 180.0;
-
-    newCS = oldCS.Rotated(rotAxis, radAngle);
-    return newCS;
-}
-
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
 //    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
@@ -965,6 +990,8 @@ void DrawViewSection::setupPatIncluded()
         PatIncluded.setValue(exchName.c_str(), special.c_str());
     }
 }
+
+#include <Mod/TechDraw/App/moc_DrawViewSection.cpp>
 
 // Python Drawing feature ---------------------------------------------------------
 
