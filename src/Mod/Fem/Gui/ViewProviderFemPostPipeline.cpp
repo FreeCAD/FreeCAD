@@ -21,14 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
+#include <Gui/Application.h>
+#include <Mod/Fem/App/FemPostPipeline.h>
+
 #include "ViewProviderFemPostPipeline.h"
 #include "ViewProviderFemPostFunction.h"
-#include <Mod/Fem/App/FemPostPipeline.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
+
 
 using namespace FemGui;
-
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostPipeline, FemGui::ViewProviderFemPostObject)
 
