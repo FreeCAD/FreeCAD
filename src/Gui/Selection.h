@@ -102,7 +102,8 @@ public:
         pDocName = Object.getDocumentName().c_str();
         pObjectName = Object.getObjectName().c_str();
         pSubName = Object.getSubName().c_str();
-        if(typeName) TypeName = typeName;
+        if (typeName)
+            TypeName = typeName;
         pTypeName = TypeName.c_str();
     }
 
