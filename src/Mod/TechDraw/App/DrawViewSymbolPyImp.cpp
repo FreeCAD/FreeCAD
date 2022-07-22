@@ -50,7 +50,7 @@ PyObject* DrawViewSymbolPy::dumpSymbol(PyObject *args)
     }
     auto dvs = getDrawViewSymbolPtr();
     std::string symbolRepr;
-    if (dvs != nullptr) {
+    if (dvs) {
         symbolRepr = dvs->Symbol.getValue();
     }
 

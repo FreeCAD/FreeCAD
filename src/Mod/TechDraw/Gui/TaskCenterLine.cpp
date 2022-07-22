@@ -184,7 +184,7 @@ void TaskCenterLine::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Center Line"));
 
-    if (m_partFeat != nullptr) {
+    if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
         for (auto& s: m_subNames) {
@@ -213,7 +213,7 @@ void TaskCenterLine::setUiPrimary()
 void TaskCenterLine::setUiEdit()
 {
     setWindowTitle(QObject::tr("Edit Center Line"));
-    if (m_partFeat != nullptr) {
+    if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
         QString listItem = Base::Tools::fromStdString(m_edgeName);
@@ -320,9 +320,9 @@ void TaskCenterLine::createCenterLine(void)
     // the centerline creation can fail if m_type is edge and both selected edges are horizontal
     // because we attempt by default to create a vertical centerline
 
-    if (cl == nullptr) { // try a horizontal line
+    if (!cl) { // try a horizontal line
         cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, CenterLine::CLMODE::HORIZONTAL, false);
-        if (cl != nullptr) {
+        if (cl) {
             m_mode = CenterLine::CLMODE::HORIZONTAL;
             ui->rbHorizontal->blockSignals(true);
             ui->rbHorizontal->setChecked(true);
@@ -330,27 +330,27 @@ void TaskCenterLine::createCenterLine(void)
         }
     }
 
-    if (cl != nullptr) {
-        double hShift = ui->qsbHorizShift->rawValue();
-        double vShift = ui->qsbVertShift->rawValue();
-        double rotate = ui->qsbRotate->rawValue();
-        double extendBy = ui->qsbExtend->rawValue();
-        cl->setShifts(hShift, vShift);
-        cl->setExtend(extendBy);
-        cl->setRotate(rotate);
-        cl->m_flip2Line = false;
-        App::Color ac;
-        ac.setValue<QColor>(ui->cpLineColor->color());
-        cl->m_format.m_color = ac;
-        cl->m_format.m_weight = ui->dsbWeight->value().getValue();
-        cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
-        cl->m_format.m_visible = true;
-        m_partFeat->addCenterLine(cl);
-    } else {
+    if (!cl) {
         Base::Console().Log("TCL::createCenterLine - CenterLine creation failed!\n");
         Gui::Command::abortCommand();
         return;
     }
+
+    double hShift = ui->qsbHorizShift->rawValue();
+    double vShift = ui->qsbVertShift->rawValue();
+    double rotate = ui->qsbRotate->rawValue();
+    double extendBy = ui->qsbExtend->rawValue();
+    cl->setShifts(hShift, vShift);
+    cl->setExtend(extendBy);
+    cl->setRotate(rotate);
+    cl->m_flip2Line = false;
+    App::Color ac;
+    ac.setValue<QColor>(ui->cpLineColor->color());
+    cl->m_format.m_color = ac;
+    cl->m_format.m_weight = ui->dsbWeight->value().getValue();
+    cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
+    cl->m_format.m_visible = true;
+    m_partFeat->addCenterLine(cl);
 
     m_partFeat->recomputeFeature();
     Gui::Command::updateActive();
@@ -379,13 +379,13 @@ void TaskCenterLine::updateOrientation(void)
 
     CenterLine* cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, orientation, m_cl->m_flip2Line);
 
-    if (cl == nullptr) { // try another orientation
+    if (!cl) { // try another orientation
         if (orientation == CenterLine::CLMODE::VERTICAL)
             orientation = CenterLine::CLMODE::HORIZONTAL;
         else if (orientation == CenterLine::CLMODE::HORIZONTAL)
             orientation = CenterLine::CLMODE::VERTICAL;
         cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, orientation, m_cl->m_flip2Line);
-        if (cl != nullptr) {
+        if (cl) {
             if (orientation == CenterLine::CLMODE::VERTICAL) {
                 m_cl->m_mode = CenterLine::CLMODE::VERTICAL;
                 ui->rbVertical->blockSignals(true);
@@ -404,7 +404,7 @@ void TaskCenterLine::updateOrientation(void)
         }
     }
 
-    if (cl != nullptr) { // we succeeded
+    if (cl) { // we succeeded
         // reset the flip for existing centerline that might use the flip feature (when created with FC 0.19)
         m_cl->m_flip2Line = false;
         m_partFeat->recomputeFeature();
@@ -433,7 +433,7 @@ double TaskCenterLine::getCenterWidth()
     delete lg;
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-    if ( partVP != nullptr ) {
+    if (partVP) {
         width = partVP->IsoWidth.getValue();
     }
     return width;

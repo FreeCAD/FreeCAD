@@ -161,7 +161,7 @@ def upgrade(objects, delete=False, force=None):
             return None
         if len(obj.Shape.Edges) == 1:
             return None
-        if is_straight_line(obj.Shape) == True:
+        if is_straight_line(obj.Shape):
             return None
         if utils.get_type(obj) == "Wire":
             obj.Closed = True
@@ -507,10 +507,9 @@ def upgrade(objects, delete=False, force=None):
             elif len(objects) > 1 and len(edges) > 1:
                 result = makeWires(objects)
                 if result:
-                    if result == True:
-                        _msg(translate("draft","Found several wires or edges: wiring them"))
-                    else:
-                        _msg(translate("draft","Found several non-treatable objects: creating compound"))
+                    _msg(translate("draft","Found several wires or edges: wiring them"))
+                else:
+                    _msg(translate("draft","Found several non-treatable objects: creating compound"))
             # special case, we have only one open wire. We close it,
             # unless it has only 1 edge!
             elif len(objects) == 1 and len(openwires) == 1:

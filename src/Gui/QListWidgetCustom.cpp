@@ -46,7 +46,7 @@ QListWidgetCustom::~QListWidgetCustom()
  */
 void QListWidgetCustom::dragMoveEvent(QDragMoveEvent *e)
 {
-    if (e->source() != nullptr) {
+    if (e->source()) {
         QVariant prop = this->property("OnlyAcceptFrom");
         if (prop.isValid()) {
             QStringList filter = prop.toStringList();

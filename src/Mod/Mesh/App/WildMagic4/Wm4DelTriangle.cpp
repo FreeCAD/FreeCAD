@@ -84,7 +84,7 @@ bool DelTriangle<Real>::IsInsertionComponent (int i, DelTriangle* pkAdj,
             {
                 for (j = 0; j < 3; j++)
                 {
-                    if (A[j] != nullptr && A[j] != pkAdj)
+                    if (A[j] && A[j] != pkAdj)
                     {
                         break;
                     }

@@ -212,6 +212,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_DecorateLine";
     *draw << "TechDraw_ShowAll";
     *draw << "TechDraw_WeldSymbol";
+    *draw << "TechDraw_SurfaceFinishSymbols";
     *draw << "Separator";
     *draw << "TechDraw_ProjectShape";
     return root;
@@ -352,6 +353,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
+    *anno << "TechDraw_SurfaceFinishSymbols";
     return root;
 }
 
@@ -491,6 +493,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
+    *anno << "TechDraw_SurfaceFinishSymbols";
 
     return root;
 }

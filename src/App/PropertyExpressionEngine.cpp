@@ -724,7 +724,7 @@ void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
 {
     DocumentObject * owner = freecad_dynamic_cast<DocumentObject>(getContainer());
 
-    if (owner == nullptr || owner==obj)
+    if (!owner || owner==obj)
         return;
 
     for(auto &v : expressions) {

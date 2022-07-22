@@ -180,7 +180,7 @@ def read_z88_mesh(
     nodes_count = int(mesh_info[1])
     elements_count = int(mesh_info[2])
     kflag = int(mesh_info[4])
-    # for non rotational elements ist --> kflag = 0 --> cartesian, kflag = 1 polar coordinates
+    # for non rotational elements is --> kflag = 0 --> cartesian, kflag = 1 polar coordinates
     if kflag:
         Console.PrintError(
             "KFLAG = 1, Rotational coordinates not supported at the moment\n"

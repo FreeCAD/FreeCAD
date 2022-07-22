@@ -118,10 +118,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_sectionName = m_section->getNameInDocument();
     App::DocumentObject* newObj = m_section->BaseView.getValue();
     m_base = dynamic_cast<TechDraw::DrawViewPart*>(newObj);
-    if ( (newObj == nullptr) ||
-         (m_base == nullptr) ) {
+    if (!newObj || !m_base)
         throw Base::RuntimeError("TaskSectionView - BaseView not found");
-    }
 
     m_saveBaseName = m_base->getNameInDocument();
     m_savePageName = m_base->findParentPage()->getNameInDocument();
@@ -217,31 +215,33 @@ void TaskSectionView::setUiEdit()
 void TaskSectionView::saveSectionState()
 {
 //    Base::Console().Message("TSV::saveSectionState()\n");
-    if (m_section != nullptr) {
-        m_saveSymbol = m_section->SectionSymbol.getValue();
-        m_saveScale  = m_section->getScale();
-        m_saveScaleType = m_section->ScaleType.getValue();
-        m_saveNormal = m_section->SectionNormal.getValue();
-        m_saveDirection = m_section->Direction.getValue();
-        m_saveOrigin    = m_section->SectionOrigin.getValue();
-        m_saveDirName   = m_section->SectionDirection.getValueAsString();
-        m_saved = true;
-    }
+    if (!m_section)
+        return;
+
+    m_saveSymbol = m_section->SectionSymbol.getValue();
+    m_saveScale  = m_section->getScale();
+    m_saveScaleType = m_section->ScaleType.getValue();
+    m_saveNormal = m_section->SectionNormal.getValue();
+    m_saveDirection = m_section->Direction.getValue();
+    m_saveOrigin    = m_section->SectionOrigin.getValue();
+    m_saveDirName   = m_section->SectionDirection.getValueAsString();
+    m_saved = true;
 }
 
 //restore the start conditions
 void TaskSectionView::restoreSectionState()
 {
 //    Base::Console().Message("TSV::restoreSectionState()\n");
-    if (m_section != nullptr) {
-        m_section->SectionSymbol.setValue(m_saveSymbol);
-        m_section->Scale.setValue(m_saveScale);
-        m_section->ScaleType.setValue(m_saveScaleType);
-        m_section->SectionNormal.setValue(m_saveNormal);
-        m_section->Direction.setValue(m_saveDirection);
-        m_section->SectionOrigin.setValue(m_saveOrigin);
-        m_section->SectionDirection.setValue(m_saveDirName.c_str());
-    }
+    if (!m_section)
+        return;
+
+    m_section->SectionSymbol.setValue(m_saveSymbol);
+    m_section->Scale.setValue(m_saveScale);
+    m_section->ScaleType.setValue(m_saveScaleType);
+    m_section->SectionNormal.setValue(m_saveNormal);
+    m_section->Direction.setValue(m_saveDirection);
+    m_section->SectionOrigin.setValue(m_saveOrigin);
+    m_section->SectionDirection.setValue(m_saveDirName.c_str());
 }
 
 void TaskSectionView::onUpClicked()
@@ -360,11 +360,10 @@ bool TaskSectionView::apply(void)
         Base::Console().Error((msg + "\n").c_str());
         return false;
     }
-    if (m_section == nullptr) {          //didn't create the feature yet
+    if (!m_section)         //didn't create the feature yet
         //this can't happen as applyQuick has to be called by the direction
         //setting process
         return false;
-    }
 
     checkAll(false);
     applyQuick(m_dirName);
@@ -375,21 +374,20 @@ void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
     m_dirName = dir;
-    if (m_section == nullptr) {
+    if (!m_section)
         createSectionView();
-    }
-    if (isSectionValid()) {
-        updateSectionView();
-        enableAll(true);
-    } else {
+
+    if (!isSectionValid()) {
         failNoObject(m_sectionName);
         return;
     }
 
+    updateSectionView();
+    enableAll(true);
+
     m_section->recomputeFeature();
-    if (isBaseValid()) {
+    if (isBaseValid())
         m_base->requestPaint();
-    }
 }
 
 void TaskSectionView::applyAligned(void) 
@@ -415,7 +413,7 @@ void TaskSectionView::createSectionView(void)
     std::string baseName = m_base->getNameInDocument();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
-    if (m_section == nullptr) {
+    if (!m_section) {
         m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";
 
@@ -442,10 +440,8 @@ void TaskSectionView::createSectionView(void)
 
         App::DocumentObject* newObj = m_base->getDocument()->getObject(m_sectionName.c_str());
         m_section = dynamic_cast<TechDraw::DrawViewSection*>(newObj);
-        if ( (newObj == nullptr) ||
-             (m_section == nullptr) ) {
+        if (!newObj || !m_section)
             throw Base::RuntimeError("TaskSectionView - new section object not found");
-         }
     }
     Gui::Command::commitCommand();
 
@@ -461,7 +457,7 @@ void TaskSectionView::updateSectionView(void)
     }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
-    if (m_section != nullptr) {
+    if (m_section) {
         Command::doCommand(Command::Doc,"App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(),m_dirName.c_str());
         Command::doCommand(Command::Doc,
@@ -504,30 +500,26 @@ void TaskSectionView::failNoObject(std::string objectName)
 
 bool TaskSectionView::isBaseValid(void)
 {
-    bool result = true;
-    if (m_base == nullptr) {
-        result = false;
-    } else {
-        App::DocumentObject* baseObj = m_doc->getObject(m_saveBaseName.c_str());
-        if (baseObj == nullptr) {
-            result = false;
-        }
-    }
-    return result;
+    if (!m_base)
+        return false;
+
+    App::DocumentObject* baseObj = m_doc->getObject(m_saveBaseName.c_str());
+    if (!baseObj)
+        return false;
+
+    return true;
 }
 
 bool TaskSectionView::isSectionValid(void)
 {
-    bool result = true;
-    if (m_section == nullptr) {
-        result = false;
-    } else {
-        App::DocumentObject* sectionObj = m_doc->getObject(m_sectionName.c_str());
-        if (sectionObj == nullptr) {
-            result = false;
-        }
-    }
-    return result;
+    if (!m_section)
+        return false;
+
+    App::DocumentObject* sectionObj = m_doc->getObject(m_sectionName.c_str());
+    if (!sectionObj)
+        return false;
+    
+    return true;
 }
 
 //******************************************************************************
@@ -547,7 +539,7 @@ bool TaskSectionView::accept()
 bool TaskSectionView::reject()
 {
 //    Base::Console().Message("TSV::reject()\n");
-    if (m_section == nullptr) {                 //no section created, nothing to undo
+    if (!m_section) {                 //no section created, nothing to undo
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
         return false;
     }

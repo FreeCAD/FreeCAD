@@ -91,7 +91,7 @@ void MeshGrid::Rebuild (int iCtGridPerAxis)
 
 void MeshGrid::InitGrid ()
 {
-  assert(_pclMesh != nullptr);
+  assert(_pclMesh);
 
   unsigned long i, j;
 
@@ -730,7 +730,7 @@ void MeshFacetGrid::Validate (const MeshKernel &rclMesh)
 
 void MeshFacetGrid::Validate ()
 {
-  if (_pclMesh == nullptr)
+  if (!_pclMesh)
     return;
 
   if (_pclMesh->CountFacets() != _ulCtElements)
@@ -1072,7 +1072,7 @@ void MeshPointGrid::Validate (const MeshKernel &rclMesh)
 
 void MeshPointGrid::Validate ()
 {
-  if (_pclMesh == nullptr)
+  if (!_pclMesh)
     return;
 
   if (_pclMesh->CountPoints() != _ulCtElements)

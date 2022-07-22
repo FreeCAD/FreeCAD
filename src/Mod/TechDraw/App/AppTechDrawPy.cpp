@@ -60,7 +60,7 @@
 #include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/OCCError.h>
 
-#include <Mod/Import/App/ImpExpDxf.h>
+#include <Mod/Import/App/dxf/ImpExpDxf.h>
 
 #include "DrawProjectSplit.h"
 #include "DrawViewPart.h"
@@ -556,7 +556,7 @@ private:
         if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
             TechDraw::DrawProjGroup*      dpg = dpgi->getPGroup();
-            if (dpg != nullptr) {
+            if (dpg) {
                 offX = dpg->X.getValue();
                 offY = dpg->Y.getValue();
             }
@@ -710,7 +710,7 @@ private:
                     } else if (v->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
                         DrawViewDimension* dvd = static_cast<TechDraw::DrawViewDimension*>(v);
                         TechDraw::DrawViewPart* dvp = dvd->getViewPart();
-                        if (dvp == nullptr) {
+                        if (!dvp) {
                             continue;
                         }
                         double grandParentX = 0.0;
@@ -718,7 +718,7 @@ private:
                         if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
                             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
                             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
-                            if (dpg == nullptr) {
+                            if (!dpg) {
                                 continue;
                             }
                             grandParentX = dpg->X.getValue();

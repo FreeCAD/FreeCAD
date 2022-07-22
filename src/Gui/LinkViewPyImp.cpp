@@ -175,7 +175,7 @@ PyObject* LinkViewPy::setType(PyObject *args) {
         return nullptr;
 
     PY_TRY{
-        getLinkViewPtr()->setNodeType((LinkView::SnapshotType)type, PyObject_IsTrue(sublink) ? true : false);
+        getLinkViewPtr()->setNodeType((LinkView::SnapshotType)type, Base::asBoolean(sublink));
         Py_Return;
     } PY_CATCH;
 }

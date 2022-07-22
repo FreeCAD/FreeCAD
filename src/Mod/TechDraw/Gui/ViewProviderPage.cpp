@@ -107,7 +107,7 @@ void ViewProviderPage::attach(App::DocumentObject *pcFeat)
 
     auto bnd = boost::bind(&ViewProviderPage::onGuiRepaint, this, bp::_1);
     auto feature = getDrawPage();
-    if (feature != nullptr) {
+    if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         m_pageName = feature->getNameInDocument();
     } else {
@@ -144,19 +144,23 @@ void ViewProviderPage::hide(void)
 
 void ViewProviderPage::removeMDIView(void)
 {
-    if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
-        // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614#p182614
-        //Gui::getMainWindow()->activatePreviousWindow();
-        QList<QWidget*> wList= Gui::getMainWindow()->windows();
-        bool found = wList.contains(m_mdiView);
-        if (found) {
-            Gui::getMainWindow()->removeWindow(m_mdiView);
-            Gui::MDIView* aw = Gui::getMainWindow()->activeWindow();  //WF: this bit should be in the remove window logic, not here.
-            if (aw != nullptr) {
-                aw->showMaximized();
-            }
-        }
+    if (m_mdiView.isNull()) {
+        return;
     }
+
+    //m_mdiView is a QPointer
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614#p182614
+    //Gui::getMainWindow()->activatePreviousWindow();
+    QList<QWidget*> wList= Gui::getMainWindow()->windows();
+    if (!wList.contains(m_mdiView))
+        return;
+    
+    Gui::getMainWindow()->removeWindow(m_mdiView);
+    Gui::MDIView* aw = Gui::getMainWindow()->activeWindow();  //WF: this bit should be in the remove window logic, not here.
+    if (!aw) {
+        return;
+    }
+    aw->showMaximized();
 }
 
 void ViewProviderPage::updateData(const App::Property* prop)
@@ -250,22 +254,20 @@ void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderPage::setEdit(int ModNum)
 {
-    bool rc = true;
     if (ModNum == _SHOWDRAWING) {
         Visibility.setValue(true);
         showMDIViewPage();   // show the drawing
-        rc = false;  //finished editing
+        return false;  //finished editing
     } else if (ModNum == _TOGGLEUPDATE) {
          auto page = getDrawPage();
-         if (page != nullptr) {
+         if (page) {
              page->KeepUpdated.setValue(!page->KeepUpdated.getValue());
              page->recomputeFeature();
          }
-         rc = false;
+         return false;
     } else {
-        rc = Gui::ViewProviderDocumentObject::setEdit(ModNum);
+        return Gui::ViewProviderDocumentObject::setEdit(ModNum);
     }
-    return rc;
 }
 
 bool ViewProviderPage::doubleClicked(void)
@@ -277,12 +279,8 @@ bool ViewProviderPage::doubleClicked(void)
 
 bool ViewProviderPage::showMDIViewPage()
 {
-   if (isRestoring()) {
+   if (isRestoring() || !Visibility.getValue())
        return true;
-   }
-   if (!Visibility.getValue())   {
-       return true;
-   }
 
     if (m_mdiView.isNull()){
         Gui::Document* doc = Gui::Application::Instance->getDocument
@@ -334,37 +332,34 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     const std::vector<App::DocumentObject *> &views = getDrawPage()->Views.getValues();
 
     try {
-      for (std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-          TechDraw::DrawView* featView = dynamic_cast<TechDraw::DrawView*> (*it);
-          App::DocumentObject *docObj = *it;
-          //DrawRichAnno with no parent is child of Page
-          TechDraw::DrawRichAnno* dra = dynamic_cast<TechDraw::DrawRichAnno*> (*it);
-          if (dra != nullptr) {
-              if (dra->AnnoParent.getValue() != nullptr) {
-                  continue;                   //has a parent somewhere else
-              } else {
-                  temp.push_back(*it);        //no parent, belongs to page
-                  continue;
-              }
-          }
+        for (std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+            TechDraw::DrawView* featView = dynamic_cast<TechDraw::DrawView*> (*it);
+            App::DocumentObject *docObj = *it;
+            //DrawRichAnno with no parent is child of Page
+            TechDraw::DrawRichAnno* dra = dynamic_cast<TechDraw::DrawRichAnno*> (*it);
+            if (dra) {
+                if (!dra->AnnoParent.getValue()) {
+                    temp.push_back(*it); //no parent, belongs to page
+                }
+                continue; //has a parent somewhere else
+            }
 
-          // Don't collect if dimension, projection group item, hatch or member of ClipGroup as these should be grouped elsewhere
-          if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())    ||
-              docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())    ||
-              docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())            ||
-              docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())      ||
-              docObj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())         ||
-              docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())       ||
-              docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())       ||
-              (featView && featView->isInClip()) )
-              continue;
-          else
-              temp.push_back(*it);
-      }
-      return temp;
+            // Don't collect if dimension, projection group item, hatch or member of ClipGroup as these should be grouped elsewhere
+            if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())    ||
+                docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())    ||
+                docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())            ||
+                docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())      ||
+                docObj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())         ||
+                docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())       ||
+                docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())       ||
+                (featView && featView->isInClip()) )
+                continue;
+            else
+                temp.push_back(*it);
+        }
+        return temp;
     } catch (...) {
-        std::vector<App::DocumentObject*> tmp;
-        return tmp;
+        return std::vector<App::DocumentObject*>();
     }
 }
 
@@ -381,20 +376,17 @@ MDIViewPage* ViewProviderPage::getMDIViewPage() const
     if (m_mdiView.isNull()) {
         Base::Console().Log("INFO - ViewProviderPage::getMDIViewPage has no m_mdiView!\n");
         return nullptr;
-    } else {
-        return m_mdiView;
     }
+
+    return m_mdiView;
 }
 
 
 void ViewProviderPage::onChanged(const App::Property *prop)
 {
-    if (prop == &(ShowGrid)) {
-        setGrid();
-    } else if (prop == &(GridSpacing)) {
+    if (prop == &(ShowGrid) || prop == &(GridSpacing)) {
         setGrid();
     }
-
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -422,8 +414,7 @@ bool ViewProviderPage::isShow(void) const
 
 bool ViewProviderPage::getFrameState(void)
 {
-    bool result = ShowFrames.getValue();
-    return result;
+    return ShowFrames.getValue();
 }
 
 void ViewProviderPage::setFrameState(bool state)
@@ -434,7 +425,7 @@ void ViewProviderPage::setFrameState(bool state)
 void ViewProviderPage::toggleFrameState(void)
 {
 //    Base::Console().Message("VPP::toggleFrameState()\n");
-    if (m_graphicsScene != nullptr) {
+    if (m_graphicsScene) {
         setFrameState(!getFrameState());
         m_graphicsScene->refreshViews();
         setTemplateMarkers(getFrameState());
@@ -452,7 +443,7 @@ void ViewProviderPage::setTemplateMarkers(bool state)
     if (vpt) {
         vpt->setMarkers(state);
         QGITemplate* t = vpt->getQTemplate();
-        if (t != nullptr) {
+        if (t) {
             t->updateView(true);
         }
     }

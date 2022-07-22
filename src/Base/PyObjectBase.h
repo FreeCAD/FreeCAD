@@ -122,6 +122,10 @@ inline PyObject* getTypeAsObject(PyTypeObject* type) {
     return obj;
 }
 
+inline bool asBoolean(PyObject *obj) {
+    return PyObject_IsTrue(obj) != 0;
+}
+
 }
 
 /*------------------------------

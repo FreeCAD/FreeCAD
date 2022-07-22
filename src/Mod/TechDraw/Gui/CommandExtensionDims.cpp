@@ -261,7 +261,7 @@ void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -470,7 +470,7 @@ void CmdTechDrawExtensionIncreaseDecreaseGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionIncreaseDecreaseGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -762,7 +762,7 @@ void CmdTechDrawExtensionPosChainDimensionGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionPosChainDimensionGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1090,7 +1090,7 @@ void CmdTechDrawExtensionCascadeDimensionGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1429,7 +1429,7 @@ void CmdTechDrawExtensionCreateChainDimensionGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1787,7 +1787,7 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -2042,7 +2042,7 @@ void CmdTechDrawExtensionChamferDimensionGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionIncreaseDecreaseGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -2260,7 +2260,7 @@ namespace TechDrawGui {
         // check selection of getSelectionEx() and selection[0].getObject()
         if (_checkSelection(cmd, selection, message)) {
             objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
-            if (objFeat == nullptr) {
+            if (!objFeat) {
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr(message.c_str()),
                     QObject::tr("No object selected"));

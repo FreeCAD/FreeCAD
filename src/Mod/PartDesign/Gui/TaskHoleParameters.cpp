@@ -689,7 +689,7 @@ void TaskHoleParameters::changeEvent(QEvent* e)
 void TaskHoleParameters::changedObject(const App::Document&, const App::Property& Prop)
 {
     // happens when aborting the command
-    if (vp == nullptr)
+    if (!vp)
         return;
 
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());

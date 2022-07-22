@@ -363,7 +363,7 @@ void CmdTechDrawView::activated(int iMsg)
         //not a Link and not null.  assume to be drawable.  Undrawables will be 
         // skipped later.
         shapes.push_back(obj);
-        if (partObj != nullptr) {
+        if (partObj) {
             continue;
         }
         //don't know if this works for an XLink
@@ -642,7 +642,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         //not a Link and not null.  assume to be drawable.  Undrawables will be 
         // skipped later.
         shapes.push_back(obj);
-        if (partObj != nullptr) {
+        if (partObj) {
             continue;
         }
         for (auto& sub : sel.getSubNames()) {
@@ -876,7 +876,7 @@ void CmdTechDrawBalloon::activated(int iMsg)
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
     auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
-    if (objFeat == nullptr) {
+    if (!objFeat) {
         return;
     }
 
@@ -1266,7 +1266,7 @@ void CmdTechDrawArchView::activated(int iMsg)
         return;
     }
 
-    if (archObject == nullptr) {
+    if (!archObject) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("No Arch Sections in selection."));
         return;

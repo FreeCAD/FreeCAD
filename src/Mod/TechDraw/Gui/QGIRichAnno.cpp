@@ -99,7 +99,7 @@ QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
 
-    if (myParent != nullptr) {
+    if (myParent) {
         setParentItem(myParent);
     }
 
@@ -147,15 +147,14 @@ void QGIRichAnno::updateView(bool update)
 //    Base::Console().Message("QGIRA::updateView() - %s\n", getViewName());
     Q_UNUSED(update);
     auto annoFeat( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
-    if ( annoFeat == nullptr ) {
+    if (!annoFeat) {
         Base::Console().Log("QGIRA::updateView - no feature!\n");
         return;
     }
 
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     if (annoFeat->X.isTouched() ||
         annoFeat->Y.isTouched()) {
         float x = Rez::guiX(annoFeat->X.getValue());
@@ -177,22 +176,19 @@ void QGIRichAnno::drawBorder()
 void QGIRichAnno::draw()
 {
 //    Base::Console().Log("QGIRA::draw() - %s - parent: %X\n",getFeature()->getNameInDocument(), parentItem());
-    if (!isVisible()) {
+    if (!isVisible())
 //        Base::Console().Message("QGIRA::draw - not visible\n");
         return;
-    }
 
     TechDraw::DrawRichAnno* annoFeat = getFeature();
-    if((!annoFeat) ) {
+    if (!annoFeat)
 //        Base::Console().Message("QGIRA::draw - no feature\n");
         return;
-    }
 
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getFeature()));
-    if ( vp == nullptr ) {
+    if (!vp)
 //        Base::Console().Message("QGIRA::draw - no viewprovider\n");
         return;
-    }
 //    double appX = Rez::guiX(annoFeat->X.getValue());
 //    double appY = Rez::guiX(annoFeat->Y.getValue());
 
@@ -326,13 +322,11 @@ QPen QGIRichAnno::rectPen() const
 {
     QPen pen;
     const auto sym( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return pen;
-    }
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return pen;
-    }
 
     double rectWeight = Rez::guiX(vp->LineWidth.getValue());
     Qt::PenStyle rectStyle = (Qt::PenStyle) vp->LineStyle.getValue();
@@ -366,9 +360,8 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
     Q_UNUSED(event);
 
     TechDraw::DrawRichAnno *annotation = dynamic_cast<TechDraw::DrawRichAnno *>(getViewObject());
-    if (annotation == nullptr) {
+    if (!annotation)
         return;
-    }
 
     QString text = QString::fromUtf8(annotation->AnnoText.getValue());
 

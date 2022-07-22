@@ -70,7 +70,7 @@ bool ViewProviderFemConstraintForce::setEdit(int ModNum)
         if (dlg && !constrDlg) {
             // This case will occur in the ShaftWizard application
             checkForWizard();
-            if ((wizardWidget == nullptr) || (wizardSubLayout == nullptr)) {
+            if (!wizardWidget || !wizardSubLayout) {
                 // No shaft wizard is running
                 QMessageBox msgBox;
                 msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -82,7 +82,7 @@ bool ViewProviderFemConstraintForce::setEdit(int ModNum)
                     Gui::Control().reject();
                 else
                     return false;
-            } else if (constraintDialog != nullptr) {
+            } else if (constraintDialog) {
                 // Another FemConstraint* dialog is already open inside the Shaft Wizard
                 // Ignore the request to open another dialog
                 return false;

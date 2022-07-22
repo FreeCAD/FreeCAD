@@ -113,7 +113,7 @@ void QGVNavStyleTouchpad::handleMouseMoveEvent(QMouseEvent *event)
 void QGVNavStyleTouchpad::setAnchor()
 {
     //this navigation style can not anchor under mouse since mouse is moving as part of zoom action
-    if (m_viewer != nullptr) {
+    if (m_viewer) {
         m_viewer->setResizeAnchor(QGraphicsView::AnchorViewCenter);
         m_viewer->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     }

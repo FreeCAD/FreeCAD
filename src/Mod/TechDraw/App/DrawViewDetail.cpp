@@ -127,15 +127,15 @@ DrawViewDetail::~DrawViewDetail()
 
 short DrawViewDetail::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result  = (AnchorPoint.isTouched() ||
-                   Radius.isTouched()     ||
-                   BaseView.isTouched()  ||
-                   Reference.isTouched());
-    }
-    if (result) {
-        return result;
+        if (
+            AnchorPoint.isTouched() ||
+            Radius.isTouched() ||
+            BaseView.isTouched() ||
+            Reference.isTouched()
+        ) {
+            return true;
+        }
     }
     return TechDraw::DrawView::mustExecute();
 }
@@ -163,7 +163,7 @@ void DrawViewDetail::onChanged(const App::Property* prop)
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly, true);
                 // apply the page-wide Scale
-                if (page != nullptr) {
+                if (page) {
                     if (std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                         Scale.setValue(page->Scale.getValue());
                         Scale.purgeTouched();
@@ -213,9 +213,9 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     DrawViewPart* dvp = nullptr;
     if (!baseObj->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
-    } else {
-        dvp = static_cast<DrawViewPart*>(baseObj);
     }
+    
+    dvp = static_cast<DrawViewPart*>(baseObj);
 
     DrawProjGroupItem* dpgi = nullptr;
     if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -228,11 +228,13 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     }
 
     TopoDS_Shape shape;
-    if (dvs != nullptr) {
+    if (dvs) {
         shape = dvs->getCutShape();
-    } else if (dpgi != nullptr) {
+    }
+    else if (dpgi) {
         shape = dpgi->getSourceShapeFused();
-    } else {
+    }
+    else {
         shape = dvp->getSourceShapeFused();
     }
 
@@ -261,16 +263,14 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     addShapes2d();
 
     //second pass if required
-    if (ScaleType.isValue("Automatic")) {
-        if (!checkFit()) {
-            double newScale = autoScale();
-            Scale.setValue(newScale);
-            Scale.purgeTouched();
-            if (geometryObject != nullptr) {
-                delete geometryObject;
-                geometryObject = nullptr;
-                detailExec(shape, dvp, dvs);
-            }
+    if (ScaleType.isValue("Automatic") && !checkFit()) {
+        double newScale = autoScale();
+        Scale.setValue(newScale);
+        Scale.purgeTouched();
+        if (geometryObject != nullptr) {
+            delete geometryObject;
+            geometryObject = nullptr;
+            detailExec(shape, dvp, dvs);
         }
     }
     dvp->requestPaint();  //to refresh detail highlight!
@@ -300,7 +300,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
     m_saveCentroid = shapeCenter;              //centroid of original shape
 
-    if (dvs != nullptr) {
+    if (dvs) {
         //section cutShape should already be on origin
     } else {
         myShape = TechDraw::moveShape(myShape,                     //centre shape on origin
@@ -524,8 +524,7 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS
 //so tell the Gui that there are no details for this view
 std::vector<DrawViewDetail*> DrawViewDetail::getDetailRefs(void) const
 {
-    std::vector<DrawViewDetail*> result;
-    return result;
+    return std::vector<DrawViewDetail*>();
 }
 
 double DrawViewDetail::getFudgeRadius()
@@ -538,8 +537,7 @@ bool DrawViewDetail::debugDetail(void) const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
 
-    bool result = hGrp->GetBool("debugDetail",false);
-    return result;
+    return hGrp->GetBool("debugDetail",false);
 }
 
 void DrawViewDetail::unsetupObject()
@@ -547,7 +545,7 @@ void DrawViewDetail::unsetupObject()
 //    Base::Console().Message("DVD::unsetupObject()\n");
     App::DocumentObject* baseObj = BaseView.getValue();
     DrawView* base = dynamic_cast<DrawView*>(baseObj);
-    if (base != nullptr) {
+    if (base) {
         base->requestPaint();
     }
 }

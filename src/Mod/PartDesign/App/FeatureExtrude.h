@@ -111,6 +111,11 @@ protected:
                               const double angle,
                               const double angle2,
                               const bool midplane);
+    
+    /**
+      * Disables settings that are not valid for the current method
+      */
+    void updateProperties(const std::string &method);
 };
 
 } //namespace PartDesign

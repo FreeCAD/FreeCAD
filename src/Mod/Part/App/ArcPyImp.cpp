@@ -69,7 +69,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast
                 (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
-            GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -114,7 +114,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast
                 (static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle());
-            GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -139,7 +139,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast
                 (static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle());
-            GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -164,7 +164,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast
                 (static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle());
-            GC_MakeArcOfHyperbola arc(hyperbola->Hypr(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfHyperbola arc(hyperbola->Hypr(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;

@@ -50,6 +50,9 @@ public:
 protected:
   void changeEvent(QEvent *e);
 
+protected Q_SLOTS:
+  void onSwitchGradientColorsPressed();
+
 private:
   std::unique_ptr<Ui_DlgSettingsViewColor> ui;
 };

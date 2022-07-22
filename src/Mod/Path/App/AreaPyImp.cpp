@@ -39,7 +39,7 @@ static PyObject * areaAbort(PyObject *, PyObject *args, PyObject *kwd) {
     if (!PyArg_ParseTupleAndKeywords(args,kwd,"|O!",kwlist,&PyBool_Type,&pObj))
         return nullptr;
 
-    Area::abort(PyObject_IsTrue(pObj) ? true : false);
+    Area::abort(Base::asBoolean(pObj));
 
     Py_Return;
 }
@@ -97,7 +97,7 @@ static PyObject * areaGetParamsDesc(PyObject *, PyObject *args, PyObject *kwd) {
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "|O!",kwlist,&PyBool_Type,&pcObj))
         return nullptr;
 
-    if (PyObject_IsTrue(pcObj) ? true : false)
+    if (Base::asBoolean(pcObj))
         return PyUnicode_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
 
     PyObject *dict = PyDict_New();
@@ -242,7 +242,7 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
         return nullptr;
 
     PY_TRY {
-        if (PyObject_IsTrue(pcObj) ? true : false)
+        if (Base::asBoolean(pcObj))
             getAreaPtr()->clean();
         return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
     } PY_CATCH_OCC

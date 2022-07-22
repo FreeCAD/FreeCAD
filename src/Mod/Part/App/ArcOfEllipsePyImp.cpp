@@ -89,7 +89,7 @@ int ArcOfEllipsePy::PyInit(PyObject* args, PyObject* /*kwds*/)
         try {
             Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast
                 (static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle());
-            GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;

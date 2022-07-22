@@ -220,7 +220,7 @@ size_t BitpackDecoder::inputProcess( const char *source, const size_t availableB
       size_t byteCount = std::min( bytesUnsaved, inBuffer_.size() - static_cast<size_t>( inBufferEndByte_ ) );
 
       /// Copy input bytes from caller, if any
-      if ( ( byteCount > 0 ) && ( source != nullptr ) )
+      if ( ( byteCount > 0 ) && source )
       {
          memcpy( &inBuffer_[inBufferEndByte_], source, byteCount );
 

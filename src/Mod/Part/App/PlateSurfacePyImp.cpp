@@ -94,7 +94,7 @@ int PlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
 
     try {
         GeomPlate_BuildPlateSurface buildPlate(Degree, NbPtsOnCur, NbIter, Tol2d, Tol3d, TolAng, TolCurv,
-            PyObject_IsTrue(Anisotropie) ? Standard_True : Standard_False);
+            Base::asBoolean(Anisotropie));
         if (!surf.IsNull()) {
             buildPlate.LoadInitSurface(surf);
 

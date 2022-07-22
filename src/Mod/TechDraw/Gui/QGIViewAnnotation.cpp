@@ -96,7 +96,7 @@ void QGIViewAnnotation::setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj)
 void QGIViewAnnotation::updateView(bool update)
 {
     auto viewAnno( dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject()) );
-    if( viewAnno == nullptr)
+    if (!viewAnno)
         return;
 
     if (update ||
@@ -129,7 +129,7 @@ void QGIViewAnnotation::draw()
 void QGIViewAnnotation::drawAnnotation()
 {
     auto viewAnno( dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject()) );
-    if( viewAnno == nullptr ) {
+    if (!viewAnno) {
         return;
     }
 
@@ -189,7 +189,7 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     Q_UNUSED(event);
 
     TechDraw::DrawViewAnnotation *annotation = dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject());
-    if (annotation == nullptr) {
+    if (!annotation) {
         return;
     }
 

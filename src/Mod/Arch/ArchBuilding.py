@@ -231,7 +231,7 @@ class _CommandBuilding:
             if not Draft.getType(obj) in ["Site", "Building"] :
                 buildingobj.append(obj)
             else :
-                if link == True :
+                if link :
                     buildingobj.append(obj)
                 else:
                     warning = True

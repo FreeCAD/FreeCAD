@@ -111,17 +111,14 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::s
     CosmeticVertex* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
     int idx = DrawUtil::getIndexFromName(name);
     TechDraw::VertexPtr v = dvp->getProjVertexByIndex(idx);
-    if (v == nullptr) {
+    if (!v)
         return result;
-    }
-    if (!v->cosmeticTag.empty()) {
+    if (!v->cosmeticTag.empty())
         result = getCosmeticVertex(v->cosmeticTag);
-    }
     return result;
 }
 
@@ -219,18 +216,15 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::strin
     CosmeticEdge* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
     int idx = DrawUtil::getIndexFromName(name);
     TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (base == nullptr) {
+    if (!base)
         return result;
-    }
     
-    if (!base->getCosmeticTag().empty()) {
+    if (!base->getCosmeticTag().empty())
         result = getCosmeticEdge(base->getCosmeticTag());
-    }
     return result;
 }
 
@@ -338,17 +332,14 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string na
     CenterLine* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
     int idx = DrawUtil::getIndexFromName(name);
     TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (base == nullptr) {
+    if (!base)
         return result;
-    }
-    if (!base->getCosmeticTag().empty()) {
+    if (!base->getCosmeticTag().empty())
         result = getCenterLine(base->getCosmeticTag());
-    }
     return result;
 }
 
@@ -430,9 +421,8 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string na
     GeomFormat* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
     int idx = DrawUtil::getIndexFromName(name);
     const std::vector<TechDraw::GeomFormat*> formats = GeomFormats.getValues();
     for (auto& gf: formats) {

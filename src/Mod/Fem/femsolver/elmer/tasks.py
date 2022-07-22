@@ -76,6 +76,9 @@ class Prepare(run.Prepare):
     def run(self):
         # TODO print working dir to report console
         self.pushStatus("Preparing input files...\n")
+        num_cores = settings.get_cores("ElmerGrid")
+        self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
+                        .format(num_cores))
         if self.testmode:
             # test mode: neither gmsh, nor elmergrid nor elmersolver binaries needed
             FreeCAD.Console.PrintMessage("Machine testmode: {}\n".format(self.testmode))
@@ -86,6 +89,7 @@ class Prepare(run.Prepare):
         try:
             w.write_solver_input()
             self.checkHandled(w)
+            self.pushStatus("Writing solver input completed.")
         except writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
@@ -121,10 +125,33 @@ class Solve(run.Solve):
                 if os.path.isdir(solvpath):
                     os.environ["ELMER_HOME"] = solvpath
                     os.environ["LD_LIBRARY_PATH"] = "$LD_LIBRARY_PATH:{}/modules".format(solvpath)
-            self._process = subprocess.Popen(
-                [binary], cwd=self.directory,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE)
+            # different call depending if with multithreading or not
+            num_cores = settings.get_cores("ElmerSolver")
+            self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
+                            .format(num_cores))
+            args = []
+            if int(num_cores) > 1:
+                if system() != "Windows":
+                    args.extend(["mpirun"])
+                else:
+                    args.extend(["mpiexec"])
+                args.extend(["-np", num_cores])
+            args.extend([binary])
+            if system() == "Windows":
+                self._process = subprocess.Popen(
+                    args,
+                    cwd=self.directory,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    startupinfo=femutils.startProgramInfo("hide")
+                )
+            else:
+                self._process = subprocess.Popen(
+                    args,
+                    cwd=self.directory,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE
+                )
             self.signalAbort.add(self._process.terminate)
             output = self._observeSolver(self._process)
             self._process.communicate()
@@ -132,7 +159,8 @@ class Solve(run.Solve):
             if not self.aborted:
                 self._updateOutput(output)
         else:
-            self.report.error("ElmerSolver executable not found.")
+            self.report.error("ElmerSolver binary not found.")
+            self.pushStatus("Error: ElmerSolver binary has not been found!")
             self.fail()
 
     def _updateOutput(self, output):
@@ -178,12 +206,16 @@ class Results(run.Results):
         # elmer post file path changed with version x.x
         # see https://forum.freecadweb.org/viewtopic.php?f=18&t=42732
         # workaround
-        possible_post_file_0 = os.path.join(self.directory, "case0001.vtu")
-        possible_post_file_t = os.path.join(self.directory, "case_t0001.vtu")
-        if os.path.isfile(possible_post_file_0):
-            postPath = possible_post_file_0
-        elif os.path.isfile(possible_post_file_t):
-            postPath = possible_post_file_t
+        possible_post_file_old = os.path.join(self.directory, "case0001.vtu")
+        possible_post_file_single = os.path.join(self.directory, "case_t0001.vtu")
+        possible_post_file_multi = os.path.join(self.directory, "case_t0001.pvtu")
+        # first try the multi-thread result, then single then old name
+        if os.path.isfile(possible_post_file_multi):
+            postPath = possible_post_file_multi
+        elif os.path.isfile(possible_post_file_single):
+            postPath = possible_post_file_single
+        elif os.path.isfile(possible_post_file_old):
+            postPath = possible_post_file_old
         else:
             self.report.error("Result file not found.")
             self.fail()

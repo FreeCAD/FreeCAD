@@ -71,7 +71,7 @@ PyObject* BodyPy::insertObject(PyObject *args)
         return nullptr;
     }
 
-    bool after = PyObject_IsTrue(afterPy) ? true : false;
+    bool after = Base::asBoolean(afterPy);
     Body* body = this->getBodyPtr();
 
     try {

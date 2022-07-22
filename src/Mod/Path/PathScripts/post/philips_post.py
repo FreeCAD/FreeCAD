@@ -431,7 +431,7 @@ def export(objectslist, filename, argstring):
 
                 if not MODAL or command != lastcommand:
                     outstring.append(mappedCommand)
-                #               if MODAL == True:
+                #               if MODAL:
                 # #\better:   append iff MODAL == False
                 #                   if command == lastcommand:
                 #                       outstring.pop(0)

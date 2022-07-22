@@ -1688,8 +1688,8 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
     // Handle(Geom_BSplineCurve) spline = new
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
-    // PyObject_IsTrue(periodic) ? Standard_True : Standard_False,
-    // PyObject_IsTrue(CheckRational) ? Standard_True : Standard_False);
+    // Base::asBoolean(periodic),
+    // Base::asBoolean(CheckRational));
 
     TColgp_Array1OfPnt p(1,polescount);
     TColStd_Array1OfReal w(1,polescount);

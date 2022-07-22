@@ -192,7 +192,7 @@ void Voronoi::colorExterior(const Voronoi::diagram_type::edge_type *edge, std::s
   edge->color(colorValue);
   edge->twin()->color(colorValue);
   auto v = edge->vertex1();
-  if (v == nullptr || !edge->is_primary()) {
+  if (!v || !edge->is_primary()) {
     return;
   }
   v->color(colorValue);

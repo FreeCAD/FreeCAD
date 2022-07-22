@@ -137,8 +137,7 @@ PyObject* ShapeFix_ShellPy::fixFaceOrientation(PyObject *args)
         return nullptr;
 
     bool ok = getShapeFix_ShellPtr()->FixFaceOrientation(TopoDS::Shell(static_cast<TopoShapePy*>(shell)->getTopoShapePtr()->getShape()),
-                                                         PyObject_IsTrue(multiConex) ? Standard_True : Standard_False,
-                                                         PyObject_IsTrue(nonManifold) ? Standard_True : Standard_False);
+                                                         Base::asBoolean(multiConex), Base::asBoolean(nonManifold));
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
@@ -148,7 +147,7 @@ PyObject* ShapeFix_ShellPy::setNonManifoldFlag(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &nonManifold))
         return nullptr;
 
-    getShapeFix_ShellPtr()->SetNonManifoldFlag(PyObject_IsTrue(nonManifold) ? Standard_True : Standard_False);
+    getShapeFix_ShellPtr()->SetNonManifoldFlag(Base::asBoolean(nonManifold));
     Py_Return;
 }
 

@@ -197,47 +197,30 @@ void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const c
     }
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewBalloon::mustExecute() const
 {
-    bool result = 0;
-    if (!isRestoring()) {
-        result =  Text.isTouched();
-    }
-
-    if (result) {
-        return result;
+    if (!isRestoring() && Text.isTouched()) {
+        return 1;
     }
 
     auto dvp = getViewPart();
-    if (dvp != nullptr) {
-        result = dvp->isTouched();
-    }
-    if (result) {
-        return result;
+    if (dvp && dvp->isTouched()) {
+        return 1;
     }
 
     return DrawView::mustExecute();
 }
 
 void DrawViewBalloon::handleXYLock(void) {
-    if (isLocked()) {
-        if (!OriginX.testStatus(App::Property::ReadOnly)) {
-            OriginX.setStatus(App::Property::ReadOnly, true);
-            OriginX.purgeTouched();
-        }
-        if (!OriginY.testStatus(App::Property::ReadOnly)) {
-            OriginY.setStatus(App::Property::ReadOnly, true);
-            OriginY.purgeTouched();
-        }
-    } else {
-        if (OriginX.testStatus(App::Property::ReadOnly)) {
-            OriginX.setStatus(App::Property::ReadOnly, false);
-            OriginX.purgeTouched();
-        }
-        if (OriginY.testStatus(App::Property::ReadOnly)) {
-            OriginY.setStatus(App::Property::ReadOnly, false);
-            OriginY.purgeTouched();
-        }
+    bool on = isLocked();
+    if (!OriginX.testStatus(App::Property::ReadOnly)) {
+        OriginX.setStatus(App::Property::ReadOnly, on);
+        OriginX.purgeTouched();
+    }
+    if (!OriginY.testStatus(App::Property::ReadOnly)) {
+        OriginY.setStatus(App::Property::ReadOnly, on);
+        OriginY.purgeTouched();
     }
     DrawView::handleXYLock();
 }
@@ -269,16 +252,14 @@ double DrawViewBalloon::prefKinkLength(void) const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Dimensions");
-    double length = hGrp->GetFloat("BalloonKink", 5.0);
-    return length;
+    return hGrp->GetFloat("BalloonKink", 5.0);
 }
 
 int DrawViewBalloon::prefShape(void) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    int result = hGrp->GetInt("BalloonShape", 0); 
-    return result;
+    return hGrp->GetInt("BalloonShape", 0);
 }
 
 int DrawViewBalloon::prefEnd(void) const
@@ -290,8 +271,7 @@ QPointF DrawViewBalloon::getOrigin()
 {
     double x = OriginX.getValue();
     double y = OriginY.getValue();
-    QPointF result(x, y);
-    return result;
+    return QPointF(x, y);
 }
 
 void DrawViewBalloon::setOrigin(QPointF p)

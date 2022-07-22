@@ -87,11 +87,11 @@ namespace SketcherGui {
                                       std::vector<Attacher::eMapMode>* allmodes = nullptr){
         //convert pointers into valid references, to avoid checking for null pointers everywhere
         Attacher::SuggestResult::eSuggestResult buf;
-        if (pMsgId == nullptr)
+        if (!pMsgId)
             pMsgId = &buf;
         Attacher::SuggestResult::eSuggestResult &msg = *pMsgId;
         QString buf2;
-        if (message == nullptr)
+        if (!message)
             message = &buf2;
         QString &msg_str = *message;
 

@@ -60,7 +60,7 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
         try {
             Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast
                 (static_cast<Parabola2dPy*>(o)->getGeom2dParabolaPtr()->handle());
-            GCE2d_MakeArcOfParabola arc(parabola->Parab2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GCE2d_MakeArcOfParabola arc(parabola->Parab2d(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;

@@ -154,7 +154,7 @@ App::DocumentObjectExecReturn *Pad::execute()
             // Find a valid face or datum plane to extrude up to
             TopoDS_Face upToFace;
             if (method == "UpToFace") {
-                getUpToFaceFromLinkSub(upToFace, UpToFace);
+                getFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
             getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
@@ -238,6 +238,9 @@ App::DocumentObjectExecReturn *Pad::execute()
            this->Shape.setValue(getSolid(prism));
         }
 
+        // eventually disable some settings that are not valid for the current method
+        updateProperties(method);
+
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -250,4 +253,5 @@ App::DocumentObjectExecReturn *Pad::execute()
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
+    
 }

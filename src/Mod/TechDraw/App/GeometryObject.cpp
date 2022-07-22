@@ -494,7 +494,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         }
 
         base = BaseGeom::baseFactory(edge);
-        if (base == nullptr) {
+        if (!base) {
             Base::Console().Log("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
             continue;
 //            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
@@ -716,9 +716,9 @@ void GeometryObject::addFaceGeom(FacePtr f)
 TechDraw::DrawViewDetail* GeometryObject::isParentDetail()
 {
     TechDraw::DrawViewDetail* result = nullptr;
-    if (m_parent != nullptr) {
+    if (m_parent) {
         TechDraw::DrawViewDetail* detail = dynamic_cast<TechDraw::DrawViewDetail*>(m_parent);
-        if (detail != nullptr) {
+        if (detail) {
             result = detail;
         }
     }

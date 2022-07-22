@@ -70,7 +70,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
     }
     for (auto& l:links) {
         const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
-        if (gex != nullptr) {
+        if (gex) {
             std::vector<App::DocumentObject*> objs = gex->Group.getValues();
             for (auto& d: objs) {
                 if (is2dObject(d)) {
@@ -129,17 +129,17 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     builder.MakeCompound(comp);
     bool found = false;
     for (auto& s:sourceShapes) {
-        if (s.ShapeType() < TopAbs_SOLID) {
+        if (s.IsNull()) {
+            continue;
+        } else if (s.ShapeType() < TopAbs_SOLID) {
             //clean up composite shapes
             TopoDS_Shape cleanShape = stripInfiniteShapes(s);
             if (!cleanShape.IsNull()) {
                 builder.Add(comp, cleanShape);
                 found = true;
             }
-        } else if (s.IsNull()) {
-            continue;    // has no shape
         } else if (Part::TopoShape(s).isInfinite()) {
-            continue;    //shape is infinite
+            continue;    //simple shape is infinite
         } else {
             //a simple shape - add to compound
             builder.Add(comp, s);
@@ -149,7 +149,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     //it appears that an empty compound is !IsNull(), so we need to check a different way
     //if we added anything to the compound.
     if (!found) {
-        Base::Console().Error("SE::getShapes - source shape is empty!\n");
+        Base::Console().Error("ShapeExtractor failed to get shape.\n");
     } else {
         result = comp;
     }
@@ -161,7 +161,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 {
 //    Base::Console().Message("SE::getXShapes(%X) - %s\n", xLink, xLink->getNameInDocument());
     std::vector<TopoDS_Shape> xSourceShapes;
-    if (xLink == nullptr) {
+    if (!xLink) {
         return xSourceShapes;
     }
 
@@ -213,7 +213,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
     } else {
         int depth = 1;   //0 is default value, related to recursion of Links???
         App::DocumentObject* link = xLink->getLink(depth);
-        if (link != nullptr) {
+        if (link) {
             auto shape = Part::Feature::getShape(link);
             if(!shape.IsNull()) {
                 if (needsTransform) {
@@ -241,10 +241,25 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
     App::Property* sProp = docObj->getPropertyByName("Shape");
     if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         const Part::Feature* pf = static_cast<const Part::Feature*>(docObj);
-        Part::TopoShape ts = pf->Shape.getShape();
-        ts.setPlacement(pf->globalPlacement());
-        result.push_back(ts.getShape());
-    } else if (gex != nullptr) {           //is a group extension
+        Part::TopoShape ts(pf->Shape.getShape());
+
+        //ts might be garbage, better check
+        try {
+            if (!ts.isNull()) {
+                ts.setPlacement(pf->globalPlacement());
+                result.push_back(ts.getShape());
+            }
+        }
+        catch (Standard_Failure& e) {
+            Base::Console().Error("ShapeExtractor - %s encountered OCC error: %s \n", docObj->getNameInDocument(), e.GetMessageString());
+            return result;
+        }
+        catch (...) {
+            Base::Console().Error("ShapeExtractor failed to retrieve shape from %s\n", docObj->getNameInDocument());
+            return result;
+        }
+
+    } else if (gex) {           //is a group extension
         std::vector<App::DocumentObject*> objs = gex->Group.getValues();
         std::vector<TopoDS_Shape> shapes;
         for (auto& d: objs) {
@@ -254,9 +269,9 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
             }
         }
     //the next 2 bits are mostly for Arch module objects
-    } else if (gProp != nullptr) {       //has a Group property
+    } else if (gProp) {       //has a Group property
         App::PropertyLinkList* list = dynamic_cast<App::PropertyLinkList*>(gProp);
-        if (list != nullptr) {
+        if (list) {
             std::vector<App::DocumentObject*> objs = list->getValues();
             std::vector<TopoDS_Shape> shapes;
             for (auto& d: objs) {
@@ -268,9 +283,9 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
         } else {
                 Base::Console().Log("SE::getShapesFromObject - Group is not a PropertyLinkList!\n");
         }
-    } else if (sProp != nullptr) {       //has a Shape property
+    } else if (sProp) {       //has a Shape property
         Part::PropertyPartShape* shape = dynamic_cast<Part::PropertyPartShape*>(sProp);
-        if (shape != nullptr) {
+        if (shape) {
             TopoDS_Shape occShape = shape->getValue();
             result.push_back(occShape);
         } else {
@@ -377,7 +392,7 @@ bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
     bool result = false;
     //if the docObj doesn't have a Proxy property, it definitely isn't a Draft point
     App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
-    if (proxy != nullptr) {
+    if (proxy) {
         std::string  pp = proxy->toString();
 //        Base::Console().Message("SE::isDraftPoint - pp: %s\n", pp.c_str());
         if (pp.find("Point") != std::string::npos) {
@@ -399,7 +414,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
 
     Part::Feature* pf = dynamic_cast<Part::Feature*>(obj);
-    if (pf != nullptr) {
+    if (pf) {
         Part::TopoShape pts = pf->Shape.getShape();
         pts.setPlacement(pf->globalPlacement());
         TopoDS_Shape ts = pts.getShape();

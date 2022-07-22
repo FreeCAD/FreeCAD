@@ -200,7 +200,7 @@ PyObject* DrawViewPartPy::getCosmeticVertex(PyObject *args)
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CosmeticVertex* cv = dvp->getCosmeticVertex(id);
-    if (cv != nullptr) {
+    if (cv) {
         result = cv->getPyObject();
     } else {
         result = Py_None;
@@ -219,7 +219,7 @@ PyObject* DrawViewPartPy::getCosmeticVertexBySelection(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     TechDraw::CosmeticVertex* cv = dvp->getCosmeticVertexBySelection(selName);
-    if (cv != nullptr) {
+    if (cv) {
         result = cv->getPyObject();
     } else {
         result = Py_None;
@@ -230,9 +230,8 @@ PyObject* DrawViewPartPy::getCosmeticVertexBySelection(PyObject *args)
 PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
 {
     DrawViewPart* dvp = getDrawViewPartPtr();
-    if (dvp == nullptr) {
+    if (!dvp)
         return Py_None;
-    }
 
     char* tag;
     if (PyArg_ParseTuple(args, "s", &tag)) {
@@ -308,14 +307,13 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     Base::Vector3d pnt2 = static_cast<Base::VectorPy*>(pPnt2)->value();
     std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
-    if (ce != nullptr) {
+    if (ce) {
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
-        if (pColor == nullptr) {
+        if (!pColor)
             ce->m_format.m_color = defCol;
-        } else {
+        else
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
     } else {
         std::string msg = "DVPPI:makeCosmeticLine - line creation failed";
         Base::Console().Message("%s\n",msg.c_str());
@@ -356,14 +354,13 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
 
     std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
-    if (ce != nullptr) {
+    if (ce) {
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
-        if (pColor == nullptr) {
+        if (!pColor)
             ce->m_format.m_color = defCol;
-        } else {
+        else
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
     } else {
         std::string msg = "DVPPI:makeCosmeticLine - line creation failed";
         Base::Console().Message("%s\n",msg.c_str());
@@ -395,15 +392,14 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::Circle> (pnt1, radius);
     std::string newTag = dvp->addCosmeticEdge(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
-    if (ce != nullptr) {
+    if (ce) {
         ce->permaRadius = radius;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
-        if (pColor == nullptr) {
+        if (!pColor)
             ce->m_format.m_color = defCol;
-        } else {
+        else
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
     } else {
         std::string msg = "DVPPI:makeCosmeticCircle - circle creation failed";
         Base::Console().Message("%s\n",msg.c_str());
@@ -438,15 +434,14 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::AOC> (pnt1, radius, angle1, angle2);
     std::string newTag = dvp->addCosmeticEdge(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
-    if (ce != nullptr) {
+    if (ce) {
         ce->permaRadius = radius;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
-        if (pColor == nullptr) {
+        if (!pColor)
             ce->m_format.m_color = defCol;
-        } else {
+        else
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
     } else {
         std::string msg = "DVPPI:makeCosmeticCircleArc - arc creation failed";
         Base::Console().Message("%s\n",msg.c_str());
@@ -470,7 +465,7 @@ PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(tag);
-    if (ce != nullptr) {
+    if (ce) {
         result = ce->getPyObject();
     } else {
         Base::Console().Error("DVPPI::getCosmeticEdge - edge %s not found\n", tag);
@@ -490,7 +485,7 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeBySelection(name);
-    if (ce != nullptr) {
+    if (ce) {
         result = ce->getPyObject();
     } else {
         Base::Console().Error("DVPPI::getCosmeticEdgebySelection - edge for name %s not found\n", name);
@@ -513,7 +508,7 @@ PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
 //    DrawViewPart* dvp = getDrawViewPartPtr();
 //    TechDraw::CosmeticEdgePy* cePy = static_cast<TechDraw::CosmeticEdgePy*>(pNewCE);
 //    TechDraw::CosmeticEdge* ce = cePy->getCosmeticEdgePtr();
-//    if (ce != nullptr) {
+//    if (ce) {
 //        result = dvp->replaceCosmeticEdge(ce);                 //<<<
 //        dvp->refreshCEGeoms();
 //        dvp->requestPaint();
@@ -565,7 +560,7 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
         cl = CenterLine::CenterLineBuilder(dvp,
                                            subs,
                                            mode);     //vert,horiz,align
-        if (cl != nullptr) {
+        if (cl) {
             tag = dvp->addCenterLine(cl);
         } else {
             std::string msg = "DVPPI:makeCenterLine - line creation failed";
@@ -589,7 +584,7 @@ PyObject* DrawViewPartPy::getCenterLine(PyObject *args)
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CenterLine* cl = dvp->getCenterLine(tag);
-    if (cl != nullptr) {
+    if (cl) {
         result = cl->getPyObject();
     } else {
         Base::Console().Error("DVPPI::getCenterLine - centerLine %s not found\n", tag);
@@ -609,7 +604,7 @@ PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     TechDraw::CenterLine* cl = dvp->getCenterLineBySelection(tag);
-    if (cl != nullptr) {
+    if (cl) {
         result = cl->getPyObject();
     } else {
         Base::Console().Error("DVPPI::getCenterLinebySelection - centerLine for tag %s not found\n", tag);
@@ -669,7 +664,7 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
     color = DrawUtil::pyTupleToColor(pColor);
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(idx);
-    if (gf != nullptr) {
+    if (gf) {
         gf->m_format.m_style = style;
         gf->m_format.m_color = color;
         gf->m_format.m_weight = weight;
@@ -691,17 +686,15 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
 {
     int edgeIndex = 0;
-    if (!PyArg_ParseTuple(args, "i", &edgeIndex)) {
+    if (!PyArg_ParseTuple(args, "i", &edgeIndex))
         throw Py::TypeError("expected (edgeIndex)");
-    }
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
     TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
-    if (geom == nullptr) {
+    if (!geom)
         throw Py::ValueError("wrong edgeIndex");
-    }
 
     TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
                                       Base::Vector3d(0.0, 0.0, 0.0),
@@ -714,17 +707,15 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
 PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
 {
     int vertexIndex = 0;
-    if (!PyArg_ParseTuple(args, "i", &vertexIndex)) {
+    if (!PyArg_ParseTuple(args, "i", &vertexIndex))
         throw Py::TypeError("expected (vertIndex)");
-    }
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
     TechDraw::VertexPtr vert = dvp->getProjVertexByIndex(vertexIndex);
-    if (vert == nullptr) {
+    if (!vert)
         throw Py::ValueError("wrong vertIndex");
-    }
     Base::Vector3d point = DrawUtil::invertY(vert->point()) / dvp->getScale();
 
     gp_Pnt gPoint(point.x, point.y, point.z);
@@ -737,9 +728,8 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 {
     int edgeIndex = 0;
     char* selName;           //Selection routine name - "Edge0"
-    if (!PyArg_ParseTuple(args, "s", &selName)) {
+    if (!PyArg_ParseTuple(args, "s", &selName))
         throw Py::TypeError("expected (string)");
-    }
 
     edgeIndex = DrawUtil::getIndexFromName(std::string(selName));
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -747,9 +737,8 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
     //this is scaled and +Yup
     //need unscaled and +Ydown
     TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
-    if (geom == nullptr) {
+    if (!geom)
         throw Py::ValueError("wrong edgeIndex");
-    }
 
     TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
                                       Base::Vector3d(0.0, 0.0, 0.0),
@@ -773,9 +762,8 @@ PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
     //this is scaled and +Yup
     //need unscaled and +Ydown
     TechDraw::VertexPtr vert = dvp->getProjVertexByIndex(vertexIndex);
-    if (vert == nullptr) {
+    if (!vert)
         throw Py::ValueError("wrong vertIndex");
-    }
     Base::Vector3d point = DrawUtil::invertY(vert->point()) / dvp->getScale();
 
     gp_Pnt gPoint(point.x, point.y, point.z);

@@ -65,30 +65,28 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_3">
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
-              <item>
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>334</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QPushButton" name="jobModelEdit">
-                <property name="text">
-                 <string>Edit</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>334</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="jobModelEdit">
+               <property name="text">
+                <string>Edit</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -223,7 +221,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.&lt;/p&gt;&lt;p&gt;FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.&lt;/p&gt;&lt;p&gt;FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="resizeMode">
           <enum>QListView::Adjust</enum>
@@ -242,7 +240,7 @@
          </property>
          <item>
           <property name="text">
-           <string>G53</string>
+           <string notr="true">G54</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -250,7 +248,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G54</string>
+           <string notr="true">G55</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -258,7 +256,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G55</string>
+           <string notr="true">G56</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -266,7 +264,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G56</string>
+           <string notr="true">G57</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -274,7 +272,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G57</string>
+           <string notr="true">G58</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -282,7 +280,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G58</string>
+           <string notr="true">G59</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -290,7 +288,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59</string>
+           <string notr="true">G59.1</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -298,7 +296,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59.1</string>
+           <string notr="true">G59.2</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -306,7 +304,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59.2</string>
+           <string notr="true">G59.3</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -314,7 +312,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59.3</string>
+           <string notr="true">G59.4</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -322,7 +320,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59.4</string>
+           <string notr="true">G59.5</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -330,7 +328,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59.5</string>
+           <string notr="true">G59.6</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -338,7 +336,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59.6</string>
+           <string notr="true">G59.7</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -346,7 +344,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59.7</string>
+           <string notr="true">G59.8</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -354,15 +352,7 @@
          </item>
          <item>
           <property name="text">
-           <string>G59.8</string>
-          </property>
-          <property name="checkState">
-           <enum>Unchecked</enum>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>G59.9</string>
+           <string notr="true">G59.9</string>
           </property>
           <property name="checkState">
            <enum>Unchecked</enum>
@@ -376,7 +366,7 @@
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post-processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post-processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>Split Output</string>
@@ -386,7 +376,7 @@
       </layout>
      </widget>
     </item>
-   <item row="5" column="0">
+    <item row="5" column="0">
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -399,7 +389,7 @@
       </property>
      </spacer>
     </item>
-    </layout>
+   </layout>
   </widget>
   <widget class="QWidget" name="tabSetup">
    <attribute name="title">
@@ -417,7 +407,7 @@
          <x>0</x>
          <y>0</y>
          <width>548</width>
-         <height>941</height>
+         <height>929</height>
         </rect>
        </property>
        <attribute name="label">
@@ -434,50 +424,48 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="widget_2">
-             <layout class="QHBoxLayout" name="horizontalLayout_5">
-              <item>
-               <widget class="QComboBox" name="stock">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="currentIndex">
-                 <number>2</number>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>Create Box</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Create Cylinder</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Extend Model's Bound Box</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Use Existing Solid</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="refreshStock">
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QComboBox" name="stock">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="currentIndex">
+                <number>2</number>
+               </property>
+               <item>
                 <property name="text">
-                 <string>Refresh</string>
+                 <string>Create Box</string>
                 </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Create Cylinder</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Extend Model's Bound Box</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Use Existing Solid</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="refreshStock">
+               <property name="text">
+                <string>Refresh</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <spacer name="horizontalSpacer">
@@ -534,7 +522,7 @@
               <item row="1" column="2">
                <widget class="Gui::InputField" name="stockExtYneg"/>
               </item>
-             <item row="1" column="3">
+              <item row="1" column="3">
                <widget class="Gui::InputField" name="stockExtYpos"/>
               </item>
               <item row="2" column="1">
@@ -550,7 +538,7 @@
               <item row="2" column="3">
                <widget class="Gui::InputField" name="stockExtZpos"/>
               </item>
-              </layout>
+             </layout>
             </widget>
            </item>
            <item>
@@ -573,10 +561,10 @@
                 </property>
                </widget>
               </item>
-             <item row="1" column="2">
+              <item row="1" column="2">
                <widget class="Gui::InputField" name="stockCylinderHeight"/>
               </item>
-              </layout>
+             </layout>
             </widget>
            </item>
            <item>
@@ -609,10 +597,10 @@
                 </property>
                </widget>
               </item>
-             <item row="2" column="2">
+              <item row="2" column="2">
                <widget class="Gui::InputField" name="stockBoxHeight"/>
               </item>
-              </layout>
+             </layout>
             </widget>
            </item>
           </layout>
@@ -631,7 +619,7 @@
              </property>
             </widget>
            </item>
-          <item row="0" column="1">
+           <item row="0" column="1">
             <widget class="QPushButton" name="setOrigin">
              <property name="text">
               <string>Set Origin</string>
@@ -652,7 +640,7 @@
              </property>
             </widget>
            </item>
-           </layout>
+          </layout>
          </widget>
         </item>
         <item>
@@ -901,45 +889,43 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QWidget" name="widget_5">
-             <layout class="QVBoxLayout" name="verticalLayout_18">
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QDoubleSpinBox" name="modelRotateValue">
-                <property name="minimum">
-                 <double>-180.000000000000000</double>
-                </property>
-                <property name="maximum">
-                 <double>360.000000000000000</double>
-                </property>
-                <property name="value">
-                 <double>90.000000000000000</double>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="modelRotateCompound">
-                <property name="text">
-                 <string>Compound</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
+            <layout class="QVBoxLayout" name="verticalLayout_18">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QDoubleSpinBox" name="modelRotateValue">
+               <property name="minimum">
+                <double>-180.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>360.000000000000000</double>
+               </property>
+               <property name="value">
+                <double>90.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="modelRotateCompound">
+               <property name="text">
+                <string>Compound</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item row="0" column="2">
             <widget class="QPushButton" name="modelRotateRight">
@@ -1234,37 +1220,35 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_4">
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <item>
-               <widget class="QPushButton" name="toolControllerEdit">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>Edit</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="toolControllerAdd">
-                <property name="text">
-                 <string>Add</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="toolControllerDelete">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>Remove</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="toolControllerEdit">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Edit</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="toolControllerAdd">
+               <property name="text">
+                <string>Add</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="toolControllerDelete">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Remove</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -1361,7 +1345,7 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <widget class="QWidget" name="activeToolGroup">
+     <widget class="QWidget" name="activeToolGroup" native="true">
       <layout class="QFormLayout" name="formLayout_3">
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -1380,86 +1364,84 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="widget">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QListWidget" name="operationsList">
-         <property name="dragDropMode">
-          <enum>QAbstractItemView::InternalMove</enum>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QListWidget" name="operationsList">
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::InternalMove</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="operationMove" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="leftMargin">
+          <number>1</number>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="operationMove">
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <spacer name="verticalSpacer_6">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QToolButton" name="operationUp">
-            <property name="text">
-             <string>...</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../../../../../Gui/Icons/resource.qrc">
-              <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="operationDown">
-            <property name="text">
-             <string>...</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../../../../../Gui/Icons/resource.qrc">
-              <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_7">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <spacer name="verticalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QToolButton" name="operationUp">
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../../../Gui/Icons/resource.qrc">
+             <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="operationDown">
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../../../Gui/Icons/resource.qrc">
+             <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QWidget" name="operationModify">
+     <widget class="QWidget" name="operationModify" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QPushButton" name="operationEdit">

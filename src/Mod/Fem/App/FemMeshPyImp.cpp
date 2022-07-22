@@ -134,14 +134,14 @@ PyObject* FemMeshPy::setShape(PyObject *args)
 PyObject* FemMeshPy::addHypothesis(PyObject *args)
 {
     PyObject* hyp;
-    PyObject* shp=nullptr;
+    PyObject* shp = nullptr;
     // Since we have not a common base class for the Python binding of the
     // hypotheses classes we cannot pass a certain Python type
     if (!PyArg_ParseTuple(args, "O|O!",&hyp, &(Part::TopoShapePy::Type), &shp))
         return nullptr;
 
     TopoDS_Shape shape;
-    if (shp == nullptr)
+    if (!shp)
         shape = getFemMeshPtr()->getSMesh()->GetShapeToMesh();
     else
         shape = static_cast<Part::TopoShapePy*>(shp)->getTopoShapePtr()->getShape();
@@ -635,7 +635,7 @@ PyObject* FemMeshPy::writeABAQUS(PyObject *args)
         return nullptr;
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
-    bool grpParam = PyObject_IsTrue(groupParam) ? true : false;
+    bool grpParam = Base::asBoolean(groupParam);
 
     try {
         getFemMeshPtr()->writeABAQUS(EncodedName.c_str(), elemParam, grpParam);

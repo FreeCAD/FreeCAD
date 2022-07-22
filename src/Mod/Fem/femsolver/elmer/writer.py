@@ -33,6 +33,7 @@ import os
 import os.path
 import subprocess
 import tempfile
+from platform import system
 
 from FreeCAD import Console
 from FreeCAD import Units
@@ -95,7 +96,14 @@ class Writer(object):
         self._writeStartinfo()
 
     def _handleUnits(self):
-        # TODO constants and units
+        # Elmer solver writer no longer uses FreeCAD unit system
+        # to retrieve units for writing the sif file
+        #
+        # ATM Elmer writer uses SI units only
+        #
+        # see forum topic: https://forum.freecadweb.org/viewtopic.php?f=18&t=70150
+        #
+        # TODO: adapt method and comment
         # should be only one system for all solver and not in each solver
         # https://forum.freecadweb.org/viewtopic.php?t=47895
         # https://forum.freecadweb.org/viewtopic.php?t=48451
@@ -208,15 +216,38 @@ class Writer(object):
             )
         else:
             binary = settings.get_binary("ElmerGrid")
+            num_cores = settings.get_cores("ElmerGrid")
             if binary is None:
                 raise WriteError("Could not find ElmerGrid binary.")
-            args = [binary,
-                    _ELMERGRID_IFORMAT,
-                    _ELMERGRID_OFORMAT,
-                    unvPath,
-                    "-scale", "0.001", "0.001", "0.001",
-                    "-out", self.directory]
-            subprocess.call(args, stdout=subprocess.DEVNULL)
+            # for multithreading we first need a normal mesh creation run
+            # then a second to split the mesh into the number of used cores
+            argsBasic = [binary,
+                         _ELMERGRID_IFORMAT,
+                         _ELMERGRID_OFORMAT,
+                         unvPath,
+                         "-scale", "0.001", "0.001", "0.001"]
+            args = argsBasic
+            args.extend(["-out", self.directory])
+            if system() == "Windows":
+                subprocess.call(
+                    args,
+                    stdout=subprocess.DEVNULL, 
+                    startupinfo=femutils.startProgramInfo("hide")
+                )
+            else:
+                subprocess.call(args, stdout=subprocess.DEVNULL)
+            if int(num_cores) > 1:
+                args = argsBasic
+                args.extend(["-partdual", "-metiskway", num_cores,
+                             "-out", self.directory])
+                if system() == "Windows":
+                   subprocess.call(
+                       args,
+                       stdout=subprocess.DEVNULL,
+                       startupinfo=femutils.startProgramInfo("hide")
+                   )
+                else:
+                    subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
@@ -282,11 +313,11 @@ class Writer(object):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
         # not necessary anymore since we use SI units
-        #if self.unit_schema == Units.Scheme.SI2:
-        #self._simulation("Coordinate Scaling", 0.001)
-        #    Console.PrintMessage(
-        #        "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
-        #    )
+        # if self.unit_schema == Units.Scheme.SI2:
+        # self._simulation("Coordinate Scaling", 0.001)
+        #     Console.PrintMessage(
+        #         "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
+        #     )
         self._simulation("Simulation Type", "Steady state")
         self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)

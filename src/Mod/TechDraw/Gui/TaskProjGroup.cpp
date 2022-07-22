@@ -144,22 +144,23 @@ TaskProjGroup::~TaskProjGroup()
 void TaskProjGroup::saveGroupState()
 {
 //    Base::Console().Message("TPG::saveGroupState()\n");
-    if (multiView != nullptr) {
-        m_saveSource   = multiView->Source.getValues();
-        m_saveProjType = multiView->ProjectionType.getValueAsString();
-        m_saveScaleType = multiView->ScaleType.getValueAsString();
-        m_saveScale = multiView->Scale.getValue();
-        m_saveAutoDistribute = multiView->AutoDistribute.getValue();
-        m_saveSpacingX = multiView->spacingX.getValue();
-        m_saveSpacingY = multiView->spacingY.getValue();
-        DrawProjGroupItem* anchor = multiView->getAnchor();
-        m_saveDirection = anchor->Direction.getValue();
+    if (!multiView)
+        return;
 
-        for( const auto it : multiView->Views.getValues() ) {
-            auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-            if (view != nullptr) {
-                m_saveViewNames.push_back(view->Type.getValueAsString());
-            }
+    m_saveSource   = multiView->Source.getValues();
+    m_saveProjType = multiView->ProjectionType.getValueAsString();
+    m_saveScaleType = multiView->ScaleType.getValueAsString();
+    m_saveScale = multiView->Scale.getValue();
+    m_saveAutoDistribute = multiView->AutoDistribute.getValue();
+    m_saveSpacingX = multiView->spacingX.getValue();
+    m_saveSpacingY = multiView->spacingY.getValue();
+    DrawProjGroupItem* anchor = multiView->getAnchor();
+    m_saveDirection = anchor->Direction.getValue();
+
+    for( const auto it : multiView->Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if (view) {
+            m_saveViewNames.push_back(view->Type.getValueAsString());
         }
     }
 }
@@ -168,18 +169,19 @@ void TaskProjGroup::saveGroupState()
 void TaskProjGroup::restoreGroupState()
 {
     Base::Console().Message("TPG::restoreGroupState()\n");
-    if (multiView != nullptr) {
-        multiView->ProjectionType.setValue(m_saveProjType.c_str());
-        multiView->ScaleType.setValue(m_saveScaleType.c_str());
-        multiView->Scale.setValue(m_saveScale);
-        multiView->AutoDistribute.setValue(m_saveAutoDistribute);
-        multiView->spacingX.setValue(m_saveSpacingX);
-        multiView->spacingY.setValue(m_saveSpacingY);
-        multiView->purgeProjections();
-        for(auto & sv : m_saveViewNames) {
-            if (sv != "Front") {
-                multiView->addProjection(sv.c_str());
-            }
+    if (!multiView)
+        return;
+
+    multiView->ProjectionType.setValue(m_saveProjType.c_str());
+    multiView->ScaleType.setValue(m_saveScaleType.c_str());
+    multiView->Scale.setValue(m_saveScale);
+    multiView->AutoDistribute.setValue(m_saveAutoDistribute);
+    multiView->spacingX.setValue(m_saveSpacingX);
+    multiView->spacingY.setValue(m_saveSpacingY);
+    multiView->purgeProjections();
+    for(auto & sv : m_saveViewNames) {
+        if (sv != "Front") {
+            multiView->addProjection(sv.c_str());
         }
     }
 }
@@ -437,7 +439,7 @@ const char * TaskProjGroup::viewChkIndexToCStr(int index)
     //   First Angle:  FBRight  B  FBL
     //                  Right   F   L  Rear
     //                 FTRight  T  FTL
-    assert (multiView != nullptr);
+    assert (multiView);
 
     bool thirdAngle = multiView->usedProjectionType().isValue("Third Angle");
     switch(index) {
@@ -456,9 +458,8 @@ const char * TaskProjGroup::viewChkIndexToCStr(int index)
 }
 void TaskProjGroup::setupViewCheckboxes(bool addConnections)
 {
-    if ( multiView == nullptr ) {
+    if (!multiView)
         return;
-    }
 
     // There must be a better way to construct this list...
     QCheckBox * viewCheckboxes[] = { ui->chkView0,
@@ -480,7 +481,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
         }
 
         const char *viewStr = viewChkIndexToCStr(i);
-        if ( viewStr != nullptr && multiView->hasProjection(viewStr) ) {
+        if (viewStr && multiView->hasProjection(viewStr)) {
             box->setCheckState(Qt::Checked);
         } else {
             box->setCheckState(Qt::Unchecked);

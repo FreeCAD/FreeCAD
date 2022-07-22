@@ -108,7 +108,7 @@ PyObject* ShapeFix_FixSmallFacePy::fixStripFace(PyObject *args)
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &wasdone))
         return nullptr;
 
-    TopoShape sh = getShapeFix_FixSmallFacePtr()->FixStripFace(PyObject_IsTrue(wasdone) ? Standard_True : Standard_False);
+    TopoShape sh = getShapeFix_FixSmallFacePtr()->FixStripFace(Base::asBoolean(wasdone));
     return sh.getPyObject();
 }
 

@@ -39,6 +39,9 @@ public:
     DlgSettingsFemGmshImp( QWidget* parent = nullptr );
     ~DlgSettingsFemGmshImp();
 
+protected Q_SLOTS:
+    void onfileNameChanged(QString FileName);
+
 protected:
     void saveSettings();
     void loadSettings();

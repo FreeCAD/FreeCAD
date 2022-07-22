@@ -75,22 +75,23 @@ DrawViewArch::~DrawViewArch()
 {
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewArch::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = (Source.isTouched() ||
-                AllOn.isTouched() ||
-                RenderMode.isTouched() ||
-                ShowHidden.isTouched() ||
-                ShowFill.isTouched() ||
-                LineWidth.isTouched() ||
-                FontSize.isTouched() ||
-                CutLineWidth.isTouched() ||
-                JoinArch.isTouched());
-    }
-    if ((bool) result) {
-        return result;
+        if (
+            Source.isTouched() ||
+            AllOn.isTouched() ||
+            RenderMode.isTouched() ||
+            ShowHidden.isTouched() ||
+            ShowFill.isTouched() ||
+            LineWidth.isTouched() ||
+            FontSize.isTouched() ||
+            CutLineWidth.isTouched() ||
+            JoinArch.isTouched()
+        ) {
+            return 1;
+        }
     }
     return DrawViewSymbol::mustExecute();
 }
@@ -106,7 +107,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
     if (sourceObj) {
         //if (sourceObj is not ArchSection) return
         App::Property* proxy = sourceObj->getPropertyByName("Proxy");
-        if (proxy == nullptr) {
+        if (!proxy) {
             Base::Console().Error("DVA::execute - %s is not an ArchSection\n", sourceObj->Label.getValue());
             //this is definitely not an ArchSection
             return DrawView::execute();
@@ -153,6 +154,5 @@ std::string DrawViewArch::getSVGHead(void)
 
 std::string DrawViewArch::getSVGTail(void)
 {
-    std::string tail = "\\n</svg>";
-    return tail;
+    return "\\n</svg>";
 }

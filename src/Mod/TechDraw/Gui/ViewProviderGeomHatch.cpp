@@ -133,7 +133,7 @@ void ViewProviderGeomHatch::onChanged(const App::Property* p)
     if ((p == &WeightPattern)  ||
         (p == &ColorPattern) ) {
         auto gHatch = getViewObject();
-        if (gHatch != nullptr) {
+        if (gHatch) {
             TechDraw::DrawViewPart* parent = gHatch->getSourceView();
             if (parent) {
                 parent->requestPaint();
@@ -153,20 +153,27 @@ void ViewProviderGeomHatch::updateData(const App::Property* prop)
 void ViewProviderGeomHatch::updateGraphic(void)
 {
     TechDraw::DrawGeomHatch* dc = getViewObject();
-    if (dc) {
-        TechDraw::DrawViewPart* dvp = dc->getSourceView();
-        if (dvp) {
-            Gui::ViewProvider* view = Gui::Application::Instance->getDocument(dvp->getDocument())->getViewProvider(dvp);
-            TechDrawGui::ViewProviderDrawingView* vpDV = dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(view);
-            if (vpDV) {
-                vpDV->show();
-                QGIView* qgiv = vpDV->getQView();
-                if (qgiv) {
-                    qgiv->updateView(true);
-                }
-            }
-        }
-   }
+    if (!dc) {
+        return;
+    }
+
+    TechDraw::DrawViewPart* dvp = dc->getSourceView();
+    if (!dvp) {
+        return;
+    }
+
+    Gui::ViewProvider* view = Gui::Application::Instance->getDocument(dvp->getDocument())->getViewProvider(dvp);
+    TechDrawGui::ViewProviderDrawingView* vpDV = dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(view);
+    if (!vpDV) {
+        return;
+    }
+    vpDV->show();
+
+    QGIView* qgiv = vpDV->getQView();
+    if (!qgiv) {
+        return;
+    }
+    qgiv->updateView(true);
 }
 
 void ViewProviderGeomHatch::getParameters(void)

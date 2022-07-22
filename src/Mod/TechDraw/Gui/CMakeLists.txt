@@ -82,6 +82,7 @@ set(TechDrawGui_UIC_SRCS
     TaskRichAnno.ui
     TaskSectionView.ui
     TaskWeldingSymbol.ui
+    TaskSurfaceFinishSymbols.ui
     SymbolChooser.ui
     TaskMoveView.ui
     TaskProjection.ui
@@ -186,6 +187,9 @@ SET(TechDrawGui_SRCS
     TaskWeldingSymbol.ui
     TaskWeldingSymbol.cpp
     TaskWeldingSymbol.h
+    TaskSurfaceFinishSymbols.ui
+    TaskSurfaceFinishSymbols.cpp
+    TaskSurfaceFinishSymbols.h
     TaskSelectLineAttributes.ui
     TaskSelectLineAttributes.cpp
     TaskSelectLineAttributes.h
@@ -404,6 +408,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLineDecor.ui
     TaskRestoreLines.ui
     TaskWeldingSymbol.ui
+    TaskSurfaceFinishSymbols.ui
     SymbolChooser.ui
     TaskActiveView.ui
     TaskDetail.ui

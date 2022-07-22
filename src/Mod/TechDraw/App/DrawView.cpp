@@ -99,7 +99,7 @@ DrawView::~DrawView()
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
 //    Base::Console().Message("DV::execute() - %s touched: %d\n", getNameInDocument(), isTouched());
-    if (findParentPage() == nullptr) {
+    if (!findParentPage()) {
         return App::DocumentObject::execute();
     }
     handleXYLock();
@@ -132,7 +132,7 @@ void DrawView::onChanged(const App::Property* prop)
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
-                if (page != nullptr) {
+                if (page) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
                     }
@@ -481,7 +481,7 @@ void DrawView::handleChangedPropertyType(
         if (strcmp(glink.getTypeId().getName(), TypeName) == 0) {            //property in file is plg
             glink.setContainer(this);
             glink.Restore(reader);
-            if (glink.getValue() != nullptr) {
+            if (glink.getValue()) {
                 static_cast<App::PropertyLinkList*>(prop)->setScope(App::LinkScope::Global);
                 static_cast<App::PropertyLinkList*>(prop)->setValue(glink.getValue());
             }
@@ -489,7 +489,7 @@ void DrawView::handleChangedPropertyType(
         else if (strcmp(link.getTypeId().getName(), TypeName) == 0) {            //property in file is pl
             link.setContainer(this);
             link.Restore(reader);
-            if (link.getValue() != nullptr) {
+            if (link.getValue()) {
                 static_cast<App::PropertyLinkList*>(prop)->setScope(App::LinkScope::Global);
                 static_cast<App::PropertyLinkList*>(prop)->setValue(link.getValue());
             }

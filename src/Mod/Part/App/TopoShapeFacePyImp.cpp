@@ -473,9 +473,9 @@ PyObject* TopoShapeFacePy::makeEvolved(PyObject *args, PyObject *kwds)
 
     try {
         BRepOffsetAPI_MakeEvolved evolved(spine, profile, joinType,
-                                          PyObject_IsTrue(AxeProf) ? Standard_True : Standard_False,
-                                          PyObject_IsTrue(Solid) ? Standard_True : Standard_False,
-                                          PyObject_IsTrue(ProfOnSpine) ? Standard_True : Standard_False,
+                                          Base::asBoolean(AxeProf),
+                                          Base::asBoolean(Solid),
+                                          Base::asBoolean(ProfOnSpine),
                                           Tolerance);
         TopoDS_Shape shape = evolved.Shape();
         return Py::new_reference_to(shape2pyshape(shape));

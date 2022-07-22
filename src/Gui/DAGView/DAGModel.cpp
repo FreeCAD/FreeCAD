@@ -1095,7 +1095,7 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 
 void Model::onRenameSlot()
 {
-  assert(proxy == nullptr);
+  assert(!proxy);
   std::vector<Gui::DAG::Vertex> selections = getAllSelected();
   assert(selections.size() == 1);
   

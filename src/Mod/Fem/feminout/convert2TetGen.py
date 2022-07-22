@@ -47,7 +47,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     """Export mesh to TetGen *.poly file format"""
     # ********** Part 1 - write node list to output file
     if beVerbose == 1:
-            Console.PrintMessage("\nExport of mesh to TetGen file ...")
+        Console.PrintMessage("\nExport of mesh to TetGen file ...")
     (allVertices, allFacets) = meshToExport.Topology
     f = open(filePath, "w")
     f.write("# This file was generated from FreeCAD geometry\n")

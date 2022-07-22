@@ -126,7 +126,7 @@ short DrawLeaderLine::mustExecute() const
     }
 
     const App::DocumentObject* docObj = getBaseObject();
-    if (docObj != nullptr) {
+    if (docObj) {
         result = docObj->isTouched();                 //object property points to is touched
     }
     if (result) {
@@ -150,9 +150,9 @@ DrawView* DrawLeaderLine::getBaseView(void) const
 {
     DrawView* result = nullptr;
     App::DocumentObject* baseObj = LeaderParent.getValue();
-    if (baseObj != nullptr) {
+    if (baseObj) {
         DrawView* cast = dynamic_cast<DrawView*>(baseObj);
-        if (cast != nullptr) {
+        if (cast) {
             result = cast;
         }
     }
@@ -163,7 +163,7 @@ App::DocumentObject* DrawLeaderLine::getBaseObject(void) const
 {
     App::DocumentObject* result = nullptr;
     DrawView* view = getBaseView();
-    if (view != nullptr) {
+    if (view) {
         result = view;
     }
     return result;
@@ -173,7 +173,7 @@ bool DrawLeaderLine::keepUpdated(void)
 {
     bool result = false;
     DrawView* view = getBaseView();
-    if (view != nullptr) {
+    if (view) {
         result = view->keepUpdated();
     }
     return result;
@@ -186,7 +186,7 @@ double DrawLeaderLine::getBaseScale(void) const
 //    Base::Console().Message("DLL::getBaseScale()\n");
     double result = 1.0;
     DrawView* parent = getBaseView();
-    if (parent != nullptr) {
+    if (parent) {
         result = parent->getScale();
     } else {
         //TARFU
@@ -201,7 +201,7 @@ double DrawLeaderLine::getScale(void) const
     double result = 1.0;
     if (Scalable.getValue()) {
         DrawView* parent = getBaseView();
-        if (parent != nullptr) {
+        if (parent) {
             result = parent->getScale();
         } else {
             //TARFU

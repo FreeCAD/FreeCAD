@@ -300,10 +300,10 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
     Base::PyGILStateLocker lock;
     PyObject *module, *dict, *presult;           /* "exec code in d, d" */
     module = PyImport_AddModule("__main__");     /* get module, init python */
-    if (module == nullptr)
+    if (!module)
         throw Base::PyException();                 /* not incref'd */
     dict = PyModule_GetDict(module);             /* get dict namespace */
-    if (dict == nullptr)
+    if (!dict)
         throw Base::PyException();                 /* not incref'd */
 
     // It seems that the return value is always 'None' or Null

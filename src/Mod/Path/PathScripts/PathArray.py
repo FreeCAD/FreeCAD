@@ -208,69 +208,6 @@ class ObjectArray:
 
         self.setEditorModes(obj)
 
-    def rotatePath(self, path, angle, centre):
-        """
-        Rotates Path around given centre vector
-        Only X and Y is considered
-        """
-        CmdMoveRapid = ["G0", "G00"]
-        CmdMoveStraight = ["G1", "G01"]
-        CmdMoveCW = ["G2", "G02"]
-        CmdMoveCCW = ["G3", "G03"]
-        CmdDrill = ["G81", "G82", "G83"]
-        CmdMoveArc = CmdMoveCW + CmdMoveCCW
-        CmdMove = CmdMoveStraight + CmdMoveArc
-
-        commands = []
-        ang = angle / 180 * math.pi
-        currX = 0
-        currY = 0
-        for cmd in path.Commands:
-            if (
-                (cmd.Name in CmdMoveRapid)
-                or (cmd.Name in CmdMove)
-                or (cmd.Name in CmdDrill)
-            ):
-                params = cmd.Parameters
-                x = params.get("X")
-                if x is None:
-                    x = currX
-                currX = x
-                y = params.get("Y")
-                if y is None:
-                    y = currY
-                currY = y
-
-                # "move" the centre to origin
-                x = x - centre.x
-                y = y - centre.y
-
-                # rotation around origin:
-                nx = x * math.cos(ang) - y * math.sin(ang)
-                ny = y * math.cos(ang) + x * math.sin(ang)
-
-                # "move" the centre back and update
-                params.update({"X": nx + centre.x, "Y": ny + centre.y})
-
-                # Arcs need to have the I and J params rotated as well
-                if cmd.Name in CmdMoveArc:
-                    i = params.get("I")
-                    if i is None:
-                        i = 0
-                    j = params.get("J")
-                    if j is None:
-                        j = 0
-
-                    ni = i * math.cos(ang) - j * math.sin(ang)
-                    nj = j * math.cos(ang) + i * math.sin(ang)
-                    params.update({"I": ni, "J": nj})
-
-                cmd.Parameters = params
-            commands.append(cmd)
-        newPath = Path.Path(commands)
-
-        return newPath
-
     def execute(self, obj):
         # backwards compatibility for PathArrays created before support for multiple bases
         if isinstance(obj.Base, list):
@@ -348,6 +285,69 @@ class PathArray:
                 self.baseList = baseList
             else:
                 self.baseList = [baseList]
+
+    def rotatePath(self, path, angle, centre):
+        """
+        Rotates Path around given centre vector
+        Only X and Y is considered
+        """
+        CmdMoveRapid = ["G0", "G00"]
+        CmdMoveStraight = ["G1", "G01"]
+        CmdMoveCW = ["G2", "G02"]
+        CmdMoveCCW = ["G3", "G03"]
+        CmdDrill = ["G73", "G81", "G82", "G83"]
+        CmdMoveArc = CmdMoveCW + CmdMoveCCW
+        CmdMove = CmdMoveStraight + CmdMoveArc
+
+        commands = []
+        ang = angle / 180 * math.pi
+        currX = 0
+        currY = 0
+        for cmd in path.Commands:
+            if (
+                (cmd.Name in CmdMoveRapid)
+                or (cmd.Name in CmdMove)
+                or (cmd.Name in CmdDrill)
+            ):
+                params = cmd.Parameters
+                x = params.get("X")
+                if x is None:
+                    x = currX
+                currX = x
+                y = params.get("Y")
+                if y is None:
+                    y = currY
+                currY = y
+
+                # "move" the centre to origin
+                x = x - centre.x
+                y = y - centre.y
+
+                # rotation around origin:
+                nx = x * math.cos(ang) - y * math.sin(ang)
+                ny = y * math.cos(ang) + x * math.sin(ang)
+
+                # "move" the centre back and update
+                params.update({"X": nx + centre.x, "Y": ny + centre.y})
+
+                # Arcs need to have the I and J params rotated as well
+                if cmd.Name in CmdMoveArc:
+                    i = params.get("I")
+                    if i is None:
+                        i = 0
+                    j = params.get("J")
+                    if j is None:
+                        j = 0
+
+                    ni = i * math.cos(ang) - j * math.sin(ang)
+                    nj = j * math.cos(ang) + i * math.sin(ang)
+                    params.update({"I": ni, "J": nj})
+
+                cmd.Parameters = params
+            commands.append(cmd)
+        newPath = Path.Path(commands)
+
+        return newPath
 
     # Private method
     def _calculateJitter(self, pos):
@@ -475,7 +475,7 @@ class PathArray:
                     ang = 360
                     if self.copies > 0:
                         ang = self.angle / self.copies * (1 + i)
-                    np = self.rotatePath(b.Path.Commands, ang, self.centre)
+                    np = self.rotatePath(b.Path, ang, self.centre)
                     output += np.toGCode()
 
         # return output

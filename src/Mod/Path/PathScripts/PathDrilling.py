@@ -98,6 +98,15 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
         )
 
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, "chipBreakEnabled"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "chipBreakEnabled",
+                "Drill",
+                QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
+            )
+
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add drilling specific properties to obj."""
         obj.addProperty(
@@ -114,6 +123,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "PeckEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "chipBreakEnabled",
+            "Drill",
+            QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
         )
         obj.addProperty(
             "App::PropertyFloat",
@@ -231,10 +246,16 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
             peckdepth = obj.PeckDepth.Value if obj.PeckEnabled else 0.0
             repeat = 1  # technical debt:  Add a repeat property for user control
+            chipBreak = (obj.chipBreakEnabled and obj.PeckEnabled)
 
             try:
                 drillcommands = generator.generate(
-                    edge, dwelltime, peckdepth, repeat, obj.RetractHeight.Value
+                    edge,
+                    dwelltime,
+                    peckdepth,
+                    repeat,
+                    obj.RetractHeight.Value,
+                    chipBreak=chipBreak
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored

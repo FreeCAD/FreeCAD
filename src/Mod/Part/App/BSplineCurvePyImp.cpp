@@ -213,7 +213,7 @@ PyObject* BSplineCurvePy::insertKnot(PyObject * args)
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
             (getGeometryPtr()->handle());
-        curve->InsertKnot(U,M,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
+        curve->InsertKnot(U, M, tol, Base::asBoolean(add));
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -252,7 +252,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
 
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
             (getGeometryPtr()->handle());
-        curve->InsertKnots(k,m,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
+        curve->InsertKnots(k, m, tol, Base::asBoolean(add));
         Py_Return;
     }
     catch (Standard_Failure& e) {
@@ -1044,19 +1044,18 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
         std::unique_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
         if (parameters.IsNull()) {
             aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints,
-                PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
+                Base::asBoolean(periodic), tol3d));
         }
         else {
             aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints, parameters,
-                PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
+                Base::asBoolean(periodic), tol3d));
         }
 
         if (t1 && t2) {
             Base::Vector3d v1 = Py::Vector(t1,false).toVector();
             Base::Vector3d v2 = Py::Vector(t2,false).toVector();
             gp_Vec initTangent(v1.x,v1.y,v1.z), finalTangent(v2.x,v2.y,v2.z);
-            aBSplineInterpolation->Load(initTangent, finalTangent, PyObject_IsTrue(scale)
-                                        ? Standard_True : Standard_False);
+            aBSplineInterpolation->Load(initTangent, finalTangent, Base::asBoolean(scale));
         }
         else if (ts && fl) {
             Py::Sequence tlist(ts);
@@ -1076,8 +1075,7 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
                 tangentFlags->SetValue(findex++, static_cast<bool>(flag) ? Standard_True : Standard_False);
             }
 
-            aBSplineInterpolation->Load(tangents, tangentFlags, PyObject_IsTrue(scale)
-                                        ? Standard_True : Standard_False);
+            aBSplineInterpolation->Load(tangents, tangentFlags, Base::asBoolean(scale));
         }
 
         aBSplineInterpolation->Perform();
@@ -1120,10 +1118,10 @@ PyObject* BSplineCurvePy::buildFromPoles(PyObject *args)
         if (poles.Length() <= degree)
             degree = poles.Length()-1;
 
-        if (PyObject_IsTrue(periodic) ? true : false) {
+        if (Base::asBoolean(periodic)) {
             int mult;
             int len;
-            if (PyObject_IsTrue(interpolate) ? true : false) {
+            if (Base::asBoolean(interpolate)) {
                 mult = degree;
                 len = poles.Length() - mult + 2;
             }
@@ -1227,7 +1225,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             else {
                 if (knots != Py_None) { number_of_knots = PyObject_Length(knots); }
                 else { //guess number of knots
-                    if (PyObject_IsTrue(periodic) ? true : false) {
+                    if (Base::asBoolean(periodic)) {
                         if (number_of_poles < degree) {degree = number_of_poles+1;}
                         number_of_knots = number_of_poles+1;
                     }
@@ -1246,7 +1244,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Standard_Integer index = 1;
             for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
                 Py::Long mult(*it);
-                if (index < occmults.Length() || PyObject_Not(periodic)) {
+                if (index < occmults.Length() || !Base::asBoolean(periodic)) {
                     sum_of_mults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
                 }
                 occmults(index++) = static_cast<int>(mult);
@@ -1256,7 +1254,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             for (int i=1; i<=occmults.Length(); i++){
                 occmults.SetValue(i,1);
             }
-            if (PyObject_Not(periodic) && occmults.Length() > 0) {
+            if (!Base::asBoolean(periodic) && occmults.Length() > 0) {
                 occmults.SetValue(1, degree+1);
                 occmults.SetValue(occmults.Length(), degree+1);
                 sum_of_mults = occmults.Length()+2*degree;
@@ -1302,15 +1300,14 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             }
         }
         // check if the number of poles matches the sum of mults
-        if (((PyObject_IsTrue(periodic) ? true : false) && sum_of_mults != number_of_poles) ||
-                ((PyObject_Not(periodic) ? true : false) && sum_of_mults - degree -1 != number_of_poles)) {
+        if ((Base::asBoolean(periodic) && sum_of_mults != number_of_poles) ||
+            (!Base::asBoolean(periodic) && sum_of_mults - degree -1 != number_of_poles)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
             return(nullptr);
         }
 
         Handle(Geom_BSplineCurve) spline = new Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
-            PyObject_IsTrue(periodic) ? Standard_True : Standard_False,
-            PyObject_IsTrue(CheckRational) ? Standard_True : Standard_False);
+            Base::asBoolean(periodic), Base::asBoolean(CheckRational));
         if (!spline.IsNull()) {
             this->getGeomBSplineCurvePtr()->setHandle(spline);
             Py_Return;

@@ -405,7 +405,9 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     std::vector<std::string> subs;
 
     int edgeType = _isValidSingleEdge(this);
-    if (edgeType == isEllipse) {
+    if (edgeType == isCircle) {
+            // nothing to do
+    } else if (edgeType == isEllipse) {
         QMessageBox::StandardButton result =
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
                              QObject::tr("Selected edge is an Ellipse.  Diameter will be approximate. Continue?"),
@@ -426,7 +428,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
                              QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
         return;
     } else {
-      QMessageBox::warning(
+        QMessageBox::warning(
           Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
           QObject::tr("Selection for Diameter does not contain a circular edge "
                       "(edge type: %1)")
@@ -514,10 +516,12 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    if ( (_isValidSingleEdge(this) == isVertical) ||
+         (_isValidSingleEdge(this) == isHorizontal) ||
+         (_isValidSingleEdge(this) == isDiagonal) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
+    } else if (  _isValidVertexes(this) ||
                 (_isValidEdgeToEdge(this) == isVertical)   ||
                 (_isValidEdgeToEdge(this) == isHorizontal) ||
                 (_isValidEdgeToEdge(this) == isDiagonal) ||
@@ -529,8 +533,8 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     } else {
       QMessageBox::warning(Gui::getMainWindow(),
                            QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
-                                       "and 1 Edge for Distance Dimension"));
+                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
+                                       "1 Vertex and 1 Edge for Distance Dimension"));
       return;
     }
 
@@ -617,10 +621,12 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    if ( (_isValidSingleEdge(this) == isVertical) ||
+         (_isValidSingleEdge(this) == isHorizontal) ||
+         (_isValidSingleEdge(this) == isDiagonal) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
+    } else if (  _isValidVertexes(this) ||
                 (_isValidEdgeToEdge(this) == isVertical)   ||
                 (_isValidEdgeToEdge(this) == isHorizontal) ||
                 (_isValidEdgeToEdge(this) == isDiagonal) ||
@@ -632,8 +638,8 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     } else {
       QMessageBox::warning(Gui::getMainWindow(),
                            QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
-                                       "and 1 Edge for Horizontal Dimension"));
+                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
+                                       "1 Vertex and 1 Edge for Horizontal Dimension"));
       return;
     }
 
@@ -720,7 +726,9 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    if ( (_isValidSingleEdge(this) == isVertical) ||
+         (_isValidSingleEdge(this) == isHorizontal) ||
+         (_isValidSingleEdge(this) == isDiagonal) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
     } else if (  _isValidVertexes(this) || 
@@ -735,8 +743,8 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     } else {
       QMessageBox::warning(Gui::getMainWindow(),
                            QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 2 Vertexes, 2 Edges or 1 Vertex "
-                                       "and 1 Edge for Vertical Dimension"));
+                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
+                                       "1 Vertex and 1 Edge for Vertical Dimension"));
       return;
     }
 
@@ -1051,7 +1059,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
 {
 //    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1145,7 +1153,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1177,7 +1185,7 @@ void execHExtent(Gui::Command* cmd)
     }
 
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if( baseFeat == nullptr ) {
+    if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                 QObject::tr("No base View in Selection."));
         return;
@@ -1232,7 +1240,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1265,7 +1273,7 @@ void execVExtent(Gui::Command* cmd)
 
 
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if( baseFeat == nullptr ) {
+    if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                 QObject::tr("No base View in Selection."));
         return;
@@ -1473,13 +1481,12 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     auto selection( cmd->getSelection().getSelectionEx() );
 
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( objFeat == nullptr ) {
+    if (!objFeat)
         return isInvalid;
-    }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() != 1 ||
-        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
+        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) != "Edge") {
         return isInvalid;
     }
 
@@ -1560,9 +1567,9 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
         return isInvalid;
     }
 
-    //they both start with "Edge"
-    if(TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
-        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
+    //they both must start with "Edge"
+    if(TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) != "Edge" ||
+        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) != "Edge") {
         return isInvalid;
     }
 
@@ -1571,7 +1578,7 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
     TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
     TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
 
-    if ((!geom0) || (!geom1)) {                                         // missing gometry
+    if (!geom0 || !geom1) {                                         // missing gometry
         Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
         return isInvalid;
     }
@@ -1626,7 +1633,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     }
     e = objFeat0->getGeomByIndex(eId);
     v = objFeat0->getProjVertexByIndex(vId);
-    if ((!e) || (!v)) {
+    if (!e || !v) {
         Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
         return false;
     }

@@ -210,13 +210,13 @@ void QGEPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void QGEPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView *view = dynamic_cast<QGIView *> (parentItem());
-    assert(view != nullptr);
+    assert(view);
     Q_UNUSED(view);
 
     Q_EMIT hover(false);
     QGraphicsItem* parent = parentItem();
     bool parentSel(false);
-    if (parent != nullptr) {
+    if (parent) {
         parentSel = parent->isSelected();
     }
     if (!parentSel  && !isSelected()) {
@@ -291,10 +291,10 @@ void QGEPath::clearMarkers()
         return;
     }
     for (auto& m: m_markers) {
-        if (m != nullptr) {
+        if (m) {
             m->hide();
             QGraphicsScene* s = m->scene();
-            if (s != nullptr) {
+            if (s) {
                 s->removeItem(m);           //should this be setParentItem(nullptr) instead??
             }
             delete m;
@@ -335,7 +335,7 @@ void QGEPath::onDoubleClick(QPointF pos, int markerIndex)
 void QGEPath::onEndEdit(void)
 {
 //    Base::Console().Message("QGEPath::onEndEdit()\n");
-    if (m_ghost != nullptr) {
+    if (m_ghost) {
         scene()->removeItem(m_ghost);   //stop ghost from messing up brect
     }
     inEdit(false);
@@ -347,13 +347,13 @@ void QGEPath::onEndEdit(void)
 std::vector<QPointF> QGEPath::getDeltasFromLeader(void)
 {
     std::vector<QPointF> qDeltas;
-    if (m_parentLeader == nullptr) {
+    if (!m_parentLeader) {
         Base::Console().Message("QGEP::getDeltasFromLeader - m_parentLeader is nullptr\n");
         return qDeltas;
     }
 
     DrawLeaderLine* featLeader = m_parentLeader->getFeature();
-    if (featLeader == nullptr) {
+    if (!featLeader) {
         Base::Console().Message("QGEP::getDeltasFromLeader - featLeader is nullptr\n");
         return  qDeltas;
     }
@@ -385,7 +385,7 @@ void QGEPath::updateParent(void)
 void QGEPath::drawGhost(void)
 {
 //    Base::Console().Message("QGEPath::drawGhost()\n");
-    if (m_ghost->scene() == nullptr) {
+    if (!m_ghost->scene()) {
         m_ghost->setParentItem(this);
     }
     QPainterPath qpp;

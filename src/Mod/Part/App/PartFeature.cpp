@@ -231,7 +231,7 @@ struct ShapeCache {
             return;
         if(strcmp(propName,"Shape")==0 
                 || strcmp(propName,"Group")==0 
-                || strstr(propName,"Touched")!=nullptr)
+                || strstr(propName,"Touched"))
             slotClear(obj);
     }
 

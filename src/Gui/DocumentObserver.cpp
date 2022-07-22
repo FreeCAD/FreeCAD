@@ -422,7 +422,7 @@ void DocumentObserver::attachDocument(Document* doc)
 {
     detachDocument();
 
-    if (doc == nullptr)
+    if (!doc)
         return;
 
     this->connectDocumentCreatedObject = doc->signalNewObject.connect(std::bind

@@ -88,6 +88,7 @@
 // Boost
 #include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
+#include <boost/core/ignore_unused.hpp>
 #include <boost/regex.hpp>
 
 #include <boost/utility.hpp>

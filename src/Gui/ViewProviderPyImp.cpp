@@ -77,7 +77,7 @@ PyObject*  ViewProviderPy::addProperty(PyObject *args)
     App::Property* prop=nullptr;
     try {
         prop = getViewProviderPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
-            PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
+            Base::asBoolean(ro), Base::asBoolean(hd));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -427,7 +427,7 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
         }
     }
 
-    Py::Int ret(getViewProviderPtr()->partialRender(values, PyObject_IsTrue(clear) ? true : false));
+    Py::Int ret(getViewProviderPtr()->partialRender(values, Base::asBoolean(clear)));
     return Py::new_reference_to(ret);
 }
 
@@ -532,7 +532,7 @@ PyObject *ViewProviderPy::getBoundingBox(PyObject *args) {
         View3DInventor *view = nullptr;
         if(pyView)
             view = static_cast<View3DInventorPy*>(pyView)->getView3DIventorPtr();
-        auto bbox = getViewProviderPtr()->getBoundingBox(subname,PyObject_IsTrue(transform) ? true : false,view);
+        auto bbox = getViewProviderPtr()->getBoundingBox(subname, Base::asBoolean(transform), view);
         return new Base::BoundBoxPy(new Base::BoundBox3d(bbox));
     }
     PY_CATCH;
@@ -641,19 +641,11 @@ Py::String ViewProviderPy::getIV() const
 
 Py::Object ViewProviderPy::getIcon() const
 {
-#if 0
-    QByteArray ba;
-    QDataStream str(&ba, QIODevice::WriteOnly);
-    QIcon icon = getViewProviderPtr()->getIcon();
-    str << icon;
-    return Py::String(ba.constData(), ba.size());
-#else
     PythonWrapper wrap;
     wrap.loadGuiModule();
     wrap.loadWidgetsModule();
     QIcon icon = getViewProviderPtr()->getIcon();
     return wrap.fromQIcon(new QIcon(icon));
-#endif
 }
 
 Py::Int ViewProviderPy::getDefaultMode() const

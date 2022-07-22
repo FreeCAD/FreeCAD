@@ -632,7 +632,7 @@ const char* System::GetPath (const char* acDirectory, const char* acFilename)
 //----------------------------------------------------------------------------
 void System::Initialize ()
 {
-    assert(ms_pkDirectories == nullptr);
+    assert(!ms_pkDirectories);
     ms_pkDirectories = WM4_NEW std::vector<std::string>;
 
     const char* acWm4Path = GetEnv("WM4_PATH");
@@ -839,7 +839,7 @@ const char* System::GetEnv (const char* acEnvVarName)
    getenv_s(&uiRequiredSize,ms_acEnvVar,SYSTEM_MAX_ENVVAR,acEnvVarName);
 #else
     char* acEnvVar = getenv(acEnvVarName);
-    if (acEnvVar == nullptr)
+    if (!acEnvVar)
     {
         return nullptr;
     }

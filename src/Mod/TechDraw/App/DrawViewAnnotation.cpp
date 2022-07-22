@@ -118,7 +118,6 @@ void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, cons
 
 QRectF DrawViewAnnotation::getRect() const
 {
-    QRectF result;
     double tSize = TextSize.getValue();
     int lines = Text.getValues().size();
     int chars = 1;
@@ -129,8 +128,7 @@ QRectF DrawViewAnnotation::getRect() const
     }
     int w = chars * std::max(1,(int)tSize);
     int h = lines * std::max(1,(int)tSize);
-    result = QRectF(0,0,getScale() * w,getScale() * h);
-    return result;
+    return QRectF(0,0,getScale() * w,getScale() * h);
 }
 
 App::DocumentObjectExecReturn *DrawViewAnnotation::execute(void)

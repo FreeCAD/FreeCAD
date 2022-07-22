@@ -128,7 +128,7 @@ Py::Object ControlPy::activeDialog(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    return Py::Boolean(dlg!=nullptr);
+    return Py::Boolean(dlg != nullptr);
 }
 
 Py::Object ControlPy::closeDialog(const Py::Tuple& args)

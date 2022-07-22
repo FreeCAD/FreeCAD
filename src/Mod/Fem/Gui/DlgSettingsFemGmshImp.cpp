@@ -23,6 +23,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QMessageBox>
+#endif
 
 #include "DlgSettingsFemGmshImp.h"
 #include "ui_DlgSettingsFemGmsh.h"
@@ -35,6 +38,9 @@ DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
     , ui(new Ui_DlgSettingsFemGmshImp)
 {
     ui->setupUi(this);
+
+    connect(ui->fc_gmsh_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+            this, &DlgSettingsFemGmshImp::onfileNameChanged);
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp()
@@ -64,6 +70,15 @@ void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void DlgSettingsFemGmshImp::onfileNameChanged(QString FileName)
+{
+    if (!QFileInfo::exists(FileName)) {
+        QMessageBox::critical(this, tr("File does not exist"),
+                              tr("The specified executable \n'%1'\n does not exist!\n"
+                                 "Specify another file please.").arg(FileName));
     }
 }
 

@@ -127,7 +127,7 @@ void TaskHatch::saveHatchState()
 void TaskHatch::restoreHatchState()
 {
 //    Base::Console().Message("TH::restoreHatchState()\n");
-    if (m_hatch != nullptr) {
+    if (m_hatch) {
         m_hatch->HatchPattern.setValue(m_saveFile);
         m_vp->HatchScale.setValue(m_saveScale);
         m_vp->HatchColor.setValue(m_saveColor);
@@ -156,14 +156,14 @@ void TaskHatch::apply(bool forceUpdate)
 {
     Q_UNUSED(forceUpdate)
 //    Base::Console().Message("TH::apply() - m_hatch: %X\n", m_hatch);
-    if (m_hatch == nullptr) {
+    if (!m_hatch) {
         createHatch();
     }
-    if (m_hatch != nullptr) {
+    if (m_hatch) {
         updateHatch();
     }
 
-    if (m_dvp != nullptr) {
+    if (m_dvp) {
         //only need requestPaint to hatch the face
 //        m_dvp->requestPaint();
         //need a recompute in order to claimChildren in tree

@@ -358,9 +358,8 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
         geometryObject = nullptr;
     }
     geometryObject = makeGeometryForShape(shape);
-    if (geometryObject == nullptr) {
+    if (!geometryObject)
         return;
-    }
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
@@ -498,9 +497,8 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
     }
 
     const BaseGeomPtrVector& edges = go->getEdgeGeometry();
-    if (edges.empty()) {
+    if (edges.empty())
         Base::Console().Log("DVP::buildGO - NO extracted edges!\n");
-    }
     bbox = go->calcBoundingBox();
     return go;
 }
@@ -508,9 +506,8 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
 //! make faces from the existing edge geometry
 void DrawViewPart::extractFaces()
 {
-    if (geometryObject == nullptr) {
+    if (!geometryObject)
         return;
-    }
     geometryObject->clearFaceGeom();
     const std::vector<TechDraw::BaseGeomPtr>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
@@ -698,7 +695,7 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
 const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 {
     std::vector<TechDraw::VertexPtr> result;
-    if (geometryObject != nullptr) {
+    if (geometryObject) {
         result = geometryObject->getVertexGeometry();
     }
     return result;
@@ -707,7 +704,7 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 {
     std::vector<TechDraw::FacePtr> result;
-    if (geometryObject != nullptr) {
+    if (geometryObject) {
         result = geometryObject->getFaceGeometry();
     }
     return result;
@@ -716,7 +713,7 @@ const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 const BaseGeomPtrVector DrawViewPart::getEdgeGeometry() const
 {
     BaseGeomPtrVector result;
-    if (geometryObject != nullptr) {
+    if (geometryObject) {
         result = geometryObject->getEdgeGeometry();
     }
     return result;
@@ -877,9 +874,8 @@ BaseGeomPtr DrawViewPart::projectEdge(const TopoDS_Edge& e) const
 bool DrawViewPart::hasGeometry(void) const
 {
     bool result = false;
-    if (geometryObject == nullptr) {
+    if (!geometryObject)
         return result;
-    }
     const std::vector<TechDraw::VertexPtr> &verts = getVertexGeometry();
     const std::vector<TechDraw::BaseGeomPtr> &edges = getEdgeGeometry();
     if (verts.empty() &&
@@ -1010,7 +1006,7 @@ void DrawViewPart::unsetupObject()
     // Remove Dimensions which reference this DVP
     // must use page->removeObject first
     TechDraw::DrawPage* page = findParentPage();
-    if (page != nullptr) {
+    if (page) {
         std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
         std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
         for (; it3 != dims.end(); it3++) {
@@ -1026,7 +1022,7 @@ void DrawViewPart::unsetupObject()
     // Remove Balloons which reference this DVP
     // must use page->removeObject first
     page = findParentPage();
-    if (page != nullptr) {
+    if (page) {
         std::vector<TechDraw::DrawViewBalloon*> balloons = getBalloons();
         std::vector<TechDraw::DrawViewBalloon*>::iterator it3 = balloons.begin();
         for (; it3 != balloons.end(); it3++) {
@@ -1075,7 +1071,7 @@ Base::Vector3d DrawViewPart::getXDirection(void) const
 //    Base::Console().Message("DVP::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
     App::Property* prop = getPropertyByName("XDirection");
-    if (prop != nullptr) {                              //have an XDirection property
+    if (prop) {                              //have an XDirection property
         Base::Vector3d propVal = XDirection.getValue();
         if (DrawUtil::fpCompare(propVal.Length(), 0.0))  {   //but it has no value
             Base::Vector3d dir = Direction.getValue();       //make a sensible default
@@ -1205,7 +1201,7 @@ int DrawViewPart::add1CVToGV(std::string tag)
 {
 //    Base::Console().Message("DVP::add1CVToGV(%s) 2\n", tag.c_str());
     TechDraw::CosmeticVertex* cv = getCosmeticVertex(tag);
-    if (cv == nullptr) {
+    if (!cv) {
         Base::Console().Message("DVP::add1CVToGV 2 - cv %s not found\n", tag.c_str());
         return 0;
     }
@@ -1283,9 +1279,8 @@ void DrawViewPart::addCosmeticEdgesToGeom(void)
     const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& ce: cEdges) {
         TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getScale());
-        if (scaledGeom == nullptr) {
+        if (!scaledGeom)
             continue;
-        }
 //        int iGE = 
         geometryObject->addCosmeticEdge(scaledGeom,
                                         ce->getTagAsString());
@@ -1296,7 +1291,7 @@ int DrawViewPart::add1CEToGE(std::string tag)
 {
 //    Base::Console().Message("CEx::add1CEToGE(%s) 2\n", tag.c_str());
     TechDraw::CosmeticEdge* ce = getCosmeticEdge(tag);
-    if (ce == nullptr) {
+    if (!ce) {
         Base::Console().Message("CEx::add1CEToGE 2 - ce %s not found\n", tag.c_str());
         return -1;
     }
@@ -1334,7 +1329,7 @@ int DrawViewPart::add1CLToGE(std::string tag)
 {
 //    Base::Console().Message("CEx::add1CLToGE(%s) 2\n", tag.c_str());
     TechDraw::CenterLine* cl = getCenterLine(tag);
-    if (cl == nullptr) {
+    if (!cl) {
         Base::Console().Message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
         return -1;
     }
@@ -1367,7 +1362,7 @@ void DrawViewPart::addCenterLinesToGeom(void)
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
     for (auto& cl: lines) {
         TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(this);
-        if (scaledGeom == nullptr) {
+        if (!scaledGeom) {
             Base::Console().Error("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
         }
@@ -1392,7 +1387,7 @@ void DrawViewPart::clearGeomFormats(void)
 
 void DrawViewPart::dumpVerts(std::string text)
 {
-    if (geometryObject == nullptr) {
+    if (!geometryObject) {
         Base::Console().Message("no verts to dump yet\n");
         return;
     }

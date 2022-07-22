@@ -479,7 +479,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == nullptr) {
+            if (!point) {
                 Base::Console().Message("No point picked.\n");
                 return;
             }

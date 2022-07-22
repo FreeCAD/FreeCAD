@@ -142,7 +142,7 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
 
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (obj == nullptr)
+    if (!obj)
         return QVariant();
 
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {

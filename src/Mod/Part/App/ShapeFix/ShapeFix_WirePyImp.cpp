@@ -265,7 +265,7 @@ PyObject* ShapeFix_WirePy::fixSmall(PyObject *args)
     double prec = 0.0;
     if (PyArg_ParseTuple(args, "O!|d", &PyBool_Type, &lock, &prec)) {
         try {
-            int num = getShapeFix_WirePtr()->FixSmall(PyObject_IsTrue(lock) ? Standard_True : Standard_False, prec);
+            int num = getShapeFix_WirePtr()->FixSmall(Base::asBoolean(lock), prec);
             return Py::new_reference_to(Py::Long(num));
         }
         catch (const Standard_Failure& e) {
@@ -278,7 +278,7 @@ PyObject* ShapeFix_WirePy::fixSmall(PyObject *args)
     int num;
     if (PyArg_ParseTuple(args, "iO!d", &num, &PyBool_Type, &lock, &prec)) {
         try {
-            bool ok = getShapeFix_WirePtr()->FixSmall(num, PyObject_IsTrue(lock) ? Standard_True : Standard_False, prec);
+            bool ok = getShapeFix_WirePtr()->FixSmall(num, Base::asBoolean(lock), prec);
             return Py::new_reference_to(Py::Boolean(ok));
         }
         catch (const Standard_Failure& e) {
@@ -366,7 +366,7 @@ PyObject* ShapeFix_WirePy::fixLacking(PyObject *args)
     PyObject* force = Py_False;
     if (PyArg_ParseTuple(args, "|O!", &PyBool_Type, &force)) {
         try {
-            Standard_Boolean ok = getShapeFix_WirePtr()->FixLacking(PyObject_IsTrue(force) ? Standard_True : Standard_False);
+            Standard_Boolean ok = getShapeFix_WirePtr()->FixLacking(Base::asBoolean(force));
             return Py::new_reference_to(Py::Boolean(ok));
         }
         catch (const Standard_Failure& e) {
@@ -380,7 +380,7 @@ PyObject* ShapeFix_WirePy::fixLacking(PyObject *args)
     force = Py_False;
     if (PyArg_ParseTuple(args, "i|O!", &num, &PyBool_Type, &force)) {
         try {
-            Standard_Boolean ok = getShapeFix_WirePtr()->FixLacking(num, PyObject_IsTrue(force) ? Standard_True : Standard_False);
+            Standard_Boolean ok = getShapeFix_WirePtr()->FixLacking(num, Base::asBoolean(force));
             return Py::new_reference_to(Py::Boolean(ok));
         }
         catch (const Standard_Failure& e) {
@@ -431,7 +431,7 @@ PyObject* ShapeFix_WirePy::fixGap3d(PyObject *args)
         return nullptr;
 
     try {
-        Standard_Boolean ok = getShapeFix_WirePtr()->FixGap3d(num, PyObject_IsTrue(convert) ? Standard_True : Standard_False);
+        Standard_Boolean ok = getShapeFix_WirePtr()->FixGap3d(num, Base::asBoolean(convert));
         return Py::new_reference_to(Py::Boolean(ok));
     }
     catch (const Standard_Failure& e) {
@@ -448,7 +448,7 @@ PyObject* ShapeFix_WirePy::fixGap2d(PyObject *args)
         return nullptr;
 
     try {
-        Standard_Boolean ok = getShapeFix_WirePtr()->FixGap2d(num, PyObject_IsTrue(convert) ? Standard_True : Standard_False);
+        Standard_Boolean ok = getShapeFix_WirePtr()->FixGap2d(num, Base::asBoolean(convert));
         return Py::new_reference_to(Py::Boolean(ok));
     }
     catch (const Standard_Failure& e) {

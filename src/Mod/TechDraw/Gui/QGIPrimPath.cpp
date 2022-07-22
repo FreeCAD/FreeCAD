@@ -157,13 +157,13 @@ QColor QGIPrimPath::getNormalColor()
     }
 
     QGraphicsItem* qparent = parentItem();
-    if (qparent == nullptr) {
+    if (!qparent) {
         parent = nullptr;
     } else {
         parent = dynamic_cast<QGIView *> (qparent);
     }
 
-    if (parent != nullptr) {
+    if (parent) {
         result = parent->getNormalColor();
     } else {
         result = PreferencesGui::normalQColor();
@@ -177,13 +177,13 @@ QColor QGIPrimPath::getPreColor()
     QColor result;
     QGIView *parent;
     QGraphicsItem* qparent = parentItem();
-    if (qparent == nullptr) {
+    if (!qparent) {
         parent = nullptr;
     } else {
         parent = dynamic_cast<QGIView *> (qparent);
     }
 
-    if (parent != nullptr) {
+    if (parent) {
         result = parent->getPreColor();
     } else {
         result = PreferencesGui::preselectQColor();
@@ -196,13 +196,13 @@ QColor QGIPrimPath::getSelectColor()
     QColor result;
     QGIView *parent;
     QGraphicsItem* qparent = parentItem();
-    if (qparent == nullptr) {
+    if (!qparent) {
         parent = nullptr;
     } else {
         parent = dynamic_cast<QGIView *> (qparent);
     }
 
-    if (parent != nullptr) {
+    if (parent) {
         result = parent->getSelectColor();
     } else {
         result = PreferencesGui::selectQColor();
@@ -279,9 +279,9 @@ void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
     //wf: this seems a bit of a hack. does it mess up selection of QGIPP??
     QGIView *parent;
     QGraphicsItem* qparent = parentItem();
-    if (qparent != nullptr) {
+    if (qparent) {
         parent = dynamic_cast<QGIView *> (qparent);
-        if (parent != nullptr) {
+        if (parent) {
 //            Base::Console().Message("QGIPP::mousePressEvent - passing event to QGIV parent\n");
             parent->mousePressEvent(event);
         } else {

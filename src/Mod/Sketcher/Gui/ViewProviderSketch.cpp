@@ -352,7 +352,7 @@ void ViewProviderSketch::forceUpdateData()
 void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
 {
     assert(editCoinManager);
-    assert(sketchHandler == nullptr);
+    assert(!sketchHandler);
 
     sketchHandler = std::unique_ptr<DrawSketchHandler>(newHandler);
     Mode = STATUS_SKETCH_UseHandler;

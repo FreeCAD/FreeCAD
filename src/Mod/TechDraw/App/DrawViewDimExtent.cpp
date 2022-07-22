@@ -109,13 +109,11 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
     }
 
     App::DocumentObject* docObj = Source.getValue();
-    if (docObj == nullptr) {
+    if (!docObj)
         return App::DocumentObject::StdReturn;
-    }
     DrawViewPart* dvp = dynamic_cast<DrawViewPart*>(docObj);
-     if (dvp == nullptr) {
+     if (!dvp)
         return App::DocumentObject::StdReturn;
-    }
 
     double tolerance = 0.00001;
     std::vector<std::string> edgeNames = getSubNames();
@@ -128,37 +126,36 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
     Base::Vector3d refMin = endPoints.first;
     Base::Vector3d refMax = endPoints.second;
 
-    TechDraw::VertexPtr v0 = nullptr;
-    TechDraw::VertexPtr v1 = nullptr;
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() > 1) {
-        v0 = dvp->getProjVertexByCosTag(cTags[0]);
-        v1 = dvp->getProjVertexByCosTag(cTags[1]);
-        if ( (v0 != nullptr) &&
-             (v1 != nullptr) ) {
-            double length00 = (v0->pnt - refMin).Length();
-            double length11 = (v1->pnt - refMax).Length();
-            double length01 = (v0->pnt - refMax).Length();
-            double length10 = (v1->pnt - refMin).Length();
-            if (  ((length00 < tolerance) &&
-                   (length11 < tolerance))  ||
-                  ((length01 < tolerance) &&
-                   (length10 < tolerance))  ) {
-                //nothing changed - nop
-            } else {
-                //update GV
-                v0->pnt = refMin;
-                v1->pnt = refMax;
-        //        v0->occVertex = ???
-        //        v1->occVertex = ???
-                //update CV
-                double scale = dvp->getScale();
-                CosmeticVertex* cvTemp = dvp->getCosmeticVertex(cTags[0]);
-                cvTemp->permaPoint = refMin / scale;
-                cvTemp = dvp->getCosmeticVertex(cTags[1]);
-                cvTemp->permaPoint = refMax / scale;
-            }
-        }
+    if (cTags.size() <= 1) {
+        return DrawViewDimension::execute();
+    }
+
+    TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
+    TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
+    if (v0 == nullptr ||
+        v1 != nullptr) {
+        return DrawViewDimension::execute();
+    }
+
+    double length00 = (v0->pnt - refMin).Length();
+    double length11 = (v1->pnt - refMax).Length();
+    double length01 = (v0->pnt - refMax).Length();
+    double length10 = (v1->pnt - refMin).Length();
+
+    if ((length00 >= tolerance || length11 >= tolerance) &&
+        (length01 >= tolerance || length10 >= tolerance)) { // Something has changed
+        //update GV
+        v0->pnt = refMin;
+        v1->pnt = refMax;
+//        v0->occVertex = ???
+//        v1->occVertex = ???
+        //update CV
+        double scale = dvp->getScale();
+        CosmeticVertex* cvTemp = dvp->getCosmeticVertex(cTags[0]);
+        cvTemp->permaPoint = refMin / scale;
+        cvTemp = dvp->getCosmeticVertex(cTags[1]);
+        cvTemp->permaPoint = refMax / scale;
     }
 
     return DrawViewDimension::execute();
@@ -167,63 +164,62 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 //getSubValues returns a garbage 1st entry if there are no subelements.
 std::vector<std::string> DrawViewDimExtent::getSubNames(void)
 {
-    std::vector<std::string> result;
     std::vector<std::string> edgeNames = Source.getSubValues();
-    if (!edgeNames.empty() &&
-         (edgeNames[0].size() == 0)) {
-         //garbage first entry - nop
-    } else {
-        result = edgeNames;
+    if (edgeNames.empty() ||
+        edgeNames[0].size() != 0) {
+        return std::vector<std::string>(); //garbage first entry - nop
     }
-    return result;
+    return edgeNames;
 }
 
 pointPair DrawViewDimExtent::getPointsTwoVerts()
 {
 //    Base::Console().Message("DVDE::getPointsTwoVerts() - %s\n",getNameInDocument());
-    pointPair result;
-    result.first = Base::Vector3d(0.0, 0.0, 0.0);
-    result.second = Base::Vector3d(0.0, 0.0, 0.0);
-    TechDraw::VertexPtr v0 = nullptr;
-    TechDraw::VertexPtr v1 = nullptr;
+    pointPair errorValue(
+        Base::Vector3d(0.0, 0.0, 0.0),
+        Base::Vector3d(0.0, 0.0, 0.0)
+    );
+
     TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp == nullptr) {
-        return result;
+    if (!dvp) {
+        return errorValue;
     }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() > 1) {
-        v0 = dvp->getProjVertexByCosTag(cTags[0]);
-        v1 = dvp->getProjVertexByCosTag(cTags[1]);
-        if ( (v0 != nullptr) &&
-             (v1 != nullptr) ) {
-            result.first  = v0->pnt;
-            result.second = v1->pnt;
-        }
+    if (cTags.size() < 1) {
+        return errorValue;
     }
-    return result;
+    
+    TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
+    TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
+    if (v0 == nullptr || v1 == nullptr ) {
+        return errorValue;
+    }
+
+    return pointPair(v0->pnt, v1->pnt);
 }
 
 //! validate 2D references - only checks if the target exists
 bool DrawViewDimExtent::checkReferences2D() const
 {
 //    Base::Console().Message("DVDE::checkReFerences2d() - %s\n",getNameInDocument());
-    bool result = false;
     TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp == nullptr) {
-        return result;
+    if (!dvp) {
+        return false;
     }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() > 1) {
-        CosmeticVertex* cv0 = dvp->getCosmeticVertex(cTags[0]);
-        CosmeticVertex* cv1 = dvp->getCosmeticVertex(cTags[1]);
-        if ( (cv0 != nullptr) &&
-             (cv1 != nullptr) ) {
-            result = true;
-        }
+    if (cTags.size() < 1) {
+        return false;
     }
-    return result;
+    
+    CosmeticVertex* cv0 = dvp->getCosmeticVertex(cTags[0]);
+    CosmeticVertex* cv1 = dvp->getCosmeticVertex(cTags[1]);
+    if (cv0 == nullptr || cv1 == nullptr) {
+        return false;
+    }
+
+    return true;
 }
 
 void DrawViewDimExtent::unsetupObject()

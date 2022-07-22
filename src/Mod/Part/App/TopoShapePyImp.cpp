@@ -176,9 +176,7 @@ PyObject* TopoShapePy::copy(PyObject *args)
     }
 
     if (!shape.IsNull()) {
-        BRepBuilderAPI_Copy c(shape,
-                              PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False,
-                              PyObject_IsTrue(copyMesh) ? Standard_True : Standard_False);
+        BRepBuilderAPI_Copy c(shape, Base::asBoolean(copyGeom), Base::asBoolean(copyMesh));
         static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(c.Shape());
     }
     return cpy;
@@ -713,7 +711,7 @@ PyObject*  TopoShapePy::check(PyObject *args)
 
     if (!getTopoShapePtr()->getShape().IsNull()) {
         std::stringstream str;
-        if (!getTopoShapePtr()->analyze(PyObject_IsTrue(runBopCheck) ? true : false, str)) {
+        if (!getTopoShapePtr()->analyze(Base::asBoolean(runBopCheck), str)) {
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return nullptr;
         }
@@ -929,7 +927,7 @@ PyObject*  TopoShapePy::section(PyObject *args)
         TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
         try {
             // Let's call algorithm computing a section operation:
-            TopoDS_Shape secShape = this->getTopoShapePtr()->section(shape,PyObject_IsTrue(approx) ? true : false);
+            TopoDS_Shape secShape = this->getTopoShapePtr()->section(shape, Base::asBoolean(approx));
             return new TopoShapePy(new TopoShape(secShape));
         }
         catch (Standard_Failure& e) {
@@ -948,7 +946,7 @@ PyObject*  TopoShapePy::section(PyObject *args)
         std::vector<TopoDS_Shape> shapeVec;
         shapeVec.push_back(static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape());
         try {
-            TopoDS_Shape sectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance,PyObject_IsTrue(approx) ? true : false);
+            TopoDS_Shape sectionShape = this->getTopoShapePtr()->section(shapeVec, tolerance, Base::asBoolean(approx));
             return new TopoShapePy(new TopoShape(sectionShape));
         }
         catch (Standard_Failure& e) {
@@ -976,7 +974,7 @@ PyObject*  TopoShapePy::section(PyObject *args)
            }
         }
         try {
-            TopoDS_Shape multiSectionShape = this->getTopoShapePtr()->section(shapeVec,tolerance,PyObject_IsTrue(approx) ? true : false);
+            TopoDS_Shape multiSectionShape = this->getTopoShapePtr()->section(shapeVec, tolerance, Base::asBoolean(approx));
             return new TopoShapePy(new TopoShape(multiSectionShape));
         }
         catch (Standard_Failure& e) {
@@ -1193,9 +1191,7 @@ PyObject* TopoShapePy::childShapes(PyObject *args)
             PyErr_SetString(PyExc_ValueError, "Shape is null");
             return nullptr;
         }
-        TopoDS_Iterator it(shape,
-            PyObject_IsTrue(cumOri) ? Standard_True : Standard_False,
-            PyObject_IsTrue(cumLoc) ? Standard_True : Standard_False);
+        TopoDS_Iterator it(shape, Base::asBoolean(cumOri), Base::asBoolean(cumLoc));
         Py::List list;
         for (; it.More(); it.Next()) {
             const TopoDS_Shape& aChild = it.Value();
@@ -1369,7 +1365,7 @@ PyObject*  TopoShapePy::transformGeometry(PyObject *args)
 
     try {
         Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
-        TopoDS_Shape shape = this->getTopoShapePtr()->transformGShape(mat, PyObject_IsTrue(cpy) ? true : false);
+        TopoDS_Shape shape = this->getTopoShapePtr()->transformGShape(mat, Base::asBoolean(cpy));
         return new TopoShapePy(new TopoShape(shape));
     }
     catch (Standard_Failure& e) {
@@ -1388,8 +1384,7 @@ PyObject*  TopoShapePy::transformShape(PyObject *args)
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
     PY_TRY {
-        this->getTopoShapePtr()->transformShape(mat, PyObject_IsTrue(copy) ? true : false, 
-                PyObject_IsTrue(checkScale) ? true : false);
+        this->getTopoShapePtr()->transformShape(mat, Base::asBoolean(copy), Base::asBoolean(checkScale));
         return IncRef();
     }
     PY_CATCH_OCC
@@ -1410,7 +1405,7 @@ PyObject* TopoShapePy::transformed(PyObject *args, PyObject *keywds)
     (void)op;
     PY_TRY {
         TopoShape s(*getTopoShapePtr());
-        s.transformShape(mat,PyObject_IsTrue(copy) ? true : false,PyObject_IsTrue(checkScale) ? true : false);
+        s.transformShape(mat,Base::asBoolean(copy), Base::asBoolean(checkScale));
         return Py::new_reference_to(shape2pyshape(s));
     }
     PY_CATCH_OCC
@@ -1679,7 +1674,7 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
         }
 
         TopoDS_Shape shape = this->getTopoShapePtr()->makeThickSolid(facesToRemove, offset, tolerance,
-            PyObject_IsTrue(inter) ? true : false, PyObject_IsTrue(self_inter) ? true : false, offsetMode, join);
+            Base::asBoolean(inter), Base::asBoolean(self_inter), offsetMode, join);
         return new TopoShapeSolidPy(new TopoShape(shape));
     }
     catch (Standard_Failure& e) {
@@ -1702,9 +1697,9 @@ PyObject* TopoShapePy::makeOffsetShape(PyObject *args, PyObject *keywds)
 
     try {
         TopoDS_Shape shape = this->getTopoShapePtr()->makeOffsetShape(offset, tolerance,
-            PyObject_IsTrue(inter) ? true : false,
-            PyObject_IsTrue(self_inter) ? true : false, offsetMode, join,
-            PyObject_IsTrue(fill) ? true : false);
+            Base::asBoolean(inter),
+            Base::asBoolean(self_inter), offsetMode, join,
+            Base::asBoolean(fill));
         return new TopoShapePy(new TopoShape(shape));
     }
     catch (Standard_Failure& e) {
@@ -1727,9 +1722,7 @@ PyObject* TopoShapePy::makeOffset2D(PyObject *args, PyObject *keywds)
 
     try {
         TopoDS_Shape resultShape = this->getTopoShapePtr()->makeOffset2D(offset, join,
-            PyObject_IsTrue(fill) ? true : false,
-            PyObject_IsTrue(openResult) ? true : false,
-            PyObject_IsTrue(inter) ? true : false);
+            Base::asBoolean(fill), Base::asBoolean(openResult), Base::asBoolean(inter));
         return new_reference_to(shape2pyshape(resultShape));
     }
     PY_CATCH_OCC;
@@ -1943,7 +1936,7 @@ PyObject* TopoShapePy::tessellate(PyObject *args)
     try {
         std::vector<Base::Vector3d> Points;
         std::vector<Data::ComplexGeoData::Facet> Facets;
-        if (PyObject_IsTrue(ok) ? true : false)
+        if (Base::asBoolean(ok))
             BRepTools::Clean(getTopoShapePtr()->getShape());
         getTopoShapePtr()->getFaces(Points, Facets,tolerance);
         Py::Tuple tuple(2);
@@ -2098,8 +2091,7 @@ PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
         HLRAppli_ReflectLines reflect(shape);
         reflect.SetAxes(v.x, v.y, v.z, p.x, p.y, p.z, u.x, u.y, u.z);
         reflect.Perform();
-        TopoDS_Shape lines = reflect.GetCompoundOf3dEdges(t, PyObject_IsTrue(vis) ? Standard_True : Standard_False,
-                                                          PyObject_IsTrue(in3d) ? Standard_True : Standard_False);
+        TopoDS_Shape lines = reflect.GetCompoundOf3dEdges(t, Base::asBoolean(vis), Base::asBoolean(in3d));
         return new TopoShapePy(new TopoShape(lines));
     }
     catch (Standard_Failure& e) {
@@ -2137,7 +2129,7 @@ PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
         }
 
         getTopoShapePtr()->setFaces(Points, Facets, tolerance);
-        if (PyObject_IsTrue(sewShape) ? true : false)
+        if (Base::asBoolean(sewShape))
             getTopoShapePtr()->sewShape(tolerance);
 
         Py_Return;
@@ -2210,7 +2202,7 @@ PyObject*  TopoShapePy::isInside(PyObject *args)
             solidClassifier.Perform(vertex, tolerance);
             Standard_Boolean test = (solidClassifier.State() == stateIn);
 
-            if ((PyObject_IsTrue(checkFace) ? true : false) && (solidClassifier.IsOnAFace()))
+            if (Base::asBoolean(checkFace) && solidClassifier.IsOnAFace())
                 test = Standard_True;
             return Py_BuildValue("O", (test ? Py_True : Py_False));
         }
@@ -2719,8 +2711,8 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
         TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
         Bnd_Box bounds;
         BRepBndLib::AddOptimal(shape, bounds,
-                               PyObject_IsTrue(useT) ? Standard_True : Standard_False,
-                               PyObject_IsTrue(useS) ? Standard_True : Standard_False);
+                               Base::asBoolean(useT),
+                               Base::asBoolean(useS));
         bounds.SetGap(0.0);
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);

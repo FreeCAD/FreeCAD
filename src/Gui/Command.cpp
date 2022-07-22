@@ -42,6 +42,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Tools.h>
 
 #include "Command.h"
@@ -1434,7 +1435,7 @@ bool PythonCommand::isChecked() const
     }
 
     if (PyBool_Check(item)) {
-        return PyObject_IsTrue(item) ? true : false;
+        return Base::asBoolean(item);
     }
     else {
         throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "
@@ -1512,14 +1513,6 @@ void PythonGroupCommand::activated(int iMsg)
             }
         }
 
-        // It is better to let ActionGroup::onActivated() to handle icon and
-        // text change. The net effect is that the GUI won't change by user
-        // inovking command through runCommandByName()
-#if 0
-        // Since the default icon is reset when enabling/disabling the command we have
-        // to explicitly set the icon of the used command.
-        pcAction->setIcon(a[iMsg]->icon());
-#endif
     }
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
@@ -1726,7 +1719,7 @@ bool PythonGroupCommand::isExclusive() const
     }
 
     if (PyBool_Check(item)) {
-        return PyObject_IsTrue(item) ? true : false;
+        return Base::asBoolean(item);
     }
     else {
         throw Base::TypeError("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
@@ -1742,7 +1735,7 @@ bool PythonGroupCommand::hasDropDownMenu() const
     }
 
     if (PyBool_Check(item)) {
-        return PyObject_IsTrue(item) ? true : false;
+        return Base::asBoolean(item);
     }
     else {
         throw Base::TypeError("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "

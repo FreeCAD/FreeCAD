@@ -123,7 +123,7 @@ PyObject* SheetPy::get(PyObject *args)
 
     App::Property * prop = this->getSheetPtr()->getPropertyByName(address);
 
-    if (prop == nullptr) {
+    if (!prop) {
         PyErr_Format(PyExc_ValueError, 
                 "Invalid cell address or property: %s",address);
         return nullptr;

@@ -287,9 +287,7 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
                 }
             }
             TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(sections,
-                PyObject_IsTrue(make_solid) ? Standard_True : Standard_False,
-                PyObject_IsTrue(is_Frenet)  ? Standard_True : Standard_False,
-                transition);
+                Base::asBoolean(make_solid), Base::asBoolean(is_Frenet), transition);
             return new TopoShapePy(new TopoShape(shape));
         }
         catch (Standard_Failure& e) {
@@ -349,9 +347,9 @@ PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds)
 
     try {
         BRepOffsetAPI_MakeEvolved evolved(spine, profile, joinType,
-                                          PyObject_IsTrue(AxeProf) ? Standard_True : Standard_False,
-                                          PyObject_IsTrue(Solid) ? Standard_True : Standard_False,
-                                          PyObject_IsTrue(ProfOnSpine) ? Standard_True : Standard_False,
+                                          Base::asBoolean(AxeProf),
+                                          Base::asBoolean(Solid),
+                                          Base::asBoolean(ProfOnSpine),
                                           Tolerance);
         TopoDS_Shape shape = evolved.Shape();
         return Py::new_reference_to(shape2pyshape(shape));

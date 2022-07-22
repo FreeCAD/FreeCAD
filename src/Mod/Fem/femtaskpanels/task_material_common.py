@@ -206,9 +206,9 @@ class _TaskPanel:
     def accept(self):
         # print(self.material)
         if self.material == {}:  # happens if material editor was canceled
-                FreeCAD.Console.PrintError("Empty material dictionary, nothing was changed.\n")
-                self.recompute_and_set_back_all()
-                return True
+            FreeCAD.Console.PrintError("Empty material dictionary, nothing was changed.\n")
+            self.recompute_and_set_back_all()
+            return True
         if self.selectionWidget.has_equal_references_shape_types():
             self.do_not_set_thermal_zeros()
             from materialtools.cardutils import check_mat_units as checkunits
@@ -488,7 +488,8 @@ class _TaskPanel:
                     self.material["VolumetricThermalExpansionCoefficient"] = "0 1/K"
             else:
                 if "ThermalExpansionCoefficient" in self.material:
-                    self.material["VolumetricThermalExpansionCoefficient"] = self.material["ThermalExpansionCoefficient"]
+                    the_index = "VolumetricThermalExpansionCoefficient"  # line was to long
+                    self.material[the_index] = self.material["ThermalExpansionCoefficient"]
                 else:
                     self.material["VolumetricThermalExpansionCoefficient"] = "0 1/K"
         # Thermal properties
@@ -737,4 +738,4 @@ class _TaskPanel:
             self.parameterWidget.cb_materials.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
             # the whole card path is added to the combo box to make it unique
             # see def choose_material:
-            # for assignment of self.card_path the path form the parameterWidget ist used
+            # for assignment of self.card_path the path form the parameterWidget is used

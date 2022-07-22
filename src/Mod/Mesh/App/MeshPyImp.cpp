@@ -79,14 +79,14 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
         }
         else if (PyList_Check(pcObj)) {
             PyObject* ret = addFacets(args);
-            bool ok = (ret!=nullptr);
+            bool ok = (ret != nullptr);
             Py_XDECREF(ret);
             if (!ok)
                 return -1;
         }
         else if (PyTuple_Check(pcObj)) {
             PyObject* ret = addFacets(args);
-            bool ok = (ret!=nullptr);
+            bool ok = (ret != nullptr);
             Py_XDECREF(ret);
             if (!ok)
                 return -1;
@@ -408,7 +408,7 @@ PyObject*  MeshPy::crossSections(PyObject *args)
     }
 
     std::vector<MeshObject::TPolylines> sections;
-    getMeshObjectPtr()->crossSections(csPlanes, sections, min_eps, PyObject_IsTrue(poly) ? true : false);
+    getMeshObjectPtr()->crossSections(csPlanes, sections, min_eps, Base::asBoolean(poly));
 
     // convert to Python objects
     Py::List crossSections;
@@ -525,7 +525,7 @@ PyObject*  MeshPy::section(PyObject *args, PyObject *kwds)
 
     MeshPy* pcObject = static_cast<MeshPy*>(pcObj);
 
-    std::vector< std::vector<Base::Vector3f> > curves = getMeshObjectPtr()->section(*pcObject->getMeshObjectPtr(), PyObject_IsTrue(connectLines) ? true : false, fMinDist);
+    std::vector< std::vector<Base::Vector3f> > curves = getMeshObjectPtr()->section(*pcObject->getMeshObjectPtr(), Base::asBoolean(connectLines), fMinDist);
     Py::List outer;
     for (const auto& it : curves) {
         Py::List inner;
@@ -739,7 +739,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
             faces.push_back(face);
         }
 
-        getMeshObjectPtr()->addFacets(faces, vertices, PyObject_IsTrue(check) ? true : false);
+        getMeshObjectPtr()->addFacets(faces, vertices, Base::asBoolean(check));
 
         Py_Return;
     }
@@ -1152,7 +1152,7 @@ PyObject*  MeshPy::removePointsOnEdge(PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O!", keywords, &PyBool_Type, &fillBoundary))
         return nullptr;
     try {
-        getMeshObjectPtr()->removePointsOnEdge(PyObject_IsTrue(fillBoundary) ? true : false);
+        getMeshObjectPtr()->removePointsOnEdge(Base::asBoolean(fillBoundary));
     }
     catch (const Base::Exception& e) {
         e.setPyException();
@@ -1663,7 +1663,8 @@ PyObject*  MeshPy::foraminate(PyObject *args)
 {
     PyObject* pnt_p;
     PyObject* dir_p;
-    if (!PyArg_ParseTuple(args, "OO", &pnt_p, &dir_p))
+    double maxAngle = MeshCore::Mathd::PI;
+    if (!PyArg_ParseTuple(args, "OO|d", &pnt_p, &dir_p, &maxAngle))
         return nullptr;
 
     try {
@@ -1682,7 +1683,7 @@ PyObject*  MeshPy::foraminate(PyObject *args)
 
         Py::Dict dict;
         for (f_it.Begin(); f_it.More(); f_it.Next(), index++) {
-            if (f_it->Foraminate(pnt, dir, res)) {
+            if (f_it->Foraminate(pnt, dir, res, static_cast<float>(maxAngle))) {
                 Py::Tuple tuple(3);
                 tuple.setItem(0, Py::Float(res.x));
                 tuple.setItem(1, Py::Float(res.y));

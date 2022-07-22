@@ -113,7 +113,7 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
     else
         getWaypointPtr()->Type = Waypoint::UNDEF;
 
-    if (vel == nullptr)
+    if (!vel)
         switch (getWaypointPtr()->Type) {
         case Waypoint::PTP:
             getWaypointPtr()->Velocity = 100;
@@ -132,7 +132,7 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
     getWaypointPtr()->Cont = cont ? true : false;
     getWaypointPtr()->Tool = tool;
     getWaypointPtr()->Base = base;
-    if (acc == nullptr)
+    if (!acc)
         getWaypointPtr()->Acceleration = 100;
     else
         getWaypointPtr()->Acceleration = Base::UnitsApi::toDouble(acc, Base::Unit::Acceleration);

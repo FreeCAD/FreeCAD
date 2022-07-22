@@ -60,7 +60,7 @@ short Mirrored::mustExecute() const
 const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*>)
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
-    if (refObject == nullptr)
+    if (!refObject)
         throw Base::ValueError("No mirror plane reference specified");
     std::vector<std::string> subStrings = MirrorPlane.getSubValues();
     if (subStrings.empty())

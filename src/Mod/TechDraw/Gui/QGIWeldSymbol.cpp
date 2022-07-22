@@ -149,11 +149,10 @@ void QGIWeldSymbol::updateView(bool update)
 //    Base::Console().Message("QGIWS::updateView()\n");
     Q_UNUSED(update);
     auto viewWeld( dynamic_cast<TechDraw::DrawWeldSymbol*>(getViewObject()) );
-    if( viewWeld == nullptr ) {
+    if (!viewWeld)
         return;
-    }
 
-    if ( getFeature() == nullptr ) {
+    if (!getFeature()) {
         Base::Console().Warning("QGIWS::updateView - no feature!\n");
         return;
     }
@@ -171,11 +170,11 @@ void QGIWeldSymbol::draw()
 
     removeQGITiles();
 
-    if (m_arrowFeat != nullptr) {
+    if (m_arrowFeat) {
         drawTile(m_arrowFeat);
     }
 
-    if (m_otherFeat != nullptr) {
+    if (m_otherFeat) {
         drawTile(m_otherFeat);
     }
 
@@ -189,19 +188,17 @@ void QGIWeldSymbol::draw()
 void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
 {
 //    Base::Console().Message("QGIWS::drawTile() - tileFeat: %X\n", tileFeat);
-    if (tileFeat == nullptr) {
+    if (!tileFeat) {
         Base::Console().Message("QGIWS::drawTile - tile is null\n");
         return;
     }
 
     const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return;
-    }
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     std::string fontName = vp->Font.getValue();
     double      sizeMM = vp->TileFontSize.getValue();
     double      fontSize = QGIView::calculateFontPixelSize(sizeMM);
@@ -271,13 +268,11 @@ void QGIWeldSymbol::drawTailText(void)
         m_tailText->show();
     }
     const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return;
-    }
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     std::string fontName = vp->Font.getValue();
     QString qFontName = Base::Tools::fromStdString(fontName);
     double sizeMM = vp->FontSize.getValue();

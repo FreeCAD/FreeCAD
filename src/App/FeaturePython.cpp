@@ -129,14 +129,14 @@ bool FeaturePythonImp::mustExecute() const
 
 void FeaturePythonImp::onBeforeChange(const Property* prop)
 {
-    if(py_onBeforeChange.isNone())
+    if (py_onBeforeChange.isNone())
         return;
 
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         const char *prop_name = object->getPropertyName(prop);
-        if(prop_name == nullptr)
+        if (!prop_name)
             return;
         if (has__object__) {
             Py::Tuple args(1);
@@ -184,13 +184,13 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
 
 void FeaturePythonImp::onChanged(const Property* prop)
 {
-    if(py_onChanged.isNone())
+    if (py_onChanged.isNone())
         return;
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         const char *prop_name = object->getPropertyName(prop);
-        if(prop_name == nullptr)
+        if (!prop_name)
             return;
         if (has__object__) {
             Py::Tuple args(1);

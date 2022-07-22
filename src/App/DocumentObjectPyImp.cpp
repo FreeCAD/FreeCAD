@@ -91,7 +91,7 @@ PyObject*  DocumentObjectPy::addProperty(PyObject *args)
     }
 
     getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
-            PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
+            Base::asBoolean(ro), Base::asBoolean(hd));
 
     return Py::new_reference_to(this);
 }
@@ -379,7 +379,7 @@ PyObject*  DocumentObjectPy::recompute(PyObject *args)
         return nullptr;
 
     try {
-        bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive) ? true : false);
+        bool ok = getDocumentObjectPtr()->recomputeFeature(Base::asBoolean(recursive));
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
     }
     catch (const Base::Exception& e) {
@@ -469,7 +469,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         return nullptr;
     }
 
-    bool transform = PyObject_IsTrue(doTransform) ? true : false;
+    bool transform = Base::asBoolean(doTransform);
 
     struct SubInfo {
         App::DocumentObject *sobj;
@@ -595,7 +595,7 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
 
     PY_TRY {
         auto linked = getDocumentObjectPtr()->getLinkedObject(
-                PyObject_IsTrue(recursive) ? true : false, mat, PyObject_IsTrue(transform) ? true : false, depth);
+                Base::asBoolean(recursive), mat, Base::asBoolean(transform), depth);
         if(!linked)
             linked = getDocumentObjectPtr();
         auto pyObj = Py::Object(linked->getPyObject(),true);
@@ -626,7 +626,7 @@ PyObject*  DocumentObjectPy::setElementVisible(PyObject *args)
     if (!PyArg_ParseTuple(args, "s|O!", &element, &PyBool_Type, &visible))
         return nullptr;
     PY_TRY {
-        return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element,PyObject_IsTrue(visible) ? true : false));
+        return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element, Base::asBoolean(visible)));
     } PY_CATCH;
 }
 
@@ -836,7 +836,7 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
     PY_TRY {
         std::pair<std::string,std::string> elementName;
         auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
-                PyObject_IsTrue(append) ? true : false,(GeoFeature::ElementNameType)type);
+                Base::asBoolean(append), (GeoFeature::ElementNameType)type);
         Py::Tuple ret(3);
         ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
         ret.setItem(1,Py::String(elementName.first));
@@ -866,7 +866,7 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
         std::set<App::DocumentObject *> visited;
         return Py::new_reference_to(Py::Boolean(
                     getDocumentObjectPtr()->adjustRelativeLinks(inList,
-                        PyObject_IsTrue(recursive) ? &visited : nullptr)));
+                        Base::asBoolean(recursive) ? &visited : nullptr)));
     }PY_CATCH
 }
 

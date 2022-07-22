@@ -722,7 +722,7 @@ PyObject* TopoShapeEdgePy::firstVertex(PyObject *args)
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
         return nullptr;
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
-    TopoDS_Vertex v = TopExp::FirstVertex(e, PyObject_IsTrue(orient) ? Standard_True : Standard_False);
+    TopoDS_Vertex v = TopExp::FirstVertex(e, Base::asBoolean(orient));
     return new TopoShapeVertexPy(new TopoShape(v));
 }
 
@@ -732,7 +732,7 @@ PyObject* TopoShapeEdgePy::lastVertex(PyObject *args)
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
         return nullptr;
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
-    TopoDS_Vertex v = TopExp::LastVertex(e, PyObject_IsTrue(orient) ? Standard_True : Standard_False);
+    TopoDS_Vertex v = TopExp::LastVertex(e, Base::asBoolean(orient));
     return new TopoShapeVertexPy(new TopoShape(v));
 }
 

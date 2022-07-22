@@ -72,7 +72,7 @@ App::DocumentObjectExecReturn *SetOperations::execute()
     Mesh::Feature *mesh1  = dynamic_cast<Mesh::Feature*>(Source1.getValue());
     Mesh::Feature *mesh2  = dynamic_cast<Mesh::Feature*>(Source2.getValue());
 
-    if ((mesh1 != nullptr) && (mesh2 != nullptr)) {
+    if (mesh1 && mesh2) {
         const MeshObject& meshKernel1 = mesh1->Mesh.getValue();
         const MeshObject& meshKernel2 = mesh2->Mesh.getValue();
 

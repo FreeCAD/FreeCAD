@@ -283,7 +283,7 @@ CmdTechDrawExtensionCircleCenterLinesGroup::CmdTechDrawExtensionCircleCenterLine
 
 void CmdTechDrawExtensionCircleCenterLinesGroup::activated(int iMsg) {
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -590,7 +590,7 @@ void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::TechDrawExtensionThreadsGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -766,7 +766,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg) {
     for (std::string name : subNames) {
         int num = DrawUtil::getIndexFromName(name);
         BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
-        if (baseGeo != nullptr) {
+        if (baseGeo) {
             if (baseGeo->cosmetic) {
                 if (baseGeo->source() == 1) {
                     TechDraw::CosmeticEdge* cosEdgeTag = objFeat->getCosmeticEdgeBySelection(name);
@@ -1068,7 +1068,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionDrawCirclesGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1299,7 +1299,7 @@ void CmdTechDrawExtensionLinePPGroup::activated(int iMsg)
 {
     //    Base::Console().Message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1506,7 +1506,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
         std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(name);
         if (geoType == "Edge") {
             TechDraw::BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
-            if (baseGeo != nullptr) {
+            if (baseGeo) {
                 if (baseGeo->geomType == TechDraw::GENERIC) {
                     TechDraw::GenericPtr genLine = std::static_pointer_cast<TechDraw::Generic>(baseGeo);
                     Base::Vector3d P0 = genLine->points.at(0);
@@ -1653,7 +1653,7 @@ void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
 {
     // Base::Console().Message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1910,7 +1910,7 @@ namespace TechDrawGui {
         }
         
         objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
-        if (objFeat == nullptr) {
+        if (!objFeat) {
             QMessageBox::warning(Gui::getMainWindow(),
                 QObject::tr(message.c_str()),
                 QObject::tr("No object selected"));

@@ -56,10 +56,10 @@ class MenuCreateCases(unittest.TestCase):
         self.b = False
         for i in list:
           if i == 'TestMenu': self.b=True
-        self.failUnless(self.b==True,"Test menu not found")
+        self.failUnless(self.b,"Test menu not found")
 
     def tearDown(self):
-      if self.b == True:
+      if self.b:
         FreeCAD.Console.PrintLog ('Test menu successfully added\n')
       else:
         FreeCAD.Console.PrintLog ('Adding Test menu failed\n')
@@ -84,7 +84,7 @@ class MenuDeleteCases(unittest.TestCase):
         self.failUnless(self.b==True,"Test menu still added")
 
     def tearDown(self):
-      if self.b == True:
+      if self.b:
         FreeCAD.Console.PrintLog ('Test menu successfully removed\n')
       else:
         FreeCAD.Console.PrintLog ('Removing Test menu failed\n')

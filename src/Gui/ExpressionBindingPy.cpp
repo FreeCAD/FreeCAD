@@ -162,7 +162,7 @@ Py::Object ExpressionBindingPy::setAutoApply(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &b))
         throw Py::Exception();
 
-    bool value = PyObject_IsTrue(b) ? true : false;
+    bool value = Base::asBoolean(b);
     expr->setAutoApply(value);
     return Py::None();
 }

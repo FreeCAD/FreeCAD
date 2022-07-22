@@ -62,7 +62,7 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
         try {
             Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast
                 (static_cast<Circle2dPy*>(o)->getGeom2dCirclePtr()->handle());
-            GCE2d_MakeArcOfCircle arc(circle->Circ2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GCE2d_MakeArcOfCircle arc(circle->Circ2d(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;

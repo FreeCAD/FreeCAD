@@ -67,7 +67,7 @@ int ShapeFix_FacePy::PyInit(PyObject* args, PyObject* /*kwds*/)
         setHandle(new ShapeFix_Face());
         if (face) {
             Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(face)->getGeomSurfacePtr()->handle());
-            getShapeFix_FacePtr()->Init(surf, prec, PyObject_IsTrue(fwd) ? Standard_True : Standard_False);
+            getShapeFix_FacePtr()->Init(surf, prec, Base::asBoolean(fwd));
         }
 
         return 0;
@@ -96,7 +96,7 @@ PyObject* ShapeFix_FacePy::init(PyObject *args)
     if (PyArg_ParseTuple(args, "O!d|O!", &GeometrySurfacePy::Type, &face, &prec, &PyBool_Type, &fwd)) {
         if (face) {
             Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(face)->getGeomSurfacePtr()->handle());
-            getShapeFix_FacePtr()->Init(surf, prec, PyObject_IsTrue(fwd) ? Standard_True : Standard_False);
+            getShapeFix_FacePtr()->Init(surf, prec, Base::asBoolean(fwd));
         }
 
         Py_Return;
@@ -174,7 +174,7 @@ PyObject* ShapeFix_FacePy::fixSmallAreaWire(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &removeSmall))
         return nullptr;
 
-    Standard_Boolean ok = getShapeFix_FacePtr()->FixSmallAreaWire(PyObject_IsTrue(removeSmall) ? Standard_True : Standard_False);
+    Standard_Boolean ok = getShapeFix_FacePtr()->FixSmallAreaWire(Base::asBoolean(removeSmall));
     return Py::new_reference_to(Py::Boolean(ok));
 }
 

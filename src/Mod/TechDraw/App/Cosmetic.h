@@ -42,11 +42,10 @@ class DrawViewPart;
 class TechDrawExport LineFormat
 {
 public:
-    LineFormat();
-    LineFormat(int style,
-               double weight,
-               App::Color color,
-               bool visible );
+    LineFormat(int style = getDefEdgeStyle(),
+               double weight = getDefEdgeWidth(),
+               App::Color color = getDefEdgeWidth(),
+               bool visible = true);
     ~LineFormat() = default;
 
     int m_style;
@@ -121,6 +120,7 @@ class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::B
     TYPESYSTEM_HEADER();
 public:
     CosmeticEdge();
+    CosmeticEdge(TechDraw::BaseGeomPtr* geometry);
     CosmeticEdge(CosmeticEdge* ce);
     CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
     CosmeticEdge(TopoDS_Edge e);
@@ -128,6 +128,7 @@ public:
     virtual ~CosmeticEdge();
 
     void initialize(void);
+    TopoDS_Edge TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
     TechDraw::BaseGeomPtr scaledGeometry(double scale);
 
     virtual std::string toString(void) const;
@@ -169,30 +170,37 @@ class TechDrawExport CenterLine: public Base::Persistence
     TYPESYSTEM_HEADER();
 
 public:
-    CenterLine();
-    CenterLine(CenterLine* cl);
-    //set m_faces after using next 3 ctors
-    CenterLine(TechDraw::BaseGeomPtr bg);
-    CenterLine(Base::Vector3d p1, Base::Vector3d p2);
-    CenterLine(Base::Vector3d p1, Base::Vector3d p2,
-               int m, 
-               double h,
-               double v,
-               double r,
-               double x);
-    virtual ~CenterLine();
-
-    enum CLMODE {
+    enum CLMODE
+    {
         VERTICAL,
         HORIZONTAL,
         ALIGNED
     };
-
-    enum CLTYPE {
+    enum CLTYPE
+    {
         FACE,
         EDGE,
         VERTEX
     };
+
+    CenterLine();
+    CenterLine(CenterLine* cl);
+    //set m_faces after using next 3 ctors
+    CenterLine(TechDraw::BaseGeomPtr bg,
+               int m = CLMODE::VERTICAL, 
+               double h = 0.0,
+               double v = 0.0,
+               double r = 0.0,
+               double x = 0.0);
+    CenterLine(Base::Vector3d p1, Base::Vector3d p2,
+               int m = CLMODE::VERTICAL, 
+               double h = 0.0,
+               double v = 0.0,
+               double r = 0.0,
+               double x = 0.0);
+    virtual ~CenterLine();
+
+    TechDraw::BaseGeomPtr BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -211,6 +219,11 @@ public:
                                          bool flip = false);
     TechDraw::BaseGeomPtr scaledGeometry(TechDraw::DrawViewPart* partFeat);
 
+    static std::tuple<Base::Vector3d, Base::Vector3d> rotatePointsAroundMid(
+                                          Base::Vector3d p1,
+                                          Base::Vector3d p2,
+                                          Base::Vector3d mid,
+                                          double rotate);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPointsNoRef(
                                                           Base::Vector3d start,
                                                           Base::Vector3d end,

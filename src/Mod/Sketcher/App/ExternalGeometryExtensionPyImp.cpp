@@ -128,7 +128,7 @@ PyObject* ExternalGeometryExtensionPy::setFlag(PyObject *args)
 
         if(getExternalGeometryExtensionPtr()->getFlagsFromName(flag, flagtype)) {
 
-            this->getExternalGeometryExtensionPtr()->setFlag(flagtype,PyObject_IsTrue(bflag) ? true : false);
+            this->getExternalGeometryExtensionPtr()->setFlag(flagtype, Base::asBoolean(bflag));
             Py_Return;
         }
 

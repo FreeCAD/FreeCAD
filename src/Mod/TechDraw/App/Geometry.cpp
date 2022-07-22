@@ -109,7 +109,7 @@ Wire::Wire(const TopoDS_Wire &w)
     for (; edges.More(); edges.Next()) {
         const auto edge( TopoDS::Edge(edges.Current()) );
         BaseGeomPtr bg = BaseGeom::baseFactory(edge);
-        if (bg != nullptr) {
+        if (bg) {
             geoms.push_back(bg);
         } else {
             Base::Console().Log("G::Wire - baseFactory returned null geom ptr\n");
@@ -192,7 +192,7 @@ BaseGeomPtr BaseGeom::copy()
     BaseGeomPtr result;
     if (!occEdge.IsNull()) {
         result = baseFactory(occEdge);
-        if (result != nullptr) {
+        if (result) {
             result->extractType = extractType;
             result->classOfEdge = classOfEdge;
             result->hlrVisible = hlrVisible;

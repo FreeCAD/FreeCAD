@@ -549,6 +549,7 @@ public:
 
     virtual void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next)
     {
+#if 0
       Base::Vector3d p1(next.x,next.y,last.z);
       points.push_back(p1);
       colorindex.push_back(0);
@@ -561,6 +562,11 @@ public:
       colorindex.push_back(0);
 
       pushCommand(id);
+#else
+      (void)last;
+      const std::deque<Base::Vector3d> pts{};
+      gx(id, &next, pts, 2);
+#endif
     }
 
 private:
@@ -582,7 +588,7 @@ private:
           colorindex.push_back(color);
         }
 
-        if (next != nullptr) {
+        if (next) {
             points.push_back(*next);
             markers.push_back(*next);
             colorindex.push_back(color);

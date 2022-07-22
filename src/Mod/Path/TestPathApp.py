@@ -38,6 +38,7 @@ from PathTests.TestPathHelixGenerator import TestPathHelixGenerator
 from PathTests.TestPathLog import TestPathLog
 from PathTests.TestPathOpTools import TestPathOpTools
 
+# from PathTests.TestPathPost import TestPathPost
 from PathTests.TestPathPost import TestPathPostUtils
 from PathTests.TestPathPost import TestBuildPostList
 from PathTests.TestPathPost import TestOutputNameSubstitution
@@ -58,11 +59,23 @@ from PathTests.TestPathUtil import TestPathUtil
 from PathTests.TestPathVcarve import TestPathVcarve
 from PathTests.TestPathVoronoi import TestPathVoronoi
 
+from PathTests.TestCentroidPost import TestCentroidPost
+from PathTests.TestGrblPost import TestGrblPost
+from PathTests.TestLinuxCNCPost import TestLinuxCNCPost
+from PathTests.TestMach3Mach4Post import TestMach3Mach4Post
+from PathTests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
+from PathTests.TestRefactoredGrblPost import TestRefactoredGrblPost
+from PathTests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
+from PathTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
+from PathTests.TestRefactoredTestPost import TestRefactoredTestPost
+
 # dummy usage to get flake8 and lgtm quiet
 False if depthTestCases.__name__ else True
 False if TestApp.__name__ else True
+False if TestBuildPostList.__name__ else True
 False if TestDressupDogbone.__name__ else True
 False if TestHoldingTags.__name__ else True
+False if TestOutputNameSubstitution.__name__ else True
 False if TestPathAdaptive.__name__ else True
 False if TestPathCore.__name__ else True
 False if TestPathDeburr.__name__ else True
@@ -72,10 +85,7 @@ False if TestPathHelpers.__name__ else True
 # False if TestPathHelix.__name__ else True
 False if TestPathLog.__name__ else True
 False if TestPathOpTools.__name__ else True
-# False if TestPathPostImport.__name__ else True
 # False if TestPathPost.__name__ else True
-False if TestBuildPostList.__name__ else True
-False if TestOutputNameSubstitution.__name__ else True
 False if TestPathPostUtils.__name__ else True
 False if TestPathPreferences.__name__ else True
 False if TestPathPropertyBag.__name__ else True
@@ -94,3 +104,13 @@ False if TestPathVcarve.__name__ else True
 False if TestPathVoronoi.__name__ else True
 False if TestPathDrillGenerator.__name__ else True
 False if TestPathHelixGenerator.__name__ else True
+
+False if TestCentroidPost.__name__ else True
+False if TestGrblPost.__name__ else True
+False if TestLinuxCNCPost.__name__ else True
+False if TestMach3Mach4Post.__name__ else True
+False if TestRefactoredCentroidPost.__name__ else True
+False if TestRefactoredGrblPost.__name__ else True
+False if TestRefactoredLinuxCNCPost.__name__ else True
+False if TestRefactoredMach3Mach4Post.__name__ else True
+False if TestRefactoredTestPost.__name__ else True

@@ -179,12 +179,7 @@ def init_draft_statusbar_scale():
     param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
     mw = Gui.getMainWindow()
-    if mw:
-        sb = mw.statusBar()
-        if sb is None:
-            return
-    else:
-        return
+    sb = mw.statusBar()
 
     scale_widget = QtGui.QToolBar()
     scale_widget.setObjectName("draft_status_scale_widget")
@@ -227,12 +222,7 @@ def init_draft_statusbar_snap():
     param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
     mw = Gui.getMainWindow()
-    if mw:
-        sb = mw.statusBar()
-        if sb is None:
-            return
-    else:
-        return
+    sb = mw.statusBar()
 
     # SNAP WIDGET - init ----------------------------------------------------
 
@@ -351,15 +341,11 @@ def show_draft_statusbar():
     shows draft statusbar if present or initializes it
     """
     params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    display_statusbar = params.GetBool("DisplayStatusbar", True)
-
-    if not display_statusbar:
-        return
 
     mw = Gui.getMainWindow()
-    if mw:
-        sb = mw.statusBar()
+    sb = mw.statusBar()
 
+    if params.GetBool("DisplayStatusbarScaleWidget", True):
         scale_widget = sb.findChild(QtGui.QToolBar,
                                     "draft_status_scale_widget")
         if scale_widget:
@@ -370,10 +356,11 @@ def show_draft_statusbar():
             if scale_widget:
                 sb.insertPermanentWidget(3, scale_widget)
                 scale_widget.show()
-            elif params.GetBool("DisplayStatusbarScaleWidget", True):
+            else:
                 t = QtCore.QTimer()
                 t.singleShot(500, init_draft_statusbar_scale)
 
+    if params.GetBool("DisplayStatusbarSnapWidget", True):
         snap_widget = sb.findChild(QtGui.QToolBar,"draft_snap_widget")
         if snap_widget:
             snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -384,7 +371,7 @@ def show_draft_statusbar():
                 sb.insertPermanentWidget(2, snap_widget)
                 snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
                 snap_widget.show()
-            elif params.GetBool("DisplayStatusbarSnapWidget", True):
+            else:
                 t = QtCore.QTimer()
                 t.singleShot(500, init_draft_statusbar_snap)
 
@@ -394,8 +381,6 @@ def hide_draft_statusbar():
     hides draft statusbar if present
     """
     mw = Gui.getMainWindow()
-    if not mw:
-        return
     sb = mw.statusBar()
 
     # hide scale widget

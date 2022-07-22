@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMutex>
 # include <QMutexLocker>
 #endif
 
 #include "Sequencer.h"
+#include "Mutex.h"
 
 
 using namespace Base;
@@ -38,11 +38,7 @@ namespace Base {
         // members
         static std::vector<SequencerBase*> _instances; /**< A vector of all created instances */
         static SequencerLauncher* _topLauncher; /**< The outermost launcher */
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
         static QRecursiveMutex mutex; /**< A mutex-locker for the launcher */
-#else
-        static QMutex mutex; /**< A mutex-locker for the launcher */
-#endif
         /** Sets a global sequencer object.
          * Access to the last registered object is performed by @see Sequencer().
          */
@@ -68,11 +64,7 @@ namespace Base {
      */
     std::vector<SequencerBase*> SequencerP::_instances;
     SequencerLauncher* SequencerP::_topLauncher = nullptr;
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
     QRecursiveMutex SequencerP::mutex;
-#else
-    QMutex SequencerP::mutex(QMutex::Recursive);
-#endif
 }
 
 SequencerBase& SequencerBase::Instance ()

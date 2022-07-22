@@ -56,27 +56,27 @@ using namespace Attacher;
 namespace PartDesignGui {
 
 bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
-    if(!obj || !obj->getNameInDocument()) {
+    if (!obj || !obj->getNameInDocument()) {
         FC_ERR("invalid object");
         return false;
     }
-    if(body == nullptr) {
+    if (!body) {
         body = getBodyFor(obj, false);
-        if(!body) {
+        if (!body) {
             FC_ERR("no body found");
             return false;
         }
     }
     auto *activeView = Gui::Application::Instance->activeView();
-    if(!activeView)
+    if (!activeView)
         return false;
     App::DocumentObject *parent = nullptr;
     std::string subname;
     auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
-    if(activeBody != body) {
+    if (activeBody != body) {
         parent = obj;
         subname.clear();
-    }else{
+    } else {
         subname += obj->getNameInDocument();
         subname += '.';
     }

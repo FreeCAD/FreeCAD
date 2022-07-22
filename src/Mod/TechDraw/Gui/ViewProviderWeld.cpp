@@ -112,25 +112,22 @@ std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren(void) const
         }
       return temp;
     } catch (...) {
-        std::vector<App::DocumentObject*> tmp;
-        return tmp;
+        return std::vector<App::DocumentObject*>();
     }
 }
 
 bool ViewProviderWeld::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPW::setEdit(%d)\n",ModNum);
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgWeldingSymbol(getFeature()));
-        return true;
-    } else {
+    if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
+    if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+        return false;
+    }
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgWeldingSymbol(getFeature()));
     return true;
 }
 
@@ -188,9 +185,8 @@ bool ViewProviderWeld::onDelete(const std::vector<std::string> &)
             QMessageBox::Ok);
         return false;
     }
-    else {
-        return true;
-    }
+
+    return true;
 }
 
 bool ViewProviderWeld::canDelete(App::DocumentObject *obj) const

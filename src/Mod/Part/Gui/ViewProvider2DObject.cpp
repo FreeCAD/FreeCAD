@@ -201,7 +201,8 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
     int lines = vlines + hlines;
 
     if (lines > maxNumberOfLines.getValue()) {
-        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n.", lines, maxNumberOfLines.getValue());
+        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n."
+                                "In order to increase the maximum adjust the property 'maxNumberOfLines'\n", lines, maxNumberOfLines.getValue());
         parent->addChild(vts);
         parent->addChild(grid);
         return GridRoot;
