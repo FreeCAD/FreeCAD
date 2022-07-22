@@ -25,6 +25,9 @@
 #ifndef _DrawViewSection_h_
 #define _DrawViewSection_h_
 
+#include <gp_Ax2.hxx>
+#include <TopoDS_Shape.hxx>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
@@ -60,6 +63,7 @@ class DashSet;
 class TechDrawExport DrawViewSection : public DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewSection);
+    Q_OBJECT
 
 public:
     DrawViewSection();
@@ -92,16 +96,17 @@ public:
     void unsetupObject() override;
     short mustExecute() const override;
 
-    void sectionExec(TopoDS_Shape s);
+    void sectionExec(TopoDS_Shape& s);
+    void makeSectionCut(TopoDS_Shape &baseShape);
+    void postHlrTasks(void) override;
+    void waitingForCut(bool s) { m_waitingForCut = s; }
+    bool waitingForCut(void) { return m_waitingForCut; }
 
     std::vector<TechDraw::FacePtr> getTDFaceGeometry() {return tdSectionFaces;}
 
     void setCSFromBase(const std::string sectionName);
     gp_Ax2 getCSFromBase(const std::string sectionName) const;
 
-    gp_Ax2 rotateCSArbitrary(gp_Ax2 oldCS,
-                             Base::Vector3d axis,
-                             double degAngle) const;
     gp_Ax2 getSectionCS() const;
     Base::Vector3d getXDirection() const override;       //don't use XDirection.getValue()
 
@@ -123,7 +128,9 @@ public:
     std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
 
     bool showSectionEdges(void);
-    void postHlrTasks(void) override;
+
+public Q_SLOTS:
+    void onSectionCutFinished(void);
 
 protected:
     TopoDS_Compound sectionFaces;    //tSectionFaces
@@ -149,6 +156,11 @@ protected:
 
     TopoDS_Shape m_rawShape;
     gp_Ax2 m_viewAxis;
+    TopoDS_Shape m_scaledShape;
+
+    QFutureWatcher<void> m_cutWatcher;
+    QFuture<void> m_cutFuture;
+    bool m_waitingForCut;
 
 };
 
