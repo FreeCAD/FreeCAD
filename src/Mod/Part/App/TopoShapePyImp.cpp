@@ -2203,7 +2203,8 @@ PyObject*  TopoShapePy::isInside(PyObject *args)
         gp_Pnt vertex = gp_Pnt(pnt.x,pnt.y,pnt.z);
         if (shape.ShapeType() == TopAbs_VERTEX ||
             shape.ShapeType() == TopAbs_EDGE ||
-            shape.ShapeType() == TopAbs_WIRE) {
+            shape.ShapeType() == TopAbs_WIRE ||
+            shape.ShapeType() == TopAbs_FACE) {
 
             BRepBuilderAPI_MakeVertex mkVertex(vertex);
             BRepExtrema_DistShapeShape extss;
