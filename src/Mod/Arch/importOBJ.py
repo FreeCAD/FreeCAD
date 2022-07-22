@@ -22,7 +22,7 @@
 import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, sys, codecs, ntpath
 # import numpy as np
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(context,text):

@@ -26,7 +26,7 @@ __url__    = "https://www.freecadweb.org"
 import FreeCAD,Draft
 
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctx,txt):

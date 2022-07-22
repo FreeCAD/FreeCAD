@@ -27,7 +27,7 @@
 
 
 import FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils, uuid, math, re
-from DraftTools import translate
+from draftutils.translate import translate
 
 __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
