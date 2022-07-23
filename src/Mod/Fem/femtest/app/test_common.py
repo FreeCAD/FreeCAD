@@ -124,13 +124,6 @@ class TestFemCommon(unittest.TestCase):
         # import all collected modules
         # fcc_print(pymodules)
         for mod in pymodules:
-            # migrate modules do not import on Python 2
-            if (
-                mod == "femtools.migrate_app"
-                or mod == "femguiutils.migrate_gui"
-            ) and sys.version_info.major < 3:
-                continue
-
             if (
                 mod == "femsolver.solver_taskpanel"
                 or mod == "femexamples.examplesgui"
