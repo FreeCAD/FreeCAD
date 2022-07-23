@@ -666,11 +666,20 @@ void ViewProviderFemPostObject::unsetEdit(int ModNum) {
 void ViewProviderFemPostObject::hide(void) {
     Gui::ViewProviderDocumentObject::hide();
     m_colorStyle->style = SoDrawStyle::INVISIBLE;
+    // TODO: the object is now hidden but the color bar is wrong
+    // if there are other FemPostObjects visible
+    // one must first search if there are other FemPostObjects visible
+    // in the tree view above this one and refresh ist color bar by updating
+    // its Field property
+    // if this is not the case, the colorbar of the next visible FemPostObjects
+    // has t be refreshed
 }
 
 void ViewProviderFemPostObject::show(void) {
     Gui::ViewProviderDocumentObject::show();
     m_colorStyle->style = SoDrawStyle::FILLED;
+    // we must update the color bar
+    WriteColorData(true);
 }
 
 
@@ -729,10 +738,7 @@ void ViewProviderFemPostObject::selectionChanged(const Gui::SelectionChanges &se
         if (obj.getObject() == this->getObject()) {
             if (!this->getObject()->Visibility.getValue())
                 return;
-            auto propField = Base::freecad_dynamic_cast<App::PropertyEnumeration>(
-                getPropertyByName("Field"));
-            if (propField)
-                propField->touch();
+            WriteColorData(true);
         }
     }
 }
