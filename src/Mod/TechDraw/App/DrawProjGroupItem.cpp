@@ -135,9 +135,13 @@ bool DrawProjGroupItem::showLock(void) const
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
-//    Base::Console().Message("DPGI::execute(%s)\n",Label.getValue());
+//    Base::Console().Message("DPGI::execute() - %s / %s\n", getNameInDocument(), Label.getValue());
     if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
+        return DrawView::execute();
+    }
+
+    if (waitingForHlr()) {
+        return DrawView::execute();
     }
 
     bool haveX = checkXDirection();
@@ -155,8 +159,21 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
     }
 
     App::DocumentObjectExecReturn* ret = DrawViewPart::execute();
+    //autoPosition needs to run after the geometry has been created
     autoPosition();
     return ret;
+}
+
+void DrawProjGroupItem::postHlrTasks(void)
+{
+//    Base::Console().Message("DPGI::postHlrTasks() - %s\n", getNameInDocument());
+    //DPGI has no geometry until HLR has finished, and the DPG can not properly
+    //AutoDistibute until all its items have geometry.  autoPositionChildren is
+    //relatively cheap so we can do it after every geometry update
+    if (getPGroup() && getPGroup()->AutoDistribute.getValue()) {
+        getPGroup()->autoPositionChildren();
+    }
+    DrawViewPart::postHlrTasks();
 }
 
 void DrawProjGroupItem::autoPosition()
@@ -165,16 +182,13 @@ void DrawProjGroupItem::autoPosition()
     if (LockPosition.getValue()) {
         return;
     }
-    auto pgroup = getPGroup();
     Base::Vector3d newPos;
-    if (pgroup) {
-        if (pgroup->AutoDistribute.getValue()) {
-            newPos = pgroup->getXYPosition(Type.getValueAsString());
+    if (getPGroup() && getPGroup()->AutoDistribute.getValue()) {
+            newPos = getPGroup()->getXYPosition(Type.getValueAsString());
             X.setValue(newPos.x);
             Y.setValue(newPos.y);
             requestPaint();
             purgeTouched();               //prevents "still touched after recompute" message
-        }
     }
 }
 
@@ -203,15 +217,10 @@ DrawProjGroup* DrawProjGroupItem::getPGroup() const
 
 bool DrawProjGroupItem::isAnchor(void) const
 {
-    bool result = false;
-    auto group = getPGroup();
-    if (group) {
-        DrawProjGroupItem* anchor = group->getAnchor();
-        if (anchor == this) {
-            result = true;
-        }
+    if (getPGroup() && (getPGroup()->getAnchor() == this) ) {
+        return true;
     }
-    return result;
+    return false;
 }
 
 /// get a coord system aligned with Direction and Rotation Vector

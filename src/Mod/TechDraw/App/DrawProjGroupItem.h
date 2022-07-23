@@ -64,24 +64,26 @@ public:
     void onDocumentRestored() override;
     void unsetupObject() override;
 
+    void postHlrTasks(void) override;
+
     DrawProjGroup* getPGroup() const;
     double getRotateAngle();
     Base::Vector3d getXDirection() const override;
     Base::Vector3d getLegacyX(const Base::Vector3d& pt,
-                                      const Base::Vector3d& axis,
-                                      const bool flip = true)  const override;
+                              const Base::Vector3d& axis,
+                              const bool flip = true)  const override;
 
     App::DocumentObjectExecReturn *execute() override;
+
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderProjGroupItem";
     }
     //return PyObject as DrawProjGroupItemPy
     PyObject *getPyObject() override;
 
-    //this doesn't override for dvp pointer??
     gp_Ax2 getViewAxis(const Base::Vector3d& pt,
-                               const Base::Vector3d& direction, 
-                               const bool flip=true) const override;
+                       const Base::Vector3d& direction,
+                       const bool flip=true) const override;
 
     double getScale() const override;
     void autoPosition();
