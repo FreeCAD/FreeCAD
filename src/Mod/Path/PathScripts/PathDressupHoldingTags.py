@@ -609,10 +609,6 @@ class MapWireToTag:
                     "Exception during processing tag @(%.2f, %.2f) (%s) - disabling the tag"
                     % (self.tag.x, self.tag.y, e.args[0])
                 )
-                # if sys.version_info.major < 3:
-                #    traceback.print_exc(e)
-                # else:
-                #    traceback.print_exc()
                 self.tag.enabled = False
                 commands = []
                 for e in self.edges:
@@ -705,10 +701,6 @@ class PathData:
             if wire.isClosed():
                 return wire
         except Exception:
-            # if sys.version_info.major < 3:
-            #    traceback.print_exc(e)
-            # else:
-            #    traceback.print_exc()
             return None
 
     def supportsTagGeneration(self):
@@ -1275,10 +1267,6 @@ class ObjectTagDressup:
             PathLog.error(
                 "processing tags failed clearing all tags ... '%s'" % (e.args[0])
             )
-            # if sys.version_info.major < 3:
-            #    traceback.print_exc(e)
-            # else:
-            #    traceback.print_exc()
             obj.Path = obj.Base.Path
 
         # update disabled in case there are some additional ones
@@ -1323,10 +1311,6 @@ class ObjectTagDressup:
                 )
                 + "\n"
             )
-            # if sys.version_info.major < 3:
-            #    traceback.print_exc(e)
-            # else:
-            #    traceback.print_exc()
             return None
 
         self.toolRadius = float(PathDressup.toolController(obj.Base).Tool.Diameter) / 2
