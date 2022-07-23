@@ -176,32 +176,29 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-    merge = hGrp->GetBool("ReadShapeCompoundMode", true);
+    Part::ImportExportSettings settings;
+    merge = settings.getReadShapeCompoundMode();
+    useLinkGroup = settings.getUseLinkGroup();
+    useBaseName = settings.getUseBaseName();
+    importHidden = settings.getImportHiddenObject();
+    reduceObjects = settings.getReduceObjects();
+    showProgress = settings.getShowProgress();
+    expandCompound = settings.getExpandCompound();
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
-    useLinkGroup = hGrp->GetBool("UseLinkGroup",true);
-    useBaseName = hGrp->GetBool("UseBaseName",true);
-    importHidden = hGrp->GetBool("ImportHiddenObject",true);
-    reduceObjects = hGrp->GetBool("ReduceObjects",true);
-    showProgress = hGrp->GetBool("ShowProgress",true);
-    expandCompound = hGrp->GetBool("ExpandCompound",true);
-
-    if(d->isSaved()) {
+    if (d->isSaved()) {
         Base::FileInfo fi(d->FileName.getValue());
         filePath = fi.dirPath();
     }
-    mode = hGrp->GetInt("ImportMode",SingleDoc);
+    mode = static_cast<int>(settings.getImportMode());
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     defaultFaceColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor",0xCCCCCC00));
     defaultFaceColor.a = 0;
 
     defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL));
     defaultEdgeColor.a = 0;
 
-    if(useLinkGroup) {
+    if (useLinkGroup) {
         // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
         aShapeTool->SetAutoNaming(Standard_False);
     }
@@ -888,9 +885,9 @@ ExportOCAF2::ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func)
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
-    exportHidden = hGrp->GetBool("ExportHiddenObject",true);
-    keepPlacement = hGrp->GetBool("ExportKeepPlacement",false);
+    Part::ImportExportSettings settings;
+    exportHidden = settings.getExportHiddenObject();
+    keepPlacement = settings.getExportKeepPlacement();
 
     Interface_Static::SetIVal("write.step.assembly",2);
 

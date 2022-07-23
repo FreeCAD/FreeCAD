@@ -314,9 +314,8 @@ private:
             }
 
             if (legacy == Py_None) {
-                auto hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/Mod/Import");
-                legacy = hGrp->GetBool("ExportLegacy",false) ? Py_True : Py_False;
+                Part::ImportExportSettings settings;
+                legacy = settings.getExportLegacy() ? Py_True : Py_False;
             }
 
             Import::ExportOCAF2 ocaf(hDoc);
