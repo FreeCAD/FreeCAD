@@ -46,7 +46,7 @@ from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     def translate(context, txt):
         return txt
