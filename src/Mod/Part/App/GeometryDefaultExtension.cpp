@@ -72,24 +72,11 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy() con
 
     copyAttributes(cpy.get());
 
-    #if (defined(__GNUC__) && __GNUC__ < 7 ) || defined(_MSC_VER)
-        return std::move(cpy); // GCC 4.8 and MSC do not support automatic move constructor call if the compiler fails to elide
+    #if defined(_MSC_VER)
+        return std::move(cpy); // MSC does not support automatic move constructor call if the compiler fails to elide
     #else
         return cpy; // all the others do automatic move constructor if RVO optimization not possible.
     #endif
-    // Advise from Scott Meyers Effective Modern c++:
-    //
-    // Don't std::move(cpy); RVO optimization Item 25, if the compiler fails to elide, would have to move it anyway
-    // move constructor is executed if available (it is). Unique_ptr does not have copy constructor.
-    //
-    // That would work perfectly with GCC 7.3.0. However, GCC 4.8.4 misserably fails:
-    //
-    // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp: In instantiation of
-    // 'std::unique_ptr<Part::GeometryExtension> Part::GeometryDefaultExtension<T>::copy() const [with T = long int]':
-    // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp:164:16:   required from here
-    // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp:84:12: error: cannot bind //
-    // 'std::unique_ptr<Part::GeometryDefaultExtension<long int>, std::default_delete<Part::GeometryDefaultExtension<long int> > >' lvalue
-    // to 'std::unique_ptr<Part::GeometryDefaultExtension<long int>, std::default_delete<Part::GeometryDefaultExtension<long int> > >&&'
 }
 
 template <typename T>
