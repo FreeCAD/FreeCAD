@@ -100,7 +100,7 @@ public:
     void makeSectionCut(TopoDS_Shape &baseShape);
     void postHlrTasks(void) override;
     void waitingForCut(bool s) { m_waitingForCut = s; }
-    bool waitingForCut(void) { return m_waitingForCut; }
+    bool waitingForCut(void) const { return m_waitingForCut; }
 
     std::vector<TechDraw::FacePtr> getTDFaceGeometry() {return tdSectionFaces;}
 

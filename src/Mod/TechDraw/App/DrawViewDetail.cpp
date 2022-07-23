@@ -278,6 +278,10 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape,
 //        Base::Console().Message("DVD::detailExec - waiting for result\n");
         return;
     }
+
+    if (waitingForDetail()) {
+        return;
+    }
     QObject::connect(&m_detailWatcher, SIGNAL(finished()), this, SLOT(onMakeDetailFinished()));
     m_detailFuture = QtConcurrent::run(this, &DrawViewDetail::makeDetailShape, shape, dvp, dvs);
     m_detailWatcher.setFuture(m_detailFuture);
@@ -288,10 +292,6 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
                                      DrawViewPart* dvp,
                                      DrawViewSection* dvs)
 {
-    if (waitingForDetail()) {
-//        Base::Console().Message("DVD::makeDetailShape - already in progress. returning\n");
-        return;
-    }
     waitingForDetail(true);
     showProgressMessage(getNameInDocument(), "is making detail shape");
 

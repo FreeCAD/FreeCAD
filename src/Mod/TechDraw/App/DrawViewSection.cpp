@@ -180,10 +180,6 @@ short DrawViewSection::mustExecute() const
 void DrawViewSection::onChanged(const App::Property* prop)
 {
     App::Document* doc = getDocument();
-//    bool docRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-//    Base::Console().Message("DVS::onChanged(%s) - obj restoring: %d\n", 
-//                            prop->getName(), isRestoring());
-
     if (!isRestoring()) {
         if (prop == &SectionSymbol) {
             std::string lblText = "Section " +
@@ -353,9 +349,11 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
 
 void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 {
-//    Base::Console().Message("DVS::sectionExec() - %s\n", getNameInDocument());
-    if (waitingForResult()) {
-//        Base::Console().Message("DVS::sectionExec - waiting for result\n");
+//    Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull: %d\n",
+//                            getNameInDocument(), baseShape.IsNull());
+
+    if (waitingForCut()) {
+//        Base::Console().Message("DVS::sectionExec - %s - waiting for cut\n", getNameInDocument());
         return;
     }
     try {
@@ -371,11 +369,12 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 
 void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
 {
-//    Base::Console().Message("DVS::makeSectionCut()\n");
-    if (waitingForCut()) {
-//        Base::Console().Message("DVS::makeSectionCut - waiting for cut - returning\n");
-        return;
-    }
+//    Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull: %d\n",
+//                            getNameInDocument(), baseShape.IsNull());
+//    if (waitingForCut()) {
+//        Base::Console().Message("DVS::makeSectionCut - %s - waiting for cut - returning\n", getNameInDocument());
+//        return;
+//    }
 
     waitingForCut(true);
     showProgressMessage(getNameInDocument(), "is making section cut");
@@ -430,8 +429,10 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
         builder.Add(pieces, cut);
         outdb++;
     }
-// pieces contains result of cutting each subshape in baseShape with tool
+
+    // pieces contains result of cutting each subshape in baseShape with tool
     TopoDS_Shape rawShape = pieces;
+
     if (debugSection()) {
         BRepTools::Write(myShape, "DVSCopy.brep");            //debug
         BRepTools::Write(aProjFace, "DVSFace.brep");          //debug
@@ -480,7 +481,7 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
 //            DrawUtil::dumpCS("DVS::makeSectionCut - CS to GO", viewAxis);
         }
 
-        m_rawShape = rawShape;  //save for postHlrTasks
+        m_rawShape = rawShape;  //save for section face finding
 
     }
     catch (Standard_Failure& e1) {
@@ -493,11 +494,19 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
 //    auto diff = end - start;
 //    double diffOut = chrono::duration <double, milli>(diff).count();
 //    Base::Console().Message("DVS::makeSectionCut - %s spent: %.3f millisecs making section cut\n", getNameInDocument(), diffOut);
+    waitingForCut(false);
 }
 
 void DrawViewSection::onSectionCutFinished()
 {
-    waitingForCut(false);
+//    Base::Console().Message("DVS::onSectionCutFinished() - %s\n", getNameInDocument());
+//    if (waitingForCut()) {
+        //this should never happen since sectionExec only starts makeSectionCut if
+        //a cut is not already in progress
+//        Base::Console().Message("DVS::onSectionCutFinished - %s - cut not completed yet\n",
+//                                getNameInDocument());
+//        return;
+//    }
     QObject::disconnect(&m_cutWatcher, SIGNAL(finished()), this, SLOT(onSectionCutFinished()));
 
     //display geometry for cut shape is in geometryObject as in DVP
@@ -511,6 +520,13 @@ void DrawViewSection::postHlrTasks(void)
 
     // build section face geometry
     TopoDS_Compound faceIntersections = findSectionPlaneIntersections(m_rawShape);
+    if (faceIntersections.IsNull()) {
+//        Base::Console().Message("DVS::postHlrTasks - no face intersections found\n");
+        requestPaint();
+        DrawViewPart::postHlrTasks();
+        return;
+    }
+
     TopoDS_Shape centeredShapeF = TechDraw::moveShape(faceIntersections,
                                                        m_saveCentroid * -1.0);
 
@@ -602,9 +618,11 @@ gp_Pln DrawViewSection::getSectionPlane() const
 //! tries to find the intersection of the section plane with the shape giving a collection of planar faces
 TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
-//    Base::Console().Message("DVS::findSectionPlaneIntersections()\n");
+//    Base::Console().Message("DVS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
     if(shape.IsNull()){
-        Base::Console().Warning("DrawViewSection::getSectionSurface - Sectional View shape is Empty\n");
+        //a) this shouldn't happen
+        //b) if it does, we should throw something
+        Base::Console().Warning("DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n", getNameInDocument());
         return TopoDS_Compound();
     }
 

@@ -171,28 +171,19 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute()
         return App::DocumentObject::StdReturn;
 
     //if group hasn't been added to page yet, can't scale or distribute projItems
-    TechDraw::DrawPage *page = getPage();
-    if (!page)
+    if (!getPage())
         return DrawViewCollection::execute();
 
-    std::vector<App::DocumentObject*> docObjs = getAllSources();
-    if (docObjs.empty())
-        return DrawViewCollection::execute();
-
-    App::DocumentObject* docObj = Anchor.getValue();
-    if (!docObj)
+    if (!Anchor.getValue())
         //no anchor yet.  nothing to do.
         return DrawViewCollection::execute();
 
-    if (ScaleType.isValue("Automatic")) {
-        if (!checkFit()) {
-            double newScale = autoScale();
-            m_lockScale = true;
-            Scale.setValue(newScale);
-            Scale.purgeTouched();
-            updateChildrenScale();
-            m_lockScale = false;
-        }
+    if (ScaleType.isValue("Automatic") && !checkFit()) {
+        m_lockScale = true;
+        Scale.setValue(autoScale());
+        Scale.purgeTouched();
+        updateChildrenScale();
+        m_lockScale = false;
     }
 
     autoPositionChildren();
@@ -942,21 +933,25 @@ void DrawProjGroup::recomputeChildren()
 //    Base::Console().Message("DPG::recomputeChildren()\n");
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (!view)
+        if (!view) {
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        else
+        } else {
             view->recomputeFeature();
+        }
     }
 }
 
 void DrawProjGroup::autoPositionChildren()
 {
+//    Base::Console().Message("DPG::autoPositionChildren() - %s\n", getNameInDocument());
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (!view)
+        if (!view) {
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        else
+        } else {
             view->autoPosition();
+            view->requestPaint();
+        }
     }
 }
 
