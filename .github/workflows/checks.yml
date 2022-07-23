@@ -40,7 +40,7 @@ env:
   checkBlack: true
   blackFailSilent: true
 
-  checkClangFormat: true
+  checkClangFormat: false
   clangStyle: file #for .clang-format file
   clangFormatFailSilent: true
 
