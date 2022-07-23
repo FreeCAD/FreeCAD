@@ -543,9 +543,6 @@ class MaterialEditor:
         group = item.parent()
         it = group.child(item.row(), 1)
         name = it.text()
-        if sys.version_info.major < 3:
-            if isinstance(name, unicode):
-                name = name.encode("utf8")
         if not name:
             name = "Material"
         filetuple = QtGui.QFileDialog.getSaveFileName(

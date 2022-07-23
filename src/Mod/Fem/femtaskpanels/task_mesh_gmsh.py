@@ -153,8 +153,6 @@ class _TaskPanel:
         self.form.cb_order.setCurrentIndex(index_order)
 
     def console_log(self, message="", color="#000000"):
-        if (not isinstance(message, bytes)) and (sys.version_info.major < 3):
-            message = message.encode("utf-8", "replace")
         self.console_message_gmsh = self.console_message_gmsh + (
             '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'
             .format(time.time() - self.Start, color, message)
