@@ -43,6 +43,7 @@
 #include <StepElement_AnalysisItemWithinRepresentation.hxx>
 #include <StepVisual_AnnotationCurveOccurrence.hxx>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 
@@ -53,6 +54,125 @@
 
 
 using namespace Part;
+
+
+ImportExportSettings::ImportExportSettings()
+{
+    pGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
+}
+
+void ImportExportSettings::setReadShapeCompoundMode(bool on)
+{
+    auto grp = pGroup->GetGroup("hSTEP");
+    grp->SetBool("ReadShapeCompoundMode", on);
+}
+
+bool ImportExportSettings::getReadShapeCompoundMode() const
+{
+    auto grp = pGroup->GetGroup("hSTEP");
+    return grp->GetBool("ReadShapeCompoundMode", true);
+}
+
+void ImportExportSettings::setExportHiddenObject(bool on)
+{
+    pGroup->SetBool("ExportHiddenObject", on);
+}
+
+bool ImportExportSettings::getExportHiddenObject() const
+{
+    return pGroup->GetBool("ExportHiddenObject", false);
+}
+
+void ImportExportSettings::setImportHiddenObject(bool on)
+{
+    pGroup->SetBool("ImportHiddenObject", on);
+}
+
+bool ImportExportSettings::getImportHiddenObject() const
+{
+    return pGroup->GetBool("ImportHiddenObject", false);
+}
+
+void ImportExportSettings::setExportLegacy(bool on)
+{
+    pGroup->SetBool("ExportLegacy", on);
+}
+
+bool ImportExportSettings::getExportLegacy() const
+{
+    return pGroup->GetBool("ExportLegacy", false);
+}
+
+void ImportExportSettings::setExportKeepPlacement(bool on)
+{
+    pGroup->SetBool("ExportKeepPlacement", on);
+}
+
+bool ImportExportSettings::getExportKeepPlacement() const
+{
+    return pGroup->GetBool("ExportKeepPlacement", false);
+}
+
+void ImportExportSettings::setUseLinkGroup(bool on)
+{
+    pGroup->SetBool("UseLinkGroup", on);
+}
+
+bool ImportExportSettings::getUseLinkGroup() const
+{
+    return pGroup->GetBool("UseLinkGroup", false);
+}
+
+void ImportExportSettings::setUseBaseName(bool on)
+{
+    pGroup->SetBool("UseBaseName", on);
+}
+
+bool ImportExportSettings::getUseBaseName() const
+{
+    return pGroup->GetBool("UseBaseName", false);
+}
+
+void ImportExportSettings::setReduceObjects(bool on)
+{
+    pGroup->SetBool("ReduceObjects", on);
+}
+
+bool ImportExportSettings::getReduceObjects() const
+{
+    return pGroup->GetBool("ReduceObjects", false);
+}
+
+void ImportExportSettings::setExpandCompound(bool on)
+{
+    pGroup->SetBool("ExpandCompound", on);
+}
+
+bool ImportExportSettings::getExpandCompound() const
+{
+    return pGroup->GetBool("ExpandCompound", false);
+}
+
+void ImportExportSettings::setShowProgress(bool on)
+{
+    pGroup->SetBool("ShowProgress", on);
+}
+
+bool ImportExportSettings::getShowProgress() const
+{
+    return pGroup->GetBool("ShowProgress", false);
+}
+
+void ImportExportSettings::setImportMode(ImportExportSettings::ImportMode mode)
+{
+    pGroup->SetInt("ImportMode", static_cast<long>(mode));
+}
+
+ImportExportSettings::ImportMode ImportExportSettings::getImportMode() const
+{
+    return static_cast<ImportExportSettings::ImportMode>(pGroup->GetInt("ImportMode", 0));
+}
+
 
 namespace Part {
 bool ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col);
