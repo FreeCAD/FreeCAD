@@ -32,6 +32,8 @@
 
 # include <QApplication>
 # include <QMessageBox>
+# include <QSlider>
+# include <QToolTip>
 #endif
 
 #include <App/Document.h>
@@ -389,6 +391,7 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     Base::Console().Log("Transparency %i: \n", trans);
     // sync the trancparency slider
     ui->Transparency->setValue(trans);
+    ui->Transparency->setToolTip(QString::number(trans) + QString::fromLatin1(" %"));
 }
 
 TaskPostDisplay::~TaskPostDisplay()
@@ -421,6 +424,9 @@ void TaskPostDisplay::on_VectorMode_activated(int i) {
 void TaskPostDisplay::on_Transparency_valueChanged(int i) {
 
     getTypedView<ViewProviderFemPostObject>()->Transparency.setValue(i);
+    ui->Transparency->setToolTip(QString::number(i) + QString::fromLatin1(" %"));
+    // highlight the tooltip
+    QToolTip::showText(QCursor::pos(), QString::number(i) + QString::fromLatin1(" %"), nullptr);
 }
 
 void TaskPostDisplay::applyPythonCode() {
