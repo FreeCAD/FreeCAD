@@ -54,7 +54,7 @@ using namespace Base;
 
 /**
  * @brief Quote input string according to quoting rules for an expression: because " and ' are
- * used to designate inch and foot units, strings are quoted as <<string>>.
+ * used to designate inch and foot units, strings are quoted as \<\<string\>\>.
  *
  * @param input
  * @return
