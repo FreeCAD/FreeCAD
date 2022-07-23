@@ -197,6 +197,9 @@ App::DocumentObjectExecReturn *Revolution::execute()
         else
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!"));
 
+        // eventually disable some settings that are not valid for the current method
+        updateProperties(method);
+
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -324,6 +327,47 @@ void Revolution::generateRevolution(TopoDS_Shape& revol,
             << method << "' for generateRevolution()";
         throw Base::RuntimeError(str.str());
     }
+}
+
+void Revolution::updateProperties(const std::string &method)
+{
+    // disable settings that are not valid on the current method
+    // disable everything unless we are sure we need it
+    bool isAngleEnabled = false;
+    bool isAngle2Enabled = false;
+    bool isMidplaneEnabled = false;
+    bool isReversedEnabled = false;
+    bool isUpToFaceEnabled = false;
+    if (method == "Angle") {
+        isAngleEnabled = true;
+        isMidplaneEnabled = true;
+        isReversedEnabled = !Midplane.getValue();
+    }
+    else if (method == "UpToLast") {
+        isReversedEnabled = true;
+    }
+    else if (method == "ThroughAll") {
+        isMidplaneEnabled = true;
+        isReversedEnabled = !Midplane.getValue();
+    }
+    else if (method == "UpToFirst") {
+        isReversedEnabled = true;
+    }
+    else if (method == "UpToFace") {
+        isReversedEnabled = true;
+        isUpToFaceEnabled = true;
+    }
+    else if (method == "TwoAngles") {
+        isAngleEnabled = true;
+        isAngle2Enabled = true;
+        isReversedEnabled = true;
+    }
+
+    Angle.setReadOnly(!isAngleEnabled);
+    Angle2.setReadOnly(!isAngle2Enabled);
+    Midplane.setReadOnly(!isMidplaneEnabled);
+    Reversed.setReadOnly(!isReversedEnabled);
+    UpToFace.setReadOnly(!isUpToFaceEnabled);
 }
 
 }

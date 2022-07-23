@@ -107,6 +107,11 @@ protected:
                             RevolMode Mode,
                             Standard_Boolean Modify);
 
+    /**
+     * Disables settings that are not valid for the current method
+     */
+    void updateProperties(const std::string &method);
+
 private:
     static const char* TypeEnums[];
 };
