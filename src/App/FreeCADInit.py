@@ -311,12 +311,6 @@ except ImportError:
     FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
     raise
 
-# Backward compatibility to Py2
-import sys
-if sys.version_info.major < 3:
-    import time
-    time.process_time = time.clock
-
 class FCADLogger(object):
     '''Convenient class for tagged logging.
 
