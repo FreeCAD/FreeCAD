@@ -49,15 +49,6 @@ public:
 
     void apply() override;
 
-    enum class Modes {
-        Dimension,
-        ThroughAll,
-        ToLast = ThroughAll,
-        ToFirst,
-        ToFace,
-        TwoDimensions
-    };
-
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to
      * current value of revolution object's axis reference.

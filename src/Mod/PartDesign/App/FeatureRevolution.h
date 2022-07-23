@@ -68,23 +68,20 @@ public:
     /// suggests a value for Reversed flag so that material is always added to the support
     bool suggestReversed();
 
+    enum class RevolMethod {
+        Dimension,
+        ThroughAll,
+        ToLast = ThroughAll,
+        ToFirst,
+        ToFace,
+        TwoDimensions
+    };
+
 protected:
     /// updates Axis from ReferenceAxis
     void updateAxis();
 
     static const App::PropertyAngle::Constraints floatAngle;
-
-    /**
-     * Generates a revolution of the input sketchshape and stores it in the given \a revol.
-     */
-    void generateRevolution(TopoDS_Shape& revol,
-                            const TopoDS_Shape& sketchshape,
-                            const std::string& method,
-                            const gp_Ax1& ax1,
-                            const double angle,
-                            const double angle2,
-                            const bool midplane,
-                            const bool reversed);
 
     // See BRepFeat_MakeRevol
     enum RevolMode {
@@ -93,24 +90,38 @@ protected:
         None = 2
     };
 
+    RevolMethod methodFromString(const std::string& methodStr);
+
+    /**
+     * Generates a revolution of the input sketchshape and stores it in the given \a revol.
+     */
+    void generateRevolution(TopoDS_Shape& revol,
+                            const TopoDS_Shape& sketchshape,
+                            const gp_Ax1& ax1,
+                            const double angle,
+                            const double angle2,
+                            const bool midplane,
+                            const bool reversed,
+                            RevolMethod method);
+
     /**
      * Generates a revolution of the input \a profileshape.
      * It will be a stand-alone solid created with BRepFeat_MakeRevol.
      */
     void generateRevolution(TopoDS_Shape& revol,
-                            const std::string& method,
                             const TopoDS_Shape& baseshape,
                             const TopoDS_Shape& profileshape,
                             const TopoDS_Face& supportface,
                             const TopoDS_Face& uptoface,
                             const gp_Ax1& ax1,
+                            RevolMethod method,
                             RevolMode Mode,
                             Standard_Boolean Modify);
 
     /**
      * Disables settings that are not valid for the current method
      */
-    void updateProperties(const std::string &method);
+    void updateProperties(RevolMethod method);
 
 private:
     static const char* TypeEnums[];

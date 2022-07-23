@@ -450,23 +450,23 @@ void TaskRevolutionParameters::onModeChanged(int index)
 {
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
 
-    switch (static_cast<Modes>(index)) {
-    case Modes::Dimension:
+    switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
+    case PartDesign::Revolution::RevolMethod::Dimension:
         pcRevolution->Type.setValue("Angle");
         // Avoid error message
         // if (ui->revolveAngle->value() < Base::Quantity(Precision::Angular(), Base::Unit::Angle)) // TODO: Ensure radians/degree consistency
         //     ui->revolveAngle->setValue(5.0);
         break;
-    case Modes::ToLast:
+    case PartDesign::Revolution::RevolMethod::ToLast:
         pcRevolution->Type.setValue("UpToLast");
         break;
-    case Modes::ToFirst:
+    case PartDesign::Revolution::RevolMethod::ToFirst:
         pcRevolution->Type.setValue("UpToFirst");
         break;
-    case Modes::ToFace:
+    case PartDesign::Revolution::RevolMethod::ToFace:
         pcRevolution->Type.setValue("UpToFace");
         break;
-    case Modes::TwoDimensions:
+    case PartDesign::Revolution::RevolMethod::TwoDimensions:
         pcRevolution->Type.setValue("TwoAngles");
         break;
     }
@@ -550,7 +550,7 @@ void TaskRevolutionParameters::apply()
     int mode = ui->changeMode->currentIndex();
     FCMD_OBJ_CMD(tobj, "Type = " << mode);
     QString facename = QString::fromLatin1("None");
-    if (static_cast<Modes>(mode) == Modes::ToFace) {
+    if (static_cast<PartDesign::Revolution::RevolMethod>(mode) == PartDesign::Revolution::RevolMethod::ToFace) {
         facename = getFaceName();
     }
     FCMD_OBJ_CMD(tobj, "UpToFace = " << facename.toLatin1().data());
