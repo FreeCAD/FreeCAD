@@ -144,10 +144,12 @@ SET(TDTest_SRCS
     TDTest/DrawHatchTest.py
     TDTest/DProjGroupTest.py
     TDTest/DVAnnoSymImageTest.py
+    TDTest/DrawViewAnnotationTest.py
     TDTest/DVDimensionTest.py
     TDTest/DVPartTest.py
     TDTest/DVSectionTest.py
     TDTest/DVBalloonTest.py
+    TDTest/TechDrawTestUtilities.py
 )
 
 SET(TDTestFile_SRCS
