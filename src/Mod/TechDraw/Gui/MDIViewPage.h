@@ -89,6 +89,7 @@ public:
 
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
+
     PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
@@ -136,11 +137,11 @@ private:
     std::string m_objectName;
     std::string m_documentName;
     bool isSelectionBlocked;
-    QGSPage* m_scene;
-    QGVPage *m_view;
+    QPointer<QGSPage> m_scene;
+    QPointer<QGVPage> m_view;
 
     QString m_currentPath;
-    ViewProviderPage *m_vpPage;
+    ViewProviderPage* m_vpPage;
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
 
