@@ -332,7 +332,7 @@ void ImageView::closeEvent(QCloseEvent *e)
     {
         // ignore the close event
         e->ignore();
-        closeEventIgnored();	// and emit a signal that we ignored it
+        Q_EMIT closeEventIgnored();	// and emit a signal that we ignored it
     }
     else
     {

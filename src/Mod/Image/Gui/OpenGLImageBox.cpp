@@ -188,7 +188,7 @@ void GLImageBox::paintGL()
 
     // Emit a signal for owners to draw any graphics that is needed.
     if (_image.hasValidData())
-        drawGraphics();
+        Q_EMIT drawGraphics();
 
     // flush the OpenGL graphical pipeline
     glFinish();
