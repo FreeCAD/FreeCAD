@@ -681,11 +681,12 @@ void ViewProviderFemPostObject::hide(void) {
     for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
             if (!firstVisiblePostObject && (*it)->Visibility.getValue()) {
-            firstVisiblePostObject = *it;
-            break;
+                firstVisiblePostObject = *it;
+                break;
+            }
         }
     }
-    // refesh found object
+    // refresh found object
     if (firstVisiblePostObject) {
         auto viewProvider = docGui->getViewProvider(firstVisiblePostObject);
         auto FEMviewProvider = static_cast<FemGui::ViewProviderFemPostObject *>(viewProvider);
