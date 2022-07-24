@@ -1104,4 +1104,3 @@ Version: V0.1B7 Date: Fri Dec 06 17:30:26 2002 +++++++++++++++++++++++++++++++
 Version: V0.1B6 Date: Thu Dec 05 20:59:11 2002 +++++++++++++++++++++++++++++++
   * Clean Up GuiApplication
   * Add GUI Console observer
- 
