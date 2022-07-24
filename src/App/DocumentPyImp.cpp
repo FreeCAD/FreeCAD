@@ -275,7 +275,9 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
             if (pyvp.hasAttr("__vobject__")) {
                 pyvp.setAttr("__vobject__", pyftr.getAttr("ViewObject"));
             }
-            pyftr.getAttr("ViewObject").setAttr("Proxy", pyvp);
+
+            Py::Object pyprx(pyftr.getAttr("ViewObject"));
+            pyprx.setAttr("Proxy", pyvp);
             return Py::new_reference_to(pyftr);
         }
         catch (Py::Exception& e) {

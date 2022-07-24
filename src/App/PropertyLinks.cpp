@@ -2813,7 +2813,6 @@ public:
             tmp.swap(links);
             for(auto link : tmp) {
                 auto owner = static_cast<DocumentObject*>(link->getContainer());
-                QString path = QString::fromUtf8(link->filePath.c_str());
                 // adjust file path for each PropertyXLink
                 DocInfo::get(filename,owner->getDocument(),link,link->objectName.c_str());
             }
