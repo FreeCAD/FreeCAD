@@ -672,8 +672,8 @@ void DlgPropertyLink::accept()
 static QTreeWidgetItem *_getLinkFromItem(std::ostringstream &ss, QTreeWidgetItem *item, const char *objName) {
     auto parent = item->parent();
     assert(parent);
-    const char *nextName = parent->data(0, Qt::UserRole).toByteArray().constData();
-    if(!nextName[0])
+    QByteArray nextName = parent->data(0, Qt::UserRole).toByteArray();
+    if (nextName.isEmpty())
         return item;
 
     item = _getLinkFromItem(ss, parent, nextName);
@@ -1016,13 +1016,13 @@ void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {
     if(item->childCount())
         return;
 
-    const char *docName = item->data(0, Qt::UserRole+1).toByteArray().constData();
+    QByteArray docName = item->data(0, Qt::UserRole+1).toByteArray();
     auto doc = App::GetApplication().getDocument(docName);
-    if(!doc)
+    if (!doc)
         return;
 
-    const char *objName = item->data(0, Qt::UserRole).toByteArray().constData();
-    if(!objName[0]) {
+    QByteArray objName = item->data(0, Qt::UserRole).toByteArray();
+    if (objName.isEmpty()) {
         for(auto obj : doc->getObjects()) {
             auto newItem = createItem(obj,item);
             if(newItem)
