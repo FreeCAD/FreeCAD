@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [master, development/toponaming, releases/FreeCAD-0-20]
+    branches: ['master', 'development/toponaming', 'releases/FreeCAD-0-20']
   pull_request:
 
 permissions:
