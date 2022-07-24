@@ -23,6 +23,7 @@
 import unittest
 
 from TDTest.DrawHatchTest import DrawHatchTest  # noqa: F401
+from TDTest.DrawViewAnnotationTest import DrawViewAnnotationTest # noqa: F401
 from TDTest.DProjGroupTest import DProjGroupTest
 from TDTest.DVAnnoSymImageTest import DVAnnoSymImageTest
 from TDTest.DVDimensionTest import DVDimensionTest

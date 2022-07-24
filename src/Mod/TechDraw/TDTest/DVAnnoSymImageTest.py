@@ -26,17 +26,6 @@ def DVAnnoSymImageTest():
     FreeCAD.ActiveDocument.Page.Template = FreeCAD.ActiveDocument.Template
     # page.ViewObject.show()  # unit tests run in console mode
 
-    # annotation
-    anno = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewAnnotation", "TestAnno")
-    s = "Different Text"
-    sl = list()
-    sl.append(s)
-    anno.Text = sl
-    anno.TextStyle = "Bold"
-    page.addView(anno)
-    anno.X = 30.0
-    anno.Y = 150.0
-
     # symbol
     sym = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewSymbol", "TestSymbol")
     f = open(symbolFileSpec, "r")
@@ -55,8 +44,7 @@ def DVAnnoSymImageTest():
     FreeCAD.ActiveDocument.recompute()
     rc = False
     if (
-        ("Up-to-date" in anno.State)
-        and ("Up-to-date" in sym.State)
+        ("Up-to-date" in sym.State)
         and ("Up-to-date" in img.State)
     ):
         rc = True
