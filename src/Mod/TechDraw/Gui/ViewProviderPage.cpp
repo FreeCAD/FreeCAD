@@ -103,6 +103,7 @@ ViewProviderPage::ViewProviderPage()
 ViewProviderPage::~ViewProviderPage()
 {
     removeMDIView();                    //if the MDIViewPage is still in MainWindow, remove it.
+    m_graphicsScene->deleteLater();
 }
 
 void ViewProviderPage::attach(App::DocumentObject *pcFeat)
@@ -269,14 +270,12 @@ bool ViewProviderPage::doubleClicked(void)
 
 void ViewProviderPage::show(void)
 {
-//    Base::Console().Message("VPP::show()\n");
     showMDIViewPage();
     ViewProviderDocumentObject::show();
 }
 
 void ViewProviderPage::hide(void)
 {
-//    Base::Console().Message("VPP::hide()\n");
     if (getMDIView()) {
         getMDIView()->hide();     //this doesn't remove the mdiViewPage from the mainWindow
         removeMDIView();
@@ -303,12 +302,13 @@ bool ViewProviderPage::showMDIViewPage()
 
     setGrid();
 
+    Visibility.setValue(true);
+
     return true;
 }
 
 void ViewProviderPage::createMDIViewPage()
 {
-//    Base::Console().Message("VPP::createMDIViewPage()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument
         (pcObject->getDocument());
     m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
@@ -318,7 +318,6 @@ void ViewProviderPage::createMDIViewPage()
         m_graphicsView->setObjectName(QString::fromLocal8Bit(objName.c_str()));
     }
     m_mdiView->setScene(m_graphicsScene, m_graphicsView);
-    m_graphicsScene->setParent(m_graphicsView);   //for QObjectParent.  required??
     QString tabTitle = QString::fromUtf8(getDrawPage()->Label.getValue());
 
     m_mdiView->setDocumentObject(getDrawPage()->getNameInDocument());
@@ -330,20 +329,16 @@ void ViewProviderPage::createMDIViewPage()
     Gui::getMainWindow()->setActiveWindow(m_mdiView);
 }
 
-//NOTE: removing MDIViewPage (parent) destroys QGVPage which will
-//delete QGSPage if still parented to QGVPage
+//NOTE: removing MDIViewPage (parent) destroys QGVPage (eventually)
 void ViewProviderPage::removeMDIView(void)
 {
-//    Base::Console().Message("VPP::removeMDIViewPage()\n");
     if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
-        // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614#p182614
-        //Gui::getMainWindow()->activatePreviousWindow();
         QList<QWidget*> wList= Gui::getMainWindow()->windows();
         bool found = wList.contains(m_mdiView);
         if (found) {
-            m_graphicsScene->setParent(nullptr);
             Gui::getMainWindow()->removeWindow(m_mdiView);
-            m_graphicsView = nullptr;       //m_graphicsView has been deleted by m_mdiView
+            m_mdiView = nullptr;            //m_mdiView will eventually be deleted and
+            m_graphicsView = nullptr;       //will take m_graphicsView with it
             Gui::MDIView* aw = Gui::getMainWindow()->activeWindow();  //WF: this bit should be in the remove window logic, not here.
             if (aw != nullptr) {
                 aw->showMaximized();

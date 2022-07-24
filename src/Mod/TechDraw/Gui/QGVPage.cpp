@@ -251,11 +251,10 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     m_parentMDI = static_cast<MDIViewPage*>(parent);
     m_saveContextEvent = nullptr;
 
-    setViewportUpdateMode(QGraphicsView::FullViewportUpdate); //this prevents crash when deleting dims.
-                                                          //scene(view?) indices of dirty regions gets
-                                                          //out of sync.  missing prepareGeometryChange
-                                                          //somewhere???? QTBUG-18021????
     setCacheMode(QGraphicsView::CacheBackground);
+    setRenderer(Native);
+//    setRenderer(OpenGL);  //gives rotten quality, don't use this
+    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     d->init();
     if (m_atCursor) {
@@ -270,16 +269,12 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
 //    setDragMode(ScrollHandDrag);
     setDragMode(QGraphicsView::NoDrag);
     resetCursor();
-    setRenderer(Native);
-    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonCursor = new QLabel(this);
     balloonCursor->setPixmap(prepareCursorPixmap("TechDraw_Balloon.svg", balloonHotspot = QPoint(8, 59)));
     balloonCursor->hide();
-
-    resetCachedContent();
 
     initNavigationStyle();
 
@@ -294,8 +289,7 @@ QGVPage::~QGVPage()
 
 void QGVPage::centerOnPage(void)
 {
-//    Base::Console().Message("QGVP::centerOnPage()\n");
-    centerOn(m_scene->getTemplateCenter());
+    centerOn(m_vpPage->getGraphicsScene()->getTemplateCenter());
 }
 
 void QGVPage::initNavigationStyle()
@@ -382,8 +376,6 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     p->save();
     p->resetTransform();
 
-    resetCachedContent();
-
     p->setBrush(*bkgBrush);
     p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
 
@@ -405,7 +397,6 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     p->setBrush(pageBrush);
 
     p->drawRect(poly.boundingRect());
-    resetCachedContent();
 
     p->restore();
 }
@@ -416,10 +407,13 @@ void QGVPage::setRenderer(RendererType type)
 
     if (m_renderer == OpenGL) {
 #ifndef QT_NO_OPENGL
-        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+//        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers))); //QGLWidget is obsolete
+        setViewport(new QOpenGLWidget);
+        setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 #endif
     } else {
         setViewport(new QWidget);
+        setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     }
 }
 

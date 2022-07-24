@@ -153,6 +153,7 @@ void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
+    setObjectName(Base::Tools::fromStdString(name));
 }
 
 void MDIViewPage::setDocumentName(const std::string& name)
@@ -162,6 +163,7 @@ void MDIViewPage::setDocumentName(const std::string& name)
 
 void MDIViewPage::closeEvent(QCloseEvent* ev)
 {
+//    Base::Console().Message("MDIVP::closeEvent()\n");
     MDIView::closeEvent(ev);
     if (!ev->isAccepted())
         return;

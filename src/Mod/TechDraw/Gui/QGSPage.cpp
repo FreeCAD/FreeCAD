@@ -134,6 +134,8 @@ QGSPage::QGSPage(ViewProviderPage *vp, QWidget *parent)
 {
     assert(vp);
     m_vpPage = vp;
+    setItemIndexMethod(QGraphicsScene::BspTreeIndex);  //the default
+//    setItemIndexMethod(QGraphicsScene::NoIndex);    //sometimes faster
 }
 
 QGSPage::~QGSPage()
