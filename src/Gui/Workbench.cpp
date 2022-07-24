@@ -468,7 +468,7 @@ std::list<std::string> Workbench::listToolbars() const
     std::unique_ptr<ToolBarItem> tb(setupToolBars());
     std::list<std::string> bars;
     QList<ToolBarItem*> items = tb->getItems();
-    for (QList<ToolBarItem*>::ConstIterator item = items.begin(); item != items.end(); ++item)
+    for (QList<ToolBarItem*>::ConstIterator item = items.cbegin(); item != items.cend(); ++item)
         bars.push_back((*item)->command());
     return bars;
 }
@@ -479,10 +479,10 @@ std::list<std::pair<std::string, std::list<std::string>>> Workbench::getToolbarI
 
     std::list<std::pair<std::string, std::list<std::string>>> itemsList;
     QList<ToolBarItem*> items = tb->getItems();
-    for (QList<ToolBarItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
+    for (QList<ToolBarItem*>::ConstIterator it = items.cbegin(); it != items.cend(); ++it) {
         QList<ToolBarItem*> sub = (*it)->getItems();
         std::list<std::string> cmds;
-        for (QList<ToolBarItem*>::ConstIterator jt = sub.begin(); jt != sub.end(); ++jt) {
+        for (QList<ToolBarItem*>::ConstIterator jt = sub.cbegin(); jt != sub.cend(); ++jt) {
             cmds.push_back((*jt)->command());
         }
 
@@ -496,7 +496,7 @@ std::list<std::string> Workbench::listMenus() const
     std::unique_ptr<MenuItem> mb(setupMenuBar());
     std::list<std::string> menus;
     QList<MenuItem*> items = mb->getItems();
-    for ( QList<MenuItem*>::ConstIterator it = items.begin(); it != items.end(); ++it )
+    for ( QList<MenuItem*>::ConstIterator it = items.cbegin(); it != items.cend(); ++it )
         menus.push_back((*it)->command());
     return menus;
 }
@@ -506,7 +506,7 @@ std::list<std::string> Workbench::listCommandbars() const
     std::unique_ptr<ToolBarItem> cb(setupCommandBars());
     std::list<std::string> bars;
     QList<ToolBarItem*> items = cb->getItems();
-    for (QList<ToolBarItem*>::ConstIterator item = items.begin(); item != items.end(); ++item)
+    for (QList<ToolBarItem*>::ConstIterator item = items.cbegin(); item != items.cend(); ++item)
         bars.push_back((*item)->command());
     return bars;
 }

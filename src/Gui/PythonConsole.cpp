@@ -1421,7 +1421,7 @@ void PythonConsole::saveHistory() const
         // only save last 100 entries so we don't inflate forever...
         if (hist.length() > 100)
             hist = hist.mid(hist.length()-100);
-        for (QStringList::ConstIterator it = hist.begin(); it != hist.end(); ++it)
+        for (QStringList::ConstIterator it = hist.cbegin(); it != hist.cend(); ++it)
             t << *it << "\n";
         f.close();
     }
