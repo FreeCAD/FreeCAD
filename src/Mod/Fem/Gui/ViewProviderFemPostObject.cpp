@@ -44,6 +44,7 @@
 # include <QTextStream>
 #endif
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
@@ -666,13 +667,33 @@ void ViewProviderFemPostObject::unsetEdit(int ModNum) {
 void ViewProviderFemPostObject::hide(void) {
     Gui::ViewProviderDocumentObject::hide();
     m_colorStyle->style = SoDrawStyle::INVISIBLE;
-    // TODO: the object is now hidden but the color bar is wrong
-    // if there are other FemPostObjects visible
-    // one must first search if there are other FemPostObjects visible
-    // in the tree view above this one and refresh ist color bar by updating
-    // its Field property
-    // if this is not the case, the colorbar of the next visible FemPostObjects
-    // has t be refreshed
+    // The object is now hidden but the color bar is wrong
+    // if there are other FemPostObjects visible.
+    // We must therefore search for the first visible FemPostObjects
+    // in the document and refresh ist color bar
+
+    // get all objects in the document
+    auto docGui = Gui::Application::Instance->activeDocument();
+    if (!docGui)
+        return;
+    auto doc = docGui->getDocument();
+    std::vector<App::DocumentObject *> ObjectsList = doc->getObjects();
+    App::DocumentObject *firstVisiblePostObject = nullptr;
+    // step through the objects
+    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+            if (!firstVisiblePostObject && (*it)->Visibility.getValue()) {
+            firstVisiblePostObject = *it;
+            break;
+        }
+    }
+    // refesh found object
+    if (firstVisiblePostObject) {
+        auto viewProvider = docGui->getViewProvider(firstVisiblePostObject);
+        auto FEMviewProvider = static_cast<FemGui::ViewProviderFemPostObject *>(viewProvider);
+        if (FEMviewProvider)
+            FEMviewProvider->WriteColorData(true);
+    }
 }
 
 void ViewProviderFemPostObject::show(void) {
