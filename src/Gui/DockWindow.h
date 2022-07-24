@@ -76,7 +76,7 @@ public:
 
 Q_SIGNALS:
   /// sends a message to the document
-  void sendCloseView(MDIView* theView);
+  void sendCloseView(Gui::MDIView* theView);
 };
 
 } // namespace Gui

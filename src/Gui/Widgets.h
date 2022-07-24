@@ -226,10 +226,10 @@ class GuiExport ColorButton : public QPushButton
 {
     Q_OBJECT
 
-    Q_PROPERTY( QColor color READ color WRITE setColor )
-    Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor )
-    Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame )
-    Q_PROPERTY( bool allowTransparency READ allowTransparency WRITE setAllowTransparency)
+    Q_PROPERTY( QColor color READ color WRITE setColor NOTIFY changed)
+    Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY( bool allowTransparency READ allowTransparency WRITE setAllowTransparency) // clazy:exclude=qproperty-without-notify
 
 public:
     ColorButton(QWidget* parent = nullptr);
@@ -284,8 +284,8 @@ private:
 class GuiExport UrlLabel : public QLabel
 {
   Q_OBJECT
-  Q_PROPERTY( QString  url    READ url   WRITE setUrl)
-  Q_PROPERTY( bool  launchExternal    READ launchExternal   WRITE setLaunchExternal)
+  Q_PROPERTY( QString  url    READ url   WRITE setUrl) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( bool  launchExternal    READ launchExternal   WRITE setLaunchExternal) // clazy:exclude=qproperty-without-notify
 
 public:
   UrlLabel ( QWidget * parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags() );
@@ -398,7 +398,7 @@ class GuiExport LabelButton : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(QVariant value  READ value  WRITE setValue)
+    Q_PROPERTY(QVariant value  READ value  WRITE setValue NOTIFY valueChanged)
 
 public:
     LabelButton (QWidget * parent = nullptr);
@@ -516,8 +516,8 @@ class GuiExport LabelEditor : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString  text        READ text        WRITE setText      )
-    Q_PROPERTY(QString  buttonText  READ buttonText  WRITE setButtonText)
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY(QString buttonText READ buttonText WRITE setButtonText) // clazy:exclude=qproperty-without-notify
 
 public:
     enum InputType {String, Float, Integer};

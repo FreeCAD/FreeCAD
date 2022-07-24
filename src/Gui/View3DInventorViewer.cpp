@@ -3283,7 +3283,7 @@ void View3DInventorViewer::drawAxisCross(void)
     // Find unit vector end points.
     SbMatrix px;
     glGetFloatv(GL_PROJECTION_MATRIX, (float*)px);
-    SbMatrix comb = mx.multRight(px);
+    SbMatrix comb = mx.multRight(px); // clazy:exclude=rule-of-two-soft
 
     SbVec3f xpos;
     comb.multVecMatrix(SbVec3f(1,0,0), xpos);
@@ -3709,3 +3709,4 @@ void View3DInventorViewer::dragLeaveEvent(QDragLeaveEvent *e)
     inherited::dragLeaveEvent(e);
 }
 
+#include "moc_View3DInventorViewer.cpp"

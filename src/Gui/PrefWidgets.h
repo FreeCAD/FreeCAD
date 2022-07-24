@@ -113,8 +113,8 @@ class GuiExport PrefSpinBox : public QSpinBox, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefSpinBox ( QWidget * parent = nullptr );
@@ -133,8 +133,8 @@ class GuiExport PrefDoubleSpinBox : public QDoubleSpinBox, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefDoubleSpinBox ( QWidget * parent = nullptr );
@@ -154,8 +154,8 @@ class GuiExport PrefLineEdit : public QLineEdit, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefLineEdit ( QWidget * parent = nullptr );
@@ -175,8 +175,8 @@ class GuiExport PrefTextEdit : public QTextEdit, public PrefWidget
 {
     Q_OBJECT
 
-        Q_PROPERTY(QByteArray prefEntry READ entryName     WRITE setEntryName)
-        Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath)
+        Q_PROPERTY(QByteArray prefEntry READ entryName     WRITE setEntryName) // clazy:exclude=qproperty-without-notify
+        Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath) // clazy:exclude=qproperty-without-notify
 
 public:
     PrefTextEdit(QWidget* parent = nullptr);
@@ -196,8 +196,8 @@ class GuiExport PrefFileChooser : public FileChooser, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefFileChooser ( QWidget * parent = nullptr );
@@ -217,8 +217,8 @@ class GuiExport PrefComboBox : public QComboBox, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefComboBox ( QWidget * parent = nullptr );
@@ -238,8 +238,8 @@ class GuiExport PrefCheckBox : public QCheckBox, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefCheckBox ( QWidget * parent = nullptr );
@@ -259,8 +259,8 @@ class GuiExport PrefRadioButton : public QRadioButton, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefRadioButton ( QWidget * parent = nullptr );
@@ -280,8 +280,8 @@ class GuiExport PrefSlider : public QSlider, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefSlider ( QWidget * parent = nullptr );
@@ -301,8 +301,8 @@ class GuiExport PrefColorButton : public ColorButton, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefColorButton ( QWidget * parent = nullptr );
@@ -323,8 +323,8 @@ class GuiExport PrefUnitSpinBox : public QuantitySpinBox, public PrefWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+    Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
     PrefUnitSpinBox ( QWidget * parent = nullptr );
@@ -346,9 +346,9 @@ class GuiExport PrefQuantitySpinBox : public QuantitySpinBox, public PrefWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(QByteArray prefEntry READ entryName     WRITE setEntryName)
-    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath)
-    Q_PROPERTY(int historySize READ historySize WRITE setHistorySize)
+    Q_PROPERTY(QByteArray prefEntry READ entryName     WRITE setEntryName) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(int historySize READ historySize WRITE setHistorySize) // clazy:exclude=qproperty-without-notify
 
 public:
     PrefQuantitySpinBox (QWidget * parent = nullptr);
@@ -388,8 +388,8 @@ class GuiExport PrefFontBox : public QFontComboBox, public PrefWidget
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     )
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefEntry READ entryName     WRITE setEntryName     ) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  ) // clazy:exclude=qproperty-without-notify
 
 public:
   PrefFontBox ( QWidget * parent = nullptr );

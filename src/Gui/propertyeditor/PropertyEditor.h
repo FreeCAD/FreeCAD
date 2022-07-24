@@ -62,8 +62,8 @@ class PropertyEditor : public QTreeView
 {
     Q_OBJECT
 
-    Q_PROPERTY(QBrush groupBackground READ groupBackground WRITE setGroupBackground DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor groupTextColor READ groupTextColor WRITE setGroupTextColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QBrush groupBackground READ groupBackground WRITE setGroupBackground DESIGNABLE true SCRIPTABLE true) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QColor groupTextColor READ groupTextColor WRITE setGroupTextColor DESIGNABLE true SCRIPTABLE true) // clazy:exclude=qproperty-without-notify
 
 public:
     PropertyEditor(QWidget *parent = nullptr);

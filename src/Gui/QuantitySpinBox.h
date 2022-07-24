@@ -39,14 +39,14 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionSpin
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString unit READ unitText WRITE setUnitText)
-    Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
-    Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
-    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
+    Q_PROPERTY(QString unit READ unitText WRITE setUnitText) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double minimum READ minimum WRITE setMinimum) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double maximum READ maximum WRITE setMaximum) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep) // clazy:exclude=qproperty-without-notify
     Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
-    Q_PROPERTY(QString binding READ boundToName WRITE setBoundToByName)
-    Q_PROPERTY(QString expression READ expressionText)
+    Q_PROPERTY(QString binding READ boundToName WRITE setBoundToByName) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString expression READ expressionText) // clazy:exclude=qproperty-without-notify
 
 public:
     explicit QuantitySpinBox(QWidget *parent = nullptr);

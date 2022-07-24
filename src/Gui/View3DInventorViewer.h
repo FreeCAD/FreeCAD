@@ -80,6 +80,7 @@ class ViewerEventFilter;
 class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
     typedef Quarter::SoQTQuarterAdaptor inherited;
+    Q_OBJECT
 
 public:
     /// Pick modes for picking points in the scene

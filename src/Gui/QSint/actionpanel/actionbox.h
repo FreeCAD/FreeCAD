@@ -163,8 +163,8 @@ class QSINT_EXPORT ActionBox : public QFrame
 {
     Q_OBJECT
 
-    Q_PROPERTY(QPixmap icon READ icon WRITE setIcon)
-    Q_PROPERTY(ActionLabel header READ header)
+    Q_PROPERTY(QPixmap icon READ icon WRITE setIcon) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(ActionLabel header READ header) // clazy:exclude=qproperty-without-notify
 
 public:
     /** Constructor.

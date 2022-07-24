@@ -320,7 +320,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void timeEvent();
-    void windowStateChanged(MDIView*);
+    void windowStateChanged(Gui::MDIView*);
     void workbenchActivated(const QString&);
     void mainWindowClosed();
 

@@ -767,6 +767,15 @@ void FileChooser::chooseFile()
 }
 
 /**
+ * Sets the accept mode.
+ */
+void FileChooser::setAcceptMode(FileChooser::AcceptMode mode)
+{
+    accMode = mode;
+    Q_EMIT acceptModeChanged(accMode);
+}
+
+/**
  * \property FileChooser::mode
  *
  * This property holds whether the widgets selects either a file or a directory.
@@ -786,6 +795,7 @@ FileChooser::Mode FileChooser::mode() const
 void FileChooser::setMode( FileChooser::Mode m )
 {
     md = m;
+    Q_EMIT modeChanged(md);
 }
 
 /**
@@ -807,6 +817,7 @@ QString FileChooser::filter() const
 void FileChooser::setFilter ( const QString& filter )
 {
     _filter = filter;
+    Q_EMIT filterChanged(_filter);
 }
 
 /**
@@ -818,6 +829,7 @@ void FileChooser::setButtonText( const QString& txt )
     int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
     int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
     button->setFixedWidth( (w1 > w2 ? w1 : w2) );
+    Q_EMIT buttonTextChanged(txt);
 }
 
 /**

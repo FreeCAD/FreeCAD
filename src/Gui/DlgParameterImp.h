@@ -186,7 +186,7 @@ protected Q_SLOTS:
      * @note We need to reimplement this method as QTreeWidgetItem::flags()
      * doesn't have an int parameter.
      */
-    bool edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event );
+    bool edit ( const QModelIndex & index, QAbstractItemView::EditTrigger trigger, QEvent * event );
 
 private:
     QMenu* menuEdit;

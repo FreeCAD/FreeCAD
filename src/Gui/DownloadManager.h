@@ -29,6 +29,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrl>
+#include <FCGlobal.h>
 
 
 class AutoSaver;
@@ -43,8 +44,6 @@ class Ui_DownloadManager;
 class GuiExport DownloadManager : public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(RemovePolicy removePolicy READ removePolicy WRITE setRemovePolicy)
-    Q_ENUMS(RemovePolicy)
 
 public:
     enum RemovePolicy {
@@ -53,6 +52,10 @@ public:
         SuccessFullDownload
     };
 
+    Q_PROPERTY(RemovePolicy removePolicy READ removePolicy WRITE setRemovePolicy) // clazy:exclude=qproperty-without-notify
+    Q_ENUM(RemovePolicy)
+
+public:
     static DownloadManager* getInstance();
 
 private:

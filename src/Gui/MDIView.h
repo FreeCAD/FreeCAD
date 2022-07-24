@@ -165,7 +165,7 @@ protected Q_SLOTS:
      * whenever the window state of the active view changes.
      * The default implementation does nothing.
      */
-    virtual void windowStateChanged(MDIView*);
+    virtual void windowStateChanged(Gui::MDIView*);
 
 protected:
     void closeEvent(QCloseEvent *e);
