@@ -971,8 +971,8 @@ void SoFCIndexedFaceSet::startSelection(SoAction * action)
     int bufSize = 5*(this->coordIndex.getNum()/4); // make the buffer big enough
     this->selectBuf = new GLuint[bufSize];
 
-    SbMatrix view = SoViewingMatrixElement::get(action->getState());
-    SbMatrix proj = SoProjectionMatrixElement::get(action->getState());
+    SbMatrix view = SoViewingMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
+    SbMatrix proj = SoProjectionMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
 
     glSelectBuffer(bufSize, selectBuf);
     glRenderMode(GL_SELECT);
@@ -1054,8 +1054,8 @@ void SoFCIndexedFaceSet::renderSelectionGeometry(const SbVec3f * coords3d)
 
 void SoFCIndexedFaceSet::startVisibility(SoAction * action)
 {
-    SbMatrix view = SoViewingMatrixElement::get(action->getState());
-    SbMatrix proj = SoProjectionMatrixElement::get(action->getState());
+    SbMatrix view = SoViewingMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
+    SbMatrix proj = SoProjectionMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
