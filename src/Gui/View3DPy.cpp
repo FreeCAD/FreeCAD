@@ -282,7 +282,7 @@ Py::Object View3DInventorPy::getattribute(const char * attr)
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
-        for (auto it : dict_base) {
+        for (const auto& it : dict_base) {
             dict_self.setItem(it.first, it.second);
         }
         return dict_self;

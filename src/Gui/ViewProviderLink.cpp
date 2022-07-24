@@ -646,7 +646,7 @@ public:
             dot = next;
         }
 
-        for(auto v : nodeMap) {
+        for(const auto& v : nodeMap) {
             if(v.second->getDetail(true,type,subname,det,path))
                 return true;
         }

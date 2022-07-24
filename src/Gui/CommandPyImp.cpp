@@ -118,7 +118,7 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
 
     PyObject* pyList = PyList_New(matches.size());
     int i=0;
-    for (std::string match : matches) {
+    for (const std::string& match : matches) {
         PyObject* str = PyUnicode_FromString(match.c_str());
         PyList_SetItem(pyList, i++, str);
     }

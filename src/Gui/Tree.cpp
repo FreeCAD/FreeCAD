@@ -3387,7 +3387,7 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
     bool needUpdate = false;
 
-    for (auto data : itEntry->second) {
+    for (const auto& data : itEntry->second) {
         DocumentItem* docItem = data->docItem;
         if (docItem == deletingDoc)
             continue;
@@ -3701,7 +3701,7 @@ void TreeWidget::slotChangeObject(
         const char* label = obj->Label.getValue();
         auto firstData = *itEntry->second.begin();
         if (firstData->label != label) {
-            for (auto data : itEntry->second) {
+            for (const auto& data : itEntry->second) {
                 data->label = label;
                 auto displayName = QString::fromUtf8(label);
                 for (auto item : data->items)
@@ -3715,7 +3715,7 @@ void TreeWidget::slotChangeObject(
         const char* label = obj->Label2.getValue();
         auto firstData = *itEntry->second.begin();
         if (firstData->label2 != label) {
-            for (auto data : itEntry->second) {
+            for (const auto& data : itEntry->second) {
                 data->label2 = label;
                 auto displayName = QString::fromUtf8(label);
                 for (auto item : data->items)

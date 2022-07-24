@@ -923,7 +923,7 @@ void ParameterGrp::Clear(void)
     }
 
     // remove group handles
-    for (auto it : removeGrp) {
+    for (const auto& it : removeGrp) {
         auto pos = _GroupMap.find(it);
         vecNodes.push_back(pos->second->_pGroupNode);
         _GroupMap.erase(pos->first);

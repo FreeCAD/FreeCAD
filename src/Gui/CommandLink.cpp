@@ -356,7 +356,7 @@ static void linkConvert(bool unlink) {
     // PropertyLinkBase::CopyOnLinkReplace().
 
     std::map<std::pair<App::DocumentObject*,App::DocumentObject*>, Info> infos;
-    for(auto sel : TreeWidget::getSelection()) {
+    for(const auto& sel : TreeWidget::getSelection()) {
         auto obj = sel.vp->getObject();
         auto parent = sel.parentVp;
         if(!parent) {

@@ -353,7 +353,7 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
     // For link list type property, try to auto filter type
     if(tryFilter && isLinkList) {
         Base::Type objType;
-        for(auto link : oldLinks) {
+        for(const auto& link : oldLinks) {
             auto obj = link.getSubObject();
             if(!obj)
                 continue;
@@ -745,7 +745,7 @@ QList<App::SubObjectT> DlgPropertyLink::originalLinks() const
     return oldLinks;
 }
 
-QString DlgPropertyLink::linksToPython(QList<App::SubObjectT> links) {
+QString DlgPropertyLink::linksToPython(const QList<App::SubObjectT>& links) {
     if(links.isEmpty())
         return QLatin1String("None");
 
@@ -756,7 +756,7 @@ QString DlgPropertyLink::linksToPython(QList<App::SubObjectT> links) {
 
     if(isLinkSub(links)) {
         ss << '(' << links.front().getObjectPython() << ", [";
-        for(auto link : links) {
+        for(const auto& link : links) {
             const auto &sub = link.getSubName();
             if(sub.size())
                 ss << "u'" << Base::Tools::escapedUnicodeFromUtf8(sub.c_str()) << "',";
@@ -764,7 +764,7 @@ QString DlgPropertyLink::linksToPython(QList<App::SubObjectT> links) {
         ss << "])";
     } else {
         ss << '[';
-        for(auto link : links)
+        for(const auto& link : links)
             ss << link.getSubObjectPython(false) << ',';
         ss << ']';
     }

@@ -49,7 +49,7 @@ public:
 
     void init(const App::DocumentObjectT &prop, bool tryFilter=true);
 
-    static QString linksToPython(QList<App::SubObjectT> links);
+    static QString linksToPython(const QList<App::SubObjectT>& links);
 
     static QList<App::SubObjectT> getLinksFromProperty(const App::PropertyLinkBase *prop);
 

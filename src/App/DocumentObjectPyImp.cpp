@@ -696,7 +696,7 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
                 (o)->getDocumentObjectPtr();
         auto array = getDocumentObjectPtr()->getPathsByOutList(target);
         Py::List list;
-        for (auto it : array) {
+        for (const auto& it : array) {
             Py::List path;
             for (auto jt : it) {
                 path.append(Py::asObject(jt->getPyObject()));

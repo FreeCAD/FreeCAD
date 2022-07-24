@@ -137,7 +137,7 @@ public:
     template<typename ExtensionT>
     std::vector<ExtensionT*> getExtensionsDerivedFromType() const {
         std::vector<ExtensionT*> typevec;
-        for(auto entry : _extensions) {
+        for(const auto& entry : _extensions) {
             if(entry.first.isDerivedFrom(ExtensionT::getExtensionClassTypeId()))
                 typevec.push_back(static_cast<ExtensionT*>(entry.second));
         }
