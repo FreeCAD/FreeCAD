@@ -168,6 +168,7 @@ public Q_SLOTS:
     */
     void setMinimumDuration (int ms);
 
+public:
     bool canAbort() const;
 
 protected:

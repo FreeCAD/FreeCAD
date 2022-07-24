@@ -123,7 +123,7 @@ void PropertyItem::reset()
 void PropertyItem::onChange()
 {
     if(hasExpression()) {
-        for(auto child : childItems) {
+        for(auto child : qAsConst(childItems)) {
             if(child && child->hasExpression())
                 child->setExpression(std::shared_ptr<App::Expression>());
         }
@@ -1356,7 +1356,7 @@ public:
     }
 
     bool apply(const std::string &propName) {
-        if (!ExpressionBinding::apply(propName)) {
+        if (!ExpressionBinding::apply(propName)) { // clazy:exclude=skipped-base-method
             QVariant data = property("coords");
             if (data.canConvert<Base::Vector3d>()) {
                 const Base::Vector3d& value = data.value<Base::Vector3d>();
@@ -1554,7 +1554,7 @@ void PropertyEditorWidget::setValue(const QVariant& val)
 {
     variant = val;
     showValue(variant);
-    valueChanged(variant);
+    Q_EMIT valueChanged(variant);
 }
 
 // ---------------------------------------------------------------
@@ -1724,9 +1724,9 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
 
     Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
     QString data = QString::fromLatin1("(%1, %2, %3)")
-                    .arg(Base::UnitsApi::toNumber(x, format))
-                    .arg(Base::UnitsApi::toNumber(y, format))
-                    .arg(Base::UnitsApi::toNumber(z, format));
+                    .arg(Base::UnitsApi::toNumber(x, format),
+                         Base::UnitsApi::toNumber(y, format),
+                         Base::UnitsApi::toNumber(z, format));
     setPropertyValue(data);
 }
 
@@ -2412,10 +2412,10 @@ void PropertyRotationItem::setValue(const QVariant& value)
     h.getValue(axis, angle);
     Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
     QString data = QString::fromLatin1("App.Rotation(App.Vector(%1,%2,%3),%4)")
-                    .arg(Base::UnitsApi::toNumber(axis.x, format))
-                    .arg(Base::UnitsApi::toNumber(axis.y, format))
-                    .arg(Base::UnitsApi::toNumber(axis.z, format))
-                    .arg(Base::UnitsApi::toNumber(angle, format));
+                    .arg(Base::UnitsApi::toNumber(axis.x, format),
+                         Base::UnitsApi::toNumber(axis.y, format),
+                         Base::UnitsApi::toNumber(axis.z, format),
+                         Base::UnitsApi::toNumber(angle, format));
     setPropertyValue(data);
 }
 
@@ -2724,13 +2724,13 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     QString data = QString::fromLatin1("App.Placement("
                                       "App.Vector(%1,%2,%3),"
                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")
-                    .arg(Base::UnitsApi::toNumber(pos.x, format))
-                    .arg(Base::UnitsApi::toNumber(pos.y, format))
-                    .arg(Base::UnitsApi::toNumber(pos.z, format))
-                    .arg(Base::UnitsApi::toNumber(axis.x, format))
-                    .arg(Base::UnitsApi::toNumber(axis.y, format))
-                    .arg(Base::UnitsApi::toNumber(axis.z, format))
-                    .arg(Base::UnitsApi::toNumber(angle, format));
+                    .arg(Base::UnitsApi::toNumber(pos.x, format),
+                         Base::UnitsApi::toNumber(pos.y, format),
+                         Base::UnitsApi::toNumber(pos.z, format),
+                         Base::UnitsApi::toNumber(axis.x, format),
+                         Base::UnitsApi::toNumber(axis.y, format),
+                         Base::UnitsApi::toNumber(axis.z, format),
+                         Base::UnitsApi::toNumber(angle, format));
     setPropertyValue(data);
 }
 
@@ -2971,7 +2971,7 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent, const QObject* receiver
     });
     QObject::connect(menu, &QMenu::triggered, this, [=](QAction *action) {
         button->setText(action->data().toString());
-        button->picked();
+        Q_EMIT button->picked();
     });
     QObject::connect(button, SIGNAL(picked()), receiver, method);
     return button;

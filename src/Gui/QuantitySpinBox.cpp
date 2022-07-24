@@ -601,7 +601,7 @@ void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
             d->pendingEmit = false;
             Q_EMIT valueChanged(res);
             Q_EMIT valueChanged(res.getValue());
-            textChanged(text);
+            Q_EMIT textChanged(text);
         }
     }
 }

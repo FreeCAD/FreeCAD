@@ -1206,7 +1206,7 @@ bool Document::saveAs(void)
     QString exe = qApp->applicationName();
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
         QString::fromUtf8(getDocument()->FileName.getValue()),
-        QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe).arg(QObject::tr("Document")));
+        QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")));
 
     if (!fn.isEmpty()) {
         QFileInfo fi;
@@ -2324,20 +2324,18 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
             }
             str << "    " << doc->getName() << "\n";
         }
-        int ret = QMessageBox::warning(getMainWindow(),
-                    undo?QObject::tr("Undo"):QObject::tr("Redo"),
-                    QString::fromLatin1("%1,\n%2%3")
-                        .arg(QObject::tr(
-                            "There are grouped transactions in the following documents with "
-                            "other preceding transactions"))
-                        .arg(QString::fromUtf8(str.str().c_str()))
-                        .arg(QObject::tr("Choose 'Yes' to roll back all preceding transactions.\n"
-                                         "Choose 'No' to roll back in the active document only.\n"
-                                         "Choose 'Abort' to abort")),
+        int ret = QMessageBox::warning(getMainWindow(), undo ? QObject::tr("Undo") : QObject::tr("Redo"),
+                    QString::fromLatin1("%1,\n%2%3").arg(
+                        QObject::tr("There are grouped transactions in the following documents with "
+                                    "other preceding transactions"),
+                        QString::fromStdString(str.str()),
+                        QObject::tr("Choose 'Yes' to roll back all preceding transactions.\n"
+                                    "Choose 'No' to roll back in the active document only.\n"
+                                    "Choose 'Abort' to abort")),
                     QMessageBox::Yes|QMessageBox::No|QMessageBox::Abort, QMessageBox::Yes);
-        if(ret == QMessageBox::Abort)
+        if (ret == QMessageBox::Abort)
             return false;
-        if(ret == QMessageBox::No)
+        if (ret == QMessageBox::No)
             return true;
     }
     for(auto &v : dmap) {

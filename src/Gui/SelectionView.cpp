@@ -177,7 +177,8 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
             str << Reason.pDocName;
             str << "#";
             // remove all items
-            for(auto item : selectionView->findItems(selObject,Qt::MatchStartsWith))
+            const auto items = selectionView->findItems(selObject,Qt::MatchStartsWith);
+            for(auto item : items)
                 delete item;
         }
     }
@@ -381,15 +382,15 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     if(Gui::Selection().isSelected(docname,objname,subname))
         cmd = QString::fromLatin1("Gui.Selection.removeSelection("
             "App.getDocument('%1').getObject('%2'),'%3')")
-            .arg(QString::fromLatin1(docname))
-            .arg(QString::fromLatin1(objname))
-            .arg(QString::fromLatin1(subname));
+            .arg(QString::fromLatin1(docname),
+                 QString::fromLatin1(objname),
+                 QString::fromLatin1(subname));
     else
         cmd = QString::fromLatin1("Gui.Selection.addSelection("
             "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)")
-            .arg(QString::fromLatin1(docname))
-            .arg(QString::fromLatin1(objname))
-            .arg(QString::fromLatin1(subname))
+            .arg(QString::fromLatin1(docname),
+                 QString::fromLatin1(objname),
+                 QString::fromLatin1(subname))
             .arg(x).arg(y).arg(z);
     try {
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
@@ -419,9 +420,9 @@ void SelectionView::preselect(QListWidgetItem* item)
     }
     QString cmd = QString::fromLatin1("Gui.Selection.setPreselection("
         "App.getDocument('%1').getObject('%2'),'%3',tp=2)")
-        .arg(QString::fromLatin1(docname))
-        .arg(QString::fromLatin1(objname))
-        .arg(QString::fromLatin1(subname));
+        .arg(QString::fromLatin1(docname),
+             QString::fromLatin1(objname),
+             QString::fromLatin1(subname));
     try {
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
     }catch(Base::Exception &e) {
