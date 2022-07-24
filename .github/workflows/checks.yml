@@ -1,5 +1,7 @@
 name: CI
 on:
+  push:
+    branches: [master, development/toponaming, releases/FreeCAD-0-20]
   pull_request:
 
 permissions:
@@ -51,7 +53,7 @@ env:
 
   checkClangTidy: true
   clangTidyChecks: boost-*,bugprone-*,performance-*,readability-*,portability-*,modernize-*,clang-analyzer-*,cppcoreguidelines-*,concurrency-*
-  clangTidyFailSilent: false
+  clangTidyFailSilent: true
 
   checkClazy: true
   clazyChecks: level1 # https://invent.kde.org/sdk/clazy#list-of-checks
