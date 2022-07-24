@@ -1814,7 +1814,7 @@ void StdViewScreenShot::activated(int iMsg)
 
         if (fd.exec() == QDialog::Accepted) {
             selFilter = fd.selectedNameFilter();
-            QString fn = fd.selectedFiles().front();
+            QString fn = fd.selectedFiles().constFirst();
             // We must convert '\' path separators to '/' before otherwise
             // Python would interpret them as escape sequences.
             fn.replace(QLatin1Char('\\'), QLatin1Char('/'));
