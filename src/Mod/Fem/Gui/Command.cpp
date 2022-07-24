@@ -1202,6 +1202,10 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
         
     // set display to assure the user sees the new object
     cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.DisplayMode = \"Surface\"");
+    // Set SelectionStyle to BoundBox because the idea is that the user gets the useful result
+    // from the colors. The default would be to highlight the shape but then the colors are changed
+    // by every highlighting leading to confusions for the user.
+    cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.SelectionStyle = \"BoundBox\"");
 
     // in case selObject is no pipeline we must set it as input object
     auto objFilter = App::GetApplication().getActiveDocument()->getActiveObject();
@@ -1849,6 +1853,10 @@ void CmdFemPostPipelineFromResult::activated(int)
             "App.activeDocument().getObject(\"%s\"))", results[0]->getNameInDocument());
         // set display to assure the user sees the new object
         doCommand(Doc, "App.activeDocument().ActiveObject.ViewObject.DisplayMode = \"Surface\"");
+        // Set SelectionStyle to BoundBox because the idea is that the user gets the useful result
+        // from the colors. The default would be to highlight the shape but then the colors are changed
+        // by every highlighting leading to confusions for the user.
+        doCommand(Doc, "App.activeDocument().ActiveObject.ViewObject.SelectionStyle = \"BoundBox\"");
         commitCommand();
 
         this->updateActive();
