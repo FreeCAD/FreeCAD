@@ -684,7 +684,7 @@ QuarterWidget::setSoRenderManager(SoRenderManager * manager)
   if (PRIVATE(this)->sorendermanager && manager) {
     scene = PRIVATE(this)->sorendermanager->getSceneGraph();
     camera = PRIVATE(this)->sorendermanager->getCamera();
-    vp = PRIVATE(this)->sorendermanager->getViewportRegion();
+    vp = PRIVATE(this)->sorendermanager->getViewportRegion(); // clazy:exclude=rule-of-two-soft
     carrydata = true;
   }
 
@@ -729,7 +729,7 @@ QuarterWidget::setSoEventManager(SoEventManager * manager)
   if (PRIVATE(this)->soeventmanager && manager) {
     scene = PRIVATE(this)->soeventmanager->getSceneGraph();
     camera = PRIVATE(this)->soeventmanager->getCamera();
-    vp = PRIVATE(this)->soeventmanager->getViewportRegion();
+    vp = PRIVATE(this)->soeventmanager->getViewportRegion(); // clazy:exclude=rule-of-two-soft
     carrydata = true;
   }
 

@@ -1063,7 +1063,7 @@ SoBoxSelectionRenderActionP::updateBbox(const SoPath * path)
         this->cube->height  = y;
         this->cube->depth = z;
 
-        SbMatrix transform = box.getTransform();
+        SbMatrix transform = box.getTransform(); // clazy:exclude=rule-of-two-soft
 
         // get center (in the local bbox coordinate system)
         SbVec3f center = box.SbBox3f::getCenter();
