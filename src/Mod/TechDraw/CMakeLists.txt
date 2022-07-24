@@ -141,7 +141,7 @@ endif(BUILD_GUI)
 #unit test files
 SET(TDTest_SRCS
     TDTest/__init__.py
-    TDTest/DHatchTest.py
+    TDTest/DrawHatchTest.py
     TDTest/DProjGroupTest.py
     TDTest/DVAnnoSymImageTest.py
     TDTest/DVDimensionTest.py
