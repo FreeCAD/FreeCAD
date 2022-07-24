@@ -206,6 +206,7 @@ def export_common(values, objectslist, filename):
 
         # process the operation gcode
         gcode += PostUtilsParse.parse_a_group(values, obj)
+
         # do the post_op
         if values["OUTPUT_COMMENTS"]:
             comment = PostUtilsParse.create_comment(
