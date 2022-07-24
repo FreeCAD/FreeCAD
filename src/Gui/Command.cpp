@@ -498,7 +498,8 @@ void Command::testActive(void)
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     if(pcAction) {
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-        for(auto action : pcAction->actions()) {
+        const auto actions = pcAction->actions();
+        for(auto action : actions) {
             auto name = action->property("CommandName").toByteArray();
             if(!name.size())
                 continue;

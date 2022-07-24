@@ -161,9 +161,9 @@ QString DlgPropertyLink::formatObject(App::Document *ownerDoc, App::DocumentObje
                                                  QString::fromUtf8(sobj->Label.getValue()));
 }
 
-static inline bool isLinkSub(QList<App::SubObjectT> links)
+static inline bool isLinkSub(const QList<App::SubObjectT>& links)
 {
-    for(auto &link : links) {
+    for(const auto &link : links) {
         if(&link == &links.front())
             continue;
         if(link.getDocumentName() != links.front().getDocumentName()
@@ -353,7 +353,7 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
     // For link list type property, try to auto filter type
     if(tryFilter && isLinkList) {
         Base::Type objType;
-        for(const auto& link : oldLinks) {
+        for(const auto& link : qAsConst(oldLinks)) {
             auto obj = link.getSubObject();
             if(!obj)
                 continue;
@@ -534,7 +534,8 @@ void DlgPropertyLink::onItemSelectionChanged()
     // Enforce single parent
     if(singleParent && currentObj && currentObj!=obj) {
         ui->treeWidget->blockSignals(true);
-        for(auto item : ui->treeWidget->selectedItems()) {
+        const auto items = ui->treeWidget->selectedItems();
+        for(auto item : items) {
             if(item != selections.back())
                 item->setSelected(false);
         }
@@ -707,7 +708,8 @@ DlgPropertyLink::getLinkFromItem(QTreeWidgetItem *item, bool needSubName) const
         return res;
     }
 
-    for(const QString &element : elements.split(QLatin1Char(','))) {
+    const auto split = elements.split(QLatin1Char(','));
+    for(const QString &element : split) {
         res.append(App::SubObjectT());
         res.last() = App::SubObjectT(sobj.getDocumentName().c_str(),
                                      sobj.getObjectName().c_str(),
@@ -1052,7 +1054,8 @@ void DlgPropertyLink::on_checkObjectType_toggled(bool on)
 void DlgPropertyLink::on_typeTree_itemSelectionChanged() {
 
     selectedTypes.clear();
-    for(auto item : ui->typeTree->selectedItems())
+    const auto items = ui->typeTree->selectedItems();
+    for(auto item : items)
         selectedTypes.insert(item->data(0, Qt::UserRole).toByteArray());
 
     if(ui->checkObjectType->isChecked())

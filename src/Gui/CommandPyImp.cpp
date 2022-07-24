@@ -309,7 +309,8 @@ PyObject* CommandPy::getAction(PyObject *args)
 
         Py::List list;
         if (group) {
-            for (auto a : group->actions())
+            const auto actions = group->actions();
+            for (auto a : actions)
                 list.append(wrap.fromQObject(a));
         }
         else if (action) {

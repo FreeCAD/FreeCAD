@@ -1671,7 +1671,8 @@ ButtonGroup::ButtonGroup(QObject *parent)
     connect(this, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
             [=](QAbstractButton *button) {
         if (exclusive()) {
-            for (auto btn : buttons()) {
+            const auto btns = buttons();
+            for (auto btn : btns) {
                 if (btn && btn != button && btn->isCheckable())
                     btn->setChecked(false);
             }

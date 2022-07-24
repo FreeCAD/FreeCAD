@@ -301,14 +301,16 @@ qint64 ApplicationCache::dirSize(QString dirPath) const
     QDir dir(dirPath);
 
     QDir::Filters fileFilters = QDir::Files;
-    for (QString filePath : dir.entryList(fileFilters)) {
+    const auto& files = dir.entryList(fileFilters);
+    for (const QString& filePath : files) {
         QFileInfo fi(dir, filePath);
         total += fi.size();
     }
 
     // traverse sub-directories recursively
     QDir::Filters dirFilters = QDir::Dirs | QDir::NoDotAndDotDot;
-    for (QString subDirPath : dir.entryList(dirFilters))
+    const auto& dirs = dir.entryList(dirFilters);
+    for (const QString& subDirPath : dirs)
         total += dirSize(dirPath + QDir::separator() + subDirPath);
     return total;
 }

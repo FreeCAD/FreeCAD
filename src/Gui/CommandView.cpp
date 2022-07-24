@@ -3013,7 +3013,8 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
         return;
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+    const auto trees = getMainWindow()->findChildren<TreeWidget*>();
+    for(auto tree : trees)
         tree->selectAllInstances(*vpd);
     Selection().selStackPush();
 }
@@ -3521,7 +3522,8 @@ StdTreeDrag::StdTreeDrag()
 void StdTreeDrag::activated(int)
 {
     if(Gui::Selection().hasSelection()) {
-        for(auto tree : getMainWindow()->findChildren<TreeWidget*>()) {
+        const auto trees = getMainWindow()->findChildren<TreeWidget*>();
+        for(auto tree : trees) {
             if(tree->isVisible()) {
                 tree->startDragging();
                 break;

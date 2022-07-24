@@ -365,7 +365,8 @@ void DlgObjectSelection::onDepItemChanged(QTreeWidgetItem * depItem, int column)
     QSignalBlocker blocker3(ui->treeWidget);
     auto state = depItem->checkState(0);
     if (depItem->isSelected()) {
-        for (auto item : depItem->treeWidget()->selectedItems()) {
+        const auto items = depItem->treeWidget()->selectedItems();
+        for (auto item : items) {
             auto objT = qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole));
             auto it = itemMap.find(objT);
             if (it == itemMap.end())
@@ -437,7 +438,8 @@ void DlgObjectSelection::onObjItemChanged(QTreeWidgetItem * objItem, int column)
         onItemSelectionChanged();
     }
     else {
-        for (auto item : ui->treeWidget->selectedItems()) {
+        const auto items = ui->treeWidget->selectedItems();
+        for (auto item : items) {
             setCheckState(item, state);
             itemChanged[qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole))] = state;
         }
@@ -552,7 +554,8 @@ void DlgObjectSelection::onItemSelectionChanged() {
     inMap.clear();
 
     std::vector<App::DocumentObject *> sels;
-    for (auto item : ui->treeWidget->selectedItems()) {
+    const auto items = ui->treeWidget->selectedItems();
+    for (auto item : items) {
         if (item == allItem) {
             sels.clear();
             break;

@@ -755,7 +755,8 @@ void StdCmdLinkSelectLinked::activated(int)
             doc->setActiveView(vp);
         }
     } else {
-        for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+        const auto trees = getMainWindow()->findChildren<TreeWidget*>();
+        for(auto tree : trees)
             tree->selectLinkedObject(linked);
     }
     Selection().selStackPush();
@@ -790,7 +791,8 @@ void StdCmdLinkSelectLinkedFinal::activated(int) {
     }
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+    const auto trees = getMainWindow()->findChildren<TreeWidget*>();
+    for(auto tree : trees)
         tree->selectLinkedObject(linked);
     Selection().selStackPush();
 }
@@ -825,7 +827,8 @@ void StdCmdLinkSelectAllLinks::activated(int)
         return;
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+    const auto trees = getMainWindow()->findChildren<TreeWidget*>();
+    for(auto tree : trees)
         tree->selectAllLinks(sels[0].pObject);
     Selection().selStackPush();
 }

@@ -213,7 +213,7 @@ TStringMap Translator::supportedLocales() const
 
     // List all .qm files
     for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
-        for (const auto& directoryName : d->paths) {
+        for (const auto& directoryName : qAsConst(d->paths)) {
             QDir dir(directoryName);
             QString filter = QString::fromLatin1("*_%1.qm").arg(QString::fromStdString(domainMap.second));
             QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);

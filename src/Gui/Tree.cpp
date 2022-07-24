@@ -1158,7 +1158,8 @@ void TreeWidget::onMarkRecompute()
 
 void TreeWidget::onRecomputeObject() {
     std::vector<App::DocumentObject*> objs;
-    for (auto ti : selectedItems()) {
+    const auto items = selectedItems();
+    for (auto ti : items) {
         if (ti->type() == ObjectType) {
             DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(ti);
             objs.push_back(objitem->object()->getObject());
@@ -1224,8 +1225,10 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
     else
         tree->_updateStatus(false);
 
-    for (auto ti : tree->selectedItems()) {
-        if (ti->type() != ObjectType) continue;
+    const auto items = tree->selectedItems();
+    for (auto ti : items) {
+        if (ti->type() != ObjectType)
+            continue;
         auto item = static_cast<DocumentObjectItem*>(ti);
         auto vp = item->object();
         auto obj = vp->getObject();
@@ -2736,7 +2739,8 @@ void TreeWidget::expandSelectedItems(TreeItemMode mode)
     if (!isSelectionAttached())
         return;
 
-    for (auto item : selectedItems()) {
+    const auto items = selectedItems();
+    for (auto item : items) {
         switch (mode) {
         case TreeItemMode::ExpandPath: {
             QTreeWidgetItem* parentItem = item->parent();

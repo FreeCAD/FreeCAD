@@ -215,7 +215,8 @@ public:
     }
 
     void removeItems() {
-        for(auto item : ui->elementList->selectedItems()) {
+        const auto items = ui->elementList->selectedItems();
+        for(auto item : items) {
             std::string sub = qPrintable(item->data(Qt::UserRole+1).value<QString>());
             if(sub == hiddenSub)
                 hiddenSub.clear();
@@ -259,8 +260,8 @@ public:
                    editObj == msg.pObjectName &&
                    boost::starts_with(msg.pSubName,editSub))
                 {
-                    for(auto item : ui->elementList->findItems(
-                                QString::fromLatin1(msg.pSubName-editSub.size()), Qt::MatchExactly))
+                    const auto items = ui->elementList->findItems(QString::fromLatin1(msg.pSubName-editSub.size()), Qt::MatchExactly);
+                    for(auto item : items)
                         item->setSelected(msg.Type==SelectionChanges::AddSelection);
                 }
             }
@@ -285,7 +286,8 @@ public:
             }
             break;
         }
-        for(auto item : ui->elementList->selectedItems()) {
+        const auto items = ui->elementList->selectedItems();
+        for(auto item : items) {
             std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
             if(ViewProvider::hasHiddenMarker(name.c_str()))
                 continue;

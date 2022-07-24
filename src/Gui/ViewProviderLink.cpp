@@ -2582,7 +2582,8 @@ void ViewProviderLink::_setupContextMenu(
             || (ext->getLinkPlacementProperty() && !ext->getLinkPlacementProperty()->isReadOnly()))
     {
         bool found = false;
-        for(auto action : menu->actions()) {
+        const auto actions = menu->actions();
+        for(auto action : actions) {
             if(action->data().toInt() == ViewProvider::Transform) {
                 found = true;
                 break;
@@ -2598,7 +2599,8 @@ void ViewProviderLink::_setupContextMenu(
 
     if(ext->getColoredElementsProperty()) {
         bool found = false;
-        for(auto action : menu->actions()) {
+        const auto actions = menu->actions();
+        for(auto action : actions) {
             if(action->data().toInt() == ViewProvider::Color) {
                 action->setText(QObject::tr("Override colors..."));
                 found = true;

@@ -193,7 +193,8 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     this->pressed = false;
 
     if (editor) {
-        for (auto w : editor->findChildren<QWidget*>()) {
+        const auto widgets = editor->findChildren<QWidget*>();
+        for (auto w : widgets) {
             if (qobject_cast<QAbstractButton*>(w)
                     || qobject_cast<QLabel*>(w))
             {

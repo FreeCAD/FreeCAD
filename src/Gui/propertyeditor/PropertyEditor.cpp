@@ -624,7 +624,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     auto contextIndex = currentIndex();
 
     std::unordered_set<App::Property*> props;
-    for(auto index : selectedIndexes()) {
+    const auto indexes = selectedIndexes();
+    for(const auto& index : indexes) {
         auto item = static_cast<PropertyItem*>(index.internalPointer());
         if(item->isSeparator())
             continue;
