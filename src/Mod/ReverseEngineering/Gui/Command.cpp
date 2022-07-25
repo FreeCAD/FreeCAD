@@ -461,7 +461,7 @@ void CmdSegmentationFromComponents::activated(int)
 
         const Mesh::MeshObject& mesh = it->Mesh.getValue();
         std::vector<std::vector<MeshCore::FacetIndex> > comps = mesh.getComponents();
-        for (auto jt : comps) {
+        for (const auto& jt : comps) {
             std::unique_ptr<Mesh::MeshObject> segment(mesh.meshFromSegment(jt));
             Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
@@ -610,9 +610,7 @@ void CmdViewTriangulation::activated(int)
                 "Width=%2.Width,"
                 "Height=%2.Height)"
             )
-            .arg(document)
-            .arg(object)
-            ;
+            .arg(document, object);
             runCommand(Doc, command.toLatin1());
         }
 
