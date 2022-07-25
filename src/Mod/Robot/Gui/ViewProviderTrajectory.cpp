@@ -96,7 +96,7 @@ ViewProviderTrajectory::~ViewProviderTrajectory()
 
 void ViewProviderTrajectory::attach(App::DocumentObject *pcObj)
 {
-    ViewProviderDocumentObject::attach(pcObj);
+    ViewProviderGeometryObject::attach(pcObj);
 
     // Draw trajectory lines
     SoSeparator* linesep = new SoSeparator;

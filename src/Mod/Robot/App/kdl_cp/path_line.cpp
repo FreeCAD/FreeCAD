@@ -38,6 +38,7 @@
  *		$Id: path_line.cpp,v 1.1.1.1.2.3 2003/07/24 13:26:15 psoetens Exp $
  *		$Name:  $
  ****************************************************************************/
+// clazy:excludeall=rule-of-two-soft
 
 
 #include "path_line.hpp"
