@@ -231,7 +231,7 @@ Py::Object BrowserViewPy::getattr(const char * attr)
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
-        for (auto it : dict_base) {
+        for (const auto& it : dict_base) {
             dict_self.setItem(it.first, it.second);
         }
         return dict_self;
@@ -405,10 +405,10 @@ void WebView::triggerContextMenuAction(int id)
 
     switch (id) {
     case WebAction::OpenLink:
-        openLinkInExternalBrowser(url);
+        Q_EMIT openLinkInExternalBrowser(url);
         break;
     case WebAction::OpenLinkInNewWindow:
-        openLinkInNewWindow(url);
+        Q_EMIT openLinkInNewWindow(url);
         break;
     case WebAction::ViewSource:
         Q_EMIT viewSource(url);
@@ -533,8 +533,7 @@ void BrowserView::urlFilter(const QUrl & url)
     //QString username = url.userName();
 
     // path handling
-    QString path     = url.path();
-    QFileInfo fi(path);
+    QString path = url.path();
     QUrl exturl(url);
 
     // query
