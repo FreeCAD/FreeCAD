@@ -190,7 +190,11 @@ PyDoc_STRVAR(FreeCAD_doc,
     );
 
 PyDoc_STRVAR(Console_doc,
-     "FreeCAD Console\n"
+    "FreeCAD Console module.\n\n"
+    "The Console module contains functions to manage log entries, messages,\n"
+    "warnings and errors.\n"
+    "There are also functions to get/set the status of the observers used as\n"
+    "logging interfaces."
     );
 
 PyDoc_STRVAR(Base_doc,
