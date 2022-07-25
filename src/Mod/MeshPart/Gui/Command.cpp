@@ -229,8 +229,8 @@ void CmdMeshPartSection::activated(int)
         std::vector<Mesh::MeshObject::TPolylines> polylines;
         mesh->crossSections(sections, polylines);
 
-        for (auto it2 : polylines) {
-            for (auto it3 : it2) {
+        for (const auto& it2 : polylines) {
+            for (const auto& it3 : it2) {
                 Py::Tuple arg(1);
                 Py::List list;
                 for (auto it4 : it3) {

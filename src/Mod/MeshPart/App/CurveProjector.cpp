@@ -785,7 +785,7 @@ void MeshProjection::findSectionParameters(const TopoDS_Edge& edge, const Base::
     const MeshCore::MeshPointArray& points = _rcMesh.GetPoints();
 
     Base::Vector3f res;
-    for (auto it : facets) {
+    for (const auto& it : facets) {
         for (int i=0; i<3; i++) {
             Base::Vector3f pt1 = points[it._aulPoints[i]];
             Base::Vector3f pt2 = points[it._aulPoints[(i+1)%3]];
@@ -860,7 +860,7 @@ void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
 
     const MeshCore::MeshFacetArray& facets = _rcMesh.GetFacets();
     const MeshCore::MeshPointArray& points = _rcMesh.GetPoints();
-    for (auto it : facets) {
+    for (const auto& it : facets) {
         for (int i=0; i<3; i++) {
             if (!it.HasNeighbour(i)) {
                 boundaryPoints.push_back(points[it._aulPoints[i]]);
@@ -985,7 +985,7 @@ void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges,
 
     Base::SequencerLauncher seq( "Project curve on mesh", aEdges.size() );
 
-    for (auto it : aEdges) {
+    for (const auto& it : aEdges) {
         std::vector<Base::Vector3f> points = it.points;
 
         typedef std::pair<Base::Vector3f, MeshCore::FacetIndex> HitPoint;
