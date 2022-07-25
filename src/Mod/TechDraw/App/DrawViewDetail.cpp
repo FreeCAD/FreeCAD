@@ -267,7 +267,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         double newScale = autoScale();
         Scale.setValue(newScale);
         Scale.purgeTouched();
-        if (geometryObject != nullptr) {
+        if (geometryObject) {
             delete geometryObject;
             geometryObject = nullptr;
             detailExec(shape, dvp, dvs);
