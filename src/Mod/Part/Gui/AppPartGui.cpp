@@ -9,7 +9,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_math.hxx>
@@ -26,15 +25,15 @@
 
 #include "AttacherTexts.h"
 #include "PropertyEnumAttacherItem.h"
-#include "SoBrepEdgeSet.h"
-#include "SoBrepFaceSet.h"
-#include "SoBrepPointSet.h"
-#include "SoFCShapeObject.h"
-#include "TaskDimension.h"
 #include "DlgSettings3DViewPartImp.h"
 #include "DlgSettingsGeneral.h"
 #include "DlgSettingsMeasure.h"
 #include "DlgSettingsObjectColor.h"
+#include "TaskDimension.h"
+#include "SoBrepEdgeSet.h"
+#include "SoBrepFaceSet.h"
+#include "SoBrepPointSet.h"
+#include "SoFCShapeObject.h"
 #include "ViewProvider.h"
 #include "ViewProvider2DObject.h"
 #include "ViewProviderAttachExtension.h"

@@ -20,46 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepAlgoAPI_Section.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <gp_Pln.hxx>
 # include <cfloat>
 # include <QFuture>
-# include <QFutureWatcher>
 # include <QKeyEvent>
-# include <QtConcurrentMap>
-# include <Python.h>
+
+# include <BRep_Builder.hxx>
+# include <Standard_math.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include "ui_CrossSections.h"
-#include "CrossSections.h"
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/CrossSection.h>
 #include <App/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
+#include <Base/Sequencer.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <App/Link.h>
-#include <Base/Sequencer.h>
-#include <Base/UnitsApi.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/Part/App/CrossSection.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include "CrossSections.h"
+#include "ui_CrossSections.h"
+
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
