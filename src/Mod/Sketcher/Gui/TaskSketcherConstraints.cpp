@@ -148,7 +148,7 @@ public:
             case Sketcher::Weight:
             case Sketcher::Diameter:
             case Sketcher::Angle:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(constraint->getPresentationValue().getUserString());
+                name = QString::fromLatin1("%1 (%2)").arg(name, constraint->getPresentationValue().getUserString());
                 break;
             case Sketcher::SnellsLaw: {
                 double v = constraint->getPresentationValue().getValue();
@@ -537,7 +537,7 @@ void ConstraintView::updateDrivingStatus()
 
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     if (it) {
-        onUpdateDrivingStatus(item, !it->isDriving());
+        Q_EMIT onUpdateDrivingStatus(item, !it->isDriving());
     }
 }
 
@@ -547,7 +547,7 @@ void ConstraintView::updateActiveStatus()
 
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     if (it) {
-        onUpdateActiveStatus(item, !it->isActive());
+        Q_EMIT onUpdateActiveStatus(item, !it->isActive());
     }
 }
 
@@ -563,7 +563,7 @@ void ConstraintView::hideConstraints()
 
 void ConstraintView::modifyCurrentItem()
 {
-    /*emit*/itemActivated(currentItem());
+    Q_EMIT itemActivated(currentItem());
 }
 
 void ConstraintView::renameCurrentItem()
@@ -708,7 +708,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
         );
 
     QObject::connect(
-        ui->visibilityButton->actions()[0], SIGNAL(changed()),
+        qAsConst(ui->visibilityButton)->actions()[0], SIGNAL(changed()),
         this                     , SLOT  (on_visibilityButton_trackingaction_changed())
         );
 
@@ -1079,8 +1079,8 @@ void TaskSketcherConstraints::on_visualisationTrackingFilter_stateChanged(int st
     {
         QSignalBlocker block(this);
 
-        if(ui->visibilityButton->actions()[0]->isChecked() != (state == Qt::Checked))
-            ui->visibilityButton->actions()[0]->setChecked(state);
+        if (qAsConst(ui->visibilityButton)->actions()[0]->isChecked() != (state == Qt::Checked))
+            qAsConst(ui->visibilityButton)->actions()[0]->setChecked(state);
     }
 
     if(state == Qt::Checked)
@@ -1093,7 +1093,7 @@ void TaskSketcherConstraints::on_visibilityButton_trackingaction_changed()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter",false);
 
-    bool bstate = ui->visibilityButton->actions()[0]->isChecked();
+    bool bstate = qAsConst(ui->visibilityButton)->actions()[0]->isChecked();
 
     if(visibilityTracksFilter != bstate) {
         hGrp->SetBool("VisualisationTrackingFilter", bstate);

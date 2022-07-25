@@ -1708,7 +1708,7 @@ void SketchObjectPy::setMissingPointOnPointConstraints(Py::List arg)
         return (checkitem(t,i,0)?Sketcher::PointPos::none:(checkitem(t,i,1)?Sketcher::PointPos::start:(checkitem(t,i,2)?Sketcher::PointPos::end:Sketcher::PointPos::mid)));
     };
 
-    for (auto ti : arg) {
+    for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
         c.First = (long)Py::Long(t.getItem(0));
@@ -1749,7 +1749,7 @@ void SketchObjectPy::setMissingVerticalHorizontalConstraints(Py::List arg)
         return (checkitem(t,i,0)?Sketcher::PointPos::none:(checkitem(t,i,1)?Sketcher::PointPos::start:(checkitem(t,i,2)?Sketcher::PointPos::end:Sketcher::PointPos::mid)));
     };
 
-    for (auto ti : arg) {
+    for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
         c.First = (long)Py::Long(t.getItem(0));
@@ -1789,7 +1789,7 @@ void SketchObjectPy::setMissingLineEqualityConstraints(Py::List arg)
         return (checkitem(t,i,0)?Sketcher::PointPos::none:(checkitem(t,i,1)?Sketcher::PointPos::start:(checkitem(t,i,2)?Sketcher::PointPos::end:Sketcher::PointPos::mid)));
     };
 
-    for (auto ti : arg) {
+    for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
         c.First = (long)Py::Long(t.getItem(0));
@@ -1829,7 +1829,7 @@ void SketchObjectPy::setMissingRadiusConstraints(Py::List arg)
         return (checkitem(t,i,0)?Sketcher::PointPos::none:(checkitem(t,i,1)?Sketcher::PointPos::start:(checkitem(t,i,2)?Sketcher::PointPos::end:Sketcher::PointPos::mid)));
     };
 
-    for (auto ti : arg) {
+    for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
         c.First = (long)Py::Long(t.getItem(0));

@@ -357,7 +357,7 @@ void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std:
 
     tempstream << str << ":" << '\n';
 
-    for(auto group : constraintgroups)  {
+    for(const auto& group : constraintgroups)  {
         tempstream << "[";
 
         for(auto c :group)
