@@ -878,8 +878,8 @@ void MainWindow::addWindow(MDIView* view)
 
     connect(view, SIGNAL(message(const QString&, int)),
             this, SLOT(showMessage(const QString&, int)));
-    connect(this, SIGNAL(windowStateChanged(MDIView*)),
-            view, SLOT(windowStateChanged(MDIView*)));
+    connect(this, SIGNAL(windowStateChanged(Gui::MDIView*)),
+            view, SLOT(windowStateChanged(Gui::MDIView*)));
 
     // listen to the incoming events of the view
     view->installEventFilter(this);
