@@ -29,6 +29,7 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 
 #include <App/Material.h>
+#include <Mod/Part/PartGlobal.h>
 
 
 namespace PartGui {
