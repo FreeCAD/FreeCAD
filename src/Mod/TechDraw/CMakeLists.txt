@@ -145,6 +145,7 @@ SET(TDTest_SRCS
     TDTest/DProjGroupTest.py
     TDTest/DVAnnoSymImageTest.py
     TDTest/DrawViewAnnotationTest.py
+    TDTest/DrawViewSymbolTest.py
     TDTest/DVDimensionTest.py
     TDTest/DVPartTest.py
     TDTest/DVSectionTest.py
