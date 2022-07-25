@@ -174,6 +174,10 @@ class Results(run.Results):
         if self.solver.ElmerResult is None:
             self._createResults()
         postPath = self._getResultFile()
+        if postPath is None:
+            self.pushStatus("\nNo result file was created.\n")
+            self.fail()
+            return
         self.solver.ElmerResult.read(postPath)
         self.solver.ElmerResult.scale(1000)
         self.solver.ElmerResult.getLastPostObject().touch()
