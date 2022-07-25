@@ -99,6 +99,7 @@ private:
     std::unique_ptr<Ui_TaskRevolutionParameters> ui;
     QWidget *proxy;
     bool selectionFace;
+    bool isGroove;
 
     /**
      * @brief axesInList is the list of links corresponding to axis combo; must
