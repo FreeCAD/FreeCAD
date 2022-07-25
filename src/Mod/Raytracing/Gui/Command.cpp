@@ -355,8 +355,8 @@ void CmdRaytracingNewPovrayProject::activated(int iMsg)
         return;
     }
 
-    QAction* a = pcAction->actions()[iMsg];
-    QFileInfo tfi(a->property("Template").toString());
+    const QList<QAction*> actions = pcAction->actions();
+    QFileInfo tfi(actions.at(iMsg)->property("Template").toString());
     if (tfi.isReadable()) {
         try {
             openCommand("Create POV-Ray project");
@@ -410,7 +410,7 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
     _pcAction = pcAction;
     languageChange();
     if (!pcAction->actions().isEmpty()) {
-        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setIcon(qAsConst(pcAction)->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
 
@@ -801,8 +801,8 @@ void CmdRaytracingNewLuxProject::activated(int iMsg)
         return;
     }
 
-    QAction* a = pcAction->actions()[iMsg];
-    QFileInfo tfi(a->property("Template").toString());
+    const QList<QAction*> actions = pcAction->actions();
+    QFileInfo tfi(actions.at(iMsg)->property("Template").toString());
     if (tfi.isReadable()) {
         try {
             openCommand("Create LuxRender project");
@@ -852,7 +852,7 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
     _pcAction = pcAction;
     languageChange();
     if (!pcAction->actions().isEmpty()) {
-        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setIcon(qAsConst(pcAction)->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
 
