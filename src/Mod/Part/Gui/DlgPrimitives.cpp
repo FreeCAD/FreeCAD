@@ -261,30 +261,28 @@ const char* PlanePrimitive::getDefaultName() const
 
 QString PlanePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Plane\",\"%1\")\n"
-        "App.ActiveDocument.%1.Length=%2\n"
-        "App.ActiveDocument.%1.Width=%3\n"
+        "App.ActiveDocument.%1.Length='%2'\n"
+        "App.ActiveDocument.%1.Width='%3'\n"
         "App.ActiveDocument.%1.Placement=%4\n"
         "App.ActiveDocument.%1.Label='%5'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->planeLength->value(), format),
-             Base::UnitsApi::toNumber(ui->planeWidth->value(), format),
+             ui->planeLength->value().getUserString(),
+             ui->planeWidth->value().getUserString(),
              placement,
              DlgPrimitives::tr("Plane"));
 }
 
 QString PlanePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Length=%2\n"
-        "%1.Width=%3\n"
+        "%1.Length='%2'\n"
+        "%1.Width='%3'\n"
         "%1.Placement=%4\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->planeLength->value(), format),
-             Base::UnitsApi::toNumber(ui->planeWidth->value(), format),
+             ui->planeLength->value().getUserString(),
+             ui->planeWidth->value().getUserString(),
              placement);
 }
 
@@ -336,34 +334,32 @@ const char* BoxPrimitive::getDefaultName() const
 
 QString BoxPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Box\",\"%1\")\n"
-        "App.ActiveDocument.%1.Length=%2\n"
-        "App.ActiveDocument.%1.Width=%3\n"
-        "App.ActiveDocument.%1.Height=%4\n"
+        "App.ActiveDocument.%1.Length='%2'\n"
+        "App.ActiveDocument.%1.Width='%3'\n"
+        "App.ActiveDocument.%1.Height='%4'\n"
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->boxLength->value(), format),
-             Base::UnitsApi::toNumber(ui->boxWidth->value(), format),
-             Base::UnitsApi::toNumber(ui->boxHeight->value(), format),
+             ui->boxLength->value().getUserString(),
+             ui->boxWidth->value().getUserString(),
+             ui->boxHeight->value().getUserString(),
              placement,
              DlgPrimitives::tr("Box"));
 }
 
 QString BoxPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Length=%2\n"
-        "%1.Width=%3\n"
-        "%1.Height=%4\n"
+        "%1.Length='%2'\n"
+        "%1.Width='%3'\n"
+        "%1.Height='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->boxLength->value(), format),
-             Base::UnitsApi::toNumber(ui->boxWidth->value(), format),
-             Base::UnitsApi::toNumber(ui->boxHeight->value(), format),
+             ui->boxLength->value().getUserString(),
+             ui->boxWidth->value().getUserString(),
+             ui->boxHeight->value().getUserString(),
              placement);
 }
 
@@ -424,38 +420,36 @@ const char* CylinderPrimitive::getDefaultName() const
 
 QString CylinderPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Cylinder\",\"%1\")\n"
-        "App.ActiveDocument.%1.Radius=%2\n"
-        "App.ActiveDocument.%1.Height=%3\n"
-        "App.ActiveDocument.%1.Angle=%4\n"
-        "App.ActiveDocument.%1.FirstAngle=%5\n"
-        "App.ActiveDocument.%1.SecondAngle=%6\n"
+        "App.ActiveDocument.%1.Radius='%2'\n"
+        "App.ActiveDocument.%1.Height='%3'\n"
+        "App.ActiveDocument.%1.Angle='%4'\n"
+        "App.ActiveDocument.%1.FirstAngle='%5'\n"
+        "App.ActiveDocument.%1.SecondAngle='%6'\n"
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->cylinderRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->cylinderHeight->value(), format),
-             Base::UnitsApi::toNumber(ui->cylinderAngle->value(), format),
-             Base::UnitsApi::toNumber(ui->cylinderXSkew->value(), format),
-             Base::UnitsApi::toNumber(ui->cylinderYSkew->value(), format),
+             ui->cylinderRadius->value().getUserString(),
+             ui->cylinderHeight->value().getUserString(),
+             ui->cylinderAngle->value().getUserString(),
+             ui->cylinderXSkew->value().getUserString(),
+             ui->cylinderYSkew->value().getUserString(),
              placement,
              DlgPrimitives::tr("Cylinder"));
 }
 
 QString CylinderPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Radius=%2\n"
-        "%1.Height=%3\n"
-        "%1.Angle=%4\n"
+        "%1.Radius='%2'\n"
+        "%1.Height='%3'\n"
+        "%1.Angle='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->cylinderRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->cylinderHeight->value(), format),
-             Base::UnitsApi::toNumber(ui->cylinderAngle->value(), format),
+             ui->cylinderRadius->value().getUserString(),
+             ui->cylinderHeight->value().getUserString(),
+             ui->cylinderAngle->value().getUserString(),
              placement);
 }
 
@@ -520,38 +514,36 @@ const char* ConePrimitive::getDefaultName() const
 
 QString ConePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Cone\",\"%1\")\n"
-        "App.ActiveDocument.%1.Radius1=%2\n"
-        "App.ActiveDocument.%1.Radius2=%3\n"
-        "App.ActiveDocument.%1.Height=%4\n"
-        "App.ActiveDocument.%1.Angle=%5\n"
+        "App.ActiveDocument.%1.Radius1='%2'\n"
+        "App.ActiveDocument.%1.Radius2='%3'\n"
+        "App.ActiveDocument.%1.Height='%4'\n"
+        "App.ActiveDocument.%1.Angle='%5'\n"
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->coneRadius1->value(), format),
-             Base::UnitsApi::toNumber(ui->coneRadius2->value(), format),
-             Base::UnitsApi::toNumber(ui->coneHeight->value(), format),
-             Base::UnitsApi::toNumber(ui->coneAngle->value(), format),
+             ui->coneRadius1->value().getUserString(),
+             ui->coneRadius2->value().getUserString(),
+             ui->coneHeight->value().getUserString(),
+             ui->coneAngle->value().getUserString(),
              placement,
              DlgPrimitives::tr("Cone"));
 }
 
 QString ConePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Radius1=%2\n"
-        "%1.Radius2=%3\n"
-        "%1.Height=%4\n"
-        "%1.Angle=%5\n"
+        "%1.Radius1='%2'\n"
+        "%1.Radius2='%3'\n"
+        "%1.Height='%4'\n"
+        "%1.Angle='%5'\n"
         "%1.Placement=%6\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->coneRadius1->value(), format),
-             Base::UnitsApi::toNumber(ui->coneRadius2->value(), format),
-             Base::UnitsApi::toNumber(ui->coneHeight->value(), format),
-             Base::UnitsApi::toNumber(ui->coneAngle->value(), format),
+             ui->coneRadius1->value().getUserString(),
+             ui->coneRadius2->value().getUserString(),
+             ui->coneHeight->value().getUserString(),
+             ui->coneAngle->value().getUserString(),
              placement);
 }
 
@@ -613,38 +605,36 @@ const char* SpherePrimitive::getDefaultName() const
 
 QString SpherePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Sphere\",\"%1\")\n"
-        "App.ActiveDocument.%1.Radius=%2\n"
-        "App.ActiveDocument.%1.Angle1=%3\n"
-        "App.ActiveDocument.%1.Angle2=%4\n"
-        "App.ActiveDocument.%1.Angle3=%5\n"
+        "App.ActiveDocument.%1.Radius='%2'\n"
+        "App.ActiveDocument.%1.Angle1='%3'\n"
+        "App.ActiveDocument.%1.Angle2='%4'\n"
+        "App.ActiveDocument.%1.Angle3='%5'\n"
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->sphereRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->sphereAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->sphereAngle2->value(), format),
-             Base::UnitsApi::toNumber(ui->sphereAngle3->value(), format),
+             ui->sphereRadius->value().getUserString(),
+             ui->sphereAngle1->value().getUserString(),
+             ui->sphereAngle2->value().getUserString(),
+             ui->sphereAngle3->value().getUserString(),
              placement,
              DlgPrimitives::tr("Sphere"));
 }
 
 QString SpherePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Radius=%2\n"
-        "%1.Angle1=%3\n"
-        "%1.Angle2=%4\n"
-        "%1.Angle3=%5\n"
+        "%1.Radius='%2'\n"
+        "%1.Angle1='%3'\n"
+        "%1.Angle2='%4'\n"
+        "%1.Angle3='%5'\n"
         "%1.Placement=%6\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->sphereRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->sphereAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->sphereAngle2->value(), format),
-             Base::UnitsApi::toNumber(ui->sphereAngle3->value(), format),
+             ui->sphereRadius->value().getUserString(),
+             ui->sphereAngle1->value().getUserString(),
+             ui->sphereAngle2->value().getUserString(),
+             ui->sphereAngle3->value().getUserString(),
              placement);
 }
 
@@ -715,46 +705,44 @@ const char* EllipsoidPrimitive::getDefaultName() const
 
 QString EllipsoidPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Ellipsoid\",\"%1\")\n"
-        "App.ActiveDocument.%1.Radius1=%2\n"
-        "App.ActiveDocument.%1.Radius2=%3\n"
-        "App.ActiveDocument.%1.Radius3=%4\n"
-        "App.ActiveDocument.%1.Angle1=%5\n"
-        "App.ActiveDocument.%1.Angle2=%6\n"
-        "App.ActiveDocument.%1.Angle3=%7\n"
+        "App.ActiveDocument.%1.Radius1='%2'\n"
+        "App.ActiveDocument.%1.Radius2='%3'\n"
+        "App.ActiveDocument.%1.Radius3='%4'\n"
+        "App.ActiveDocument.%1.Angle1='%5'\n"
+        "App.ActiveDocument.%1.Angle2='%6'\n"
+        "App.ActiveDocument.%1.Angle3='%7'\n"
         "App.ActiveDocument.%1.Placement=%8\n"
         "App.ActiveDocument.%1.Label='%9'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->ellipsoidRadius1->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidRadius2->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidRadius3->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidAngle2->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidAngle3->value(), format),
+             ui->ellipsoidRadius1->value().getUserString(),
+             ui->ellipsoidRadius2->value().getUserString(),
+             ui->ellipsoidRadius3->value().getUserString(),
+             ui->ellipsoidAngle1->value().getUserString(),
+             ui->ellipsoidAngle2->value().getUserString(),
+             ui->ellipsoidAngle3->value().getUserString(),
              placement,
              DlgPrimitives::tr("Ellipsoid"));
 }
 
 QString EllipsoidPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Radius1=%2\n"
-        "%1.Radius2=%3\n"
-        "%1.Radius3=%4\n"
-        "%1.Angle1=%5\n"
-        "%1.Angle2=%6\n"
-        "%1.Angle3=%7\n"
+        "%1.Radius1='%2'\n"
+        "%1.Radius2='%3'\n"
+        "%1.Radius3='%4'\n"
+        "%1.Angle1='%5'\n"
+        "%1.Angle2='%6'\n"
+        "%1.Angle3='%7'\n"
         "%1.Placement=%8\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->ellipsoidRadius1->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidRadius2->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidRadius3->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidAngle2->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipsoidAngle3->value(), format),
+             ui->ellipsoidRadius1->value().getUserString(),
+             ui->ellipsoidRadius2->value().getUserString(),
+             ui->ellipsoidRadius3->value().getUserString(),
+             ui->ellipsoidAngle1->value().getUserString(),
+             ui->ellipsoidAngle2->value().getUserString(),
+             ui->ellipsoidAngle3->value().getUserString(),
              placement);
 }
 
@@ -826,42 +814,40 @@ const char* TorusPrimitive::getDefaultName() const
 
 QString TorusPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
-        "App.ActiveDocument.%1.Radius1=%2\n"
-        "App.ActiveDocument.%1.Radius2=%3\n"
-        "App.ActiveDocument.%1.Angle1=%4\n"
-        "App.ActiveDocument.%1.Angle2=%5\n"
-        "App.ActiveDocument.%1.Angle3=%6\n"
+        "App.ActiveDocument.%1.Radius1='%2'\n"
+        "App.ActiveDocument.%1.Radius2='%3'\n"
+        "App.ActiveDocument.%1.Angle1='%4'\n"
+        "App.ActiveDocument.%1.Angle2='%5'\n"
+        "App.ActiveDocument.%1.Angle3='%6'\n"
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->torusRadius1->value(), format),
-             Base::UnitsApi::toNumber(ui->torusRadius2->value(), format),
-             Base::UnitsApi::toNumber(ui->torusAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->torusAngle2->value(), format),
-             Base::UnitsApi::toNumber(ui->torusAngle3->value(), format),
+             ui->torusRadius1->value().getUserString(),
+             ui->torusRadius2->value().getUserString(),
+             ui->torusAngle1->value().getUserString(),
+             ui->torusAngle2->value().getUserString(),
+             ui->torusAngle3->value().getUserString(),
              placement,
              DlgPrimitives::tr("Torus"));
 }
 
 QString TorusPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Radius1=%2\n"
-        "%1.Radius2=%3\n"
-        "%1.Angle1=%4\n"
-        "%1.Angle2=%5\n"
-        "%1.Angle3=%6\n"
+        "%1.Radius1='%2'\n"
+        "%1.Radius2='%3'\n"
+        "%1.Angle1='%4'\n"
+        "%1.Angle2='%5'\n"
+        "%1.Angle3='%6'\n"
         "%1.Placement=%7\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->torusRadius1->value(), format),
-             Base::UnitsApi::toNumber(ui->torusRadius2->value(), format),
-             Base::UnitsApi::toNumber(ui->torusAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->torusAngle2->value(), format),
-             Base::UnitsApi::toNumber(ui->torusAngle3->value(), format),
+             ui->torusRadius1->value().getUserString(),
+             ui->torusRadius2->value().getUserString(),
+             ui->torusAngle1->value().getUserString(),
+             ui->torusAngle2->value().getUserString(),
+             ui->torusAngle3->value().getUserString(),
              placement);
 }
 
@@ -926,42 +912,40 @@ const char* PrismPrimitive::getDefaultName() const
 
 QString PrismPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
         "App.ActiveDocument.%1.Polygon=%2\n"
-        "App.ActiveDocument.%1.Circumradius=%3\n"
-        "App.ActiveDocument.%1.Height=%4\n"
-        "App.ActiveDocument.%1.FirstAngle=%5\n"
-        "App.ActiveDocument.%1.SecondAngle=%6\n"
+        "App.ActiveDocument.%1.Circumradius='%3'\n"
+        "App.ActiveDocument.%1.Height='%4'\n"
+        "App.ActiveDocument.%1.FirstAngle='%5'\n"
+        "App.ActiveDocument.%1.SecondAngle='%6'\n"
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName,
              QString::number(ui->prismPolygon->value()),
-             Base::UnitsApi::toNumber(ui->prismCircumradius->value(), format),
-             Base::UnitsApi::toNumber(ui->prismHeight->value(), format),
-             Base::UnitsApi::toNumber(ui->prismXSkew->value(), format),
-             Base::UnitsApi::toNumber(ui->prismYSkew->value(), format),
+             ui->prismCircumradius->value().getUserString(),
+             ui->prismHeight->value().getUserString(),
+             ui->prismXSkew->value().getUserString(),
+             ui->prismYSkew->value().getUserString(),
              placement,
              DlgPrimitives::tr("Prism"));
 }
 
 QString PrismPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "%1.Polygon=%2\n"
-        "%1.Circumradius=%3\n"
-        "%1.Height=%4\n"
-        "%1.FirstAngle=%5\n"
-        "%1.SecondAngle=%6\n"
+        "%1.Circumradius='%3'\n"
+        "%1.Height='%4'\n"
+        "%1.FirstAngle='%5'\n"
+        "%1.SecondAngle='%6'\n"
         "%1.Placement=%7\n")
         .arg(objectName,
              QString::number(ui->prismPolygon->value()),
-             Base::UnitsApi::toNumber(ui->prismCircumradius->value(), format),
-             Base::UnitsApi::toNumber(ui->prismHeight->value(), format),
-             Base::UnitsApi::toNumber(ui->prismXSkew->value(), format),
-             Base::UnitsApi::toNumber(ui->prismYSkew->value(), format),
+             ui->prismCircumradius->value().getUserString(),
+             ui->prismHeight->value().getUserString(),
+             ui->prismXSkew->value().getUserString(),
+             ui->prismYSkew->value().getUserString(),
              placement);
 }
 
@@ -1060,62 +1044,60 @@ const char* WedgePrimitive::getDefaultName() const
 
 QString WedgePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Wedge\",\"%1\")\n"
-        "App.ActiveDocument.%1.Xmin=%2\n"
-        "App.ActiveDocument.%1.Ymin=%3\n"
-        "App.ActiveDocument.%1.Zmin=%4\n"
-        "App.ActiveDocument.%1.X2min=%5\n"
-        "App.ActiveDocument.%1.Z2min=%6\n"
-        "App.ActiveDocument.%1.Xmax=%7\n"
-        "App.ActiveDocument.%1.Ymax=%8\n"
-        "App.ActiveDocument.%1.Zmax=%9\n"
-        "App.ActiveDocument.%1.X2max=%10\n"
-        "App.ActiveDocument.%1.Z2max=%11\n"
+        "App.ActiveDocument.%1.Xmin='%2'\n"
+        "App.ActiveDocument.%1.Ymin='%3'\n"
+        "App.ActiveDocument.%1.Zmin='%4'\n"
+        "App.ActiveDocument.%1.X2min='%5'\n"
+        "App.ActiveDocument.%1.Z2min='%6'\n"
+        "App.ActiveDocument.%1.Xmax='%7'\n"
+        "App.ActiveDocument.%1.Ymax='%8'\n"
+        "App.ActiveDocument.%1.Zmax='%9'\n"
+        "App.ActiveDocument.%1.X2max='%10'\n"
+        "App.ActiveDocument.%1.Z2max='%11'\n"
         "App.ActiveDocument.%1.Placement=%12\n"
         "App.ActiveDocument.%1.Label='%13'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->wedgeXmin->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format),
+             ui->wedgeXmin->value().getUserString(),
+             ui->wedgeYmin->value().getUserString(),
+             ui->wedgeZmin->value().getUserString(),
+             ui->wedgeX2min->value().getUserString(),
+             ui->wedgeZ2min->value().getUserString(),
+             ui->wedgeXmax->value().getUserString(),
+             ui->wedgeYmax->value().getUserString())
+        .arg(ui->wedgeZmax->value().getUserString(),
+             ui->wedgeX2max->value().getUserString(),
+             ui->wedgeZ2max->value().getUserString(),
              placement,
              DlgPrimitives::tr("Wedge"));
 }
 
 QString WedgePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Xmin=%2\n"
-        "%1.Ymin=%3\n"
-        "%1.Zmin=%4\n"
-        "%1.X2min=%5\n"
-        "%1.Z2min=%6\n"
-        "%1.Xmax=%7\n"
-        "%1.Ymax=%8\n"
-        "%1.Zmax=%9\n"
-        "%1.X2max=%10\n"
-        "%1.Z2max=%11\n"
+        "%1.Xmin='%2'\n"
+        "%1.Ymin='%3'\n"
+        "%1.Zmin='%4'\n"
+        "%1.X2min='%5'\n"
+        "%1.Z2min='%6'\n"
+        "%1.Xmax='%7'\n"
+        "%1.Ymax='%8'\n"
+        "%1.Zmax='%9'\n"
+        "%1.X2max='%10'\n"
+        "%1.Z2max='%11'\n"
         "%1.Placement=%12\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->wedgeXmin->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format))
-        .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format),
-             Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format),
+             ui->wedgeXmin->value().getUserString(),
+             ui->wedgeYmin->value().getUserString(),
+             ui->wedgeZmin->value().getUserString(),
+             ui->wedgeX2min->value().getUserString(),
+             ui->wedgeZ2min->value().getUserString(),
+             ui->wedgeXmax->value().getUserString(),
+             ui->wedgeYmax->value().getUserString(),
+             ui->wedgeZmax->value().getUserString())
+        .arg(ui->wedgeX2max->value().getUserString(),
+             ui->wedgeZ2max->value().getUserString(),
              placement);
 }
 
@@ -1197,22 +1179,21 @@ const char* HelixPrimitive::getDefaultName() const
 
 QString HelixPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Helix\",\"%1\")\n"
-        "App.ActiveDocument.%1.Pitch=%2\n"
-        "App.ActiveDocument.%1.Height=%3\n"
-        "App.ActiveDocument.%1.Radius=%4\n"
-        "App.ActiveDocument.%1.Angle=%5\n"
+        "App.ActiveDocument.%1.Pitch='%2'\n"
+        "App.ActiveDocument.%1.Height='%3'\n"
+        "App.ActiveDocument.%1.Radius='%4'\n"
+        "App.ActiveDocument.%1.Angle='%5'\n"
         "App.ActiveDocument.%1.LocalCoord=%6\n"
         "App.ActiveDocument.%1.Style=1\n"
         "App.ActiveDocument.%1.Placement=%7\n"
         "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->helixPitch->value(), format),
-             Base::UnitsApi::toNumber(ui->helixHeight->value(), format),
-             Base::UnitsApi::toNumber(ui->helixRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->helixAngle->value(), format),
+             ui->helixPitch->value().getUserString(),
+             ui->helixHeight->value().getUserString(),
+             ui->helixRadius->value().getUserString(),
+             ui->helixAngle->value().getUserString(),
              QString::number(ui->helixLocalCS->currentIndex()),
              placement,
              DlgPrimitives::tr("Helix"));
@@ -1220,19 +1201,18 @@ QString HelixPrimitive::create(const QString& objectName, const QString& placeme
 
 QString HelixPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Pitch=%2\n"
-        "%1.Height=%3\n"
-        "%1.Radius=%4\n"
-        "%1.Angle=%5\n"
+        "%1.Pitch='%2'\n"
+        "%1.Height='%3'\n"
+        "%1.Radius='%4'\n"
+        "%1.Angle='%5'\n"
         "%1.LocalCoord=%6\n"
         "%1.Placement=%7\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->helixPitch->value(), format),
-             Base::UnitsApi::toNumber(ui->helixHeight->value(), format),
-             Base::UnitsApi::toNumber(ui->helixRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->helixAngle->value(), format),
+             ui->helixPitch->value().getUserString(),
+             ui->helixHeight->value().getUserString(),
+             ui->helixRadius->value().getUserString(),
+             ui->helixAngle->value().getUserString(),
              QString::number(ui->helixLocalCS->currentIndex()),
              placement);
 }
@@ -1293,34 +1273,32 @@ const char* SpiralPrimitive::getDefaultName() const
 
 QString SpiralPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Spiral\",\"%1\")\n"
-        "App.ActiveDocument.%1.Growth=%2\n"
+        "App.ActiveDocument.%1.Growth='%2'\n"
         "App.ActiveDocument.%1.Rotations=%3\n"
-        "App.ActiveDocument.%1.Radius=%4\n"
+        "App.ActiveDocument.%1.Radius='%4'\n"
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->spiralGrowth->value(), format),
-             Base::UnitsApi::toNumber(ui->spiralRotation->value(), format),
-             Base::UnitsApi::toNumber(ui->spiralRadius->value(), format),
+             ui->spiralGrowth->value().getUserString(),
+             QString::number(ui->spiralRotation->value()),
+             ui->spiralRadius->value().getUserString(),
              placement,
              DlgPrimitives::tr("Spiral"));
 }
 
 QString SpiralPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Growth=%2\n"
+        "%1.Growth='%2'\n"
         "%1.Rotations=%3\n"
-        "%1.Radius=%4\n"
+        "%1.Radius='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->spiralGrowth->value(), format),
-             Base::UnitsApi::toNumber(ui->spiralRotation->value(), format),
-             Base::UnitsApi::toNumber(ui->spiralRadius->value(), format),
+             ui->spiralGrowth->value().getUserString(),
+             QString::number(ui->spiralRotation->value()),
+             ui->spiralRadius->value().getUserString(),
              placement);
 }
 
@@ -1375,34 +1353,32 @@ const char* CirclePrimitive::getDefaultName() const
 
 QString CirclePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
-        "App.ActiveDocument.%1.Radius=%2\n"
-        "App.ActiveDocument.%1.Angle1=%3\n"
-        "App.ActiveDocument.%1.Angle2=%4\n"
+        "App.ActiveDocument.%1.Radius='%2'\n"
+        "App.ActiveDocument.%1.Angle1='%3'\n"
+        "App.ActiveDocument.%1.Angle2='%4'\n"
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->circleRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->circleAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->circleAngle2->value(), format),
+             ui->circleRadius->value().getUserString(),
+             ui->circleAngle1->value().getUserString(),
+             ui->circleAngle2->value().getUserString(),
              placement,
              DlgPrimitives::tr("Circle"));
 }
 
 QString CirclePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.Radius=%2\n"
-        "%1.Angle1=%3\n"
-        "%1.Angle2=%4\n"
+        "%1.Radius='%2'\n"
+        "%1.Angle1='%3'\n"
+        "%1.Angle2='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->circleRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->circleAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->circleAngle2->value(), format),
+             ui->circleRadius->value().getUserString(),
+             ui->circleAngle1->value().getUserString(),
+             ui->circleAngle2->value().getUserString(),
              placement);
 }
 
@@ -1461,38 +1437,36 @@ const char* EllipsePrimitive::getDefaultName() const
 
 QString EllipsePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
-        "App.ActiveDocument.%1.MajorRadius=%2\n"
-        "App.ActiveDocument.%1.MinorRadius=%3\n"
-        "App.ActiveDocument.%1.Angle1=%4\n"
-        "App.ActiveDocument.%1.Angle2=%5\n"
+        "App.ActiveDocument.%1.MajorRadius='%2'\n"
+        "App.ActiveDocument.%1.MinorRadius='%3'\n"
+        "App.ActiveDocument.%1.Angle1='%4'\n"
+        "App.ActiveDocument.%1.Angle2='%5'\n"
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->ellipseMajorRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipseMinorRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipseAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipseAngle2->value(), format),
+             ui->ellipseMajorRadius->value().getUserString(),
+             ui->ellipseMinorRadius->value().getUserString(),
+             ui->ellipseAngle1->value().getUserString(),
+             ui->ellipseAngle2->value().getUserString(),
              placement,
              DlgPrimitives::tr("Ellipse"));
 }
 
 QString EllipsePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.MajorRadius=%2\n"
-        "%1.MinorRadius=%3\n"
-        "%1.Angle1=%4\n"
-        "%1.Angle2=%5\n"
+        "%1.MajorRadius='%2'\n"
+        "%1.MinorRadius='%3'\n"
+        "%1.Angle1='%4'\n"
+        "%1.Angle2='%5'\n"
         "%1.Placement=%6\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->ellipseMajorRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipseMinorRadius->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipseAngle1->value(), format),
-             Base::UnitsApi::toNumber(ui->ellipseAngle2->value(), format),
+             ui->ellipseMajorRadius->value().getUserString(),
+             ui->ellipseMinorRadius->value().getUserString(),
+             ui->ellipseAngle1->value().getUserString(),
+             ui->ellipseAngle2->value().getUserString(),
              placement);
 }
 
@@ -1544,30 +1518,28 @@ const char* PolygonPrimitive::getDefaultName() const
 
 QString PolygonPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
         "App.ActiveDocument.%1.Polygon=%2\n"
-        "App.ActiveDocument.%1.Circumradius=%3\n"
+        "App.ActiveDocument.%1.Circumradius='%3'\n"
         "App.ActiveDocument.%1.Placement=%4\n"
         "App.ActiveDocument.%1.Label='%5'\n")
         .arg(objectName,
              QString::number(ui->regularPolygonPolygon->value()),
-             Base::UnitsApi::toNumber(ui->regularPolygonCircumradius->value(), format),
+             ui->regularPolygonCircumradius->value().getUserString(),
              placement,
              DlgPrimitives::tr("Regular polygon"));
 }
 
 QString PolygonPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "%1.Polygon=%2\n"
-        "%1.Circumradius=%3\n"
+        "%1.Circumradius='%3'\n"
         "%1.Placement=%4\n")
         .arg(objectName,
              QString::number(ui->regularPolygonPolygon->value()),
-             Base::UnitsApi::toNumber(ui->regularPolygonCircumradius->value(), format),
+             ui->regularPolygonCircumradius->value().getUserString(),
              placement);
 }
 
@@ -1637,46 +1609,44 @@ const char* LinePrimitive::getDefaultName() const
 
 QString LinePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
-        "App.ActiveDocument.%1.X1=%2\n"
-        "App.ActiveDocument.%1.Y1=%3\n"
-        "App.ActiveDocument.%1.Z1=%4\n"
-        "App.ActiveDocument.%1.X2=%5\n"
-        "App.ActiveDocument.%1.Y2=%6\n"
-        "App.ActiveDocument.%1.Z2=%7\n"
+        "App.ActiveDocument.%1.X1='%2'\n"
+        "App.ActiveDocument.%1.Y1='%3'\n"
+        "App.ActiveDocument.%1.Z1='%4'\n"
+        "App.ActiveDocument.%1.X2='%5'\n"
+        "App.ActiveDocument.%1.Y2='%6'\n"
+        "App.ActiveDocument.%1.Z2='%7'\n"
         "App.ActiveDocument.%1.Placement=%8\n"
         "App.ActiveDocument.%1.Label='%9'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->edgeX1->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeY1->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeZ1->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeX2->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeY2->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeZ2->value(), format),
+             ui->edgeX1->value().getUserString(),
+             ui->edgeY1->value().getUserString(),
+             ui->edgeZ1->value().getUserString(),
+             ui->edgeX2->value().getUserString(),
+             ui->edgeY2->value().getUserString(),
+             ui->edgeZ2->value().getUserString(),
              placement,
              DlgPrimitives::tr("Line"));
 }
 
 QString LinePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.X1=%2\n"
-        "%1.Y1=%3\n"
-        "%1.Z1=%4\n"
-        "%1.X2=%5\n"
-        "%1.Y2=%6\n"
-        "%1.Z2=%7\n"
+        "%1.X1='%2'\n"
+        "%1.Y1='%3'\n"
+        "%1.Z1='%4'\n"
+        "%1.X2='%5'\n"
+        "%1.Y2='%6'\n"
+        "%1.Z2='%7'\n"
         "%1.Placement=%8\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->edgeX1->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeY1->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeZ1->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeX2->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeY2->value(), format),
-             Base::UnitsApi::toNumber(ui->edgeZ2->value(), format),
+             ui->edgeX1->value().getUserString(),
+             ui->edgeY1->value().getUserString(),
+             ui->edgeZ1->value().getUserString(),
+             ui->edgeX2->value().getUserString(),
+             ui->edgeY2->value().getUserString(),
+             ui->edgeZ2->value().getUserString(),
              placement);
 }
 
@@ -1743,34 +1713,32 @@ const char* VertexPrimitive::getDefaultName() const
 
 QString VertexPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
-        "App.ActiveDocument.%1.X=%2\n"
-        "App.ActiveDocument.%1.Y=%3\n"
-        "App.ActiveDocument.%1.Z=%4\n"
+        "App.ActiveDocument.%1.X='%2'\n"
+        "App.ActiveDocument.%1.Y='%3'\n"
+        "App.ActiveDocument.%1.Z='%4'\n"
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->vertexX->value(), format),
-             Base::UnitsApi::toNumber(ui->vertexY->value(), format),
-             Base::UnitsApi::toNumber(ui->vertexZ->value(), format),
+             ui->vertexX->value().getUserString(),
+             ui->vertexY->value().getUserString(),
+             ui->vertexZ->value().getUserString(),
              placement,
              DlgPrimitives::tr("Vertex"));
 }
 
 QString VertexPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
     return QString::fromLatin1(
-        "%1.X=%2\n"
-        "%1.Y=%3\n"
-        "%1.Z=%4\n"
+        "%1.X='%2'\n"
+        "%1.Y='%3'\n"
+        "%1.Z='%4'\n"
         "%1.Placement=%5\n")
         .arg(objectName,
-             Base::UnitsApi::toNumber(ui->vertexX->value(), format),
-             Base::UnitsApi::toNumber(ui->vertexY->value(), format),
-             Base::UnitsApi::toNumber(ui->vertexZ->value(), format),
+             ui->vertexX->value().getUserString(),
+             ui->vertexY->value().getUserString(),
+             ui->vertexZ->value().getUserString(),
              placement);
 }
 
