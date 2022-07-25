@@ -260,8 +260,8 @@ void CrossSections::apply()
         Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
             "wires=list()\n"
             "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
-            .arg(QLatin1String(doc->getName()))
-            .arg(QLatin1String((*it)->getNameInDocument())).toLatin1());
+            .arg(QLatin1String(doc->getName()),
+                 QLatin1String((*it)->getNameInDocument())).toLatin1());
 
         for (std::vector<double>::iterator jt = d.begin(); jt != d.end(); ++jt) {
             Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
@@ -277,8 +277,8 @@ void CrossSections::apply()
             "slice.Shape=comp\n"
             "slice.purgeTouched()\n"
             "del slice,comp,wires,shape")
-            .arg(QLatin1String(doc->getName()))
-            .arg(QLatin1String(s.c_str())).toLatin1());
+            .arg(QLatin1String(doc->getName()),
+                 QLatin1String(s.c_str())).toLatin1());
 
         seq.next();
     }

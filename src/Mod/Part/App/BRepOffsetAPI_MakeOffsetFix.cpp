@@ -136,7 +136,7 @@ void BRepOffsetAPI_MakeOffsetFix::MakeWire(TopoDS_Shape& wire)
     }
 
     std::list<TopoDS_Edge> edgeList;
-    for (auto itLoc : myLocations) {
+    for (const auto& itLoc : myLocations) {
         TopTools_ListOfShape newShapes = mkOffset.Generated(itLoc.first);
         // Check generated shapes for the vertexes, too
         TopExp_Explorer xpv(itLoc.first, TopAbs_VERTEX);

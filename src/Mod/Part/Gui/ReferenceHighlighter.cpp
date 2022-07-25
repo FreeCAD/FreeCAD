@@ -114,7 +114,7 @@ void ReferenceHighlighter::getVertexColors(const std::vector<std::string>& eleme
     colors.resize(vMap.Extent(), defaultColor);
 
     if (!elements.empty()) {
-        for (std::string e : elements) {
+        for (const std::string& e : elements) {
             if (boost::starts_with(e, "Vertex")) {
                 getVertexColor(e, colors);
             }
@@ -185,7 +185,7 @@ void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& element
     colors.resize(eMap.Extent(), defaultColor);
 
     if (!elements.empty()) {
-        for (std::string e : elements) {
+        for (const std::string& e : elements) {
             if (boost::starts_with(e, "Edge")) {
                 getEdgeColor(e, colors);
             }
@@ -217,7 +217,7 @@ void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& element
     colors.resize(fMap.Extent(), defaultColor);
 
     if (!elements.empty()) {
-        for (std::string e : elements) {
+        for (const std::string& e : elements) {
             if (boost::starts_with(e, "Face")) {
                 getFaceColor(e, colors);
             }

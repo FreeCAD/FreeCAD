@@ -188,7 +188,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
 DlgProjectionOnSurface::~DlgProjectionOnSurface()
 {
   delete ui;
-  for ( auto it : m_projectionSurfaceVec)
+  for (const auto& it : m_projectionSurfaceVec)
   {
     try {
       higlight_object(it.partFeature, it.partName, false, 0);
@@ -203,7 +203,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
       vp->Transparency.setValue(it.transparency);
     }
   }
-  for (auto it : m_shapeVec)
+  for (const auto& it : m_shapeVec)
   {
     try {
       higlight_object(it.partFeature, it.partName, false, 0);
@@ -475,7 +475,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
       if (!itCurrentShape.aFace.IsNull())
       {
         get_all_wire_from_face(itCurrentShape);
-        for (auto itWire : itCurrentShape.aWireVec)
+        for (const auto& itWire : itCurrentShape.aWireVec)
         {
           BRepProj_Projection aProjection(itWire, itCurrentShape.surfaceToProject, itCurrentShape.aProjectionDir);
           double minDistance = std::numeric_limits<double>::max();
@@ -534,15 +534,15 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
   TopoDS_Builder aBuilder;
   aBuilder.MakeCompound(aCompound);
 
-  for (auto it : iShapeVec)
+  for (const auto& it : iShapeVec)
   {
     if ( m_currentShowType == "edges" )
     {
-      for (auto it2 : it.aProjectedEdgeVec)
+      for (const auto& it2 : it.aProjectedEdgeVec)
       {
         aBuilder.Add(aCompound, it2);
       }
-      for (auto it2 : it.aProjectedWireVec)
+      for (const auto& it2 : it.aProjectedWireVec)
       {
         aBuilder.Add(aCompound, it2);
       }
@@ -552,7 +552,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
     {
       if (it.aProjectedFace.IsNull())
       {
-        for (auto it2 : it.aProjectedWireVec)
+        for (const auto& it2 : it.aProjectedWireVec)
         {
           if (!it2.IsNull())
           {
@@ -575,7 +575,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
       }
       else if (it.aProjectedWireVec.size())
       {
-        for ( auto itWire : it.aProjectedWireVec )
+        for (const auto& itWire : it.aProjectedWireVec )
         {
           if ( itWire.IsNull() ) continue;
           aBuilder.Add(aCompound, itWire);
@@ -583,7 +583,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
       }
       else if (it.aProjectedEdgeVec.size())
       {
-        for (auto itEdge : it.aProjectedEdgeVec)
+        for (const auto& itEdge : it.aProjectedEdgeVec)
         {
           if (itEdge.IsNull()) continue;
           aBuilder.Add(aCompound, itEdge);
@@ -731,7 +731,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
 
       //create a wire of all edges in parametric space on the surface of the face to projected
       // --> otherwise BRepBuilderAPI_MakeFace can not make a face from the wire!
-      for (auto itWireVec : itCurrentShape.aProjectedWireVec)
+      for (const auto& itWireVec : itCurrentShape.aProjectedWireVec)
       {
         std::vector<TopoDS_Shape> edgeVec;
         for (TopExp_Explorer aExplorer(itWireVec, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
@@ -827,7 +827,7 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
   Handle(TopTools_HSequenceOfShape) aWireHandle;
   Handle(TopTools_HSequenceOfShape) aWireWireHandle;
 
-  for (auto it : iEdgeVec)
+  for (const auto& it : iEdgeVec)
   {
     shapeList->Append(it);
   }
@@ -903,7 +903,7 @@ void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iC
   }
 
   std::vector<TopoDS_Edge> edgeVec;
-  for ( auto it : aWireVec )
+  for (const auto& it : aWireVec )
   {
     bool edgeExists = false;
     for (TopExp_Explorer aExplorer(it, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
@@ -923,7 +923,7 @@ void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iC
   if (indexMap.IsEmpty())
       return;
 
-  for ( auto it : edgeVec )
+  for (const auto& it : edgeVec )
   {
     if ( it.IsSame(iCurrentShape.inputShape)) continue;
     if (!indexMap.Contains(it))

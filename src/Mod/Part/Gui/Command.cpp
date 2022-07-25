@@ -1202,8 +1202,8 @@ void CmdPartMakeSolid::activated(int iMsg)
                     "__o__.Shape=__s__\n"
                     "del __s__, __o__"
                     )
-                    .arg(QLatin1String((*it)->getNameInDocument()))
-                    .arg(QLatin1String((*it)->Label.getValue()));
+                    .arg(QLatin1String((*it)->getNameInDocument()),
+                         QLatin1String((*it)->Label.getValue()));
             }
             else if (type == TopAbs_SHELL) {
                 str = QString::fromLatin1(
@@ -1214,8 +1214,8 @@ void CmdPartMakeSolid::activated(int iMsg)
                     "__o__.Shape=__s__\n"
                     "del __s__, __o__"
                     )
-                    .arg(QLatin1String((*it)->getNameInDocument()))
-                    .arg(QLatin1String((*it)->Label.getValue()));
+                    .arg(QLatin1String((*it)->getNameInDocument()),
+                         QLatin1String((*it)->Label.getValue()));
             }
             else {
                 Base::Console().Message("%s is ignored because it is neither a shell nor a compound.\n",

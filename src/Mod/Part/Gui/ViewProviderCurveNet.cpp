@@ -89,7 +89,7 @@ ViewProviderCurveNet::~ViewProviderCurveNet()
 void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderGeometryObject::attach(pcFeat);
+    ViewProviderGeometryObject::attach(pcFeat); // clazy:exclude=skipped-base-method
 
     // setup the root and material for the edges
     SoSeparator* ModeRoot = new SoSeparator();
@@ -111,7 +111,7 @@ void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderCurveNet::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    Gui::ViewProviderGeometryObject::updateData(prop); // clazy:exclude=skipped-base-method
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         TopoDS_Shape cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
         if (cShape.IsNull())

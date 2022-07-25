@@ -255,7 +255,7 @@ void ShapeBuilderWidget::createEdgeFromVertex()
         "if _.isNull(): raise RuntimeError('Failed to create edge')\n"
         "App.ActiveDocument.addObject('Part::Feature','Edge').Shape=_\n"
         "del _\n"
-    ).arg(elements[0]).arg(elements[1]);
+    ).arg(elements[0], elements[1]);
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edge"));

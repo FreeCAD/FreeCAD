@@ -208,7 +208,7 @@ void Geometry::Save(Base::Writer &writer) const
 
     // Get the number of persistent extensions
     int counter = 0;
-    for(auto att:extensions) {
+    for(const auto& att : extensions) {
         if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
             counter++;
     }
@@ -217,7 +217,7 @@ void Geometry::Save(Base::Writer &writer) const
 
     writer.incInd();
 
-    for(auto att:extensions) {
+    for(const auto& att : extensions) {
         if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
             std::static_pointer_cast<Part::GeometryPersistenceExtension>(att)->Save(writer);
     }
@@ -282,7 +282,7 @@ std::vector<std::weak_ptr<const GeometryExtension>> Geometry::getExtensions() co
 
 bool Geometry::hasExtension(Base::Type type) const
 {
-    for( auto ext : extensions) {
+    for(const auto& ext : extensions) {
         if(ext->getTypeId() == type)
             return true;
     }
@@ -292,7 +292,7 @@ bool Geometry::hasExtension(Base::Type type) const
 
 bool Geometry::hasExtension(const std::string & name) const
 {
-    for( auto ext : extensions) {
+    for(const auto& ext : extensions) {
         if(ext->getName() == name)
             return true;
     }
@@ -302,7 +302,7 @@ bool Geometry::hasExtension(const std::string & name) const
 
 std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type)
 {
-    for( auto ext : extensions) {
+    for(const auto& ext : extensions) {
         if(ext->getTypeId() == type)
             return ext;
     }
@@ -312,7 +312,7 @@ std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type)
 
 std::weak_ptr<GeometryExtension> Geometry::getExtension(const std::string & name)
 {
-    for( auto ext : extensions) {
+    for(const auto& ext : extensions) {
         if(ext->getName() == name)
             return ext;
     }

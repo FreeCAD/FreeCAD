@@ -171,7 +171,7 @@ bool Mirroring::accept()
             "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
             "__doc__.ActiveObject.Base=(%7,%8,%9)\n"
             "del __doc__")
-            .arg(this->document).arg(shape).arg(label)
+            .arg(this->document, shape, label)
             .arg(normx).arg(normy).arg(normz)
             .arg(basex).arg(basey).arg(basez);
         Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
