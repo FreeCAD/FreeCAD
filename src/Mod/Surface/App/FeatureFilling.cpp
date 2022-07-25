@@ -245,12 +245,12 @@ void Filling::addConstraints(BRepFill_Filling& builder,
                              const App::PropertyLinkSubList& pointsList)
 {
     auto points = pointsList.getSubListValues();
-    for (auto it : points) {
+    for (const auto& it : points) {
         App::DocumentObject* obj = it.first;
         std::vector<std::string> sub = it.second;
         if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
-            for (auto jt : sub) {
+            for (const auto& jt : sub) {
                 TopoDS_Shape subShape = shape.getSubShape(jt.c_str());
                 if (!subShape.IsNull() && subShape.ShapeType() == TopAbs_VERTEX) {
                     gp_Pnt pnt = BRep_Tool::Pnt(TopoDS::Vertex(subShape));
@@ -288,7 +288,7 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         if (initFace && initFace->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             const Part::TopoShape& shape = static_cast<Part::Feature*>(initFace)->Shape.getShape();
             std::vector<std::string> subNames = InitialFace.getSubValues();
-            for (auto it : subNames) {
+            for (const auto& it : subNames) {
                 TopoDS_Shape subShape = shape.getSubShape(it.c_str());
                 if (!subShape.IsNull() && subShape.ShapeType() == TopAbs_FACE) {
                     builder.LoadInitSurface(TopoDS::Face(subShape));

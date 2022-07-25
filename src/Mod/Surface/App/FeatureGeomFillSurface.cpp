@@ -218,7 +218,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
         App::PropertyLinkSubList::SubSet set = boundary[i];
 
         if (set.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            for (auto jt: set.second) {
+            for (const auto& jt: set.second) {
                 const Part::TopoShape &ts = static_cast<Part::Feature*>(set.first)->Shape.getShape();
                 validator.checkAndAdd(ts, jt.c_str(), &aWD);
             }

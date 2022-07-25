@@ -102,7 +102,7 @@ QIcon ViewProviderFilling::getIcon(void) const
 
 void ViewProviderFilling::highlightReferences(ShapeType type, const References& refs, bool on)
 {
-    for (auto it : refs) {
+    for (const auto& it : refs) {
         Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
         if (base) {
             PartGui::ViewProviderPartExt* svp = dynamic_cast<PartGui::ViewProviderPartExt*>(
@@ -116,7 +116,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                         TopExp::MapShapes(base->Shape.getValue(), TopAbs_VERTEX, vMap);
                         colors.resize(vMap.Extent(), svp->PointColor.getValue());
 
-                        for (auto jt : it.second) {
+                        for (const auto& jt : it.second) {
                             // check again that the index is in range because it's possible that the
                             // sub-names are invalid
                             std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
@@ -137,7 +137,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                         TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
                         colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-                        for (auto jt : it.second) {
+                        for (const auto& jt : it.second) {
                             std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                             // check again that the index is in range because it's possible that the
                             // sub-names are invalid
@@ -158,7 +158,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                         TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
                         colors.resize(fMap.Extent(), svp->ShapeColor.getValue());
 
-                        for (auto jt : it.second) {
+                        for (const auto& jt : it.second) {
                             std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                             // check again that the index is in range because it's possible that the
                             // sub-names are invalid
@@ -234,9 +234,9 @@ private:
             return false;
 
         auto links = editedObject->BoundaryEdges.getSubListValues();
-        for (auto it : links) {
+        for (const auto& it : links) {
             if (it.first == pObj) {
-                for (auto jt : it.second) {
+                for (const auto& jt : it.second) {
                     if (jt == sSubName)
                         return !appendEdges;
                 }
@@ -295,8 +295,8 @@ void FillingPanel::setEditedObject(Surface::Filling* fea)
     const std::vector<std::string>& subList = editedObject->InitialFace.getSubValues();
     if (initFace && subList.size() == 1) {
         QString text = QString::fromLatin1("%1.%2")
-                .arg(QString::fromUtf8(initFace->Label.getValue()))
-                .arg(QString::fromStdString(subList.front()));
+                .arg(QString::fromUtf8(initFace->Label.getValue()),
+                     QString::fromStdString(subList.front()));
         ui->lineInitFaceName->setText(text);
     }
 
@@ -329,8 +329,8 @@ void FillingPanel::setEditedObject(Surface::Filling* fea)
         ui->listBoundary->addItem(item);
 
         QString text = QString::fromLatin1("%1.%2")
-                .arg(QString::fromUtf8(obj->Label.getValue()))
-                .arg(QString::fromStdString(edge));
+                .arg(QString::fromUtf8(obj->Label.getValue()),
+                     QString::fromStdString(edge));
         item->setText(text);
 
         // The user data field of a list widget item
@@ -581,8 +581,8 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (selectionMode == InitFace) {
             Gui::SelectionObject sel(msg);
             QString text = QString::fromLatin1("%1.%2")
-                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()))
-                    .arg(QString::fromLatin1(msg.pSubName));
+                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                         QString::fromLatin1(msg.pSubName));
             ui->lineInitFaceName->setText(text);
 
             std::vector<std::string> subList;
@@ -603,8 +603,8 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
 
             Gui::SelectionObject sel(msg);
             QString text = QString::fromLatin1("%1.%2")
-                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()))
-                    .arg(QString::fromLatin1(msg.pSubName));
+                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                         QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;
