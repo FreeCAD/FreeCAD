@@ -118,7 +118,7 @@ void ViewProviderLoft::highlightSection(bool on)
 {
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
     auto sections = pcLoft->Sections.getSubListValues();
-    for (auto it : sections) {
+    for (auto& it : sections) {
         // only take the entire shape when we have a sketch selected, but
         // not a point of the sketch
         auto subName = it.second.empty() ? "" : it.second.front();

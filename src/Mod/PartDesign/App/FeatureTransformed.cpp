@@ -236,7 +236,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             shapes.emplace_back(shape);
         }
 
-        for (auto shape : shapes)
+        for (const auto& shape : shapes)
             shapeTools.Append(shape);
 
         return shapeTools;

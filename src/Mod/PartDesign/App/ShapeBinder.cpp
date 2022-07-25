@@ -204,7 +204,7 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std:
             return part->Shape.getValue();
 
         std::vector<TopoDS_Shape> shapes;
-        for (std::string sub : subs) {
+        for (const std::string& sub : subs) {
             shapes.push_back(part->Shape.getShape().getSubShape(sub.c_str()));
         }
 

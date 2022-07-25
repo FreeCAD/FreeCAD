@@ -133,7 +133,7 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     QAction* act = menu->addAction(tr("Toggle active body"));
     func->trigger(act, std::bind(&ViewProviderBody::doubleClicked, this));
 
-    Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
+    Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
 bool ViewProviderBody::doubleClicked(void)

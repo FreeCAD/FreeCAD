@@ -60,7 +60,7 @@ short DressUp::mustExecute() const
 {
     if (Base.getValue() && Base.getValue()->isTouched())
         return 1;
-    return PartDesign::Feature::mustExecute();
+    return PartDesign::FeatureAddSub::mustExecute();
 }
 
 void DressUp::positionByBaseFeature(void)

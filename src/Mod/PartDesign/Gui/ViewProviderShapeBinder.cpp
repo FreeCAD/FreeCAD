@@ -160,7 +160,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             std::vector<App::Color> fcolors = originalFaceColors;
             fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
 
-            for (std::string e : subs) {
+            for (const std::string& e : subs) {
                 // Note: stoi may throw, but it strictly shouldn't happen
                 if (e.compare(0, 4, "Edge") == 0) {
                     int idx = std::stoi(e.substr(4)) - 1;

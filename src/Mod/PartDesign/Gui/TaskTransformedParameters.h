@@ -156,7 +156,7 @@ public:
         return transactionID;
     }
 
-protected Q_SLOTS:
+protected:
     /**
      * Returns the base transformation view provider
      * For stand alone features it will be view provider associated with this object
@@ -171,6 +171,7 @@ protected Q_SLOTS:
      */
     PartDesign::Transformed *getTopTransformedObject () const;
 
+protected Q_SLOTS:
     /// Connect the subTask OK button to the MultiTransform task
     virtual void onSubTaskButtonOK() {}
     void onButtonAddFeature(const bool checked);

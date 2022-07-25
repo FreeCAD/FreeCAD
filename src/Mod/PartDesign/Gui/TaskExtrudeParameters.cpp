@@ -152,9 +152,9 @@ void TaskExtrudeParameters::setupDialog()
     }
     else if (obj && faceId >= 0) {
         ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
-                                  .arg(QString::fromUtf8(obj->Label.getValue()))
-                                  .arg(tr("Face"))
-                                  .arg(faceId));
+                                  .arg(QString::fromUtf8(obj->Label.getValue()),
+                                       tr("Face"),
+                                       QString::number(faceId)));
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
     }
     else {
@@ -735,9 +735,9 @@ void TaskExtrudeParameters::translateFaceName()
 
         if (ok) {
             ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
-                                      .arg(parts[0])
-                                      .arg(tr("Face"))
-                                      .arg(faceId));
+                                      .arg(parts[0],
+                                           tr("Face"),
+                                           QString(faceId)));
         }
         else {
             ui->lineFaceName->setText(parts[0]);
