@@ -60,7 +60,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraint, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraint, Gui::ViewProviderGeometryObject)
 
 
 ViewProviderFemConstraint::ViewProviderFemConstraint()
@@ -106,7 +106,7 @@ ViewProviderFemConstraint::~ViewProviderFemConstraint()
 
 void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
 {
-    ViewProviderDocumentObject::attach(pcObject);
+    ViewProviderGeometryObject::attach(pcObject);
 
     SoPickStyle* ps = new SoPickStyle();
     ps->style = SoPickStyle::UNPICKABLE;
@@ -147,7 +147,7 @@ void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver,
     QAction* act;
     act = menu->addAction(QObject::tr("Edit constraint"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
+    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
 void ViewProviderFemConstraint::onChanged(const App::Property* prop)
@@ -167,7 +167,7 @@ void ViewProviderFemConstraint::onChanged(const App::Property* prop)
         pFont->size = FontSize.getValue();
     }
     else {
-        ViewProviderDocumentObject::onChanged(prop);
+        ViewProviderDocumentObject::onChanged(prop); // clazy:exclude=skipped-base-method
     }
 }
 
@@ -213,7 +213,7 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
             Gui::Control().closeDialog();
         }
         else {
-            ViewProviderDocumentObject::unsetEdit(ModNum);
+            ViewProviderGeometryObject::unsetEdit(ModNum);
         }
     }
 }

@@ -34,13 +34,13 @@ namespace FemGui {
 class PropertyFemMeshItem : public Gui::PropertyEditor::PropertyItem
 {
     Q_OBJECT
-    Q_PROPERTY(int Nodes READ countNodes)
-    Q_PROPERTY(int Edges READ countEdges)
-    Q_PROPERTY(int Faces READ countFaces)
-    Q_PROPERTY(int Polygons READ countPolygons)
-    Q_PROPERTY(int Volumes READ countVolumes)
-    Q_PROPERTY(int Polyhedrons READ countPolyhedrons)
-    Q_PROPERTY(int Groups READ countGroups)
+    Q_PROPERTY(int Nodes READ countNodes CONSTANT)
+    Q_PROPERTY(int Edges READ countEdges CONSTANT)
+    Q_PROPERTY(int Faces READ countFaces CONSTANT)
+    Q_PROPERTY(int Polygons READ countPolygons CONSTANT)
+    Q_PROPERTY(int Volumes READ countVolumes CONSTANT)
+    Q_PROPERTY(int Polyhedrons READ countPolyhedrons CONSTANT)
+    Q_PROPERTY(int Groups READ countGroups CONSTANT)
     PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;

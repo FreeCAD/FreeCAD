@@ -100,7 +100,7 @@ void PointMarker::customEvent(QEvent*)
     const SbVec3f& pt2 = vp->pCoords->point[1];
 
     if (!m_name.empty()) {
-        PointsChanged(pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2]);
+        Q_EMIT PointsChanged(pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0], pt1[1], pt1[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", m_name.c_str(), pt2[0], pt2[1], pt2[2]);
     }
@@ -168,7 +168,7 @@ void DataMarker::customEvent(QEvent*)
     const SbVec3f& pt1 = vp->pCoords->point[0];
 
     if (!m_name.empty()) {
-        PointsChanged(pt1[0], pt1[1], pt1[2]);
+        Q_EMIT PointsChanged(pt1[0], pt1[1], pt1[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0], pt1[1], pt1[2]);
     }
     Gui::Command::doCommand(Gui::Command::Doc, ObjectInvisible().c_str());
