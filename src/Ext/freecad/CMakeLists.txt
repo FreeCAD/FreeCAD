@@ -10,7 +10,8 @@ if (WIN32)
                        REALPATH BASE_DIR "${CMAKE_INSTALL_PREFIX}")
     set( ${CMAKE_INSTALL_BINDIR})
 else()
-    set(FREECAD_LIBRARY_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR})
+    get_filename_component(FREECAD_LIBRARY_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}"
+                       REALPATH BASE_DIR "${CMAKE_INSTALL_PREFIX}")
 endif()
 
 configure_file(__init__.py.template ${NAMESPACE_INIT})
