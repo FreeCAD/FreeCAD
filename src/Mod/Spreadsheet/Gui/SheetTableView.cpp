@@ -60,7 +60,7 @@ namespace bp = boost::placeholders;
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {
     QHeaderView::mouseReleaseEvent(event);
-    resizeFinished();
+    Q_EMIT resizeFinished();
 }
 
 bool SheetViewHeader::viewportEvent(QEvent *e) {
@@ -314,7 +314,7 @@ void SheetTableView::insertRows()
     std::vector<int> sortedRows;
 
     /* Make sure rows are sorted in ascending order */
-    for (QModelIndexList::const_iterator it = rows.begin(); it != rows.end(); ++it)
+    for (QModelIndexList::const_iterator it = rows.cbegin(); it != rows.cend(); ++it)
         sortedRows.push_back(it->row());
     std::sort(sortedRows.begin(), sortedRows.end());
 
@@ -365,7 +365,7 @@ void SheetTableView::removeRows()
     std::vector<int> sortedRows;
 
     /* Make sure rows are sorted in descending order */
-    for (QModelIndexList::const_iterator it = rows.begin(); it != rows.end(); ++it)
+    for (QModelIndexList::const_iterator it = rows.cbegin(); it != rows.cend(); ++it)
         sortedRows.push_back(it->row());
     std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
 
@@ -386,7 +386,7 @@ void SheetTableView::insertColumns()
     std::vector<int> sortedColumns;
 
     /* Make sure rows are sorted in ascending order */
-    for (QModelIndexList::const_iterator it = cols.begin(); it != cols.end(); ++it)
+    for (QModelIndexList::const_iterator it = cols.cbegin(); it != cols.cend(); ++it)
         sortedColumns.push_back(it->column());
     std::sort(sortedColumns.begin(), sortedColumns.end());
 
@@ -438,7 +438,7 @@ void SheetTableView::removeColumns()
     std::vector<int> sortedColumns;
 
     /* Make sure rows are sorted in descending order */
-    for (QModelIndexList::const_iterator it = cols.begin(); it != cols.end(); ++it)
+    for (QModelIndexList::const_iterator it = cols.cbegin(); it != cols.cend(); ++it)
         sortedColumns.push_back(it->column());
     std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<int>());
 
@@ -694,13 +694,13 @@ void SheetTableView::pasteClipboard()
         Range range = ranges.back();
         if (!mimeData->hasFormat(_SheetMime)) {
             CellAddress current = range.from();
-            QStringList cells;
             QString text = mimeData->text();
+            QStringList cells = text.split(QLatin1Char('\n'));
             int i=0;
-            for (auto it : text.split(QLatin1Char('\n'))) {
+            for (const auto& it : cells) {
                 QStringList cols = it.split(QLatin1Char('\t'));
                 int j=0;
-                for (auto jt : cols) {
+                for (const auto& jt : cols) {
                     QModelIndex index = model()->index(current.row()+i, current.col()+j);
                     model()->setData(index, jt);
                     j++;

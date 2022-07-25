@@ -516,7 +516,7 @@ void SheetModel::cellUpdated(CellAddress address)
 {
     QModelIndex i = index(address.row(), address.col());
 
-    dataChanged(i, i);
+    Q_EMIT dataChanged(i, i);
 }
 
 void SheetModel::rangeUpdated(const Range &range)
@@ -524,7 +524,7 @@ void SheetModel::rangeUpdated(const Range &range)
     QModelIndex i = index(range.from().row(), range.from().col());
     QModelIndex j = index(range.to().row(), range.to().col());
 
-    dataChanged(i, j);
+    Q_EMIT dataChanged(i, j);
 }
 
 #include "moc_SheetModel.cpp"

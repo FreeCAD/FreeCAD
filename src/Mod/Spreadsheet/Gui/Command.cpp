@@ -626,7 +626,7 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
             if (selection.size() > 0) {
                 bool allBold = true;
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
+                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
                     const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
                     if (cell) {
@@ -700,7 +700,7 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
             if (selection.size() > 0) {
                 bool allItalic = true;
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
+                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
                     const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
                     if (cell) {
@@ -774,7 +774,7 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
             if (selection.size() > 0) {
                 bool allUnderline = true;
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
+                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
                     const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
                     if (cell) {
