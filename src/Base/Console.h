@@ -596,6 +596,7 @@ protected:
     static PyObject *sPyError    (PyObject *self,PyObject *args);
     static PyObject *sPySetStatus(PyObject *self,PyObject *args);
     static PyObject *sPyGetStatus(PyObject *self,PyObject *args);
+    static PyObject *sPyGetObservers(PyObject *self, PyObject *args);
 
     bool _bVerbose;
     bool _bCanRefresh;
