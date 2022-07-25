@@ -20,24 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+
+// to avoid compiler warnings of redefining contents of basic.h
+// later by #include <Gui/ViewProvider.h>
+# define _USE_MATH_DEFINES
+# include <cmath>
+
+# include <cfloat>
 # include <QMessageBox>
 # include <QRegExp>
 # include <QTreeWidget>
-# include <TopoDS_Shape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <cfloat>
-# include <Inventor/system/inttypes.h>
 #endif
 
-#include "Mirroring.h"
-#include "ui_Mirroring.h"
-#include "../App/PartFeature.h"
-#include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -51,6 +49,11 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include "Mirroring.h"
+#include "ui_Mirroring.h"
+
 
 using namespace PartGui;
 
