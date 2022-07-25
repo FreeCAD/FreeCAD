@@ -201,7 +201,8 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     // font size
 
     QFontDatabase db;
-    for(int size: db.standardSizes()) {
+    const auto sizes = db.standardSizes();
+    for(int size: sizes) {
         f_fontsize->addItem(QString::number(size));
     }
     //TODO: void QComboBox::setEditText(const QString &text) to " " when multiple select

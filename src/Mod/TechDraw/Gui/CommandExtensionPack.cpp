@@ -110,7 +110,7 @@ namespace TechDrawGui {
             return;
         const std::vector<std::string> SubNames = selection[0].getSubNames();
         std::vector<TechDraw::CirclePtr> Circles;
-        for (std::string Name : SubNames) {
+        for (const std::string& Name : SubNames) {
             int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
             std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
             TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
@@ -138,7 +138,7 @@ namespace TechDrawGui {
         std::string bigCircleTag = objFeat->addCosmeticEdge(bigCircle);
         TechDraw::CosmeticEdge* ceCircle = objFeat->getCosmeticEdge(bigCircleTag);
         _setLineAttributes(ceCircle);
-        for (TechDraw::CirclePtr oneCircle : Circles) {
+        for (const TechDraw::CirclePtr& oneCircle : Circles) {
             Base::Vector3d oneCircleCenter = oneCircle->center;
             float oneRadius = oneCircle->radius;
             Base::Vector3d delta = (oneCircle->center - bigCenter).Normalize() * (oneRadius + 2);
@@ -201,7 +201,7 @@ void execCircleCenterLines(Gui::Command* cmd) {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
     double scale = objFeat->getScale();
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    for (std::string Name : SubNames) {
+    for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
@@ -476,7 +476,7 @@ void execThreadHoleBottom(Gui::Command* cmd) {
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    for (std::string Name : SubNames) {
+    for (const std::string& Name : SubNames) {
         _createThreadCircle(Name, objFeat, 1.177f);
     }
     cmd->getSelection().clearSelection();
@@ -527,7 +527,7 @@ void execThreadBoltBottom(Gui::Command* cmd) {
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    for (std::string Name : SubNames) {
+    for (const std::string& Name : SubNames) {
         _createThreadCircle(Name, objFeat, 0.85f);
     }
     cmd->getSelection().clearSelection();
@@ -763,7 +763,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg) {
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Change Line Attributes"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
-    for (std::string name : subNames) {
+    for (const std::string& name : subNames) {
         int num = DrawUtil::getIndexFromName(name);
         BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
         if (baseGeo) {
@@ -1767,7 +1767,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
             int idx = TechDraw::DrawUtil::getIndexFromName(name);
             std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
             // We filter arcs, circles etc. which are not allowed.
-            for (TechDraw::BaseGeomPtr geoPtr : faceEdges)
+            for (const TechDraw::BaseGeomPtr& geoPtr : faceEdges)
                 if (geoPtr->geomType != TechDraw::GENERIC)
                     throw Base::TypeError("CmdTechDrawAreaAnnotation - forbidden border element found\n");
             // We create a list of all points along the boundary of the face.
@@ -1923,7 +1923,7 @@ namespace TechDrawGui {
     std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat) {
         // get vertex points as Vector3d
         std::vector<Base::Vector3d> vertexPoints;
-        for (std::string Name : SubNames) {
+        for (const std::string& Name : SubNames) {
             std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
             if (GeoType == "Vertex") {
                 int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);

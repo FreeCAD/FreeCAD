@@ -71,7 +71,7 @@ public:
 public Q_SLOTS:
     void onTrackerClicked(bool b);
     void onCancelEditClicked(bool b);
-    void onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent);
+    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
 
 public:
     virtual bool accept();

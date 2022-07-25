@@ -2306,7 +2306,7 @@ namespace TechDrawGui {
         // get subNames and coordinates of all selected vertexes
         std::vector<dimVertex> vertexes;
         dimVertex nextVertex;
-        for (std::string name : subNames) {
+        for (const std::string& name : subNames) {
             std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(name);
             if (geoType == "Vertex") {
                 int geoId = TechDraw::DrawUtil::getIndexFromName(name);

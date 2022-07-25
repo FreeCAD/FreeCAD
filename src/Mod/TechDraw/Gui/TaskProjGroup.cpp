@@ -192,7 +192,7 @@ void TaskProjGroup::viewToggled(bool toggle)
     bool changed = false;
     // Obtain name of checkbox
     QString viewName = sender()->objectName();
-    int index = viewName.mid(7).toInt();
+    int index = viewName.midRef(7).toInt();
     const char *viewNameCStr = viewChkIndexToCStr(index);
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
         Gui::Command::doCommand(Gui::Command::Doc,
@@ -498,9 +498,9 @@ void TaskProjGroup::setUiPrimary()
 QString TaskProjGroup::formatVector(Base::Vector3d v)
 {
     QString data = QString::fromLatin1("[%1 %2 %3]")
-        .arg(QLocale().toString(v.x, 'f', 2))
-        .arg(QLocale().toString(v.y, 'f', 2))
-        .arg(QLocale().toString(v.z, 'f', 2));
+        .arg(QLocale().toString(v.x, 'f', 2),
+             QLocale().toString(v.y, 'f', 2),
+             QLocale().toString(v.z, 'f', 2));
     return data;
 }
 

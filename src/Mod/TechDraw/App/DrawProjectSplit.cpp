@@ -446,7 +446,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
     sorted.erase(last, sorted.end());                         //remove dupls
 
     //TODO: "sorted" turns to garbage if pagescale set to "0.1"!!!!???? ***
-    for (auto e: sorted) {
+    for (const auto& e: sorted) {
         if (e.idx < inEdges.size()) {
             result.push_back(inEdges.at(e.idx));                  //<<< ***here
         } else {

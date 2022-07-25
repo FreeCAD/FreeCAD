@@ -20,6 +20,7 @@
 **
 ** $QT_END_LICENSE$
 */
+// clazy:excludeall=qstring-arg
 #include "PreCompiled.h"
 
 #include "mtextedit.h"

@@ -78,8 +78,8 @@ public:
     QPointF snapToAngle(QPointF pt);
 
 Q_SIGNALS:
-    void drawingFinished(std::vector<QPointF> pts, QGIView* qgParent);
-    void qViewPicked(QPointF pos, QGIView* qgParent);
+    void drawingFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
+    void qViewPicked(QPointF pos, TechDrawGui::QGIView* qgParent);
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

@@ -397,7 +397,6 @@ void QGSPage::createBalloon(QPointF origin, DrawViewPart *parent)
     balloon->Y.setValue(appOrigin.y() + textOffset);
 
     int idx = getDrawPage()->getNextBalloonIndex();
-    QString labelText = QString::number(idx);
     balloon->Text.setValue(std::to_string(idx).c_str());
 
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", pageName.c_str(), featName.c_str());

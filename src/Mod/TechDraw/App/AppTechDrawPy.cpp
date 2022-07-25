@@ -119,7 +119,7 @@ void copy(Py::Dict sourceRange, OutputIt targetIt)
   string key;
   string value;
 
-  for (auto keyPy : sourceRange.keys()) {
+  for (const auto& keyPy : sourceRange.keys()) {
     key = Py::String(keyPy);
     value = Py::String(sourceRange[keyPy]);
     *targetIt = {key, value};

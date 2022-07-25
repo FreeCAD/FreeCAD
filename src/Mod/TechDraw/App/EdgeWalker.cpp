@@ -283,7 +283,7 @@ TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol
     ShapeFix_ShapeTolerance sTol;
     Handle(ShapeExtend_WireData) wireData = new ShapeExtend_WireData();
 
-    for (auto e:edges) {
+    for (const auto& e:edges) {
         wireData->Add(e);
     }
 
@@ -315,7 +315,7 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
         TopoDS_Vertex v2 = TopExp::LastVertex(e);
         bool addv1 = true;
         bool addv2 = true;
-        for (auto v:uniqueVert) {
+        for (const auto& v:uniqueVert) {
             if (DrawUtil::isSamePoint(v,v1,EWTOLERANCE))
                 addv1 = false;
             if (DrawUtil::isSamePoint(v,v2,EWTOLERANCE))
@@ -336,7 +336,7 @@ std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edg
 //    Base::Console().Message("TRACE - EW::makeWalkerEdges()\n");
     m_saveInEdges = edges;
     std::vector<WalkerEdge> walkerEdges;
-    for (auto e:edges) {
+    for (const auto& e:edges) {
         TopoDS_Vertex ev1 = TopExp::FirstVertex(e);
         TopoDS_Vertex ev2 = TopExp::LastVertex(e);
         int v1dx = findUniqueVert(ev1, verts);

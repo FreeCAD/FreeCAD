@@ -179,7 +179,6 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
         Base::Console().Error("G3D::copyActiveViewToSvgFile - can not open file - %s/n", fileSpec.c_str());
         return result;
     }
-    QColor dbColor(Qt::blue);
     execVectorizeAction(viewerSvg,
                         va.get(),
                         outWidth, outHeight,

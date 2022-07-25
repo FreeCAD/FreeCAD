@@ -1140,8 +1140,8 @@ void CmdTechDrawSymbol::activated(int iMsg)
     QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QObject::tr("Choose an SVG file to open"), QString(),
         QString::fromLatin1("%1 (*.svg *.svgz);;%2 (*.*)").
-        arg(QObject::tr("Scalable Vector Graphic")).
-        arg(QObject::tr("All Files")));
+        arg(QObject::tr("Scalable Vector Graphic"),
+            QObject::tr("All Files")));
 
     if (!filename.isEmpty())
     {

@@ -182,7 +182,7 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
         bodyMessageStream << qApp->translate("Std_Delete",
             "The group cannot be deleted because its items have the following\nsection or detail views, or leader lines that would get broken:");
         bodyMessageStream << '\n';
-        for (auto ListIterator : ViewList)
+        for (const auto& ListIterator : ViewList)
             bodyMessageStream << '\n' << QString::fromUtf8(ListIterator.c_str());
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,

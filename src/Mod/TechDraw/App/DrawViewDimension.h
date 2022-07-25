@@ -59,6 +59,20 @@ struct anglePoints
         ends.second = Base::Vector3d(0.0,0.0,0.0);
         vertex      = Base::Vector3d(0.0,0.0,0.0);
     }
+
+    anglePoints(const anglePoints& ap)
+        : ends(ap.ends)
+        , vertex(ap.vertex)
+    {
+
+    }
+
+    anglePoints& operator= (const anglePoints& ap)
+    {
+        ends = ap.ends;
+        vertex = ap.vertex;
+        return *this;
+    }
 };
 
 struct arcPoints
@@ -84,6 +98,29 @@ struct arcPoints
          arcCW = false;
     }
 
+    arcPoints(const arcPoints& ap)
+        : isArc(ap.isArc)
+        , radius(ap.radius)
+        , center(ap.center)
+        , onCurve(ap.onCurve)
+        , arcEnds(ap.arcEnds)
+        , midArc(ap.midArc)
+        , arcCW(ap.arcCW)
+    {
+
+    }
+
+    arcPoints& operator= (const arcPoints& ap)
+    {
+        isArc = ap.isArc;
+        radius = ap.radius;
+        center = ap.center;
+        onCurve = ap.onCurve;
+        arcEnds = ap.arcEnds;
+        midArc = ap.midArc;
+        arcCW = ap.arcCW;
+        return *this;
+    }
 };
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView

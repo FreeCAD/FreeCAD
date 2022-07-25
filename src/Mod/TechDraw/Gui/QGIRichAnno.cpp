@@ -208,7 +208,6 @@ void QGIRichAnno::setTextItem()
     if (!getExporting()) {
         //convert point font sizes to (Rez,mm) font sizes
         QRegExp rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
-        QString match;
         double mmPerPoint = 0.353;
         double sizeConvert = Rez::getRezFactor() * mmPerPoint;
         int pos = 0;

@@ -1101,7 +1101,7 @@ void MDIViewPage::sceneSelectionManager()
     //add to m_qgSceneSelected anything that is in q_sceneSel
     for (auto qts: sceneSel) {
         bool found = false;
-        for (auto ms: m_qgSceneSelected) {
+        for (auto ms: qAsConst(m_qgSceneSelected)) {
             if ( qts == ms ) {
                 found = true;
                 break;
@@ -1115,7 +1115,7 @@ void MDIViewPage::sceneSelectionManager()
 
     //remove items from m_qgSceneSelected that are not in q_sceneSel
     QList<QGraphicsItem*> m_new;
-    for (auto m: m_qgSceneSelected) {
+    for (auto m: qAsConst(m_qgSceneSelected)) {
         for (auto q: sceneSel)  {
             if (m == q) {
                 m_new.push_back(m);
@@ -1455,7 +1455,7 @@ Py::Object MDIViewPagePy::getattr(const char * attr)
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
-        for (auto it : dict_base) {
+        for (const auto& it : dict_base) {
             dict_self.setItem(it.first, it.second);
         }
         return dict_self;
