@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TaskRevolutionParameters_H
 #define GUI_TASKVIEW_TaskRevolutionParameters_H
 
+#include <Mod/PartDesign/App/FeatureRevolution.h>
+#include <Mod/PartDesign/App/FeatureGroove.h>
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderRevolution.h"
 
@@ -77,6 +79,7 @@ protected:
     bool getReversed() const;
     QString getFaceName() const;
     void setupDialog(void);
+    void setCheckboxes(PartDesign::Revolution::RevolMethod mode);
 
     //mirrors of revolution's or groove's properties
     //should have been done by inheriting revolution and groove from common class...

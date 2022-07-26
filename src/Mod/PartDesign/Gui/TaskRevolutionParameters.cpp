@@ -230,6 +230,71 @@ void TaskRevolutionParameters::addAxisToCombo(App::DocumentObject* linkObj,
     lnk.setValue(linkObj,std::vector<std::string>(1,linkSubname));
 }
 
+void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod mode)
+{
+    // disable/hide everything unless we are sure we don't need it
+    // exception: the direction parameters are in any case visible
+    bool isRevolveAngleVisible = false;
+    bool isRevolveAngle2Visible = false;
+    bool isMidplaneEnabled = false;
+    bool isMidplaneVisible = false;
+    bool isReversedEnabled = false;
+    bool isFaceEditEnabled = false;
+
+    if (mode == PartDesign::Revolution::RevolMethod::Dimension) {
+        isRevolveAngleVisible = true;
+        ui->revolveAngle->selectNumber();
+        QMetaObject::invokeMethod(ui->revolveAngle, "setFocus", Qt::QueuedConnection);
+        isMidplaneVisible = true;
+        isMidplaneEnabled = true;
+        // Reverse only makes sense if Midplane is not true
+        isReversedEnabled = !ui->checkBoxMidplane->isChecked();
+    }
+    else if (mode == PartDesign::Revolution::RevolMethod::ThroughAll && isGroove) {
+        isMidplaneEnabled = true;
+        isMidplaneVisible = true;
+        isReversedEnabled = !ui->checkBoxMidplane->isChecked();
+    }
+    else if (mode == PartDesign::Revolution::RevolMethod::ToLast && !isGroove) {
+        isReversedEnabled = true;
+    }
+    else if (mode == PartDesign::Revolution::RevolMethod::ToFirst) {
+        isReversedEnabled = true;
+    }
+    else if (mode == PartDesign::Revolution::RevolMethod::ToFace) {
+        isReversedEnabled = true;
+        isFaceEditEnabled = true;
+        QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
+        // Go into reference selection mode if no face has been selected yet
+        if (ui->lineFaceName->property("FeatureName").isNull())
+            ui->buttonFace->setChecked(true);
+    }
+    else if (mode == PartDesign::Revolution::RevolMethod::TwoDimensions) {
+        isRevolveAngleVisible = true;
+        isRevolveAngle2Visible = true;
+        isReversedEnabled = true;
+    }
+
+    ui->revolveAngle->setVisible(isRevolveAngleVisible);
+    ui->revolveAngle->setEnabled(isRevolveAngleVisible);
+    ui->labelAngle->setVisible(isRevolveAngleVisible);
+
+    ui->revolveAngle2->setVisible(isRevolveAngle2Visible);
+    ui->revolveAngle2->setEnabled(isRevolveAngle2Visible);
+    ui->labelAngle2->setVisible(isRevolveAngle2Visible);
+
+    ui->checkBoxMidplane->setEnabled(isMidplaneEnabled);
+    ui->checkBoxMidplane->setVisible(isMidplaneVisible);
+
+    ui->checkBoxReversed->setEnabled(isReversedEnabled);
+
+    ui->buttonFace->setEnabled(isFaceEditEnabled);
+    ui->lineFaceName->setEnabled(isFaceEditEnabled);
+    if (!isFaceEditEnabled) {
+        ui->buttonFace->setChecked(false);
+    }
+}
+
 void TaskRevolutionParameters::connectSignals()
 {
     connect(ui->revolveAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
@@ -252,12 +317,13 @@ void TaskRevolutionParameters::connectSignals()
             this, &TaskRevolutionParameters::onFaceName);
 }
 
-void TaskRevolutionParameters::updateUI(int /*index*/)
+void TaskRevolutionParameters::updateUI(int index)
 {
     if (blockUpdate)
         return;
     Base::StateLocker lock(blockUpdate, true);
     fillAxisCombo();
+    setCheckboxes(static_cast<PartDesign::Revolution::RevolMethod>(index));
 }
 
 void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
