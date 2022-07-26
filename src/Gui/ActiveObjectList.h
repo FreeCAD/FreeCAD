@@ -28,6 +28,7 @@
 
 #include <map>
 #include <Gui/TreeItemMode.h>
+#include <FCGlobal.h>
 
 
 namespace App {
