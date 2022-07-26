@@ -80,7 +80,7 @@ void ImportExportSettings::setExportHiddenObject(bool on)
 
 bool ImportExportSettings::getExportHiddenObject() const
 {
-    return pGroup->GetBool("ExportHiddenObject", false);
+    return pGroup->GetBool("ExportHiddenObject", true);
 }
 
 void ImportExportSettings::setImportHiddenObject(bool on)

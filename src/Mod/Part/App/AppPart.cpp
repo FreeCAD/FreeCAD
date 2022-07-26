@@ -564,7 +564,7 @@ PyMOD_INIT_FUNC(Part)
     // STEP file.
     // Off (0) : writes STEP files without pcurves. This mode decreases the size of the resulting file.
     // On (1) : (default) writes pcurves to STEP file
-    int writesurfacecurve = hGenGrp->GetInt("WriteSurfaceCurveMode", 1);
+    int writesurfacecurve = hGenGrp->GetInt("WriteSurfaceCurveMode", 0);
     Interface_Static::SetIVal("write.surfacecurve.mode", writesurfacecurve);
 
     //IGES handling
