@@ -1,0 +1,21 @@
+; Aluminum-Generic
+; Uwe Stöhr
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD 0.21.29751 (Git)
+
+[General]
+Name = Aluminum Generic
+Father = Metal
+KindOfMaterial = Aluminium
+
+[Mechanical]
+Density = 2700 kg/m^3
+PoissonRatio = 0.35
+UltimateTensileStrength = 310 MPa
+YoungsModulus = 70000 MPa
+
+[Thermal]
+SpecificHeat = 897.0 J/kg/K
+ThermalConductivity = 237.0 W/m/K
+ThermalExpansionCoefficient = 23.1 µm/m/K
