@@ -53,7 +53,7 @@ std::string BSplineSurfacePy::representation(void) const
 
 PyObject *BSplineSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of BSplineSurfacePy and the Twin object 
+    // create a new instance of BSplineSurfacePy and the Twin object
     return new BSplineSurfacePy(new GeomBSplineSurface);
 }
 
@@ -1167,7 +1167,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
     Standard_Real dY=0;
 
     static char* kwds_interp[] = {"Points", "DegMin", "DegMax", "Continuity", "Tolerance", "X0", "dX", "Y0", "dY", "ParamType", "LengthWeight", "CurvatureWeight", "TorsionWeight", nullptr};
-    
+
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|iiidddddsddd", kwds_interp, &obj, &degMin, &degMax, &continuity, &tol3d, &X0, &dX, &Y0, &dY, &parType, &weight1, &weight2, &weight3))
         return nullptr;
     try {
@@ -1220,7 +1220,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
             c = GeomAbs_C2;
             break;
         }
-        
+
         Approx_ParametrizationType pt;
         std::string pstr = parType;
         Standard_Boolean useParam = Standard_True;
@@ -1573,35 +1573,35 @@ Py::Long BSplineSurfacePy::getMaxDegree(void) const
 {
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(surf->MaxDegree()); 
+    return Py::Long(surf->MaxDegree());
 }
 
 Py::Long BSplineSurfacePy::getNbUPoles(void) const
 {
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(surf->NbUPoles()); 
+    return Py::Long(surf->NbUPoles());
 }
 
 Py::Long BSplineSurfacePy::getNbVPoles(void) const
 {
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(surf->NbVPoles()); 
+    return Py::Long(surf->NbVPoles());
 }
 
 Py::Long BSplineSurfacePy::getNbUKnots(void) const
 {
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(surf->NbUKnots()); 
+    return Py::Long(surf->NbUKnots());
 }
 
 Py::Long BSplineSurfacePy::getNbVKnots(void) const
 {
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(surf->NbVKnots()); 
+    return Py::Long(surf->NbVKnots());
 }
 
 Py::Object BSplineSurfacePy::getFirstUKnotIndex(void) const
@@ -1701,5 +1701,5 @@ PyObject *BSplineSurfacePy::getCustomAttributes(const char* /*attr*/) const
 
 int BSplineSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
