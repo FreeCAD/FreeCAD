@@ -422,12 +422,18 @@ class Writer(object):
                 if obj.References
                 else self._getAllBodies())
             for name in (n for n in refs if n in bodies):
+                if "Density" not in m:
+                    raise WriteError("Used material does not specify the necessary 'Density'.")
                 self._material(
                     name, "Density",
                     self._getDensity(m))
+                if "ThermalConductivity" not in m:
+                    raise WriteError("Used material does not specify the necessary 'Thermal Conductivity'.")
                 self._material(
                     name, "Heat Conductivity",
                     self._convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
+                if "SpecificHeat" not in m:
+                    raise WriteError("Used material does not specify the necessary 'Specific Heat'.")
                 self._material(
                     name, "Heat Capacity",
                     self._convert(m["SpecificHeat"], "L^2/(T^2*O)"))
