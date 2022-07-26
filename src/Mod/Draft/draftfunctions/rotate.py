@@ -39,8 +39,8 @@ import draftmake.make_line as make_line
 import draftmake.make_copy as make_copy
 
 
-def rotate(objectslist, angle, center=App.Vector(0,0,0),
-           axis=App.Vector(0,0,1), copy=False):
+def rotate(objectslist, angle, center=App.Vector(0, 0, 0),
+           axis=App.Vector(0, 0, 1), copy=False):
     """rotate(objects,angle,[center,axis,copy])
 
     Rotates the objects contained in objects (that can be a list of objects
@@ -49,9 +49,9 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
 
     Parameters
     ----------
-    objectlist : list
+    objectslist : list
 
-    angle : list
+    angle : rotation angle (in degrees)
 
     center : Base.Vector
 
@@ -76,8 +76,17 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
     newgroups = {}
     objectslist = utils.filter_objects_for_modifiers(objectslist, copy)
 
+    if copy:
+        doc = App.ActiveDocument
+        for obj in objectslist:
+            if obj.isDerivedFrom("App::DocumentObjectGroup") \
+                    and obj.Name not in newgroups.keys():
+                newgroups[obj.Name] = doc.addObject(obj.TypeId,
+                                                    utils.get_real_name(obj.Name))
+
     for obj in objectslist:
         newobj = None
+
         # real_center and real_axis are introduced to take into account
         # the possibility that object is inside an App::Part
         if hasattr(obj, "getGlobalPlacement"):
@@ -89,61 +98,83 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
             real_center = center
             real_axis = axis
 
-        if copy:
-            newobj = make_copy.make_copy(obj)
-        else:
-            newobj = obj
         if obj.isDerivedFrom("App::Annotation"):
             # TODO: this is very different from how move handle annotations
             # maybe we can uniform the two methods
-            if axis.normalize() == App.Vector(1,0,0):
+            if copy:
+                newobj = make_copy.make_copy(obj)
+            else:
+                newobj = obj
+            if axis.normalize() == App.Vector(1, 0, 0):
                 newobj.ViewObject.RotationAxis = "X"
                 newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == App.Vector(0,1,0):
+            elif axis.normalize() == App.Vector(0, 1, 0):
                 newobj.ViewObject.RotationAxis = "Y"
                 newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == App.Vector(0,-1,0):
+            elif axis.normalize() == App.Vector(0, -1, 0):
                 newobj.ViewObject.RotationAxis = "Y"
                 newobj.ViewObject.Rotation = -angle
-            elif axis.normalize() == App.Vector(0,0,1):
+            elif axis.normalize() == App.Vector(0, 0, 1):
                 newobj.ViewObject.RotationAxis = "Z"
                 newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == App.Vector(0,0,-1):
+            elif axis.normalize() == App.Vector(0, 0, -1):
                 newobj.ViewObject.RotationAxis = "Z"
                 newobj.ViewObject.Rotation = -angle
+
         elif utils.get_type(obj) == "Point":
-            v = App.Vector(obj.X,obj.Y,obj.Z)
+            if copy:
+                newobj = make_copy.make_copy(obj)
+            else:
+                newobj = obj
+            v = App.Vector(newobj.X, newobj.Y, newobj.Z)
             rv = v.sub(real_center)
             rv = DraftVecUtils.rotate(rv, math.radians(angle), real_axis)
             v = real_center.add(rv)
             newobj.X = v.x
             newobj.Y = v.y
             newobj.Z = v.z
+
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
-            pass
-        elif hasattr(obj,"Placement"):
-            #FreeCAD.Console.PrintMessage("placement rotation\n")
+            if copy:
+                newobj = newgroups[obj.Name]
+            else:
+                newobj = obj
+
+        elif hasattr(obj, "Placement"):
+            # App.Console.PrintMessage("placement rotation\n")
+            if copy:
+                newobj = make_copy.make_copy(obj)
+            else:
+                newobj = obj
             shape = Part.Shape()
-            shape.Placement = obj.Placement
+            shape.Placement = newobj.Placement
             shape.rotate(DraftVecUtils.tup(real_center), DraftVecUtils.tup(real_axis), angle)
             newobj.Placement = shape.Placement
-        elif hasattr(obj,'Shape') and (utils.get_type(obj) not in ["WorkingPlaneProxy","BuildingPart"]):
-            #think it make more sense to try first to rotate placement and later to try with shape. no?
-            shape = obj.Shape.copy()
+
+        elif hasattr(obj, "Shape"):
+            if copy:
+                newobj = make_copy.make_copy(obj)
+            else:
+                newobj = obj
+            shape = newobj.Shape.copy()
             shape.rotate(DraftVecUtils.tup(real_center), DraftVecUtils.tup(real_axis), angle)
             newobj.Shape = shape
-        if copy:
-            gui_utils.formatObject(newobj,obj)
+
         if newobj is not None:
             newobjlist.append(newobj)
-        if copy:
-            for p in obj.InList:
-                if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
-                    g = newgroups.setdefault(p.Name, App.ActiveDocument.addObject(p.TypeId, p.Name))
-                    g.addObject(newobj)
-                    break
+            if copy:
+                for parent in obj.InList:
+                    if parent.isDerivedFrom("App::DocumentObjectGroup") \
+                            and (parent in objectslist):
+                        newgroups[parent.Name].addObject(newobj)
+                    if utils.get_type(parent) == "Layer":
+                        parent.Proxy.addObject(parent ,newobj)
 
-    gui_utils.select(newobjlist)
+    if copy and utils.get_param("selectBaseObjects", False):
+        gui_utils.select(objectslist)
+    else:
+        gui_utils.select(newobjlist)
+
     if len(newobjlist) == 1:
         return newobjlist[0]
     return newobjlist

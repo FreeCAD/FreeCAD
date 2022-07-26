@@ -391,9 +391,9 @@ def get_real_name(name):
         The returned string cannot be empty; it will have
         at least one letter.
     """
-    for i in range(1, len(name)):
+    for i in range(1, len(name) + 1):
         if name[-i] not in '1234567890':
-            return name[:len(name) - (i-1)]
+            return name[:len(name) - (i - 1)]
     return name
 
 
