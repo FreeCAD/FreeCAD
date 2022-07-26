@@ -844,6 +844,7 @@ public:
     virtual ~GeomBSplineSurface();
     virtual Geometry *copy(void) const;
 
+    void setBounds(double u0, double u1, double v0, double v1);
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;

@@ -729,5 +729,15 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="setBounds">
+			<Documentation>
+				<UserDocu>
+					Changes the U and V parametric bounds of the surface.
+					The geometry is not modified.
+					bspline_surf.setBounds(u0, u1, v0, v1)
+					Default arguments are 0.0, 1.0, 0.0, 1.0
+				</UserDocu>
+			</Documentation>
+		</Methode>
 	</PythonExport>
 </GenerateModel>
