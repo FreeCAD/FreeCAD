@@ -4458,6 +4458,41 @@ Geometry *GeomBSplineSurface::copy(void) const
     return newSurf;
 }
 
+void GeomBSplineSurface::setBounds(double u0, double u1, double v0, double v1)
+{
+    try {
+        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast(mySurface->Copy());
+        Standard_RangeError_Raise_if (u1 <= u0 || v1 <= v0, " ");
+        Standard_Real bu0,bu1,bv0,bv1;
+        surf->Bounds(bu0,bu1,bv0,bv1);
+        if ((abs(u0-bu0) > Precision::Confusion()) || (abs(u1-bu1) > Precision::Confusion())) {
+            TColStd_Array1OfReal uk(1,surf->NbUKnots());
+            TColStd_Array1OfReal nuk(1,surf->NbUKnots());
+            surf->UKnots(uk);
+            Standard_Real ur = uk(uk.Upper()) - uk(uk.Lower());
+            for (Standard_Integer i=uk.Lower(); i<=uk.Upper(); i++) {
+                nuk(i) = u0 + ((u1 - u0) * (uk(i) - uk(uk.Lower())) / ur);
+            }
+            surf->SetUKnots(nuk);
+        }
+        if ((abs(v0-bv0) > Precision::Confusion()) || (abs(v1-bv1) > Precision::Confusion())) {
+            TColStd_Array1OfReal vk(1,surf->NbVKnots());
+            TColStd_Array1OfReal nvk(1,surf->NbVKnots());
+            surf->VKnots(vk);
+            Standard_Real vr = vk(vk.Upper()) - vk(vk.Lower());
+            for (Standard_Integer j=vk.Lower(); j<=vk.Upper(); j++) {
+                nvk(j) = v0 + ((v1 - v0) * (vk(j) - vk(vk.Lower())) / vr);
+            }
+            surf->SetVKnots(nvk);
+        }
+        mySurface = surf;
+        return;
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+}
+
 // Persistence implementer
 unsigned int GeomBSplineSurface::getMemSize (void) const
 {

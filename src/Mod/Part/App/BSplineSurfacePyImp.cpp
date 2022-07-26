@@ -1668,6 +1668,32 @@ Py::List BSplineSurfacePy::getVKnotSequence(void) const
     return list;
 }
 
+PyObject* BSplineSurfacePy::setBounds(PyObject *args)
+{
+    double u0=0.0;
+    double u1=1.0;
+    double v0=0.0;
+    double v1=1.0;
+
+    if (!PyArg_ParseTuple(args, "|dddd", &u0, &u1, &v0, &v1))
+        return nullptr;
+    try {
+        if (u0 >= u1 || v0 >= v1) {
+            Standard_Failure::Raise("Bad parameter range");
+            return nullptr;;
+        }
+        GeomBSplineSurface* surf = getGeomBSplineSurfacePtr();
+        surf->setBounds(u0, u1, v0, v1);
+        Py_Return;
+    }
+    catch (Standard_Failure& e) {
+        std::string err = e.GetMessageString();
+        if (err.empty()) err = e.DynamicType()->Name();
+        PyErr_SetString(PartExceptionOCCError, err.c_str());
+        return nullptr;
+    }
+}
+
 PyObject *BSplineSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
