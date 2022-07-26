@@ -652,7 +652,7 @@ void InputField::focusOutEvent(QFocusEvent *event)
             actQuantity = actQuantity * factor;
         }
     }
-    catch (const Base::ParserError& e) {
+    catch (const Base::ParserError&) {
         // do nothing, let apply the last known good value
     }
     this->setText(actQuantity.getUserString());
