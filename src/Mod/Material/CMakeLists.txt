@@ -28,6 +28,7 @@ SET (MaterialLib_Files
     StandardMaterial/AlMg3F24.FCMat
     StandardMaterial/AlMgSi1F31.FCMat
     StandardMaterial/Aluminum-6061-T6.FCMat
+    StandardMaterial/Aluminum-Generic.FCMat
     StandardMaterial/AlZn4-5Mg1F35.FCMat
     StandardMaterial/CalculiX-Steel.FCMat
     StandardMaterial/Concrete-Generic.FCMat
