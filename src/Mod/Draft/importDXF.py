@@ -72,7 +72,7 @@ if gui:
         draftui = FreeCADGui.draftToolBar
     except (AttributeError, NameError):
         draftui = None
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide import QtGui
 else:
     def translate(context, txt):
