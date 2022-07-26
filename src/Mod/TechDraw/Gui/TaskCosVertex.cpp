@@ -211,8 +211,8 @@ void TaskCosVertex::startTracker(void)
     if (!m_tracker) {
         m_tracker = new QGTracker(m_scene, m_trackerMode);
         QObject::connect(
-            m_tracker, SIGNAL(drawingFinished(std::vector<QPointF>, QGIView*)),
-            this, SLOT(onTrackerFinished(std::vector<QPointF>, QGIView*))
+            m_tracker, &QGTracker::drawingFinished,
+            this, &TaskCosVertex::onTrackerFinished
         );
     }
     else {
