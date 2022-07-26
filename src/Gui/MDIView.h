@@ -36,6 +36,7 @@ QT_END_NAMESPACE
 namespace Gui
 {
 class Document;
+class MainWindow;
 class ViewProvider;
 class ViewProviderDocumentObject;
 
@@ -182,6 +183,8 @@ private:
     ActiveObjectList ActiveObjects;
     typedef boost::signals2::connection Connection;
     Connection connectDelObject; //remove active object upon delete.
+
+    friend class MainWindow;
 };
 
 } // namespace Gui

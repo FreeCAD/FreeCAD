@@ -876,10 +876,8 @@ void MainWindow::addWindow(MDIView* view)
         d->mdiArea->addSubWindow(child);
     }
 
-    connect(view, SIGNAL(message(const QString&, int)),
-            this, SLOT(showMessage(const QString&, int)));
-    connect(this, SIGNAL(windowStateChanged(MDIView*)),
-            view, SLOT(windowStateChanged(MDIView*)));
+    connect(view, &MDIView::message, this, &MainWindow::showMessage);
+    connect(this, &MainWindow::windowStateChanged, view, &MDIView::windowStateChanged);
 
     // listen to the incoming events of the view
     view->installEventFilter(this);
@@ -900,10 +898,9 @@ void MainWindow::addWindow(MDIView* view)
 void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 {
     // free all connections
-    disconnect(view, SIGNAL(message(const QString&, int)),
-            this, SLOT(showMessage(const QString&, int )));
-    disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
-            view, SLOT(windowStateChanged(MDIView*)));
+    disconnect(view, &MDIView::message, this, &MainWindow::showMessage);
+    disconnect(this, &MainWindow::windowStateChanged, view, &MDIView::windowStateChanged);
+
     view->removeEventFilter(this);
 
     // check if the focus widget is a child of the view
