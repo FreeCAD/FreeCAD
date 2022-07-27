@@ -147,6 +147,7 @@ protected:
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
 
     void selectionChanged(const Gui::SelectionChanges &);
+    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
     typedef boost::signals2::scoped_connection Connection;
     Connection connectSelection;
 
