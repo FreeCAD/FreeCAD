@@ -55,6 +55,7 @@
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Fem/App/FemPostFilter.h>
+#include <Mod/Fem/App/FemPostPipeline.h>
 
 #include "ViewProviderFemPostObject.h"
 #include "TaskPostBoxes.h"
@@ -761,11 +762,34 @@ void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &
     // color bar.
     // But don't do this if the object is invisible because other objects with a
     // color bar might be visible and the color bar is then wrong.
+    // For pipelines, hide other visible ones and make the current visible since there
+    // is technically no way to paint them over each other and showing the one one likes
+    // Corresponding info from Realthunder:
+    // "Because on top rendering delays rendering to the last, where the OpenGL depth buffer
+    // is already populated. On top rendering is done with depth write disabled and only with
+    // transparency painting on top is somewhat visually acceptable."
     if (sel.Type == sel.AddSelection) {
         Gui::SelectionObject obj(sel);
         if (obj.getObject() == this->getObject()) {
+            if (this->getObject()->isDerivedFrom(Fem::FemPostPipeline::getClassTypeId()))
+                this->getObject()->Visibility.setValue(true);
             if (this->getObject()->Visibility.getValue())
                 WriteColorData(true);
+            if (!this->getObject()->isDerivedFrom(Fem::FemPostPipeline::getClassTypeId()))
+                    return;
+            // hide other pipelines
+            auto docGui = Gui::Application::Instance->activeDocument();
+            if (!docGui)
+                return;
+            auto doc = docGui->getDocument();
+            std::vector<App::DocumentObject *> ObjectsList = doc->getObjects();
+            for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
+                if ((*it)->Visibility.getValue()
+                    && (*it)->isDerivedFrom(Fem::FemPostPipeline::getClassTypeId())
+                    && (*it) != obj.getObject()) {
+                    (*it)->Visibility.setValue(false);
+                }
+            }
         }
     }
 }

@@ -122,6 +122,7 @@ protected:
     bool setupPipeline();
     void updateVtk();
     void setRangeOfColorBar(double min, double max);
+    void WriteColorData(bool ResetColorBarRange);
 
     SoCoordinate3*              m_coordinates;
     SoIndexedPointSet*          m_markers;
@@ -156,7 +157,6 @@ private:
     void update3D();
     void WritePointData(vtkPoints *points, vtkDataArray *normals,
                         vtkDataArray *tcoords);
-    void WriteColorData(bool ResetColorBarRange);
     void WriteTransparency();
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
