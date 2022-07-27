@@ -73,25 +73,22 @@
 using namespace std;
 using namespace SketcherGui;
 
-define CONSTRUCTION_UPDATE_ACTION(CLASS, ICON)
-/* This macro creates an updateAction() function that will toggle between normal & construction icon */
-void CLASS::updateAction(int mode)
-{
-    auto act = getAction();
-    if (act) {
-        switch (mode) {
-
-        case Normal:
-            act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON));
-            break;
-        case Construction:
-            act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON"_Constr"));
-            break;
-
-        }
-
+#define CONSTRUCTION_UPDATE_ACTION(CLASS, ICON)                                                             \
+    /* This macro creates an updateAction() function that will toggle between normal & construction icon */ \
+    void CLASS::updateAction(int mode)                                                                      \
+    {                                                                                                       \
+        auto act = getAction();                                                                             \
+        if (act) {                                                                                          \
+            switch (mode) {                                                                                 \
+                case Normal:                                                                                \
+                    act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON));                                 \
+                    break;                                                                                  \
+                case Construction:                                                                          \
+                    act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON "_Constr"));                       \
+                    break;                                                                                  \
+            }                                                                                               \
+        }                                                                                                   \
     }
-}
 
 namespace SketcherGui {
 GeometryCreationMode geometryCreationMode=Normal;
