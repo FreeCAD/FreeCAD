@@ -629,7 +629,12 @@ class FillMacroListWorker(QtCore.QThread):
         try:
             if os.path.exists(self.repo_dir):
                 if not os.path.exists(os.path.join(self.repo_dir, ".git")):
-                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller","Attempting to change non-git Macro setup to use git\n"))
+                    FreeCAD.Console.PrintWarning(
+                        translate(
+                            "AddonsInstaller",
+                            "Attempting to change non-git Macro setup to use git\n",
+                        )
+                    )
                     utils.repair_git_repo(
                         "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
                     )
@@ -642,15 +647,15 @@ class FillMacroListWorker(QtCore.QThread):
         except Exception as e:
             FreeCAD.Console.PrintMessage(
                 translate(
-                    "AddonsInstaller", "An error occurred updating macros from GitHub, trying clean checkout..."
+                    "AddonsInstaller",
+                    "An error occurred updating macros from GitHub, trying clean checkout...",
                 )
                 + f":\n{e}\n"
             )
             FreeCAD.Console.PrintMessage(f"{self.repo_dir}\n")
             FreeCAD.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller", "Attempting to do a clean checkout..."
-                ) + "\n"
+                translate("AddonsInstaller", "Attempting to do a clean checkout...")
+                + "\n"
             )
             try:
                 shutil.rmtree(self.repo_dir, onerror=self.remove_readonly)
@@ -658,15 +663,13 @@ class FillMacroListWorker(QtCore.QThread):
                     "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
                 )
                 FreeCAD.Console.PrintMessage(
-                    translate(
-                        "AddonsInstaller", "Clean checkout succeeded"
-                    )
-                    + "\n"
+                    translate("AddonsInstaller", "Clean checkout succeeded") + "\n"
                 )
             except Exception as e:
                 FreeCAD.Console.PrintWarning(
                     translate(
-                        "AddonsInstaller", "Failed to update macros from GitHub -- try clearing the Addon Manager's cache."
+                        "AddonsInstaller",
+                        "Failed to update macros from GitHub -- try clearing the Addon Manager's cache.",
                     )
                     + f":\n{str(e)}\n"
                 )
@@ -1646,7 +1649,9 @@ class UpdateAllWorker(QtCore.QThread):
         current_thread = QtCore.QThread.currentThread()
         for repo in self.repos:
             self.repo_queue.put(repo)
-            FreeCAD.Console.PrintLog(f"  UPDATER: Adding '{repo.name}' to update queue\n")
+            FreeCAD.Console.PrintLog(
+                f"  UPDATER: Adding '{repo.name}' to update queue\n"
+            )
 
         # The original design called for multiple update threads at the same time, but the updater
         # itself is not thread-safe, so for the time being only spawn one update thread.
@@ -1676,14 +1681,18 @@ class UpdateAllWorker(QtCore.QThread):
             worker.wait()
 
     def on_success(self, repo: Addon) -> None:
-        FreeCAD.Console.PrintLog(f"  UPDATER: Main thread received notice that worker successfully updated {repo.name}\n")
+        FreeCAD.Console.PrintLog(
+            f"  UPDATER: Main thread received notice that worker successfully updated {repo.name}\n"
+        )
         self.progress_made.emit(
             len(self.repos) - self.repo_queue.qsize(), len(self.repos)
         )
         self.success.emit(repo)
 
     def on_failure(self, repo: Addon) -> None:
-        FreeCAD.Console.PrintLog(f"  UPDATER:  Main thread received notice that worker failed to update {repo.name}\n")
+        FreeCAD.Console.PrintLog(
+            f"  UPDATER:  Main thread received notice that worker failed to update {repo.name}\n"
+        )
         self.progress_made.emit(
             len(self.repos) - self.repo_queue.qsize(), len(self.repos)
         )
@@ -1702,13 +1711,19 @@ class UpdateSingleWorker(QtCore.QThread):
         current_thread = QtCore.QThread.currentThread()
         while True:
             if current_thread.isInterruptionRequested():
-                FreeCAD.Console.PrintLog(f"  UPDATER: Interruption requested, stopping all updates\n")
+                FreeCAD.Console.PrintLog(
+                    f"  UPDATER: Interruption requested, stopping all updates\n"
+                )
                 return
             try:
                 repo = self.repo_queue.get_nowait()
-                FreeCAD.Console.PrintLog(f"  UPDATER: Pulling {repo.name} from the update queue\n")
+                FreeCAD.Console.PrintLog(
+                    f"  UPDATER: Pulling {repo.name} from the update queue\n"
+                )
             except queue.Empty:
-                FreeCAD.Console.PrintLog(f"  UPDATER: Worker thread queue is empty, exiting thread\n")
+                FreeCAD.Console.PrintLog(
+                    f"  UPDATER: Worker thread queue is empty, exiting thread\n"
+                )
                 return
             if repo.repo_type == Addon.Kind.MACRO:
                 FreeCAD.Console.PrintLog(f"  UPDATER: Updating macro '{repo.name}'\n")
@@ -1717,8 +1732,9 @@ class UpdateSingleWorker(QtCore.QThread):
                 FreeCAD.Console.PrintLog(f"  UPDATER: Updating addon '{repo.name}'\n")
                 self.update_package(repo)
             self.repo_queue.task_done()
-            FreeCAD.Console.PrintLog(f"  UPDATER: Worker thread completed action for '{repo.name}' and reported result to main thread\n")
-
+            FreeCAD.Console.PrintLog(
+                f"  UPDATER: Worker thread completed action for '{repo.name}' and reported result to main thread\n"
+            )
 
     def update_macro(self, repo: Addon):
         """Updating a macro happens in this function, in the current thread"""
@@ -1751,7 +1767,7 @@ class UpdateSingleWorker(QtCore.QThread):
             if not worker.isRunning():
                 break
 
-        time.sleep(0.1) # Give the signal a moment to propagate to the other threads
+        time.sleep(0.1)  # Give the signal a moment to propagate to the other threads
         QtCore.QCoreApplication.processEvents()
 
 

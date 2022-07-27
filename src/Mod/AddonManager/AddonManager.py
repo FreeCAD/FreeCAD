@@ -48,7 +48,7 @@ from install_to_toolbar import (
 from manage_python_dependencies import (
     check_for_python_package_updates,
     CheckForPythonPackageUpdatesWorker,
-    PythonPackageManager
+    PythonPackageManager,
 )
 
 from NetworkManager import HAVE_QTNETWORK, InitializeNetworkManager
@@ -82,6 +82,7 @@ installed.
 def QT_TRANSLATE_NOOP(ctx, txt):
     return txt
 
+
 ADDON_MANAGER_DEVELOPER_MODE = False
 
 
@@ -100,7 +101,7 @@ class CommandAddonManager:
         "load_macro_metadata_worker",
         "update_all_worker",
         "dependency_installation_worker",
-        "check_for_python_package_updates_worker"
+        "check_for_python_package_updates_worker",
     ]
 
     lock = threading.Lock()
@@ -109,7 +110,7 @@ class CommandAddonManager:
     def __init__(self):
         FreeCADGui.addPreferencePage(
             os.path.join(os.path.dirname(__file__), "AddonManagerOptions.ui"),
-            translate("AddonsInstaller","Addon Manager"),
+            translate("AddonsInstaller", "Addon Manager"),
         )
 
         self.allowed_packages = set()
@@ -343,7 +344,9 @@ class CommandAddonManager:
         self.dialog.buttonCheckForUpdates.clicked.connect(
             lambda: self.force_check_updates(standalone=True)
         )
-        self.dialog.buttonUpdateDependencies.clicked.connect(self.show_python_updates_dialog)
+        self.dialog.buttonUpdateDependencies.clicked.connect(
+            self.show_python_updates_dialog
+        )
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
@@ -577,7 +580,7 @@ class CommandAddonManager:
             self.populate_macros,
             self.update_metadata_cache,
             self.check_updates,
-            self.check_python_updates
+            self.check_python_updates,
         ]
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         if pref.GetBool("DownloadMacros", False):
@@ -868,7 +871,9 @@ class CommandAddonManager:
                 if not thread.isFinished():
                     self.do_next_startup_phase()
                     return
-        self.check_for_python_package_updates_worker = CheckForPythonPackageUpdatesWorker()
+        self.check_for_python_package_updates_worker = (
+            CheckForPythonPackageUpdatesWorker()
+        )
         self.check_for_python_package_updates_worker.python_package_updates_available.connect(
             lambda: self.dialog.buttonUpdateDependencies.show()
         )
@@ -878,7 +883,7 @@ class CommandAddonManager:
         self.check_for_python_package_updates_worker.start()
 
     def show_python_updates_dialog(self) -> None:
-        if not hasattr(self,"manage_python_packages_dialog"):
+        if not hasattr(self, "manage_python_packages_dialog"):
             self.manage_python_packages_dialog = PythonPackageManager()
         self.manage_python_packages_dialog.show()
 
@@ -889,7 +894,7 @@ class CommandAddonManager:
             addon_repo.icon = self.get_icon(addon_repo)
         for repo in self.item_model.repos:
             if repo.name == addon_repo.name:
-                #self.item_model.reload_item(repo) # If we want to have later additions supersede earlier
+                # self.item_model.reload_item(repo) # If we want to have later additions supersede earlier
                 return
         self.item_model.append_item(addon_repo)
 
@@ -1041,20 +1046,26 @@ class CommandAddonManager:
             ]
 
     def update_allowed_packages_list(self) -> None:
-        FreeCAD.Console.PrintLog("Attempting to fetch remote copy of ALLOWED_PYTHON_PACKAGES.txt...\n")
+        FreeCAD.Console.PrintLog(
+            "Attempting to fetch remote copy of ALLOWED_PYTHON_PACKAGES.txt...\n"
+        )
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
             "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/ALLOWED_PYTHON_PACKAGES.txt"
         )
         if p:
-            FreeCAD.Console.PrintLog("Remote ALLOWED_PYTHON_PACKAGES.txt file located, overriding locally-installed copy\n")
+            FreeCAD.Console.PrintLog(
+                "Remote ALLOWED_PYTHON_PACKAGES.txt file located, overriding locally-installed copy\n"
+            )
             p = p.data().decode("utf8")
             lines = p.split("\n")
-            self.allowed_packages.clear() # Unset the locally-defined list
+            self.allowed_packages.clear()  # Unset the locally-defined list
             for line in lines:
                 if line and len(line) > 0 and line[0] != "#":
                     self.allowed_packages.add(line.strip())
         else:
-            FreeCAD.Console.PrintLog("Could not fetch remote ALLOWED_PYTHON_PACKAGES.txt, using local copy\n")
+            FreeCAD.Console.PrintLog(
+                "Could not fetch remote ALLOWED_PYTHON_PACKAGES.txt, using local copy\n"
+            )
 
     def handle_disallowed_python(self, python_required: List[str]) -> bool:
         """Determine if we are missing any required Python packages that are not in the allowed
@@ -1724,14 +1735,18 @@ class CommandAddonManager:
             elif addon.repo_type == Addon.Kind.MACRO:
                 if addon.macro.parsed:
                     if len(addon.macro.icon) == 0 and len(addon.macro.xpm) == 0:
-                        FreeCAD.Console.PrintLog(f"Macro '{addon.name}' does not have an icon\n")
+                        FreeCAD.Console.PrintLog(
+                            f"Macro '{addon.name}' does not have an icon\n"
+                        )
             else:
-                FreeCAD.Console.PrintLog(f"Addon '{addon.name}' does not have a package.xml file\n")
-        
+                FreeCAD.Console.PrintLog(
+                    f"Addon '{addon.name}' does not have a package.xml file\n"
+                )
+
         FreeCAD.Console.PrintLog(f"-----------------------------------\n\n")
         self.do_next_startup_phase()
 
-    def validate_package_xml(self, addon:Addon):
+    def validate_package_xml(self, addon: Addon):
         if addon.metadata is None:
             return
 
@@ -1743,20 +1758,28 @@ class CommandAddonManager:
         # Top-level required elements
 
         if not addon.metadata.Name or len(addon.metadata.Name) == 0:
-            errors.append(f"No top-level <name> element found, or <name> element is empty")
+            errors.append(
+                f"No top-level <name> element found, or <name> element is empty"
+            )
         if not addon.metadata.Version or addon.metadata.Version == "0.0.0":
-            errors.append(f"No top-level <version> element found, or <version> element is invalid")
-        #if not addon.metadata.Date or len(addon.metadata.Date) == 0:
+            errors.append(
+                f"No top-level <version> element found, or <version> element is invalid"
+            )
+        # if not addon.metadata.Date or len(addon.metadata.Date) == 0:
         #    errors.append(f"No top-level <date> element found, or <date> element is invalid")
         if not addon.metadata.Description or len(addon.metadata.Description) == 0:
-            errors.append(f"No top-level <description> element found, or <description> element is invalid")
+            errors.append(
+                f"No top-level <description> element found, or <description> element is invalid"
+            )
 
         maintainers = addon.metadata.Maintainer
         if len(maintainers) == 0:
             errors.append(f"No top-level <maintainers> found, at least one is required")
         for maintainer in maintainers:
-            if len(maintainer['email']) == 0:
-                errors.append(f"No email address specified for maintainer '{maintainer['name']}'")
+            if len(maintainer["email"]) == 0:
+                errors.append(
+                    f"No email address specified for maintainer '{maintainer['name']}'"
+                )
 
         licenses = addon.metadata.License
         if len(licenses) == 0:
@@ -1764,7 +1787,9 @@ class CommandAddonManager:
 
         urls = addon.metadata.Urls
         if len(urls) == 0:
-            errors.append(f"No <url> elements found, at least a repo url must be provided")
+            errors.append(
+                f"No <url> elements found, at least a repo url must be provided"
+            )
         else:
             found_repo = False
             found_readme = False
@@ -1772,23 +1797,31 @@ class CommandAddonManager:
                 if url["type"] == "repository":
                     found_repo = True
                     if len(url["branch"]) == 0:
-                        errors.append("<repository> element is missing the 'branch' attribute")
+                        errors.append(
+                            "<repository> element is missing the 'branch' attribute"
+                        )
                 elif url["type"] == "readme":
                     found_readme = True
                     location = url["location"]
                     p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(location)
                     if not p:
-                        errors.append(f"Could not access specified readme at {location}")
+                        errors.append(
+                            f"Could not access specified readme at {location}"
+                        )
                     else:
                         p = p.data().decode("utf8")
                         if "<html" in p or "<!DOCTYPE html>" in p:
                             pass
                         else:
-                            errors.append(f"Readme data found at {location} does not appear to be rendered HTML")
+                            errors.append(
+                                f"Readme data found at {location} does not appear to be rendered HTML"
+                            )
             if not found_repo:
                 errors.append("No repo url specified")
             if not found_readme:
-                errors.append("No readme url specified (not required, but highly recommended)")
+                errors.append(
+                    "No readme url specified (not required, but highly recommended)"
+                )
 
         contents = addon.metadata.Content
         if not contents or len(contents) == 0:
@@ -1801,20 +1834,22 @@ class CommandAddonManager:
             if "workbench" in contents:
                 wb = contents["workbench"][0]
                 if wb.Icon:
-                   missing_icon = False
+                    missing_icon = False
         if missing_icon:
             errors.append(f"No <icon> element found, or <icon> element is invalid")
 
         if "workbench" in contents:
             for wb in contents["workbench"]:
-                errors.extend (self.validate_workbench_metadata(wb))
+                errors.extend(self.validate_workbench_metadata(wb))
 
         if "preferencepack" in contents:
             for wb in contents["preferencepack"]:
-                errors.extend (self.validate_preference_pack_metadata(wb))
+                errors.extend(self.validate_preference_pack_metadata(wb))
 
         if len(errors) > 0:
-            FreeCAD.Console.PrintLog(f"Errors found in package.xml file for '{addon.name}'\n")
+            FreeCAD.Console.PrintLog(
+                f"Errors found in package.xml file for '{addon.name}'\n"
+            )
             for error in errors:
                 FreeCAD.Console.PrintLog(f"   * {error}\n")
 
@@ -1829,5 +1864,6 @@ class CommandAddonManager:
         if not pack.Name or len(pack.Name) == 0:
             errors.append("No <name> specified for preference pack")
         return errors
+
 
 # @}

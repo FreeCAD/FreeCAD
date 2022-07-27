@@ -347,6 +347,7 @@ def is_float(element: Any) -> bool:
 
 #  @}
 
+
 def get_python_exe() -> str:
     # Find Python. In preference order
     #   A) The value of the PythonExecutableForPip user preference
@@ -356,11 +357,7 @@ def get_python_exe() -> str:
     #   E) The result of an shutil search for your system's "python" executable
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
-    if (
-        not python_exe
-        or python_exe == "Not set"
-        or not os.path.exists(python_exe)
-    ):
+    if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
         fc_dir = FreeCAD.getHomePath()
         python_exe = os.path.join(fc_dir, "bin", "python3")
         if "Windows" in platform.system():
