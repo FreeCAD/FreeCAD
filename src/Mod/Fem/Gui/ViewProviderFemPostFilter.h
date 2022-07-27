@@ -62,6 +62,8 @@ class FemGuiExport ViewProviderFemPostDataAtPoint: public ViewProviderFemPostObj
 public:
     /// constructor.
     ViewProviderFemPostDataAtPoint();
+    void show() override;
+    void onSelectionChanged(const Gui::SelectionChanges &) override;
     ~ViewProviderFemPostDataAtPoint();
 
 protected:

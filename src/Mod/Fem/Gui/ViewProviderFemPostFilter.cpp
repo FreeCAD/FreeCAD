@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+# include <Inventor/nodes/SoDrawStyle.h>
+#endif
+
 #include <Mod/Fem/App/FemPostFilter.h>
 
 #include "ViewProviderFemPostFilter.h"
@@ -75,6 +79,19 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAtPoint, FemGui::ViewProviderFemP
 ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint() {
 
     sPixmap = "FEM_PostFilterDataAtPoint";
+}
+
+void ViewProviderFemPostDataAtPoint::show()
+{
+    Gui::ViewProviderDocumentObject::show();
+    m_colorStyle->style = SoDrawStyle::FILLED;
+}
+
+void ViewProviderFemPostDataAtPoint::onSelectionChanged(const Gui::SelectionChanges &)
+{
+    // do not do anything here
+    // For DataAtPoint the color bar must not be refreshed when it is selected
+    // because a single point does not make sense with a color range.
 }
 
 ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() {

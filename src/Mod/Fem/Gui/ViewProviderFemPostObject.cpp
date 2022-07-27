@@ -699,9 +699,9 @@ void ViewProviderFemPostObject::show(void) {
     Gui::ViewProviderDocumentObject::show();
     m_colorStyle->style = SoDrawStyle::FILLED;
     // we must update the color bar except for data point filters
-    auto nameVP = std::string(this->getObject()->getViewProviderName());
-    if (nameVP.compare("FemGui::ViewProviderFemPostDataAtPoint") == 0)
-        return;
+    //auto nameVP = std::string(this->getObject()->getViewProviderName());
+    //if (nameVP.compare("FemGui::ViewProviderFemPostDataAtPoint") == 0)
+    //    return;
     WriteColorData(true);
 }
 
@@ -751,20 +751,20 @@ bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
 
 void ViewProviderFemPostObject::selectionChanged(const Gui::SelectionChanges &sel)
 {
+    onSelectionChanged(sel);
+}
+
+void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &sel)
+{
     // If a FemPostObject is selected in the document tree we must refresh its
     // color bar.
     // But don't do this if the object is invisible because other objects with a
     // color bar might be visible and the color bar is then wrong.
-    // Also don't do this for point filters because for them a color bar is not sensible.
     if (sel.Type == sel.AddSelection) {
         Gui::SelectionObject obj(sel);
         if (obj.getObject() == this->getObject()) {
-            if (!this->getObject()->Visibility.getValue())
-                return;
-            auto nameVP = std::string(this->getObject()->getViewProviderName());
-            if (nameVP.compare("FemGui::ViewProviderFemPostDataAtPoint") == 0)
-                return;
-            WriteColorData(true);
+            if (this->getObject()->Visibility.getValue())
+                WriteColorData(true);
         }
     }
 }
