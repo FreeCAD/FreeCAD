@@ -149,7 +149,7 @@ SET(TDTest_SRCS
     TDTest/DrawViewDimensionTest.py
     TDTest/DrawViewPartTest.py
     TDTest/DrawViewSectionTest.py
-    TDTest/DVBalloonTest.py
+    TDTest/DrawViewBalloonTest.py
     TDTest/TechDrawTestUtilities.py
 )
 
