@@ -699,7 +699,7 @@ void ViewProviderFemPostObject::show(void) {
     Gui::ViewProviderDocumentObject::show();
     m_colorStyle->style = SoDrawStyle::FILLED;
     // we must update the color bar except for data point filters
-    // (for ViewProviderFemPostDataAtPoint show() is overriden to prevent the update)
+    // (for ViewProviderFemPostDataAtPoint show() is overridden to prevent the update)
     WriteColorData(true);
 }
 

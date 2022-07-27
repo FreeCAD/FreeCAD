@@ -84,7 +84,6 @@ ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint() {
 void ViewProviderFemPostDataAtPoint::show()
 {
     Gui::ViewProviderDocumentObject::show();
-    m_colorStyle->style = SoDrawStyle::FILLED;
 }
 
 void ViewProviderFemPostDataAtPoint::onSelectionChanged(const Gui::SelectionChanges &)
