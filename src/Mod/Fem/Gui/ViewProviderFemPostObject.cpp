@@ -64,9 +64,9 @@ using namespace FemGui;
 namespace sp = std::placeholders;
 
 #ifdef VTK_CELL_ARRAY_V2
-typedef const vtkIdType* vtkIdTypePtr;
+using vtkIdTypePtr = const vtkIdType*;
 #else
-typedef vtkIdType* vtkIdTypePtr;
+using vtkIdTypePtr = vtkIdType*;
 #endif
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
@@ -574,7 +574,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     if (static_cast<Fem::FemPostObject*>(getObject())->getTypeId()
          == Base::Type::fromName("Fem::FemPostDataAtPointFilter"))
         ResetColorBarRange = false;
-    else 
+    else
         ResetColorBarRange = true;
 
     if (prop == &Field && setupPipeline()) {
