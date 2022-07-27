@@ -114,15 +114,15 @@ def restart_freecad():
 def get_zip_url(repo):
     """Returns the location of a zip file from a repo, if available"""
 
-    parsedUrl = urlparse(repo.url)
-    if parsedUrl.netloc == "github.com":
+    parsed_url = urlparse(repo.url)
+    if parsed_url.netloc == "github.com":
         return f"{repo.url}/archive/{repo.branch}.zip"
     elif parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
     else:
         FreeCAD.Console.PrintLog(
             "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:",
-            parsedUrl.netloc,
+            parsed_url.netloc,
             "\n",
         )
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
