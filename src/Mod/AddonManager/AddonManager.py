@@ -132,6 +132,12 @@ class CommandAddonManager:
                 + "\n"
             )
 
+        # Silence some pylint errors:
+        self.check_worker = None
+        self.check_for_python_package_updates_worker = None
+        self.install_worker = None
+        self.update_all_worker = None
+
     def GetResources(self) -> Dict[str, str]:
         return {
             "Pixmap": "AddonManager",
