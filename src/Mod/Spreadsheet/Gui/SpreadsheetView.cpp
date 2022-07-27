@@ -133,7 +133,9 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
 SheetView::~SheetView()
 {
     Gui::Application::Instance->detachView(this);
-    //delete delegate;
+    delete ui;
+    delete model;
+    delete delegate;
 }
 
 bool SheetView::onMsg(const char *pMsg, const char **)
