@@ -2245,7 +2245,7 @@ class FeatureTestColumn(unittest.TestCase):
         self.assertEqual(self.obj.Value, 702)
 
     def testAAZ(self):
-        self.obj.Column = "AAA"
+        self.obj.Column = "AAZ"
         self.obj.recompute()
         self.assertEqual(self.obj.Value, 727)
 
