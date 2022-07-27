@@ -328,6 +328,11 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd && !cmd->getAction()) {
         Base::Console().Warning("Command %s not in use yet\n", cmd->getName());
+        QMessageBox::warning(this,
+                             tr("Command not in use yet"),
+                             tr("The command '%1' is loaded but not in use yet, so it can't be assigned a new shortcut.\n"
+                             "To enable assignment, please make '%2' the active workbench").arg(data.toString(),ui->categoryBox->currentText()),
+                             QMessageBox::Ok);
         ui->buttonAssign->setEnabled(false); // command not in use
         return;
     }
