@@ -73,6 +73,26 @@
 using namespace std;
 using namespace SketcherGui;
 
+define CONSTRUCTION_UPDATE_ACTION(CLASS, ICON) \
+/* This macro creates an updateAction() function that will toggle between normal & construction icon */ \
+void CLASS::updateAction(int mode) \
+{
+    auto act = getAction();
+    if (act) {
+        switch (mode) {
+
+        case Normal:
+            act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON));
+            break;
+        case Construction:
+            act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON"_Constr"));
+            break;
+
+        }
+
+    }
+}
+
 namespace SketcherGui {
 GeometryCreationMode geometryCreationMode=Normal;
 }
@@ -336,24 +356,12 @@ CmdSketcherCreateLine::CmdSketcherCreateLine()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateLine, "Sketcher_CreateLine")
+
 void CmdSketcherCreateLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerLine() );
-}
-
-void CmdSketcherCreateLine::updateAction(int mode)
-{
-    switch (mode) {
-    case Normal:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine"));
-        break;
-    case Construction:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine_Constr"));
-        break;
-    }
 }
 
 bool CmdSketcherCreateLine::isActive(void)
@@ -645,24 +653,12 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateRectangle, "Sketcher_CreateRectangle")
+
 void CmdSketcherCreateRectangle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBox(DrawSketchHandlerBox::Diagonal) );
-}
-
-void CmdSketcherCreateRectangle::updateAction(int mode)
-{
-    switch (mode) {
-    case Normal:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
-        break;
-    case Construction:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
-        break;
-    }
 }
 
 bool CmdSketcherCreateRectangle::isActive(void)
@@ -686,24 +682,12 @@ CmdSketcherCreateRectangleCenter::CmdSketcherCreateRectangleCenter()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateRectangleCenter, "Sketcher_CreateRectangle_Center")
+
 void CmdSketcherCreateRectangleCenter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBox(DrawSketchHandlerBox::CenterAndCorner) );
-}
-
-void CmdSketcherCreateRectangleCenter::updateAction(int mode)
-{
-    switch (mode) {
-    case Normal:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
-        break;
-    case Construction:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
-        break;
-    }
 }
 
 bool CmdSketcherCreateRectangleCenter::isActive(void)
@@ -1014,24 +998,12 @@ CmdSketcherCreateOblong::CmdSketcherCreateOblong()
     eType = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateOblong, "Sketcher_CreateOblong")
+
 void CmdSketcherCreateOblong::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOblong());
-}
-
-void CmdSketcherCreateOblong::updateAction(int mode)
-{
-    switch (mode) {
-    case Normal:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
-        break;
-    case Construction:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong_Constr"));
-        break;
-    }
 }
 
 bool CmdSketcherCreateOblong::isActive(void)
@@ -1814,24 +1786,12 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline, "Sketcher_CreatePolyline")
+
 void CmdSketcherCreatePolyline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerLineSet() );
-}
-
-void CmdSketcherCreatePolyline::updateAction(int mode)
-{
-    switch (mode) {
-    case Normal:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolyline"));
-        break;
-    case Construction:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolyline_Constr"));
-        break;
-    }
 }
 
 bool CmdSketcherCreatePolyline::isActive(void)
@@ -2043,7 +2003,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArc)
+DEF_STD_CMD_AU(CmdSketcherCreateArc)
 
 CmdSketcherCreateArc::CmdSketcherCreateArc()
   : Command("Sketcher_CreateArc")
@@ -2058,6 +2018,8 @@ CmdSketcherCreateArc::CmdSketcherCreateArc()
     sAccel          = "G, A";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateArc, "Sketcher_CreateArc")
 
 void CmdSketcherCreateArc::activated(int iMsg)
 {
@@ -2315,7 +2277,7 @@ protected:
     Sketcher::PointPos arcPos1, arcPos2;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreate3PointArc)
+DEF_STD_CMD_AU(CmdSketcherCreate3PointArc)
 
 CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
   : Command("Sketcher_Create3PointArc")
@@ -2330,6 +2292,8 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
     sAccel          = "G, 3, A";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointArc, "Sketcher_Create3PointArc")
 
 void CmdSketcherCreate3PointArc::activated(int iMsg)
 {
@@ -2579,7 +2543,7 @@ protected:
 
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateCircle)
+DEF_STD_CMD_AU(CmdSketcherCreateCircle)
 
 CmdSketcherCreateCircle::CmdSketcherCreateCircle()
   : Command("Sketcher_CreateCircle")
@@ -2594,6 +2558,8 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
     sAccel          = "G, C";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateCircle, "Sketcher_CreateCircle")
 
 void CmdSketcherCreateCircle::activated(int iMsg)
 {
@@ -3373,7 +3339,7 @@ private:
 };
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateEllipseByCenter'
-DEF_STD_CMD_A(CmdSketcherCreateEllipseByCenter)
+DEF_STD_CMD_AU(CmdSketcherCreateEllipseByCenter)
 
 /**
  * @brief ctor
@@ -3387,10 +3353,12 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
     sToolTipText    = QT_TR_NOOP("Create an ellipse by center in the sketch");
     sWhatsThis      = "Sketcher_CreateEllipseByCenter";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Conics_Ellipse_Center";
+    sPixmap = "Sketcher_CreateEllipse"; //FIXME: icon link
     sAccel          = "G, E, E";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseByCenter, "Sketcher_CreateEllipse") //FIXME: icon link
 
 void CmdSketcherCreateEllipseByCenter::activated(int iMsg)
 {
@@ -3404,7 +3372,7 @@ bool CmdSketcherCreateEllipseByCenter::isActive(void)
 }
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateEllipseBy3Points'
-DEF_STD_CMD_A(CmdSketcherCreateEllipseBy3Points)
+DEF_STD_CMD_AU(CmdSketcherCreateEllipseBy3Points)
 
 /**
  * @brief ctor
@@ -3422,6 +3390,8 @@ CmdSketcherCreateEllipseBy3Points::CmdSketcherCreateEllipseBy3Points()
     sAccel          = "G, 3, E";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseBy3Points, "Sketcher_CreateEllipse_3points")
 
 void CmdSketcherCreateEllipseBy3Points::activated(int iMsg)
 {
@@ -3737,7 +3707,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArcOfEllipse)
+DEF_STD_CMD_AU(CmdSketcherCreateArcOfEllipse)
 
 CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
   : Command("Sketcher_CreateArcOfEllipse")
@@ -3752,6 +3722,8 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
     sAccel          = "G, E, A";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateArcOfEllipse, "Sketcher_CreateElliptical_Arc")
 
 void CmdSketcherCreateArcOfEllipse::activated(int iMsg)
 {
@@ -4083,7 +4055,7 @@ protected:
 
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArcOfHyperbola)
+DEF_STD_CMD_AU(CmdSketcherCreateArcOfHyperbola)
 
 CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
   : Command("Sketcher_CreateArcOfHyperbola")
@@ -4098,6 +4070,8 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
     sAccel          = "G, H";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateArcOfHyperbola, "Sketcher_CreateHyperbolic_Arc")
 
 void CmdSketcherCreateArcOfHyperbola::activated(int /*iMsg*/)
 {
@@ -4383,7 +4357,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArcOfParabola)
+DEF_STD_CMD_AU(CmdSketcherCreateArcOfParabola)
 
 CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
   : Command("Sketcher_CreateArcOfParabola")
@@ -4399,6 +4373,8 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateArcOfParabola, "Sketcher_CreateParabolic_Arc")
+
 void CmdSketcherCreateArcOfParabola::activated(int /*iMsg*/)
 {
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerArcOfParabola() );
@@ -4408,8 +4384,6 @@ bool CmdSketcherCreateArcOfParabola::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
-
-
 
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateEllipse'
@@ -5026,7 +5000,7 @@ protected:
     Base::Vector2d prevCursorPosition;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateBSpline)
+DEF_STD_CMD_AU(CmdSketcherCreateBSpline)
 
 CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
   : Command("Sketcher_CreateBSpline")
@@ -5042,25 +5016,13 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSpline, "Sketcher_CreateBSpline")
+
 void CmdSketcherCreateBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBSpline(0) );
 }
-
-/*void CmdSketcherCreateBSpline::updateAction(int mode)
-{
-    switch (mode) {
-    case Normal:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
-        break;
-    case Construction:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline_Constr"));
-        break;
-    }
-}*/
 
 bool CmdSketcherCreateBSpline::isActive(void)
 {
@@ -5068,7 +5030,7 @@ bool CmdSketcherCreateBSpline::isActive(void)
 }
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateBSpline'
-DEF_STD_CMD_A(CmdSketcherCreatePeriodicBSpline)
+DEF_STD_CMD_AU(CmdSketcherCreatePeriodicBSpline)
 
 /**
  * @brief ctor
@@ -5086,6 +5048,8 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
     sAccel          = "G, B, P";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePeriodicBSpline, "Sketcher_Create_Periodic_BSpline")
 
 void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
 {
@@ -5388,7 +5352,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreate3PointCircle)
+DEF_STD_CMD_AU(CmdSketcherCreate3PointCircle)
 
 CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
   : Command("Sketcher_Create3PointCircle")
@@ -5403,6 +5367,8 @@ CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
     sAccel          = "G, 3, C";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointCircle, "Sketcher_Create3PointCircle")
 
 void CmdSketcherCreate3PointCircle::activated(int iMsg)
 {
@@ -7043,6 +7009,8 @@ CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCarbonCopy, "Sketcher_CarbonCopy")
+
 void CmdSketcherCarbonCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -7052,20 +7020,6 @@ void CmdSketcherCarbonCopy::activated(int iMsg)
 bool CmdSketcherCarbonCopy::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
-}
-
-void CmdSketcherCarbonCopy::updateAction(int mode)
-{
-    switch (mode) {
-        case Normal:
-            if (getAction())
-                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy"));
-            break;
-        case Construction:
-            if (getAction())
-                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy_Constr"));
-            break;
-    }
 }
 
 
@@ -7355,24 +7309,12 @@ CmdSketcherCreateSlot::CmdSketcherCreateSlot()
     eType = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateSlot, "Sketcher_CreateSlot")
+
 void CmdSketcherCreateSlot::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSlot());
-}
-
-void CmdSketcherCreateSlot::updateAction(int mode)
-{
-    switch (mode) {
-    case Normal:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSlot"));
-        break;
-    case Construction:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSlot_Constr"));
-        break;
-    }
 }
 
 bool CmdSketcherCreateSlot::isActive(void)
@@ -7533,7 +7475,7 @@ protected:
 };
 
 
-DEF_STD_CMD_A(CmdSketcherCreateTriangle)
+DEF_STD_CMD_AU(CmdSketcherCreateTriangle)
 
 CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
   : Command("Sketcher_CreateTriangle")
@@ -7549,6 +7491,8 @@ CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateTriangle, "Sketcher_CreateTriangle")
+
 void CmdSketcherCreateTriangle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -7560,7 +7504,7 @@ bool CmdSketcherCreateTriangle::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreateSquare)
+DEF_STD_CMD_AU(CmdSketcherCreateSquare)
 
 CmdSketcherCreateSquare::CmdSketcherCreateSquare()
   : Command("Sketcher_CreateSquare")
@@ -7576,6 +7520,8 @@ CmdSketcherCreateSquare::CmdSketcherCreateSquare()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateSquare, "Sketcher_CreateSquare")
+
 void CmdSketcherCreateSquare::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -7587,7 +7533,7 @@ bool CmdSketcherCreateSquare::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreatePentagon)
+DEF_STD_CMD_AU(CmdSketcherCreatePentagon)
 
 CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
   : Command("Sketcher_CreatePentagon")
@@ -7603,6 +7549,8 @@ CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePentagon, "Sketcher_CreatePentagon")
+
 void CmdSketcherCreatePentagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -7615,7 +7563,7 @@ bool CmdSketcherCreatePentagon::isActive(void)
 }
 
 
-DEF_STD_CMD_A(CmdSketcherCreateHexagon)
+DEF_STD_CMD_AU(CmdSketcherCreateHexagon)
 
 CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
   : Command("Sketcher_CreateHexagon")
@@ -7631,6 +7579,8 @@ CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateHexagon, "Sketcher_CreateHexagon")
+
 void CmdSketcherCreateHexagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -7642,7 +7592,7 @@ bool CmdSketcherCreateHexagon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreateHeptagon)
+DEF_STD_CMD_AU(CmdSketcherCreateHeptagon)
 
 CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
   : Command("Sketcher_CreateHeptagon")
@@ -7658,6 +7608,8 @@ CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateHeptagon, "Sketcher_CreateHeptagon")
+
 void CmdSketcherCreateHeptagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -7669,7 +7621,7 @@ bool CmdSketcherCreateHeptagon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreateOctagon)
+DEF_STD_CMD_AU(CmdSketcherCreateOctagon)
 
 CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
   : Command("Sketcher_CreateOctagon")
@@ -7685,6 +7637,8 @@ CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
     eType           = ForEdit;
 }
 
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateOctagon, "Sketcher_CreateOctagon")
+
 void CmdSketcherCreateOctagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -7696,7 +7650,7 @@ bool CmdSketcherCreateOctagon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreateRegularPolygon)
+DEF_STD_CMD_AU(CmdSketcherCreateRegularPolygon)
 
 CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
 : Command("Sketcher_CreateRegularPolygon")
@@ -7711,6 +7665,8 @@ CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
     sAccel          = "G, P, R";
     eType           = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateRegularPolygon, "Sketcher_CreateRegularPolygon")
 
 void CmdSketcherCreateRegularPolygon::activated(int iMsg)
 {
