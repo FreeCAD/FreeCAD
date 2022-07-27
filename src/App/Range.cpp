@@ -197,7 +197,7 @@ int App::validRow(const std::string &rowstr)
 
 bool App::validColumn( const std::string &colstr )
 {
-    return std::regex_match(colstr, std::regex("[A-Z]{1,3}" ));
+    return boost::regex_match(colstr, boost::regex("[A-Z]{1,3}"));
 }
 
 /**
