@@ -19,20 +19,27 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import FreeCADGui
-from PySide2 import QtCore, QtGui, QtWidgets
-import addonmanager_utilities as utils
+""" Provides classes and support functions for managing the automatically-installed
+Python library dependencies. No support is provided for uninstalling those dependencies
+because pip's uninstall function does not support the target directory argument. """
+
 from typing import List, Dict
 
 import os
 import subprocess
 from functools import partial
 
+import FreeCAD
+import FreeCADGui
+from PySide2 import QtCore, QtGui, QtWidgets
+
+import addonmanager_utilities as utils
+
 translate = FreeCAD.Qt.translate
 
-# For non-blocking update availability checking:
+
 class CheckForPythonPackageUpdatesWorker(QtCore.QThread):
+    """Perform non-blocking Python library update availability checking"""
 
     python_package_updates_available = QtCore.Signal()
 
@@ -40,12 +47,18 @@ class CheckForPythonPackageUpdatesWorker(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
     def run(self):
-        current_thread = QtCore.QThread.currentThread()
+        """Usually not called directly: instead, instantiate this class and call its start() function
+        in a parent thread. emits a python_package_updates_available signal if updates are available
+        for any of the installed Python packages."""
+
         if check_for_python_package_updates():
             self.python_package_updates_available.emit()
 
 
 def check_for_python_package_updates() -> bool:
+    """Returns True if any of the Python packages installed into the AdditionalPythonPackages directory
+    have updates available, or False if the are all up-to-date."""
+
     vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
     package_counter = 0
     outdated_packages_stdout = call_pip(["list", "-o", "--path", vendor_path])
@@ -58,6 +71,9 @@ def check_for_python_package_updates() -> bool:
 
 
 def call_pip(args) -> List[str]:
+    """Tries to locate the appropriate Python executable and run pip with version checking disabled. Fails
+    if Python can't be found or if pip is not installed."""
+
     python_exe = utils.get_python_exe()
     pip_failed = False
     if python_exe:
@@ -65,7 +81,11 @@ def call_pip(args) -> List[str]:
             call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
             call_args.extend(args)
             proc = subprocess.run(
-                call_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
+                call_args,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                shell=True,
+                check=True,
             )
         except subprocess.CalledProcessError:
             pip_failed = True
@@ -84,6 +104,9 @@ def call_pip(args) -> List[str]:
 
 
 class PythonPackageManager:
+
+    """A GUI-based pip interface allowing packages to be updated, either individually or all at once."""
+
     def __init__(self):
         self.dlg = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "PythonDependencyUpdateDialog.ui")
@@ -93,6 +116,8 @@ class PythonPackageManager:
         )
 
     def show(self):
+        """Run the modal dialog"""
+
         self._create_list_from_pip()
         self.dlg.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         self.dlg.tableWidget.setSortingEnabled(False)
@@ -100,6 +125,9 @@ class PythonPackageManager:
         self.dlg.exec()
 
     def _create_list_from_pip(self):
+        """Uses pip and pip -o to generate a list of installed packages, and creates the user
+        interface elements for those packages."""
+
         all_packages_stdout = call_pip(["list", "--path", self.vendor_path])
         outdated_packages_stdout = call_pip(["list", "-o", "--path", self.vendor_path])
         package_list = self._parse_pip_list_output(
@@ -110,7 +138,7 @@ class PythonPackageManager:
         )
 
         self.dlg.tableWidget.setRowCount(len(package_list))
-        updateButtons = list()
+        updateButtons = []
         counter = 0
         update_counter = 0
         self.dlg.tableWidget.setSortingEnabled(False)
@@ -165,6 +193,9 @@ class PythonPackageManager:
     def _parse_pip_list_output(
         self, all_packages, outdated_packages
     ) -> Dict[str, Dict[str, str]]:
+        """Parses the output from pip into a dictionary with update information in it. The pip output should
+        be an array of lines of text."""
+
         # All Packages output looks like this:
         # Package    Version
         # ---------- -------
@@ -211,6 +242,7 @@ class PythonPackageManager:
         return packages
 
     def _update_package(self, package_name) -> None:
+        """Run pip --upgrade on the given package. Updates all dependent packages as well."""
         for line in range(self.dlg.tableWidget.rowCount()):
             if self.dlg.tableWidget.item(line, 0).text() == package_name:
                 self.dlg.tableWidget.setItem(
@@ -228,10 +260,15 @@ class PythonPackageManager:
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
     def _update_all_packages(self, package_list) -> None:
+        """Updates all packages with available updates."""
+        updates = []
         for package_name, package_details in package_list.items():
             if (
                 len(package_details["available_version"]) > 0
                 and package_details["available_version"]
                 != package_details["installed_version"]
             ):
-                self._update_package(package_name)
+                updates.append(package_name)
+
+        for package_name in updates:
+            self._update_package(package_name)
