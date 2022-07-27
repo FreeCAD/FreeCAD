@@ -134,6 +134,23 @@ public:
   }
 };
 
+class FeatureTestColumn : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestColumn);
+
+public:
+    FeatureTestColumn();
+
+    // Standard Properties (PropertyStandard.h)
+    App::PropertyString  Column;
+    App::PropertyBool    Silent;
+    App::PropertyInteger Value;
+
+    /** @name methods override Feature */
+    //@{
+    DocumentObjectExecReturn *execute() override;
+    //@}
+};
 
 
 } //namespace App

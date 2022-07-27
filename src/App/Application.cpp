@@ -1991,6 +1991,7 @@ void Application::initTypes()
     App ::GeoFeature                ::init();
     App ::FeatureTest               ::init();
     App ::FeatureTestException      ::init();
+    App ::FeatureTestColumn         ::init();
     App ::FeaturePython             ::init();
     App ::GeometryPython            ::init();
     App ::Document                  ::init();

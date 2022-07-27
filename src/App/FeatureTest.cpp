@@ -31,6 +31,7 @@
 
 #include "FeatureTest.h"
 #include "Material.h"
+#include "Range.h"
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4700 )
@@ -179,6 +180,7 @@ DocumentObjectExecReturn *FeatureTest::execute()
     return DocumentObject::StdReturn;
 }
 
+// ----------------------------------------------------------------------------
 
 PROPERTY_SOURCE(App::FeatureTestException, App::FeatureTest)
 
@@ -193,5 +195,23 @@ DocumentObjectExecReturn *FeatureTestException::execute()
     //ExceptionType;
     throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");
 
+    return nullptr;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(App::FeatureTestColumn, App::DocumentObject)
+
+
+FeatureTestColumn::FeatureTestColumn()
+{
+    ADD_PROPERTY_TYPE(Column, ("A"), "Test", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(Silent, (false), "Test", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(Value, (0L), "Test", App::Prop_Output, "");
+}
+
+DocumentObjectExecReturn *FeatureTestColumn::execute()
+{
+    Value.setValue(decodeColumn(Column.getStrValue(), Silent.getValue()));
     return nullptr;
 }
