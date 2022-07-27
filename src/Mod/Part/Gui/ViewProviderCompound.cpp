@@ -125,6 +125,12 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             }
         }
 
+        // If the view provider has set a transparency then override the values
+        // of the input shapes
+        if (Transparency.getValue() > 0) {
+            applyTransparency(Transparency.getValue(), compCol);
+        }
+
         this->DiffuseColor.setValues(compCol);
     }
     else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {

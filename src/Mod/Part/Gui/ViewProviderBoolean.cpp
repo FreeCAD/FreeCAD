@@ -130,6 +130,12 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                     applyColor(hist[1], colTool, colBool);
                 }
 
+                // If the view provider has set a transparency then override the values
+                // of the input shapes
+                if (Transparency.getValue() > 0) {
+                    applyTransparency(Transparency.getValue(), colBool);
+                }
+
                 this->DiffuseColor.setValues(colBool);
             }
         }
@@ -216,6 +222,12 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
                     applyColor(hist[index], colBase, colBool);
                 }
             }
+        }
+
+        // If the view provider has set a transparency then override the values
+        // of the input shapes
+        if (Transparency.getValue() > 0) {
+            applyTransparency(Transparency.getValue(), colBool);
         }
 
         this->DiffuseColor.setValues(colBool);
@@ -347,6 +359,12 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
                     applyColor(hist[index], colBase, colBool);
                 }
             }
+        }
+
+        // If the view provider has set a transparency then override the values
+        // of the input shapes
+        if (Transparency.getValue() > 0) {
+            applyTransparency(Transparency.getValue(), colBool);
         }
 
         this->DiffuseColor.setValues(colBool);
