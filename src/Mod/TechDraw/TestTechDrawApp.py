@@ -20,8 +20,6 @@
 #   USA                                                                   *
 # **************************************************************************
 
-import unittest
-
 from TDTest.DrawHatchTest import DrawHatchTest  # noqa: F401
 from TDTest.DrawViewAnnotationTest import DrawViewAnnotationTest  # noqa: F401
 from TDTest.DrawViewBalloonTest import DrawViewBalloonTest  # noqa: F401
@@ -30,18 +28,4 @@ from TDTest.DrawViewImageTest import DrawViewImageTest  # noqa: F401
 from TDTest.DrawViewSectionTest import DrawViewSectionTest  # noqa: F401
 from TDTest.DrawViewSymbolTest import DrawViewSymbolTest  # noqa: F401
 from TDTest.DrawViewPartTest import DrawViewPartTest  # noqa: F401
-from TDTest.DProjGroupTest import DProjGroupTest
-
-# ---------------------------------------------------------------------------
-# define the test cases to test the FreeCAD TechDraw module
-# ---------------------------------------------------------------------------
-
-
-class TechDrawTestCases(unittest.TestCase):
-    def testProjGroupCase(self):
-        print("starting TD DrawProjGroup test")
-        rc = DProjGroupTest()
-        if rc:
-            print("TD DrawProjGroup test passed")
-        else:
-            print("TD DrawProjGroup test failed")
+from TDTest.DrawProjectionGroupTest import DrawProjectionGroupTest  # noqa: F401
