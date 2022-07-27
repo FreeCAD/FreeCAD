@@ -22,6 +22,8 @@
 # ***************************************************************************
 
 import os
+import platform
+import shutil
 import re
 import ctypes
 from typing import Union, Optional, Any
@@ -375,7 +377,6 @@ def get_python_exe() -> str:
         python_exe = shutil.which("python")
 
     if not python_exe or not os.path.exists(python_exe):
-        self.no_python_exe.emit()
         return ""
 
     prefs.SetString("PythonExecutableForPip", python_exe)
