@@ -26,10 +26,10 @@ from TDTest.DrawHatchTest import DrawHatchTest  # noqa: F401
 from TDTest.DrawViewAnnotationTest import DrawViewAnnotationTest  # noqa: F401
 from TDTest.DrawViewDimensionTest import DrawViewDimensionTest  # noqa: F401
 from TDTest.DrawViewImageTest import DrawViewImageTest  # noqa: F401
+from TDTest.DrawViewSectionTest import DrawViewSectionTest  # noqa: F401
 from TDTest.DrawViewSymbolTest import DrawViewSymbolTest  # noqa: F401
 from TDTest.DrawViewPartTest import DrawViewPartTest  # noqa: F401
 from TDTest.DProjGroupTest import DProjGroupTest
-from TDTest.DVSectionTest import DVSectionTest
 from TDTest.DVBalloonTest import DVBalloonTest
 
 # ---------------------------------------------------------------------------
@@ -45,14 +45,6 @@ class TechDrawTestCases(unittest.TestCase):
             print("TD DrawProjGroup test passed")
         else:
             print("TD DrawProjGroup test failed")
-
-    def testSectionCase(self):
-        print("starting TD DrawViewSection test")
-        rc = DVSectionTest()
-        if rc:
-            print("TD DrawViewSection test passed")
-        else:
-            print("TD DrawViewSection test failed")
 
     def testBalloonCase(self):
         print("starting TD DrawViewBalloon test")
