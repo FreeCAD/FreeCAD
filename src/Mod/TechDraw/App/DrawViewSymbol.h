@@ -23,17 +23,20 @@
 #ifndef _DrawViewSymbol_h_
 #define _DrawViewSymbol_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QDomDocument>
+#include <QXmlResultItems>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <Base/BoundBox.h>
 
 #include "DrawView.h"
 
-
 namespace TechDraw
 {
 class DrawPage;
-
 
 class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 {
@@ -63,12 +66,13 @@ public:
     //return PyObject as DrawViewSymbolPy
     virtual PyObject *getPyObject(void) override;
 
-    virtual short mustExecute() const override;
-
-
 protected:
     virtual void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
+
+    std::vector<std::string> getEditableFields();
+    void updateFieldsInSymbol();
+    bool loadQDomDocument(QDomDocument& symbolDocument);
 };
 
 typedef App::FeaturePythonT<DrawViewSymbol> DrawViewSymbolPython;
