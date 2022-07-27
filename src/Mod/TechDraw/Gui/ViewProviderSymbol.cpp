@@ -67,6 +67,15 @@ std::vector<std::string> ViewProviderSymbol::getDisplayModes(void) const
 
 void ViewProviderSymbol::updateData(const App::Property* prop)
 {
+    if (prop == &getViewObject()->Scale) {
+        onGuiRepaint(getViewObject());
+    } else if (prop == &getViewObject()->Rotation) {
+        onGuiRepaint(getViewObject());
+    } else if (prop == &getViewObject()->Symbol) {
+        onGuiRepaint(getViewObject());
+    } else if (prop == &getViewObject()->EditableTexts) {
+        onGuiRepaint(getViewObject());
+    }
     ViewProviderDrawingView::updateData(prop);
 }
 
