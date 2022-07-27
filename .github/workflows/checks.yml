@@ -22,7 +22,7 @@ env:
   qtconnectionSyntaxFailSilent: true
 
   checkCpplint: true
-  cpplintFilters: -build/header_guard,-readability/braces,-whitespace
+  cpplintFilters: -build/header_guard,-readability/braces,-whitespace,-build/include_order
   cpplintLineLength: 120
   cpplintFailSilent: true
 
