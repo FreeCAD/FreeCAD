@@ -183,6 +183,15 @@ class PartTestBSplineSurface(unittest.TestCase):
         self.assertGreater(len(bs.UKnotSequence), 0)
         self.assertGreater(len(bs.VKnotSequence), 0)
 
+    def testBounds(self):
+        to = Part.Toroid()
+        bs = to.toBSpline()
+        self.assertAlmostEqual(bs.bounds()[1], 2 * math.pi)
+        self.assertAlmostEqual(bs.bounds()[3], 2 * math.pi)
+        bs.setBounds(0.0, 1.0, 0.0, 1.0)
+        self.assertAlmostEqual(bs.bounds()[1], 1.0)
+        self.assertAlmostEqual(bs.bounds()[3], 1.0)
+
 class PartTestNormals(unittest.TestCase):
     def setUp(self):
         self.face = Part.makePlane(1, 1)
