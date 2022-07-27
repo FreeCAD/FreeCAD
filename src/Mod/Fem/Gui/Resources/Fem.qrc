@@ -10,6 +10,7 @@
 
         <!-- gui command icons: constraints -->
         <file>icons/FEM_ConstraintBearing.svg</file>
+        <file>icons/FEM_ConstraintBodyHeatSource.svg</file>
         <file>icons/FEM_ConstraintCentrif.svg</file>
         <file>icons/FEM_ConstraintContact.svg</file>
         <file>icons/FEM_ConstraintDisplacement.svg</file>

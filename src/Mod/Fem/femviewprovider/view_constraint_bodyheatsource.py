@@ -36,4 +36,4 @@ from . import view_base_femconstraint
 class VPConstraintBodyHeatSource(view_base_femconstraint.VPBaseFemConstraint):
 
     def getIcon(self):
-        return ":/icons/FEM_ConstraintHeatflux.svg"  # the heatflux icon is used
+        return ":/icons/FEM_ConstraintBodyHeatSource.svg"
