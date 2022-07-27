@@ -12,7 +12,7 @@ class DrawViewSymbolTest(unittest.TestCase):
         FreeCAD.newDocument("TDAnno")
         FreeCAD.setActiveDocument("TDAnno")
         FreeCAD.ActiveDocument = FreeCAD.getDocument("TDAnno")
-        self.page = createPageWithSVGTemplate("TDAnno")
+        self.page = createPageWithSVGTemplate()
 
     def tearDown(self):
         FreeCAD.closeDocument("TDAnno")

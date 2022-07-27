@@ -3,14 +3,10 @@ import FreeCAD
 import os
 
 
-def createPageWithSVGTemplate(
-    templateName: str = "TestTemplate.svg",
-):
+def createPageWithSVGTemplate():
     """Returns a page with an SVGTemplate added on the ActiveDocument"""
-    print("2")
     path = os.path.dirname(os.path.abspath(__file__))
-    print("TDTestAnno path: " + path)
-    templateFileSpec = path + templateName
+    templateFileSpec = path + "/TestTemplate.svg"
 
     page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
     FreeCAD.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
