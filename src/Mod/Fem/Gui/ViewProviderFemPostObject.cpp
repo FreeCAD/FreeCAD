@@ -54,6 +54,7 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Fem/App/FemPostFilter.h>
 
 #include "ViewProviderFemPostObject.h"
 #include "TaskPostBoxes.h"
@@ -669,8 +670,9 @@ void ViewProviderFemPostObject::hide(void) {
     m_colorStyle->style = SoDrawStyle::INVISIBLE;
     // The object is now hidden but the color bar is wrong
     // if there are other FemPostObjects visible.
-    // We must therefore search for the first visible FemPostObjects
-    // in the document and refresh ist color bar
+    // We must therefore search for the first visible FemPostObject
+    // according to their order in the Tree View (excluding the point
+    // object FemPostDataAtPointFilter) and refresh its color bar.
 
     // get all objects in the document
     auto docGui = Gui::Application::Instance->activeDocument();
@@ -682,7 +684,8 @@ void ViewProviderFemPostObject::hide(void) {
     // step through the objects
     for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
-            if (!firstVisiblePostObject && (*it)->Visibility.getValue()) {
+            if (!firstVisiblePostObject && (*it)->Visibility.getValue()
+                && !(*it)->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
                 firstVisiblePostObject = *it;
                 break;
             }
