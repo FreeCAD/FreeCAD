@@ -701,9 +701,7 @@ void ViewProviderFemPostObject::show(void) {
     Gui::ViewProviderDocumentObject::show();
     m_colorStyle->style = SoDrawStyle::FILLED;
     // we must update the color bar except for data point filters
-    //auto nameVP = std::string(this->getObject()->getViewProviderName());
-    //if (nameVP.compare("FemGui::ViewProviderFemPostDataAtPoint") == 0)
-    //    return;
+    // (for ViewProviderFemPostDataAtPoint show() is overriden to prevent the update)
     WriteColorData(true);
 }
 
