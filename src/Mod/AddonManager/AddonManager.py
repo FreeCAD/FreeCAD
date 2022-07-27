@@ -45,6 +45,11 @@ from install_to_toolbar import (
     ask_to_install_toolbar_button,
     remove_custom_toolbar_button,
 )
+from manage_python_dependencies import (
+    check_for_python_package_updates,
+    CheckForPythonPackageUpdatesWorker,
+    PythonPackageManager
+)
 
 from NetworkManager import HAVE_QTNETWORK, InitializeNetworkManager
 
@@ -95,6 +100,7 @@ class CommandAddonManager:
         "load_macro_metadata_worker",
         "update_all_worker",
         "dependency_installation_worker",
+        "check_for_python_package_updates_worker"
     ]
 
     lock = threading.Lock()
@@ -325,6 +331,9 @@ class CommandAddonManager:
             translate("AddonsInstaller", "Starting up...")
         )
 
+        # Only shown if there are available Python package updates
+        self.dialog.buttonUpdateDependencies.hide()
+
         # connect slots
         self.dialog.rejected.connect(self.reject)
         self.dialog.buttonUpdateAll.clicked.connect(self.update_all)
@@ -334,6 +343,7 @@ class CommandAddonManager:
         self.dialog.buttonCheckForUpdates.clicked.connect(
             lambda: self.force_check_updates(standalone=True)
         )
+        self.dialog.buttonUpdateDependencies.clicked.connect(self.show_python_updates_dialog)
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
@@ -567,6 +577,7 @@ class CommandAddonManager:
             self.populate_macros,
             self.update_metadata_cache,
             self.check_updates,
+            self.check_python_updates
         ]
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         if pref.GetBool("DownloadMacros", False):
@@ -849,6 +860,27 @@ class CommandAddonManager:
     def update_check_complete(self) -> None:
         self.enable_updates(len(self.packages_with_updates))
         self.dialog.buttonCheckForUpdates.setEnabled(True)
+
+    def check_python_updates(self) -> None:
+        if hasattr(self, "check_for_python_package_updates_worker"):
+            thread = self.check_for_python_package_updates_worker
+            if thread:
+                if not thread.isFinished():
+                    self.do_next_startup_phase()
+                    return
+        self.check_for_python_package_updates_worker = CheckForPythonPackageUpdatesWorker()
+        self.check_for_python_package_updates_worker.python_package_updates_available.connect(
+            lambda: self.dialog.buttonUpdateDependencies.show()
+        )
+        self.check_for_python_package_updates_worker.finished.connect(
+            self.do_next_startup_phase
+        )
+        self.check_for_python_package_updates_worker.start()
+
+    def show_python_updates_dialog(self) -> None:
+        if not hasattr(self,"manage_python_packages_dialog"):
+            self.manage_python_packages_dialog = PythonPackageManager()
+        self.manage_python_packages_dialog.show()
 
     def add_addon_repo(self, addon_repo: Addon) -> None:
         """adds a workbench to the list"""

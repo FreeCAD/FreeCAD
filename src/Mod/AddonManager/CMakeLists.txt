@@ -22,9 +22,11 @@ SET(AddonManager_SRCS
     InitGui.py
     install_to_toolbar.py
     loading.html
+    manage_python_dependencies.py
     NetworkManager.py
     package_details.py
     package_list.py
+    PythonDependencyUpdateDialog.ui
     select_toolbar_dialog.ui
     TestAddonManagerApp.py
 )

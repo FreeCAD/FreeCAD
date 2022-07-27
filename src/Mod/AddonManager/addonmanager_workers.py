@@ -1300,50 +1300,18 @@ class DependencyInstallationWorker(QtCore.QThread):
                 QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
         if self.python_required or self.python_optional:
-
-            # Find Python. In preference order
-            #   A) The value of the PythonExecutableForPip user preference
-            #   B) The executable located in the same bin directory as FreeCAD and called "python3"
-            #   C) The executable located in the same bin directory as FreeCAD and called "python"
-            #   D) The result of an shutil search for your system's "python3" executable
-            #   E) The result of an shutil search for your system's "python" executable
-            prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-            python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
-            if (
-                not python_exe
-                or python_exe == "Not set"
-                or not os.path.exists(python_exe)
-            ):
-                fc_dir = FreeCAD.getHomePath()
-                python_exe = os.path.join(fc_dir, "bin", "python3")
-                if "Windows" in platform.system():
-                    python_exe += ".exe"
-
-            if not python_exe or not os.path.exists(python_exe):
-                python_exe = os.path.join(fc_dir, "bin", "python")
-                if "Windows" in platform.system():
-                    python_exe += ".exe"
-
-            if not python_exe or not os.path.exists(python_exe):
-                python_exe = shutil.which("python3")
-
-            if not python_exe or not os.path.exists(python_exe):
-                python_exe = shutil.which("python")
-
-            if not python_exe or not os.path.exists(python_exe):
-                self.no_python_exe.emit()
-                return
-
-            prefs.SetString("PythonExecutableForPip", python_exe)
-
+            python_exe = utils.get_python_exe()
             pip_failed = False
-            try:
-                proc = subprocess.run(
-                    [python_exe, "-m", "pip", "--version"], stdout=subprocess.PIPE
-                )
-            except subprocess.CalledProcessError as e:
-                pip_failed = True
-            if proc.returncode != 0:
+            if python_exe:
+                try:
+                    proc = subprocess.run(
+                        [python_exe, "-m", "pip", "--version"], stdout=subprocess.PIPE
+                    )
+                except subprocess.CalledProcessError as e:
+                    pip_failed = True
+                if proc.returncode != 0:
+                    pip_failed = True
+            else:
                 pip_failed = True
             if pip_failed:
                 self.no_pip.emit(f"{python_exe} -m pip --version")
@@ -1375,6 +1343,8 @@ class DependencyInstallationWorker(QtCore.QThread):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
+            # Note to self: how to list installed packages
+            # ./python.exe -m pip list --path ~/AppData/Roaming/FreeCAD/AdditionalPythonPackages
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
                 self.failure.emit(
