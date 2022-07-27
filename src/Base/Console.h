@@ -33,6 +33,7 @@
 #include <set>
 #include <string>
 #include <sstream>
+#include <FCGlobal.h>
 
 // Python stuff
 typedef struct _object PyObject;
