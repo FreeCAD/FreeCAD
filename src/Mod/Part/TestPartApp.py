@@ -174,6 +174,15 @@ class PartTestBSplineCurve(unittest.TestCase):
         #closing doc
         FreeCAD.closeDocument("PartTest")
 
+class PartTestBSplineSurface(unittest.TestCase):
+    def testTorusToSpline(self):
+        to = Part.Toroid()
+        bs = to.toBSpline()
+        bs.setUPeriodic()
+        bs.setVPeriodic()
+        self.assertGreater(len(bs.UKnotSequence), 0)
+        self.assertGreater(len(bs.VKnotSequence), 0)
+
 class PartTestNormals(unittest.TestCase):
     def setUp(self):
         self.face = Part.makePlane(1, 1)
