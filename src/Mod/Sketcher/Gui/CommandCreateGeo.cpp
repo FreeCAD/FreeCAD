@@ -3353,7 +3353,7 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
     sToolTipText    = QT_TR_NOOP("Create an ellipse by center in the sketch");
     sWhatsThis      = "Sketcher_CreateEllipseByCenter";
     sStatusTip      = sToolTipText;
-    sPixmap = "Sketcher_CreateEllipse"; //FIXME: icon link
+    sPixmap         = "Sketcher_CreateEllipse"; //FIXME: icon link
     sAccel          = "G, E, E";
     eType           = ForEdit;
 }
