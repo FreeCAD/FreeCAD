@@ -40,6 +40,8 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
     def __init__(self, obj):
         super(ConstraintBodyHeatSource, self).__init__(obj)
         self.add_properties(obj)
+        # the constraint does not take any references, thus hide this property
+        obj.setEditorMode("References", 2)
 
     def onDocumentRestored(self, obj):
         self.add_properties(obj)
