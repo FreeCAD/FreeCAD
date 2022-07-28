@@ -1375,7 +1375,7 @@ def Create(res):
     that is created in each operations Gui implementation."""
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
     try:
-        obj = res.objFactory(res.name, obj=None, parentJob=res.job)
+        obj = res.objFactory(res.name, obj=None)#, parentJob=res.job)
         if obj.Proxy:
             obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
             obj.ViewObject.Visibility = True
