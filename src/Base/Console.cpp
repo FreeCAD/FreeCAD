@@ -30,6 +30,7 @@
 #  include <unistd.h>
 # endif
 # include <cstring>
+# include <functional>
 #endif
 
 #include "Console.h"
@@ -487,47 +488,58 @@ PyMethodDef ConsoleSingleton::Methods[] = {
     {nullptr, nullptr, 0, nullptr}		/* Sentinel */
 };
 
-#define FC_PYCONSOLE_MSG(func, args) \
-    PyObject *output;\
-    if (!PyArg_ParseTuple(args, "O", &output))\
-        return nullptr;\
-    PY_TRY {\
-    const char* string = nullptr;\
-    PyObject* unicode = nullptr;\
-    if (PyUnicode_Check(output)) {\
-        string = PyUnicode_AsUTF8(output);\
-    }\
-    else {\
-        unicode = PyObject_Str(output);\
-        if (unicode)\
-            string = PyUnicode_AsUTF8(unicode);\
-    }\
-    if (string)\
-        func("%s",string);            /*process message*/\
-    Py_XDECREF(unicode);\
-    }\
-    PY_CATCH\
+namespace {
+PyObject* FC_PYCONSOLE_MSG(std::function<void(const char*)> func, PyObject* args)
+{
+    PyObject *output;
+    if (!PyArg_ParseTuple(args, "O", &output))
+        return nullptr;
+    PY_TRY {
+        const char* string = nullptr;
+        PyObject* unicode = nullptr;
+        if (PyUnicode_Check(output)) {
+            string = PyUnicode_AsUTF8(output);
+        }
+        else {
+            unicode = PyObject_Str(output);
+            if (unicode)
+                string = PyUnicode_AsUTF8(unicode);
+        }
+        if (string)
+            func(string);            /*process message*/
+        Py_XDECREF(unicode);
+    }
+    PY_CATCH
     Py_Return;
-
+}
+}
 
 PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 {
-    FC_PYCONSOLE_MSG(Instance().Message, args);
+    return FC_PYCONSOLE_MSG([](const char* msg) {
+        Instance().Message("%s", msg);
+    }, args);
 }
 
 PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
 {
-    FC_PYCONSOLE_MSG(Instance().Warning, args);
+    return FC_PYCONSOLE_MSG([](const char* msg) {
+        Instance().Warning("%s", msg);
+    }, args);
 }
 
 PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 {
-    FC_PYCONSOLE_MSG(Instance().Error, args);
+    return FC_PYCONSOLE_MSG([](const char* msg) {
+        Instance().Error("%s", msg);
+    }, args);
 }
 
 PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 {
-    FC_PYCONSOLE_MSG(Instance().Log, args);
+    return FC_PYCONSOLE_MSG([](const char* msg) {
+        Instance().Log("%s", msg);
+    }, args);
 }
 
 PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
