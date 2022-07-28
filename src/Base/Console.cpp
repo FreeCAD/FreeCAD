@@ -60,7 +60,7 @@ public:
     }
 };
 
-class ConsoleOutput : public QObject
+class ConsoleOutput : public QObject // clazy:exclude=missing-qobject-macro
 {
 public:
     static ConsoleOutput* getInstance() {
