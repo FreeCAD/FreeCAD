@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 #define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QGraphicsItem>
 #include <QObject>

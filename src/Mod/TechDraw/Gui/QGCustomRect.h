@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMRECT_H
 #define DRAWINGGUI_QGCUSTOMRECT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>

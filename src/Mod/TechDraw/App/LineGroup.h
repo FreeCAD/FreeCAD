@@ -25,6 +25,8 @@
 #ifndef _TechDraw_LINEGROUP_H_
 #define _TechDraw_LINEGROUP_H_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <string>
 
 namespace TechDraw

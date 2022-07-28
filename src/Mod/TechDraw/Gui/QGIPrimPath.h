@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGIPRIMPATH_H
 #define DRAWINGGUI_QGIPRIMPATH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>

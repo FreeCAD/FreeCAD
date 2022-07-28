@@ -36,6 +36,7 @@ namespace TechDraw
 class TechDrawExport DrawRichAnno : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawRichAnno);
+    Q_OBJECT
 
 public:
     DrawRichAnno();

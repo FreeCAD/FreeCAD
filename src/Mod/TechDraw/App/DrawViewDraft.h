@@ -23,6 +23,8 @@
 #ifndef _DrawViewDraft_h_
 #define _DrawViewDraft_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
@@ -37,6 +39,7 @@ namespace TechDraw
 class TechDrawExport DrawViewDraft : public TechDraw::DrawViewSymbol
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDraft);
+    Q_OBJECT
 
 public:
     /// Constructor

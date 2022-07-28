@@ -28,6 +28,8 @@
 #ifndef TECHDRAW_EDGEWALKER_H
 #define TECHDRAW_EDGEWALKER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/planar_face_traversal.hpp>

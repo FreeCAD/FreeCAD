@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 #define DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>

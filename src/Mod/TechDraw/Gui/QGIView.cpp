@@ -606,63 +606,59 @@ QGIView* QGIView::getQGIVByName(std::string name)
 /* static */
 Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
 {
-    Gui::ViewProvider* result = nullptr;
     if (obj) {
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
-        result = guiDoc->getViewProvider(obj);
+        return guiDoc->getViewProvider(obj);
     }
-    return result;
+    return nullptr;
 }
 
-QGVPage* QGIView::getGraphicsView(TechDraw::DrawView* dv)
+QGVPage* QGIView::getQGVPage(TechDraw::DrawView* dv)
 {
-    QGVPage* graphicsView = nullptr;
-    if (dv != nullptr) {
-        TechDraw::DrawPage* page = dv->findParentPage();
-        if (page != nullptr) {
-            Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-            Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
-            if (vpp != nullptr) {
-                graphicsView = vpp->getGraphicsView();
-            }
-        }
+    ViewProviderPage* vpp = getViewProviderPage(dv);
+    if (!vpp) {
+        return vpp->getQGVPage();
     }
-    return graphicsView;
+    return nullptr;
 }
 
-QGSPage* QGIView::getGraphicsScene(TechDraw::DrawView* dv)
+QGSPage* QGIView::getQGSPage(TechDraw::DrawView* dv)
 {
-    QGSPage* graphicsScene = nullptr;
-    if (dv != nullptr) {
-        TechDraw::DrawPage* page = dv->findParentPage();
-        if (page != nullptr) {
-            Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-            Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
-            if (vpp != nullptr) {
-                graphicsScene = vpp->getGraphicsScene();
-            }
-        }
+    ViewProviderPage* vpp = getViewProviderPage(dv);
+    if (vpp) {
+        return vpp->getQGSPage();
     }
-    return graphicsScene;
+    return nullptr;
 }
 
 MDIViewPage* QGIView::getMDIViewPage() const
 {
-    MDIViewPage* mdi = nullptr;
-    if (getViewObject() != nullptr) {
-        TechDraw::DrawPage* page = getViewObject()->findParentPage();
-        if (page != nullptr) {
-            Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-            Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-            ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
-            if (vpp != nullptr) {
-                mdi = vpp->getMDIViewPage();
-            }
-        }
+    if (!getViewObject()) {
+        return nullptr;
     }
-    return mdi;
+    ViewProviderPage* vpp = getViewProviderPage(getViewObject());
+    if (vpp) {
+        return vpp->getMDIViewPage();
+    }
+    return nullptr;
+}
+
+ViewProviderPage* QGIView::getViewProviderPage(TechDraw::DrawView* dv)
+{
+    if (!dv)  {
+        return nullptr;
+    }
+    TechDraw::DrawPage* page = dv->findParentPage();
+    if (!page) {
+        return nullptr;
+    }
+
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+    if (!activeGui) {
+        return nullptr;
+    }
+
+    return dynamic_cast<ViewProviderPage*>(activeGui->getViewProvider(page));
 }
 
 //remove a child of this from scene while keeping scene indexes valid

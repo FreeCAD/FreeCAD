@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_QGICENTERLINE_H
 #define TECHDRAWGUI_QGICENTERLINE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QPointF>
 

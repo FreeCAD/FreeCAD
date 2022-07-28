@@ -25,6 +25,8 @@
 #ifndef _DrawViewSection_h_
 #define _DrawViewSection_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <gp_Ax2.hxx>
 #include <TopoDS_Shape.hxx>
 

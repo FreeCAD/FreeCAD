@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawViewDimension_h_
 #define _TechDraw_DrawViewDimension_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <tuple>
 
 #include <App/DocumentObject.h>
@@ -126,6 +128,7 @@ struct arcPoints
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
+    Q_OBJECT
 
 public:
     /// Constructor

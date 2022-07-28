@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 #define TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsScene>
 #include <QObject>
 #include <QPointF>

@@ -23,6 +23,8 @@
 #ifndef _ARROWENUMS_H_
 #define _ARROWENUMS_H_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
 #include <string>
 #include <QCoreApplication>

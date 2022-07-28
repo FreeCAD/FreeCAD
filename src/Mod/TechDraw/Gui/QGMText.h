@@ -26,6 +26,8 @@
 #ifndef TECHDRAWGUI_MOVABLETEXT_H
 #define TECHDRAWGUI_MOVABLETEXT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGCustomText.h"
 #include <QObject>
 

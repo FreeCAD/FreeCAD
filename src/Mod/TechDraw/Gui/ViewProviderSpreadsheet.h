@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 #define DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 
 #include "ViewProviderSymbol.h"

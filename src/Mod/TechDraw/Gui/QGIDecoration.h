@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGIDECORATION_H
 #define DRAWINGGUI_QGIDECORATION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QBrush>
 #include <QGraphicsItemGroup>
 #include <QPen>

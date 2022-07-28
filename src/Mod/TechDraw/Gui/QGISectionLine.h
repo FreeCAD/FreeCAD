@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_QGISECTIONLINE_H
 #define TECHDRAWGUI_QGISECTIONLINE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QPointF>

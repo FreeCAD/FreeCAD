@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QPointF>
 #include <QPrinter>
 
@@ -138,7 +140,6 @@ private:
     std::string m_documentName;
     bool isSelectionBlocked;
     QPointer<QGSPage> m_scene;
-    QPointer<QGVPage> m_view;
 
     QString m_currentPath;
     ViewProviderPage* m_vpPage;

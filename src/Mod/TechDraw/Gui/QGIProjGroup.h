@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGIProjGroup_H
 #define DRAWINGGUI_QGIProjGroup_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIViewCollection.h"
 #include <QObject>
 

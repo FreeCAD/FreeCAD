@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_QGIVBALLOON_H
 #define TECHDRAWGUI_QGIVBALLOON_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>

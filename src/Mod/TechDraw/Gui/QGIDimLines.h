@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
 #define DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include "QGIPrimPath.h"
 
 QT_BEGIN_NAMESPACE

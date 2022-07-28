@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_EDITABLEPATH_H
 #define TECHDRAWGUI_EDITABLEPATH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QObject>

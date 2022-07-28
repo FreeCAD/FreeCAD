@@ -890,8 +890,8 @@ void CmdTechDrawBalloon::activated(int iMsg)
     ViewProviderViewPart* partVP = dynamic_cast<ViewProviderViewPart*>(guiDoc->getViewProvider(objFeat));
 
     if (pageVP && partVP) {
-        QGVPage* viewPage = pageVP->getGraphicsView();
-        QGSPage* scenePage = pageVP->getGraphicsScene();
+        QGVPage* viewPage = pageVP->getQGVPage();
+        QGSPage* scenePage = pageVP->getQGSPage();
         if (viewPage) {
             viewPage->startBalloonPlacing();
 

@@ -96,8 +96,6 @@ public:
     void setFrameState(bool state);
     void toggleFrameState();
     void setTemplateMarkers(bool state);
-    QGVPage *getGraphicsView() { return m_graphicsView; }
-    QGSPage* getGraphicsScene() { return m_graphicsScene; }
 
     bool canDelete(App::DocumentObject* obj) const override;
 

@@ -288,7 +288,7 @@ QGVPage::~QGVPage()
 
 void QGVPage::centerOnPage(void)
 {
-    centerOn(m_vpPage->getGraphicsScene()->getTemplateCenter());
+    centerOn(m_vpPage->getQGSPage()->getTemplateCenter());
 }
 
 void QGVPage::initNavigationStyle()

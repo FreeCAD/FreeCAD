@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItemGroup>
 #include <QObject>
 #include <Mod/TechDraw/TechDrawGlobal.h>
