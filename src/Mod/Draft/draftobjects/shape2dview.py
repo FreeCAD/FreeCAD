@@ -116,6 +116,11 @@ class Shape2DView(DraftObject):
                     "A list of exclusion points. Any edge touching any of those points will not be drawn.")
             obj.addProperty("App::PropertyVectorList", "ExclusionPoints",
                             "Draft", _tip)
+        if not "ExclusionNames" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.")
+            obj.addProperty("App::PropertyStringList", "ExclusionNames",
+                            "Draft", _tip)
         if not "OnlySolids" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "If this is True, only solid geometry is handled. This overrides the base object's Only Solids property")
@@ -183,6 +188,13 @@ class Shape2DView(DraftObject):
                     nedges.append(e)
         return nedges
 
+    def excludeNames(self,obj,objs):
+        if hasattr(obj,"ExclusionNames"):
+            print("Exclude names:",obj.ExclusionNames)
+            print("Names:",[o.Name for o in objs])
+            objs = [o for o in objs if not(o.Name in obj.ExclusionNames)]
+            return objs
+
     def execute(self,obj):
         if not getattr(obj,"AutoUpdate", True):
             return True
@@ -193,10 +205,10 @@ class Shape2DView(DraftObject):
             if utils.get_type(obj.Base) in ["BuildingPart","SectionPlane"]:
                 objs = []
                 if utils.get_type(obj.Base) == "SectionPlane":
-                    objs = obj.Base.Objects
+                    objs = self.excludeNames(obj,obj.Base.Objects)
                     cutplane = obj.Base.Shape
                 else:
-                    objs = obj.Base.Group
+                    objs = self.excludeNames(obj,obj.Base.Group)
                     cutplane = Part.makePlane(1000, 1000, App.Vector(-500, -500, 0))
                     m = 1
                     if obj.Base.ViewObject and hasattr(obj.Base.ViewObject,"CutMargin"):
@@ -312,7 +324,7 @@ class Shape2DView(DraftObject):
 
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
-                objs = groups.get_group_contents(obj.Base)
+                objs = self.excludeNames(obj,groups.get_group_contents(obj.Base))
                 for o in objs:
                     if hasattr(o,'Shape'):
                         if o.Shape:
