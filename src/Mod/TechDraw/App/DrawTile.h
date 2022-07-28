@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawTile_h_
 #define _TechDraw_DrawTile_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 

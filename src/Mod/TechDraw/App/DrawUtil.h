@@ -23,6 +23,8 @@
 #ifndef _DrawUtil_h_
 #define _DrawUtil_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <string>
 
 #include <QByteArray>

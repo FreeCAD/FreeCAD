@@ -26,6 +26,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QString>
 
 #include <Base/Vector3D.h>

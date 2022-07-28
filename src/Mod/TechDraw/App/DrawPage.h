@@ -23,6 +23,8 @@
 #ifndef _DrawPage_h_
 #define _DrawPage_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <boost_signals2.hpp>
 
 #include <App/DocumentObject.h>

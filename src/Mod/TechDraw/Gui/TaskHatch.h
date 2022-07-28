@@ -24,6 +24,8 @@
 #ifndef GUI_TASKVIEW_TASKHATCH_H
 #define GUI_TASKVIEW_TASKHATCH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/Material.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>

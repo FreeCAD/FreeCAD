@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H
 #define TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 

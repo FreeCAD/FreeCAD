@@ -25,6 +25,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QDomDocument>
 #include <QXmlResultItems>
 
@@ -41,6 +43,7 @@ class DrawPage;
 class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewSymbol);
+    Q_OBJECT
 
 public:
     /// Constructor

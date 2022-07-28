@@ -23,6 +23,8 @@
 #ifndef _DrawViewArch_h_
 #define _DrawViewArch_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <Base/BoundBox.h>
@@ -36,6 +38,7 @@ namespace TechDraw
 class TechDrawExport DrawViewArch : public TechDraw::DrawViewSymbol
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewArch);
+    Q_OBJECT
 
 public:
     /// Constructor

@@ -23,6 +23,8 @@
 #ifndef _DrawProjGroupItem_h_
 #define _DrawProjGroupItem_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <gp_Ax2.hxx>
 
 #include <App/DocumentObject.h>
@@ -51,6 +53,7 @@ class DrawProjGroup;
 class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawProjGroupItem);
+    Q_OBJECT
 
 public:
     /// Constructor

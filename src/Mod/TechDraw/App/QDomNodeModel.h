@@ -27,6 +27,8 @@
 #ifndef _QDOMNODEMODEL_H_
 #define _QDOMNODEMODEL_H_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QAbstractXmlNodeModel>
 #include <QDomDocument>
 #include <QXmlNamePool>

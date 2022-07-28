@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWGROUPITEM_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWGROUPITEM_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "ViewProviderViewPart.h"

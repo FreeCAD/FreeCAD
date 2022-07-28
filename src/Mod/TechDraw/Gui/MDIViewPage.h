@@ -140,7 +140,6 @@ private:
     std::string m_documentName;
     bool isSelectionBlocked;
     QPointer<QGSPage> m_scene;
-    QPointer<QGVPage> m_view;
 
     QString m_currentPath;
     ViewProviderPage* m_vpPage;

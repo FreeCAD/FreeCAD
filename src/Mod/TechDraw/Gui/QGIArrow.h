@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
 #define DRAWINGGUI_QGRAPHICSITEMARROW_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Base/Vector3D.h>
 
 # include "QGIPrimPath.h"

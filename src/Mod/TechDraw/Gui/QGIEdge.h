@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
 #define DRAWINGGUI_QGRAPHICSITEMEDGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIPrimPath.h"
 
 namespace TechDrawGui

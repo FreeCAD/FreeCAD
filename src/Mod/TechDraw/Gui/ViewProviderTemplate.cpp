@@ -76,7 +76,7 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
             Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);
             TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
             if (vpp) {
-                vpp->getGraphicsScene()->attachTemplate(t);
+                vpp->getQGSPage()->attachTemplate(t);
             }
        }
     }
@@ -135,7 +135,7 @@ QGITemplate* ViewProviderTemplate::getQTemplate()
         Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(dt->getDocument())->getViewProvider(page);
         TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
         if (vpp != nullptr) {
-            return vpp->getGraphicsScene()->getTemplate();
+            return vpp->getQGSPage()->getTemplate();
         }
     }
     return nullptr;

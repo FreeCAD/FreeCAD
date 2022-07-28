@@ -24,6 +24,8 @@
 #ifndef _DrawViewAnnotation_h_
 #define _DrawViewAnnotation_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
@@ -38,6 +40,7 @@ namespace TechDraw
 class TechDrawExport DrawViewAnnotation : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewAnnotation);
+    Q_OBJECT
 
 public:
     /// Constructor

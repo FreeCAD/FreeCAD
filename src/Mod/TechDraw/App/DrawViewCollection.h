@@ -24,6 +24,8 @@
 #ifndef _TECHDRAW_FEATUREVIEWCOLLECTION_h_
 #define _TECHDRAW_FEATUREVIEWCOLLECTION_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 
@@ -37,6 +39,7 @@ namespace TechDraw
 class TechDrawExport DrawViewCollection : public DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewCollection);
+    Q_OBJECT
 
 public:
     App::PropertyLinkList Views;

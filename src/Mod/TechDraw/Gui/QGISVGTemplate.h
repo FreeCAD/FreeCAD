@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSvgItem;
