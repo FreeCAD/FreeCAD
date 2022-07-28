@@ -256,11 +256,16 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
     }
 
     //convert the hlr output into TD Geometry
-    const DrawViewPart* dvp = static_cast<const DrawViewPart*>(m_parent);
     extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                         true);
     extractGeometry(TechDraw::ecOUTLINE,
                         true);
+
+    const DrawViewPart* dvp = static_cast<const DrawViewPart*>(m_parent);
+    if (!dvp) {
+        return;       //some routines do not have a dvp (ex shape outline)
+    }
+
     if (dvp->SmoothVisible.getValue()) {
         extractGeometry(TechDraw::ecSMOOTH,
                             true);
