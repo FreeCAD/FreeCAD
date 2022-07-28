@@ -471,26 +471,22 @@ def polar_placements(base_placement,
     if number == 0:
         return placements
 
-    spin = App.Placement(App.Vector(), base_placement.Rotation)
-    pl = App.Placement(base_placement.Base, App.Rotation())
-    center = center.sub(base_placement.Base)
-
     if angle == 360:
-        fraction = float(angle)/number
+        fraction = float(angle) / number
     else:
-        fraction = float(angle)/(number - 1)
-
-    center_tuple = DraftVecUtils.tup(center)
-    axis_tuple = DraftVecUtils.tup(axis)
+        fraction = float(angle) / (number - 1)
 
     for i in range(number - 1):
-        currangle = fraction + (i*fraction)
-        npl = pl.copy()
-        npl.rotate(center_tuple, axis_tuple, currangle)
-        npl = npl.multiply(spin)
+        currangle = fraction + (i * fraction)
+        npl = base_placement.copy()
+        # Workaround for `faulty` implementation of Base.Placement.rotate(center, axis, angle).
+        # See: https://forum.freecadweb.org/viewtopic.php?p=613196#p613196
+        offset_rotation = App.Placement(App.Vector(0, 0, 0), App.Rotation(axis, currangle), center)
+        npl = offset_rotation * npl
+
         if axisvector:
             if not DraftVecUtils.isNull(axisvector):
-                npl.translate(App.Vector(axisvector).multiply(i+1))
+                npl.translate(App.Vector(axisvector).multiply(i + 1))
         placements.append(npl)
 
     return placements
@@ -512,20 +508,21 @@ def circ_placements(base_placement,
 
     for xcount in range(1, circle_number):
         rc = xcount * r_distance
+        trans = App.Vector(direction).multiply(rc)
         c = 2 * rc * math.pi
         n = math.floor(c / tan_distance)
         n = int(math.floor(n / symmetry) * symmetry)
         if n == 0:
             continue
 
-        angle = 360.0/n
+        angle = 360.0 / n
         for ycount in range(0, n):
             npl = base_placement.copy()
-            trans = App.Vector(direction).multiply(rc)
             npl.translate(trans)
-            npl.rotate(npl.Rotation.inverted().multVec(center-trans),
-                       axis,
-                       ycount * angle)
+            # Workaround for `faulty` implementation of Base.Placement.rotate(center, axis, angle).
+            # See: https://forum.freecadweb.org/viewtopic.php?p=613196#p613196
+            offset_rotation = App.Placement(App.Vector(0, 0, 0), App.Rotation(axis, ycount * angle), center)
+            npl = offset_rotation * npl
             placements.append(npl)
 
     return placements
