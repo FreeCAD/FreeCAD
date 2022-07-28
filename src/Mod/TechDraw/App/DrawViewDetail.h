@@ -23,6 +23,8 @@
 #ifndef _DrawViewDetail_h_
 #define _DrawViewDetail_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <gp_Ax2.hxx>
 #include <TopoDS_Shape.hxx>
 

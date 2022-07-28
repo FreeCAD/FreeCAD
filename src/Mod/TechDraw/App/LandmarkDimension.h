@@ -23,6 +23,8 @@
 #ifndef _TechDraw_LandmarkDimension_h_
 #define _TechDraw_LandmarkDimension_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include <App/DocumentObject.h>
 # include <App/PropertyStandard.h>
 
@@ -42,6 +44,7 @@ class DrawViewPart;
 class TechDrawExport LandmarkDimension : public TechDraw::DrawViewDimension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::LandmarkDimension);
+    Q_OBJECT
 
 public:
     /// Constructor

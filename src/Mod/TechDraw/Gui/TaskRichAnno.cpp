@@ -116,7 +116,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     m_qgParent = nullptr;
     if (m_baseFeat) {
-        m_qgParent = m_vpp->getGraphicsScene()->findQViewForDocObj(m_baseFeat);
+        m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
     }
 
     ui->setupUi(this);
@@ -158,8 +158,8 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_vpp = static_cast<ViewProviderPage*>(vp);
 
     m_qgParent = nullptr;
-    if (m_vpp->getGraphicsScene()) {
-        m_qgParent = m_vpp->getGraphicsScene()->findQViewForDocObj(baseFeat);
+    if (m_vpp->getQGSPage()) {
+        m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(baseFeat);
     }
 
     ui->setupUi(this);

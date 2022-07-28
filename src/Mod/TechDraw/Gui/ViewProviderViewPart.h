@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 
 #include <Mod/TechDraw/App/DrawViewPart.h>

@@ -29,6 +29,8 @@
 #ifndef _MRICHTEXTEDIT_H_
 #define _MRICHTEXTEDIT_H_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QPointer>
 
 #include "ui_mrichtextedit.h"

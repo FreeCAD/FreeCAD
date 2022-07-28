@@ -23,6 +23,8 @@
 #ifndef TECHDRAW_PropertyCosmeticVertexList_H
 #define TECHDRAW_PropertyCosmeticVertexList_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
 #include <App/Property.h>
 

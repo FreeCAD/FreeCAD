@@ -23,6 +23,8 @@
 #ifndef _TECHDRAW_FEATUREVIEWGROUP_H_
 #define _TECHDRAW_FEATUREVIEWGROUP_H_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <string>
 # include <QRectF>
 
@@ -49,7 +51,8 @@ class DrawProjGroupItem;
 class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawProjGroup);
-
+    Q_OBJECT
+    
 public:
     /// Constructor
     DrawProjGroup();

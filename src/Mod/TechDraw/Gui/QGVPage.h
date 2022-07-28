@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <memory>
+
 #include <QGraphicsView>
 #include <QLabel>
 #include <QPainterPath>

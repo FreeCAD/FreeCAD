@@ -23,6 +23,7 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
 #define DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 namespace TechDraw{
     class DrawTemplate;

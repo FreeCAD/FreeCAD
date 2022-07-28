@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QObject>
+
 #include "QGIViewCollection.h"
 
 QT_BEGIN_NAMESPACE

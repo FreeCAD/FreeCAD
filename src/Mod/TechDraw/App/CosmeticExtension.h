@@ -23,6 +23,8 @@
 #ifndef TECHDRAW_COSMETICEXTENSION_H
 #define TECHDRAW_COSMETICEXTENSION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
 #include <Base/Vector3D.h>

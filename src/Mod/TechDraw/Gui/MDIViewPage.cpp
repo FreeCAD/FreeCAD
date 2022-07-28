@@ -144,8 +144,7 @@ MDIViewPage::~MDIViewPage()
 void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
 {
     m_scene = scene;
-    m_view = viewWidget;
-    setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
+    setCentralWidget(viewWidget);            //this makes viewWidget a Qt child of MDIViewPage
     QObject::connect(m_scene, SIGNAL(selectionChanged()),
                     this, SLOT  (sceneSelectionChanged()));
 }
@@ -475,7 +474,7 @@ void MDIViewPage::toggleKeepUpdated()
 
 void MDIViewPage::viewAll()
 {
-    m_view->fitInView(m_scene->itemsBoundingRect(), Qt::KeepAspectRatio);
+    m_vpPage->getQGVPage()->fitInView(m_scene->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
 
 void MDIViewPage::saveSVG()

@@ -502,7 +502,7 @@ void  ViewProviderPage::setGrid()
         pageWidth = dp->getPageWidth();
         pageHeight = dp->getPageHeight();
     }
-    QGVPage* widget = getGraphicsView();
+    QGVPage* widget = getQGVPage();
     if (widget) {
         if (ShowGrid.getValue()) {
             widget->showGrid(true);

@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 #define TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 
