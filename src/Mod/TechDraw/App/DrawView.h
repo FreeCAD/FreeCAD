@@ -112,6 +112,9 @@ public:
 
     void setScaleAttribute();
 
+    void overrideKeepUpdated(bool s) { m_overrideKeepUpdated = s; }
+    bool overrideKeepUpdated(void) { return m_overrideKeepUpdated; }
+
 protected:
     void onChanged(const App::Property* prop) override;
     virtual void validateScale();
@@ -125,6 +128,8 @@ protected:
 private:
     static const char* ScaleTypeEnums[];
     static App::PropertyFloatConstraint::Constraints scaleRange;
+
+    bool m_overrideKeepUpdated;
 };
 
 typedef App::FeaturePythonT<DrawView> DrawViewPython;

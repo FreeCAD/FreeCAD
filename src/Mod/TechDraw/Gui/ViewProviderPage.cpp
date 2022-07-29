@@ -350,7 +350,6 @@ void ViewProviderPage::removeMDIView(void)
 MDIViewPage* ViewProviderPage::getMDIViewPage() const
 {
     if (m_mdiView.isNull()) {
-        Base::Console().Log("VPP::getMDIViewPage has no m_mdiView!\n");
         return nullptr;
     }
     return m_mdiView;

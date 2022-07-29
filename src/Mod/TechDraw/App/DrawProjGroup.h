@@ -72,9 +72,11 @@ public:
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
 
-    Base::BoundBox3d getBoundingBox() const;
-    double calculateAutomaticScale() const;
-    QRectF getRect() const override;
+    double autoScale() const override;
+    double autoScale(double w, double h) const override;
+    QRectF getRect() const override;   //always scaled
+    QRectF getRect(bool scaled) const;     //scaled or unscaled
+
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
 
@@ -137,7 +139,13 @@ public:
     void updateChildrenEnforce();
 
     std::vector<App::DocumentObject*> getAllSources() const;
+    bool checkFit() const override;
+    bool checkFit(DrawPage* p) const override;
 
+    bool waitingForChildren() const;
+    void reportReady();
+
+    void dumpTouchedProps();
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -158,30 +166,29 @@ protected:
      */
     void makeViewBbs(DrawProjGroupItem *viewPtrs[10],
                      Base::BoundBox3d bboxes[10],
-                     bool documentScale = true) const;
+                     bool scaled = true) const;
 
     /// Helper for calculateAutomaticScale
     /*!
      * Returns a width and height in object-space scale, for the enabled views
      * without accounting for their actual X and Y positions or borders.
      */
-    void minimumBbViews(DrawProjGroupItem *viewPtrs[10],
-                       double &width, double &height) const;
+    void getViewArea(DrawProjGroupItem *viewPtrs[10],
+                        double &width, double &height,
+                        bool scaled = true) const;
 
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage() const;
 
     void updateChildrenSource();
     void updateChildrenLock();
-    void updateViews();
+
     int getViewIndex(const char *viewTypeCStr) const;
     int getDefProjConv() const;
     Base::Vector3d dir2vec(gp_Dir d);
     gp_Dir vec2dir(Base::Vector3d v);
 
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-    
-    bool m_lockScale;
 };
 
 } //namespace TechDraw

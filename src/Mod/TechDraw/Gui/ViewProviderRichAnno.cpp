@@ -74,20 +74,6 @@ ViewProviderRichAnno::~ViewProviderRichAnno()
 {
 }
 
-bool ViewProviderRichAnno::setEdit(int ModNum)
-{
-//    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
-    if (ModNum != ViewProvider::Default ) {
-        return ViewProviderDrawingView::setEdit(ModNum);
-    }
-    if (Gui::Control().activeDialog()) { //TaskPanel already open!
-        return false;
-    }
-    Gui::Selection().clearSelection();
-    Gui::Control().showDialog(new TaskDlgRichAnno(this));
-    return true;
-}
-
 bool ViewProviderRichAnno::doubleClicked()
 {
 //    Base::Console().Message("VPRA::doubleClicked()\n");

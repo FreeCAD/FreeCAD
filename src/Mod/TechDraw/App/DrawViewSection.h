@@ -104,6 +104,7 @@ public:
     virtual void postSectionCutTasks();
     void waitingForCut(bool s) { m_waitingForCut = s; }
     bool waitingForCut(void) const { return m_waitingForCut; }
+    bool waitingForResult() const override;
 
     std::vector<TechDraw::FacePtr> getTDFaceGeometry() {return tdSectionFaces;}
 
@@ -116,10 +117,9 @@ public:
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
 
-    TopoDS_Compound getSectionFaces() { return sectionFaces;}
-//    std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }   //obs?
-    TopoDS_Face getSectionTFace(int i);
-    void makeLineSets() ;
+    TopoDS_Compound getSectionTFaces() { return sectionTopoDSFaces;}
+    TopoDS_Face getSectionTopoDSFace(int i);
+    void makeLineSets(void) ;
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
@@ -136,8 +136,7 @@ public Q_SLOTS:
     void onSectionCutFinished(void);
 
 protected:
-    TopoDS_Compound sectionFaces;    //tSectionFaces
-//    std::vector<TopoDS_Wire> sectionFaceWires;   //obs??? getSectionFaceWires
+    TopoDS_Compound sectionTopoDSFaces;       //needed for hatching
     std::vector<LineSet> m_lineSets;
     std::vector<TechDraw::FacePtr> tdSectionFaces;
 
