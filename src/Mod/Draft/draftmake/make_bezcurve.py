@@ -92,7 +92,7 @@ def make_bezcurve(pointslist,
                          Part.BezierCurve().MaxDegree)
     obj.Closed = closed
     obj.Support = support
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
     obj.Proxy.resetcontinuity(obj)
     if placement: obj.Placement = placement

@@ -68,7 +68,7 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     Polygon(obj)
     obj.FacesNumber = nfaces
     obj.Radius = radius
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
     if inscribed:
         obj.DrawMode = "inscribed"

@@ -84,7 +84,7 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
     obj.Height = height
     obj.Support = support
 
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
 
     if placement: obj.Placement = placement

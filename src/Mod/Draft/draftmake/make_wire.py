@@ -103,9 +103,9 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
         if not bs2wire:
             pointslist = [ipl.multVec(p) for p in pointslist]
 
-    if len(pointslist) == 2: 
+    if len(pointslist) == 2:
         fname = "Line"
-    else: 
+    else:
         fname = "Wire"
 
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", fname)
@@ -113,11 +113,11 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support
-    
-    if face != None:
+
+    if face is not None:
         obj.MakeFace = face
 
-    if placement: 
+    if placement:
         obj.Placement = placement
 
     if App.GuiUp:

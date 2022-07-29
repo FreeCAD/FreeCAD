@@ -87,7 +87,7 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
 
     Circle(obj)
 
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
 
     if isinstance(radius,Part.Edge):
@@ -112,7 +112,7 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
                 obj.LastAngle = a1
     else:
         obj.Radius = radius
-        if (startangle != None) and (endangle != None):
+        if (startangle is not None) and (endangle is not None):
             if startangle == -0: startangle = 0
             obj.FirstAngle = startangle
             obj.LastAngle = endangle

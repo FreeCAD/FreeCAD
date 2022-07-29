@@ -74,7 +74,7 @@ def make_ellipse(majradius, minradius, placement=None, face=None, support=None):
     obj.MinorRadius = minradius
     obj.Support = support
 
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
 
     if placement:
