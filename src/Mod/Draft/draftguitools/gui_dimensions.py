@@ -153,7 +153,7 @@ class Dimension(gui_base_original.Creator):
                     if v.Point == edge.Vertexes[1].Point:
                         v2 = i
 
-                if v1 != None and v2 != None: # note that v1 or v2 can be zero
+                if v1 is not None and v2 is not None: # note that v1 or v2 can be zero
                     self.link = [sel_object.Object, v1, v2]
             elif DraftGeomUtils.geomType(edge) == "Circle":
                 self.node.extend([edge.Curve.Center,

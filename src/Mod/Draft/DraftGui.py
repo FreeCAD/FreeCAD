@@ -819,7 +819,7 @@ class DraftToolBar:
         pb = []
         for i in range(self.layout.count()):
             w = self.layout.itemAt(i).widget()
-            if w != None and w.inherits('QPushButton'):
+            if w is not None and w.inherits('QPushButton'):
                 pb.append(w)
 
         for i in pb:
@@ -1770,7 +1770,7 @@ class DraftToolBar:
         dp = None
         if point:
             dp = point
-            if self.relativeMode: # and (last != None):
+            if self.relativeMode: # and (last is not None):
                 if self.globalMode:
                     dp = point - last
                 else:
@@ -2206,7 +2206,7 @@ class DraftToolBar:
                                  "Draft_ShapeString","Draft_BezCurve"]
                 self.title = "Create objects"
             def shouldShow(self):
-                return (FreeCAD.ActiveDocument != None) and (not FreeCADGui.Selection.getSelection())
+                return (FreeCAD.ActiveDocument is not None) and (not FreeCADGui.Selection.getSelection())
 
         class DraftModifyWatcher:
             def __init__(self):
@@ -2217,7 +2217,7 @@ class DraftToolBar:
                                  "Draft_Drawing"]
                 self.title = "Modify objects"
             def shouldShow(self):
-                return (FreeCAD.ActiveDocument != None) and (FreeCADGui.Selection.getSelection() != [])
+                return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])
 
         # OBSOLETE
         #class DraftTrayWatcher:
@@ -2254,7 +2254,7 @@ class DraftToolBar:
             self.draftWidget.toggleViewAction().setVisible(True)
 
     def Deactivated(self):
-        if (FreeCAD.activeDraftCommand != None):
+        if (FreeCAD.activeDraftCommand is not None):
             self.continueMode = False
             FreeCAD.activeDraftCommand.finish()
         if self.taskmode:
