@@ -98,7 +98,11 @@ Metadata::Metadata(const fs::path& metadataFile)
     auto errHandler = std::make_unique<MetadataInternal::XMLErrorHandler>();
     _parser->setErrorHandler(errHandler.get());
 
+#if defined (FC_OS_WIN32)
+    _parser->parse(reinterpret_cast<const XMLCh*>(metadataFile.wstring().c_str()));
+#else
     _parser->parse(metadataFile.string().c_str());
+#endif
 
     auto doc = _parser->getDocument();
     _dom = doc->getDocumentElement();
