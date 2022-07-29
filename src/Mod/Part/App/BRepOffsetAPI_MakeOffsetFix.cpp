@@ -252,7 +252,7 @@ TopoDS_Shape BRepOffsetAPI_MakeOffsetFix::Replace(GeomAbs_CurveType type, const 
             xp.Next();
         }
 
-        return comp;
+        return TopoDS_Compound(std::move(comp));
     }
     else if (S.ShapeType() == TopAbs_WIRE) {
         return ReplaceEdges(type, TopoDS::Wire(S));
