@@ -77,7 +77,7 @@ PyMOD_INIT_FUNC(Path)
     Base::Interpreter().addType(&Path::ToolPy           ::Type, pathModule, "Tool");
     Base::Interpreter().addType(&Path::TooltablePy      ::Type, pathModule, "Tooltable");
     Base::Interpreter().addType(&Path::AreaPy           ::Type, pathModule, "Area");
-    Base::Interpreter().addType(&Path::VoronoiPy        ::Type, pathModule, "Voronoi");
+    Base::Interpreter().addType(&Path::VoronoiPy        ::Type, pathModule, "VoronoiDiagram");
     Base::Interpreter().addType(&Path::VoronoiCellPy    ::Type, pathModule, "VoronoiCell");
     Base::Interpreter().addType(&Path::VoronoiEdgePy    ::Type, pathModule, "VoronoiEdge");
     Base::Interpreter().addType(&Path::VoronoiVertexPy  ::Type, pathModule, "VoronoiVertex");

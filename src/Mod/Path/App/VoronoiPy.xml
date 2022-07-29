@@ -3,6 +3,7 @@
     <PythonExport 
         Father="BaseClassPy" 
         Name="VoronoiPy" 
+        PythonName="VoronoiDiagram"
         Twin="Voronoi" 
         TwinPointer="Voronoi" 
         Include="Mod/Path/App/Voronoi.h" 

@@ -292,7 +292,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         voronoiWires = []
         for f in faces:
-            vd = Path.Voronoi()
+            vd = Path.VoronoiDiagram()
             insert_many_wires(vd, f.Wires)
 
             vd.construct()
@@ -354,7 +354,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             )
             return
 
-        try:
+        if True:
             faces = []
 
             for base in obj.BaseShapes:
@@ -383,10 +383,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     )
                 )
 
-        except Exception as e:
-            PathLog.error(
-                "Error processing Base object. Engraving operation will produce no output."
-            )
+        #except Exception as e:
+        #    PathLog.error(
+        #        "Error processing Base object. Engraving operation will produce no output."
+        #    )
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
         """updateDepths(obj) ... engraving is always done at the top most z-value"""
