@@ -1137,7 +1137,7 @@ void SectionCut::onCutYvalueChanged(double val)
         // refresh X limits
         // this is done by
         // first making the cut X box visible, the setting the limits only for X
-        // if x-limit in box direcion is larger than object, reset value to saved limit
+        // if x-limit in box direction is larger than object, reset value to saved limit
         if (hasBoxX) {
             auto CutBoxX = doc->getObject(BoxXName);
             if (!CutBoxX)
@@ -1230,7 +1230,7 @@ void SectionCut::onCutZvalueChanged(double val)
     // refresh X and Y limits
     // this is done e.g. for X by
     // first making the cut X box visible, the setting the limits only for X
-    // if x-limit in box direcion is larger than object, reset value to saved limit
+    // if x-limit in box direction is larger than object, reset value to saved limit
     SbBox3f CutBoundingBox;
     if (hasBoxX) {
         auto CutBoxX = doc->getObject(BoxXName);
