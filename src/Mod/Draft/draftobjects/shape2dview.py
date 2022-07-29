@@ -190,12 +190,11 @@ class Shape2DView(DraftObject):
 
     def excludeNames(self,obj,objs):
         if hasattr(obj,"ExclusionNames"):
-            print("Exclude names:",obj.ExclusionNames)
-            print("Names:",[o.Name for o in objs])
             objs = [o for o in objs if not(o.Name in obj.ExclusionNames)]
             return objs
 
     def execute(self,obj):
+
         if not getattr(obj,"AutoUpdate", True):
             return True
         import Part, DraftGeomUtils
