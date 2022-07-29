@@ -57,6 +57,7 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     ui->cbEndCap->onSave();
     ui->sbMaxTiles->onSave();
     ui->sbMaxPat->onSave();
+    ui->cbReportProgress->onSave();
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadSettings()
@@ -73,6 +74,7 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->cbEndCap->onRestore();
     ui->sbMaxTiles->onRestore();
     ui->sbMaxPat->onRestore();
+    ui->cbReportProgress->onRestore();
 }
 
 /**
