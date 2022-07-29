@@ -93,7 +93,7 @@ public:
     static std::string prefGeomHatchFile(void);
     static std::string prefGeomHatchName();
     static App::Color prefGeomHatchColor();
-
+    static std::vector<LineSet> makeLineSets(std::string fileSpec, std::string myPattern);
 
 protected:
     virtual void onDocumentRestored() override;

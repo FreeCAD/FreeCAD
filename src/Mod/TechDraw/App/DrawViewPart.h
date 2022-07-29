@@ -209,7 +209,7 @@ public:
     void waitingForFaces(bool s) { m_waitingForFaces = s;}
     bool waitingForHlr() const { return m_waitingForHlr; }
     void waitingForHlr(bool s) { m_waitingForHlr = s; }
-    bool waitingForResult() const;
+    virtual bool waitingForResult() const;
 
     void progressValueChanged(int v);
 

@@ -356,8 +356,11 @@ void DrawPage::updateAllViews()
         if (part) {
             continue;
         }
-        if (v) {
-            v->recomputeFeature();
+
+        TechDraw::DrawView* view = dynamic_cast<TechDraw::DrawView*>(v);
+        if (view) {
+            view->overrideKeepUpdated(true);
+            view->recomputeFeature();
         }
     }
 }

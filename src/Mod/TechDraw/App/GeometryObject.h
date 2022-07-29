@@ -122,6 +122,7 @@ public:
     TopoDS_Shape projectFace(const TopoDS_Shape &face,
                              const gp_Ax2 &CS);
 
+    void makeTDGeometry();
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(FacePtr f);
     void clearFaceGeom();
