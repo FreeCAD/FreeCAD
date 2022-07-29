@@ -192,7 +192,7 @@ class _ArchSchedule:
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
-                    objs = [o for o in objs if o != None]
+                    objs = [o for o in objs if o is not None]
                 else:
                     objs = FreeCAD.ActiveDocument.Objects
                 if len(objs) == 1:

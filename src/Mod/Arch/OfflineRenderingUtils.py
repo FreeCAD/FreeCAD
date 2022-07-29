@@ -122,7 +122,7 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
     # plus a GuiCameraSettings key that contains an iv repr of a coin camera
 
     def __init__(self):
-        
+
         super().__init__()
         self.guidata = {}
         self.current = None
@@ -188,7 +188,7 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
                 self.current = None
                 self.properties = {}
         elif tag == "Property":
-            if self.currentprop and (self.currentval != None):
+            if self.currentprop and (self.currentval is not None):
                 self.properties[self.currentprop] = {"type":self.currenttype,"value":self.currentval}
                 self.currentprop = None
                 self.currentval = None

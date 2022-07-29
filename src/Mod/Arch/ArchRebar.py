@@ -86,7 +86,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         obj.Diameter = p.GetFloat("RebarDiameter",6)
     obj.Amount = amount
     obj.Document.recompute()
-    if offset != None:
+    if offset is not None:
         obj.OffsetStart = offset
         obj.OffsetEnd = offset
     else:
