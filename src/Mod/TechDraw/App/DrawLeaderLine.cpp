@@ -143,6 +143,7 @@ App::DocumentObjectExecReturn *DrawLeaderLine::execute()
         return App::DocumentObject::StdReturn;
     }
     adjustLastSegment();
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 

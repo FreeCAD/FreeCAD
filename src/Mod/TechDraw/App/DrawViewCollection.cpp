@@ -77,6 +77,7 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute()
 
     lockChildren();
 
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 

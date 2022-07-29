@@ -81,18 +81,7 @@ DrawProjGroupItem::~DrawProjGroupItem()
 
 short DrawProjGroupItem::mustExecute() const
 {
-    short result = 0;
-    if (!isRestoring()) {
-        result  =  (Direction.isTouched()  ||
-                    XDirection.isTouched() ||
-                    Source.isTouched()  ||
-                    XSource.isTouched()  ||
-                    Scale.isTouched());
-    }
-
-    if (result) {
-        return result;
-    }
+    //there is nothing unique about dpgi vs dvp
     return TechDraw::DrawViewPart::mustExecute();
 }
 
@@ -158,22 +147,19 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
         return new App::DocumentObjectExecReturn("DPGI: Direction and XDirection are parallel");
     }
 
-    App::DocumentObjectExecReturn* ret = DrawViewPart::execute();
-    //autoPosition needs to run after the geometry has been created
-    autoPosition();
-    return ret;
+    return DrawViewPart::execute();
 }
 
 void DrawProjGroupItem::postHlrTasks(void)
 {
 //    Base::Console().Message("DPGI::postHlrTasks() - %s\n", getNameInDocument());
-    //DPGI has no geometry until HLR has finished, and the DPG can not properly
-    //AutoDistibute until all its items have geometry.  autoPositionChildren is
-    //relatively cheap so we can do it after every geometry update
-    if (getPGroup() && getPGroup()->AutoDistribute.getValue()) {
-        getPGroup()->autoPositionChildren();
-    }
     DrawViewPart::postHlrTasks();
+
+    //DPGI has no geometry until HLR has finished, and the DPG can not properly
+    //AutoDistibute until all its items have geometry.
+    autoPosition();
+
+    getPGroup()->reportReady();     //tell the parent DPG we are ready
 }
 
 void DrawProjGroupItem::autoPosition()
@@ -184,11 +170,12 @@ void DrawProjGroupItem::autoPosition()
     }
     Base::Vector3d newPos;
     if (getPGroup() && getPGroup()->AutoDistribute.getValue()) {
-            newPos = getPGroup()->getXYPosition(Type.getValueAsString());
-            X.setValue(newPos.x);
-            Y.setValue(newPos.y);
-            requestPaint();
-            purgeTouched();               //prevents "still touched after recompute" message
+        newPos = getPGroup()->getXYPosition(Type.getValueAsString());
+        X.setValue(newPos.x);
+        Y.setValue(newPos.y);
+        requestPaint();
+        purgeTouched();               //prevents "still touched after recompute" message
+        getPGroup()->purgeTouched();  //changing dpgi x,y marks parent dpg as touched
     }
 }
 

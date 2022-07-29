@@ -81,7 +81,8 @@ public:
                          DrawViewSection* dvs);
     void postHlrTasks(void) override;
     void waitingForDetail(bool s) { m_waitingForDetail = s; }
-    bool waitingForDetail(void) { return m_waitingForDetail; }
+    bool waitingForDetail(void) const { return m_waitingForDetail; }
+    bool waitingForResult() const override;
 
     double getFudgeRadius(void);
     TopoDS_Shape projectEdgesOntoFace(TopoDS_Shape& edgeShape,
@@ -104,6 +105,9 @@ protected:
     QFutureWatcher<void> m_detailWatcher;
     QFuture<void> m_detailFuture;
     bool m_waitingForDetail;
+
+    DrawViewPart* m_saveDvp;
+    DrawViewSection* m_saveDvs;
 };
 
 typedef App::FeaturePythonT<DrawViewDetail> DrawViewDetailPython;

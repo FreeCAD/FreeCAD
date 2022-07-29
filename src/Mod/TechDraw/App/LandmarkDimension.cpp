@@ -154,6 +154,8 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
 //    dvp->resetReferenceVerts();
     dvp->addReferencesToGeom();
     dvp->requestPaint();
+
+    overrideKeepUpdated(false);
     return dvdResult;
 }
 

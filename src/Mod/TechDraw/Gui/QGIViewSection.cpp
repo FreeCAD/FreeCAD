@@ -67,24 +67,25 @@ void QGIViewSection::draw()
 void QGIViewSection::drawSectionFace()
 {
     auto section( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
-    if (!section)
+    if (!section) {
         return;
+    }
 
-    if (!section->hasGeometry())
+    if (!section->hasGeometry()) {
         return;
+    }
+
     Gui::ViewProvider* gvp = QGIView::getViewProvider(section);
     ViewProviderViewSection* sectionVp = dynamic_cast<ViewProviderViewSection*>(gvp);
     if (!sectionVp || !sectionVp->ShowCutSurface.getValue())
         return;
 
-    float lineWidth    = sectionVp->LineWidth.getValue();
-
     auto sectionFaces( section->getTDFaceGeometry() );
     if (sectionFaces.empty()) {
-        Base::Console().
-             Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
     }
+
+    float lineWidth    = sectionVp->LineWidth.getValue();
 
     std::vector<TechDraw::FacePtr>::iterator fit = sectionFaces.begin();
     int i = 0;

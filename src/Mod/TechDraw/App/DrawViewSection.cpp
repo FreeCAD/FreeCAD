@@ -26,32 +26,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
-//#include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepAlgoAPI_Section.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepTools.hxx>
-#include <BRepCheck_Wire.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Dir.hxx>
 #include <Geom_Plane.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <ShapeAnalysis.hxx>
-#include <ShapeFix_Wire.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
@@ -60,14 +50,14 @@
 #include <TopoDS_Compound.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-
 #endif
 
 #include <chrono>
+#include <sstream>
 
 #include <QFile>
 #include <QFileInfo>
-#include "QtConcurrent/qtconcurrentrun.h"
+#include <QtConcurrentRun>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -163,121 +153,59 @@ DrawViewSection::~DrawViewSection()
 
 short DrawViewSection::mustExecute() const
 {
-    short result = 0;
-    if (!isRestoring()) {
-        result  = (Scale.isTouched() ||
-                   Direction.isTouched()     ||
-                   BaseView.isTouched()  ||
-                   SectionNormal.isTouched() ||
-                   SectionOrigin.isTouched() );
+    if (isRestoring()) {
+        return TechDraw::DrawView::mustExecute();
     }
-    if (result) {
-        return result;
+
+    if (Scale.isTouched() ||
+        Direction.isTouched()     ||
+        BaseView.isTouched()  ||
+        SectionNormal.isTouched() ||
+        SectionOrigin.isTouched() ) {
+        return 1;
     }
+
     return TechDraw::DrawView::mustExecute();
 }
 
 void DrawViewSection::onChanged(const App::Property* prop)
 {
-    App::Document* doc = getDocument();
-    if (!isRestoring()) {
-        if (prop == &SectionSymbol) {
-            std::string lblText = "Section " +
-                                  std::string(SectionSymbol.getValue()) +
-                                  " - " +
-                                  std::string(SectionSymbol.getValue());
-            Label.setValue(lblText);
-        } else if (prop == &SectionOrigin) {
-            App::DocumentObject* base = BaseView.getValue();
-            TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(base);
-            if (dv) {
-                dv->requestPaint();
-            }
-        } else if (prop == &CutSurfaceDisplay) {
-            if (CutSurfaceDisplay.isValue("PatHatch")) {
-                makeLineSets();
-            }
-        }
-
-        if ((prop == &FileHatchPattern) && doc) {
-            if (!FileHatchPattern.isEmpty()) {
-                Base::FileInfo fi(FileHatchPattern.getValue());
-                if (fi.isReadable()) {
-                    replaceSvgIncluded(FileHatchPattern.getValue());
-                }
-            }
-        }
-
-        if ((prop == &FileGeomPattern) && doc) {
-            if (!FileGeomPattern.isEmpty()) {
-                Base::FileInfo fi(FileGeomPattern.getValue());
-                if (fi.isReadable()) {
-                    replacePatIncluded(FileGeomPattern.getValue());
-                }
-            }
-        }
+    if (isRestoring()) {
+        DrawView::onChanged(prop);
+        return;
     }
 
-    if (prop == &FileGeomPattern    ||
+    App::Document* doc = getDocument();
+    if (prop == &SectionSymbol) {
+        std::string lblText = "Section " +
+                              std::string(SectionSymbol.getValue()) +
+                              " - " +
+                              std::string(SectionSymbol.getValue());
+        Label.setValue(lblText);
+    } else if (prop == &CutSurfaceDisplay) {
+        if (CutSurfaceDisplay.isValue("PatHatch")) {
+            makeLineSets();
+        }
+    } else if ((prop == &FileHatchPattern) && doc) {
+        if (!FileHatchPattern.isEmpty()) {
+            Base::FileInfo fi(FileHatchPattern.getValue());
+            if (fi.isReadable()) {
+                replaceSvgIncluded(FileHatchPattern.getValue());
+            }
+        }
+    } else if ((prop == &FileGeomPattern) && doc) {
+        if (!FileGeomPattern.isEmpty()) {
+            Base::FileInfo fi(FileGeomPattern.getValue());
+            if (fi.isReadable()) {
+                replacePatIncluded(FileGeomPattern.getValue());
+            }
+        }
+    } else if (prop == &FileGeomPattern    ||
         prop == &NameGeomPattern ) {
         makeLineSets();
     }
+
     DrawView::onChanged(prop);
-}
-
-void DrawViewSection::makeLineSets()
-{
-//    Base::Console().Message("DVS::makeLineSets()\n");
-    if (!PatIncluded.isEmpty())  {
-        std::string fileSpec = PatIncluded.getValue();
-        Base::FileInfo fi(fileSpec);
-        std::string ext = fi.extension();
-        if (!fi.isReadable()) {
-            Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
-        } else {
-            if ( (ext == "pat") ||
-                 (ext == "PAT") ) {
-                if ((!fileSpec.empty())  &&
-                    (!NameGeomPattern.isEmpty())) {
-                    std::vector<PATLineSpec> specs = 
-                               DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
-                                                                      NameGeomPattern.getValue());
-                    m_lineSets.clear();
-                    for (auto& hl: specs) {
-                        //hl.dump("hl from section");
-                        LineSet ls;
-                        ls.setPATLineSpec(hl);
-                        m_lineSets.push_back(ls);
-                    }
-                }
-            }
-        }
-    }
-}
-
-//this could probably always use FileHatchPattern as input?
-void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
-{
-//    Base::Console().Message("DVS::replaceSvgHatch(%s)\n", newSvgFile.c_str());
-    if (SvgIncluded.isEmpty()) {
-        setupSvgIncluded();
-    } else {
-        std::string tempName = SvgIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newSvgFile, tempName);
-        SvgIncluded.setValue(tempName.c_str());
-    }
-}
-
-void DrawViewSection::replacePatIncluded(std::string newPatFile)
-{
-//    Base::Console().Message("DVS::replacePatHatch(%s)\n", newPatFile.c_str());
-    if (PatIncluded.isEmpty()) {
-        setupPatIncluded();
-    } else {
-        std::string tempName = PatIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newPatFile, tempName);
-        PatIncluded.setValue(tempName.c_str());
-    }
 }
 
 App::DocumentObjectExecReturn *DrawViewSection::execute()
@@ -293,21 +221,22 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
 
     TechDraw::DrawViewPart* dvp = nullptr;
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        //this can probably only happen with scripting
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
     } else {
         dvp = static_cast<TechDraw::DrawViewPart*>(base);
     }
 
-    TopoDS_Shape baseShape;
+    TopoDS_Shape baseShape = dvp->getSourceShape();
     if (FuseBeforeCut.getValue()) {
         baseShape = dvp->getSourceShapeFused();
-    } else {
-        baseShape = dvp->getSourceShape();
     }
     
     if (baseShape.IsNull()) {
         return DrawView::execute();
     }
+
+    m_saveShape = baseShape;        //save shape for 2nd pass
 
 //    checkXDirection();
     bool haveX = checkXDirection();
@@ -322,20 +251,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
     sectionExec(baseShape);
     addShapes2d();
 
-    //second pass if required
-    if (ScaleType.isValue("Automatic")) {
-        if (!checkFit()) {
-            double newScale = autoScale();
-            Scale.setValue(newScale);
-            Scale.purgeTouched();
-            if (geometryObject) {
-                delete geometryObject;
-                geometryObject = nullptr;
-                sectionExec(baseShape);
-            }
-        }
-    }
-
     return DrawView::execute();
 }
 
@@ -344,7 +259,8 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 //    Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull: %d\n",
 //                            getNameInDocument(), baseShape.IsNull());
 
-    if (waitingForCut()) {
+    if (waitingForHlr() ||
+        waitingForCut()) {
         return;
     }
 
@@ -352,11 +268,16 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
         //should be caught before this
         return;
     }
+    if (geometryObject) {
+        delete geometryObject;
+        geometryObject = nullptr;
+    }
 
     try {
         QObject::connect(&m_cutWatcher, SIGNAL(finished()), this, SLOT(onSectionCutFinished()));
         m_cutFuture = QtConcurrent::run(this, &DrawViewSection::makeSectionCut, baseShape);
         m_cutWatcher.setFuture(m_cutFuture);
+        waitingForCut(true);
     }
     catch (...) {
         Base::Console().Message("DVS::sectionExec - failed to make section cut");
@@ -369,7 +290,6 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
 //    Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull: %d\n",
 //                            getNameInDocument(), baseShape.IsNull());
 
-    waitingForCut(true);
     showProgressMessage(getNameInDocument(), "is making section cut");
 
 // cut base shape with tool
@@ -400,6 +320,7 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
     // We need to copy the shape to not modify the BRepstructure
     BRepBuilderAPI_Copy BuilderCopy(baseShape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
+    m_saveShape = myShape;        //save shape for 2nd pass
 
 // perform cut
     BRep_Builder builder;
@@ -502,11 +423,24 @@ void DrawViewSection::postHlrTasks(void)
 {
 //    Base::Console().Message("DVS::postHlrTasks() - %s\n", getNameInDocument());
 
+    DrawViewPart::postHlrTasks();
+
+    //second pass if required
+    if (ScaleType.isValue("Automatic")) {
+        if (!checkFit()) {
+            double newScale = autoScale();
+            Scale.setValue(newScale);
+            Scale.purgeTouched();
+            sectionExec(m_saveShape);
+        }
+    }
+    overrideKeepUpdated(false);
+
+
     // build section face geometry
     TopoDS_Compound faceIntersections = findSectionPlaneIntersections(m_rawShape);
     if (faceIntersections.IsNull()) {
         requestPaint();
-        DrawViewPart::postHlrTasks();
         return;
     }
 
@@ -536,32 +470,25 @@ void DrawViewSection::postHlrTasks(void)
     BRepBuilderAPI_Transform xformer(fromR3);
     xformer.Perform(scaledSection, true);
     if (xformer.IsDone()) {
-        sectionFaces = TopoDS::Compound(xformer.Shape());
-//            BRepTools::Write(sectionFaces, "DVSXFaces.brep");    //debug
+        sectionTopoDSFaces = TopoDS::Compound(xformer.Shape());
     } else {
         Base::Console().Message("DVS::sectionExec - face xform failed\n");
     }
 
-    sectionFaces = TopoDS::Compound(GeometryObject::invertGeometry(sectionFaces));     //handle Qt -y
+    sectionTopoDSFaces = TopoDS::Compound(GeometryObject::invertGeometry(sectionTopoDSFaces));     //handle Qt -y
 
-    //turn section faces into something we can draw
+    //turn section faces into TD geometry
     tdSectionFaces.clear();
-    TopExp_Explorer sectionExpl(sectionFaces, TopAbs_FACE);
-    int iface = 0;
+    TopExp_Explorer sectionExpl(sectionTopoDSFaces, TopAbs_FACE);
     for (; sectionExpl.More(); sectionExpl.Next()) {
-        iface++;
         const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
         TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
         TopExp_Explorer expFace(face, TopAbs_WIRE);
-        int iwire = 0;
         for ( ; expFace.More(); expFace.Next()) {
-            iwire++;
             TechDraw::Wire* w = new TechDraw::Wire();
             const TopoDS_Wire& wire = TopoDS::Wire(expFace.Current());
-            int iedge = 0;
             TopExp_Explorer expWire(wire, TopAbs_EDGE);
             for ( ; expWire.More(); expWire.Next()) {
-                iedge++;
                 const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
                 TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
                 if (e) {
@@ -573,15 +500,11 @@ void DrawViewSection::postHlrTasks(void)
         tdSectionFaces.push_back(sectionFace);
     }
 
-    App::DocumentObject* base = BaseView.getValue();
-    if (base != nullptr) {
-        if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(base);
-            dvp->requestPaint();  //to refresh section line
-        }
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(BaseView.getValue());
+    if (dvp) {
+        dvp->requestPaint();  //to refresh section line
     }
     requestPaint();
-    DrawViewPart::postHlrTasks();
 }
 
 //activities that depend on a valid section cut
@@ -590,10 +513,19 @@ void DrawViewSection::postSectionCutTasks()
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& c: children) {
         if (c->getTypeId().isDerivedFrom(DrawViewPart::getClassTypeId())) {
-            //details or sections need cut shape
+            //details or sections of this need cut shape
             c->recomputeFeature();
         }
     }
+}
+
+bool DrawViewSection::waitingForResult() const
+{
+    if (DrawViewPart::waitingForResult() ||
+        waitingForCut()) {
+        return true;
+    }
+    return false;
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
@@ -604,14 +536,12 @@ gp_Pln DrawViewSection::getSectionPlane() const
     return gp_Pln(viewAxis3);
 }
 
-
 //! tries to find the intersection of the section plane with the shape giving a collection of planar faces
 TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
     if(shape.IsNull()){
-        //a) this shouldn't happen
-        //b) if it does, we should throw something
+        // this shouldn't happen
         Base::Console().Warning("DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n", getNameInDocument());
         return TopoDS_Compound();
     }
@@ -622,22 +552,17 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
     builder.MakeCompound(result);
 
     TopExp_Explorer expFaces(shape, TopAbs_FACE);
-    int i;
-    int dbAdded = 0;
-    for (i = 1 ; expFaces.More(); expFaces.Next(), i++) {
+    for ( ; expFaces.More(); expFaces.Next()) {
         const TopoDS_Face& face = TopoDS::Face(expFaces.Current());
         BRepAdaptor_Surface adapt(face);
         if (adapt.GetType() == GeomAbs_Plane){
             gp_Pln plnFace = adapt.Plane();
-
             if(plnSection.Contains(plnFace.Location(), Precision::Confusion()) &&
                plnFace.Axis().IsParallel(plnSection.Axis(), Precision::Angular())) {
-                dbAdded++;
                 builder.Add(result, face);
             }
         }
     }
-//    BRepTools::Write(result, "DVSIntersect.brep");            //debug
     return result;
 }
 
@@ -646,34 +571,32 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds()
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
-    double baseRotation = getBaseDVP()->Rotation.getValue();      //Qt degrees
+    double baseRotation = getBaseDVP()->Rotation.getValue();      //Qt degrees are clockwise
     Base::Rotation rotator(stdZ, baseRotation * M_PI / 180.0);
     Base::Rotation unrotator(stdZ, - baseRotation * M_PI / 180.0);
 
     auto sNorm  = SectionNormal.getValue();
-    double angle = M_PI / 2.0;
     auto axis   = getBaseDVP()->Direction.getValue();
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
-    Base::Vector3d sLineDir = DrawUtil::vecRotate(sNorm, angle, axis, stdOrg);
-    sLineDir.Normalize();
-    Base::Vector3d sLineDir2 = - axis.Cross(sNorm);
-    sLineDir2.Normalize();
-    Base::Vector3d sLineOnBase = getBaseDVP()->projectPoint(sLineDir2);
-    sLineOnBase.Normalize();
+    Base::Vector3d sectionLineDir = - axis.Cross(sNorm);
+    sectionLineDir.Normalize();
+    sectionLineDir = getBaseDVP()->projectPoint(sectionLineDir);   //convert to base view CS
+    sectionLineDir.Normalize();
 
-    auto sOrigin = SectionOrigin.getValue();
-    Base::Vector3d adjSectionOrg = sOrigin - getBaseDVP()->getOriginalCentroid();
-    Base::Vector3d sOrgOnBase = getBaseDVP()->projectPoint(adjSectionOrg);
+    Base::Vector3d sectionOrg = SectionOrigin.getValue() - getBaseDVP()->getOriginalCentroid();
+    sectionOrg = getBaseDVP()->projectPoint(sectionOrg);            //convert to base view CS
 
+    //get the unscaled X and Y ranges of the base view geometry
     auto bbx = getBaseDVP()->getBoundingBox();
     double xRange = bbx.MaxX - bbx.MinX;
     xRange /= getBaseDVP()->getScale();
     double yRange = bbx.MaxY - bbx.MinY;
     yRange /= getBaseDVP()->getScale();
-    sOrgOnBase = rotator.multVec(sOrgOnBase);
-    sLineOnBase = rotator.multVec(sLineOnBase);
 
-    result = DrawUtil::boxIntersect2d(sOrgOnBase, sLineOnBase, xRange, yRange);  //unscaled
+    sectionOrg = rotator.multVec(sectionOrg);
+    sectionLineDir = rotator.multVec(sectionLineDir);
+
+    result = DrawUtil::boxIntersect2d(sectionOrg, sectionLineDir, xRange, yRange);  //unscaled
     result.first = unrotator.multVec(result.first);
     result.second = unrotator.multVec(result.second);
 
@@ -704,26 +627,26 @@ Base::Vector3d DrawViewSection::getXDirection() const
 //    Base::Console().Message("DVS::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
     App::Property* prop = getPropertyByName("XDirection");
-    if (prop) {                              //have an XDirection property
-        Base::Vector3d propVal = XDirection.getValue();
-        if (DrawUtil::fpCompare(propVal.Length(), 0.0))  {   //but it has no value
-            std::string sectName = SectionDirection.getValueAsString();
-            gp_Ax2 cs = getCSFromBase(sectName);
+    if (prop) {
+        //we have an XDirection property
+        if (DrawUtil::fpCompare(XDirection.getValue().Length(), 0.0)) {
+            //but it has no value, so we make a value
+            gp_Ax2 cs = getCSFromBase(SectionDirection.getValueAsString());
             gp_Dir gXDir = cs.XDirection();
             result = Base::Vector3d(gXDir.X(),
                                     gXDir.Y(),
                                     gXDir.Z());
         } else {
-            result = propVal;                               //normal case.  XDirection is set.
+            //XDirection is good, so we use it
+            result = XDirection.getValue();
         }
-    } else {                                                //no Property.  can this happen?
-            std::string sectName = SectionDirection.getValueAsString();
-            gp_Ax2 cs = getCSFromBase(sectName);
-            gp_Dir gXDir = cs.XDirection();
-            result = Base::Vector3d(gXDir.X(),
-                                    gXDir.Y(),
-                                    gXDir.Z());
-
+    } else {
+        //no XDirection property.  can this happen?
+        gp_Ax2 cs = getCSFromBase(SectionDirection.getValueAsString());
+        gp_Dir gXDir = cs.XDirection();
+        result = Base::Vector3d(gXDir.X(),
+                                gXDir.Y(),
+                                gXDir.Z());
     }
     return result;
 }
@@ -731,14 +654,13 @@ Base::Vector3d DrawViewSection::getXDirection() const
 void DrawViewSection::setCSFromBase(const std::string sectionName) 
 {
 //    Base::Console().Message("DVS::setCSFromBase(%s)\n", sectionName.c_str());
-    gp_Ax2 CS = getCSFromBase(sectionName);
-    gp_Dir gDir = CS.Direction();
+    gp_Dir gDir = getCSFromBase(sectionName).Direction();
     Base::Vector3d vDir(gDir.X(),
                         gDir.Y(),
                         gDir.Z());
     Direction.setValue(vDir);
     SectionNormal.setValue(vDir);
-    gp_Dir gxDir = CS.XDirection();
+    gp_Dir gxDir = getCSFromBase(sectionName).XDirection();
     Base::Vector3d vXDir(gxDir.X(),
                          gxDir.Y(),
                          gxDir.Z());
@@ -830,15 +752,15 @@ std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 //    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
     std::vector<LineSet> result;
     result = DrawGeomHatch::getTrimmedLinesSection(this,m_lineSets,
-                                                   getSectionTFace(i),
+                                                   getSectionTopoDSFace(i),
                                                    HatchScale.getValue());
     return result;
 }
 
-TopoDS_Face DrawViewSection::getSectionTFace(int i)
+TopoDS_Face DrawViewSection::getSectionTopoDSFace(int i)
 {
     TopoDS_Face result;
-    TopExp_Explorer expl(sectionFaces, TopAbs_FACE);
+    TopExp_Explorer expl(sectionTopoDSFaces, TopAbs_FACE);
     int count = 1;
     for (; expl.More(); expl.Next(), count++) {
         if (count == i+1) {
@@ -846,15 +768,6 @@ TopoDS_Face DrawViewSection::getSectionTFace(int i)
         }
     }
     return result;
-}
-
-void DrawViewSection::unsetupObject()
-{
-    TechDraw::DrawViewPart* base = getBaseDVP();
-    if (base) {
-        base->touch();
-    }
-    DrawViewPart::unsetupObject();
 }
 
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
@@ -881,42 +794,16 @@ TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
     return baseDPGI;
 }
 
-void DrawViewSection::getParameters()
+// setup / tear down routines
+
+void DrawViewSection::unsetupObject()
 {
-//    Base::Console().Message("DVS::getParameters()\n");
-    Base::Reference<ParameterGrp>hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-
-    bool fuseFirst = hGrp->GetBool("SectionFuseFirst", false);
-    FuseBeforeCut.setValue(fuseFirst);
+    TechDraw::DrawViewPart* base = getBaseDVP();
+    if (base) {
+        base->touch();
+    }
+    DrawViewPart::unsetupObject();
 }
-
-bool DrawViewSection::debugSection() const
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
-
-    bool result = hGrp->GetBool("debugSection",false);
-    return result;
-}
-
-int DrawViewSection::prefCutSurface() const
-{
-//    Base::Console().Message("DVS::prefCutSurface()\n");
-    Base::Reference<ParameterGrp>hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-
-    int result = hGrp->GetInt("CutSurfaceDisplay", 2);   //default to SvgHatch
-    return result;
-}
-
-bool DrawViewSection::showSectionEdges()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    return (hGrp->GetBool("ShowSectionEdges", true));
-}
-
 
 void DrawViewSection::onDocumentRestored() 
 {
@@ -954,7 +841,32 @@ void DrawViewSection::setupObject()
     DrawViewPart::setupObject();
 }
 
-void DrawViewSection::setupSvgIncluded()
+//hatch file routines
+
+//create geometric hatch lines
+void DrawViewSection::makeLineSets(void)
+{
+//    Base::Console().Message("DVS::makeLineSets()\n");
+    if (!PatIncluded.isEmpty())  {
+        std::string fileSpec = PatIncluded.getValue();
+        Base::FileInfo fi(fileSpec);
+        std::string ext = fi.extension();
+        if (!fi.isReadable()) {
+            Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
+        } else {
+            if ( (ext == "pat") ||
+                 (ext == "PAT") ) {
+                if ((!fileSpec.empty())  &&
+                    (!NameGeomPattern.isEmpty())) {
+                    m_lineSets.clear();
+                    m_lineSets = DrawGeomHatch::makeLineSets(fileSpec, NameGeomPattern.getValue());
+                }
+            }
+        }
+    }
+}
+
+void DrawViewSection::setupSvgIncluded(void)
 {
 //    Base::Console().Message("DVS::setupSvgIncluded()\n");
     App::Document* doc = getDocument();
@@ -997,6 +909,69 @@ void DrawViewSection::setupPatIncluded()
         DrawUtil::copyFile(FileGeomPattern.getValue(), exchName);
         PatIncluded.setValue(exchName.c_str(), special.c_str());
     }
+}
+
+//this could probably always use FileHatchPattern as input?
+void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
+{
+//    Base::Console().Message("DVS::replaceSvgHatch(%s)\n", newSvgFile.c_str());
+    if (SvgIncluded.isEmpty()) {
+        setupSvgIncluded();
+    } else {
+        std::string tempName = SvgIncluded.getExchangeTempFile();
+        DrawUtil::copyFile(newSvgFile, tempName);
+        SvgIncluded.setValue(tempName.c_str());
+    }
+}
+
+void DrawViewSection::replacePatIncluded(std::string newPatFile)
+{
+//    Base::Console().Message("DVS::replacePatHatch(%s)\n", newPatFile.c_str());
+    if (PatIncluded.isEmpty()) {
+        setupPatIncluded();
+    } else {
+        std::string tempName = PatIncluded.getExchangeTempFile();
+        DrawUtil::copyFile(newPatFile, tempName);
+        PatIncluded.setValue(tempName.c_str());
+    }
+}
+
+// Parameter fetching routines
+
+void DrawViewSection::getParameters()
+{
+//    Base::Console().Message("DVS::getParameters()\n");
+    Base::Reference<ParameterGrp>hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+
+    bool fuseFirst = hGrp->GetBool("SectionFuseFirst", false);
+    FuseBeforeCut.setValue(fuseFirst);
+}
+
+bool DrawViewSection::debugSection(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
+
+    bool result = hGrp->GetBool("debugSection",false);
+    return result;
+}
+
+int DrawViewSection::prefCutSurface(void) const
+{
+//    Base::Console().Message("DVS::prefCutSurface()\n");
+    Base::Reference<ParameterGrp>hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+
+    int result = hGrp->GetInt("CutSurfaceDisplay", 2);   //default to SvgHatch
+    return result;
+}
+
+bool DrawViewSection::showSectionEdges(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    return (hGrp->GetBool("ShowSectionEdges", true));
 }
 
 #include <Mod/TechDraw/App/moc_DrawViewSection.cpp>
