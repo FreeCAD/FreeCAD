@@ -582,8 +582,10 @@ void DrawView::requestPaint()
 }
 
 void DrawView::showProgressMessage(std::string featureName, std::string text)
-{    
-    signalProgressMessage(this, featureName, text);
+{
+    if (Preferences::reportProgress()) {
+        signalProgressMessage(this, featureName, text);
+    }
 }
 
 PyObject *DrawView::getPyObject(void)
