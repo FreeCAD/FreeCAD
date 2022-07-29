@@ -292,7 +292,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         voronoiWires = []
         for f in faces:
-            vd = Path.VoronoiDiagram()
+            vd = Path.Voronoi.Diagram()
             insert_many_wires(vd, f.Wires)
 
             vd.construct()

@@ -49,7 +49,7 @@ def initVD():
         ptv = [FreeCAD.Vector(p[0], p[1]) for p in pts]
         ptv.append(ptv[0])
 
-        vd = Path.VoronoiDiagram()
+        vd = Path.Voronoi.Diagram()
         for i in range(len(pts)):
             vd.addSegment(ptv[i], ptv[i + 1])
 

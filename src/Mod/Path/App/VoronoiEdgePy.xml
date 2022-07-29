@@ -3,6 +3,7 @@
     <PythonExport 
         Father="BaseClassPy" 
         Name="VoronoiEdgePy" 
+        PythonName="Path.Voronoi.Edge"
         Twin="VoronoiEdge" 
         TwinPointer="VoronoiEdge" 
         Include="Mod/Path/App/VoronoiEdge.h" 

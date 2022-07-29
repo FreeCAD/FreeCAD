@@ -3,6 +3,7 @@
     <PythonExport 
         Father="BaseClassPy" 
         Name="VoronoiCellPy" 
+        PythonName="Path.Voronoi.Cell"
         Twin="VoronoiCell" 
         TwinPointer="VoronoiCell" 
         Include="Mod/Path/App/VoronoiCell.h" 
