@@ -810,7 +810,7 @@ TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
     for (auto& v : vecIn) {
         builder.Add(compOut, v);
     }
-    return compOut;
+    return TopoDS_Compound(std::move(compOut));
 }
 //get 3d position of a face's center
 Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
