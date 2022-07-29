@@ -63,14 +63,19 @@ Alias to move(), to be compatible with TopoShape.translate().\n
 vector : Base.Vector\n    Vector by which to move the placement.</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="rotate">
+        <Methode Name="rotate" Keyword="true">
         <Documentation>
-            <UserDocu>rotate(center, axis, angle) -> None\n
+            <UserDocu>rotate(center, axis, angle, comp) -> None\n
 Rotate the current placement around center and axis with the given angle.
-This method is compatible with TopoShape.rotate().\n
+This method is compatible with TopoShape.rotate() if the (optional) keyword
+argument comp is True (default=False).
+
 center : Base.Vector, sequence of float\n    Rotation center.
 axis : Base.Vector, sequence of float\n    Rotation axis.
-angle : float\n    Rotation angle in degrees.</UserDocu>
+angle : float\n    Rotation angle in degrees.
+comp : bool\n    optional keyword only argument, if True (default=False),
+behave like TopoShape.rotate() (i.e. the resulting placements are interchangeable).
+</UserDocu>
         </Documentation>
         </Methode>
                 <Methode Name="multiply" Const="true">

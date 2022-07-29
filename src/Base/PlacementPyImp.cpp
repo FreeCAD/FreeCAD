@@ -163,22 +163,36 @@ PyObject* PlacementPy::translate(PyObject * args)
     return move(args);
 }
 
-PyObject* PlacementPy::rotate(PyObject *args) {
-    PyObject *obj1, *obj2;
+PyObject* PlacementPy::rotate(PyObject *args, PyObject *kw) {
     double angle;
-    if (!PyArg_ParseTuple(args, "OOd", &obj1, &obj2, &angle))
+    char *keywords[] =  { "center", "axis", "angle", "comp", nullptr };
+    Vector3d center;
+    Vector3d axis;
+    PyObject* pyComp = Py_False;
+    
+    if (!PyArg_ParseTupleAndKeywords(args, kw, "(ddd)(ddd)d|$O!", keywords, &center.x, &center.y, &center.z,
+                                         &axis.x, &axis.y, &axis.z, &angle, &PyBool_Type, &pyComp))
         return nullptr;
-
+    
     try {
-        Py::Sequence p1(obj1), p2(obj2);
-        Vector3d center((double)Py::Float(p1[0]),
-                        (double)Py::Float(p1[1]),
-                        (double)Py::Float(p1[2]));
-        Vector3d axis((double)Py::Float(p2[0]),
-                      (double)Py::Float(p2[1]),
-                      (double)Py::Float(p2[2]));
-        (*getPlacementPtr()) *= Placement(
-                Vector3d(),Rotation(axis,toRadians<double>(angle)),center);
+        /*
+         * if comp is False, we retain the original behaviour that - contrary to the documentation - generates
+         * Placements different from TopoShape.rotate() to ensure compatibility for existing code
+         */
+        bool comp = Base::asBoolean(pyComp);
+
+        if (!comp) {
+            (*getPlacementPtr()) *= Placement(
+                        Vector3d(),Rotation(axis,toRadians<double>(angle)),center);
+        } else 
+        {
+            // multiply new Placement the same way TopoShape.rotate() does
+        
+            Placement p = *getPlacementPtr();
+            *getPlacementPtr() = Placement(
+                        Vector3d(),Rotation(axis,toRadians<double>(angle)),center) * p;
+        }
+        
         Py_Return;
     }
     catch (const Py::Exception&) {
