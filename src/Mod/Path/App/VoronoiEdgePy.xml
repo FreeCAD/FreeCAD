@@ -100,6 +100,11 @@
                 <UserDocu>Returns true if edge goes through endpoint of the segment site</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="isBorderline" Const="true">
+            <Documentation>
+                <UserDocu>Returns true if the point is on the segment</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="toShape" Const="true">
             <Documentation>
                 <UserDocu>Returns a shape for the edge</UserDocu>
