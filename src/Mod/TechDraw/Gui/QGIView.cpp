@@ -340,16 +340,20 @@ QGIViewClip* QGIView::getClipGroup()
     return result;
 }
 
-void QGIView::updateView(bool update)
+void QGIView::updateView(bool forceUpdate)
 {
 //    Base::Console().Message("QGIV::updateView() - %s\n",getViewObject()->getNameInDocument());
-    (void) update;
 
     //allow/prevent dragging
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
         setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
+
+    if (getViewObject() && forceUpdate) {
+        setPosition(Rez::guiX(getViewObject()->X.getValue()),
+                    Rez::guiX(getViewObject()->Y.getValue()));
     }
 
     double appRotation = getViewObject()->Rotation.getValue();

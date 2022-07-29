@@ -95,6 +95,7 @@ App::DocumentObjectExecReturn *DrawRichAnno::execute()
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 

@@ -178,10 +178,10 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
     catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
                               e.GetMessageString());
-        throw Base::RuntimeError("GeometryObject::hlrExecute - OCC error");
+        throw Base::RuntimeError("GeometryObject::projectShape - OCC error");
         }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::hlrExecute - unknown error");
+        throw Base::RuntimeError("GeometryObject::projectShape - unknown error");
     }
 
     try {
@@ -249,13 +249,18 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
         }
     }
     catch (const Standard_Failure& e) {
-        throw Base::RuntimeError("GeometryObject::hlrExecute - OCC error occurred while extracting edges");
+        throw Base::RuntimeError("GeometryObject::projectShape - OCC error occurred while extracting edges");
     }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::hlrExecute - unknown error occurred while extracting edges");
+        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while extracting edges");
     }
 
-    //convert the hlr output into TD Geometry
+    makeTDGeometry();
+}
+
+//convert the hlr output into TD Geometry
+void GeometryObject::makeTDGeometry()
+{
     extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                         true);
     extractGeometry(TechDraw::ecOUTLINE,
@@ -340,8 +345,6 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         inCopy = BuilderCopy.Shape();
     }
 
-    auto start = chrono::high_resolution_clock::now();
-
     Handle(HLRBRep_PolyAlgo) brep_hlrPoly;
 
     try {
@@ -369,11 +372,10 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
     catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while projecting shape\n",
                               e.GetMessageString());
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - OCC error");
     }
     catch (...) {
-        Base::Console().Error("GO::projectShapeWithPolygonAlgo - unknown error while projecting shape\n");
-//        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
-//        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - unknown error");
     }
 
     try {
@@ -417,16 +419,13 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
     catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while extracting edges\n",
                               e.GetMessageString());
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - OCC error occurred while extracting edges");
     }
     catch (...) {
-        Base::Console().Error("GO::projectShapeWithPolygonAlgo - - error occurred while extracting edges\n");
-//        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while extracting edges");
-//        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - unknown error occurred while extracting edges");
     }
-    auto end = chrono::high_resolution_clock::now();
-    auto diff = end - start;
-    double diffOut = chrono::duration <double, milli>(diff).count();
-    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_PolyAlgo & co\n", m_parentName.c_str(), diffOut);
+
+    makeTDGeometry();
 }
 
 TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape &face,

@@ -264,7 +264,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
         // Automatic Scale Type
         //block recompute
         multiView->ScaleType.setValue("Automatic");
-        double autoScale = multiView->calculateAutomaticScale();
+        double autoScale = multiView->autoScale();
         multiView->Scale.setValue(autoScale);
         //unblock recompute
 
