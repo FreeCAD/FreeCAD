@@ -43,6 +43,7 @@ EXTERIOR1 = 2
 EXTERIOR2 = 3
 COLINEAR = 4
 TWIN = 5
+BORDERLINE = 6
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -297,7 +298,13 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vd.construct()
 
             for e in vd.Edges:
-                e.Color = PRIMARY if e.isPrimary() else SECONDARY
+                if e.isPrimary():
+                    if e.isBorderline():
+                        e.Color = BORDERLINE
+                    else:
+                        e.Color = PRIMARY
+                else:
+                    e.Color = SECONDARY
             vd.colorExterior(EXTERIOR1)
             vd.colorExterior(
                 EXTERIOR2,
