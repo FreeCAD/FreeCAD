@@ -39,7 +39,7 @@ if App.GuiUp:
 
 def make_wire(pointslist, closed=False, placement=None, face=None, support=None, bs2wire=False):
     """make_wire(pointslist, [closed], [placement])
-    
+
     Creates a Wire object from the given list of vectors.  If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.
@@ -50,19 +50,19 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
         List of points to create the polyline
 
     closed : bool
-        If closed is True or first and last points are identical, 
+        If closed is True or first and last points are identical,
         the created polyline will be closed.
 
     placement : Base.Placement
         If a placement is given, it is used.
-    
-    face : Bool
-        If face is False, the rectangle is shown as a wireframe, 
-        otherwise as a face.   
 
-    support : 
+    face : Bool
+        If face is False, the rectangle is shown as a wireframe,
+        otherwise as a face.
+
+    support :
         TODO: Describe
-    
+
     bs2wire : bool
         TODO: Describe
     """
@@ -96,7 +96,7 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
 
     if len(pointslist) == 0:
         App.Console.PrintWarning("Draft Wire created with empty point list\n")
-    
+
     if placement:
         utils.type_check([(placement, App.Placement)], "make_wire")
         ipl = placement.inverse()
