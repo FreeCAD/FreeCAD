@@ -69,6 +69,60 @@ typedef const vtkIdType* vtkIdTypePtr;
 typedef vtkIdType* vtkIdTypePtr;
 #endif
 
+// ----------------------------------------------------------------------------
+
+namespace {
+/*
+ * The class FemPostObjectSelectionObserver notifies a ViewProviderFemPostObject
+ *  only if its selection status has changed
+ */
+class FemPostObjectSelectionObserver
+{
+public:
+    static FemPostObjectSelectionObserver& instance() {
+        static FemPostObjectSelectionObserver inst;
+        return inst;
+    }
+    void registerFemPostObject(ViewProviderFemPostObject* vp) {
+        views.insert(vp);
+    }
+    void unregisterFemPostObject(ViewProviderFemPostObject* vp) {
+        auto it = views.find(vp);
+        if (it != views.end())
+            views.erase(it);
+    }
+
+    void selectionChanged(const Gui::SelectionChanges& msg) {
+        Gui::SelectionObject obj(msg);
+        auto findVP = std::find_if(views.begin(), views.end(), [&obj](const auto& vp) {
+            return obj.getObject() == vp->getObject();
+        });
+
+        if (findVP != views.end()) {
+            (*findVP)->onSelectionChanged(msg);
+        }
+    }
+
+private:
+    FemPostObjectSelectionObserver() {
+        this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
+            std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1));
+    }
+
+    ~FemPostObjectSelectionObserver() = default;
+    FemPostObjectSelectionObserver(const FemPostObjectSelectionObserver&) = delete;
+    FemPostObjectSelectionObserver& operator= (const FemPostObjectSelectionObserver&) = delete;
+
+private:
+    std::set<ViewProviderFemPostObject*> views;
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connectSelection;
+};
+
+}
+
+// ----------------------------------------------------------------------------
+
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
 ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
@@ -137,12 +191,12 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
 
     updateProperties();  // initialize the enums
 
-    this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
-        std::bind(&ViewProviderFemPostObject::selectionChanged, this, sp::_1));
+    FemPostObjectSelectionObserver::instance().registerFemPostObject(this);
 }
 
 ViewProviderFemPostObject::~ViewProviderFemPostObject()
 {
+    FemPostObjectSelectionObserver::instance().unregisterFemPostObject(this);
     m_shapeHints->unref();
     m_coordinates->unref();
     m_materialBinding->unref();
@@ -752,11 +806,6 @@ bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
         return true;
 }
 
-void ViewProviderFemPostObject::selectionChanged(const Gui::SelectionChanges &sel)
-{
-    onSelectionChanged(sel);
-}
-
 void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &sel)
 {
     // If a FemPostObject is selected in the document tree we must refresh its
@@ -764,10 +813,7 @@ void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &
     // But don't do this if the object is invisible because other objects with a
     // color bar might be visible and the color bar is then wrong.
     if (sel.Type == sel.AddSelection) {
-        Gui::SelectionObject obj(sel);
-        if (obj.getObject() == this->getObject()) {
-            if (this->getObject()->Visibility.getValue())
-                WriteColorData(true);
-        }
+        if (this->getObject()->Visibility.getValue())
+            WriteColorData(true);
     }
 }
