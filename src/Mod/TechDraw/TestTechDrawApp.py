@@ -20,60 +20,12 @@
 #   USA                                                                   *
 # **************************************************************************
 
-import unittest
-
 from TDTest.DrawHatchTest import DrawHatchTest  # noqa: F401
 from TDTest.DrawViewAnnotationTest import DrawViewAnnotationTest  # noqa: F401
+from TDTest.DrawViewBalloonTest import DrawViewBalloonTest  # noqa: F401
+from TDTest.DrawViewDimensionTest import DrawViewDimensionTest  # noqa: F401
 from TDTest.DrawViewImageTest import DrawViewImageTest  # noqa: F401
+from TDTest.DrawViewSectionTest import DrawViewSectionTest  # noqa: F401
 from TDTest.DrawViewSymbolTest import DrawViewSymbolTest  # noqa: F401
-from TDTest.DProjGroupTest import DProjGroupTest
-from TDTest.DVDimensionTest import DVDimensionTest
-from TDTest.DVPartTest import DVPartTest
-from TDTest.DVSectionTest import DVSectionTest
-from TDTest.DVBalloonTest import DVBalloonTest
-
-# ---------------------------------------------------------------------------
-# define the test cases to test the FreeCAD TechDraw module
-# ---------------------------------------------------------------------------
-
-
-class TechDrawTestCases(unittest.TestCase):
-    def testViewPartCase(self):
-        print("starting TD DrawViewPart test")
-        rc = DVPartTest()
-        if rc:
-            print("TD DrawViewPart test passed")
-        else:
-            print("TD DrawViewPart test failed")
-
-    def testProjGroupCase(self):
-        print("starting TD DrawProjGroup test")
-        rc = DProjGroupTest()
-        if rc:
-            print("TD DrawProjGroup test passed")
-        else:
-            print("TD DrawProjGroup test failed")
-
-    def testDimensionCase(self):
-        print("starting TD DrawViewDimension test")
-        rc = DVDimensionTest()
-        if rc:
-            print("TD DrawViewDimension test passed")
-        else:
-            print("TD DrawViewDimension test failed")
-
-    def testSectionCase(self):
-        print("starting TD DrawViewSection test")
-        rc = DVSectionTest()
-        if rc:
-            print("TD DrawViewSection test passed")
-        else:
-            print("TD DrawViewSection test failed")
-
-    def testBalloonCase(self):
-        print("starting TD DrawViewBalloon test")
-        rc = DVBalloonTest()
-        if rc:
-            print("TD DrawViewBalloon test passed")
-        else:
-            print("TD DrawViewBalloon test failed")
+from TDTest.DrawViewPartTest import DrawViewPartTest  # noqa: F401
+from TDTest.DrawProjectionGroupTest import DrawProjectionGroupTest  # noqa: F401

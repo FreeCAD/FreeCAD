@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 #define DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 
 #include "ViewProviderDrawingView.h"

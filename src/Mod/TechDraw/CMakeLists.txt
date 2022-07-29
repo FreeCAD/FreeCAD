@@ -142,14 +142,14 @@ endif(BUILD_GUI)
 SET(TDTest_SRCS
     TDTest/__init__.py
     TDTest/DrawHatchTest.py
-    TDTest/DProjGroupTest.py
+    TDTest/DrawProjectionGroupTest.py
     TDTest/DrawViewAnnotationTest.py
     TDTest/DrawViewImageTest.py
     TDTest/DrawViewSymbolTest.py
-    TDTest/DVDimensionTest.py
-    TDTest/DVPartTest.py
-    TDTest/DVSectionTest.py
-    TDTest/DVBalloonTest.py
+    TDTest/DrawViewDimensionTest.py
+    TDTest/DrawViewPartTest.py
+    TDTest/DrawViewSectionTest.py
+    TDTest/DrawViewBalloonTest.py
     TDTest/TechDrawTestUtilities.py
 )
 

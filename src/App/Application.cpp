@@ -122,13 +122,6 @@
 #include "Branding.h"
 
 
-using namespace App;
-using namespace std;
-using namespace boost;
-using namespace boost::program_options;
-namespace sp = std::placeholders;
-
-
 // scriptings (scripts are built-in but can be overridden by command line option)
 #include <App/InitScript.h>
 #include <App/TestScript.h>
@@ -148,10 +141,13 @@ namespace sp = std::placeholders;
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
-//using Base::GetConsole;
-using namespace Base;
 using namespace App;
+using namespace Base;
 using namespace std;
+using namespace boost;
+using namespace boost::program_options;
+using Base::FileInfo;
+namespace sp = std::placeholders;
 
 //==========================================================================
 // Application
@@ -190,7 +186,11 @@ PyDoc_STRVAR(FreeCAD_doc,
     );
 
 PyDoc_STRVAR(Console_doc,
-     "FreeCAD Console\n"
+    "FreeCAD Console module.\n\n"
+    "The Console module contains functions to manage log entries, messages,\n"
+    "warnings and errors.\n"
+    "There are also functions to get/set the status of the observers used as\n"
+    "logging interfaces."
     );
 
 PyDoc_STRVAR(Base_doc,
@@ -261,7 +261,7 @@ void Application::setupPythonTypes()
     static struct PyModuleDef ConsoleModuleDef = {
         PyModuleDef_HEAD_INIT,
         "__FreeCADConsole__", Console_doc, -1,
-        ConsoleSingleton::Methods,
+        Base::ConsoleSingleton::Methods,
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
@@ -778,7 +778,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
             }
             catch (const std::exception &e) {
                 if (!errs && isMainDoc)
@@ -786,7 +786,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
             }
             catch (...) {
                 if (errs) {
@@ -1636,22 +1636,22 @@ void Application::cleanupUnits()
 void Application::destruct(void)
 {
     // saving system parameter
-    Console().Log("Saving system parameter...\n");
+    Base::Console().Log("Saving system parameter...\n");
     _pcSysParamMngr->SaveDocument();
     // saving the User parameter
-    Console().Log("Saving system parameter...done\n");
-    Console().Log("Saving user parameter...\n");
+    Base::Console().Log("Saving system parameter...done\n");
+    Base::Console().Log("Saving user parameter...\n");
     _pcUserParamMngr->SaveDocument();
-    Console().Log("Saving user parameter...done\n");
+    Base::Console().Log("Saving user parameter...done\n");
 
     // now save all other parameter files
     std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
     for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
         if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
             if (it->second->HasSerializer()) {
-                Console().Log("Saving %s...\n", it->first.c_str());
+                Base::Console().Log("Saving %s...\n", it->first.c_str());
                 it->second->SaveDocument();
-                Console().Log("Saving %s...done\n", it->first.c_str());
+                Base::Console().Log("Saving %s...done\n", it->first.c_str());
             }
         }
 
@@ -1677,8 +1677,8 @@ void Application::destruct(void)
 
     Base::Interpreter().finalize();
 
-    ScriptFactorySingleton::Destruct();
-    InterpreterSingleton::Destruct();
+    Base::ScriptFactorySingleton::Destruct();
+    Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
     ParameterManager::Terminate();
 }
@@ -1686,12 +1686,12 @@ void Application::destruct(void)
 void Application::destructObserver(void)
 {
     if ( _pConsoleObserverFile ) {
-        Console().DetachObserver(_pConsoleObserverFile);
+        Base::Console().DetachObserver(_pConsoleObserverFile);
         delete _pConsoleObserverFile;
         _pConsoleObserverFile = nullptr;
     }
     if ( _pConsoleObserverStd ) {
-        Console().DetachObserver(_pConsoleObserverStd);
+        Base::Console().DetachObserver(_pConsoleObserverStd);
         delete _pConsoleObserverStd;
         _pConsoleObserverStd = nullptr;
     }
@@ -2038,37 +2038,37 @@ void Application::initTypes()
             (DocumentObject::getClassTypeId());
 
     // register exception producer types
-    new ExceptionProducer<Base::AbortException>;
-    new ExceptionProducer<Base::XMLBaseException>;
-    new ExceptionProducer<Base::XMLParseException>;
-    new ExceptionProducer<Base::XMLAttributeError>;
-    new ExceptionProducer<Base::FileException>;
-    new ExceptionProducer<Base::FileSystemError>;
-    new ExceptionProducer<Base::BadFormatError>;
-    new ExceptionProducer<Base::MemoryException>;
-    new ExceptionProducer<Base::AccessViolation>;
-    new ExceptionProducer<Base::AbnormalProgramTermination>;
-    new ExceptionProducer<Base::UnknownProgramOption>;
-    new ExceptionProducer<Base::ProgramInformation>;
-    new ExceptionProducer<Base::TypeError>;
-    new ExceptionProducer<Base::ValueError>;
-    new ExceptionProducer<Base::IndexError>;
-    new ExceptionProducer<Base::NameError>;
-    new ExceptionProducer<Base::ImportError>;
-    new ExceptionProducer<Base::AttributeError>;
-    new ExceptionProducer<Base::RuntimeError>;
-    new ExceptionProducer<Base::BadGraphError>;
-    new ExceptionProducer<Base::NotImplementedError>;
-    new ExceptionProducer<Base::ZeroDivisionError>;
-    new ExceptionProducer<Base::ReferenceError>;
-    new ExceptionProducer<Base::ExpressionError>;
-    new ExceptionProducer<Base::ParserError>;
-    new ExceptionProducer<Base::UnicodeError>;
-    new ExceptionProducer<Base::OverflowError>;
-    new ExceptionProducer<Base::UnderflowError>;
-    new ExceptionProducer<Base::UnitsMismatchError>;
-    new ExceptionProducer<Base::CADKernelError>;
-    new ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::AbortException>;
+    new Base::ExceptionProducer<Base::XMLBaseException>;
+    new Base::ExceptionProducer<Base::XMLParseException>;
+    new Base::ExceptionProducer<Base::XMLAttributeError>;
+    new Base::ExceptionProducer<Base::FileException>;
+    new Base::ExceptionProducer<Base::FileSystemError>;
+    new Base::ExceptionProducer<Base::BadFormatError>;
+    new Base::ExceptionProducer<Base::MemoryException>;
+    new Base::ExceptionProducer<Base::AccessViolation>;
+    new Base::ExceptionProducer<Base::AbnormalProgramTermination>;
+    new Base::ExceptionProducer<Base::UnknownProgramOption>;
+    new Base::ExceptionProducer<Base::ProgramInformation>;
+    new Base::ExceptionProducer<Base::TypeError>;
+    new Base::ExceptionProducer<Base::ValueError>;
+    new Base::ExceptionProducer<Base::IndexError>;
+    new Base::ExceptionProducer<Base::NameError>;
+    new Base::ExceptionProducer<Base::ImportError>;
+    new Base::ExceptionProducer<Base::AttributeError>;
+    new Base::ExceptionProducer<Base::RuntimeError>;
+    new Base::ExceptionProducer<Base::BadGraphError>;
+    new Base::ExceptionProducer<Base::NotImplementedError>;
+    new Base::ExceptionProducer<Base::ZeroDivisionError>;
+    new Base::ExceptionProducer<Base::ReferenceError>;
+    new Base::ExceptionProducer<Base::ExpressionError>;
+    new Base::ExceptionProducer<Base::ParserError>;
+    new Base::ExceptionProducer<Base::UnicodeError>;
+    new Base::ExceptionProducer<Base::OverflowError>;
+    new Base::ExceptionProducer<Base::UnderflowError>;
+    new Base::ExceptionProducer<Base::UnitsMismatchError>;
+    new Base::ExceptionProducer<Base::CADKernelError>;
+    new Base::ExceptionProducer<Base::RestoreError>;
 }
 
 namespace {
@@ -2246,12 +2246,12 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     catch (const std::exception& e) {
         std::stringstream str;
         str << e.what() << endl << endl << visible << endl;
-        throw UnknownProgramOption(str.str());
+        throw Base::UnknownProgramOption(str.str());
     }
     catch (...) {
         std::stringstream str;
         str << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
-        throw UnknownProgramOption(str.str());
+        throw Base::UnknownProgramOption(str.str());
     }
 
     if (vm.count("help")) {
@@ -2474,7 +2474,7 @@ void Application::initConfig(int argc, char ** argv)
     // init python
     PyImport_AppendInittab ("FreeCAD", init_freecad_module);
     PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
-    const char* pythonpath = Interpreter().init(argc,argv);
+    const char* pythonpath = Base::Interpreter().init(argc,argv);
     if (pythonpath)
         mConfig["PythonSearchPath"] = pythonpath;
     else
@@ -2485,8 +2485,8 @@ void Application::initConfig(int argc, char ** argv)
 
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
-    _pConsoleObserverStd = new ConsoleObserverStd();
-    Console().AttachObserver(_pConsoleObserverStd);
+    _pConsoleObserverStd = new Base::ConsoleObserverStd();
+    Base::Console().AttachObserver(_pConsoleObserverStd);
     if (mConfig["LoggingConsole"] != "1") {
         _pConsoleObserverStd->bMsg = false;
         _pConsoleObserverStd->bLog = false;
@@ -2494,12 +2494,12 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverStd->bErr = false;
     }
     if (mConfig["Verbose"] == "Strict")
-        Console().UnsetConsoleMode(ConsoleSingleton::Verbose);
+        Base::Console().UnsetConsoleMode(Base::ConsoleSingleton::Verbose);
 
     // file logging Init ===========================================================
     if (mConfig["LoggingFile"] == "1") {
-        _pConsoleObserverFile = new ConsoleObserverFile(mConfig["LoggingFileName"].c_str());
-        Console().AttachObserver(_pConsoleObserverFile);
+        _pConsoleObserverFile = new Base::ConsoleObserverFile(mConfig["LoggingFileName"].c_str());
+        Base::Console().AttachObserver(_pConsoleObserverFile);
     }
     else
         _pConsoleObserverFile = nullptr;
@@ -2509,14 +2509,14 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
-            Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
+            Base::Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
+            Base::Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
@@ -2614,19 +2614,20 @@ void Application::initApplication(void)
 {
     // interpreter and Init script ==========================================================
     // register scripts
-    new ScriptProducer( "CMakeVariables", CMakeVariables );
-    new ScriptProducer( "FreeCADInit",    FreeCADInit    );
-    new ScriptProducer( "FreeCADTest",    FreeCADTest    );
+    new Base::ScriptProducer( "CMakeVariables", CMakeVariables );
+    new Base::ScriptProducer( "FreeCADInit",    FreeCADInit    );
+    new Base::ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
     // creating the application
-    if (!(mConfig["Verbose"] == "Strict")) Console().Log("Create Application\n");
+    if (!(mConfig["Verbose"] == "Strict"))
+        Base::Console().Log("Create Application\n");
     Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
-    UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
-    UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
+    Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
 
     // In case we are using fractional inches, get user setting for min unit
     int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
@@ -2634,14 +2635,14 @@ void Application::initApplication(void)
 
 
 #if defined (_DEBUG)
-    Console().Log("Application is built with debug information\n");
+    Base::Console().Log("Application is built with debug information\n");
 #endif
 
     // starting the init script
-    Console().Log("Run App init script\n");
+    Base::Console().Log("Run App init script\n");
     try {
-        Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
-        Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -2697,7 +2698,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
                     processed.push_back(*it);
                 }
-                catch (const PyException&) {
+                catch (const Base::PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
                     processed.push_back(*it);
@@ -2718,7 +2719,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
-                    Console().Warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().Warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
         }
@@ -2726,10 +2727,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
         }
         catch (...) {
-            Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
 
@@ -2751,7 +2752,7 @@ void Application::processCmdLineFiles(void)
         // then execute it. This is to behave like the standard Python executable.
         Base::FileInfo file(files.front());
         if (!file.exists()) {
-            Interpreter().runString(files.front().c_str());
+            Base::Interpreter().runString(files.front().c_str());
             mConfig["RunMode"] = "Exit";
         }
     }
@@ -2773,14 +2774,14 @@ void Application::processCmdLineFiles(void)
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Console().Warning("File format not supported: %s \n", output.c_str());
+                Base::Console().Warning("File format not supported: %s \n", output.c_str());
             }
         }
         catch (const Base::Exception& e) {
-            Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
         }
         catch (...) {
-            Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
         }
     }
 }
@@ -2792,19 +2793,19 @@ void Application::runApplication()
 
     if (mConfig["RunMode"] == "Cmd") {
         // Run the commandline interface
-        Interpreter().runCommandLine("FreeCAD Console mode");
+        Base::Interpreter().runCommandLine("FreeCAD Console mode");
     }
     else if (mConfig["RunMode"] == "Internal") {
         // run internal script
-        Console().Log("Running internal script:\n");
-        Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
+        Base::Console().Log("Running internal script:\n");
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
     }
     else if (mConfig["RunMode"] == "Exit") {
         // getting out
-        Console().Log("Exiting on purpose\n");
+        Base::Console().Log("Exiting on purpose\n");
     }
     else {
-        Console().Log("Unknown Run mode (%d) in main()?!?\n\n",mConfig["RunMode"].c_str());
+        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n",mConfig["RunMode"].c_str());
     }
 }
 
@@ -2812,10 +2813,10 @@ void Application::logStatus()
 {
     std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
-    Console().Log("Time = %s\n", time_str.c_str());
+    Base::Console().Log("Time = %s\n", time_str.c_str());
 
     for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
-        Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
+        Base::Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
     }
 }
 
@@ -2839,10 +2840,10 @@ void Application::LoadParameters(void)
         if (_pcSysParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Console().Warning("   Parameter does not exist, writing initial one\n");
-                Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
-                                  "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
-                                  "   configuration.\n");
+                Base::Console().Warning("   Parameter does not exist, writing initial one\n");
+                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                                        "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
+                                        "   configuration.\n");
             }
         }
     }
@@ -2873,10 +2874,10 @@ void Application::LoadParameters(void)
 
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Console().Warning("   User settings do not exist, writing initial one\n");
-                Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
-                                  "   or your configuration was deleted or moved. The system defaults\n"
-                                  "   will be automatically generated for you.\n");
+                Base::Console().Warning("   User settings do not exist, writing initial one\n");
+                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                                        "   or your configuration was deleted or moved. The system defaults\n"
+                                        "   will be automatically generated for you.\n");
             }
         }
     }

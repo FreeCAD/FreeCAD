@@ -591,12 +591,12 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
     sToolTipText    = QT_TR_NOOP("Create an ellipse by center in the sketch");
     sWhatsThis      = "Sketcher_CreateEllipseByCenter";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_CreateEllipse"; //FIXME: icon link
+    sPixmap         = "Sketcher_CreateEllipseByCenter";
     sAccel          = "G, E, E";
     eType           = ForEdit;
 }
 
-CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseByCenter,"Sketcher_CreateEllipse") //FIXME: icon link
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseByCenter, "Sketcher_CreateEllipseByCenter")
 
 void CmdSketcherCreateEllipseByCenter::activated(int iMsg)
 {
@@ -784,8 +784,7 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* ellipseByCenter = pcAction->addAction(QString());
-    ellipseByCenter->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
-     /// @todo replace with correct icon
+    ellipseByCenter->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter"));
     QAction* ellipseBy3Points = pcAction->addAction(QString());
     ellipseBy3Points->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
 
@@ -819,7 +818,7 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
     case Normal:
-        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
         a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
         a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
@@ -827,7 +826,7 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
-        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_Constr"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter_Constr"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr"));
         a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr"));
         a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr"));

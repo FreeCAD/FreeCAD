@@ -33,6 +33,7 @@
 # include <QTimer>
 # include <QToolBar>
 # include <QToolButton>
+# include <QToolTip>
 #endif
 
 #include <Base/Exception.h>
@@ -367,7 +368,7 @@ void ActionGroup::onActivated (QAction* a)
 
 void ActionGroup::onHovered (QAction *a)
 {
-    Gui::ToolTip::showText(QCursor::pos(), a->toolTip());
+    QToolTip::showText(QCursor::pos(), a->toolTip());
 }
 
 
