@@ -101,6 +101,7 @@ public:
     // handling when object is deleted
     virtual bool onDelete(const std::vector<std::string>&);
     virtual bool canDelete(App::DocumentObject* obj) const;
+    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
 
       /** @name Selection handling
       * This group of methods do the selection handling.
@@ -145,11 +146,6 @@ protected:
     vtkSmartPointer<vtkOutlineCornerFilter>     m_outline;
     vtkSmartPointer<vtkExtractEdges>            m_wireframe, m_wireframeSurface;
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
-
-    void selectionChanged(const Gui::SelectionChanges &);
-    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
-    typedef boost::signals2::scoped_connection Connection;
-    Connection connectSelection;
 
 private:
     void updateProperties();
