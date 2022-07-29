@@ -306,15 +306,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
     }
     
     if (baseShape.IsNull()) {
-        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-        if (isRestoring) {
-            Base::Console().Warning("DVS::execute - base shape is invalid - (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVS::execute - base shape is Null. - %s\n",
-                                  getNameInDocument());
-        }
-        return new App::DocumentObjectExecReturn("BaseView Source object is Null");
+        return DrawView::execute();
     }
 
 //    checkXDirection();
@@ -353,9 +345,14 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 //                            getNameInDocument(), baseShape.IsNull());
 
     if (waitingForCut()) {
-//        Base::Console().Message("DVS::sectionExec - %s - waiting for cut\n", getNameInDocument());
         return;
     }
+
+    if (baseShape.IsNull()) {
+        //should be caught before this
+        return;
+    }
+
     try {
         QObject::connect(&m_cutWatcher, SIGNAL(finished()), this, SLOT(onSectionCutFinished()));
         m_cutFuture = QtConcurrent::run(this, &DrawViewSection::makeSectionCut, baseShape);
@@ -371,15 +368,9 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
 {
 //    Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull: %d\n",
 //                            getNameInDocument(), baseShape.IsNull());
-//    if (waitingForCut()) {
-//        Base::Console().Message("DVS::makeSectionCut - %s - waiting for cut - returning\n", getNameInDocument());
-//        return;
-//    }
 
     waitingForCut(true);
     showProgressMessage(getNameInDocument(), "is making section cut");
-
-    //    auto start = chrono::high_resolution_clock::now();
 
 // cut base shape with tool
     //is SectionOrigin valid?
@@ -490,38 +481,30 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
         return;
     }
 
-//    auto end = chrono::high_resolution_clock::now();
-//    auto diff = end - start;
-//    double diffOut = chrono::duration <double, milli>(diff).count();
-//    Base::Console().Message("DVS::makeSectionCut - %s spent: %.3f millisecs making section cut\n", getNameInDocument(), diffOut);
     waitingForCut(false);
 }
 
 void DrawViewSection::onSectionCutFinished()
 {
 //    Base::Console().Message("DVS::onSectionCutFinished() - %s\n", getNameInDocument());
-//    if (waitingForCut()) {
-        //this should never happen since sectionExec only starts makeSectionCut if
-        //a cut is not already in progress
-//        Base::Console().Message("DVS::onSectionCutFinished - %s - cut not completed yet\n",
-//                                getNameInDocument());
-//        return;
-//    }
     QObject::disconnect(&m_cutWatcher, SIGNAL(finished()), this, SLOT(onSectionCutFinished()));
+
+    showProgressMessage(getNameInDocument(), "has finished making section cut");
+
+    postSectionCutTasks();
 
     //display geometry for cut shape is in geometryObject as in DVP
     geometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
 }
 
+//activities that depend on updated geometry object
 void DrawViewSection::postHlrTasks(void)
 {
 //    Base::Console().Message("DVS::postHlrTasks() - %s\n", getNameInDocument());
-//    auto start = chrono::high_resolution_clock::now();
 
     // build section face geometry
     TopoDS_Compound faceIntersections = findSectionPlaneIntersections(m_rawShape);
     if (faceIntersections.IsNull()) {
-//        Base::Console().Message("DVS::postHlrTasks - no face intersections found\n");
         requestPaint();
         DrawViewPart::postHlrTasks();
         return;
@@ -590,11 +573,6 @@ void DrawViewSection::postHlrTasks(void)
         tdSectionFaces.push_back(sectionFace);
     }
 
-//    auto end = chrono::high_resolution_clock::now();
-//    auto diff = end - start;
-//    double diffOut = chrono::duration <double, milli>(diff).count();
-//    Base::Console().Message("DVS::sectionExec - %s spent: %.3f millisecs finding section faces\n", getNameInDocument(), diffOut);
-
     App::DocumentObject* base = BaseView.getValue();
     if (base != nullptr) {
         if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
@@ -604,6 +582,18 @@ void DrawViewSection::postHlrTasks(void)
     }
     requestPaint();
     DrawViewPart::postHlrTasks();
+}
+
+//activities that depend on a valid section cut
+void DrawViewSection::postSectionCutTasks()
+{
+    std::vector<App::DocumentObject*> children = getInList();
+    for (auto& c: children) {
+        if (c->getTypeId().isDerivedFrom(DrawViewPart::getClassTypeId())) {
+            //details or sections need cut shape
+            c->recomputeFeature();
+        }
+    }
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
