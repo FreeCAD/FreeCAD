@@ -122,7 +122,7 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
     # plus a GuiCameraSettings key that contains an iv repr of a coin camera
 
     def __init__(self):
-        
+
         super().__init__()
         self.guidata = {}
         self.current = None
