@@ -213,25 +213,13 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute()
     }
     
     DrawViewPart* dvp = static_cast<DrawViewPart*>(baseObj);
-
-    DrawProjGroupItem* dpgi = nullptr;
-    if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        dpgi= static_cast<TechDraw::DrawProjGroupItem*>(dvp);
-    }
-
     DrawViewSection* dvs = nullptr;
+    TopoDS_Shape shape;
     if (dvp->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
         dvs= static_cast<TechDraw::DrawViewSection*>(dvp);
-    }
-
-    TopoDS_Shape shape;
-    if (dvs) {
         shape = dvs->getCutShape();
-    }
-    else if (dpgi) {
-        shape = dpgi->getSourceShapeFused();
-    }
-    else {
+    } else {
+        //getSourceShapeFused will complain if called on section
         shape = dvp->getSourceShapeFused();
     }
 

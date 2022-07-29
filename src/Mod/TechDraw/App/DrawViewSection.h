@@ -101,6 +101,7 @@ public:
     void sectionExec(TopoDS_Shape& s);
     void makeSectionCut(TopoDS_Shape &baseShape);
     void postHlrTasks(void) override;
+    virtual void postSectionCutTasks();
     void waitingForCut(bool s) { m_waitingForCut = s; }
     bool waitingForCut(void) const { return m_waitingForCut; }
 
