@@ -188,7 +188,7 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
                 self.current = None
                 self.properties = {}
         elif tag == "Property":
-            if self.currentprop and (self.currentval != None):
+            if self.currentprop and (self.currentval is not None):
                 self.properties[self.currentprop] = {"type":self.currenttype,"value":self.currentval}
                 self.currentprop = None
                 self.currentval = None

@@ -521,7 +521,7 @@ class ArchGridTaskPanel:
                         if (s[0] == r.topRow()) and (s[1] == r.leftColumn()):
                             f = i
                             break
-                    if f != None:
+                    if f is not None:
                         self.spans.pop(f)
 
     def editHorizontalHeader(self, index):

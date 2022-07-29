@@ -1480,7 +1480,7 @@ class IfcSchema:
         ent = self.entities[name]
 
         attrs = []
-        while ent != None:
+        while ent is not None:
             this_ent_attrs = copy.copy(ent["attributes"])
             this_ent_attrs.reverse()
             attrs.extend(this_ent_attrs)
