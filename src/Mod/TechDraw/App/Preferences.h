@@ -81,6 +81,7 @@ static std::string bitmapFill();
 static double      GapISO();
 static double      GapASME();
 
+static bool        reportProgress();
 };
 
 } //end namespace TechDraw

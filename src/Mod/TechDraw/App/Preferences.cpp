@@ -339,3 +339,12 @@ double Preferences::GapASME()
     double factor = hGrp->GetFloat("GapASME", 6.0);
     return factor;
 }
+
+bool Preferences::reportProgress()
+{
+    Base::Reference<ParameterGrp>  hGrp = App::GetApplication().GetUserParameter().
+                                          GetGroup("BaseApp")->GetGroup("Preferences")->
+                                          GetGroup("Mod/TechDraw/General");
+    bool report = hGrp->GetBool("ReportProgress", false);
+    return report;
+}
