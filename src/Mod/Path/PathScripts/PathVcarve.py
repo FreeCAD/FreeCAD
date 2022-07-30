@@ -197,7 +197,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
     """Proxy class for Vcarve operation."""
 
     def opFeatures(self, obj):
-        """opFeatures(obj) ... return all standard features and edges based geomtries"""
+        """opFeatures(obj) ... return all standard features and edges based geometries"""
         return (
             PathOp.FeatureTool
             | PathOp.FeatureHeights
@@ -354,7 +354,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             )
             return
 
-        if True:
+        try:
             faces = []
 
             for base in obj.BaseShapes:
@@ -383,10 +383,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     )
                 )
 
-        #except Exception as e:
-        #    PathLog.error(
-        #        "Error processing Base object. Engraving operation will produce no output."
-        #    )
+        except Exception as e:
+            PathLog.error(
+                "Error processing Base object. Engraving operation will produce no output."
+            )
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
         """updateDepths(obj) ... engraving is always done at the top most z-value"""
