@@ -47,7 +47,7 @@ class DocumentBasicCases(unittest.TestCase):
   def testCreateDestroy(self):
     #FIXME: Causes somehow a ref count error but it's _not_ FreeCAD.getDocument()!!!
     #If we remove the whole method no error appears.
-    self.failUnless(FreeCAD.getDocument("CreateTest")!= None,"Creating Document failed")
+    self.failUnless(FreeCAD.getDocument("CreateTest") is not None,"Creating Document failed")
 
   def testAddition(self):
     # Cannot write a real test case for that but when debugging the
@@ -1092,7 +1092,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.failUnless(G1.getObject("Label_2") is None)
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first group and then the object
     self.Doc.openTransaction("Remove")
@@ -1100,7 +1100,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.removeObject("Label_2")
     self.Doc.commitTransaction()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first object and then the group in two transactions
     self.Doc.openTransaction("Remove")
@@ -1112,7 +1112,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.Doc.undo()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first object and then the group in one transaction
     self.Doc.openTransaction("Remove")
@@ -1122,7 +1122,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.Doc.undo()
     # FIXME: See bug #1820554
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Add a second object to the group
     L3 = self.Doc.addObject("App::FeatureTest","Label_3")
@@ -1135,8 +1135,8 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.removeObject("Group")
     self.Doc.commitTransaction()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_3") != None)
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_3") is not None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     self.Doc.UndoMode = 0
 

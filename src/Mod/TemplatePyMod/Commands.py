@@ -142,7 +142,7 @@ class TemplatePyMod_Cmd4:
 		FreeCAD.Console.PrintError('TemplatePyMod_Cmd4 was destroyed\n')
 
 	def Activated(self):
-		if FreeCADGui.ActiveDocument != None:
+		if FreeCADGui.ActiveDocument is not None:
 			self.sc.enter()
 		else:
 			FreeCAD.Console.PrintWarning('A 3d view must be created\n')
