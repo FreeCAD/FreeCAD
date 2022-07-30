@@ -14,10 +14,10 @@ d=dict()
 l=list()
 for line in lines:
     r=re.search("\\(#\\s*\\d+\\)",line)
-    if r != None:
+    if r is not None:
         s=line[r.start():r.end()]
         t=re.search("^Leak",line)
-        if t != None:
+        if t is not None:
             m=d[s]
             l.append(m)
         else:
