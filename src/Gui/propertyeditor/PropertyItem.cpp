@@ -1017,7 +1017,7 @@ PropertyFloatItem::PropertyFloatItem()
 QVariant PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    QString data = QLocale().toString(value, 'f', decimals());
+    QString data = QLocale().toString(value, 'g', decimals());
 
     if (hasExpression())
         data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
@@ -1040,7 +1040,7 @@ void PropertyFloatItem::setValue(const QVariant& value)
         if (!value.canConvert(QVariant::Double))
             return;
         double val = value.toDouble();
-        QString data = QString::fromLatin1("%1").arg(val, 0, 'f', decimals());
+        QString data = QString::fromLatin1("%1").arg(val, 0, 'g', decimals());
         setPropertyValue(data);
     }
 }
@@ -1197,7 +1197,7 @@ PropertyFloatConstraintItem::PropertyFloatConstraintItem()
 QVariant PropertyFloatConstraintItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    QString data = QLocale().toString(value, 'f', decimals());
+    QString data = QLocale().toString(value, 'g', decimals());
     return QVariant(data);
 }
 
@@ -1216,7 +1216,7 @@ void PropertyFloatConstraintItem::setValue(const QVariant& value)
         if (!value.canConvert(QVariant::Double))
             return;
         double val = value.toDouble();
-        QString data = QString::fromLatin1("%1").arg(val, 0, 'f', decimals());
+        QString data = QString::fromLatin1("%1").arg(val, 0, 'g', decimals());
         setPropertyValue(data);
     }
 }
@@ -3124,7 +3124,7 @@ QVariant PropertyFloatListItem::value(const App::Property* prop) const
     QStringList list;
     const std::vector<double>& value = static_cast<const App::PropertyFloatList*>(prop)->getValues();
     for (std::vector<double>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
-        list << QString::number(*jt, 'f', decimals());
+        list << QString::number(*jt, 'g', decimals());
     }
 
     return QVariant(list);
