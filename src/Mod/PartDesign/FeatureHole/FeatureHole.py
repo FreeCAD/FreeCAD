@@ -50,13 +50,13 @@ class Hole():
         self.feature.addProperty("App::PropertyLength","Depth","Hole","Depth of hole").Depth=8.0
         self.feature.addProperty("App::PropertyLength","CounterboreDiameter","Hole","Diameter of counterbore").CounterboreDiameter=10.0
         self.feature.addProperty("App::PropertyLength","CounterboreDepth","Hole","Depth of counterbore").CounterboreDepth=4.0
-        self.feature.addProperty("App::PropertyLength","CountersinkAngle","Hole","Angle of countersink").CountersinkAngle=45.0;
-        self.feature.addProperty("App::PropertyLength","ThreadLength","Hole","Length of thread").ThreadLength=5.0;
+        self.feature.addProperty("App::PropertyLength","CountersinkAngle","Hole","Angle of countersink").CountersinkAngle=45.0
+        self.feature.addProperty("App::PropertyLength","ThreadLength","Hole","Length of thread").ThreadLength=5.0
         self.feature.addProperty("App::PropertyString","PositionType","Hole","Type of position references").PositionType="Linear"
         self.feature.addProperty("App::PropertyLinkSub","Support","Hole","Support of hole feature").Support=None
         self.feature.addProperty("App::PropertyLink","HoleGroove","Hole","Revolution feature creating the hole").HoleGroove=None
         # Create new HoleGroove feature
-        body = FreeCADGui.activeView().getActiveObject("pdbody");
+        body = FreeCADGui.activeView().getActiveObject("pdbody")
         self.sketchaxis = self.feature.Document.addObject("PartDesign::Line", "HoleSketchAxis")
         body.addFeature(self.sketchaxis)
         self.Gui.ActiveDocument.hide(self.sketchaxis.Name)
