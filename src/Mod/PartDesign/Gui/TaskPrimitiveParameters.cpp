@@ -734,9 +734,9 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Width='%3'\n"
                     "%1.Height='%4'\n")
                     .arg(name,
-                         ui->boxLength->value().getUserString(),
-                         ui->boxWidth->value().getUserString(),
-                         ui->boxHeight->value().getUserString());
+                         ui->boxLength->value().getSafeUserString(),
+                         ui->boxWidth->value().getSafeUserString(),
+                         ui->boxHeight->value().getSafeUserString());
                 break;
 
             case 2:  // cylinder
@@ -747,11 +747,11 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.FirstAngle='%5'\n"
                     "%1.SecondAngle='%6'\n")
                     .arg(name,
-                         ui->cylinderRadius->value().getUserString(),
-                         ui->cylinderHeight->value().getUserString(),
-                         ui->cylinderAngle->value().getUserString(),
-                         ui->cylinderXSkew->value().getUserString(),
-                         ui->cylinderYSkew->value().getUserString());
+                         ui->cylinderRadius->value().getSafeUserString(),
+                         ui->cylinderHeight->value().getSafeUserString(),
+                         ui->cylinderAngle->value().getSafeUserString(),
+                         ui->cylinderXSkew->value().getSafeUserString(),
+                         ui->cylinderYSkew->value().getSafeUserString());
                 break;
 
             case 3:  // cone
@@ -767,10 +767,10 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Height='%4'\n"
                     "%1.Angle='%5'\n")
                     .arg(name,
-                         ui->coneRadius1->value().getUserString(),
-                         ui->coneRadius2->value().getUserString(),
-                         ui->coneHeight->value().getUserString(),
-                         ui->coneAngle->value().getUserString());
+                         ui->coneRadius1->value().getSafeUserString(),
+                         ui->coneRadius2->value().getSafeUserString(),
+                         ui->coneHeight->value().getSafeUserString(),
+                         ui->coneAngle->value().getSafeUserString());
                  break;
 
             case 4:  // sphere
@@ -780,10 +780,10 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2='%4'\n"
                     "%1.Angle3='%5'\n")
                     .arg(name,
-                         ui->sphereRadius->value().getUserString(),
-                         ui->sphereAngle1->value().getUserString(),
-                         ui->sphereAngle2->value().getUserString(),
-                         ui->sphereAngle3->value().getUserString());
+                         ui->sphereRadius->value().getSafeUserString(),
+                         ui->sphereAngle1->value().getSafeUserString(),
+                         ui->sphereAngle2->value().getSafeUserString(),
+                         ui->sphereAngle3->value().getSafeUserString());
                 break;
             case 5:  // ellipsoid
                 cmd = QString::fromLatin1(
@@ -794,12 +794,12 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2='%6'\n"
                     "%1.Angle3='%7'\n")
                     .arg(name,
-                         ui->ellipsoidRadius1->value().getUserString(),
-                         ui->ellipsoidRadius2->value().getUserString(),
-                         ui->ellipsoidRadius3->value().getUserString(),
-                         ui->ellipsoidAngle1->value().getUserString(),
-                         ui->ellipsoidAngle2->value().getUserString(),
-                         ui->ellipsoidAngle3->value().getUserString());
+                         ui->ellipsoidRadius1->value().getSafeUserString(),
+                         ui->ellipsoidRadius2->value().getSafeUserString(),
+                         ui->ellipsoidRadius3->value().getSafeUserString(),
+                         ui->ellipsoidAngle1->value().getSafeUserString(),
+                         ui->ellipsoidAngle2->value().getSafeUserString(),
+                         ui->ellipsoidAngle3->value().getSafeUserString());
                 break;
 
             case 6:  // torus
@@ -810,11 +810,11 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2='%5'\n"
                     "%1.Angle3='%6'\n")
                     .arg(name,
-                         ui->torusRadius1->value().getUserString(),
-                         ui->torusRadius2->value().getUserString(),
-                         ui->torusAngle1->value().getUserString(),
-                         ui->torusAngle2->value().getUserString(),
-                         ui->torusAngle3->value().getUserString());
+                         ui->torusRadius1->value().getSafeUserString(),
+                         ui->torusRadius2->value().getSafeUserString(),
+                         ui->torusAngle1->value().getSafeUserString(),
+                         ui->torusAngle2->value().getSafeUserString(),
+                         ui->torusAngle3->value().getSafeUserString());
                 break;
             case 7:  // prism
                 cmd = QString::fromLatin1(
@@ -825,10 +825,10 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.SecondAngle='%6'\n")
                     .arg(name,
                          QString::number(ui->prismPolygon->value()),
-                         ui->prismCircumradius->value().getUserString(),
-                         ui->prismHeight->value().getUserString(),
-                         ui->prismXSkew->value().getUserString(),
-                         ui->prismYSkew->value().getUserString());
+                         ui->prismCircumradius->value().getSafeUserString(),
+                         ui->prismHeight->value().getSafeUserString(),
+                         ui->prismXSkew->value().getSafeUserString(),
+                         ui->prismYSkew->value().getSafeUserString());
                 break;
             case 8:  // wedge
                 // Xmin/max, Ymin/max and Zmin/max must each not be equal
@@ -859,16 +859,16 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.X2max='%10'\n"
                     "%1.Z2max='%11'\n")
                     .arg(name,
-                         ui->wedgeXmin->value().getUserString(),
-                         ui->wedgeYmin->value().getUserString(),
-                         ui->wedgeZmin->value().getUserString(),
-                         ui->wedgeX2min->value().getUserString(),
-                         ui->wedgeZ2min->value().getUserString(),
-                         ui->wedgeXmax->value().getUserString(),
-                         ui->wedgeYmax->value().getUserString(),
-                         ui->wedgeZmax->value().getUserString())
-                    .arg(ui->wedgeX2max->value().getUserString(),
-                         ui->wedgeZ2max->value().getUserString());
+                         ui->wedgeXmin->value().getSafeUserString(),
+                         ui->wedgeYmin->value().getSafeUserString(),
+                         ui->wedgeZmin->value().getSafeUserString(),
+                         ui->wedgeX2min->value().getSafeUserString(),
+                         ui->wedgeZ2min->value().getSafeUserString(),
+                         ui->wedgeXmax->value().getSafeUserString(),
+                         ui->wedgeYmax->value().getSafeUserString(),
+                         ui->wedgeZmax->value().getSafeUserString())
+                    .arg(ui->wedgeX2max->value().getSafeUserString(),
+                         ui->wedgeZ2max->value().getSafeUserString());
                 break;
 
             default:
