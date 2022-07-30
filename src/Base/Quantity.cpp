@@ -242,6 +242,22 @@ QString Quantity::getUserString(UnitsSchema* schema, double &factor, QString &un
     return schema->schemaTranslate(*this, factor, unitString);
 }
 
+QString Quantity::getSafeUserString() const
+{
+    auto retString = getUserString();
+    if(Q_LIKELY(this->_Value != 0))
+    {
+        auto feedbackQty = parse(retString);
+        auto feedbackVal = feedbackQty.getValue();
+        if (feedbackVal == 0) {
+            retString = QStringLiteral("%1 %2")
+                .arg(this->_Value)
+                .arg(this->getUnit().getString());
+        }
+    }
+    return retString;
+}
+
 /// true if it has a number without a unit
 bool Quantity::isDimensionless() const
 {
