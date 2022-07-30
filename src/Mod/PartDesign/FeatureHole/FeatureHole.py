@@ -32,7 +32,7 @@ def makeVector(point):
 class Hole():
     "Hole feature"
     App = FreeCAD
-    Gui = FreeCADGui    
+    Gui = FreeCADGui
 
     def __init__(self, feature):
         self.feature = feature
@@ -78,14 +78,14 @@ class Hole():
         self.oldCountersink = False
 
     def execute(self, feature):
-        if feature.Support != None:
+        if feature.Support is not None:
             (support, element) = feature.Support
             feature.Placement = feature.HoleGroove.Placement
             shape = feature.HoleGroove.Shape.copy()
             shape.Placement = FreeCAD.Placement()
             feature.Shape = shape
-            
-            self.Gui.ActiveDocument.hide(support.Name)            
+
+            self.Gui.ActiveDocument.hide(support.Name)
             # Copy display properties from support
             featview = feature.ViewObject
             suppview = support.ViewObject
@@ -125,7 +125,7 @@ class Hole():
         refs = plane.References
         if len(refs) == 0:
             return
-            
+
         axis = plane.References[0][0]
         firstTime = (len(axis.References) == 0)
         if firstTime:
@@ -156,7 +156,7 @@ class Hole():
                             except Exception:
                                 # Unknown curvetype GeomAbs_OtherCurve
                                 continue
-                        axis.References = [(support,  elementList[0]),  (support,  "Edge" + str(firstLineIndex+1)),  (support,  "Edge" + str(secondLineIndex+1))] 
+                        axis.References = [(support,  elementList[0]),  (support,  "Edge" + str(firstLineIndex+1)),  (support,  "Edge" + str(secondLineIndex+1))]
                         axis.Offset = 1.0
                         axis.Offset2 = 1.0
                         self.feature.PositionType = "Linear"
@@ -166,7 +166,7 @@ class Hole():
                         #l2 = Part.LineSegment(e.Curve)
                         #axis.Offset = p.distanceToLine(l1.StartPoint,  l1.EndPoint - l1.StartPoint)
                         #axis.Offset2 = p.distanceToLine(l1.StartPoint,  l2.EndPoint - l2.StartPoint)
-                        # TODO: Ensure that the hole is inside the face! 
+                        # TODO: Ensure that the hole is inside the face!
                         break
                 elif type(e.Curve) == Part.Circle:
                     allEdges = support.Shape.Edges
@@ -195,12 +195,12 @@ class Hole():
                                 break
                         except:
                             continue
-                    break          
-        
+                    break
+
         # Grab a point from the wire of the support face
         axisbase = axis.Shape.Curve.StartPoint
         axisdir = axis.Shape.Curve.EndPoint - axisbase
-        found = False        
+        found = False
         if not firstTime and len(refs) > 1:
             # Try to keep the old point, to avoid the sketch plane jumping around
             (obj, sub) = refs[1]
@@ -215,12 +215,12 @@ class Hole():
                     break
         if not found:
             point = face.OuterWire.Vertexes[0] # Better this than nothing... and it can't actually happen, can it?
-            
+
         # Find the index of the point in the support shape
         allVertexes = support.Shape.Vertexes
         for v in range(len(allVertexes)):
-            if allVertexes[v].Point == point.Point:                
-                # Use this point and the axis to define the sketch plane            
+            if allVertexes[v].Point == point.Point:
+                # Use this point and the axis to define the sketch plane
                 if len(refs) < 2:
                     refs.append((support,  "Vertex" + str(v+1)))
                 else:
@@ -234,7 +234,7 @@ class Hole():
         else:
             self.executeSketchChanged(fp) # Update the sketch of the hole
         self.setHoleDirection(fp)
-        
+
     def setHoleDirection(self,  feature):
         # Make sure the hole goes into the material, not out of it
         sketch = feature.HoleGroove.Sketch
@@ -244,7 +244,7 @@ class Hole():
         p1 = None
         p2 = None
         for v in sketch.Shape.Vertexes:
-            # Find the two sketch vertices that are on the sketch axis            
+            # Find the two sketch vertices that are on the sketch axis
             if v.Point.distanceToLine(axisbase, axisdir) < 1E-10: # TODO: use Precision::Confusion()
                 if p1 is None:
                     p1 = v.Point
@@ -263,7 +263,7 @@ class Hole():
                 dir = p2 - p1
             else:
                 top = p2
-                dir = p1 - p2       
+                dir = p1 - p2
             if not support.Shape.isInside(top + dir.multiply(1E-8),  1E-10,  False):
                 # Toggle the angle
                 angle = sketch.Constraints[12].Value
@@ -291,17 +291,17 @@ class Hole():
             self.createOrUpdateStandardSketch(fp, length, radius)
 
     def createOrUpdateStandardSketch(self, fp, depth, radius):
-        (support,  elements) = fp.Support        
+        (support,  elements) = fp.Support
         if fp.HoleGroove.Sketch.GeometryCount == 0:
             #FreeCAD.Console.PrintMessage("Standard sketch\n")
-            # New sketch        
+            # New sketch
             sketch = fp.HoleGroove.Sketch
             axis = sketch.Support[0].References[0][0]
             # Geo  -1,1 is the origin (Point)
             # Geo -1 is the X-axis
             # Geo -2 is the Y-axis
             # First external geometry is -3
-            sketch.addExternal(axis.Name,"LineSegment") # Geo -3: Datum axis            
+            sketch.addExternal(axis.Name,"LineSegment") # Geo -3: Datum axis
             sketch.addExternal(support.Name,  elements[0]) # Geo -4: Support face
             # Note: Creating the sketch first with depth = 100.0 and then changing the constraint later seems to be more stable
             tempDepth = 100.0
@@ -314,8 +314,8 @@ class Hole():
             sketch.addGeometry(Part.LineSegment(self.App.Vector(10.0,-10.0,0),self.App.Vector(20.0,-10.0,0))) # Geo2: Top of hole
             sketch.addConstraint(Sketcher.Constraint('Coincident',1,1,2,1)) # Datum2
             sketch.addConstraint(Sketcher.Constraint('Perpendicular',2, 1))  # Datum3
-            sketch.addGeometry(Part.LineSegment(self.App.Vector(20.0,-10.0,0),self.App.Vector(20.0,-25.0,0))) # Geo3: Vertical mantle of hole      
-            sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) # temporary      
+            sketch.addGeometry(Part.LineSegment(self.App.Vector(20.0,-10.0,0),self.App.Vector(20.0,-25.0,0))) # Geo3: Vertical mantle of hole
+            sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) # temporary
             sketch.addConstraint(Sketcher.Constraint('Parallel',3, 1))         # Datum4
             sketch.addConstraint(Sketcher.Constraint('Distance',3,2,1, 10.0))  # Datum5: Radius
             sketch.addConstraint(Sketcher.Constraint('Distance',3,2,2, 15.0)) # Datum6: Depth
@@ -323,7 +323,7 @@ class Hole():
             sketch.addConstraint(Sketcher.Constraint('Coincident',4,1,1,2)) # Datum7
             sketch.addConstraint(Sketcher.Constraint('Coincident',4,2,3,2)) # Datum8
             # TODO: The tip angle of 118 degrees is for steel only. It should be taken from Part material data
-            # (as soon as that is implemented) 
+            # (as soon as that is implemented)
             sketch.addConstraint(Sketcher.Constraint('Angle',4,1,1,2, 118.0/2.0 * math.pi / 180.0)) # Datum9
             # Locate at the intersection of the two external geometries
             sketch.addConstraint(Sketcher.Constraint('PointOnObject',1,1,-3))# Datum10
@@ -332,7 +332,7 @@ class Hole():
             # This datum is specific for this holetype, so move it to the last position
             sketch.delConstraint(4)
             sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) # Datum13
-            fp.HoleGroove.ReferenceAxis = (sketch,['Axis0'])            
+            fp.HoleGroove.ReferenceAxis = (sketch,['Axis0'])
         if self.oldCounterbore == True:
             # Remove counterbore from existing sketch
             #FreeCAD.Console.PrintMessage("Counter to Standard sketch\n")
@@ -345,7 +345,7 @@ class Hole():
             sketch.delConstraint(14)
             sketch.delConstraint(13)
             sketch.delGeometry(6)
-            sketch.delGeometry(5)        
+            sketch.delGeometry(5)
             sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) # Datum13
         elif self.oldCountersink == True:
             # Remove countersink from existing sketch
@@ -355,7 +355,7 @@ class Hole():
             sketch.delConstraint(15)
             sketch.delConstraint(14)
             sketch.delConstraint(13)
-            sketch.delGeometry(5)            
+            sketch.delGeometry(5)
             sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) # Datum13
         else:
             # Update existing standard sketch
@@ -369,12 +369,12 @@ class Hole():
                 sketch.delConstraint(13)
                 sketch.delConstraint(12)
                 sketch.delConstraint(11)
-                sketch.delExternal(1)                
+                sketch.delExternal(1)
                 sketch.addExternal(support.Name,  elements[0]) # Geo -4: Support face
                 sketch.addConstraint(Sketcher.Constraint('PointOnObject',1,1,-4))# Datum11
                 sketch.addConstraint(Sketcher.Constraint('Angle',0,1,-3, 1,  angle))# Datum12
                 sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) # Datum13
-            
+
         self.setHoleDirection(fp)
         self.oldCounterbore = False
         self.oldCountersink = False
@@ -404,17 +404,17 @@ class Hole():
                 sketch.delConstraint(13)
                 sketch.delConstraint(12)
                 sketch.delConstraint(11)
-                sketch.delExternal(1)                
+                sketch.delExternal(1)
                 sketch.addExternal(support.Name,  elements[0]) # Geo -4: Support face
                 sketch.addConstraint(Sketcher.Constraint('PointOnObject',1,1,-4))# Datum11
                 sketch.addConstraint(Sketcher.Constraint('Angle',0,1,-3, 1,  angle))# Datum12
                 sketch.addConstraint(Sketcher.Constraint('Distance',2, cradius))  # Datum13
                 sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,5,1)) # Datum14
                 sketch.addConstraint(Sketcher.Constraint('Distance',3, 1, 2, cdepth))  # Datum15
-                sketch.addConstraint(Sketcher.Constraint('Parallel',5, 1))         # Datum16            
+                sketch.addConstraint(Sketcher.Constraint('Parallel',5, 1))         # Datum16
                 sketch.addConstraint(Sketcher.Constraint('Coincident',5,2,6,1)) # Datum17
                 sketch.addConstraint(Sketcher.Constraint('Perpendicular',6, -3))  # Datum18
-                sketch.addConstraint(Sketcher.Constraint('Coincident',6,2,3,1)) # Datum19     
+                sketch.addConstraint(Sketcher.Constraint('Coincident',6,2,3,1)) # Datum19
         else:
             # Change standard to counterbore in existing sketch
             #FreeCAD.Console.PrintMessage("Standard to Counterbore sketch\n")
@@ -430,7 +430,7 @@ class Hole():
             sketch.addGeometry(Part.LineSegment(self.App.Vector(p2.x,p2.y-20.0, 0),p3)) # Geo6: bottom of counterbore
             sketch.addConstraint(Sketcher.Constraint('Coincident',5,2,6,1)) # Datum17
             sketch.addConstraint(Sketcher.Constraint('Perpendicular',6, -3))  # Datum18
-            sketch.addConstraint(Sketcher.Constraint('Coincident',6,2,3,1)) # Datum19            
+            sketch.addConstraint(Sketcher.Constraint('Coincident',6,2,3,1)) # Datum19
 
         self.setHoleDirection(fp)
         self.oldCounterbore = True
@@ -441,7 +441,7 @@ class Hole():
         sangle = fp.CountersinkAngle * math.pi / 180.0
         (support,  elements) = fp.Support
 
-        if self.oldCountersink == True:            
+        if self.oldCountersink == True:
             # Update properties of existing countersink sketch
             #FreeCAD.Console.PrintMessage("Update to Countersink sketch\n")
             sketch = fp.HoleGroove.Sketch
@@ -458,13 +458,13 @@ class Hole():
                 sketch.delConstraint(13)
                 sketch.delConstraint(12)
                 sketch.delConstraint(11)
-                sketch.delExternal(1)                
+                sketch.delExternal(1)
                 sketch.addExternal(support.Name,  elements[0]) # Geo -4: Support face
                 sketch.addConstraint(Sketcher.Constraint('PointOnObject',1,1,-4))# Datum11
                 sketch.addConstraint(Sketcher.Constraint('Angle',0,1,-3, 1,  angle))# Datum12
                 sketch.addConstraint(Sketcher.Constraint('Distance',2, sradius))  # Datum13
                 sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,5,1)) # Datum14
-                sketch.addConstraint(Sketcher.Constraint('Angle',5,2, 1,2,  sangle))  # Datum15  
+                sketch.addConstraint(Sketcher.Constraint('Angle',5,2, 1,2,  sangle))  # Datum15
                 sketch.addConstraint(Sketcher.Constraint('Coincident',3,1,5,2)) # Datum16
         else:
             # Change standard to countersink in existing sketch
@@ -475,8 +475,8 @@ class Hole():
             p2 = sketch.Geometry[2].EndPoint
             sketch.addGeometry(Part.LineSegment(p2,self.App.Vector(p2.x,p2.y-20.0,0))) # Geo5: Chamfer of countersink
             sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,5,1)) # Datum14
-            sketch.addConstraint(Sketcher.Constraint('Angle',5,2, 1,2,  sangle))  # Datum15  
-            sketch.addConstraint(Sketcher.Constraint('Coincident',3,1,5,2)) # Datum16            
+            sketch.addConstraint(Sketcher.Constraint('Angle',5,2, 1,2,  sangle))  # Datum15
+            sketch.addConstraint(Sketcher.Constraint('Coincident',3,1,5,2)) # Datum16
 
         self.setHoleDirection(fp)
         self.oldCounterbore = False
