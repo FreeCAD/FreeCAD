@@ -18,7 +18,7 @@ project(FreeCAD)
 set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
 set(PACKAGE_VERSION_MINOR "20")
-set(PACKAGE_VERSION_PATCH "0")
+set(PACKAGE_VERSION_PATCH "1")
 set(PACKAGE_VERSION_SUFFIX "") # either "dev" for development snapshot or "" (empty string)
 set(FREECAD_VERSION_PATCH "1") # number of patch release (e.g. "4" for the 0.18.4 release)
 
