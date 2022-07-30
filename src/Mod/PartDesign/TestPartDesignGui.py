@@ -40,7 +40,7 @@ class CallableCheckWorkflow:
     def __call__(self):
         diag = QApplication.activeModalWidget()
         self.test.assertIsNotNone(diag, "Dialog box could not be found")
-        if (diag != None):
+        if (diag is not None):
             cbuttons = diag.findChildren(QtGui.QPushButton)
             cbutton = cbuttons[1]
             dialogcheck = CallableCheckDialog(self.test)
@@ -60,7 +60,7 @@ class CallableCheckWarning:
     def __call__(self):
         diag = QApplication.activeModalWidget()
         self.test.assertIsNotNone(diag, "Input dialog box could not be found")
-        if (diag != None):
+        if (diag is not None):
             QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
 
 class CallableComboBox:
@@ -69,10 +69,10 @@ class CallableComboBox:
     def __call__(self):
         diag = QApplication.activeModalWidget()
         self.test.assertIsNotNone(diag, "Warning dialog box could not be found")
-        if (diag != None):
+        if (diag is not None):
             cbox = diag.findChild(QtGui.QComboBox)
             self.test.assertIsNotNone(cbox, "ComboBox widget could not be found")
-            if (cbox != None):
+            if (cbox is not None):
                 QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
 
 App = FreeCAD
@@ -234,7 +234,7 @@ class PartDesignTransformed(unittest.TestCase):
         
     def tearDown(self):
         #closing doc
-        if (App.ActiveDocument != None and App.ActiveDocument.Name == PartDesignTransformed):
+        if (App.ActiveDocument is not None and App.ActiveDocument.Name == PartDesignTransformed):
             App.closeDocument("PartDesignTransformed")
         #print ("omit closing document for debugging")
 

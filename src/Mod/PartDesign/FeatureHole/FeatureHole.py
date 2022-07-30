@@ -78,7 +78,7 @@ class Hole():
         self.oldCountersink = False
 
     def execute(self, feature):
-        if feature.Support != None:
+        if feature.Support is not None:
             (support, element) = feature.Support
             feature.Placement = feature.HoleGroove.Placement
             shape = feature.HoleGroove.Shape.copy()

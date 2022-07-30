@@ -46,7 +46,7 @@ class TaskHole:
         return True
 
     def reject(self):
-        if (self.feature != None):
+        if (self.feature is not None):
             self.hideFeature() # Show the support again
             document = self.feature.Document
             body = FreeCADGui.activeView().getActiveObject("pdbody");
@@ -383,7 +383,7 @@ class TaskHole:
             self.form.labelRef1.setEnabled(True)
             self.form.labelRef1.setText("Distance")
             axis = self.feature.HoleGroove.Sketch.Support[0].References[0][0]
-            if len(axis.References) > 0 and axis.References[0] != None:
+            if len(axis.References) > 0 and axis.References[0] is not None:
                 if (len(axis.References) == 3):
                     self.form.lineRef1.setText(self.getRefText(axis.References[1]))
                 else:
@@ -392,7 +392,7 @@ class TaskHole:
             self.form.spinRef1.setValue(axis.Offset)
             self.form.labelRef2.setEnabled(True)
             self.form.labelRef2.setText("Distance")
-            if len(axis.References) > 1 and axis.References[1] != None:
+            if len(axis.References) > 1 and axis.References[1] is not None:
                 if (len(axis.References) == 3):
                     self.form.lineRef2.setText(self.getRefText(axis.References[2]))
                 else:
@@ -406,7 +406,7 @@ class TaskHole:
             self.form.buttonRef2.setEnabled(False)
             self.form.lineRef1.setEnabled(True)
             axis = self.feature.HoleGroove.Sketch.Support[0].References[0][0]
-            if len(axis.References) > 0 and axis.References[0] != None:
+            if len(axis.References) > 0 and axis.References[0] is not None:
                 self.form.lineRef1.setText(self.getRefText(axis.References[0]))
             self.form.lineRef2.setEnabled(False)
             self.form.labelRef1.setEnabled(False)
@@ -616,13 +616,13 @@ class TaskHole:
 
     def hideFeature(self):
         # Make sure selection takes place on support, not on hole feature
-        if self.feature.Support != None:
+        if self.feature.Support is not None:
             FreeCADGui.ActiveDocument.hide(self.feature.Name)
             (support, elements) = self.feature.Support
             FreeCADGui.ActiveDocument.show(support.Name)
 
     def showFeature(self):
-        if self.feature.Support != None:
+        if self.feature.Support is not None:
             FreeCADGui.ActiveDocument.show(self.feature.Name)
             (support, elements) = self.feature.Support
             FreeCADGui.ActiveDocument.hide(support.Name)

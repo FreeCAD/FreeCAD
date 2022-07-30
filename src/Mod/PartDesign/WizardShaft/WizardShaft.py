@@ -189,7 +189,7 @@ class WizardShaftGui:
                 'ToolTip': ToolTip}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument != None
+        return FreeCAD.ActiveDocument is not None
 
     def __del__(self):
         global WizardShaftDlg
@@ -198,7 +198,7 @@ class WizardShaftGui:
 class WizardShaftGuiCallback:
     def Activated(self):
         global WizardShaftDlg
-        if WizardShaftDlg != None and WizardShaftDlg.table != None:
+        if WizardShaftDlg is not None and WizardShaftDlg.table is not None:
             WizardShaftDlg.table.finishEditConstraint()
 
     def isActive(self):

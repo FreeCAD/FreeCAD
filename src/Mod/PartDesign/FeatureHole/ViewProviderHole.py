@@ -41,7 +41,7 @@ class ViewProviderHole:
         if not hasattr(self,  "Object"):
             return
             
-        if self.Object != None:
+        if self.Object is not None:
             return [self.Object.HoleGroove,  # the groove feature
                          self.Object.HoleGroove.Sketch.Support[0],  # the groove sketchplane (datum plane) feature
                          self.Object.HoleGroove.Sketch.Support[0].References[0][0]] # the sketchplane first reference (datum line)
