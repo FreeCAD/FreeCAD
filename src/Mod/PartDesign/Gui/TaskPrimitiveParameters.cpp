@@ -688,28 +688,28 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
         switch(ui->widgetStack->currentIndex()) {
             case 1:         // box
                 cmd = QString::fromLatin1(
-                    "%1.Length=%2\n"
-                    "%1.Width=%3\n"
-                    "%1.Height=%4\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->boxLength->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->boxWidth->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->boxHeight->value(), format));
+                    "%1.Length='%2'\n"
+                    "%1.Width='%3'\n"
+                    "%1.Height='%4'\n")
+                    .arg(name,
+                         ui->boxLength->value().getUserString(),
+                         ui->boxWidth->value().getUserString(),
+                         ui->boxHeight->value().getUserString());
                 break;
 
             case 2:  // cylinder
                 cmd = QString::fromLatin1(
-                    "%1.Radius=%2\n"
-                    "%1.Height=%3\n"
-                    "%1.Angle=%4\n"
-                    "%1.FirstAngle=%5\n"
-                    "%1.SecondAngle=%6\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderRadius->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderHeight->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderAngle->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderXSkew->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderYSkew->value(), format));
+                    "%1.Radius='%2'\n"
+                    "%1.Height='%3'\n"
+                    "%1.Angle='%4'\n"
+                    "%1.FirstAngle='%5'\n"
+                    "%1.SecondAngle='%6'\n")
+                    .arg(name,
+                         ui->cylinderRadius->value().getUserString(),
+                         ui->cylinderHeight->value().getUserString(),
+                         ui->cylinderAngle->value().getUserString(),
+                         ui->cylinderXSkew->value().getUserString(),
+                         ui->cylinderYSkew->value().getUserString());
                 break;
 
             case 3:  // cone
@@ -720,73 +720,73 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     return false;
                 }
                 cmd = QString::fromLatin1(
-                    "%1.Radius1=%2\n"
-                    "%1.Radius2=%3\n"
-                    "%1.Height=%4\n"
-                    "%1.Angle=%5\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->coneRadius1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->coneRadius2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->coneHeight->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->coneAngle->value(), format));
+                    "%1.Radius1='%2'\n"
+                    "%1.Radius2='%3'\n"
+                    "%1.Height='%4'\n"
+                    "%1.Angle='%5'\n")
+                    .arg(name,
+                         ui->coneRadius1->value().getUserString(),
+                         ui->coneRadius2->value().getUserString(),
+                         ui->coneHeight->value().getUserString(),
+                         ui->coneAngle->value().getUserString());
                  break;
 
             case 4:  // sphere
                 cmd = QString::fromLatin1(
-                    "%1.Radius=%2\n"
-                    "%1.Angle1=%3\n"
-                    "%1.Angle2=%4\n"
-                    "%1.Angle3=%5\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->sphereRadius->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle3->value(), format));
+                    "%1.Radius='%2'\n"
+                    "%1.Angle1='%3'\n"
+                    "%1.Angle2='%4'\n"
+                    "%1.Angle3='%5'\n")
+                    .arg(name,
+                         ui->sphereRadius->value().getUserString(),
+                         ui->sphereAngle1->value().getUserString(),
+                         ui->sphereAngle2->value().getUserString(),
+                         ui->sphereAngle3->value().getUserString());
                 break;
             case 5:  // ellipsoid
                 cmd = QString::fromLatin1(
-                    "%1.Radius1=%2\n"
-                    "%1.Radius2=%3\n"
-                    "%1.Radius3=%4\n"
-                    "%1.Angle1=%5\n"
-                    "%1.Angle2=%6\n"
-                    "%1.Angle3=%7\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius3->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle3->value(), format));
+                    "%1.Radius1='%2'\n"
+                    "%1.Radius2='%3'\n"
+                    "%1.Radius3='%4'\n"
+                    "%1.Angle1='%5'\n"
+                    "%1.Angle2='%6'\n"
+                    "%1.Angle3='%7'\n")
+                    .arg(name,
+                         ui->ellipsoidRadius1->value().getUserString(),
+                         ui->ellipsoidRadius2->value().getUserString(),
+                         ui->ellipsoidRadius3->value().getUserString(),
+                         ui->ellipsoidAngle1->value().getUserString(),
+                         ui->ellipsoidAngle2->value().getUserString(),
+                         ui->ellipsoidAngle3->value().getUserString());
                 break;
 
             case 6:  // torus
                 cmd = QString::fromLatin1(
-                    "%1.Radius1=%2\n"
-                    "%1.Radius2=%3\n"
-                    "%1.Angle1=%4\n"
-                    "%1.Angle2=%5\n"
-                    "%1.Angle3=%6\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->torusRadius1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->torusRadius2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->torusAngle1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->torusAngle2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->torusAngle3->value(), format));
+                    "%1.Radius1='%2'\n"
+                    "%1.Radius2='%3'\n"
+                    "%1.Angle1='%4'\n"
+                    "%1.Angle2='%5'\n"
+                    "%1.Angle3='%6'\n")
+                    .arg(name,
+                         ui->torusRadius1->value().getUserString(),
+                         ui->torusRadius2->value().getUserString(),
+                         ui->torusAngle1->value().getUserString(),
+                         ui->torusAngle2->value().getUserString(),
+                         ui->torusAngle3->value().getUserString());
                 break;
             case 7:  // prism
                 cmd = QString::fromLatin1(
                     "%1.Polygon=%2\n"
-                    "%1.Circumradius=%3\n"
-                    "%1.Height=%4\n"
-                    "%1.FirstAngle=%5\n"
-                    "%1.SecondAngle=%6\n")
-                    .arg(name)
-                    .arg(ui->prismPolygon->value())
-                    .arg(Base::UnitsApi::toNumber(ui->prismCircumradius->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->prismHeight->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->prismXSkew->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->prismYSkew->value(), format));
+                    "%1.Circumradius='%3'\n"
+                    "%1.Height='%4'\n"
+                    "%1.FirstAngle='%5'\n"
+                    "%1.SecondAngle='%6'\n")
+                    .arg(name,
+                         QString::number(ui->prismPolygon->value()),
+                         ui->prismCircumradius->value().getUserString(),
+                         ui->prismHeight->value().getUserString(),
+                         ui->prismXSkew->value().getUserString(),
+                         ui->prismYSkew->value().getUserString());
                 break;
             case 8:  // wedge
                 // Xmin/max, Ymin/max and Zmin/max must each not be equal
@@ -806,27 +806,27 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     return false;
                 }
                 cmd = QString::fromLatin1(
-                    "%1.Xmin=%2\n"
-                    "%1.Ymin=%3\n"
-                    "%1.Zmin=%4\n"
-                    "%1.X2min=%5\n"
-                    "%1.Z2min=%6\n"
-                    "%1.Xmax=%7\n"
-                    "%1.Ymax=%8\n"
-                    "%1.Zmax=%9\n"
-                    "%1.X2max=%10\n"
-                    "%1.Z2max=%11\n")
+                    "%1.Xmin='%2'\n"
+                    "%1.Ymin='%3'\n"
+                    "%1.Zmin='%4'\n"
+                    "%1.X2min='%5'\n"
+                    "%1.Z2min='%6'\n"
+                    "%1.Xmax='%7'\n"
+                    "%1.Ymax='%8'\n"
+                    "%1.Zmax='%9'\n"
+                    "%1.X2max='%10'\n"
+                    "%1.Z2max='%11'\n")
                     .arg(name,
-                         Base::UnitsApi::toNumber(ui->wedgeXmin->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format));
+                         ui->wedgeXmin->value().getUserString(),
+                         ui->wedgeYmin->value().getUserString(),
+                         ui->wedgeZmin->value().getUserString(),
+                         ui->wedgeX2min->value().getUserString(),
+                         ui->wedgeZ2min->value().getUserString(),
+                         ui->wedgeXmax->value().getUserString(),
+                         ui->wedgeYmax->value().getUserString(),
+                         ui->wedgeZmax->value().getUserString())
+                    .arg(ui->wedgeX2max->value().getUserString(),
+                         ui->wedgeZ2max->value().getUserString());
                 break;
 
             default:
