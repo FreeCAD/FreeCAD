@@ -6,12 +6,22 @@ on:
 
 permissions:
   pull-requests: write
-
+  contents: write
 
 env:
   logdir: logs/
   fixesdir: fixes/
 
+  # Build and Test
+  buildFailSilent: false
+  test: true # run Unit tests
+  testFailSilent: false # don't fail CI if Unittests fail
+
+  testInstall: true # run CMake install and Unit tests on install
+  installFailSilent: false # don't fail if CMake install fails
+  testInstallFailSilent: false # don't fail CI if Unittests fail
+
+  # Linting
   checkWhitespace: true
   whitespaceFailSilent: true
 
@@ -22,22 +32,17 @@ env:
   qtconnectionSyntaxFailSilent: true
 
   checkCpplint: true
-  cpplintFilters: -build/header_guard,-readability/braces,-whitespace
+  # This option allows you to specify a comma-separated list of rule-filters to apply. For example, the rule names look like whitespace/indent. In that case, the category is whitespace.
+  # To turn off, specify - as prefix like -whitespace or -whitespace/indent. On the other hand, to turn on, specify + like +whitespace or +whitespace/indent.
+  # The recommended filters are taken from https://github.com/sider/runners/blob/HEAD/images/cpplint/sider_recommended_CPPLINT.cfg
+  cpplintFilters: -build/c++11,-build/header_guard,-build/include,-build/include_alpha,-build/include_order,-build/include_subdir,-build/include_what_you_use,-build/namespaces,-legal/copyright,-readability/braces,-readability/casting,-readability/namespace,-readability/todo,-runtime/int,-runtime/references,-whitespace/blank_line,-whitespace/braces,-whitespace/comments,-whitespace/end_of_line,-whitespace/indent,-whitespace/line_length,-whitespace/newline,-whitespace/operators,-whitespace/parens,-whitespace/tab
   cpplintLineLength: 120
   cpplintFailSilent: true
 
   checkPylint: true
-  pylintDisable: E0401,C0301,C0103,R0801,W0125
+  pylintDisable: # additional disables to the .pylintrc file
   # for the Message codes see: https://pylint.pycqa.org/en/latest/user_guide/messages/index.html
-  # E0401: Unable to import '*' (import-error)
-  # C0103: Function name "*" doesn't conform to snake_case naming style (invalid-name)
-  # C0301: Line too long (118/100) (line-too-long)
-  # C0115: Missing class docstring (missing-class-docstring)
-  # C0116: Missing function or method docstring (missing-function-docstring)
-  # C0411: standard import "import *" should be placed before "import *" (wrong-import-order)
-  # R0801: Similar lines in 2 files --> not useful for us because not all files will be checked
-  # W0125: Using a conditional statement with a constant value (using-constant-test) --> often used for testing/debugging purposes in the Path module
-  pylintFailSilent: false
+  pylintFailSilent: true
 
   checkBlack: true
   blackFailSilent: true
@@ -51,21 +56,26 @@ env:
   skip: ./.git,*.po,*.ts,*.svg,./ChangeLog.txt,./src/3rdParty,./src/Mod/Assembly/App/opendcm,./src/CXX,./src/zipios++,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL,./src/WindowsInstaller,./src/Doc/FreeCAD.uml,./build/
   codespellFailSilent: false
 
+  # Static Analysis
   checkClangTidy: true
-  clangTidyChecks: boost-*,bugprone-*,performance-*,readability-*,portability-*,modernize-*,clang-analyzer-*,cppcoreguidelines-*,concurrency-*
-  clangTidyFailSilent: true
+  # for the Message codes see: https://clang-tidy.llvm.org/checks/index.html
+  clangTidyChecks: # empty to use the .clang-tidy file
+  clangTidyFailSilent: true # if false, the CI will fail if clang-tidy finds errors. Warnings or notes will not fail the CI
 
   checkClazy: true
-  clazyChecks: level1 # https://invent.kde.org/sdk/clazy#list-of-checks
-  clazyFailSilent: false
+  # for the Message codes see: https://invent.kde.org/sdk/clazy#list-of-checks
+  clazyChecks: level1
+  clazyFailSilent: true # if false, the CI will fail if clazy finds errors. Warnings or notes will not fail the CI
 
   checkClazyQT6: true
   clazyQT6Checks: qt6-deprecated-api-fixes,qt6-header-fixes,qt6-qhash-signature,qt6-fwd-fixes,missing-qobject-macro # for QT6 Porting https://invent.kde.org/sdk/clazy#list-of-checks
   QT6Branch: master  # branch to check for QT6 Porting
-  clazyQT6FailSilent: false
+  clazyQT6FailSilent: true # if false, the CI will fail if clazy finds errors. Warnings or notes will not fail the CI
 
+  # Reporting
   reportStepSummary: true
-  reportPRComment: false
+  reportPRComment: false # disabled because of permission hell (and the comments are to big for Github)
+  reportPushComment: false # disabled because of permission hell (and the comments are to big for Github)
 
 jobs:
   checks:
@@ -76,7 +86,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Install dependencies
+      - name: Install FreeCAD dependencies
         id: install-dependencies
         run: |
           sudo apt-get update -qq
@@ -146,21 +156,57 @@ jobs:
                             shiboken2                                   \
                             imagemagick
 
-      - name: make Log and Fixes directory
+      - name: Get Date
+        if: always()
+        id: get-date
+        run: |
+          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d%H%M")"
+        shell: bash
+
+      - name: Install ccache
+        if: always()
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ccache
+
+      - name: make directories
+        if: always()
         run: |
           mkdir -p ${{ env.logdir }}
           mkdir -p ${{ env.fixesdir }}
 
+          mkdir -p ~/.ccache
+
+      - name: Restore Compiler Cache
+        if: always()
+        uses: pat-s/always-upload-cache@v3
+        with:
+          path: |
+            ~/.ccache
+          key: CI-cache-${{ steps.get-date.outputs.date }}-${{ github.run_number }}
+          restore-keys: |
+            CI-cache-${{ steps.get-date.outputs.date }}-
+            CI-cache-
+
+      - name: Configure Cache
+        if: always()
+        run: |
+          ccache -z -M 1G
+          ccache --show-config
+          ccache -s
+
       - name: Job summary Header
+        if: always()
         id: header
         run: |
           echo '# Check Results: :rocket:' >> ${{ env.logdir }}checkReport.md
 
       - name: Get changed files
+        if: always()
         id: changed-files
-        uses: tj-actions/changed-files@v12.2
+        uses: tj-actions/changed-files@v24
 
-      - name: List all changed Files
+      - name: Report all changed Files
         id: list-changed-files
         run: |
           echo "<details><summary>:clipboard: Changed Files:</summary>" >> ${{ env.logdir }}checkReport.md
@@ -177,6 +223,7 @@ jobs:
         id: harmonize-line-endings
         shell: bash
         run: |
+          # harmonize line endings in all changed files (Windows -> Unix)
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [ -f "$file" ]; then
               echo "Harmonizing line endings in $file"
@@ -185,17 +232,250 @@ jobs:
           done
 
       - name: filter files by extensions
+        if: always()
         id: files-by-extensions
         shell: bash
         run: |
           changed_files=$( echo ${{ steps.changed-files.outputs.all_changed_files }} )
 
-          py=$(grep -oE '\S*?\.(py|py3)' <<< $changed_files | tr '\n' ' ') || true # grep returns non-zero exit code if no match is found
-          cpp=$(grep -oE '\S*?\.(c|c++|cc|cpp|cu|cuh|cxx|h|h++|hh|hpp|hxx)' <<< $changed_files | tr '\n' ' ') || true
+          py=$(grep -oE '\S+\.(py|py3)' <<< $changed_files | tr '\n' ' ') || true # grep returns non-zero exit code if no match is found
+          cpp=$(grep -oE '\S+\.(c|c\+\+|cc|cpp|cu|cuh|cxx|h|h\+\+|hh|hpp|hxx)' <<< $changed_files | tr '\n' ' ') || true
           echo "::set-output name=python_files::$py"
           echo "::set-output name=cpp_files::$cpp"
+          echo "Python Files: $py"
+          echo "C++ Files: $cpp"
 
-      - name: Tests Header
+      - name: CMake Configure
+        id: configure
+        if: always()
+        run: |
+          set +e
+
+          cmake \
+          -D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
+          -B build/ > ${{ env.logdir }}Cmake.log 2> ${{ env.logdir }}CmakeErrors.log
+
+          exitCode=$?
+
+          # Build Header in Report
+          echo '### Build:' >> ${{ env.logdir }}checkReport.md
+
+          # Write the configure report
+          if [ $exitCode -eq 0 ] ; then
+            echo "<details><summary>:heavy_check_mark: CMake configure succeeded</summary>" >> ${{ env.logdir }}checkReport.md
+          else
+            echo "<details><summary>:fire: CMake configure failed</summary>" >> ${{ env.logdir }}checkReport.md
+          fi
+          echo "" >> ${{ env.logdir }}checkReport.md
+          echo "Configure Error Log (stderr output):" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}CmakeErrors.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "Configure Log (stdout output):" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          tail -n 60 ${{ env.logdir }}Cmake.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "</details>">> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
+
+          cat ${{ env.logdir }}CmakeErrors.log
+          echo "::group::Configure Log"
+          cat ${{ env.logdir }}Cmake.log
+          echo "::endgroup::"
+
+          exit $exitCode
+
+      - name: Print ccache statistics before Build
+        if: always()
+        run: ccache -s
+
+      - name: CMake Build
+        id: build
+        if: always()
+        run: |
+          set +e
+
+          cmake --build build/ > ${{ env.logdir }}Build.log 2> ${{ env.logdir }}BuildErrors.log
+
+          exitCode=$?
+
+          # Write the build report
+          if [ $exitCode -eq 0 ] ; then
+            echo "<details><summary>:heavy_check_mark: CMake build succeeded</summary>" >> ${{ env.logdir }}checkReport.md
+          else
+            echo "<details><summary>:fire: CMake build failed</summary>" >> ${{ env.logdir }}checkReport.md
+          fi
+          echo "" >> ${{ env.logdir }}checkReport.md
+          echo "Build Error Log (stderr output):" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}BuildErrors.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "Build Log (stdout output trimmed to the last 100 Lines):" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          tail -n 50 ${{ env.logdir }}Build.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "</details>">> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
+
+          # Print the Log to the console
+          cat ${{ env.logdir }}BuildErrors.log
+          echo "::group::Build Log"
+          cat ${{ env.logdir }}Build.log
+          echo "::endgroup::"
+
+          # Exit the step with the exit code of the build
+          if [ ${{ env.buildFailSilent }} != true ]; then
+            exit $exitCode
+          else
+            echo "Build exited with code $exitCode, but we are ignoring it"
+            exit 0
+          fi
+
+      - name: Print ccache statistics after Build
+        if: always()
+        run: ccache -s
+
+      - name: FreeCAD UnitTests
+        id: test
+        if: env.test == 'true' && always()
+        run: |
+          set +e
+
+          build/bin/FreeCADCmd -t 0 &> ${{ env.logdir }}Test.log
+
+          exitCode=$?
+
+          # Trim the Log file
+          # remove "(xx %)"
+          sed -E '/\t+\([[:digit:]]{1,3} %\)\t/d' ${{ env.logdir }}Test.log > ${{ env.logdir }}TestTrimmed.log
+
+          # Write the test report
+          if [ $exitCode -eq 0 ] ; then
+            echo "<details><summary>:heavy_check_mark: Unittests succeeded</summary>" >> ${{ env.logdir }}checkReport.md
+          else
+            echo "<details><summary>:fire: CMake test failed</summary>" >> ${{ env.logdir }}checkReport.md
+          fi
+          echo "" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          tail -n 100 ${{ env.logdir }}TestTrimmed.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "</details>">> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
+
+          # Print the Log to the console
+          cat ${{ env.logdir }}Test.log
+
+          # Exit the step with the exit code of the UnitTests
+          if [ ${{ env.testFailSilent }} != true ]; then
+            exit $exitCode
+          else
+            echo "Test exited with code $exitCode, but we are ignoring it"
+            exit 0
+          fi
+
+      - name: CMake Install
+        id: install
+        if: env.testInstall == 'true' && always()
+        run: |
+          set +e
+
+          # Run the CMake Configure step again to update the install path
+          cmake \
+          -D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
+          -D CMAKE_INSTALL_PREFIX='/usr/lib/freecad' \
+          -D CMAKE_INSTALL_BINDIR='/usr/lib/freecad/bin' \
+          -D CMAKE_INSTALL_LIBDIR='/usr/lib/freecad/lib' \
+          -D CMAKE_INSTALL_DATADIR='/usr/share/freecad' \
+          -D CMAKE_INSTALL_DATAROOTDIR='/usr/share' \
+          -D CMAKE_INSTALL_DOCDIR='/usr/share/doc/freecad' \
+          -B build/ >> ${{ env.logdir }}Install.log 2>> ${{ env.logdir }}InstallErrors.log
+
+          # Build again to copy the files to the install path
+          cmake --build build/ >> ${{ env.logdir }}Install.log 2>> ${{ env.logdir }}InstallErrors.log
+
+          # Run CMake Install
+          sudo cmake --install build/ >> ${{ env.logdir }}Install.log 2>> ${{ env.logdir }}InstallErrors.log
+
+          exitCode=$?
+
+          # links for bin
+          FILES=/usr/lib/freecad/bin/*
+          for f in $FILES
+          do
+            sudo ln -vs /usr/lib/freecad/bin/$(basename $f) /usr/bin/$(basename $f)
+          done
+
+          # Write the install report
+          if [ $exitCode -eq 0 ] ; then
+            echo "<details><summary>:heavy_check_mark: CMake install succeeded</summary>" >> ${{ env.logdir }}checkReport.md
+          else
+            echo "<details><summary>:fire: CMake install failed</summary>" >> ${{ env.logdir }}checkReport.md
+          fi
+          echo "" >> ${{ env.logdir }}checkReport.md
+          echo "Install Error Log (stderr output):" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}InstallErrors.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "Install Error Log (stdout output trimmed to the last 100 Lines):" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          tail -n 100 ${{ env.logdir }}Install.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "</details>">> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
+
+          # Print the Log to the console
+          cat ${{ env.logdir }}InstallErrors.log
+          echo "::group::Install Log"
+          cat ${{ env.logdir }}Install.log
+          echo "::endgroup::"
+
+          # Exit the step with the exit code of the Install
+          if [ ${{ env.cmakeInstallFailSilent }} != true ]; then
+            exit $exitCode
+          else
+            echo "CMake install exited with code $exitCode, but we are ignoring it"
+            exit 0
+          fi
+
+      - name: FreeCAD UnitTests on Install
+        id: testInstall
+        if: env.testInstall == 'true' && always()
+        run: |
+          set +e
+
+          LD_LIBRARY_PATH=/usr/lib/freecad/lib FreeCADCmd -t 0 &> ${{ env.logdir }}TestInstall.log
+
+          exitCode=$?
+
+          # Trim the Log file
+          # remove "(xx %)"
+          sed -E '/\t+\([[:digit:]]{1,3} %\)\t/d' ${{ env.logdir }}TestInstall.log > ${{ env.logdir }}TestInstallTrimmed.log
+
+          # Write the testInstall report
+          if [ $exitCode -eq 0 ] ; then
+            echo "<details><summary>:heavy_check_mark: Unittests on install succeeded</summary>" >> ${{ env.logdir }}checkReport.md
+          else
+            echo "<details><summary>:fire: CMake test on install failed</summary>" >> ${{ env.logdir }}checkReport.md
+          fi
+          echo "" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          tail -n 100 ${{ env.logdir }}TestInstallTrimmed.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "</details>">> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
+
+          # Print the Log to the console
+          cat ${{ env.logdir }}TestInstall.log
+
+          # Exit the step with the exit code of the UnitTests
+          if [ ${{ env.testInstallFailSilent }} != true ]; then
+            exit $exitCode
+          else
+            echo "Test on install exited with code $exitCode, but we are ignoring it"
+            exit 0
+          fi
+
+      - name: Report Tests header
         if: always()
         id: tests-header
         run: |
@@ -213,6 +493,7 @@ jobs:
             grep -rnIHE --exclude="$exclude" " $" $file | sed 's/$/<-- trailing whitespace/' >> ${{ env.logdir }}whitespace.log || true
           done
 
+          # Write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}whitespace.log ]; then
             echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
             cat ${{ env.logdir }}whitespace.log
@@ -225,12 +506,12 @@ jobs:
 
           echo "whitespaceErrors=$whitespaceErrors" >> $GITHUB_ENV
 
-          if [ "$whitespaceErrors" -gt 0 ]; then
-            # Write the report
+          # Write the report
+          if [ $whitespaceErrors -gt 0 ]; then
             echo "<details><summary>:information_source: Found $whitespaceErrors trailing whitespace</summary>" >> ${{ env.logdir }}checkReport.md
             echo "" >> ${{ env.logdir }}checkReport.md
             echo '```' >> ${{ env.logdir }}checkReport.md
-            head -n 500 ${{ env.logdir }}whitespace.log >> ${{ env.logdir }}checkReport.md
+            cat ${{ env.logdir }}whitespace.log >> ${{ env.logdir }}checkReport.md
             echo '```' >> ${{ env.logdir }}checkReport.md
             echo "</details>">> ${{ env.logdir }}checkReport.md
           else
@@ -238,7 +519,8 @@ jobs:
           fi
           echo "" >> ${{ env.logdir }}checkReport.md
 
-          if [ "$whitespaceErrors" -gt 0 ] && [ ${{ env.whitespaceFailSilent }} != true ]; then
+          # Exit the step with the exit code
+          if [ $whitespaceErrors -gt 0 ] && [ ${{ env.whitespaceFailSilent }} != true ]; then
             exit 1
           else
             exit 0
@@ -256,7 +538,7 @@ jobs:
             grep -rnIHE --exclude="$exclude" $'\t' $file | sed 's/$/ <-- contains tab/' >> ${{ env.logdir }}tab.log || true
           done
 
-          # Parse the log
+          # Write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}tab.log ]; then
             echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
             cat ${{ env.logdir }}tab.log
@@ -269,11 +551,12 @@ jobs:
 
           echo "tabErrors=$tabErrors" >> $GITHUB_ENV
 
-          if [ "$tabErrors" -gt 0 ]; then
+          # Write the report
+          if [ $tabErrors -gt 0 ]; then
             echo "<details><summary>:information_source: Found $tabErrors tabs, better to use spaces</summary>" >> ${{ env.logdir }}checkReport.md
             echo "" >> ${{ env.logdir }}checkReport.md
             echo '```' >> ${{ env.logdir }}checkReport.md
-            head -n 500 ${{ env.logdir }}tab.log >> ${{ env.logdir }}checkReport.md
+            cat ${{ env.logdir }}tab.log >> ${{ env.logdir }}checkReport.md
             echo '```' >> ${{ env.logdir }}checkReport.md
             echo "</details>">> ${{ env.logdir }}checkReport.md
           else
@@ -281,7 +564,8 @@ jobs:
           fi
           echo "" >> ${{ env.logdir }}checkReport.md
 
-          if [ "$tabErrors" -gt 0 ] && [ ${{ env.tabsFailSilent }} != true ]; then
+          # Exit the step with the exit code
+          if [ $tabErrors -gt 0 ] && [ ${{ env.tabsFailSilent }} != true ]; then
             exit 1
           else
             exit 0
@@ -314,13 +598,13 @@ jobs:
           echo "Found $qtconnectionSyntax QT string-based connections"
 
           # Step-Report
-          if [ "$qtconnectionSyntax" -gt 0 ]; then
+          if [ $qtconnectionSyntax -gt 0 ]; then
             echo "<details><summary>:information_source: Found $qtconnectionSyntax QT string-based connections :arrow_right: consider using QT functor-Based Connections</summary>" >> ${{ env.logdir }}checkReport.md
             echo "" >> ${{ env.logdir }}checkReport.md
             # documentation link
             echo "For more information see: https://wiki.qt.io/New_Signal_Slot_Syntax or https://github.com/FreeCAD/FreeCAD/issues/6166" >> ${{ env.logdir }}checkReport.md
             echo '```' >> ${{ env.logdir }}checkReport.md
-            head -n 500 ${{ env.logdir }}stringSyntax.log >> ${{ env.logdir }}checkReport.md
+            cat ${{ env.logdir }}stringSyntax.log >> ${{ env.logdir }}checkReport.md
             echo '```' >> ${{ env.logdir }}checkReport.md
             echo "</details>">> ${{ env.logdir }}checkReport.md
           else
@@ -328,7 +612,8 @@ jobs:
           fi
           echo "" >> ${{ env.logdir }}checkReport.md
 
-          if [ "$qtconnectionSyntax" -gt 0 ] && [ ${{ env.qtconnectionSyntaxFailSilent }} != true ]; then
+          # Exit the step with the exit code
+          if [ $qtconnectionSyntax -gt 0 ] && [ ${{ env.qtconnectionSyntaxFailSilent }} != true ]; then
               exit 1
             else
               exit 0
@@ -339,8 +624,6 @@ jobs:
         if: env.checkCpplint == 'true' && steps.files-by-extensions.outputs.cpp_files != '' && always()
         run: |
           cpplintErrors="0"
-          #filters="--filter=-build/header_guard,-readability/braces,-whitespace"
-          #linelength="--linelength=120"
 
           pip install cpplint
 
@@ -364,7 +647,7 @@ jobs:
           echo "Found $cpplintErrors cpplint errors"
 
           # Step-Report
-          if [ "$cpplintErrors" -gt 0 ]; then
+          if [ $cpplintErrors -gt 0 ]; then
             echo "<details><summary>:warning: CppLint found $cpplintErrors errors / warnings</summary>" >> ${{ env.logdir }}checkReport.md
           else
             echo "<details><summary>:heavy_check_mark: No cpplint errors found </summary>  " >> ${{ env.logdir }}checkReport.md
@@ -372,12 +655,13 @@ jobs:
 
           echo "" >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
-          head -n 500 ${{ env.logdir }}cpplint.log >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}cpplint.log >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
           echo "</details>">> ${{ env.logdir }}checkReport.md
           echo "" >> ${{ env.logdir }}checkReport.md
 
-          if [ "$cpplintErrors" -gt 0 ] && [ ${{ env.cpplintFailSilent }} != true ]; then
+          # Exit the step with the exit code
+          if [ $cpplintErrors -gt 0 ] && [ ${{ env.cpplintFailSilent }} != true ]; then
             exit 1
           else
             exit 0
@@ -387,6 +671,8 @@ jobs:
         shell: bash
         if: env.checkPylint == 'true' && steps.files-by-extensions.outputs.python_files != '' && always()
         run: |
+          set +e
+
           pylintErrors="0"
 
           pip install pylint
@@ -396,8 +682,13 @@ jobs:
           pylintRefactorings="0"
           pylintConventions="0"
 
+          # List enabled pylint checks
+          pylint --list-msgs-enabled > ${{ env.logdir }}pylint-enabled-checks.log
+
           # Run pylint on all python files
-          pylint --exit-zero --reports y --disable=${{ env.pylintDisable }} ${{ steps.files-by-extensions.outputs.python_files }} > ${{ env.logdir }}pylint.log
+          pylint --disable=${{ env.pylintDisable }} ${{ steps.files-by-extensions.outputs.python_files }} > ${{ env.logdir }}pylint.log
+
+          exitCode=$?
 
           # if pylint has run successfully, then parse the output
           if [ -f ${{ env.logdir }}pylint.log ]; then
@@ -422,29 +713,38 @@ jobs:
           echo "Found $pylintErrors errors, $pylintWarnings warnings, $pylintRefactorings refactorings, $pylintConventions conventions"
 
           #Step-summary
-          if [ "$pylintErrors" -gt 0 ]; then
+          if [ $pylintErrors -gt 0 ]; then
             echo "<details><summary>:fire: Pylint found :fire: $pylintErrors errors, :warning: $pylintWarnings warnings, :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{ env.logdir }}checkReport.md
-          elif [ "$pylintWarnings" -gt 0 ]; then
+          elif [ $pylintWarnings -gt 0 ]; then
             echo "<details><summary>:warning: Pylint found :warning: $pylintWarnings warnings, :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{ env.logdir }}checkReport.md
-          elif [ "$pylintRefactorings" -gt 0 ]; then
+          elif [ $pylintRefactorings -gt 0 ]; then
             echo "<details><summary>:construction: Pylint found :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{ env.logdir }}checkReport.md
-          elif [ "$pylintConventions" -gt 0 ]; then
+          elif [ $pylintConventions -gt 0 ]; then
             echo "<details><summary>:pencil2: Pylint found :pencil2: $pylintConventions conventions</summary>" >> ${{ env.logdir }}checkReport.md
           else
             echo "<details><summary>:heavy_check_mark: No pylint errors found </summary>  " >> ${{ env.logdir }}checkReport.md
           fi
 
           echo "" >> ${{ env.logdir }}checkReport.md
+          # list enabled checks
+          echo "<details><summary>:information_source: Enabled checks</summary>" >> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
-          head -n 500 ${{ env.logdir }}pylint.log >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}pylint-enabled-checks.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "</details>">> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}pylint.log >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
           echo "</details>">> ${{ env.logdir }}checkReport.md
           echo "" >> ${{ env.logdir }}checkReport.md
 
           # Error the step if pylint has found errors
-          if [ "$pylintErrors" -gt 0 ] && [ ${{ env.pylintFailSilent }} != true ]; then
-            exit 1
+          if [ $pylintErrors -gt 0 ] && [ ${{ env.pylintFailSilent }} != true ]; then
+            exit $exitCode
           else
+            echo "Pylint exited with code $exitCode, but we are ignoring it"
             exit 0
           fi
 
@@ -452,13 +752,16 @@ jobs:
         shell: bash
         if: env.checkBlack == 'true' && steps.files-by-extensions.outputs.python_files != '' && always()
         run: |
+          set +e
 
           pip install black
 
           blackReformats="0"
           blackFails="0"
 
-          black --check ${{ steps.files-by-extensions.outputs.python_files }} &> ${{ env.logdir }}black.log || true
+          black --check ${{ steps.files-by-extensions.outputs.python_files }} &> ${{ env.logdir }}black.log
+
+          exitCode=$?
 
           # if black has run successfully, then parse the output
           if [ -f ${{ env.logdir }}black.log ]; then
@@ -477,7 +780,7 @@ jobs:
           echo "Found $blackReformats files would be reformatted and $blackFails files would fail to reformat"
 
           #Step-summary
-          if [ "$blackReformats" -gt 0 ] || [ "$blackFails" -gt 0 ] ; then
+          if [ $blackReformats -gt 0 ] || [ $blackFails -gt 0 ] ; then
             echo "<details><summary>:pencil2: Black would reformat $blackReformats files</summary>" >> ${{ env.logdir }}checkReport.md
           else
             echo "<details><summary>:heavy_check_mark: Black would reformat no file</summary>" >> ${{ env.logdir }}checkReport.md
@@ -485,14 +788,15 @@ jobs:
 
           echo "" >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
-          head -n 500 ${{ env.logdir }}black.log >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}black.log >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
           echo "</details>">> ${{ env.logdir }}checkReport.md
           echo "" >> ${{ env.logdir }}checkReport.md
 
-          if [ "$blackReformats" -gt 0 ] && [ ${{ env.blackFailSilent }} != true ]; then
-            exit 1
+          if [ $exitCode -gt 0 ] && [ ${{ env.blackFailSilent }} != true ]; then
+            exit $exitCode
           else
+            echo "Black exited with code $exitCode, but we are ignoring it"
             exit 0
           fi
 
@@ -521,7 +825,7 @@ jobs:
 
           # Report
 
-          if [ "$clangFormatErrors" -gt 0 ]; then
+          if [ $clangFormatErrors -gt 0 ]; then
             echo "<details><summary>:pencil2: Clang-format would reformat $clangFormatErrors files</summary>" >> ${{ env.logdir }}checkReport.md
           else
             echo "<details><summary>:heavy_check_mark: Clang-format would reformat no file</summary>  " >> ${{ env.logdir }}checkReport.md
@@ -529,12 +833,12 @@ jobs:
 
           echo "" >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
-          head -n 500 ${{ env.logdir }}clang-format.log >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}clang-format.log >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
           echo "</details>">> ${{ env.logdir }}checkReport.md
           echo "" >> ${{ env.logdir }}checkReport.md
 
-          if [ "$clangFormatErrors" -gt 0 ] && [ ${{ env.clangFormatFailSilent }} != true ]; then
+          if [ $clangFormatErrors -gt 0 ] && [ ${{ env.clangFormatFailSilent }} != true ]; then
             exit 1
           else
             exit 0
@@ -565,7 +869,7 @@ jobs:
           echo "Found $misspellings misspellings"
 
           #Step-summary
-          if [ "$misspellings" -gt 0 ]; then
+          if [ $misspellings -gt 0 ]; then
             echo "<details><summary>:pencil2: Codespell found $misspellings misspellings</summary>" >> ${{ env.logdir }}checkReport.md
           else
             echo "<details><summary>:heavy_check_mark: Codespell found no misspellings</summary>" >> ${{ env.logdir }}checkReport.md
@@ -575,35 +879,35 @@ jobs:
           # documentation link
           echo "To ignore false positives, append the word to the [.github/codespellignore](https://github.com/FreeCAD/FreeCAD/blob/c38e88c61b8926f725215da88940025c94be1daa/.github/codespellignore) file (lowercase)" >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
-          head -n 500 ${{ env.logdir }}codespell.log >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}codespell.log >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
           echo "</details>">> ${{ env.logdir }}checkReport.md
           echo "" >> ${{ env.logdir }}checkReport.md
 
           # Error the step if pylint has found errors
-          if [ "$misspellings" -gt 0 ] && [ ${{ env.codespellFailSilent }} != true ]; then
+          if [ $misspellings -gt 0 ] && [ ${{ env.codespellFailSilent }} != true ]; then
             exit 1
           else
             exit 0
           fi
 
-      - name: CMake Configure
-        if: env.checkClangTidy == 'true' && steps.files-by-extensions.outputs.cpp_files != '' && always()
-        run: |
-          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -B build/ > ${{ env.logdir }}Cmake.log
-          cat ${{ env.logdir }}Cmake.log
-
       - name: Clang-tidy
         shell: bash
         if: env.checkClangTidy == 'true' && steps.files-by-extensions.outputs.cpp_files != '' && always()
         run: |
+          set +e
+
           clangTidyErrors="0"
           clangTidyWarnings="0"
           clangTidyNotes="0"
 
-          sudo apt-get install clang-tidy
+          sudo apt-get install -y --no-install-recommends clang-tidy
 
-          clang-tidy --quiet --format-style=${{ env.clangStyle }} --export-fixes=${{ env.fixesdir }}clang-tidy.yaml -checks=${{ env.clangTidyChecks }} -p build/ ${{ steps.files-by-extensions.outputs.cpp_files }} &>> ${{ env.logdir }}clang-tidy.log  || true
+          clang-tidy --quiet --format-style=${{ env.clangStyle }} --export-fixes=${{ env.fixesdir }}clang-tidy.yaml -checks=${{ env.clangTidyChecks }} -p build/ --explain-config &>> ${{ env.logdir }}clang-tidy-enabled-checks.log
+
+          clang-tidy --quiet --format-style=${{ env.clangStyle }} --export-fixes=${{ env.fixesdir }}clang-tidy.yaml -checks=${{ env.clangTidyChecks }} -p build/ ${{ steps.files-by-extensions.outputs.cpp_files }} &>> ${{ env.logdir }}clang-tidy.log
+
+          exitCode=$?
 
           # if clang-tidy has run successfully parse the output
           if [ -f ${{ env.logdir }}clang-tidy.log ]; then
@@ -624,27 +928,36 @@ jobs:
           echo "Found $clangTidyErrors errors, $clangTidyWarnings warnings, $clangTidyNotes notes"
 
           # Step-Report
-          if [ "$clangTidyErrors" -gt 0 ]; then
+          if [ $clangTidyErrors -gt 0 ]; then
             echo "<details><summary>:fire: Clang-Tidy found :fire: $clangTidyErrors errors, :warning: $clangTidyWarnings warnings and :pencil2: $clangTidyNotes notes</summary>" >> ${{ env.logdir }}checkReport.md
-          elif [ "$clangTidyWarnings" -gt 0 ]; then
+          elif [ $clangTidyWarnings -gt 0 ]; then
             echo "<details><summary>:warning: Clang-Tidy found :warning: $clangTidyWarnings warnings and :pencil2: $clangTidyNotes notes</summary>" >> ${{ env.logdir }}checkReport.md
-          elif [ "$clangTidyNotes" -gt 0 ]; then
+          elif [ $clangTidyNotes -gt 0 ]; then
             echo "<details><summary>:pencil2: Clang-Tidy found :pencil2: $clangTidyNotes notes</summary>" >> ${{ env.logdir }}checkReport.md
           else
             echo "<details><summary>:heavy_check_mark: Clang-Tidy found no errors, warnings or notes</summary>" >> ${{ env.logdir }}checkReport.md
           fi
 
           echo "" >> ${{ env.logdir }}checkReport.md
+          # enabled checks
+          echo "<details><summary>:information_source: Enabled checks</summary>" >> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
-          head -n 500 ${{ env.logdir }}clang-tidy.log >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}clang-tidy-enabled-checks.log >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          echo "</details>">> ${{ env.logdir }}checkReport.md
+          echo "" >> ${{ env.logdir }}checkReport.md
+          echo '```' >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}clang-tidy.log >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
           echo "</details>">> ${{ env.logdir }}checkReport.md
           echo "" >> ${{ env.logdir }}checkReport.md
 
           # Error the step if pylint has found errors
-          if [ "$clangTidyErrors" -gt 0 ] && [ ${{ env.clangTidyFailSilent }} != true ]; then
+          if [ $clangTidyErrors -gt 0 ] && [ ${{ env.clangTidyFailSilent }} != true ]; then
             exit 1
           else
+            echo "Clang-tidy exited with code $exitCode, but we are ignoring it"
             exit 0
           fi
 
@@ -656,7 +969,7 @@ jobs:
           clazyWarnings="0"
           clazyNotes="0"
 
-          sudo apt-get install clazy
+          sudo apt-get install -y --no-install-recommends clazy
 
           clazy-standalone --export-fixes=${{ env.fixesdir }}clazy.yaml -checks=${{ env.clazyChecks }} -p build/ ${{ steps.files-by-extensions.outputs.cpp_files }} &>> ${{ env.logdir }}clazy.log  || true
 
@@ -688,10 +1001,11 @@ jobs:
           else
             echo "<details><summary>:heavy_check_mark: Clazy found no errors, warnings or notes</summary>" >> ${{ env.logdir }}checkReport.md
           fi
-
           echo "" >> ${{ env.logdir }}checkReport.md
+          # documentation link
+          echo "[List of checks](https://github.com/KDE/clazy#list-of-checks), [This explains some of the clazy warnings](https://www.kdab.com/uncovering-32-qt-best-practices-compile-time-clazy/)  " >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
-          head -n 500 ${{ env.logdir }}clazy.log >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}clazy.log >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
           echo "</details>">> ${{ env.logdir }}checkReport.md
           echo "" >> ${{ env.logdir }}checkReport.md
@@ -705,7 +1019,7 @@ jobs:
 
       - name: Clazy-QT6
         shell: bash
-        if: env.checkClazyQT6 == 'true' && steps.files-by-extensions.outputs.cpp_files != '' && github.base_ref == env.QT6Branch && always()
+        if: env.checkClazyQT6 == 'true' && steps.files-by-extensions.outputs.cpp_files != '' && github.ref == env.QT6Branch && always()
         run: |
           clazyQT6Errors="0"
           clazyQT6Warnings="0"
@@ -748,7 +1062,7 @@ jobs:
 
           echo "" >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
-          head -n 500 ${{ env.logdir }}clazyQT6.log >> ${{ env.logdir }}checkReport.md
+          cat ${{ env.logdir }}clazyQT6.log >> ${{ env.logdir }}checkReport.md
           echo '```' >> ${{ env.logdir }}checkReport.md
           echo "</details>">> ${{ env.logdir }}checkReport.md
           echo "" >> ${{ env.logdir }}checkReport.md
@@ -791,8 +1105,24 @@ jobs:
           cat ${{ env.logdir }}checkReport.md  > $GITHUB_STEP_SUMMARY
 
       - name: Create Pull request comment
-        if: env.reportPRComment == 'true' && always()
+        if: env.reportPRComment == 'true' && github.event_name == 'pull_request' && always()
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: Check results
           path: ${{ env.logdir }}checkReport.md
+
+      - name: get comment body
+        id: get-comment-body
+        if: env.reportPushComment == 'true' && github.event_name == 'push' && always()
+        run: |
+          body=$(cat ${{ env.logdir }}checkReport.md)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}"
+          echo ::set-output name=body::$body
+
+      - name: Create commit comment
+        if: env.reportPushComment == 'true' && github.event_name == 'push' && always()
+        uses: peter-evans/commit-comment@v2
+        with:
+          body: ${{ steps.get-comment-body.outputs.body }}
