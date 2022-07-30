@@ -40,7 +40,7 @@ class ViewProviderHole:
         # <unknown exception traceback><type 'exceptions.TypeError'>: PyCXX: Error creating object of type N2Py7SeqBaseINS_6ObjectEEE from None
         if not hasattr(self,  "Object"):
             return
-            
+
         if self.Object is not None:
             return [self.Object.HoleGroove,  # the groove feature
                          self.Object.HoleGroove.Sketch.Support[0],  # the groove sketchplane (datum plane) feature
@@ -63,9 +63,9 @@ class ViewProviderHole:
         ''' Print the name of the property that has changed '''
         #FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
         pass
-        
+
     def setEdit(self,vp,mode):
-        panel = TaskHole(self.Object)        
+        panel = TaskHole(self.Object)
 
         FreeCADGui.Control.showDialog(panel)
         if not panel.setupUi():
