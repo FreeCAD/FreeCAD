@@ -153,6 +153,7 @@ public:
         return getUserString(dummy1,dummy2);
     }
     QString getUserString(UnitsSchema* schema, double &factor, QString &unitString) const;
+    QString getSafeUserString() const;
 
     static Quantity parse(const QString &string);
 
