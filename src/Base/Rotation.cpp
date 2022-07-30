@@ -28,6 +28,7 @@
 
 #include "Rotation.h"
 #include "Matrix.h"
+#include "Precision.h"
 
 
 using namespace Base;
@@ -496,7 +497,7 @@ Rotation Rotation::identity()
 
 Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder)
 {
-    const double tol = 1e-7; //equal to OCC Precision::Confusion
+    const double tol = Precision::Confusion();
     enum dirIndex {
         X,
         Y,
