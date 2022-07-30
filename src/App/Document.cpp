@@ -2614,37 +2614,15 @@ bool Document::saveToFile(const char* filename) const
     bool policy = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetBool("BackupPolicy",true);
 
-    auto canonical_path = [](const char* filename) {
-        try {
-#ifdef FC_OS_WIN32
-            QString utf8Name = QString::fromUtf8(filename);
-            auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
-            std::string nativePath = QString::fromStdWString(realpath.native()).toStdString();
-#else
-            auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
-            std::string nativePath = realpath.native();
-#endif
-            // In case some folders in the path do not exist
-            auto parentPath = realpath.parent_path();
-            fs::create_directories(parentPath);
-
-            return nativePath;
-        }
-        catch (const std::exception&) {
-#ifdef FC_OS_WIN32
-            QString utf8Name = QString::fromUtf8(filename);
-            auto parentPath = fs::absolute(fs::path(utf8Name.toStdWString())).parent_path();
-#else
-            auto parentPath = fs::absolute(fs::path(filename)).parent_path();
-#endif
-            fs::create_directories(parentPath);
-
-            return std::string(filename);
-        }
-    };
-
     //realpath is canonical filename i.e. without symlink
-    std::string nativePath = canonical_path(filename);
+#ifdef FC_OS_WIN32
+    QString utf8Name = QString::fromUtf8(filename);
+    auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
+    std::string nativePath = QString::fromStdWString(realpath.native()).toStdString();
+#else
+    auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
+    std::string nativePath = realpath.native();
+#endif
 
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
@@ -2657,6 +2635,10 @@ bool Document::saveToFile(const char* filename) const
     }
     Base::FileInfo tmp(fn);
 
+
+    // In case some folders in the path do not exist
+    auto parentPath = realpath.parent_path();
+    fs::create_directories(parentPath);
 
     // open extra scope to close ZipWriter properly
     {
