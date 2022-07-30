@@ -26,7 +26,8 @@
 #include "PrecisionPy.cpp"
 
 
-using namespace Part;
+using Base::Precision;
+using Base::PrecisionPy;
 
 
 // returns a string which represents the object e.g. when printed in python

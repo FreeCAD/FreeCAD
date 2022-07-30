@@ -70,6 +70,7 @@
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
+#include <Base/PrecisionPy.h>
 #include <Base/RotationPy.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
@@ -301,6 +302,7 @@ void Application::setupPythonTypes()
     Base::Interpreter().addType(&Base::AxisPy            ::Type,pBaseModule,"Axis");
     Base::Interpreter().addType(&Base::CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
     Base::Interpreter().addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
+    Base::Interpreter().addType(&Base::PrecisionPy       ::Type,pBaseModule,"Precision");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
     Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");

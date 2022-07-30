@@ -34,6 +34,7 @@
 #include <Base/ExceptionFactory.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/PrecisionPy.h>
 
 #include "ArcOfCirclePy.h"
 #include "ArcOfConicPy.h"
@@ -107,7 +108,6 @@
 #include "PlanePy.h"
 #include "PlateSurfacePy.h"
 #include "PointPy.h"
-#include "PrecisionPy.h"
 #include "PrimitiveFeature.h"
 #include "RectangularTrimmedSurfacePy.h"
 #include "SpherePy.h"
@@ -315,7 +315,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::GeometryStringExtensionPy ::Type,partModule,"GeometryStringExtension");
     Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
     Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
-    Base::Interpreter().addType(&Part::PrecisionPy ::Type,partModule,"Precision");
+    Base::Interpreter().addType(&Base::PrecisionPy ::Type,partModule,"Precision");
 
     // BRepFeat package
     PyObject* brepfeatModule(module.getAttr("BRepFeat").ptr());

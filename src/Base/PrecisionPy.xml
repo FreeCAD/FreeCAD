@@ -3,17 +3,17 @@
   <PythonExport
       Father="PyObjectBase"
       Name="PrecisionPy"
-      PythonName="Part.Precision"
+      PythonName="Base.Precision"
       Twin="Precision"
       TwinPointer="Precision"
-      Include="Precision.hxx"
-      Namespace="Part"
+      Include="Base/Precision.h"
+      Namespace="Base"
       FatherInclude="Base/PyObjectBase.h"
       FatherNamespace="Base">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <DeveloperDocu>This is the Type class</DeveloperDocu>
-      <UserDocu>This is the Type class</UserDocu>
+      <DeveloperDocu>This is the Precision class</DeveloperDocu>
+      <UserDocu>This is the Precision class</UserDocu>
     </Documentation>
     <Methode Name="angular" Static="true">
       <Documentation>
