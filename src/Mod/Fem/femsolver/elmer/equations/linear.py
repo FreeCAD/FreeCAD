@@ -37,7 +37,7 @@ from . import equation
 
 
 LINEAR_SOLVER = ["Direct", "Iterative"]
-LINEAR_DIRECT = ["Banded", "umfpack"]
+LINEAR_DIRECT = ["Banded", "MUMPS", "Umfpack"]
 LINEAR_ITERATIVE = [
     "CG",
     "CGS",
