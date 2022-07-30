@@ -392,7 +392,7 @@ jobs:
 
           # Build again to copy the files to the install path
           cmake --build build/ >> ${{ env.logdir }}Install.log 2>> ${{ env.logdir }}InstallErrors.log
-          
+
           # Run CMake Install
           sudo cmake --install build/ >> ${{ env.logdir }}Install.log 2>> ${{ env.logdir }}InstallErrors.log
 
