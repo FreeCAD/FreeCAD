@@ -28,10 +28,10 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import cmath
 import os
 import os.path
 import subprocess
-import sys
 from platform import system
 
 import FreeCAD
@@ -152,10 +152,9 @@ class Solve(run.Solve):
     def _updateOutput(self, output):
         if self.solver.ElmerOutput is None:
             self._createOutput()
-        if sys.version_info.major >= 3:
-            self.solver.ElmerOutput.Text = output
-        else:
-            self.solver.ElmerOutput.Text = output.decode("utf-8")
+        # check if eigenmodes were calculated and if so append them to output
+        output = self._calculateEigenfrequencies(output)
+        self.solver.ElmerOutput.Text = output
 
     def _createOutput(self):
         self.solver.ElmerOutput = self.analysis.Document.addObject(
@@ -167,6 +166,62 @@ class Solve(run.Solve):
         self.analysis.addObject(self.solver.ElmerOutput)
         self.solver.Document.recompute()
 
+    def _calculateEigenfrequencies(self, output):
+        # takes the EigenSolve results and performs the calculation
+        # sqrt(aResult) / 2*PI but with aResult as complex number
+
+        # first search the output file for the results
+        OutputList = output.split("\n")
+        modeNumber = 0
+        modeCount = 0
+        real = 0
+        imaginary = 0
+        haveImaginary = False
+        FrequencyList = []
+        for line in OutputList:
+            LineList = line.split(" ")
+            if (len(LineList) > 1) \
+             and (LineList[0] == "EigenSolve:") \
+             and (LineList[1] == "Computed"):
+                # we found a result and take now the next LineList[2] lines
+                modeCount = int(LineList[2])
+                modeNumber = modeCount
+                continue
+            if modeCount > 0:
+                for LineString in reversed(LineList):
+                    # the output of Elmer may vary, we only know the last float
+                    # is the imaginary and second to last float the real part
+                    if self._isNumber(LineString):
+                        if not haveImaginary:
+                            imaginary = float(LineString)
+                            haveImaginary = True
+                        else:
+                            real = float(LineString)
+                            break
+                eigenFreq = complex(real, imaginary)
+                haveImaginary = False
+                # now we can perform the calculation
+                eigenFreq = cmath.sqrt(eigenFreq) / (2 * cmath.pi)
+                # create an output line
+                FrequencyList.append("Mode " + str(modeNumber - modeCount + 1) \
+                    + ": " + str(eigenFreq.real) + " Hz")
+                modeCount = modeCount - 1
+        if modeNumber > 0:
+            # push the results and append to output
+            self.pushStatus("\n\nEigenfrequency results:")
+            output = output + "\n\nEigenfrequency results:"
+            for i in range(0, modeNumber):
+                output = output + "\n" + FrequencyList[i]
+                self.pushStatus("\n" + FrequencyList[i])
+            self.pushStatus("\n")
+        return output
+
+    def _isNumber(self, string):
+        try:
+            float(string)
+            return True
+        except ValueError:
+            return False
 
 class Results(run.Results):
 
