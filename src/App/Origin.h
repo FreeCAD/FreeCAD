@@ -40,11 +40,11 @@ class AppExport Origin : public App::DocumentObject
 
 public:
     /// Constructor
-    Origin(void);
+    Origin();
     virtual ~Origin();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "Gui::ViewProviderOrigin";
     }
 
@@ -112,7 +112,7 @@ public:
     static Base::BoundBox3d defaultBoundBox();
 
     /// Returns true on changing OriginFeature set
-    virtual short mustExecute(void) const;
+    virtual short mustExecute() const;
 
     /// Axis types
     static const char* AxisRoles[3];
@@ -124,7 +124,7 @@ public:
 
 protected:
     /// Checks integrity of the Origin
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     /// Creates all corresponding Axes and Planes objects for the origin if they aren't linked yet
     virtual void setupObject ();
     /// Removes all planes and axis if they are still linked to the document

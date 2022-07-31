@@ -43,7 +43,7 @@ FC_LOG_LEVEL_INIT("Property", true, 2)
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string PropertyContainerPy::representation(void) const
+std::string PropertyContainerPy::representation() const
 {
     return std::string("<property container>");
 }
@@ -448,7 +448,7 @@ PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
     return Py::new_reference_to(ret);
 }
 
-Py::List PropertyContainerPy::getPropertiesList(void) const
+Py::List PropertyContainerPy::getPropertiesList() const
 {
     Py::List ret;
     std::map<std::string,Property*> Map;

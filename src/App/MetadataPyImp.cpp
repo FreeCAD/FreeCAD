@@ -33,7 +33,7 @@ using namespace Base;
 XERCES_CPP_NAMESPACE_USE
 
 // Returns a string which represents the object e.g. when printed in Python
-std::string MetadataPy::representation(void) const
+std::string MetadataPy::representation() const
 {
     MetadataPy::PointerType ptr = getMetadataPtr();
     std::stringstream str;
@@ -112,22 +112,22 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Object MetadataPy::getName(void) const
+Py::Object MetadataPy::getName() const
 {
     return Py::String(getMetadataPtr()->name());
 }
 
-Py::Object MetadataPy::getVersion(void) const
+Py::Object MetadataPy::getVersion() const
 {
     return Py::String(getMetadataPtr()->version().str());
 }
 
-Py::Object MetadataPy::getDescription(void) const
+Py::Object MetadataPy::getDescription() const
 {
     return Py::String(getMetadataPtr()->description());
 }
 
-Py::Object MetadataPy::getMaintainer(void) const
+Py::Object MetadataPy::getMaintainer() const
 {
     auto maintainers = getMetadataPtr()->maintainer();
     Py::List pyMaintainers;
@@ -140,7 +140,7 @@ Py::Object MetadataPy::getMaintainer(void) const
     return pyMaintainers;
 }
 
-Py::Object MetadataPy::getAuthor(void) const
+Py::Object MetadataPy::getAuthor() const
 {
     auto authors = getMetadataPtr()->author();
     Py::List pyAuthors;
@@ -153,7 +153,7 @@ Py::Object MetadataPy::getAuthor(void) const
     return pyAuthors;
 }
 
-Py::Object MetadataPy::getLicense(void) const
+Py::Object MetadataPy::getLicense() const
 {
     auto licenses = getMetadataPtr()->license();
     Py::List pyLicenses;
@@ -166,7 +166,7 @@ Py::Object MetadataPy::getLicense(void) const
     return pyLicenses;
 }
 
-Py::Object MetadataPy::getUrls(void) const
+Py::Object MetadataPy::getUrls() const
 {
     auto urls = getMetadataPtr()->url ();
     Py::List pyUrls;
@@ -200,7 +200,7 @@ Py::Object dependencyToPyObject(const Meta::Dependency& d)
     return pyDependency;
 }
 
-Py::Object MetadataPy::getDepend(void) const
+Py::Object MetadataPy::getDepend() const
 {
     auto dependencies = getMetadataPtr()->depend();
     Py::List pyDependencies;
@@ -210,7 +210,7 @@ Py::Object MetadataPy::getDepend(void) const
     return pyDependencies;
 }
 
-Py::Object MetadataPy::getConflict(void) const
+Py::Object MetadataPy::getConflict() const
 {
     auto dependencies = getMetadataPtr()->conflict();
     Py::List pyDependencies;
@@ -220,7 +220,7 @@ Py::Object MetadataPy::getConflict(void) const
     return pyDependencies;
 }
 
-Py::Object MetadataPy::getReplace(void) const
+Py::Object MetadataPy::getReplace() const
 {
     auto dependencies = getMetadataPtr()->replace();
     Py::List pyDependencies;
@@ -232,7 +232,7 @@ Py::Object MetadataPy::getReplace(void) const
 
 // Tag, icon, classname, file
 
-Py::Object MetadataPy::getTag(void) const
+Py::Object MetadataPy::getTag() const
 {
     auto tags = getMetadataPtr()->tag();
     Py::List pyTags;
@@ -242,22 +242,22 @@ Py::Object MetadataPy::getTag(void) const
     return pyTags;
 }
 
-Py::Object MetadataPy::getIcon(void) const
+Py::Object MetadataPy::getIcon() const
 {
     return Py::String(getMetadataPtr()->icon().string());
 }
 
-Py::Object MetadataPy::getClassname(void) const
+Py::Object MetadataPy::getClassname() const
 {
     return Py::String(getMetadataPtr()->classname());
 }
 
-Py::Object MetadataPy::getSubdirectory(void) const
+Py::Object MetadataPy::getSubdirectory() const
 {
     return Py::String(getMetadataPtr()->subdirectory().string());
 }
 
-Py::Object MetadataPy::getFile(void) const
+Py::Object MetadataPy::getFile() const
 {
     auto files = getMetadataPtr()->file();
     Py::List pyFiles;
@@ -267,7 +267,7 @@ Py::Object MetadataPy::getFile(void) const
     return pyFiles;
 }
 
-Py::Object MetadataPy::getContent(void) const
+Py::Object MetadataPy::getContent() const
 {
     auto content = getMetadataPtr()->content();
     std::set<std::string> keys;

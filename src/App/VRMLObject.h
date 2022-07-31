@@ -37,18 +37,18 @@ class AppExport VRMLObject : public GeoFeature
 
 public:
     /// Constructor
-    VRMLObject(void);
+    VRMLObject();
     virtual ~VRMLObject();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "Gui::ViewProviderVRMLObject";
     }
-    virtual DocumentObjectExecReturn *execute(void) {
+    virtual DocumentObjectExecReturn *execute() {
         return DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    virtual short mustExecute() const;
+    virtual PyObject *getPyObject();
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
     virtual void SaveDocFile (Base::Writer &writer) const;

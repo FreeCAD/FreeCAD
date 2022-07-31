@@ -42,7 +42,7 @@ class AppExport GroupExtension : public DocumentObjectExtension
 
 public:
     /// Constructor
-    GroupExtension(void);
+    GroupExtension();
     virtual ~GroupExtension();
 
     /** @name Object handling  */
@@ -107,7 +107,7 @@ public:
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}
     
-    virtual PyObject* getExtensionPyObject(void) override;
+    virtual PyObject* getExtensionPyObject() override;
 
     virtual void extensionOnChanged(const Property* p) override;
 
@@ -116,7 +116,7 @@ public:
 
     virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
 
-    virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
+    virtual App::DocumentObjectExecReturn *extensionExecute() override;
 
     std::vector<DocumentObject*> getAllChildren() const;
     void getAllChildren(std::vector<DocumentObject*> &, std::set<DocumentObject*> &) const;

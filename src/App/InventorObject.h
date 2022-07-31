@@ -37,18 +37,18 @@ class AppExport InventorObject : public GeoFeature
 
 public:
     /// Constructor
-    InventorObject(void);
+    InventorObject();
     virtual ~InventorObject();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "Gui::ViewProviderInventorObject";
     }
-    virtual DocumentObjectExecReturn *execute(void) {
+    virtual DocumentObjectExecReturn *execute() {
         return DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    virtual short mustExecute() const;
+    virtual PyObject *getPyObject();
 
     PropertyString Buffer;
     PropertyString FileName;

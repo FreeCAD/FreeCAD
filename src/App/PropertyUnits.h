@@ -45,21 +45,21 @@ class AppExport PropertyQuantity : public PropertyFloat
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyQuantity(void){}
+    PropertyQuantity(){}
     virtual ~PropertyQuantity(){}
 
-    Base::Quantity getQuantityValue(void) const;
+    Base::Quantity getQuantityValue() const;
 
-    virtual const char* getEditorName(void) const;
+    virtual const char* getEditorName() const;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual void setPyObject(PyObject *);
 
     void setUnit(const Base::Unit &u) {_Unit = u;}
-    const Base::Unit &getUnit(void) const {return _Unit;}
+    const Base::Unit &getUnit() const {return _Unit;}
 
     void setValue(double lValue) { PropertyFloat::setValue(lValue); }
-    double getValue(void) const { return PropertyFloat::getValue(); }
+    double getValue() const { return PropertyFloat::getValue(); }
 
     virtual void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
     virtual const boost::any getPathValue(const App::ObjectIdentifier &path) const;
@@ -85,7 +85,7 @@ class AppExport PropertyQuantityConstraint : public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyQuantityConstraint(void):_ConstStruct(nullptr){}
+    PropertyQuantityConstraint():_ConstStruct(nullptr){}
     virtual ~PropertyQuantityConstraint(){}
 
     /// Constraint methods
@@ -104,14 +104,14 @@ public:
      */
     void setConstraints(const Constraints* sConstrain);
     /// get the constraint struct
-    const Constraints*  getConstraints(void) const;
+    const Constraints*  getConstraints() const;
     //@}
 
     double getMinimum() const;
     double getMaximum() const;
     double getStepSize() const;
 
-    virtual const char* getEditorName(void) const;
+    virtual const char* getEditorName() const;
     virtual void setPyObject(PyObject *);
 
 
@@ -128,7 +128,7 @@ class AppExport PropertyAcceleration: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyAcceleration(void);
+    PropertyAcceleration();
     virtual ~PropertyAcceleration() {}
 };
 
@@ -141,9 +141,9 @@ class AppExport PropertyAngle: public PropertyQuantityConstraint
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyAngle(void);
+    PropertyAngle();
     virtual ~PropertyAngle() {}
-    virtual const char *getEditorName(void) const { return "Gui::PropertyEditor::PropertyAngleItem"; }
+    virtual const char *getEditorName() const { return "Gui::PropertyEditor::PropertyAngleItem"; }
 };
 
 /** Area property
@@ -155,7 +155,7 @@ class AppExport PropertyArea: public PropertyQuantityConstraint
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyArea(void);
+    PropertyArea();
     virtual ~PropertyArea() {}
 };
 
@@ -168,7 +168,7 @@ class AppExport PropertyDistance: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyDistance(void);
+    PropertyDistance();
     virtual ~PropertyDistance() {}
 };
 
@@ -181,7 +181,7 @@ class AppExport PropertyElectricPotential: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyElectricPotential(void);
+    PropertyElectricPotential();
     virtual ~PropertyElectricPotential() {}
 };
 
@@ -194,7 +194,7 @@ class AppExport PropertyFrequency: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyFrequency(void);
+    PropertyFrequency();
     virtual ~PropertyFrequency() {}
 };
 
@@ -207,7 +207,7 @@ class AppExport PropertyForce: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyForce(void);
+    PropertyForce();
     virtual ~PropertyForce() {}
 };
 
@@ -220,7 +220,7 @@ class AppExport PropertyLength: public PropertyQuantityConstraint
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyLength(void);
+    PropertyLength();
     virtual ~PropertyLength() {}
 };
 
@@ -233,7 +233,7 @@ class AppExport PropertyPressure: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyPressure(void);
+    PropertyPressure();
     virtual ~PropertyPressure() {}
 };
 
@@ -246,7 +246,7 @@ class AppExport PropertySpeed: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertySpeed(void);
+    PropertySpeed();
     virtual ~PropertySpeed() {}
 };
 
@@ -259,7 +259,7 @@ class AppExport PropertyStiffness: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyStiffness(void);
+    PropertyStiffness();
     virtual ~PropertyStiffness() {}
 };
 
@@ -272,7 +272,7 @@ class AppExport PropertyVacuumPermittivity: public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyVacuumPermittivity(void);
+    PropertyVacuumPermittivity();
     virtual ~PropertyVacuumPermittivity() {}
 };
 
@@ -285,7 +285,7 @@ class AppExport PropertyVolume: public PropertyQuantityConstraint
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyVolume(void);
+    PropertyVolume();
     virtual ~PropertyVolume() {}
 };
 

@@ -156,7 +156,7 @@ public:
    */
   virtual ~PropertyContainer();
 
-  virtual unsigned int getMemSize (void) const;
+  virtual unsigned int getMemSize () const;
 
   virtual std::string getFullName() const {return std::string();}
 
@@ -242,8 +242,8 @@ protected:
   virtual void onBeforeChange(const Property* /*prop*/){}
 
   //void hasChanged(Property* prop);
-  static const  PropertyData * getPropertyDataPtr(void);
-  virtual const PropertyData& getPropertyData(void) const;
+  static const  PropertyData * getPropertyDataPtr();
+  virtual const PropertyData& getPropertyData() const;
 
   virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);

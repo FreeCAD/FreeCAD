@@ -33,7 +33,7 @@
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string LinkBaseExtensionPy::representation(void) const
+std::string LinkBaseExtensionPy::representation() const
 {
     std::ostringstream str;
     str << "<" << getLinkBaseExtensionPtr()->getExtensionClassTypeId().getName() << ">";

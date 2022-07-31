@@ -55,7 +55,7 @@ PropertyContainer::~PropertyContainer()
 
 }
 
-unsigned int PropertyContainer::getMemSize (void) const
+unsigned int PropertyContainer::getMemSize () const
 {
     std::map<std::string,Property*> Map;
     getPropertyMap(Map);
@@ -178,8 +178,8 @@ const char* PropertyContainer::getPropertyName(const Property* prop)const
     return res;
 }
 
-const PropertyData * PropertyContainer::getPropertyDataPtr(void){return &propertyData;}
-const PropertyData & PropertyContainer::getPropertyData(void) const{return propertyData;}
+const PropertyData * PropertyContainer::getPropertyDataPtr(){return &propertyData;}
+const PropertyData & PropertyContainer::getPropertyData() const{return propertyData;}
 
 /**
  * @brief PropertyContainer::handleChangedPropertyName is called during restore to possibly

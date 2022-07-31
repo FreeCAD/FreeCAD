@@ -37,14 +37,14 @@ class AppExport MaterialObject : public DocumentObject
 
 public:
     /// Constructor
-    MaterialObject(void);
+    MaterialObject();
     virtual ~MaterialObject();
 
     App::PropertyMap Material;
 
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "Gui::ViewProviderMaterialObject";
     }
 

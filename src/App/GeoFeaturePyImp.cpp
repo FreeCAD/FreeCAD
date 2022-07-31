@@ -32,7 +32,7 @@
 using namespace App;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeoFeaturePy::representation(void) const
+std::string GeoFeaturePy::representation() const
 {
     return std::string("<GeoFeature object>");
 }

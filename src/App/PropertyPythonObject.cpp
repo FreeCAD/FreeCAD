@@ -66,7 +66,7 @@ Py::Object PropertyPythonObject::getValue() const
     return object;
 }
 
-PyObject *PropertyPythonObject::getPyObject(void)
+PyObject *PropertyPythonObject::getPyObject()
 {
     return Py::new_reference_to(this->object);
 }
@@ -400,12 +400,12 @@ void PropertyPythonObject::RestoreDocFile(Base::Reader &reader)
     hasSetValue();
 }
 
-unsigned int PropertyPythonObject::getMemSize (void) const
+unsigned int PropertyPythonObject::getMemSize () const
 {
     return sizeof(Py::Object);
 }
 
-Property *PropertyPythonObject::Copy(void) const
+Property *PropertyPythonObject::Copy() const
 {
     PropertyPythonObject *p = new PropertyPythonObject();
     Base::PyGILStateLocker lock;

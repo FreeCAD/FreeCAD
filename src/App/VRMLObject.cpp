@@ -52,7 +52,7 @@ VRMLObject::~VRMLObject()
 {
 }
 
-short VRMLObject::mustExecute(void) const
+short VRMLObject::mustExecute() const
 {
     return 0;
 }

@@ -297,7 +297,7 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
     return nullptr;
 }
 
-PyObject* GroupExtension::getExtensionPyObject(void) {
+PyObject* GroupExtension::getExtensionPyObject() {
 
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
@@ -396,7 +396,7 @@ bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) 
     return true;
 }
 
-App::DocumentObjectExecReturn *GroupExtension::extensionExecute(void) {
+App::DocumentObjectExecReturn *GroupExtension::extensionExecute() {
     // This touch property is for propagating changes to upper group
     _GroupTouched.touch();
     return inherited::extensionExecute();
