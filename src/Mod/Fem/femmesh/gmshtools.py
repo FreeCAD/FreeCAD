@@ -29,7 +29,6 @@ __url__ = "https://www.freecadweb.org"
 
 import os
 import subprocess
-import sys
 
 import FreeCAD
 from FreeCAD import Console
@@ -319,8 +318,7 @@ class GmshTools():
                 p1 = subprocess.Popen(["which", "gmsh"], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
                     output = p1.stdout.read()
-                    if sys.version_info.major >= 3:
-                        output = output.decode("utf-8")
+                    output = output.decode("utf-8")
                     gmsh_path = output.split("\n")[0]
                 elif p1.wait() == 1:
                     error_message = (
@@ -921,9 +919,7 @@ class GmshTools():
                 stderr=subprocess.PIPE
             )
             output, error = p.communicate()
-            if sys.version_info.major >= 3:
-                # output = output.decode("utf-8")
-                error = error.decode("utf-8")
+            error = error.decode("utf-8")
             # stdout is still cut at some point
             # but the warnings are in stderr and thus printed :-)
             # print(output)

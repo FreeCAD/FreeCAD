@@ -29,7 +29,6 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief task panel for reinforced material object
 
-import sys
 from PySide import QtCore
 from PySide import QtGui
 
@@ -37,8 +36,7 @@ import FreeCAD
 import FreeCADGui
 
 
-if sys.version_info.major >= 3:
-    unicode = str
+unicode = str
 
 
 class _TaskPanel:
@@ -46,8 +44,7 @@ class _TaskPanel:
     The editmode TaskPanel for MaterialReinforced objects
     """
 
-    if sys.version_info.major >= 3:
-        unicode = str
+    unicode = str
 
     def __init__(self, obj):
 

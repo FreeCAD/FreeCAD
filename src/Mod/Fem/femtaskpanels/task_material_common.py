@@ -31,7 +31,6 @@ __url__ = "https://www.freecadweb.org"
 #  \brief FreeCAD FEM _ViewProviderFemMaterial
 #  \brief task panel for common material object
 
-import sys
 from PySide import QtCore
 from PySide import QtGui
 
@@ -42,8 +41,7 @@ from FreeCAD import Units
 from femguiutils import selection_widgets
 
 
-if sys.version_info.major >= 3:
-    unicode = str
+unicode = str
 
 
 class _TaskPanel:

@@ -210,10 +210,7 @@ class SolidSelector(_Selector):
                     foundSolids.add("Solid" + str(solidId + 1))
         if len(foundSolids) == 1:
             it = iter(foundSolids)
-            if sys.version_info.major >= 3:
-                return next(it)
-            else:
-                return it.next()
+            return next(it)
         return None
 
     def _findSub(self, sub, subList):

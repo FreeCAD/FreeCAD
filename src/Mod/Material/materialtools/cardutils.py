@@ -24,14 +24,12 @@ __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 import os
-import sys
 from os.path import join
 
 import FreeCAD
 
 
-if sys.version_info.major >= 3:
-    unicode = str
+unicode = str
 
 
 # TODO:

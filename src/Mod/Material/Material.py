@@ -71,10 +71,7 @@ def importFCMat(fileName):
     )
     Config = configparser.RawConfigParser()
     Config.optionxform = str
-    if sys.version_info.major >= 3:
-        Config.read(fileName, encoding='utf-8')  # respect unicode filenames
-    else:
-        Config.read(fileName)
+    Config.read(fileName, encoding='utf-8')  # respect unicode filenames
     dict1 = {}
     for section in Config.sections():
         options = Config.options(section)
