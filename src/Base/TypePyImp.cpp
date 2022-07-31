@@ -32,7 +32,7 @@
 using namespace Base;
 
 // returns a string which represent the object e.g. when printed in python
-std::string TypePy::representation(void) const
+std::string TypePy::representation() const
 {
     std::stringstream str;
     str << "<class '" << getBaseTypePtr()->getName() << "'>";
@@ -243,17 +243,17 @@ PyObject* TypePy::createInstanceByName (PyObject *args)
     return createPyObject(base);
 }
 
-Py::String TypePy::getName(void) const
+Py::String TypePy::getName() const
 {
     return Py::String(std::string(getBaseTypePtr()->getName()));
 }
 
-Py::Long TypePy::getKey(void) const
+Py::Long TypePy::getKey() const
 {
     return Py::Long(static_cast<long>(getBaseTypePtr()->getKey()));
 }
 
-Py::String TypePy::getModule(void) const
+Py::String TypePy::getModule() const
 {
     std::string module(getBaseTypePtr()->getName());
     std::string::size_type pos = module.find_first_of("::");

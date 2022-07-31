@@ -392,7 +392,7 @@ Py::Object Vector2dPy::projectToLine(const Py::Tuple& args)
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, projectToLine)
 
-void Vector2dPy::init_type(void)
+void Vector2dPy::init_type()
 {
     behaviors().name( "Vector2d" );
     behaviors().doc( "Vector2d class" );
