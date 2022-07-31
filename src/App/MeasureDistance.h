@@ -34,7 +34,7 @@ namespace App
 
 class AppExport MeasureDistance : public DocumentObject
 {
-    PROPERTY_HEADER(App::MeasureDistance);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::MeasureDistance);
 
 public:
     /// Constructor

@@ -50,7 +50,7 @@ namespace Data
  */
 class AppExport Segment: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     ~Segment() override = default;
@@ -62,7 +62,7 @@ public:
  */
 class AppExport ComplexGeoData: public Base::Persistence, public Base::Handled
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     struct Line  {uint32_t I1; uint32_t I2;};

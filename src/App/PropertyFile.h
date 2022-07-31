@@ -41,7 +41,7 @@ namespace App
   */
 class AppExport PropertyFile : public PropertyString
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyFile();
@@ -73,7 +73,7 @@ private:
  */
 class AppExport PropertyFileIncluded : public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyFileIncluded();

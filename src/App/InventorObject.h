@@ -33,7 +33,7 @@ namespace App
 
 class AppExport InventorObject : public GeoFeature
 {
-    PROPERTY_HEADER(App::InventorObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::InventorObject);
 
 public:
     /// Constructor

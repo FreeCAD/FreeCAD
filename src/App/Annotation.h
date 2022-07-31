@@ -34,7 +34,7 @@ namespace App
 
 class AppExport Annotation : public DocumentObject
 {
-    PROPERTY_HEADER(App::Annotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::Annotation);
 
 public:
     /// Constructor
@@ -52,7 +52,7 @@ public:
 
 class AppExport AnnotationLabel : public DocumentObject
 {
-    PROPERTY_HEADER(App::AnnotationLabel);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::AnnotationLabel);
 
 public:
     /// Constructor

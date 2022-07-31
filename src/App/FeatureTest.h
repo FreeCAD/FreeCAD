@@ -36,7 +36,7 @@ namespace App
 /// The testing feature
 class FeatureTest : public DocumentObject
 {
-  PROPERTY_HEADER(App::FeatureTest);
+  PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTest);
 
 public:
   FeatureTest();
@@ -118,7 +118,7 @@ public:
 /// The exception testing feature
 class FeatureTestException :public FeatureTest
 {
-  PROPERTY_HEADER(App::FeatureTestException);
+  PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestException);
 
 public:
   FeatureTestException();

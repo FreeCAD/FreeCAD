@@ -50,7 +50,7 @@ namespace App
  */
 class AppExport PropertyInteger: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyInteger();
@@ -95,7 +95,7 @@ protected:
  */
 class AppExport PropertyPath: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -141,7 +141,7 @@ protected:
 /// Property wrapper around an Enumeration object.
 class AppExport PropertyEnumeration: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /// Standard constructor
@@ -249,7 +249,7 @@ private:
  */
 class AppExport PropertyIntegerConstraint: public PropertyInteger
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /// Standard constructor
@@ -320,7 +320,7 @@ protected:
 
 class AppExport PropertyPercent: public PropertyIntegerConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /// Standard constructor
@@ -372,7 +372,7 @@ protected:
  */
 class AppExport PropertyIntegerSet: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -424,7 +424,7 @@ private:
  */
 class AppExport PropertyMap: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -490,7 +490,7 @@ private:
  */
 class AppExport PropertyFloat: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /** Value Constructor
@@ -543,7 +543,7 @@ protected:
  */
 class AppExport PropertyFloatConstraint: public PropertyFloat
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -624,7 +624,7 @@ protected:
  */
 class AppExport PropertyPrecision: public PropertyFloatConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     PropertyPrecision();
     ~PropertyPrecision() override;
@@ -676,7 +676,7 @@ protected:
  */
 class AppExport PropertyString: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -729,7 +729,7 @@ protected:
  */
 class AppExport PropertyUUID: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -779,7 +779,7 @@ private:
  */
 class AppExport PropertyFont : public PropertyString
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyFont();
@@ -839,7 +839,7 @@ protected:
  */
 class AppExport PropertyBool : public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -917,7 +917,7 @@ protected:
  */
 class AppExport PropertyColor : public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -1005,7 +1005,7 @@ protected:
  */
 class AppExport PropertyMaterial : public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 

@@ -46,7 +46,7 @@ using ExpressionPtr = std::unique_ptr<Expression>;
 
 class AppExport PropertyExpressionContainer : public App::PropertyXLinkContainer
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     PropertyExpressionContainer();
     ~PropertyExpressionContainer() override;

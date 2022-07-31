@@ -33,7 +33,7 @@ namespace App
 
 class AppExport VRMLObject : public GeoFeature
 {
-    PROPERTY_HEADER(App::VRMLObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::VRMLObject);
 
 public:
     /// Constructor

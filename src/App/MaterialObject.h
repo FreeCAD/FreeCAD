@@ -33,7 +33,7 @@ namespace App
 
 class AppExport MaterialObject : public DocumentObject
 {
-    PROPERTY_HEADER(App::MaterialObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::MaterialObject);
 
 public:
     /// Constructor

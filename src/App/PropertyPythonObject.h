@@ -44,7 +44,7 @@ namespace App
  */
 class AppExport PropertyPythonObject : public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPythonObject();

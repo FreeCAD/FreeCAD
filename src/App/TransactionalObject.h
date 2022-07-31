@@ -36,7 +36,7 @@ class TransactionObject;
  */
 class AppExport TransactionalObject : public App::ExtensionContainer
 {
-    PROPERTY_HEADER(App::TransactionalObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::TransactionalObject);
 
 public:
     /// Constructor

@@ -33,7 +33,7 @@ namespace App
 
 class AppExport DocumentObjectFileIncluded : public DocumentObject
 {
-    PROPERTY_HEADER(App::DocumentObjectFileIncluded);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::DocumentObjectFileIncluded);
 
 public:
     /// Constructor

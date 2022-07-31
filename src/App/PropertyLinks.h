@@ -639,7 +639,7 @@ class AppExport PropertyLinkChild : public PropertyLink
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkChild() {_pcScope = LinkScope::Child;};
+    PropertyLinkChild() {_pcScope = LinkScope::Child;}
 };
 
 /** The general Link Property with Global scope
@@ -648,7 +648,7 @@ class AppExport PropertyLinkGlobal : public PropertyLink
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkGlobal() {_pcScope = LinkScope::Global;};
+    PropertyLinkGlobal() {_pcScope = LinkScope::Global;}
 };
 
 /** The general Link Property that are hidden from dependency checking
@@ -657,7 +657,7 @@ class AppExport PropertyLinkHidden : public PropertyLink
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkHidden() {_pcScope = LinkScope::Hidden;};
+    PropertyLinkHidden() {_pcScope = LinkScope::Hidden;}
 };
 
 
@@ -739,7 +739,7 @@ class AppExport PropertyLinkListChild : public PropertyLinkList
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkListChild() {_pcScope = LinkScope::Child;};
+    PropertyLinkListChild() {_pcScope = LinkScope::Child;}
 };
 
 /** The general Link Property with Global scope
@@ -748,7 +748,7 @@ class AppExport PropertyLinkListGlobal : public PropertyLinkList
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkListGlobal() {_pcScope = LinkScope::Global;};
+    PropertyLinkListGlobal() {_pcScope = LinkScope::Global;}
 };
 
 /** The general Link Property that are hidden from dependency checking
@@ -757,7 +757,7 @@ class AppExport PropertyLinkListHidden : public PropertyLinkList
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkListHidden() {_pcScope = LinkScope::Hidden;};
+    PropertyLinkListHidden() {_pcScope = LinkScope::Hidden;}
 };
 
 /** the Link Property with sub elements
@@ -873,7 +873,7 @@ class AppExport PropertyLinkSubChild : public PropertyLinkSub
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkSubChild() {_pcScope = LinkScope::Child;};
+    PropertyLinkSubChild() {_pcScope = LinkScope::Child;}
 };
 
 /** The general Link Property with Global scope
@@ -882,7 +882,7 @@ class AppExport PropertyLinkSubGlobal : public PropertyLinkSub
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkSubGlobal() {_pcScope = LinkScope::Global;};
+    PropertyLinkSubGlobal() {_pcScope = LinkScope::Global;}
 };
 
 /** The general Link Property that are hidden from dependency checking
@@ -891,7 +891,7 @@ class AppExport PropertyLinkSubHidden : public PropertyLinkSub
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkSubHidden() {_pcScope = LinkScope::Hidden;};
+    PropertyLinkSubHidden() {_pcScope = LinkScope::Hidden;}
 };
 
 class AppExport PropertyLinkSubList : public PropertyLinkBase
@@ -1024,7 +1024,7 @@ class AppExport PropertyLinkSubListChild : public PropertyLinkSubList
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkSubListChild() {_pcScope = LinkScope::Child;};
+    PropertyLinkSubListChild() {_pcScope = LinkScope::Child;}
 };
 
 /** The general Link Property with Global scope
@@ -1033,7 +1033,7 @@ class AppExport PropertyLinkSubListGlobal : public PropertyLinkSubList
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkSubListGlobal() {_pcScope = LinkScope::Global;};
+    PropertyLinkSubListGlobal() {_pcScope = LinkScope::Global;}
 };
 
 /** The general Link Property that are hidden from dependency checking
@@ -1042,7 +1042,7 @@ class AppExport PropertyLinkSubListHidden : public PropertyLinkSubList
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLinkSubListHidden() {_pcScope = LinkScope::Hidden;};
+    PropertyLinkSubListHidden() {_pcScope = LinkScope::Hidden;}
 };
 
 class PropertyXLinkSubList;

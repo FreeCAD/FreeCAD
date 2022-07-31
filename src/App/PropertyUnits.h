@@ -42,7 +42,7 @@ namespace App
  */
 class AppExport PropertyQuantity : public PropertyFloat
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyQuantity() = default;
@@ -82,7 +82,7 @@ protected:
  */
 class AppExport PropertyQuantityConstraint : public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyQuantityConstraint():_ConstStruct(nullptr){}
@@ -125,7 +125,7 @@ protected:
  */
 class AppExport PropertyAcceleration: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyAcceleration();
@@ -138,7 +138,7 @@ public:
  */
 class AppExport PropertyAngle: public PropertyQuantityConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyAngle();
@@ -152,7 +152,7 @@ public:
  */
 class AppExport PropertyArea: public PropertyQuantityConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyArea();
@@ -165,7 +165,7 @@ public:
  */
 class AppExport PropertyDistance: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyDistance();
@@ -178,7 +178,7 @@ public:
  */
 class AppExport PropertyElectricPotential: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyElectricPotential();
@@ -191,7 +191,7 @@ public:
  */
 class AppExport PropertyFrequency: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyFrequency();
@@ -204,7 +204,7 @@ public:
  */
 class AppExport PropertyForce: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyForce();
@@ -217,7 +217,7 @@ public:
  */
 class AppExport PropertyLength: public PropertyQuantityConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyLength();
@@ -230,7 +230,7 @@ public:
  */
 class AppExport PropertyPressure: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPressure();
@@ -243,7 +243,7 @@ public:
  */
 class AppExport PropertySpeed: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertySpeed();
@@ -256,7 +256,7 @@ public:
  */
 class AppExport PropertyStiffness: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyStiffness();
@@ -269,7 +269,7 @@ public:
  */
 class AppExport PropertyVacuumPermittivity: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyVacuumPermittivity();
@@ -282,7 +282,7 @@ public:
  */
 class AppExport PropertyVolume: public PropertyQuantityConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyVolume();

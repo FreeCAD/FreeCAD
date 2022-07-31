@@ -44,7 +44,7 @@ class TransactionalObject;
  */
 class AppExport Transaction : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /** Construction
@@ -105,7 +105,7 @@ private:
  */
 class AppExport TransactionObject : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /// Construction
@@ -143,7 +143,7 @@ protected:
  */
 class AppExport TransactionDocumentObject : public TransactionObject
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /// Construction

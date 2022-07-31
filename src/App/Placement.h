@@ -34,7 +34,7 @@ namespace App
  */
 class AppExport Placement: public App::GeoFeature
 {
-    PROPERTY_HEADER(App::Placement);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::Placement);
 
 public:
   /// Constructor

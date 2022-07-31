@@ -119,7 +119,7 @@ private:
 
 class AppExport PropertyVectorDistance: public PropertyVector
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -145,7 +145,7 @@ public:
 
 class AppExport PropertyPosition: public PropertyVector
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -171,7 +171,7 @@ public:
 
 class AppExport PropertyDirection: public PropertyVector
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -243,7 +243,7 @@ protected:
  */
 class AppExport PropertyMatrix: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -374,7 +374,7 @@ private:
  */
 class AppExport PropertyPlacementLink : public PropertyLink
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -500,7 +500,7 @@ private:
  */
 class AppExport PropertyGeometry : public App::Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyGeometry();
@@ -524,7 +524,7 @@ public:
  */
 class AppExport PropertyComplexGeoData : public App::PropertyGeometry
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyComplexGeoData();

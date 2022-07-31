@@ -32,7 +32,7 @@ namespace App
 {
 
 class AppExport TextDocument : public App::DocumentObject {
-    PROPERTY_HEADER(App::TextDocument);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::TextDocument);
 public:
     using TextSignal = boost::signals2::signal<void ()>;
     using TextSlot = TextSignal::slot_type;

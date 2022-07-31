@@ -36,7 +36,7 @@ namespace App
  */
 class AppExport Origin : public App::DocumentObject
 {
-    PROPERTY_HEADER(App::Origin);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::Origin);
 
 public:
     /// Constructor
