@@ -240,9 +240,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     setupPythonTypes();
 }
 
-Application::~Application()
-{
-}
+Application::~Application() = default;
 
 void Application::setupPythonTypes()
 {

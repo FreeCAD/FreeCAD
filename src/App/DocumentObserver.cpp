@@ -35,9 +35,7 @@ using namespace App;
 namespace sp = std::placeholders;
 
 
-DocumentT::DocumentT()
-{
-}
+DocumentT::DocumentT() = default;
 
 DocumentT::DocumentT(Document* doc)
 {
@@ -54,9 +52,7 @@ DocumentT::DocumentT(const DocumentT& doc)
     document = doc.document;
 }
 
-DocumentT::~DocumentT()
-{
-}
+DocumentT::~DocumentT() = default;
 
 void DocumentT::operator=(const DocumentT& doc)
 {
@@ -94,9 +90,7 @@ std::string DocumentT::getDocumentPython() const
 
 // -----------------------------------------------------------------------------
 
-DocumentObjectT::DocumentObjectT()
-{
-}
+DocumentObjectT::DocumentObjectT() = default;
 
 DocumentObjectT::DocumentObjectT(const DocumentObjectT &other)
 {
@@ -133,9 +127,7 @@ DocumentObjectT::DocumentObjectT(const char *docName, const char *objName)
         object = objName;
 }
 
-DocumentObjectT::~DocumentObjectT()
-{
-}
+DocumentObjectT::~DocumentObjectT() = default;
 
 DocumentObjectT &DocumentObjectT::operator=(const DocumentObjectT& obj)
 {
@@ -265,8 +257,7 @@ Property *DocumentObjectT::getProperty() const {
 
 // -----------------------------------------------------------------------------
 
-SubObjectT::SubObjectT()
-{}
+SubObjectT::SubObjectT() = default;
 
 SubObjectT::SubObjectT(const SubObjectT &other)
     :DocumentObjectT(other), subname(other.subname)
@@ -579,9 +570,7 @@ DocumentWeakPtrT::DocumentWeakPtrT(App::Document* doc) noexcept
 {
 }
 
-DocumentWeakPtrT::~DocumentWeakPtrT()
-{
-}
+DocumentWeakPtrT::~DocumentWeakPtrT() = default;
 
 void DocumentWeakPtrT::reset() noexcept
 {
@@ -664,10 +653,7 @@ DocumentObjectWeakPtrT::DocumentObjectWeakPtrT(App::DocumentObject* obj)
 {
 }
 
-DocumentObjectWeakPtrT::~DocumentObjectWeakPtrT()
-{
-
-}
+DocumentObjectWeakPtrT::~DocumentObjectWeakPtrT() = default;
 
 App::DocumentObject* DocumentObjectWeakPtrT::_get() const noexcept
 {
@@ -809,13 +795,9 @@ void DocumentObserver::slotRecomputedDocument(const Document& /*doc*/)
 
 // -----------------------------------------------------------------------------
 
-DocumentObjectObserver::DocumentObjectObserver()
-{
-}
+DocumentObjectObserver::DocumentObjectObserver() = default;
 
-DocumentObjectObserver::~DocumentObjectObserver()
-{
-}
+DocumentObjectObserver::~DocumentObjectObserver() = default;
 
 DocumentObjectObserver::const_iterator DocumentObjectObserver::begin() const
 {

@@ -154,9 +154,9 @@ public:
    * A destructor.
    * A more elaborate description of the destructor.
    */
-  virtual ~PropertyContainer();
+  ~PropertyContainer() override;
 
-  virtual unsigned int getMemSize () const;
+  unsigned int getMemSize () const override;
 
   virtual std::string getFullName() const {return std::string();}
 
@@ -218,8 +218,8 @@ public:
 
   virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus);
 
-  virtual void Save (Base::Writer &writer) const;
-  virtual void Restore(Base::XMLReader &reader);
+  void Save (Base::Writer &writer) const override;
+  void Restore(Base::XMLReader &reader) override;
 
   virtual void editProperty(const char * /*propName*/) {}
 

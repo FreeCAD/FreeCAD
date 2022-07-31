@@ -42,7 +42,7 @@ public:
 
     /// Constructor
     OriginFeature();
-    virtual ~OriginFeature();
+    ~OriginFeature() override;
 
     /// Finds the origin object this plane belongs to
     App::Origin *getOrigin ();
@@ -51,7 +51,7 @@ public:
 class AppExport Plane: public App::OriginFeature {
     PROPERTY_HEADER(App::OriginFeature);
 public:
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderPlane";
     }
 };
@@ -59,7 +59,7 @@ public:
 class AppExport Line: public App::OriginFeature {
     PROPERTY_HEADER(App::OriginFeature);
 public:
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderLine";
     }
 };

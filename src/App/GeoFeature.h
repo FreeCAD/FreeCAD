@@ -43,7 +43,7 @@ public:
 
     /// Constructor
     GeoFeature();
-    virtual ~GeoFeature();
+    ~GeoFeature() override;
 
     /**
      * @brief transformPlacement applies transform to placement of this shape.
@@ -64,7 +64,7 @@ public:
      * @brief getPyObject returns the Python binding object
      * @return the Python binding object
      */
-    virtual PyObject* getPyObject();
+    PyObject* getPyObject() override;
 
     /// Specify the type of element name to return when calling getElementName() 
     enum ElementNameType {

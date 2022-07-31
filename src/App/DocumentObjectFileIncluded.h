@@ -38,11 +38,11 @@ class AppExport DocumentObjectFileIncluded : public DocumentObject
 public:
     /// Constructor
     DocumentObjectFileIncluded();
-    virtual ~DocumentObjectFileIncluded();
+    ~DocumentObjectFileIncluded() override;
 
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderDocumentObject";
     }
 

@@ -35,7 +35,5 @@ DocumentObjectFileIncluded::DocumentObjectFileIncluded()
     ADD_PROPERTY_TYPE(File,(nullptr),"",(App::PropertyType)(Prop_None),"File to include into Project File");
 }
 
-DocumentObjectFileIncluded::~DocumentObjectFileIncluded()
-{
-}
+DocumentObjectFileIncluded::~DocumentObjectFileIncluded() = default;
 

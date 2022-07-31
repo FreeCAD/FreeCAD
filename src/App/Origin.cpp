@@ -57,8 +57,7 @@ Origin::Origin() : extension(this) {
 }
 
 
-Origin::~Origin()
-{ }
+Origin::~Origin() = default;
 
 App::OriginFeature *Origin::getOriginFeature( const char *role) const {
     const auto & features = OriginFeatures.getValues ();

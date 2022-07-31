@@ -77,15 +77,15 @@ public:
 
     /// Constructor
     Part();
-    virtual ~Part();
+    ~Part() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderPart";
     }
 
 
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop) override;
 
     /**
      * Returns the part which contains this object.
@@ -95,7 +95,7 @@ public:
      */
     static App::Part* getPartOfObject (const DocumentObject* obj, bool recursive=true);
 
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;

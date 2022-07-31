@@ -36,9 +36,7 @@ using namespace App;
 
 TYPESYSTEM_SOURCE(App::ExtensionContainer, App::PropertyContainer)
 
-ExtensionContainer::ExtensionContainer() {
-
-}
+ExtensionContainer::ExtensionContainer() = default;
 
 ExtensionContainer::~ExtensionContainer() {
 

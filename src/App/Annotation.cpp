@@ -36,9 +36,7 @@ Annotation::Annotation()
     ADD_PROPERTY(Position,(Base::Vector3d()));
 }
 
-Annotation::~Annotation()
-{
-}
+Annotation::~Annotation() = default;
 
 // --------------------------------------------------
 
@@ -52,6 +50,4 @@ AnnotationLabel::AnnotationLabel()
     ADD_PROPERTY_TYPE(TextPosition,(Base::Vector3d()),"Label",Prop_Output,"Text position");
 }
 
-AnnotationLabel::~AnnotationLabel()
-{
-}
+AnnotationLabel::~AnnotationLabel() = default;

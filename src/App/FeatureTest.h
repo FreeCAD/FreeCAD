@@ -41,7 +41,7 @@ class FeatureTest : public DocumentObject
 public:
   FeatureTest();
 
-  ~FeatureTest();
+  ~FeatureTest() override;
 
   // Standard Properties (PropertyStandard.h)
   App::PropertyInteger      Integer;
@@ -104,12 +104,12 @@ public:
 
   /** @name methods override Feature */
   //@{
-  virtual short mustExecute() const;
+  short mustExecute() const override;
   /// recalculate the Feature
-  virtual DocumentObjectExecReturn *execute();
+  DocumentObjectExecReturn *execute() override;
   /// returns the type name of the ViewProvider
   //Hint: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
-  virtual const char* getViewProviderName() const {
+  const char* getViewProviderName() const override {
     return "Gui::ViewProviderFeature";
   }
   //@}
@@ -127,9 +127,9 @@ public:
   App::PropertyInteger ExceptionType;
 
   /// recalculate the Feature and throw an exception
-  virtual DocumentObjectExecReturn *execute();
+  DocumentObjectExecReturn *execute() override;
   /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName() const {
+  const char* getViewProviderName() const override {
     return "Gui::ViewProviderFeature";
   }
 };

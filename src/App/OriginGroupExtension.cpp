@@ -46,8 +46,7 @@ OriginGroupExtension::OriginGroupExtension () {
     Origin.setScope(LinkScope::Child);
 }
 
-OriginGroupExtension::~OriginGroupExtension ()
-{ }
+OriginGroupExtension::~OriginGroupExtension () = default;
 
 App::Origin *OriginGroupExtension::getOrigin () const {
     App::DocumentObject *originObj = Origin.getValue ();

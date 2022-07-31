@@ -60,9 +60,7 @@ Part::Part()
     GroupExtension::initExtension(this);
 }
 
-Part::~Part()
-{
-}
+Part::~Part() = default;
 
 static App::Part *_getPartOfObject(const DocumentObject *obj,
                                    std::set<const DocumentObject*> *objset)

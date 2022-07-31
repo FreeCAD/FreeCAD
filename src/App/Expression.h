@@ -55,7 +55,7 @@ typedef std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectI
 
 class AppExport ExpressionVisitor {
 public:
-    virtual ~ExpressionVisitor() {}
+    virtual ~ExpressionVisitor() = default;
     virtual void visit(Expression &e) = 0;
     virtual void aboutToChange() {}
     virtual int changed() const { return 0;}
@@ -87,18 +87,18 @@ public:
         , _changed(0) 
     {}
 
-    virtual ~ExpressionModifier() { }
+    ~ExpressionModifier() override = default;
 
-    virtual void aboutToChange() override{
+    void aboutToChange() override{
         ++_changed;
         signaller.aboutToChange();
     }
 
-    virtual int changed() const override { return _changed; }
+    int changed() const override { return _changed; }
 
-    virtual void reset() override {_changed = 0;}
+    void reset() override {_changed = 0;}
 
-    virtual App::PropertyLinkBase* getPropertyLink() override {return propLink;}
+    App::PropertyLinkBase* getPropertyLink() override {return propLink;}
 
 protected:
     P & prop;
@@ -119,7 +119,7 @@ public:
 
     Expression(const App::DocumentObject * _owner);
 
-    virtual ~Expression();
+    ~Expression() override;
 
     virtual bool isTouched() const { return false; }
 

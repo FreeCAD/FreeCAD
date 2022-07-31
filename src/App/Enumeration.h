@@ -54,7 +54,7 @@ namespace App
     public:
         class Object {
         public:
-            virtual ~Object() {}
+            virtual ~Object() = default;
             virtual const char* data() const = 0;
             virtual bool isEqual(const char*) const = 0;
             virtual bool isCustom() const = 0;

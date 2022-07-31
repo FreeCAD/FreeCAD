@@ -433,17 +433,13 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionDocumentObject, App::TransactionObjec
  * A constructor.
  * A more elaborate description of the constructor.
  */
-TransactionDocumentObject::TransactionDocumentObject()
-{
-}
+TransactionDocumentObject::TransactionDocumentObject() = default;
 
 /**
  * A destructor.
  * A more elaborate description of the destructor.
  */
-TransactionDocumentObject::~TransactionDocumentObject()
-{
-}
+TransactionDocumentObject::~TransactionDocumentObject() = default;
 
 void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcObj)
 {

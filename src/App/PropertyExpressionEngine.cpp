@@ -96,9 +96,7 @@ PropertyExpressionEngine::PropertyExpressionEngine()
  * @brief Destroy the PropertyExpressionEngine object.
  */
 
-PropertyExpressionEngine::~PropertyExpressionEngine()
-{
-}
+PropertyExpressionEngine::~PropertyExpressionEngine() = default;
 
 /**
  * @brief Estimate memory size of this property.

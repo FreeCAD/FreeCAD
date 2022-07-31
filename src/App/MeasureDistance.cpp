@@ -39,9 +39,7 @@ MeasureDistance::MeasureDistance()
 
 }
 
-MeasureDistance::~MeasureDistance()
-{
-}
+MeasureDistance::~MeasureDistance() = default;
 
 DocumentObjectExecReturn *MeasureDistance::execute()
 {

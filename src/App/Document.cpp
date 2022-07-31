@@ -2332,8 +2332,7 @@ public:
         useFCBakExtension = false;
         saveBackupDateFormat = "%Y%m%d-%H%M%S";
     }
-    ~BackupPolicy() {
-    }
+    ~BackupPolicy() = default;
     void setPolicy(Policy p) {
         policy = p;
     }

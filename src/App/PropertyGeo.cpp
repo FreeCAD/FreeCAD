@@ -59,16 +59,10 @@ TYPESYSTEM_SOURCE(App::PropertyVector , App::Property)
 // Construction/Destruction
 
 
-PropertyVector::PropertyVector()
-{
-
-}
+PropertyVector::PropertyVector() = default;
 
 
-PropertyVector::~PropertyVector()
-{
-
-}
+PropertyVector::~PropertyVector() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -225,15 +219,9 @@ TYPESYSTEM_SOURCE(App::PropertyVectorDistance , App::PropertyVector)
 // Construction/Destruction
 
 
-PropertyVectorDistance::PropertyVectorDistance()
-{
+PropertyVectorDistance::PropertyVectorDistance() = default;
 
-}
-
-PropertyVectorDistance::~PropertyVectorDistance()
-{
-
-}
+PropertyVectorDistance::~PropertyVectorDistance() = default;
 
 //**************************************************************************
 // PropertyPosition
@@ -245,15 +233,9 @@ TYPESYSTEM_SOURCE(App::PropertyPosition , App::PropertyVector)
 // Construction/Destruction
 
 
-PropertyPosition::PropertyPosition()
-{
+PropertyPosition::PropertyPosition() = default;
 
-}
-
-PropertyPosition::~PropertyPosition()
-{
-
-}
+PropertyPosition::~PropertyPosition() = default;
 
 //**************************************************************************
 // PropertyPosition
@@ -265,15 +247,9 @@ TYPESYSTEM_SOURCE(App::PropertyDirection , App::PropertyVector)
 // Construction/Destruction
 
 
-PropertyDirection::PropertyDirection()
-{
+PropertyDirection::PropertyDirection() = default;
 
-}
-
-PropertyDirection::~PropertyDirection()
-{
-
-}
+PropertyDirection::~PropertyDirection() = default;
 
 //**************************************************************************
 // PropertyVectorList
@@ -284,15 +260,9 @@ TYPESYSTEM_SOURCE(App::PropertyVectorList , App::PropertyLists)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyVectorList::PropertyVectorList()
-{
+PropertyVectorList::PropertyVectorList() = default;
 
-}
-
-PropertyVectorList::~PropertyVectorList()
-{
-
-}
+PropertyVectorList::~PropertyVectorList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -405,16 +375,10 @@ TYPESYSTEM_SOURCE(App::PropertyMatrix , App::Property)
 // Construction/Destruction
 
 
-PropertyMatrix::PropertyMatrix()
-{
-
-}
+PropertyMatrix::PropertyMatrix() = default;
 
 
-PropertyMatrix::~PropertyMatrix()
-{
-
-}
+PropertyMatrix::~PropertyMatrix() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -533,16 +497,10 @@ TYPESYSTEM_SOURCE(App::PropertyPlacement , App::Property)
 // Construction/Destruction
 
 
-PropertyPlacement::PropertyPlacement()
-{
-
-}
+PropertyPlacement::PropertyPlacement() = default;
 
 
-PropertyPlacement::~PropertyPlacement()
-{
-
-}
+PropertyPlacement::~PropertyPlacement() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -763,15 +721,9 @@ TYPESYSTEM_SOURCE(App::PropertyPlacementList , App::PropertyLists)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyPlacementList::PropertyPlacementList()
-{
+PropertyPlacementList::PropertyPlacementList() = default;
 
-}
-
-PropertyPlacementList::~PropertyPlacementList()
-{
-
-}
+PropertyPlacementList::~PropertyPlacementList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -895,16 +847,10 @@ TYPESYSTEM_SOURCE(App::PropertyPlacementLink , App::PropertyLink)
 // Construction/Destruction
 
 
-PropertyPlacementLink::PropertyPlacementLink()
-{
-
-}
+PropertyPlacementLink::PropertyPlacementLink() = default;
 
 
-PropertyPlacementLink::~PropertyPlacementLink()
-{
-
-}
+PropertyPlacementLink::~PropertyPlacementLink() = default;
 
 App::Placement * PropertyPlacementLink::getPlacementObject() const
 {
@@ -939,16 +885,10 @@ void PropertyPlacementLink::Paste(const Property &from)
 
 TYPESYSTEM_SOURCE(App::PropertyRotation , App::Property)
 
-PropertyRotation::PropertyRotation()
-{
-
-}
+PropertyRotation::PropertyRotation() = default;
 
 
-PropertyRotation::~PropertyRotation()
-{
-
-}
+PropertyRotation::~PropertyRotation() = default;
 
 void PropertyRotation::setValue(const Base::Rotation &rot)
 {
@@ -1113,26 +1053,14 @@ void PropertyRotation::Paste(const Property &from)
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyGeometry , App::Property)
 
-PropertyGeometry::PropertyGeometry()
-{
+PropertyGeometry::PropertyGeometry() = default;
 
-}
-
-PropertyGeometry::~PropertyGeometry()
-{
-
-}
+PropertyGeometry::~PropertyGeometry() = default;
 
 // ------------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyComplexGeoData , App::PropertyGeometry)
 
-PropertyComplexGeoData::PropertyComplexGeoData()
-{
+PropertyComplexGeoData::PropertyComplexGeoData() = default;
 
-}
-
-PropertyComplexGeoData::~PropertyComplexGeoData()
-{
-
-}
+PropertyComplexGeoData::~PropertyComplexGeoData() = default;

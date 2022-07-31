@@ -944,7 +944,7 @@ public:
         :deps(deps)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->getIdentifiers(e,deps);
     }
 
@@ -968,7 +968,7 @@ public:
         :inList(inList),res(false)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         if(this->adjustLinks(e,inList))
             res = true;
     }
@@ -989,7 +989,7 @@ public:
         :subNameMap(subNameMap)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->importSubNames(e,subNameMap);
     }
 
@@ -1033,7 +1033,7 @@ public:
         :obj(obj),ref(ref),newLabel(newLabel)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->updateLabelReference(e,obj,ref,newLabel);
     }
 
@@ -1070,7 +1070,7 @@ public:
     {
     }
 
-    void visit(Expression &e) {
+    void visit(Expression &e) override {
         if(collect)
             this->collectReplacement(e,paths,parent,oldObj,newObj);
         else
@@ -1821,7 +1821,7 @@ bool FunctionExpression::isTouched() const
 class Collector {
 public:
     Collector() : first(true) { }
-    virtual ~Collector() {}
+    virtual ~Collector() = default;
     virtual void collect(Quantity value) {
         if (first)
             q.setUnit(value.getUnit());
@@ -1838,7 +1838,7 @@ class SumCollector : public Collector {
 public:
     SumCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         q += value;
         first = false;
@@ -1850,14 +1850,14 @@ class AverageCollector : public Collector {
 public:
     AverageCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         q += value;
         ++n;
         first = false;
     }
 
-    virtual Quantity getQuantity() const { return q/(double)n; }
+    Quantity getQuantity() const override { return q/(double)n; }
 
 private:
     unsigned int n;
@@ -1867,7 +1867,7 @@ class StdDevCollector : public Collector {
 public:
     StdDevCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first) {
             M2 = Quantity(0, value.getUnit() * value.getUnit());
@@ -1882,7 +1882,7 @@ public:
         first = false;
     }
 
-    virtual Quantity getQuantity() const {
+    Quantity getQuantity() const override {
         if (n < 2)
             throw ExpressionError("Invalid number of entries: at least two required.");
         else
@@ -1899,13 +1899,13 @@ class CountCollector : public Collector {
 public:
     CountCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         ++n;
         first = false;
     }
 
-    virtual Quantity getQuantity() const { return Quantity(n); }
+    Quantity getQuantity() const override { return Quantity(n); }
 
 private:
     unsigned int n;
@@ -1915,7 +1915,7 @@ class MinCollector : public Collector {
 public:
     MinCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first || value < q)
             q = value;
@@ -1927,7 +1927,7 @@ class MaxCollector : public Collector {
 public:
     MaxCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first || value > q)
             q = value;
@@ -2493,9 +2493,7 @@ VariableExpression::VariableExpression(const DocumentObject *_owner, const Objec
 {
 }
 
-VariableExpression::~VariableExpression()
-{
-}
+VariableExpression::~VariableExpression() = default;
 
 /**
   * Determine if the expression is touched or not, i.e whether the Property object it

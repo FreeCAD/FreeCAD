@@ -41,7 +41,7 @@ class AppExport TransactionalObject : public App::ExtensionContainer
 public:
     /// Constructor
     TransactionalObject();
-    virtual ~TransactionalObject();
+    ~TransactionalObject() override;
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
 protected:

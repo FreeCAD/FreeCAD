@@ -41,8 +41,7 @@ OriginFeature::OriginFeature()
     Placement.setStatus(Property::Hidden, true);
 }
 
-OriginFeature::~OriginFeature()
-{ }
+OriginFeature::~OriginFeature() = default;
 
 Origin * OriginFeature::getOrigin () {
     App::Document *doc = getDocument();

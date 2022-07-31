@@ -37,14 +37,9 @@ PROPERTY_SOURCE(App::Placement, App::GeoFeature)
 // Feature
 //===========================================================================
 
-Placement::Placement()
-{
+Placement::Placement() = default;
 
-}
-
-Placement::~Placement()
-{
-}
+Placement::~Placement() = default;
 
 
 

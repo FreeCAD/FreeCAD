@@ -385,8 +385,7 @@ class WeakPtrT
 public:
     WeakPtrT(T* t) : ptr(t) {
     }
-    ~WeakPtrT() {
-    }
+    ~WeakPtrT() = default;
 
     /*!
      * \brief reset
@@ -527,7 +526,7 @@ public:
 
     /// Constructor
     DocumentObjectObserver();
-    virtual ~DocumentObjectObserver();
+    ~DocumentObjectObserver() override;
 
     const_iterator begin() const;
     const_iterator end() const;
@@ -536,15 +535,15 @@ public:
 
 private:
     /** Checks if a new document was created */
-    virtual void slotCreatedDocument(const App::Document& Doc);
+    void slotCreatedDocument(const App::Document& Doc) override;
     /** Checks if the given document is about to be closed */
-    virtual void slotDeletedDocument(const App::Document& Doc);
+    void slotDeletedDocument(const App::Document& Doc) override;
     /** Checks if a new object was added. */
-    virtual void slotCreatedObject(const App::DocumentObject& Obj);
+    void slotCreatedObject(const App::DocumentObject& Obj) override;
     /** Checks if the given object is about to be removed. */
-    virtual void slotDeletedObject(const App::DocumentObject& Obj);
+    void slotDeletedObject(const App::DocumentObject& Obj) override;
     /** The property of an observed object has changed */
-    virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
     /** This method gets called when all observed objects are deleted or the whole document is deleted.
       * This method can be re-implemented to perform an extra step like closing a dialog that observes
       * a document.
