@@ -20,18 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "ViewProviderLineParametric.h"
 
 
 using namespace PartGui;
 using namespace std;
-
 
 //**************************************************************************
 // Construction/Destruction

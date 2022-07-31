@@ -20,45 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <Geom_Curve.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <Inventor/events/SoKeyboardEvent.h>
+# include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoComplexity.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoLocateHighlight.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoSphere.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCSelection.h>
-#include <App/Application.h>
-
-#include <Mod/Part/App/PartFeature.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "ViewProviderCurveNet.h"
 
 
-
 using namespace PartGui;
-
 
 //**************************************************************************
 // Construction/Destruction

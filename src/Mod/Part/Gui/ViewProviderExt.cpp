@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -40,8 +39,8 @@
 # include <TColgp_Array1OfDir.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
@@ -65,8 +64,12 @@
 # include <Inventor/nodes/SoNormal.h>
 # include <Inventor/nodes/SoNormalBinding.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
 #endif
+
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/regex.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -74,11 +77,9 @@
 #include <Base/Parameter.h>
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/regex.hpp>
+
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>

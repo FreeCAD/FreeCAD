@@ -20,43 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
 # include <QTimer>
+
 # include <Standard_math.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
+
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoDragger.h>
+# include <Inventor/manips/SoCenterballManip.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/manips/SoCenterballManip.h>
 #endif
 
-#include <Mod/Part/App/FeatureMirroring.h>
-#include <Mod/Part/App/FeatureFillet.h>
-#include <Mod/Part/App/FeatureChamfer.h>
-#include <Mod/Part/App/FeatureRevolution.h>
-#include <Mod/Part/App/FeatureOffset.h>
-#include <Mod/Part/App/PartFeatures.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Mod/Part/App/FeatureChamfer.h>
+#include <Mod/Part/App/FeatureFillet.h>
+#include <Mod/Part/App/FeatureMirroring.h>
+#include <Mod/Part/App/FeatureOffset.h>
+#include <Mod/Part/App/FeatureRevolution.h>
+#include <Mod/Part/App/PartFeatures.h>
+
 #include "ViewProviderMirror.h"
 #include "DlgFilletEdges.h"
 #include "TaskOffset.h"
 #include "TaskThickness.h"
 
-using namespace PartGui;
 
+using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderMirror, PartGui::ViewProviderPart)
 
