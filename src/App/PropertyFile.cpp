@@ -49,10 +49,7 @@ using namespace std;
 TYPESYSTEM_SOURCE(App::PropertyFileIncluded , App::Property)
 
 
-PropertyFileIncluded::PropertyFileIncluded()
-{
-
-}
+PropertyFileIncluded::PropertyFileIncluded() = default;
 
 PropertyFileIncluded::~PropertyFileIncluded()
 {
@@ -583,10 +580,7 @@ PropertyFile::PropertyFile()
     m_filter = "";
 }
 
-PropertyFile::~PropertyFile()
-{
-
-}
+PropertyFile::~PropertyFile() = default;
 
 void PropertyFile::setFilter(const std::string f)
 {

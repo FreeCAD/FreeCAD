@@ -55,8 +55,7 @@ namespace bp = boost::placeholders;
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLinkBase , App::Property)
 
 static std::unordered_map<std::string, std::set<PropertyLinkBase*> > _LabelMap;
-PropertyLinkBase::PropertyLinkBase()
-{}
+PropertyLinkBase::PropertyLinkBase() = default;
 
 PropertyLinkBase::~PropertyLinkBase() {
     unregisterLabelReferences();
@@ -574,10 +573,7 @@ TYPESYSTEM_SOURCE(App::PropertyLinkListHidden, App::PropertyLinkList)
 // Construction/Destruction
 
 
-PropertyLinkList::PropertyLinkList()
-{
-
-}
+PropertyLinkList::PropertyLinkList() = default;
 
 PropertyLinkList::~PropertyLinkList()
 {
@@ -1575,10 +1571,7 @@ TYPESYSTEM_SOURCE(App::PropertyLinkSubListHidden, App::PropertyLinkSubList)
 // Construction/Destruction
 
 
-PropertyLinkSubList::PropertyLinkSubList()
-{
-
-}
+PropertyLinkSubList::PropertyLinkSubList() = default;
 
 PropertyLinkSubList::~PropertyLinkSubList()
 {
@@ -2658,8 +2651,7 @@ public:
         :pcDoc(nullptr)
     {}
 
-    ~DocInfo() {
-    }
+    ~DocInfo() = default;
 
     void deinit() {
         FC_LOG("deinit " << (pcDoc?pcDoc->getName():filePath()));
@@ -3760,8 +3752,7 @@ PropertyXLinkSub::PropertyXLinkSub(bool allowPartial, PropertyLinkBase *parent)
 
 }
 
-PropertyXLinkSub::~PropertyXLinkSub() {
-}
+PropertyXLinkSub::~PropertyXLinkSub() = default;
 
 bool PropertyXLinkSub::upgrade(Base::XMLReader &reader, const char *typeName) {
     if(strcmp(typeName, PropertyLinkSubGlobal::getClassTypeId().getName())==0 ||
@@ -3811,9 +3802,7 @@ PropertyXLinkSubList::PropertyXLinkSubList()
     setSyncSubObject(true);
 }
 
-PropertyXLinkSubList::~PropertyXLinkSubList()
-{
-}
+PropertyXLinkSubList::~PropertyXLinkSubList() = default;
 
 void PropertyXLinkSubList::setSyncSubObject(bool enable)
 {
@@ -4475,13 +4464,9 @@ TYPESYSTEM_SOURCE(App::PropertyXLinkList , App::PropertyXLinkSubList)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyXLinkList::PropertyXLinkList()
-{
-}
+PropertyXLinkList::PropertyXLinkList() = default;
 
-PropertyXLinkList::~PropertyXLinkList()
-{
-}
+PropertyXLinkList::~PropertyXLinkList() = default;
 
 PyObject *PropertyXLinkList::getPyObject()
 {
@@ -4527,8 +4512,7 @@ PropertyXLinkContainer::PropertyXLinkContainer() {
     _LinkRestored = false;
 }
 
-PropertyXLinkContainer::~PropertyXLinkContainer() {
-}
+PropertyXLinkContainer::~PropertyXLinkContainer() = default;
 
 void PropertyXLinkContainer::afterRestore() {
     _DocMap.clear();

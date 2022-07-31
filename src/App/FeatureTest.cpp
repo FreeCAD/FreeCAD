@@ -112,10 +112,7 @@ FeatureTest::FeatureTest()
   QuantityOther.setUnit(Base::Unit(-3,1));
 }
 
-FeatureTest::~FeatureTest()
-{
-
-}
+FeatureTest::~FeatureTest() = default;
 
 short FeatureTest::mustExecute() const
 {

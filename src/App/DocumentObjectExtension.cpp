@@ -37,10 +37,7 @@ DocumentObjectExtension::DocumentObjectExtension()
     initExtensionType(App::DocumentObjectExtension::getExtensionClassTypeId());
 }
 
-DocumentObjectExtension::~DocumentObjectExtension()
-{
-
-}
+DocumentObjectExtension::~DocumentObjectExtension() = default;
 
 short int DocumentObjectExtension::extensionMustExecute() {
 

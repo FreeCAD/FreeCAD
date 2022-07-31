@@ -268,7 +268,7 @@ public:
         return *this;
     }
 
-    virtual ~ObjectIdentifier() {}
+    virtual ~ObjectIdentifier() = default;
 
     App::DocumentObject *getOwner() const { return owner; }
 

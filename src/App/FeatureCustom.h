@@ -45,11 +45,9 @@ class FeatureCustomT : public FeatureT
     PROPERTY_HEADER(App::FeatureCustomT<FeatureT>);
 
 public:
-    FeatureCustomT() {
-    }
+    FeatureCustomT() = default;
 
-    virtual ~FeatureCustomT() {
-    }
+    virtual ~FeatureCustomT() = default;
 
     /** @name methods override DocumentObject */
     //@{

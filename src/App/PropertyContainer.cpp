@@ -50,10 +50,7 @@ PropertyContainer::PropertyContainer()
     propertyData.parentPropertyData = nullptr;
 }
 
-PropertyContainer::~PropertyContainer()
-{
-
-}
+PropertyContainer::~PropertyContainer() = default;
 
 unsigned int PropertyContainer::getMemSize () const
 {

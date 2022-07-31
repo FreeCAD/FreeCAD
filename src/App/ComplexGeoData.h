@@ -53,7 +53,7 @@ class AppExport Segment: public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    virtual ~Segment(){}
+    ~Segment() override = default;
     virtual std::string getName() const=0;
 };
 
@@ -75,7 +75,7 @@ public:
     /// Constructor
     ComplexGeoData();
     /// Destructor
-    virtual ~ComplexGeoData();
+    ~ComplexGeoData() override;
 
     /** @name Subelement management */
     //@{

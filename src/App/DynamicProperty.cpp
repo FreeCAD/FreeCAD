@@ -39,9 +39,7 @@ FC_LOG_LEVEL_INIT("Property",true,true)
 using namespace App;
 
 
-DynamicProperty::DynamicProperty()
-{
-}
+DynamicProperty::DynamicProperty() = default;
 
 DynamicProperty::~DynamicProperty()
 {

@@ -187,7 +187,7 @@ public:
         return imp->mustExecute()?1:0;
     }
     /// recalculate the Feature
-    virtual DocumentObjectExecReturn *execute() override {
+    DocumentObjectExecReturn *execute() override {
         try {
             bool handled = imp->execute();
             if (!handled)
@@ -198,19 +198,19 @@ public:
         }
         return DocumentObject::StdReturn;
     }
-    virtual const char* getViewProviderNameOverride() const override {
+    const char* getViewProviderNameOverride() const override {
         viewProviderName = imp->getViewProviderName();
         if(viewProviderName.size())
             return viewProviderName.c_str();
         return FeatureT::getViewProviderNameOverride();
     }
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return FeatureT::getViewProviderName();
         //return "Gui::ViewProviderPythonFeature";
     }
 
-    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
+    App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override 
     {
         App::DocumentObject *ret = nullptr;
@@ -219,14 +219,14 @@ public:
         return FeatureT::getSubObject(subname,pyObj,mat,transform,depth);
     }
 
-    virtual std::vector<std::string> getSubObjects(int reason=0) const override {
+    std::vector<std::string> getSubObjects(int reason=0) const override {
         std::vector<std::string> ret;
         if(imp->getSubObjects(ret,reason))
             return ret;
         return FeatureT::getSubObjects(reason);
     }
 
-    virtual App::DocumentObject *getLinkedObject(bool recurse, 
+    App::DocumentObject *getLinkedObject(bool recurse,
             Base::Matrix4D *mat, bool transform, int depth) const override
     {
         App::DocumentObject *ret = nullptr;
@@ -236,7 +236,7 @@ public:
     }
 
     /// return true to activate tree view group object handling
-    virtual bool hasChildElement() const override {
+    bool hasChildElement() const override {
         switch (imp->hasChildElement()) {
         case FeaturePythonImp::Accepted:
             return true;
@@ -247,21 +247,21 @@ public:
         }
     }
     /// Get sub-element visibility
-    virtual int isElementVisible(const char *element) const override {
+    int isElementVisible(const char *element) const override {
         int ret = imp->isElementVisible(element);
         if(ret == -2)
             return FeatureT::isElementVisible(element);
         return ret;
     }
     /// Set sub-element visibility
-    virtual int setElementVisible(const char *element, bool visible) override {
+    int setElementVisible(const char *element, bool visible) override {
         int ret = imp->setElementVisible(element,visible);
         if(ret == -2)
             return FeatureT::setElementVisible(element,visible);
         return ret;
     }
 
-    virtual bool canLinkProperties() const override {
+    bool canLinkProperties() const override {
         switch (imp->canLinkProperties()) {
         case FeaturePythonImp::Accepted:
             return true;
@@ -272,7 +272,7 @@ public:
         }
     }
 
-    virtual bool allowDuplicateLabel() const override {
+    bool allowDuplicateLabel() const override {
         switch (imp->allowDuplicateLabel()) {
         case FeaturePythonImp::Accepted:
             return true;
@@ -283,7 +283,7 @@ public:
         }
     }
 
-    virtual bool redirectSubName(std::ostringstream &ss,
+    bool redirectSubName(std::ostringstream &ss,
             App::DocumentObject *topParent, App::DocumentObject *child) const override 
     {
         switch (imp->redirectSubName(ss,topParent,child)) {
@@ -296,14 +296,14 @@ public:
         }
     }
 
-    virtual int canLoadPartial() const override {
+    int canLoadPartial() const override {
         int ret = imp->canLoadPartial();
         if(ret>=0)
             return ret;
         return FeatureT::canLoadPartial();
     }
 
-    virtual void editProperty(const char *propName) override {
+    void editProperty(const char *propName) override {
         if (!imp->editProperty(propName))
             FeatureT::editProperty(propName);
     }
@@ -323,21 +323,21 @@ public:
     }
 
 protected:
-    virtual void onBeforeChange(const Property* prop) override {
+    void onBeforeChange(const Property* prop) override {
         FeatureT::onBeforeChange(prop);
         imp->onBeforeChange(prop);
     }
-    virtual void onBeforeChangeLabel(std::string &newLabel) override{
+    void onBeforeChangeLabel(std::string &newLabel) override{
         if(!imp->onBeforeChangeLabel(newLabel))
             FeatureT::onBeforeChangeLabel(newLabel);
     }
-    virtual void onChanged(const Property* prop) override {
+    void onChanged(const Property* prop) override {
         if(prop == &Proxy)
             imp->init(Proxy.getValue().ptr());
         imp->onChanged(prop);
         FeatureT::onChanged(prop);
     }
-    virtual void onDocumentRestored() override {
+    void onDocumentRestored() override {
         imp->onDocumentRestored();
         FeatureT::onDocumentRestored();
     }

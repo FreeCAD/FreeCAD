@@ -41,9 +41,7 @@ using namespace App;
 
 TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property)
 
-PropertyPythonObject::PropertyPythonObject()
-{
-}
+PropertyPythonObject::PropertyPythonObject() = default;
 
 PropertyPythonObject::~PropertyPythonObject()
 {

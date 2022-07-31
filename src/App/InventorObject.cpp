@@ -38,9 +38,7 @@ InventorObject::InventorObject()
     ADD_PROPERTY_TYPE(FileName,(""),"",Prop_None,"Path to an Inventor file");
 }
 
-InventorObject::~InventorObject()
-{
-}
+InventorObject::~InventorObject() = default;
 
 short InventorObject::mustExecute() const
 {

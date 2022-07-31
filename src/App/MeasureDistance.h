@@ -39,22 +39,22 @@ class AppExport MeasureDistance : public DocumentObject
 public:
     /// Constructor
     MeasureDistance();
-    virtual ~MeasureDistance();
+    ~MeasureDistance() override;
 
     App::PropertyVector P1;
     App::PropertyVector P2;
     App::PropertyDistance Distance;
 
     /// recalculate the object
-    virtual DocumentObjectExecReturn *execute();
+    DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderMeasureDistance";
     }
 
 protected:
-    virtual void onChanged(const Property* prop);
+    void onChanged(const Property* prop) override;
 };
 
 } //namespace App

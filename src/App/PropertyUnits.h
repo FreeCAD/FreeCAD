@@ -45,15 +45,15 @@ class AppExport PropertyQuantity : public PropertyFloat
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyQuantity(){}
-    virtual ~PropertyQuantity(){}
+    PropertyQuantity() = default;
+    ~PropertyQuantity() override = default;
 
     Base::Quantity getQuantityValue() const;
 
-    virtual const char* getEditorName() const;
+    const char* getEditorName() const override;
 
-    virtual PyObject *getPyObject();
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
     void setUnit(const Base::Unit &u) {_Unit = u;}
     const Base::Unit &getUnit() const {return _Unit;}
@@ -61,10 +61,10 @@ public:
     void setValue(double lValue) { PropertyFloat::setValue(lValue); }
     double getValue() const { return PropertyFloat::getValue(); }
 
-    virtual void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value) override;
+    const boost::any getPathValue(const App::ObjectIdentifier &path) const override;
 
-    virtual bool isSame(const Property &other) const {
+    bool isSame(const Property &other) const override {
         if (&other == this)
             return true;
         return getTypeId() == other.getTypeId()
@@ -86,7 +86,7 @@ class AppExport PropertyQuantityConstraint : public PropertyQuantity
 
 public:
     PropertyQuantityConstraint():_ConstStruct(nullptr){}
-    virtual ~PropertyQuantityConstraint(){}
+    ~PropertyQuantityConstraint() override = default;
 
     /// Constraint methods
     //@{
@@ -111,8 +111,8 @@ public:
     double getMaximum() const;
     double getStepSize() const;
 
-    virtual const char* getEditorName() const;
-    virtual void setPyObject(PyObject *);
+    const char* getEditorName() const override;
+    void setPyObject(PyObject *) override;
 
 
 protected:
@@ -129,7 +129,7 @@ class AppExport PropertyAcceleration: public PropertyQuantity
 
 public:
     PropertyAcceleration();
-    virtual ~PropertyAcceleration() {}
+    ~PropertyAcceleration() override = default;
 };
 
 /** Angle property
@@ -142,8 +142,8 @@ class AppExport PropertyAngle: public PropertyQuantityConstraint
 
 public:
     PropertyAngle();
-    virtual ~PropertyAngle() {}
-    virtual const char *getEditorName() const { return "Gui::PropertyEditor::PropertyAngleItem"; }
+    ~PropertyAngle() override = default;
+    const char *getEditorName() const override { return "Gui::PropertyEditor::PropertyAngleItem"; }
 };
 
 /** Area property
@@ -156,7 +156,7 @@ class AppExport PropertyArea: public PropertyQuantityConstraint
 
 public:
     PropertyArea();
-    virtual ~PropertyArea() {}
+    ~PropertyArea() override = default;
 };
 
 /** Distance property
@@ -169,7 +169,7 @@ class AppExport PropertyDistance: public PropertyQuantity
 
 public:
     PropertyDistance();
-    virtual ~PropertyDistance() {}
+    ~PropertyDistance() override = default;
 };
 
 /** ElectricPotential property
@@ -182,7 +182,7 @@ class AppExport PropertyElectricPotential: public PropertyQuantity
 
 public:
     PropertyElectricPotential();
-    virtual ~PropertyElectricPotential() {}
+    ~PropertyElectricPotential() override = default;
 };
 
 /** Frequency property
@@ -195,7 +195,7 @@ class AppExport PropertyFrequency: public PropertyQuantity
 
 public:
     PropertyFrequency();
-    virtual ~PropertyFrequency() {}
+    ~PropertyFrequency() override = default;
 };
 
 /** Force property
@@ -208,7 +208,7 @@ class AppExport PropertyForce: public PropertyQuantity
 
 public:
     PropertyForce();
-    virtual ~PropertyForce() {}
+    ~PropertyForce() override = default;
 };
 
 /** Length property
@@ -221,7 +221,7 @@ class AppExport PropertyLength: public PropertyQuantityConstraint
 
 public:
     PropertyLength();
-    virtual ~PropertyLength() {}
+    ~PropertyLength() override = default;
 };
 
 /** Pressure property
@@ -234,7 +234,7 @@ class AppExport PropertyPressure: public PropertyQuantity
 
 public:
     PropertyPressure();
-    virtual ~PropertyPressure() {}
+    ~PropertyPressure() override = default;
 };
 
 /** Speed property
@@ -247,7 +247,7 @@ class AppExport PropertySpeed: public PropertyQuantity
 
 public:
     PropertySpeed();
-    virtual ~PropertySpeed() {}
+    ~PropertySpeed() override = default;
 };
 
 /** Stiffness property
@@ -260,7 +260,7 @@ class AppExport PropertyStiffness: public PropertyQuantity
 
 public:
     PropertyStiffness();
-    virtual ~PropertyStiffness() {}
+    ~PropertyStiffness() override = default;
 };
 
 /** VacuumPermittivity property
@@ -273,7 +273,7 @@ class AppExport PropertyVacuumPermittivity: public PropertyQuantity
 
 public:
     PropertyVacuumPermittivity();
-    virtual ~PropertyVacuumPermittivity() {}
+    ~PropertyVacuumPermittivity() override = default;
 };
 
 /** Volume property
@@ -286,7 +286,7 @@ class AppExport PropertyVolume: public PropertyQuantityConstraint
 
 public:
     PropertyVolume();
-    virtual ~PropertyVolume() {}
+    ~PropertyVolume() override = default;
 };
 
 }// namespace App

@@ -58,10 +58,7 @@ Property::Property()
 {
 }
 
-Property::~Property()
-{
-
-}
+Property::~Property() = default;
 
 const char* Property::getName() const
 {

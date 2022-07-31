@@ -48,9 +48,7 @@ VRMLObject::VRMLObject() : index(0)
     Resources.setSize(0);
 }
 
-VRMLObject::~VRMLObject()
-{
-}
+VRMLObject::~VRMLObject() = default;
 
 short VRMLObject::mustExecute() const
 {

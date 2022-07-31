@@ -45,9 +45,7 @@ GeoFeature::GeoFeature()
     ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
 }
 
-GeoFeature::~GeoFeature()
-{
-}
+GeoFeature::~GeoFeature() = default;
 
 void GeoFeature::transformPlacement(const Base::Placement &transform)
 {

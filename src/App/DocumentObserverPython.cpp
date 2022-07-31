@@ -114,9 +114,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG2(AddedDynamicExtension, AddedDynamicExtension)
 }
 
-DocumentObserverPython::~DocumentObserverPython()
-{
-}
+DocumentObserverPython::~DocumentObserverPython() = default;
 
 void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
 {

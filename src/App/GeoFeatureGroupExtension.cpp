@@ -50,9 +50,7 @@ GeoFeatureGroupExtension::GeoFeatureGroupExtension()
     Group.setScope(LinkScope::Child);
 }
 
-GeoFeatureGroupExtension::~GeoFeatureGroupExtension()
-{
-}
+GeoFeatureGroupExtension::~GeoFeatureGroupExtension() = default;
 
 void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj) {
     

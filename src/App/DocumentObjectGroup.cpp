@@ -37,9 +37,7 @@ DocumentObjectGroup::DocumentObjectGroup(): DocumentObject(), GroupExtension() {
     _GroupTouched.setStatus(App::Property::Output,true);
 }
 
-DocumentObjectGroup::~DocumentObjectGroup() {
-
-}
+DocumentObjectGroup::~DocumentObjectGroup() = default;
 
 PyObject *DocumentObjectGroup::getPyObject()
 {

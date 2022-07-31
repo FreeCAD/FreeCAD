@@ -36,13 +36,13 @@ namespace {
 struct StringCopy : public Enumeration::Object {
     StringCopy(const char* str) : d(str) {
     }
-    const char* data() const {
+    const char* data() const override {
         return d.data();
     }
-    bool isEqual(const char* str) const {
+    bool isEqual(const char* str) const override {
         return d == str;
     }
-    bool isCustom() const {
+    bool isCustom() const override {
         return true;
     }
 
@@ -53,13 +53,13 @@ private:
 struct StringView : public Enumeration::Object {
     StringView(const char* str) : d(str) {
     }
-    const char* data() const {
+    const char* data() const override {
         return d.data();
     }
-    bool isEqual(const char* str) const {
+    bool isEqual(const char* str) const override {
         return d == str;
     }
-    bool isCustom() const {
+    bool isCustom() const override {
         return false;
     }
 

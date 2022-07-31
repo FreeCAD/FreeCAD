@@ -39,10 +39,10 @@ class AppExport Placement: public App::GeoFeature
 public:
   /// Constructor
   Placement();
-  virtual ~Placement();
+  ~Placement() override;
 
   /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName() const {
+  const char* getViewProviderName() const override {
       return "Gui::ViewProviderPlacement";
   }
 

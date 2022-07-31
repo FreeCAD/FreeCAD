@@ -101,7 +101,7 @@ public:
     };
 
     Property();
-    virtual ~Property();
+    ~Property() override;
 
     /// For safe deleting of a dynamic property
     static void destroy(Property *p);
@@ -112,7 +112,7 @@ public:
      * This method is defined in Base::Persistence
      * @see Base::Persistence
      */
-    virtual unsigned int getMemSize () const override {
+    unsigned int getMemSize () const override {
         // you have to implement this method in all property classes!
         return sizeof(father) + sizeof(StatusBits);
     }
@@ -456,7 +456,7 @@ class AppExport PropertyLists : public Property, public PropertyListsBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual void setPyObject(PyObject *obj) override {
+    void setPyObject(PyObject *obj) override {
         _setPyObject(obj);
     }
 
@@ -486,11 +486,11 @@ public:
         _lValueList.resize(newSize,def);
     }
 
-    virtual void setSize(int newSize) override {
+    void setSize(int newSize) override {
         _lValueList.resize(newSize);
     }
 
-    virtual int getSize() const override {
+    int getSize() const override {
         return static_cast<int>(_lValueList.size());
     }
 
@@ -518,14 +518,14 @@ public:
 
     const_reference operator[] (int idx) const {return _lValueList[idx];} 
 
-    virtual bool isSame(const Property &other) const override {
+    bool isSame(const Property &other) const override {
         if (&other == this)
             return true;
         return this->getTypeId() == other.getTypeId()
             && this->getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
 
-    virtual void setPyObject(PyObject *value) override {
+    void setPyObject(PyObject *value) override {
         try {
             setValue(getPyValue(value));
             return;

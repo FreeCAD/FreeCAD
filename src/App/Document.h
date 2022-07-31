@@ -230,8 +230,8 @@ public:
     const char* getFileName() const;
     //@}
 
-    virtual void Save (Base::Writer &writer) const override;
-    virtual void Restore(Base::XMLReader &reader) override;
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
     /// returns the complete document memory consumption, including all managed DocObjects and Undo Redo.
     unsigned int getMemSize () const override;
@@ -491,9 +491,9 @@ public:
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
 
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
-    virtual std::string getFullName() const override;
+    std::string getFullName() const override;
 
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
@@ -506,7 +506,7 @@ public:
     friend class TransactionDocumentObject;
 
     /// Destruction
-    virtual ~Document();
+    ~Document() override;
 
 protected:
     /// Construction

@@ -52,9 +52,7 @@ GroupExtension::GroupExtension()
             PropertyType(Prop_Hidden|Prop_Transient),0);
 }
 
-GroupExtension::~GroupExtension()
-{
-}
+GroupExtension::~GroupExtension() = default;
 
 DocumentObject* GroupExtension::addObject(const char* sType, const char* pObjectName)
 {
