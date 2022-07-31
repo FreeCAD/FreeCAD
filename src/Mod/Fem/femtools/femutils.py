@@ -34,7 +34,6 @@ __url__ = "https://www.freecadweb.org"
 
 import os
 import subprocess
-import sys
 from platform import system
 
 import FreeCAD
