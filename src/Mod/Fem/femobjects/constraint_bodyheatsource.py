@@ -54,4 +54,4 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
                 "Base",
                 "Body heat source"
             )
-        obj.HeatSource = 0.0
+            obj.HeatSource = 0.0
