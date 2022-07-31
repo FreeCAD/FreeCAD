@@ -7,11 +7,9 @@ Defines some routines for calculating normals and transforming points.
 """
 
 import numpy
-import sys
 
 # xrange is not available in python3
-if sys.version_info.major >= 3:
-    xrange = range
+xrange = range
 
 # Can push numpy.float64 (or even numpy.float80) into this if you
 # would like to use higher precision when calculating; results will be

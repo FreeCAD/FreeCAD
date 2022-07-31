@@ -225,10 +225,7 @@ def getGuiData(filename):
                             df.close()
                             cols = []
                             for i in range(1,int(len(buf)/4)):
-                                if sys.version_info.major < 3:
-                                    cols.append(ord(buf[i*4+3])/255.0,ord(buf[i*4+2])/255.0,ord(buf[i*4+1])/255.0,ord(buf[i*4])/255.0)
-                                else:
-                                    cols.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
+                                cols.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
                             guidata[key][propname]["value"] = cols
         zdoc.close()
         #print ("guidata:",guidata)
@@ -243,11 +240,7 @@ def saveDiffuseColor(colorlist):
     property. Returns the path to the created temp file"""
 
     def tochr(i):
-        #print("tochr:",i)
-        if sys.version_info.major < 3:
-            return chr(i)
-        else:
-            return bytes((i,))
+        return bytes((i,))
     # if too many colors, bail out and use only the first one for now...
     if len(colorlist) > 254:
         colorlist = colorlist[:1]
