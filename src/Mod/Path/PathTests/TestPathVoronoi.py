@@ -25,7 +25,6 @@ import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathTests.PathTestUtils as PathTestUtils
-import sys
 
 vd = None
 
@@ -57,10 +56,7 @@ def initVD():
         vd.construct()
 
         for e in vd.Edges:
-            if sys.version_info.major > 2:
-                e.Color = 0 if e.isPrimary() else 1
-            else:
-                e.Color = long(0) if e.isPrimary() else long(1)
+            e.Color = 0 if e.isPrimary() else 1
 
         vd.colorExterior(2)
         vd.colorColinear(3)
