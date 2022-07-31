@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PARTGUI_VIEWPROVIDERRULEDSURFACE_H
 #define PARTGUI_VIEWPROVIDERRULEDSURFACE_H
 
 #include "ViewProvider.h"
-
-
 
 
 namespace PartGui {
@@ -46,7 +43,6 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const;
     void updateData(const App::Property*);
     bool onDelete(const std::vector<std::string> &);
-    
 
 protected:
 
@@ -56,4 +52,3 @@ protected:
 
 
 #endif // PARTGUI_VIEWPROVIDERRULEDSURFACE_H
-

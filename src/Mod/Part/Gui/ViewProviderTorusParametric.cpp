@@ -20,14 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderTorusParametric.h"
-
 
 using namespace PartGui;
 using namespace std;

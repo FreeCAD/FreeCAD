@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "ViewProviderRuledSurface.h"
+#include <Gui/Application.h>
 #include <Mod/Part/App/PartFeatures.h>
 
-#include <Gui/Application.h>
-#include <Base/Parameter.h>
+#include "ViewProviderRuledSurface.h"
 
 
 using namespace PartGui;
 using namespace std;
-
 
 //**************************************************************************
 // Construction/Destruction
