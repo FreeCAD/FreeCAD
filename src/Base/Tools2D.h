@@ -60,10 +60,10 @@ public:
   // operators
   inline Vector2d& operator=  (const Vector2d &v);
   inline bool      operator== (const Vector2d &v) const;
-  inline Vector2d  operator+  (void) const;
+  inline Vector2d  operator+  () const;
   inline Vector2d  operator+  (const Vector2d &v) const;
   inline Vector2d& operator+= (const Vector2d &v);
-  inline Vector2d  operator-  (void) const;
+  inline Vector2d  operator-  () const;
   inline Vector2d  operator-  (const Vector2d &v) const;
   inline Vector2d& operator-= (const Vector2d &v);
   inline Vector2d  operator*  (double c) const;

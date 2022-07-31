@@ -365,7 +365,7 @@ Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
     return rParamGrp;
 }
 
-std::vector<Base::Reference<ParameterGrp> > ParameterGrp::GetGroups(void)
+std::vector<Base::Reference<ParameterGrp> > ParameterGrp::GetGroups()
 {
     Base::Reference<ParameterGrp> rParamGrp;
     std::vector<Base::Reference<ParameterGrp> >  vrParamGrp;
@@ -905,7 +905,7 @@ bool ParameterGrp::RenameGrp(const char* OldName, const char* NewName)
     return true;
 }
 
-void ParameterGrp::Clear(void)
+void ParameterGrp::Clear()
 {
     std::vector<DOMNode*> vecNodes;
 

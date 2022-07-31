@@ -105,7 +105,7 @@ public:
     ///  this function returns the stack trace
     const std::string &getStackTrace() const {return _stackTrace;}
     const std::string &getErrorType() const {return _errorType;}
-    virtual PyObject *getPyExceptionType(void) const override {return _exceptionType;}
+    virtual PyObject *getPyExceptionType() const override {return _exceptionType;}
     void ReportException () const override;
     /// Sets the Python error indicator and an error message
     virtual void setPyException() const override;
