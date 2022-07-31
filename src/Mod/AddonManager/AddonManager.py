@@ -512,8 +512,8 @@ class CommandAddonManager:
                     thread = getattr(self, worker)
                     if thread:
                         thread.wait(25)
-                    if not thread.isFinished():
-                        oktoclose = False
+                        if not thread.isFinished():
+                            oktoclose = False
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
 
         # Write the cache data if it's safe to do so:
