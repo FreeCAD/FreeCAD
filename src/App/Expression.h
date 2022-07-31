@@ -63,12 +63,12 @@ public:
     virtual App::PropertyLinkBase* getPropertyLink() {return nullptr;}
 
 protected:
-    void getIdentifiers(Expression &e, std::map<App::ObjectIdentifier, bool> &); 
+    void getIdentifiers(Expression &e, std::map<App::ObjectIdentifier, bool> &);
     bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
     bool relabeledDocument(Expression &e, const std::string &oldName, const std::string &newName);
     bool renameObjectIdentifier(Expression &e,
             const std::map<ObjectIdentifier,ObjectIdentifier> &, const ObjectIdentifier &);
-    void collectReplacement(Expression &e, std::map<ObjectIdentifier,ObjectIdentifier> &, 
+    void collectReplacement(Expression &e, std::map<ObjectIdentifier,ObjectIdentifier> &,
             const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const;
     bool updateElementReference(Expression &e, App::DocumentObject *feature,bool reverse);
     void importSubNames(Expression &e, const ObjectIdentifier::SubNameMap &subNameMap);

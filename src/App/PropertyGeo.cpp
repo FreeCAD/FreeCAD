@@ -274,10 +274,10 @@ void PropertyVectorList::setValue(double x, double y, double z)
 
 PyObject *PropertyVectorList::getPyObject()
 {
-    PyObject* list = PyList_New(	getSize() );
+    PyObject* list = PyList_New(getSize());
 
-    for (int i = 0;i<getSize(); i++)
-        PyList_SetItem( list, i, new VectorPy(	_lValueList[i]));
+    for (int i = 0;i < getSize(); i++)
+        PyList_SetItem(list, i, new VectorPy(_lValueList[i]));
 
     return list;
 }

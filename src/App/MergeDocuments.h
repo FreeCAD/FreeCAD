@@ -25,6 +25,7 @@
 #define APP_MERGEDOCUMENTS_H
 
 #include <Base/Persistence.h>
+#include <boost/signals2.hpp>
 
 namespace zipios {
 class ZipInputStream;

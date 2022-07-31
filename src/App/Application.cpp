@@ -140,7 +140,7 @@
 # include <new>
 #endif
 
-FC_LOG_LEVEL_INIT("App",true,true)
+FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 using namespace Base;
@@ -159,7 +159,7 @@ ParameterManager *App::Application::_pcUserParamMngr;
 Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
-AppExport std::map<std::string,std::string> Application::mConfig;
+AppExport std::map<std::string, std::string> Application::mConfig;
 
 // Custom Python exception types
 BaseExport extern PyObject* Base::PyExc_FC_GeneralError;

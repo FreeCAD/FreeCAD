@@ -172,7 +172,7 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
     if(prop && prop->getContainer()==&pc)
         FC_THROWM(Base::NameError, "Property " << pc.getFullName() << '.' << name << " already exists");
 
-    if(Base::Tools::getIdentifier(name) != name) 
+    if(Base::Tools::getIdentifier(name) != name)
         FC_THROWM(Base::NameError, "Invalid property name '" << name << "'");
 
     Base::Type propType = Base::Type::getTypeIfDerivedFrom(type, App::Property::getClassTypeId(), true);

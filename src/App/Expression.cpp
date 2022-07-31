@@ -909,7 +909,7 @@ ExpressionDeps Expression::getDeps(int option)  const {
 }
 
 void Expression::getDepObjects(
-        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels)  const 
+        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels) const
 {
     for(auto &v : getIdentifiers()) {
         bool hidden = v.second;
