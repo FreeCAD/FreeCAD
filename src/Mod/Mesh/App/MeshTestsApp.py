@@ -457,7 +457,7 @@ class PivyTestCases(unittest.TestCase):
         rp.setRay(coin.SbVec3f(-16.05,16.0,16.0),coin.SbVec3f(0,-1,0))
         rp.apply(view.getSoRenderManager().getSceneGraph())
         pp=rp.getPickedPoint()
-        self.assertTrue(pp != None)
+        self.assertTrue(pp is not None)
         det=pp.getDetail()
         self.assertTrue(det.getTypeId() == coin.SoFaceDetail.getClassTypeId())
         det=coin.cast(det, det.getTypeId().getName().getString())

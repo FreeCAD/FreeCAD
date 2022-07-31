@@ -465,7 +465,7 @@ def export(objectslist, filename, argstring):
                 parsedElem = HEIDEN_Line(
                     c.Parameters, Compensation, Feed, True, Spindle_Status, Cmd_Count
                 )
-                if parsedElem != None:
+                if parsedElem is not None:
                     POSTGCODE.append(parsedElem)
 
             # Linear movement
@@ -473,7 +473,7 @@ def export(objectslist, filename, argstring):
                 parsedElem = HEIDEN_Line(
                     c.Parameters, Compensation, Feed, False, "", Cmd_Count
                 )
-                if parsedElem != None:
+                if parsedElem is not None:
                     POSTGCODE.append(parsedElem)
 
             # Arc movement
@@ -481,7 +481,7 @@ def export(objectslist, filename, argstring):
                 parsedElem = HEIDEN_Arc(
                     c.Parameters, command, Compensation, Feed, False, "", Cmd_Count
                 )
-                if parsedElem != None:
+                if parsedElem is not None:
                     POSTGCODE.extend(parsedElem)
 
             if command == "G80":  # Reset Canned Cycles
@@ -492,13 +492,13 @@ def export(objectslist, filename, argstring):
             # Drilling, Dwell Drilling, Peck Drilling
             if command == "G81" or command == "G82" or command == "G83":
                 parsedElem = HEIDEN_Drill(obj, c.Parameters, command, Feed)
-                if parsedElem != None:
+                if parsedElem is not None:
                     POSTGCODE.extend(parsedElem)
 
             # Tool change
             if command == "M6":
                 parsedElem = HEIDEN_ToolCall(obj)
-                if parsedElem != None:
+                if parsedElem is not None:
                     POSTGCODE.append(parsedElem)
 
         if COMPENSATION_DIFF_STATUS[0]:  # Restore the compensation if removed
@@ -961,7 +961,7 @@ def HEIDEN_Drill(
         else:
             drill_SafePoint = drill_Params["R"]
         # Surface equals to theoric start point of drilling
-        if drill_Surface != None and drill_SafePoint > drill_Surface:
+        if drill_Surface is not None and drill_SafePoint > drill_Surface:
             drill_Defs["DIST"] = drill_Surface - drill_SafePoint
             drill_StartPoint = drill_Surface
         else:
@@ -1108,7 +1108,7 @@ def HEIDEN_LBL_Get(GetPoint=None, GetLevel=None, GetAddit=0):
     global STORED_LBL
     global LBLIZE_PATH_LEVEL
 
-    if GetPoint != None:
+    if GetPoint is not None:
         if LBLIZE_PATH_LEVEL != GetLevel:
             LBLIZE_PATH_LEVEL = GetLevel
             if len(STORED_LBL) != 0 and len(STORED_LBL[-1][-1]) == 0:
