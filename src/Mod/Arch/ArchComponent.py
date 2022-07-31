@@ -31,7 +31,7 @@ __title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchCommands,sys,ArchIFC
+import FreeCAD,Draft,ArchCommands,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -2085,11 +2085,7 @@ class ComponentTaskPanel:
                         if not ptype.startswith("Ifc"):
                             ptype = self.ptypes[self.plabels.index(ptype)]
                         pvalue = self.ifcModel.item(row,0).child(childrow,2).text()
-                        if sys.version_info.major >= 3:
-                            ifcdict[prop] = pset+";;"+ptype+";;"+pvalue
-                        else:
-                            # keys cannot be unicode
-                            ifcdict[prop.encode("utf8")] = pset+";;"+ptype+";;"+pvalue
+                        ifcdict[prop] = pset+";;"+ptype+";;"+pvalue
             ifcData = self.obj.IfcData
             ifcData["IfcUID"] = self.ifcEditor.labelUUID.text()
             ifcData["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())

@@ -19,7 +19,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, sys, codecs, ntpath
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, codecs, ntpath
 # import numpy as np
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -44,10 +44,6 @@ if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 def decode(txt):
-
-    if sys.version_info.major < 3:
-        if isinstance(txt,unicode):
-            return txt.encode("utf8")
     return txt
 
 def findVert(aVertex,aList):
