@@ -522,6 +522,11 @@ void ViewProviderFemPostObject::setRangeOfColorBar(double min, double max)
     }
 }
 
+void ViewProviderFemPostObject::updateMaterial()
+{
+    WriteColorData(true);
+}
+
 void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
     if (!setupPipeline())
@@ -803,7 +808,7 @@ bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
     // thus we can pass this action
     // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
     Q_UNUSED(obj)
-        return true;
+    return true;
 }
 
 void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &sel)
@@ -812,8 +817,8 @@ void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &
     // color bar.
     // But don't do this if the object is invisible because other objects with a
     // color bar might be visible and the color bar is then wrong.
-    if (sel.Type == sel.AddSelection) {
+    if (sel.Type == Gui::SelectionChanges::AddSelection) {
         if (this->getObject()->Visibility.getValue())
-            WriteColorData(true);
+            updateMaterial();
     }
 }
