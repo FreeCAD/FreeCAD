@@ -1565,7 +1565,7 @@ Document::Document(const char *name)
 
     // license stuff
     ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
+    ADD_PROPERTY_TYPE(LicenseURL,("https://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
 
     // license stuff
     int licenseId = App::GetApplication().GetParameterGroupByPath
@@ -1575,39 +1575,39 @@ Document::Document(const char *name)
     switch (licenseId) {
         case 0:
             license = "All rights reserved";
-            licenseUrl = "http://en.wikipedia.org/wiki/All_rights_reserved";
+            licenseUrl = "https://en.wikipedia.org/wiki/All_rights_reserved";
             break;
         case 1:
             license = "Creative Commons Attribution";
-            licenseUrl = "http://creativecommons.org/licenses/by/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by/4.0/";
             break;
         case 2:
             license = "Creative Commons Attribution-ShareAlike";
-            licenseUrl = "http://creativecommons.org/licenses/by-sa/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-sa/4.0/";
             break;
         case 3:
             license = "Creative Commons Attribution-NoDerivatives";
-            licenseUrl = "http://creativecommons.org/licenses/by-nd/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-nd/4.0/";
             break;
         case 4:
             license = "Creative Commons Attribution-NonCommercial";
-            licenseUrl = "http://creativecommons.org/licenses/by-nc/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-nc/4.0/";
             break;
         case 5:
             license = "Creative Commons Attribution-NonCommercial-ShareAlike";
-            licenseUrl = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
             break;
         case 6:
             license = "Creative Commons Attribution-NonCommercial-NoDerivatives";
-            licenseUrl = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-nc-nd/4.0/";
             break;
         case 7:
             license = "Public Domain";
-            licenseUrl = "http://en.wikipedia.org/wiki/Public_domain";
+            licenseUrl = "https://en.wikipedia.org/wiki/Public_domain";
             break;
         case 8:
             license = "FreeArt";
-            licenseUrl = "http://artlibre.org/licence/lal";
+            licenseUrl = "https://artlibre.org/licence/lal";
             break;
         default:
             license = "Other";
