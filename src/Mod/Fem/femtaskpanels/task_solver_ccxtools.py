@@ -30,7 +30,6 @@ __url__ = "https://www.freecadweb.org"
 #  \brief task panel for solver ccx tools object
 
 import os
-import sys
 import time
 from PySide import QtCore
 from PySide import QtGui
@@ -42,9 +41,8 @@ import FreeCADGui
 
 import FemGui
 
-if sys.version_info.major >= 3:
-    def unicode(text, *args):
-        return str(text)
+def unicode(text, *args):
+    return str(text)
 
 
 class _TaskPanel:
@@ -190,25 +188,9 @@ class _TaskPanel:
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
             return False
 
-        if sys.version_info.major >= 3:
-            # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195
-            # convert QByteArray to a binary string an decode it to "utf-8"
-            out = out.data().decode()  # "utf-8" can be omitted
-            # print(type(out))
-            # print(out)
-        else:
-            try:
-                out = unicode(out, "utf-8", "replace")
-                rx = QtCore.QRegExp("\\*ERROR.*\\n\\n")
-                # print(rx)
-                rx.setMinimal(True)
-                pos = rx.indexIn(out)
-                while not pos < 0:
-                    match = rx.cap(0)
-                    FreeCAD.Console.PrintError(match.strip().replace("\n", " ") + "\n")
-                    pos = rx.indexIn(out, pos + 1)
-            except UnicodeDecodeError:
-                self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195
+        # convert QByteArray to a binary string an decode it to "utf-8"
+        out = out.data().decode()  # "utf-8" can be omitted
         out = os.linesep.join([s for s in out.splitlines() if s])
         out = out.replace("\n", "<br>")
         # print(out)

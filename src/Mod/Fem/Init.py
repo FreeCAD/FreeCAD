@@ -48,9 +48,8 @@ import FreeCAD
 from femtools.migrate_app import FemMigrateApp
 
 
-if sys.version_info.major >= 3:
-    # migrate old FEM App objects
-    sys.meta_path.append(FemMigrateApp())
+# migrate old FEM App objects
+sys.meta_path.append(FemMigrateApp())
 
 
 # add FEM App unit tests

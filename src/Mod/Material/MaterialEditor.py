@@ -25,7 +25,6 @@ __author__ = "Yorik van Havre, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 import os
-import sys
 from PySide import QtCore, QtGui, QtSvg
 
 import FreeCAD
@@ -33,8 +32,7 @@ import FreeCADGui
 # import Material_rc
 
 # is this still needed after the move to card utils???
-if sys.version_info.major >= 3:
-    unicode = str
+unicode = str
 
 
 # ************************************************************************************************
