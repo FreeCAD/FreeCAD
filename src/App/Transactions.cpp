@@ -109,7 +109,7 @@ int Transaction::getLastID() {
     return _TransactionID;
 }
 
-unsigned int Transaction::getMemSize (void) const
+unsigned int Transaction::getMemSize () const
 {
     return 0;
 }
@@ -124,7 +124,7 @@ void Transaction::Restore(Base::XMLReader &/*reader*/)
     assert(0);
 }
 
-int Transaction::getID(void) const
+int Transaction::getID() const
 {
     return transID;
 }
@@ -404,7 +404,7 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
     }
 }
 
-unsigned int TransactionObject::getMemSize (void) const
+unsigned int TransactionObject::getMemSize () const
 {
     return 0;
 }

@@ -42,7 +42,7 @@ InventorObject::~InventorObject()
 {
 }
 
-short InventorObject::mustExecute(void) const
+short InventorObject::mustExecute() const
 {
     return 0;
 }

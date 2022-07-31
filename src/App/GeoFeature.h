@@ -42,7 +42,7 @@ public:
     PropertyPlacement Placement;
 
     /// Constructor
-    GeoFeature(void);
+    GeoFeature();
     virtual ~GeoFeature();
 
     /**
@@ -64,7 +64,7 @@ public:
      * @brief getPyObject returns the Python binding object
      * @return the Python binding object
      */
-    virtual PyObject* getPyObject(void);
+    virtual PyObject* getPyObject();
 
     /// Specify the type of element name to return when calling getElementName() 
     enum ElementNameType {

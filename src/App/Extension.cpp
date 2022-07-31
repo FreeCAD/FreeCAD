@@ -39,10 +39,10 @@
  * PropertyData in the extension chain, there is no parent property data.
  */
 EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension)
-const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(void){return &propertyData;}
-const App::PropertyData & App::Extension::extensionGetPropertyData(void) const{return propertyData;}
+const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(){return &propertyData;}
+const App::PropertyData & App::Extension::extensionGetPropertyData() const{return propertyData;}
 App::PropertyData App::Extension::propertyData;
-void App::Extension::init(void){
+void App::Extension::init(){
 
     assert(Extension::classTypeId == Base::Type::badType() && "don't init() twice!");
 
@@ -95,7 +95,7 @@ void Extension::initExtension(ExtensionContainer* obj) {
 }
 
 
-PyObject* Extension::getExtensionPyObject(void) {
+PyObject* Extension::getExtensionPyObject() {
 
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1

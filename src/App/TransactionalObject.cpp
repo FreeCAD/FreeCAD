@@ -32,11 +32,11 @@ using namespace App;
 
 PROPERTY_SOURCE_ABSTRACT(App::TransactionalObject, App::ExtensionContainer)
 
-TransactionalObject::TransactionalObject(void)
+TransactionalObject::TransactionalObject()
 {
 }
 
-TransactionalObject::~TransactionalObject(void)
+TransactionalObject::~TransactionalObject()
 {
 }
 

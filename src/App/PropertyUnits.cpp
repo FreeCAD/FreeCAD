@@ -49,17 +49,17 @@ const PropertyQuantityConstraint::Constraints AngleStandard = {-360,360,1.0};
 
 TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat)
 
-Base::Quantity PropertyQuantity::getQuantityValue(void) const
+Base::Quantity PropertyQuantity::getQuantityValue() const
 {
     return Quantity(_dValue,_Unit);
 }
 
-const char* PropertyQuantity::getEditorName(void) const
+const char* PropertyQuantity::getEditorName() const
 {
     return "Gui::PropertyEditor::PropertyUnitItem";
 }
 
-PyObject *PropertyQuantity::getPyObject(void)
+PyObject *PropertyQuantity::getPyObject()
 {
     return new QuantityPy (new Quantity(_dValue,_Unit));
 }
@@ -146,13 +146,13 @@ void PropertyQuantityConstraint::setConstraints(const Constraints* sConstrain)
     _ConstStruct = sConstrain;
 }
 
-const char* PropertyQuantityConstraint::getEditorName(void) const
+const char* PropertyQuantityConstraint::getEditorName() const
 {
     return "Gui::PropertyEditor::PropertyUnitConstraintItem";
 }
 
 
-const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getConstraints(void) const
+const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getConstraints() const
 {
     return _ConstStruct;
 }

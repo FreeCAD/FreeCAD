@@ -41,7 +41,7 @@ public:
     PropertyString Role;
 
     /// Constructor
-    OriginFeature(void);
+    OriginFeature();
     virtual ~OriginFeature();
 
     /// Finds the origin object this plane belongs to
@@ -51,7 +51,7 @@ public:
 class AppExport Plane: public App::OriginFeature {
     PROPERTY_HEADER(App::OriginFeature);
 public:
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "Gui::ViewProviderPlane";
     }
 };
@@ -59,7 +59,7 @@ public:
 class AppExport Line: public App::OriginFeature {
     PROPERTY_HEADER(App::OriginFeature);
 public:
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "Gui::ViewProviderLine";
     }
 };

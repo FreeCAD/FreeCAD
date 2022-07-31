@@ -40,12 +40,12 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 // Feature
 //===========================================================================
 
-GeoFeature::GeoFeature(void)
+GeoFeature::GeoFeature()
 {
     ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
 }
 
-GeoFeature::~GeoFeature(void)
+GeoFeature::~GeoFeature()
 {
 }
 
@@ -71,7 +71,7 @@ const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
     return nullptr;
 }
 
-PyObject* GeoFeature::getPyObject(void)
+PyObject* GeoFeature::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

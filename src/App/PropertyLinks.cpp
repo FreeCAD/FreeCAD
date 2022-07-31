@@ -441,7 +441,7 @@ void PropertyLink::setValue(App::DocumentObject * lValue)
     hasSetValue();
 }
 
-App::DocumentObject * PropertyLink::getValue(void) const
+App::DocumentObject * PropertyLink::getValue() const
 {
     return _pcLink;
 }
@@ -451,7 +451,7 @@ App::DocumentObject * PropertyLink::getValue(Base::Type t) const
     return (_pcLink && _pcLink->getTypeId().isDerivedFrom(t)) ? _pcLink : nullptr;
 }
 
-PyObject *PropertyLink::getPyObject(void)
+PyObject *PropertyLink::getPyObject()
 {
     if (_pcLink)
         return _pcLink->getPyObject();
@@ -515,7 +515,7 @@ void PropertyLink::Restore(Base::XMLReader &reader)
     }
 }
 
-Property *PropertyLink::Copy(void) const
+Property *PropertyLink::Copy() const
 {
     PropertyLink *p= new PropertyLink();
     p->_pcLink = _pcLink;
@@ -691,7 +691,7 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
     inherited::setValues(lValue);
 }
 
-PyObject *PropertyLinkList::getPyObject(void)
+PyObject *PropertyLinkList::getPyObject()
 {
     int count = getSize();
 #if 0//FIXME: Should switch to tuple
@@ -813,7 +813,7 @@ Property *PropertyLinkList::CopyOnLinkReplace(const App::DocumentObject *parent,
     return p;
 }
 
-Property *PropertyLinkList::Copy(void) const
+Property *PropertyLinkList::Copy() const
 {
     PropertyLinkList *p = new PropertyLinkList();
     p->_lValueList = _lValueList;
@@ -828,7 +828,7 @@ void PropertyLinkList::Paste(const Property &from)
     setValues(static_cast<const PropertyLinkList&>(from)._lValueList);
 }
 
-unsigned int PropertyLinkList::getMemSize(void) const
+unsigned int PropertyLinkList::getMemSize() const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(App::DocumentObject *));
 }
@@ -963,12 +963,12 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue,
     hasSetValue();
 }
 
-App::DocumentObject * PropertyLinkSub::getValue(void) const
+App::DocumentObject * PropertyLinkSub::getValue() const
 {
     return _pcLinkSub;
 }
 
-const std::vector<std::string>& PropertyLinkSub::getSubValues(void) const
+const std::vector<std::string>& PropertyLinkSub::getSubValues() const
 {
     return _cSubList;
 }
@@ -1009,7 +1009,7 @@ App::DocumentObject * PropertyLinkSub::getValue(Base::Type t) const
     return (_pcLinkSub && _pcLinkSub->getTypeId().isDerivedFrom(t)) ? _pcLinkSub : nullptr;
 }
 
-PyObject *PropertyLinkSub::getPyObject(void)
+PyObject *PropertyLinkSub::getPyObject()
 {
     Py::Tuple tup(2);
     Py::List list(static_cast<int>(_cSubList.size()));
@@ -1478,7 +1478,7 @@ Property *PropertyLinkSub::CopyOnLinkReplace(const App::DocumentObject *parent,
     return nullptr;
 }
 
-Property *PropertyLinkSub::Copy(void) const
+Property *PropertyLinkSub::Copy() const
 {
     PropertyLinkSub *p= new PropertyLinkSub();
     p->_pcLinkSub = _pcLinkSub;
@@ -1621,7 +1621,7 @@ void PropertyLinkSubList::setSize(int newSize)
     _ShadowSubList.resize(newSize);
 }
 
-int PropertyLinkSubList::getSize(void) const
+int PropertyLinkSubList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -1977,7 +1977,7 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues(b
     return values;
 }
 
-PyObject *PropertyLinkSubList::getPyObject(void)
+PyObject *PropertyLinkSubList::getPyObject()
 {
     std::vector<SubSet> subLists = getSubListValues();
     std::size_t count = subLists.size();
@@ -2407,7 +2407,7 @@ Property *PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject *pare
     return p.release();
 }
 
-Property *PropertyLinkSubList::Copy(void) const
+Property *PropertyLinkSubList::Copy() const
 {
     PropertyLinkSubList *p = new PropertyLinkSubList();
     p->_lValueList = _lValueList;
@@ -2423,7 +2423,7 @@ void PropertyLinkSubList::Paste(const Property &from)
     setValues(link._lValueList, link._lSubList);
 }
 
-unsigned int PropertyLinkSubList::getMemSize (void) const
+unsigned int PropertyLinkSubList::getMemSize () const
 {
    unsigned int size = static_cast<unsigned int>(_lValueList.size() * sizeof(App::DocumentObject *));
    for(int i = 0;i<getSize(); i++)
@@ -3504,7 +3504,7 @@ void PropertyXLink::copyTo(PropertyXLink &other,
     other._Flags = _Flags;
 }
 
-Property *PropertyXLink::Copy(void) const
+Property *PropertyXLink::Copy() const
 {
     std::unique_ptr<PropertyXLink> p(new PropertyXLink);
     copyTo(*p);
@@ -3615,7 +3615,7 @@ PropertyXLink::getDocumentInList(App::Document *doc) {
     return ret;
 }
 
-PyObject *PropertyXLink::getPyObject(void)
+PyObject *PropertyXLink::getPyObject()
 {
     if(!_pcLink)
         Py_Return;
@@ -3777,7 +3777,7 @@ bool PropertyXLinkSub::upgrade(Base::XMLReader &reader, const char *typeName) {
     return PropertyXLink::upgrade(reader,typeName);
 }
 
-PyObject *PropertyXLinkSub::getPyObject(void)
+PyObject *PropertyXLinkSub::getPyObject()
 {
     if(!_pcLink)
         Py_Return;
@@ -3820,7 +3820,7 @@ void PropertyXLinkSubList::setSyncSubObject(bool enable)
     _Flags.set((std::size_t)LinkSyncSubObject, enable);
 }
 
-int PropertyXLinkSubList::getSize(void) const
+int PropertyXLinkSubList::getSize() const
 {
     return static_cast<int>(_Links.size());
 }
@@ -4033,7 +4033,7 @@ int PropertyXLinkSubList::removeValue(App::DocumentObject *lValue)
     return ret;
 }
 
-PyObject *PropertyXLinkSubList::getPyObject(void)
+PyObject *PropertyXLinkSubList::getPyObject()
 {
     Py::List list;
     for(auto &link : _Links) {
@@ -4255,7 +4255,7 @@ Property *PropertyXLinkSubList::CopyOnLinkReplace(const App::DocumentObject *par
     return p.release();
 }
 
-Property *PropertyXLinkSubList::Copy(void) const
+Property *PropertyXLinkSubList::Copy() const
 {
     PropertyXLinkSubList *p = new PropertyXLinkSubList();
     for(auto &l : _Links) {
@@ -4279,7 +4279,7 @@ void PropertyXLinkSubList::Paste(const Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyXLinkSubList::getMemSize (void) const
+unsigned int PropertyXLinkSubList::getMemSize () const
 {
     unsigned int size=0;
     for(auto &l : _Links)
@@ -4459,7 +4459,7 @@ void PropertyXLinkSubList::aboutToSetChildValue(Property &) {
     }
 }
 
-std::vector<App::DocumentObject*> PropertyXLinkSubList::getValues(void) const
+std::vector<App::DocumentObject*> PropertyXLinkSubList::getValues() const
 {
     std::vector<DocumentObject*> xLinks;
     getLinks(xLinks);
@@ -4483,7 +4483,7 @@ PropertyXLinkList::~PropertyXLinkList()
 {
 }
 
-PyObject *PropertyXLinkList::getPyObject(void)
+PyObject *PropertyXLinkList::getPyObject()
 {
     for(auto &link : _Links) {
         auto obj = link.getValue();

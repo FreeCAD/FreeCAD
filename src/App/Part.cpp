@@ -40,7 +40,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::GeoFeature)
 //===========================================================================
 
 
-Part::Part(void)
+Part::Part()
 {
     ADD_PROPERTY(Type,(""));
     ADD_PROPERTY_TYPE(Material, (nullptr), 0, App::Prop_None, "The Material for this Part");
@@ -60,7 +60,7 @@ Part::Part(void)
     GroupExtension::initExtension(this);
 }
 
-Part::~Part(void)
+Part::~Part()
 {
 }
 

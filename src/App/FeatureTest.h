@@ -104,12 +104,12 @@ public:
 
   /** @name methods override Feature */
   //@{
-  virtual short mustExecute(void) const;
+  virtual short mustExecute() const;
   /// recalculate the Feature
-  virtual DocumentObjectExecReturn *execute(void);
+  virtual DocumentObjectExecReturn *execute();
   /// returns the type name of the ViewProvider
   //Hint: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
-  virtual const char* getViewProviderName(void) const {
+  virtual const char* getViewProviderName() const {
     return "Gui::ViewProviderFeature";
   }
   //@}
@@ -127,9 +127,9 @@ public:
   App::PropertyInteger ExceptionType;
 
   /// recalculate the Feature and throw an exception
-  virtual DocumentObjectExecReturn *execute(void);
+  virtual DocumentObjectExecReturn *execute();
   /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName(void) const {
+  virtual const char* getViewProviderName() const {
     return "Gui::ViewProviderFeature";
   }
 };

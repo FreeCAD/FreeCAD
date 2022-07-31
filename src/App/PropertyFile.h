@@ -51,7 +51,7 @@ public:
     { return "Gui::PropertyEditor::PropertyFileItem"; }
 
     virtual void setFilter(const std::string filter);
-    virtual std::string getFilter(void) const;
+    virtual std::string getFilter() const;
 
 private:
     std::string m_filter;
@@ -114,7 +114,7 @@ public:
     std::string getExchangeTempFile() const;
     std::string getOriginalFileName() const;
 
-    bool isEmpty(void) const {return _cValue.empty();}
+    bool isEmpty() const {return _cValue.empty();}
 
 protected:
     // get the transient path if the property is in a DocumentObject

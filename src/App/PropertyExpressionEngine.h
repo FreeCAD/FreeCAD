@@ -107,7 +107,7 @@ public:
     PropertyExpressionEngine();
     ~PropertyExpressionEngine();
 
-    unsigned int getMemSize (void) const override;
+    unsigned int getMemSize () const override;
 
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
@@ -115,7 +115,7 @@ public:
 
     void setValue() { } // Dummy
 
-    Property *Copy(void) const override;
+    Property *Copy() const override;
 
     void Paste(const Property &from) override;
 
@@ -168,7 +168,7 @@ public:
     virtual void onContainerRestored() override;
 
     /* Python interface */
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
     void setPyObject(PyObject *) override;
 
 protected:

@@ -67,7 +67,7 @@ public:
     virtual void transformPlacement(const Base::Placement &transform);
     
     /// Constructor
-    GeoFeatureGroupExtension(void);
+    GeoFeatureGroupExtension();
     virtual ~GeoFeatureGroupExtension();
     
     virtual void extensionOnChanged(const Property* p) override;

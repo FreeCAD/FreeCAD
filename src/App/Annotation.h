@@ -38,14 +38,14 @@ class AppExport Annotation : public DocumentObject
 
 public:
     /// Constructor
-    Annotation(void);
+    Annotation();
     virtual ~Annotation();
 
     App::PropertyStringList LabelText;
     App::PropertyVector Position;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "Gui::ViewProviderAnnotation";
     }
 };
@@ -56,7 +56,7 @@ class AppExport AnnotationLabel : public DocumentObject
 
 public:
     /// Constructor
-    AnnotationLabel(void);
+    AnnotationLabel();
     virtual ~AnnotationLabel();
 
     App::PropertyStringList LabelText;
@@ -64,7 +64,7 @@ public:
     App::PropertyVector TextPosition;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "Gui::ViewProviderAnnotationLabel";
     }
 };

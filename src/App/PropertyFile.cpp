@@ -593,7 +593,7 @@ void PropertyFile::setFilter(const std::string f)
     m_filter = f;
 }
 
-std::string PropertyFile::getFilter(void) const
+std::string PropertyFile::getFilter() const
 {
     return m_filter;
 }

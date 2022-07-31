@@ -65,17 +65,17 @@ public:
     // the utf-8 name of the transaction
     std::string Name;
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
     virtual void Save (Base::Writer &writer) const;
     /// This method is used to restore properties from an XML document.
     virtual void Restore(Base::XMLReader &reader);
 
     /// Return the transaction ID
-    int getID(void) const;
+    int getID() const;
 
     /// Generate a new unique transaction ID
-    static int getNewID(void);
-    static int getLastID(void);
+    static int getNewID();
+    static int getLastID();
 
     /// Returns true if the transaction list is empty; otherwise returns false.
     bool isEmpty() const;
@@ -120,7 +120,7 @@ public:
     void setProperty(const Property* pcProp);
     void addOrRemoveProperty(const Property* pcProp, bool add);
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
     virtual void Save (Base::Writer &writer) const;
     /// This method is used to restore properties from an XML document.
     virtual void Restore(Base::XMLReader &reader);

@@ -57,15 +57,15 @@ public:
         return FeatureT::mustExecute();
     }
     /// recalculate the Feature
-    virtual DocumentObjectExecReturn *execute(void) {
+    virtual DocumentObjectExecReturn *execute() {
         return FeatureT::execute();
     }
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return FeatureT::getViewProviderName();
     }
 
-    PyObject *getPyObject(void) {
+    PyObject *getPyObject() {
         return FeatureT::getPyObject();
     }
     void setPyObject(PyObject *obj) {

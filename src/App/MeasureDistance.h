@@ -38,7 +38,7 @@ class AppExport MeasureDistance : public DocumentObject
 
 public:
     /// Constructor
-    MeasureDistance(void);
+    MeasureDistance();
     virtual ~MeasureDistance();
 
     App::PropertyVector P1;
@@ -46,10 +46,10 @@ public:
     App::PropertyDistance Distance;
 
     /// recalculate the object
-    virtual DocumentObjectExecReturn *execute(void);
+    virtual DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "Gui::ViewProviderMeasureDistance";
     }
 

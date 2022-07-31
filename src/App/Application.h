@@ -119,7 +119,7 @@ public:
             std::vector<std::string> *errs=nullptr,
             bool createView = true);
     /// Retrieve the active document
-    App::Document* getActiveDocument(void) const;
+    App::Document* getActiveDocument() const;
     /// Retrieve a named document
     App::Document* getDocument(const char *Name) const;
 
@@ -157,7 +157,7 @@ public:
     void setActiveDocument(App::Document* pDoc);
     void setActiveDocument(const char *Name);
     /// close all documents (without saving)
-    void closeAllDocuments(void);
+    void closeAllDocuments();
     /// Add pending document to open together with the current opening document
     int addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
     /// Indicate whether the application is opening (restoring) some document
@@ -311,9 +311,9 @@ public:
     /** @name methods for parameter handling */
     //@{
     /// returns the system parameter
-    ParameterManager &                                GetSystemParameter(void) ;
+    ParameterManager &                                GetSystemParameter() ;
     /// returns the user parameter
-    ParameterManager &                                GetUserParameter(void) ;
+    ParameterManager &                                GetUserParameter() ;
     /** Gets a parameter group by a full qualified path
      * It's an easy method to get a group:
      * \code
@@ -326,7 +326,7 @@ public:
     Base::Reference<ParameterGrp>                     GetParameterGroupByPath(const char* sName);
 
     ParameterManager *                                GetParameterSet(const char* sName) const;
-    const std::map<std::string,ParameterManager *> &  GetParameterSetList(void) const;
+    const std::map<std::string,ParameterManager *> &  GetParameterSetList() const;
     void AddParameterSet(const char* sName);
     void RemoveParameterSet(const char* sName);
     //@}
@@ -354,11 +354,11 @@ public:
     /// Return a list of filetypes that are supported by a module.
     std::vector<std::string> getImportTypes(const char* Module) const;
     /// Return a list of all filetypes.
-    std::vector<std::string> getImportTypes(void) const;
+    std::vector<std::string> getImportTypes() const;
     /// Return the import filters with modules of a given filetype.
     std::map<std::string, std::string> getImportFilters(const char* Type) const;
     /// Return a list of all import filters.
-    std::map<std::string, std::string> getImportFilters(void) const;
+    std::map<std::string, std::string> getImportFilters() const;
     //@}
     //@{
     /// Register an export filetype and a module name
@@ -372,27 +372,27 @@ public:
     /// Return a list of filetypes that are supported by a module.
     std::vector<std::string> getExportTypes(const char* Module) const;
     /// Return a list of all filetypes.
-    std::vector<std::string> getExportTypes(void) const;
+    std::vector<std::string> getExportTypes() const;
     /// Return the export filters with modules of a given filetype.
     std::map<std::string, std::string> getExportFilters(const char* Type) const;
     /// Return a list of all export filters.
-    std::map<std::string, std::string> getExportFilters(void) const;
+    std::map<std::string, std::string> getExportFilters() const;
     //@}
 
     /** @name Init, Destruct an Access methods */
     //@{
     static void init(int argc, char ** argv);
-    static void initTypes(void);
-    static void destruct(void);
-    static void destructObserver(void);
-    static void processCmdLineFiles(void);
+    static void initTypes();
+    static void destruct();
+    static void destructObserver();
+    static void processCmdLineFiles();
     static std::list<std::string> getCmdLineFiles();
     static std::list<std::string> processFiles(const std::list<std::string>&);
-    static void runApplication(void);
-    friend Application &GetApplication(void);
-    static std::map<std::string,std::string> &Config(void){return mConfig;}
-    static int GetARGC(void){return _argc;}
-    static char** GetARGV(void){return _argv;}
+    static void runApplication();
+    friend Application &GetApplication();
+    static std::map<std::string,std::string> &Config(){return mConfig;}
+    static int GetARGC(){return _argc;}
+    static char** GetARGV(){return _argv;}
     //@}
 
     /** @name Application directories */
@@ -562,8 +562,8 @@ private:
     /** @name  Private Init, Destruct an Access methods */
     //@{
     static void initConfig(int argc, char ** argv);
-    static void initApplication(void);
-    static void logStatus(void);
+    static void initApplication();
+    static void logStatus();
     // the one and only pointer to the application object
     static Application *_pcSingleton;
     /// checks if the environment is alright
@@ -574,11 +574,11 @@ private:
      */
     static std::string FindHomePath(const char* sCall);
     /// Print the help message
-    static void PrintInitHelp(void);
+    static void PrintInitHelp();
     /// figure out some things
     static void ExtractUserPath();
     /// load the user and system parameter set
-    static void LoadParameters(void);
+    static void LoadParameters();
     /// puts the given env variable in the config
     static void SaveEnv(const char *);
     /// startup configuration container
@@ -629,7 +629,7 @@ private:
 };
 
 /// Singleton getter of the Application
-inline App::Application &GetApplication(void){
+inline App::Application &GetApplication(){
     return *App::Application::_pcSingleton;
 }
 
