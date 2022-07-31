@@ -315,10 +315,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 {
     d_ptr->locale = locale();
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
-    QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
-                     this, SLOT(userInput(QString)));
-    QObject::connect(this, SIGNAL(editingFinished()),
-                     this, SLOT(handlePendingEmit()));
+    connect(lineEdit(), &QLineEdit::textChanged,
+            this, &QuantitySpinBox::userInput);
+    connect(this, &QuantitySpinBox::editingFinished,
+            this, [&]{
+        this->handlePendingEmit(true);
+    });
 
     // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
 #ifndef Q_OS_MAC
@@ -441,8 +443,8 @@ bool QuantitySpinBox::apply(const std::string & propName)
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), dValue);
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void QuantitySpinBox::resizeEvent(QResizeEvent * event)
