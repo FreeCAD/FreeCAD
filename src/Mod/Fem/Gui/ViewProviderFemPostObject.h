@@ -123,6 +123,7 @@ protected:
     bool setupPipeline();
     void updateVtk();
     void setRangeOfColorBar(double min, double max);
+    void updateMaterial();
 
     SoCoordinate3*              m_coordinates;
     SoIndexedPointSet*          m_markers;

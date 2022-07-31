@@ -28,9 +28,25 @@
 #include <Mod/Fem/FemGlobal.h>
 #include <QCoreApplication>
 
+class SoAnnotation;
 
 namespace FemGui
 {
+
+class ViewProviderFemAnalysis;
+class ViewProviderFemHighlighter
+{
+public:
+    /// Constructor
+    ViewProviderFemHighlighter();
+     ~ViewProviderFemHighlighter();
+
+    void attach(ViewProviderFemAnalysis*);
+    void highlightView(Gui::ViewProviderDocumentObject*);
+
+private:
+    SoAnnotation* annotate;
+};
 
 class FemGuiExport ViewProviderFemAnalysis : public Gui::ViewProviderDocumentObjectGroup
 {
@@ -44,6 +60,7 @@ public:
     /// destructor.
     virtual ~ViewProviderFemAnalysis();
 
+    virtual void attach(App::DocumentObject*);
     virtual bool doubleClicked(void);
 
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
@@ -67,6 +84,8 @@ public:
     /// Show the object in the view
     virtual void show(void);
 
+    void highlightView(Gui::ViewProviderDocumentObject*);
+
     /** @name Drag and drop */
     //@{
     /// Returns true if the view provider generally supports dragging objects
@@ -87,6 +106,8 @@ protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
 
+private:
+    ViewProviderFemHighlighter extension;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemAnalysis> ViewProviderFemAnalysisPython;

@@ -22,9 +22,17 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+# include <Inventor/nodes/SoShapeHints.h>
+#endif
+
+#include <App/GroupExtension.h>
 #include <Gui/Application.h>
+#include <Gui/Selection.h>
+#include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
+#include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostPipeline.h"
 #include "ViewProviderFemPostFunction.h"
 
@@ -36,6 +44,10 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostPipeline, FemGui::ViewProviderFemPost
 ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
 {
     sPixmap = "FEM_PostPipelineFromResult";
+
+    // Fixes rendering issue with the annotation node
+    m_shapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
+    m_shapeHints->shapeType = SoShapeHints::SOLID;
 }
 
 ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline()
@@ -86,5 +98,33 @@ void ViewProviderFemPostPipeline::updateFunctionSize() {
         vp->SizeX.setValue(box.GetLength(0) * 1.2);
         vp->SizeY.setValue(box.GetLength(1) * 1.2);
         vp->SizeZ.setValue(box.GetLength(2) * 1.2);
+    }
+}
+
+void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges &sel)
+{
+    auto getAnalyzeView = [](App::DocumentObject* obj) {
+        ViewProviderFemAnalysis* analyzeView = nullptr;
+        App::DocumentObject* grp = App::GroupExtension::getGroupOfObject(obj);
+        if (Fem::FemAnalysis* analyze = Base::freecad_dynamic_cast<Fem::FemAnalysis>(grp)) {
+            analyzeView = Base::freecad_dynamic_cast<ViewProviderFemAnalysis>
+                                                   (Gui::Application::Instance->getViewProvider(analyze));
+        }
+        return analyzeView;
+    };
+
+    // If a FemPostObject is selected in the document tree we must refresh its
+    // color bar.
+    // But don't do this if the object is invisible because other objects with a
+    // color bar might be visible and the color bar is then wrong.
+    if (sel.Type == Gui::SelectionChanges::AddSelection) {
+        if (this->getObject()->Visibility.getValue())
+            updateMaterial();
+
+        // Access analysis object
+        ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
+        if (analyzeView) {
+            analyzeView->highlightView(this);
+        }
     }
 }
