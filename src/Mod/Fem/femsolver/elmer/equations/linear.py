@@ -105,7 +105,11 @@ class Proxy(equation.Proxy):
             "Linear System",
             ""
         )
-        obj.LinearTolerance = 1e-8
+        # we must set an expression because we don't have a UI, the user has to
+        # view and edit the tolerance via the property editor and this does not
+        # yet allow to view and edit small numbers in scientific notation
+        # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
+        obj.setExpression('LinearTolerance', "1e-8")
         obj.addProperty(
             "App::PropertyInteger",
             "LinearIterations",
@@ -119,7 +123,8 @@ class Proxy(equation.Proxy):
             "Steady State",
             ""
         )
-        obj.SteadyStateTolerance = 1e-5
+        # same as with LinearTolerance
+        obj.setExpression('SteadyStateTolerance', "1e-5")
         obj.addProperty(
             "App::PropertyBool",
             "Stabilize",
