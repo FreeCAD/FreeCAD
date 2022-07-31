@@ -30,8 +30,6 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM FemSelectWidget
 
-import sys
-
 from PySide import QtGui
 from PySide import QtCore
 

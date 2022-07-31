@@ -106,6 +106,7 @@ def get_binary(name):
         )
         return None
 
+
 def get_cores(name):
     """ Read number of CPU cores for solver *name* honoring user settings.
 

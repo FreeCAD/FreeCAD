@@ -25,7 +25,6 @@ __title__ = "Common FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
-import sys
 import unittest
 
 import FreeCAD

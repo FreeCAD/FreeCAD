@@ -137,7 +137,7 @@ class _TaskPanel:
 
         # hide some groupBox according to material category
         # note: input_fd_vol_expansion_coefficient is currently not used
-        #       it might be used in future for solids 
+        #       it might be used in future for solids
         self.parameterWidget.label_category.setText(self.obj.Category)
         if self.obj.Category == "Fluid":
             self.parameterWidget.groupBox_mechanical.setVisible(0)

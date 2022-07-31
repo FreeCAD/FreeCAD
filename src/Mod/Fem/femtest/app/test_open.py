@@ -25,7 +25,6 @@ __title__ = "Open files FEM App unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
-import sys
 import tempfile
 import unittest
 from os.path import join

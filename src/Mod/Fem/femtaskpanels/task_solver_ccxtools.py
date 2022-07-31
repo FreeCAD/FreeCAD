@@ -41,6 +41,7 @@ import FreeCADGui
 
 import FemGui
 
+
 def unicode(text, *args):
     return str(text)
 

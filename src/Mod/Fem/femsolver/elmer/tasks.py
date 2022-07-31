@@ -194,9 +194,11 @@ class Solve(run.Solve):
         FrequencyList = []
         for line in OutputList:
             LineList = line.split(" ")
-            if (len(LineList) > 1) \
-             and (LineList[0] == "EigenSolve:") \
-             and (LineList[1] == "Computed"):
+            if (
+                len(LineList) > 1
+                and LineList[0] == "EigenSolve:"
+                and LineList[1] == "Computed"
+            ):
                 # we found a result and take now the next LineList[2] lines
                 modeCount = int(LineList[2])
                 modeNumber = modeCount
@@ -217,8 +219,9 @@ class Solve(run.Solve):
                 # now we can perform the calculation
                 eigenFreq = cmath.sqrt(eigenFreq) / (2 * cmath.pi)
                 # create an output line
-                FrequencyList.append("Mode " + str(modeNumber - modeCount + 1) \
-                    + ": " + str(eigenFreq.real) + " Hz")
+                FrequencyList.append(
+                    "Mode {}: {} Hz".format(modeNumber - modeCount + 1, eigenFreq.real)
+                )
                 modeCount = modeCount - 1
         if modeNumber > 0:
             # push the results and append to output
@@ -236,6 +239,7 @@ class Solve(run.Solve):
             return True
         except ValueError:
             return False
+
 
 class Results(run.Results):
 
