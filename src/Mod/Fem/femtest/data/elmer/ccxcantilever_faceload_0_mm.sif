@@ -7,7 +7,7 @@ End
 Solver 1
   Bubbles = Logical False
   Calculate Pangle = Logical False
-  Calculate Principal = Logical False
+  Calculate Principal = Logical True
   Calculate Strains = Logical False
   Calculate Stresses = Logical False
   Displace mesh = Logical False
