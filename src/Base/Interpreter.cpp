@@ -93,9 +93,7 @@ PyException::PyException()
     PyErr_Clear(); // must be called to keep Python interpreter in a valid state (Werner)
 }
 
-PyException::~PyException() throw()
-{
-}
+PyException::~PyException() throw() = default;
 
 void PyException::ThrowException()
 {
@@ -203,12 +201,8 @@ public:
         add_varargs_method("flush",&PythonStdOutput::flush,"flush()");
     }
 
-    PythonStdOutput()
-    {
-    }
-    ~PythonStdOutput()
-    {
-    }
+    PythonStdOutput() = default;
+    ~PythonStdOutput() override = default;
 
     Py::Object write(const Py::Tuple&)
     {
@@ -227,10 +221,7 @@ InterpreterSingleton::InterpreterSingleton()
     this->_global = nullptr;
 }
 
-InterpreterSingleton::~InterpreterSingleton()
-{
-
-}
+InterpreterSingleton::~InterpreterSingleton() = default;
 
 
 std::string InterpreterSingleton::runString(const char *sCmd)

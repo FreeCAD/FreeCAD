@@ -55,9 +55,7 @@ public:
         : QEvent(QEvent::User), msgtype(type), msg(msg)
     {
     }
-    ~ConsoleEvent()
-    {
-    }
+    ~ConsoleEvent() override = default;
 };
 
 class ConsoleOutput : public QObject // clazy:exclude=missing-qobject-macro
@@ -73,7 +71,7 @@ public:
         instance = nullptr;
     }
 
-    void customEvent(QEvent* ev) {
+    void customEvent(QEvent* ev) override {
         if (ev->type() == QEvent::User) {
             ConsoleEvent* ce = static_cast<ConsoleEvent*>(ev);
             switch (ce->msgtype) {
@@ -94,12 +92,8 @@ public:
     }
 
 private:
-    ConsoleOutput()
-    {
-    }
-    ~ConsoleOutput()
-    {
-    }
+    ConsoleOutput() = default;
+    ~ConsoleOutput() override = default;
 
     static ConsoleOutput* instance;
 };
@@ -619,5 +613,4 @@ PyObject *ConsoleSingleton::sPyGetObservers(PyObject * /*self*/, PyObject *args)
     PY_CATCH
 }
 
-Base::ILogger::~ILogger()
-{}
+Base::ILogger::~ILogger() = default;

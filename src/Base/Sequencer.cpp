@@ -310,13 +310,9 @@ PyObject *ProgressIndicatorPy::PyMake(struct _typeobject *, PyObject *, PyObject
     return new ProgressIndicatorPy();
 }
 
-ProgressIndicatorPy::ProgressIndicatorPy()
-{
-}
+ProgressIndicatorPy::ProgressIndicatorPy() = default;
 
-ProgressIndicatorPy::~ProgressIndicatorPy()
-{
-}
+ProgressIndicatorPy::~ProgressIndicatorPy() = default;
 
 Py::Object ProgressIndicatorPy::repr()
 {

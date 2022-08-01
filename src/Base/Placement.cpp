@@ -29,10 +29,7 @@
 
 using namespace Base;
 
-Placement::Placement()
-{
-
-}
+Placement::Placement() = default;
 
 Placement::Placement(const Base::Matrix4D& matrix)
 {

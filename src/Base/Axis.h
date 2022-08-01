@@ -40,7 +40,7 @@ public:
     Axis(const Axis&);
     Axis(const Vector3d& Orig, const Vector3d& Dir);
     /// Destruction
-    ~Axis () {}
+    ~Axis () = default;
 
     const Vector3d& getBase() const {return _base;}
     const Vector3d& getDirection() const {return _dir;}

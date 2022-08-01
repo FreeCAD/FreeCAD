@@ -91,9 +91,7 @@ ConsoleObserverStd::ConsoleObserverStd() :
     bLog = false;
 }
 
-ConsoleObserverStd::~ConsoleObserverStd()
-{
-}
+ConsoleObserverStd::~ConsoleObserverStd() = default;
 
 void ConsoleObserverStd::SendLog(const std::string& msg, LogStyle level)
 {

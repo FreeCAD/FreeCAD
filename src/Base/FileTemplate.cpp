@@ -48,9 +48,7 @@ ClassTemplate::ClassTemplate()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-ClassTemplate::~ClassTemplate()
-{
-}
+ClassTemplate::~ClassTemplate() = default;
 
 
 //**************************************************************************

@@ -78,9 +78,7 @@ Type::Type(const Type& type)
  * A destructor.
  * A more elaborate description of the destructor.
  */
-Type::~Type()
-{
-}
+Type::~Type() = default;
 
 void *Type::createInstance()
 {

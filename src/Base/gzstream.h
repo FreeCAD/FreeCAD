@@ -71,11 +71,11 @@ public:
     int is_open() { return opened; }
     gzstreambuf* open( const char* name, int open_mode, int comp);
     gzstreambuf* close();
-    ~gzstreambuf() { close(); }
+    ~gzstreambuf() override { close(); }
     
-    virtual int     overflow( int c = EOF);
-    virtual int     underflow();
-    virtual int     sync();
+    int     overflow( int c = EOF) override;
+    int     underflow() override;
+    int     sync() override;
 };
 
 class BaseExport gzstreambase : virtual public std::ios {
@@ -84,7 +84,7 @@ protected:
 public:
     gzstreambase() { init(&buf); }
     gzstreambase( const char* name, int open_mode, int comp);
-    ~gzstreambase();
+    ~gzstreambase() override;
     void open( const char* name, int open_mode, int comp);
     void close();
     gzstreambuf* rdbuf() { return &buf; }

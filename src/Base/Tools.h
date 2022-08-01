@@ -236,8 +236,7 @@ class ConnectionBlocker {
 public:
     ConnectionBlocker(Connection& c) : blocker(c) {
     }
-    ~ConnectionBlocker() {
-    }
+    ~ConnectionBlocker() = default;
 };
 
 // ----------------------------------------------------------------------------

@@ -35,9 +35,7 @@ CoordinateSystem::CoordinateSystem()
 {
 }
 
-CoordinateSystem::~CoordinateSystem()
-{
-}
+CoordinateSystem::~CoordinateSystem() = default;
 
 void CoordinateSystem::setAxes(const Axis& v, const Vector3d& xd)
 {

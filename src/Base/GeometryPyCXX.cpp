@@ -133,9 +133,7 @@ Vector2dPy::Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict 
     v.y = y;
 }
 
-Vector2dPy::~Vector2dPy()
-{
-}
+Vector2dPy::~Vector2dPy() = default;
 
 Py::Object Vector2dPy::repr()
 {

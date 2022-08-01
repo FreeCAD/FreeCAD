@@ -152,11 +152,11 @@ class BaseExport ZipWriter : public Writer
 public:
     ZipWriter(const char* FileName);
     ZipWriter(std::ostream&);
-    virtual ~ZipWriter();
+    ~ZipWriter() override;
 
-    virtual void writeFiles();
+    void writeFiles() override;
 
-    virtual std::ostream &Stream(){return ZipStream;}
+    std::ostream &Stream() override{return ZipStream;}
 
     void setComment(const char* str){ZipStream.setComment(str);}
     void setLevel(int level){ZipStream.setLevel( level );}
@@ -176,9 +176,9 @@ class BaseExport StringWriter : public Writer
 {
 
 public:
-    virtual std::ostream &Stream(){return StrStream;}
+    std::ostream &Stream() override{return StrStream;}
     std::string getString() const {return StrStream.str();}
-    virtual void writeFiles(){}
+    void writeFiles() override{}
 
 private:
     std::stringstream StrStream;
@@ -193,12 +193,12 @@ class BaseExport FileWriter : public Writer
 {
 public:
     FileWriter(const char* DirName);
-    virtual ~FileWriter();
+    ~FileWriter() override;
 
     void putNextEntry(const char* file);
-    virtual void writeFiles();
+    void writeFiles() override;
 
-    virtual std::ostream &Stream(){return FileStream;}
+    std::ostream &Stream() override{return FileStream;}
     void close() {FileStream.close();}
     /*!
      This method can be re-implemented in sub-classes to avoid

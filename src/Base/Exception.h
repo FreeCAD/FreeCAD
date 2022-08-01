@@ -92,7 +92,7 @@ class BaseExport Exception : public BaseClass
   TYPESYSTEM_HEADER();
 public:
 
-  virtual ~Exception() throw() {}
+  ~Exception() throw() override = default;
 
   Exception &operator=(const Exception &inst);
 
@@ -121,9 +121,9 @@ public:
   inline void setReported(bool reported) { _isReported = reported; }
 
   /// returns a Python dictionary containing the exception data
-  virtual PyObject * getPyObject();
+  PyObject * getPyObject() override;
   /// returns sets the exception data from a Python dictionary
-  virtual void setPyObject( PyObject * pydict);
+  void setPyObject( PyObject * pydict) override;
 
   /// returns the corresponding python exception type
   virtual PyObject * getPyExceptionType() const;
@@ -165,7 +165,7 @@ public:
   AbortException();
 
   /// Destruction
-  virtual ~AbortException() throw() {}
+  ~AbortException() throw() override = default;
   /// Description of the exception
   const char* what() const throw() override;
   /// returns the corresponding python exception type
@@ -185,7 +185,7 @@ public:
   XMLBaseException(const std::string& sMessage);
 
   /// Destruction
-  virtual ~XMLBaseException() throw() {}
+  ~XMLBaseException() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -204,7 +204,7 @@ public:
   XMLParseException();
 
   /// Destruction
-  virtual ~XMLParseException() throw() {}
+  ~XMLParseException() throw() override = default;
   /// Description of the exception
   const char* what() const throw() override;
   PyObject * getPyExceptionType() const override;
@@ -225,7 +225,7 @@ public:
   XMLAttributeError();
 
   /// Destruction
-  virtual ~XMLAttributeError() throw() {}
+  ~XMLAttributeError() throw() override = default;
   /// Description of the exception
   const char* what() const throw() override;
   PyObject * getPyExceptionType() const override;
@@ -247,7 +247,7 @@ public:
   /// Construction
   FileException(const FileException &inst);
   /// Destruction
-  virtual ~FileException() throw() {}
+  ~FileException() throw() override = default;
   /// Assignment operator
   FileException &operator=(const FileException &inst);
   /// Description of the exception
@@ -283,7 +283,7 @@ public:
   FileSystemError(const char * sMessage);
   FileSystemError(const std::string& sMessage);
   /// Destruction
-  virtual ~FileSystemError() throw() {}
+  ~FileSystemError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -299,7 +299,7 @@ public:
   BadFormatError(const char * sMessage);
   BadFormatError(const std::string& sMessage);
   /// Destruction
-  virtual ~BadFormatError() throw() {}
+  ~BadFormatError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -320,7 +320,7 @@ public:
   /// Construction
   MemoryException(const MemoryException &inst);
   /// Destruction
-  virtual ~MemoryException() throw() {}
+  ~MemoryException() throw() override = default;
   /// Assignment operator
   MemoryException &operator=(const MemoryException &inst);
 #if defined (__GNUC__)
@@ -342,7 +342,7 @@ public:
   AccessViolation(const char * sMessage);
   AccessViolation(const std::string& sMessage);
   /// Destruction
-  virtual ~AccessViolation() throw() {}
+  ~AccessViolation() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -359,7 +359,7 @@ public:
   AbnormalProgramTermination(const char * sMessage);
   AbnormalProgramTermination(const std::string& sMessage);
   /// Destruction
-  virtual ~AbnormalProgramTermination() throw() {}
+  ~AbnormalProgramTermination() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -375,7 +375,7 @@ public:
   UnknownProgramOption(const char * sMessage);
   UnknownProgramOption(const std::string& sMessage);
   /// Destruction
-  virtual ~UnknownProgramOption() throw() {}
+  ~UnknownProgramOption() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -392,7 +392,7 @@ public:
   ProgramInformation(const std::string& sMessage);
 
   /// Destruction
-  virtual ~ProgramInformation() throw() {}
+  ~ProgramInformation() throw() override = default;
 };
 
 /**
@@ -407,7 +407,7 @@ public:
   TypeError(const char * sMessage);
   TypeError(const std::string& sMessage);
   /// Destruction
-  virtual ~TypeError() throw() {}
+  ~TypeError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -423,7 +423,7 @@ public:
   ValueError(const char * sMessage);
   ValueError(const std::string& sMessage);
   /// Destruction
-  virtual ~ValueError() throw() {}
+  ~ValueError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -439,7 +439,7 @@ public:
   IndexError(const char * sMessage);
   IndexError(const std::string& sMessage);
   /// Destruction
-  virtual ~IndexError() throw() {}
+  ~IndexError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -451,7 +451,7 @@ public:
   NameError(const char * sMessage);
   NameError(const std::string& sMessage);
   /// Destruction
-  virtual ~NameError() throw() {}
+  ~NameError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -463,7 +463,7 @@ public:
   ImportError(const char * sMessage);
   ImportError(const std::string& sMessage);
   /// Destruction
-  virtual ~ImportError() throw() {}
+  ~ImportError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -479,7 +479,7 @@ public:
   AttributeError(const char * sMessage);
   AttributeError(const std::string& sMessage);
   /// Destruction
-  virtual ~AttributeError() throw() {}
+  ~AttributeError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -495,7 +495,7 @@ public:
   RuntimeError(const char * sMessage);
   RuntimeError(const std::string& sMessage);
   /// Destruction
-  virtual ~RuntimeError() throw() {}
+  ~RuntimeError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -511,8 +511,8 @@ public:
   BadGraphError(const char * sMessage);
   BadGraphError(const std::string& sMessage);
   /// Destruction
-  virtual ~BadGraphError() throw() {}
-  PyObject * getPyExceptionType() const;
+  ~BadGraphError() throw() override = default;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -527,7 +527,7 @@ public:
   NotImplementedError(const char * sMessage);
   NotImplementedError(const std::string& sMessage);
   /// Destruction
-  virtual ~NotImplementedError() throw() {}
+  ~NotImplementedError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -543,7 +543,7 @@ public:
   ZeroDivisionError(const char * sMessage);
   ZeroDivisionError(const std::string& sMessage);
   /// Destruction
-  virtual ~ZeroDivisionError() throw() {}
+  ~ZeroDivisionError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -559,7 +559,7 @@ public:
   ReferenceError(const char * sMessage);
   ReferenceError(const std::string& sMessage);
   /// Destruction
-  virtual ~ReferenceError() throw() {}
+  ~ReferenceError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -576,7 +576,7 @@ public:
   ExpressionError(const char * sMessage);
   ExpressionError(const std::string& sMessage);
   /// Destruction
-  virtual ~ExpressionError() throw() {}
+  ~ExpressionError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -592,7 +592,7 @@ public:
   ParserError(const char * sMessage);
   ParserError(const std::string& sMessage);
   /// Destruction
-  virtual ~ParserError() throw() {}
+  ~ParserError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -608,7 +608,7 @@ public:
   UnicodeError(const char * sMessage);
   UnicodeError(const std::string& sMessage);
   /// Destruction
-  virtual ~UnicodeError() throw() {}
+  ~UnicodeError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -624,7 +624,7 @@ public:
   OverflowError(const char * sMessage);
   OverflowError(const std::string& sMessage);
   /// Destruction
-  virtual ~OverflowError() throw() {}
+  ~OverflowError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -640,7 +640,7 @@ public:
   UnderflowError(const char * sMessage);
   UnderflowError(const std::string& sMessage);
   /// Destruction
-  virtual ~UnderflowError() throw() {}
+  ~UnderflowError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -656,7 +656,7 @@ public:
   UnitsMismatchError(const char * sMessage);
   UnitsMismatchError(const std::string& sMessage);
   /// Destruction
-  virtual ~UnitsMismatchError() throw() {}
+  ~UnitsMismatchError() throw() override = default;
   PyObject * getPyExceptionType() const override;
 };
 
@@ -673,8 +673,8 @@ public:
     CADKernelError(const char * sMessage);
     CADKernelError(const std::string& sMessage);
     /// Destruction
-    virtual ~CADKernelError() throw() {}
-    PyObject * getPyExceptionType() const;
+    ~CADKernelError() throw() override = default;
+    PyObject * getPyExceptionType() const override;
 };
 
 /* The RestoreError can be used to try to do a best recovery effort when an error during restoring
@@ -692,7 +692,7 @@ public:
     RestoreError(const char * sMessage);
     RestoreError(const std::string& sMessage);
     /// Destruction
-    virtual ~RestoreError() throw() {}
+    ~RestoreError() throw() override = default;
     PyObject * getPyExceptionType() const override;
 };
 

@@ -116,7 +116,7 @@ public:
     explicit Quantity(double value, const Unit& unit=Unit());
     explicit Quantity(double value, const QString& unit);
     /// Destruction
-    ~Quantity () {}
+    ~Quantity () = default;
 
     /** Operators. */
     //@{
