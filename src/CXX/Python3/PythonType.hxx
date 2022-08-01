@@ -43,7 +43,7 @@ namespace Py
     class PYCXX_EXPORT PythonType
     {
     public:
-        // if you define one sequence method you must define 
+        // if you define one sequence method you must define
         // all of them except the assigns
 
         PythonType( size_t base_size, int itemsize, const char *default_name );

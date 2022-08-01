@@ -36,9 +36,9 @@
 //-----------------------------------------------------------------------------
 
 #ifndef __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
-#define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+# define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
 
-#include "CXX/WrapPython.h"
+# include "CXX/WrapPython.h"
 #include "CXX/Config.hxx"
 
 namespace Py
@@ -110,6 +110,9 @@ PYCXX_EXPORT bool _Instance_Check( PyObject *op );
 PYCXX_EXPORT PyTypeObject * _Method_Type();
 PYCXX_EXPORT bool _Method_Check( PyObject *op );
 
+PYCXX_EXPORT PyTypeObject * _Function_Type();
+PYCXX_EXPORT bool _Function_Check( PyObject *op );
+
 PYCXX_EXPORT PyTypeObject * _Complex_Type();
 PYCXX_EXPORT bool _Complex_Check( PyObject *op );
 
@@ -124,9 +127,6 @@ PYCXX_EXPORT bool _Float_Check( PyObject *op );
 
 PYCXX_EXPORT PyTypeObject * _Frame_Type();
 PYCXX_EXPORT bool _Frame_Check( PyObject *op );
-
-PYCXX_EXPORT PyTypeObject * _Function_Type();
-PYCXX_EXPORT bool _Function_Check( PyObject *op );
 
 PYCXX_EXPORT PyTypeObject * _Bool_Type();
 PYCXX_EXPORT bool _Boolean_Check( PyObject *op );
@@ -175,10 +175,10 @@ PYCXX_EXPORT int &_Py_TabcheckFlag();
 PYCXX_EXPORT int &_Py_VerboseFlag();
 PYCXX_EXPORT int &_Py_UnicodeFlag();
 
+PYCXX_EXPORT const char *__Py_PackageContext();
+
 PYCXX_EXPORT void _XINCREF( PyObject *op );
 PYCXX_EXPORT void _XDECREF( PyObject *op );
-
-PYCXX_EXPORT const char *__Py_PackageContext();
 }
 
 #endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__

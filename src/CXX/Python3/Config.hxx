@@ -53,7 +53,7 @@
 #endif
 
 //
-//	Assume all other compilers do
+// Assume all other compilers do
 //
 #else
 
@@ -68,7 +68,7 @@
 #endif
 
 //
-//	Which C++ standard is in use?
+// Which C++ standard is in use?
 //
 #if defined( _MSC_VER )
 

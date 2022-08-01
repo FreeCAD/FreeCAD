@@ -47,14 +47,14 @@ namespace Py
     // There are two ways that extension objects can get destroyed.
     // 1. Their reference count goes to zero
     // 2. Someone does an explicit delete on a pointer.
-    // In(1) the problem is to get the destructor called 
+    // In(1) the problem is to get the destructor called
     //      We register a special deallocator in the Python type object
     //      (see behaviors()) to do this.
     // In(2) there is no problem, the dtor gets called.
 
-    // PythonExtension does not use the usual Python heap allocator, 
+    // PythonExtension does not use the usual Python heap allocator,
     // instead using new/delete. We do the setting of the type object
-    // and reference count, usually done by PyObject_New, in the 
+    // and reference count, usually done by PyObject_New, in the
     // base class ctor.
 
     // This special deallocator does a delete on the pointer.
@@ -66,7 +66,7 @@ namespace Py
         virtual ~PythonExtensionBase();
 
     public:
-        // object 
+        // object
         virtual void reinit( Tuple &args, Dict &kwds );
 
         // object basics
@@ -98,6 +98,7 @@ namespace Py
         // Mapping
         virtual int mapping_length();
         virtual Object mapping_subscript( const Object & );
+
         virtual int mapping_ass_subscript( const Object &, const Object & );
 
         // Number

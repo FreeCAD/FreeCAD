@@ -240,7 +240,7 @@ namespace Py
         //
 
         // Can pyob be used in this object's constructor?
-        virtual bool accepts( PyObject * /* pyob */ ) const
+        virtual bool accepts( PyObject * ) const
         {
             // allow any object or NULL
             return true;
@@ -290,16 +290,6 @@ namespace Py
         {
             return PyObject_IsTrue( ptr() ) != 0;
         }
-
-        //operator bool() const
-        //{
-        //    return as_bool();
-        //}
-
-        // int print( FILE *fp, int flags=Py_Print_RAW )
-        //{
-        //    return PyObject_Print( p, fp, flags );
-        //}
 
         bool is( PyObject *pother ) const
         {  // identity test
@@ -703,11 +693,6 @@ namespace Py
         }
 #endif
 
-        //operator bool() const
-        //{
-        //    return as_bool();
-        //}
-
         // convert to long
         long as_long() const
         {
@@ -730,6 +715,7 @@ namespace Py
             return PyLong_AsUnsignedLong( ptr() );
         }
 
+        // convert to unsigned
         operator unsigned long() const
         {
             return as_unsigned_long();
@@ -1068,6 +1054,7 @@ namespace Py
             return PyComplex_ImagAsDouble( ptr() );
         }
     };
+
     // Sequences
     // Sequences are here represented as sequences of items of type T.
     // The base class SeqBase<T> represents that.
@@ -1768,7 +1755,7 @@ namespace Py
     template <TEMPLATE_TYPENAME T> bool operator< ( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right );
     template <TEMPLATE_TYPENAME T> bool operator> ( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right );
     template <TEMPLATE_TYPENAME T> bool operator<=( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right );
-    template <TEMPLATE_TYPENAME T> bool operator>=( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right ); 
+    template <TEMPLATE_TYPENAME T> bool operator>=( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right );
 
 
     PYCXX_EXPORT extern bool operator==( const Sequence::iterator &left, const Sequence::iterator &right );
@@ -1783,7 +1770,7 @@ namespace Py
     PYCXX_EXPORT extern bool operator< ( const Sequence::const_iterator &left, const Sequence::const_iterator &right );
     PYCXX_EXPORT extern bool operator> ( const Sequence::const_iterator &left, const Sequence::const_iterator &right );
     PYCXX_EXPORT extern bool operator<=( const Sequence::const_iterator &left, const Sequence::const_iterator &right );
-    PYCXX_EXPORT extern bool operator>=( const Sequence::const_iterator &left, const Sequence::const_iterator &right ); 
+    PYCXX_EXPORT extern bool operator>=( const Sequence::const_iterator &left, const Sequence::const_iterator &right );
 
     // ==================================================
     // class Char
@@ -1959,7 +1946,9 @@ namespace Py
         // Membership
         virtual bool accepts( PyObject *pyob ) const
         {
-            return pyob != 0 &&( Py::_Unicode_Check( pyob ) ) && PySequence_Length( pyob ) == 1;
+            return (pyob != 0 &&
+                    Py::_Unicode_Check( pyob ) &&
+                    PySequence_Length( pyob ) == 1);
         }
 
         explicit Char( PyObject *pyob, bool owned = false )
@@ -2082,7 +2071,7 @@ namespace Py
 
            Many of these APIs take two arguments encoding and errors. These
            parameters encoding and errors have the same semantics as the ones
-           of the builtin unicode() API. 
+           of the builtin unicode() API.
 
            Setting encoding to NULL causes the default encoding to be used.
 
@@ -2783,7 +2772,7 @@ namespace Py
 
         T getItem( const std::string &s ) const
         {
-            return T( asObject( PyMapping_GetItemString( ptr(),const_cast<char*>( s.c_str() ) ) ) );
+            return T( asObject( PyMapping_GetItemString( ptr(), const_cast<char*>( s.c_str() ) ) ) );
         }
 
         T getItem( const Object &s ) const
@@ -2860,9 +2849,9 @@ namespace Py
 
             friend class MapBase<T>;
             //
-            MapBase<T>      *map;
-            List            keys;       // for iterating over the map
-            size_type       pos;        // index into the keys
+            MapBase<T>          *map;
+            List                keys;       // for iterating over the map
+            size_type           pos;        // index into the keys
 
         public:
             ~iterator()
@@ -2945,7 +2934,7 @@ namespace Py
 
             // postfix --
             iterator operator--( int )
-            { 
+            {
                 return iterator( map, keys, pos-- );
             }
 

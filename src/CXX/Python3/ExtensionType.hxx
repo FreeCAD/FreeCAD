@@ -111,7 +111,6 @@ namespace Py
         PythonExtensionBase *m_pycxx_object;
     };
 
-
     class PYCXX_EXPORT ExtensionClassMethodsTable
     {
     public:
@@ -194,7 +193,7 @@ namespace Py
         }
 
         virtual ~PythonClass()
-        {} 
+        {}
 
         static ExtensionClassMethodsTable &methodTable()
         {
@@ -212,7 +211,7 @@ namespace Py
         static PythonType &behaviors()
         {
             static PythonType *p;
-            if( p == NULL ) 
+            if( p == NULL )
             {
 #if defined( _CPPRTTI ) || defined( __GNUG__ )
                 const char *default_name = (typeid( T )).name();

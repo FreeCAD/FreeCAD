@@ -525,7 +525,7 @@ PythonType &PythonType::supportClass()
     return *this;
 }
 
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 )
 PythonType &PythonType::supportPrint()
 {
 #if PY_VERSION_HEX < 0x03080000
@@ -622,7 +622,7 @@ PythonExtensionBase *getPythonExtensionBase( PyObject *self )
     }
 }
 
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined ( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
 {
     try
@@ -1245,7 +1245,7 @@ int PythonExtensionBase::genericSetAttro( const Py::String &name, const Py::Obje
     return PyObject_GenericSetAttr( selfPtr(), name.ptr(), value.ptr() );
 }
 
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 )
 int PythonExtensionBase::print( FILE *, int )
 {
     missing_method( print );
@@ -1321,15 +1321,15 @@ Py::Object PythonExtensionBase::iter()
 PyObject *PythonExtensionBase::iternext()
 {
     missing_method( iternext );
-    return NULL; }
-
-
+    return NULL;
+}
 
 // Sequence methods
 int PythonExtensionBase::sequence_length()
 {
     missing_method( sequence_length );
-    return -1; }
+    return -1;
+}
 
 
 Py::Object PythonExtensionBase::sequence_concat( const Py::Object & )
@@ -1487,7 +1487,7 @@ Py::Object PythonExtensionBase::number_power( const Py::Object &, const Py::Obje
 
 
 // Buffer
-int PythonExtensionBase::buffer_get( Py_buffer * /* buf */, int /* flags */ )
+int PythonExtensionBase::buffer_get( Py_buffer * /*buf*/, int /*flags*/ )
 {
     missing_method( buffer_get );
     return -1;
@@ -1495,8 +1495,8 @@ int PythonExtensionBase::buffer_get( Py_buffer * /* buf */, int /* flags */ )
 
 int PythonExtensionBase::buffer_release( Py_buffer * /*buf*/ )
 {
-    /* This method is optional and only required if the buffer's
-       memory is dynamic. */
+    // This method is optional and only required if the buffer's
+    // memory is dynamic.
     return 0;
 }
 
