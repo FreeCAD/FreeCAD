@@ -224,8 +224,7 @@ class Writer(object):
             argsBasic = [binary,
                          _ELMERGRID_IFORMAT,
                          _ELMERGRID_OFORMAT,
-                         unvPath,
-                         "-scale", "0.001", "0.001", "0.001"]
+                         unvPath]
             args = argsBasic
             args.extend(["-out", self.directory])
             if system() == "Windows":

@@ -252,7 +252,6 @@ class Results(run.Results):
             self.fail()
             return
         self.solver.ElmerResult.read(postPath)
-        self.solver.ElmerResult.scale(1000)
         self.solver.ElmerResult.getLastPostObject().touch()
         self.solver.Document.recompute()
 
