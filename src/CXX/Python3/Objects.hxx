@@ -51,6 +51,7 @@
 #include <utility>
 #include <typeinfo>
 #include <algorithm>
+#include <cstring>
 
 namespace Py
 {
@@ -968,7 +969,6 @@ namespace Py
     bool operator<=( double a, const Float &b );
     bool operator<=( const Float &a, double b );
 
-#if !defined( Py_LIMITED_API )
     // ===============================================
     // class Complex
     class PYCXX_EXPORT Complex: public Object
@@ -1010,6 +1010,8 @@ namespace Py
         {
             return pyob && Py::_Complex_Check( pyob );
         }
+
+#if !defined( Py_LIMITED_API )
         // convert to Py_complex
         operator Py_complex() const
         {
@@ -1021,6 +1023,8 @@ namespace Py
             set( PyComplex_FromCComplex( v ), true );
             return *this;
         }
+#endif // Py_LIMITED_API
+
         // assign from a double
         Complex &operator=( double v )
         {
@@ -1056,7 +1060,6 @@ namespace Py
             return PyComplex_ImagAsDouble( ptr() );
         }
     };
-#endif // Py_LIMITED_API
 
     // Sequences
     // Sequences are here represented as sequences of items of type T.
@@ -2029,9 +2032,31 @@ namespace Py
             return *this;
         }
 #endif
+
         long ord()
         {
+#if !defined( Py_LIMITED_API )
             return static_cast<long>( PyUnicode_ReadChar( ptr(), 0 ) );
+#else
+            // we know that a Char() is 1 unicode code point
+            // that fits in 2 wchar_t on windows at worst
+            wchar_t buf[2];
+            Py_ssize_t num_elements = PyUnicode_AsWideChar( ptr(), buf, 2 );
+
+            // just one wchar_t that easy
+            if( num_elements == 1 )
+            {
+                return static_cast<long>( buf[0] );
+            }
+            // must be a pair of utf-16 surragates - convert to a code point
+            if( num_elements == 2 )
+            {
+                // convert from utf-16 to a code-point
+                return static_cast<long>( ((buf[0]-0xd800)*0x400) + (buf[1]-0xdc00) + 0x10000);
+            }
+            return 0;
+#endif
+
         }
 
         // Conversion
@@ -2123,7 +2148,7 @@ namespace Py
             validate();
         }
 
-#if !defined( Py_UNICODE_WIDE )
+#if !defined( Py_LIMITED_API ) && !defined( Py_UNICODE_WIDE )
         // Need these c'tors becuase Py_UNICODE is 2 bytes
         // User may use "int" or "unsigned int" as the unicode type
         String( const unsigned int *s, int length )
@@ -2181,12 +2206,15 @@ namespace Py
             return Bytes( PyUnicode_AsEncodedString( ptr(), encoding, error ), true );
         }
 
+#if !defined( Py_LIMITED_API )
         // Queries
         virtual size_type size() const
         {
             return PyUnicode_GetLength( ptr() );
         }
+#endif
 
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 9
 #if !defined( Py_LIMITED_API )
         const Py_UNICODE *unicode_data() const
         {
@@ -2200,6 +2228,8 @@ namespace Py
             return unicodestring( unicode_data(), PyUnicode_GetLength( ptr() ) );
         }
 #endif
+#endif
+
         ucs4string as_ucs4string() const
         {
             Py_UCS4 *buf = new Py_UCS4[ size() ];
@@ -3250,7 +3280,7 @@ namespace Py
             }
             return asObject( result );
         }
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
+#if (!defined( Py_LIMITED_API ) && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9) || (defined( Py_LIMITED_API ) && Py_LIMITED_API+0 >= 0x03090000)
         Object apply() const
         {
             PyObject *result = PyObject_CallNoArgs( ptr() );

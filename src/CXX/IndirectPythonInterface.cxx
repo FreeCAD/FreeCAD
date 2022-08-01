@@ -39,33 +39,38 @@
 
 namespace Py
 {
-PYCXX_EXPORT bool _CFunction_Check( PyObject *op )   { return op->ob_type == _CFunction_Type(); }
-PYCXX_EXPORT bool _Complex_Check( PyObject *op )     { return op->ob_type == _Complex_Type(); }
-PYCXX_EXPORT bool _Dict_Check( PyObject *op )        { return op->ob_type == _Dict_Type(); }
-PYCXX_EXPORT bool _Float_Check( PyObject *op )       { return op->ob_type == _Float_Type(); }
+static int _IsInstance( PyObject *op, PyTypeObject *type )
+{
+    return PyObject_IsInstance( op, reinterpret_cast<PyObject *>( type ) );
+}
+
+PYCXX_EXPORT bool _CFunction_Check( PyObject *op )   { return _IsInstance( op, _CFunction_Type() ) > 0; }
+PYCXX_EXPORT bool _Complex_Check( PyObject *op )     { return _IsInstance( op, _Complex_Type() ) > 0; }
+PYCXX_EXPORT bool _Dict_Check( PyObject *op )        { return _IsInstance( op, _Dict_Type() ) > 0; }
+PYCXX_EXPORT bool _Float_Check( PyObject *op )       { return _IsInstance( op, _Float_Type() ) > 0; }
 #if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
-PYCXX_EXPORT bool _Function_Check( PyObject *op )    { return op->ob_type == _Function_Type(); }
+PYCXX_EXPORT bool _Function_Check( PyObject *op )    { return _IsInstance( op, _Function_Type() ) > 0; }
 #endif
-PYCXX_EXPORT bool _Boolean_Check( PyObject *op )     { return op->ob_type == _Bool_Type(); }
-PYCXX_EXPORT bool _List_Check( PyObject *op )        { return op->ob_type == _List_Type(); }
-PYCXX_EXPORT bool _Long_Check( PyObject *op )        { return op->ob_type == _Long_Type(); }
+PYCXX_EXPORT bool _Boolean_Check( PyObject *op )     { return _IsInstance( op, _Bool_Type() ) > 0; }
+PYCXX_EXPORT bool _List_Check( PyObject *op )        { return _IsInstance( op, _List_Type() ) > 0; }
+PYCXX_EXPORT bool _Long_Check( PyObject *op )        { return _IsInstance( op, _Long_Type() ) > 0; }
 #if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
-PYCXX_EXPORT bool _Method_Check( PyObject *op )      { return op->ob_type == _Method_Type(); }
+PYCXX_EXPORT bool _Method_Check( PyObject *op )      { return _IsInstance( op, _Method_Type() ) > 0; }
 #endif
-PYCXX_EXPORT bool _Module_Check( PyObject *op )      { return op->ob_type == _Module_Type(); }
-PYCXX_EXPORT bool _Range_Check( PyObject *op )       { return op->ob_type == _Range_Type(); }
-PYCXX_EXPORT bool _Slice_Check( PyObject *op )       { return op->ob_type == _Slice_Type(); }
-PYCXX_EXPORT bool _TraceBack_Check( PyObject *op )   { return op->ob_type == _TraceBack_Type(); }
-PYCXX_EXPORT bool _Tuple_Check( PyObject *op )       { return op->ob_type == _Tuple_Type(); }
-PYCXX_EXPORT bool _Type_Check( PyObject *op )        { return op->ob_type == _Type_Type(); }
-PYCXX_EXPORT bool _Unicode_Check( PyObject *op )     { return op->ob_type == _Unicode_Type(); }
+PYCXX_EXPORT bool _Module_Check( PyObject *op )      { return _IsInstance( op, _Module_Type() ) > 0; }
+PYCXX_EXPORT bool _Range_Check( PyObject *op )       { return _IsInstance( op, _Range_Type() ) > 0; }
+PYCXX_EXPORT bool _Slice_Check( PyObject *op )       { return _IsInstance( op, _Slice_Type() ) > 0; }
+PYCXX_EXPORT bool _TraceBack_Check( PyObject *op )   { return _IsInstance( op, _TraceBack_Type() ) > 0; }
+PYCXX_EXPORT bool _Tuple_Check( PyObject *op )       { return _IsInstance( op, _Tuple_Type() ) > 0; }
+PYCXX_EXPORT bool _Type_Check( PyObject *op )        { return _IsInstance( op, _Type_Type() ) > 0; }
+PYCXX_EXPORT bool _Unicode_Check( PyObject *op )     { return _IsInstance( op, _Unicode_Type() ) > 0; }
 #if PY_MAJOR_VERSION == 2
-PYCXX_EXPORT bool _String_Check( PyObject *op )      { return op->ob_type == _String_Type(); }
-PYCXX_EXPORT bool _Int_Check( PyObject *op )         { return op->ob_type == _Int_Type(); }
-PYCXX_EXPORT bool _CObject_Check( PyObject *op )     { return op->ob_type == _CObject_Type(); }
+PYCXX_EXPORT bool _String_Check( PyObject *op )      { return _IsInstance( op, _String_Type() ) > 0; }
+PYCXX_EXPORT bool _Int_Check( PyObject *op )         { return _IsInstance( op, _Int_Type() ) > 0; }
+PYCXX_EXPORT bool _CObject_Check( PyObject *op )     { return _IsInstance( op, _CObject_Type() ) > 0; }
 #endif
 #if PY_MAJOR_VERSION >= 3
-PYCXX_EXPORT bool _Bytes_Check( PyObject *op )       { return op->ob_type == _Bytes_Type(); }
+PYCXX_EXPORT bool _Bytes_Check( PyObject *op )       { return _IsInstance( op, _Bytes_Type() ) > 0; }
 #endif
 
 #if defined(PY_WIN32_DELAYLOAD_PYTHON_DLL)
@@ -123,7 +128,11 @@ static int *ptr_Py_OptimizeFlag = NULL;
 static int *ptr_Py_NoSiteFlag = NULL;
 static int *ptr_Py_VerboseFlag = NULL;
 
+#   if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+static const char **ptr__Py_PackageContext = NULL;
+#   else
 static char **ptr__Py_PackageContext = NULL;
+#   endif
 #  endif
 
 #  ifdef Py_REF_DEBUG
@@ -198,6 +207,17 @@ static char **GetCharPointer_as_CharPointerPointer( const char *name )
     return (char **)addr;
 }
 
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+static char **GetConstCharPointer_as_ConstCharPointerPointer( const char *name )
+{
+    FARPROC addr = GetProcAddress( python_dll, name );
+    if( addr == NULL )
+        throw GetAddressException( name );
+
+    return (const char **)addr;
+}
+#endif
+
 
 #  ifdef _DEBUG
 static const char python_dll_name_format[] = "PYTHON%1.1d%1.1d_D.DLL";
@@ -227,7 +247,12 @@ bool InitialisePythonIndirectInterface()
     ptr_Py_OptimizeFlag         = GetInt_as_IntPointer( "Py_OptimizeFlag" );
     ptr_Py_NoSiteFlag           = GetInt_as_IntPointer( "Py_NoSiteFlag" );
     ptr_Py_VerboseFlag          = GetInt_as_IntPointer( "Py_VerboseFlag" );
+
+#    if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+    ptr__Py_PackageContext      = GetConstCharPointer_as_ConstCharPointerPointer( "_Py_PackageContext" );
+#    else
     ptr__Py_PackageContext      = GetCharPointer_as_CharPointerPointer( "_Py_PackageContext" );
+#    endif
 #  endif
 
 #  define PYCXX_STANDARD_EXCEPTION( eclass, bclass )
@@ -379,7 +404,11 @@ PYCXX_EXPORT int &_Py_NoSiteFlag()                   { return *ptr_Py_NoSiteFlag
 PYCXX_EXPORT int &_Py_VerboseFlag()                  { return *ptr_Py_VerboseFlag; }
 #  endif
 
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+PYCXX_EXPORT const char *__Py_PackageContext()       { return *ptr__Py_PackageContext; }
+#  else
 PYCXX_EXPORT char *__Py_PackageContext()             { return *ptr__Py_PackageContext; }
+#  endif
 
 #  if 0
 #   define Py_INCREF(op) (                         \
@@ -494,7 +523,11 @@ PYCXX_EXPORT int &_Py_InteractiveFlag()              { return Py_InteractiveFlag
 PYCXX_EXPORT int &_Py_OptimizeFlag()                 { return Py_OptimizeFlag; }
 PYCXX_EXPORT int &_Py_NoSiteFlag()                   { return Py_NoSiteFlag; }
 PYCXX_EXPORT int &_Py_VerboseFlag()                  { return Py_VerboseFlag; }
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
 PYCXX_EXPORT const char *__Py_PackageContext()       { return _Py_PackageContext; }
+#  else
+PYCXX_EXPORT char *__Py_PackageContext()             { return _Py_PackageContext; }
+#  endif
 # endif
 
 //

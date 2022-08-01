@@ -70,7 +70,7 @@ namespace Py
         virtual void reinit( Tuple &args, Dict &kwds );
 
         // object basics
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
         virtual int print( FILE *, int );
 #endif
         virtual Object getattr( const char * );
@@ -114,7 +114,6 @@ namespace Py
         virtual Object number_invert();
         virtual Object number_int();
         virtual Object number_float();
-        virtual Object number_long();
         virtual Object number_add( const Object & );
         virtual Object number_subtract( const Object & );
         virtual Object number_multiply( const Object & );
@@ -126,6 +125,28 @@ namespace Py
         virtual Object number_xor( const Object & );
         virtual Object number_or( const Object & );
         virtual Object number_power( const Object &, const Object & );
+        virtual Object number_floor_divide( const Object & );
+        virtual Object number_true_divide( const Object & );
+        virtual Object number_index();
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+        virtual Object number_matrix_multiply( const Object & );
+#endif
+
+        virtual Object number_inplace_add( const Object & );
+        virtual Object number_inplace_subtract( const Object & );
+        virtual Object number_inplace_multiply( const Object & );
+        virtual Object number_inplace_remainder( const Object & );
+        virtual Object number_inplace_power( const Object &, const Object & );
+        virtual Object number_inplace_lshift( const Object & );
+        virtual Object number_inplace_rshift( const Object & );
+        virtual Object number_inplace_and( const Object & );
+        virtual Object number_inplace_xor( const Object & );
+        virtual Object number_inplace_or( const Object & );
+        virtual Object number_inplace_floor_divide( const Object & );
+        virtual Object number_inplace_true_divide( const Object & );
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+        virtual Object number_inplace_matrix_multiply( const Object & );
+#endif
 
 #if !defined( Py_LIMITED_API )
         // Buffer

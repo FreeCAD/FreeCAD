@@ -232,7 +232,7 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API )
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
     static int print_handler( PyObject *, FILE *, int );
 #endif
     static PyObject *getattr_handler( PyObject *, char * );
@@ -282,6 +282,28 @@ extern "C"
     static PyObject *number_xor_handler( PyObject *, PyObject * );
     static PyObject *number_or_handler( PyObject *, PyObject * );
     static PyObject *number_power_handler( PyObject *, PyObject *, PyObject * );
+    static PyObject *number_floor_divide_handler( PyObject *, PyObject * );
+    static PyObject *number_true_divide_handler( PyObject *, PyObject * );
+    static PyObject *number_index_handler( PyObject * );
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+    static PyObject *number_matrix_multiply_handler( PyObject *, PyObject * );
+#endif
+
+    static PyObject *number_inplace_add_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_subtract_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_multiply_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_remainder_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_power_handler( PyObject *, PyObject *, PyObject * );
+    static PyObject *number_inplace_lshift_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_rshift_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_and_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_xor_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_or_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_floor_divide_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_true_divide_handler( PyObject *, PyObject * );
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+    static PyObject *number_inplace_matrix_multiply_handler( PyObject *, PyObject * );
+#endif
 
     // Buffer
 #if !defined( Py_LIMITED_API )
@@ -391,14 +413,22 @@ PythonType &PythonType::supportMappingType( int methods_to_support )
     if( methods_to_support&support_number_ ## slot ) { \
         slots[ Py_nb_ ## slot ] = reinterpret_cast<void *>( number_ ## slot ## _handler ); \
     }
+#define FILL_NUMBER_INPLACE_SLOT(slot) \
+    if( inplace_methods_to_support&support_number_ ## slot ) { \
+        slots[ Py_nb_ ## slot ] = reinterpret_cast<void *>( number_ ## slot ## _handler ); \
+    }
 #else
 #define FILL_NUMBER_SLOT(slot) \
     if( methods_to_support&support_number_ ## slot ) { \
         number_table->nb_ ## slot = number_ ## slot ## _handler; \
     }
+#define FILL_NUMBER_INPLACE_SLOT(slot) \
+    if( inplace_methods_to_support&support_number_ ## slot ) { \
+        number_table->nb_ ## slot = number_ ## slot ## _handler; \
+    }
 #endif
 
-PythonType &PythonType::supportNumberType( int methods_to_support )
+PythonType &PythonType::supportNumberType( int methods_to_support, int inplace_methods_to_support )
 {
 #if !defined( Py_LIMITED_API )
     if( number_table )
@@ -427,6 +457,29 @@ PythonType &PythonType::supportNumberType( int methods_to_support )
     FILL_NUMBER_SLOT(or)
     FILL_NUMBER_SLOT(int)
     FILL_NUMBER_SLOT(float)
+    FILL_NUMBER_SLOT(floor_divide)
+    FILL_NUMBER_SLOT(true_divide)
+    FILL_NUMBER_SLOT(index)
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+    FILL_NUMBER_SLOT(matrix_multiply)
+#endif
+
+    FILL_NUMBER_INPLACE_SLOT(inplace_add)
+    FILL_NUMBER_INPLACE_SLOT(inplace_subtract)
+    FILL_NUMBER_INPLACE_SLOT(inplace_multiply)
+    FILL_NUMBER_INPLACE_SLOT(inplace_remainder)
+    FILL_NUMBER_INPLACE_SLOT(inplace_power)
+    FILL_NUMBER_INPLACE_SLOT(inplace_lshift)
+    FILL_NUMBER_INPLACE_SLOT(inplace_rshift)
+    FILL_NUMBER_INPLACE_SLOT(inplace_and)
+    FILL_NUMBER_INPLACE_SLOT(inplace_xor)
+    FILL_NUMBER_INPLACE_SLOT(inplace_or)
+    FILL_NUMBER_INPLACE_SLOT(inplace_floor_divide)
+    FILL_NUMBER_INPLACE_SLOT(inplace_true_divide)
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+    FILL_NUMBER_INPLACE_SLOT(inplace_matrix_multiply)
+#endif
+
     return *this;
 }
 
@@ -688,7 +741,7 @@ PythonType &PythonType::supportClass()
     return *this;
 }
 
-#if defined( PYCXX_PYTHON_2TO3 )
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 PythonType &PythonType::supportPrint()
 {
 #if PY_VERSION_HEX < 0x03080000
@@ -835,7 +888,7 @@ PythonExtensionBase *getPythonExtensionBase( PyObject *self )
     }
 }
 
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined ( Py_LIMITED_API )
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined ( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
 {
     try
@@ -1143,226 +1196,89 @@ extern "C" int mapping_ass_subscript_handler( PyObject *self, PyObject *key, PyO
 }
 
 // Number
-extern "C" PyObject *number_negative_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_negative() );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
+#define NUMBER_UNARY( slot ) \
+extern "C" PyObject *number_ ## slot ## _handler( PyObject *self ) \
+{ \
+    try \
+    { \
+        PythonExtensionBase *p = getPythonExtensionBase( self ); \
+        return new_reference_to( p->number_ ## slot() ); \
+    } \
+    catch( BaseException & ) \
+    { \
+        return NULL; /* indicates error */ \
+    } \
 }
 
-extern "C" PyObject *number_positive_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_positive() );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
+#define NUMBER_BINARY( slot ) \
+extern "C" PyObject *number_ ## slot ## _handler( PyObject *self, PyObject *other ) \
+{ \
+    try \
+    { \
+        PythonExtensionBase *p = getPythonExtensionBase( self ); \
+        return new_reference_to( p->number_ ## slot( Object( other ) ) ); \
+    } \
+    catch( BaseException & ) \
+    { \
+        return NULL; /* indicates error */ \
+    } \
+}
+#define NUMBER_TERNARY( slot ) \
+extern "C" PyObject *number_ ## slot ## _handler( PyObject *self, PyObject *other1, PyObject *other2 ) \
+{ \
+    try \
+    { \
+        PythonExtensionBase *p = getPythonExtensionBase( self ); \
+        return new_reference_to( p->number_ ## slot( Object( other1 ), Object( other2 ) ) ); \
+    } \
+    catch( BaseException & ) \
+    { \
+        return NULL; /* indicates error */ \
+    } \
 }
 
-extern "C" PyObject *number_absolute_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_absolute() );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
+NUMBER_UNARY( negative )
+NUMBER_UNARY( positive )
+NUMBER_UNARY( absolute )
+NUMBER_UNARY( invert )
+NUMBER_UNARY( int )
+NUMBER_UNARY( float )
+NUMBER_BINARY( add )
+NUMBER_BINARY( subtract )
+NUMBER_BINARY( multiply )
+NUMBER_BINARY( remainder )
+NUMBER_BINARY( divmod )
+NUMBER_BINARY( lshift )
+NUMBER_BINARY( rshift )
+NUMBER_BINARY( and )
+NUMBER_BINARY( xor )
+NUMBER_BINARY( or )
+NUMBER_TERNARY( power )
+NUMBER_BINARY( floor_divide )
+NUMBER_BINARY( true_divide )
+NUMBER_UNARY( index )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+NUMBER_BINARY( matrix_multiply )
+#endif
+NUMBER_BINARY( inplace_add )
+NUMBER_BINARY( inplace_subtract )
+NUMBER_BINARY( inplace_multiply )
+NUMBER_BINARY( inplace_remainder )
+NUMBER_TERNARY( inplace_power )
+NUMBER_BINARY( inplace_lshift )
+NUMBER_BINARY( inplace_rshift )
+NUMBER_BINARY( inplace_and )
+NUMBER_BINARY( inplace_xor )
+NUMBER_BINARY( inplace_or )
+NUMBER_BINARY( inplace_floor_divide )
+NUMBER_BINARY( inplace_true_divide )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+NUMBER_BINARY( inplace_matrix_multiply )
+#endif
 
-extern "C" PyObject *number_invert_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_invert() );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_int_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_int() );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_float_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_float() );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_add_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_add( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_subtract_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_subtract( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_multiply_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_multiply( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_remainder_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_remainder( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_divmod_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_divmod( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_lshift_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_lshift( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_rshift_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_rshift( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_and_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_and( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_xor_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_xor( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_or_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_or( Object( other ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_power_handler( PyObject *self, PyObject *x1, PyObject *x2 )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_power( Object( x1 ), Object( x2 ) ) );
-    }
-    catch( BaseException & )
-    {
-        return NULL;    // indicate error
-    }
-}
+#undef NUMBER_UNARY
+#undef NUMBER_BINARY
+#undef NUMBER_TERNARY
 
 // Buffer
 #ifndef Py_LIMITED_API
@@ -1499,7 +1415,7 @@ int PythonExtensionBase::genericSetAttro( const String &name, const Object &valu
     return PyObject_GenericSetAttr( selfPtr(), name.ptr(), value.ptr() );
 }
 
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API )
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 int PythonExtensionBase::print( FILE *, int )
 {
     missing_method( print );
@@ -1624,95 +1540,57 @@ int PythonExtensionBase::mapping_ass_subscript( const Object &, const Object & )
     missing_method( mapping_ass_subscript );
 }
 
-Object PythonExtensionBase::number_negative()
-{
-    missing_method( number_negative );
-}
+// Number
+#define NUMBER_UNARY( slot ) Object PythonExtensionBase::number_ ## slot() \
+    { missing_method( number_ ## slot ); }
+#define NUMBER_BINARY( slot ) Object PythonExtensionBase::number_ ## slot( const Object & ) \
+    { missing_method( number_ ## slot ); }
+#define NUMBER_TERNARY( slot ) Object PythonExtensionBase::number_ ## slot( const Object &, const Object & ) \
+    { missing_method( number_ ## slot ); }
 
-Object PythonExtensionBase::number_positive()
-{
-    missing_method( number_positive );
-}
+NUMBER_UNARY( negative )
+NUMBER_UNARY( positive )
+NUMBER_UNARY( absolute )
+NUMBER_UNARY( invert )
+NUMBER_UNARY( int )
+NUMBER_UNARY( float )
+NUMBER_BINARY( add )
+NUMBER_BINARY( subtract )
+NUMBER_BINARY( multiply )
+NUMBER_BINARY( remainder )
+NUMBER_BINARY( divmod )
+NUMBER_BINARY( lshift )
+NUMBER_BINARY( rshift )
+NUMBER_BINARY( and )
+NUMBER_BINARY( xor )
+NUMBER_BINARY( or )
+NUMBER_TERNARY( power )
+NUMBER_BINARY( floor_divide )
+NUMBER_BINARY( true_divide )
+NUMBER_UNARY( index )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+NUMBER_BINARY( matrix_multiply )
+#endif
 
-Object PythonExtensionBase::number_absolute()
-{
-    missing_method( number_absolute );
-}
+NUMBER_BINARY( inplace_add )
+NUMBER_BINARY( inplace_subtract )
+NUMBER_BINARY( inplace_multiply )
+NUMBER_BINARY( inplace_remainder )
+NUMBER_TERNARY( inplace_power )
+NUMBER_BINARY( inplace_lshift )
+NUMBER_BINARY( inplace_rshift )
+NUMBER_BINARY( inplace_and )
+NUMBER_BINARY( inplace_xor )
+NUMBER_BINARY( inplace_or )
+NUMBER_BINARY( inplace_floor_divide )
+NUMBER_BINARY( inplace_true_divide )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+NUMBER_BINARY( inplace_matrix_multiply )
+#endif
 
-Object PythonExtensionBase::number_invert()
-{
-    missing_method( number_invert );
-}
-
-Object PythonExtensionBase::number_int()
-{
-    missing_method( number_int );
-}
-
-Object PythonExtensionBase::number_float()
-{
-    missing_method( number_float );
-}
-
-Object PythonExtensionBase::number_long()
-{
-    missing_method( number_long );
-}
-
-Object PythonExtensionBase::number_add( const Object & )
-{
-    missing_method( number_add );
-}
-
-Object PythonExtensionBase::number_subtract( const Object & )
-{
-    missing_method( number_subtract );
-}
-
-Object PythonExtensionBase::number_multiply( const Object & )
-{
-    missing_method( number_multiply );
-}
-
-Object PythonExtensionBase::number_remainder( const Object & )
-{
-    missing_method( number_remainder );
-}
-
-Object PythonExtensionBase::number_divmod( const Object & )
-{
-    missing_method( number_divmod );
-}
-
-Object PythonExtensionBase::number_lshift( const Object & )
-{
-    missing_method( number_lshift );
-}
-
-Object PythonExtensionBase::number_rshift( const Object & )
-{
-    missing_method( number_rshift );
-}
-
-Object PythonExtensionBase::number_and( const Object & )
-{
-    missing_method( number_and );
-}
-
-Object PythonExtensionBase::number_xor( const Object & )
-{
-    missing_method( number_xor );
-}
-
-Object PythonExtensionBase::number_or( const Object & )
-{
-    missing_method( number_or );
-}
-
-Object PythonExtensionBase::number_power( const Object &, const Object & )
-{
-    missing_method( number_power );
-}
+#undef NUMBER_UNARY
+#undef NUMBER_BINARY
+#undef NUMBER_TERNARY
 
 
 // Buffer
@@ -1912,6 +1790,29 @@ bool BaseException::matches( ExtensionExceptionType &exc )
 {
     return PyErr_ExceptionMatches( exc.ptr() ) != 0;
 }
+
+Object BaseException::errorType()
+{
+    PyObject *type, *value, *traceback;
+    PyErr_Fetch( &type, &value, &traceback );
+
+    Object result( type );
+
+    PyErr_Restore( type, value, traceback );
+    return result;
+}
+
+Object BaseException::errorValue()
+{
+    PyObject *type, *value, *traceback;
+    PyErr_Fetch( &type, &value, &traceback );
+
+    Object result( value );
+
+    PyErr_Restore( type, value, traceback );
+    return result;
+}
+
 
 //------------------------------------------------------------
 

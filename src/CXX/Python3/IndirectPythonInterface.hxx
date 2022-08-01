@@ -149,7 +149,11 @@ PYCXX_EXPORT int &_Py_NoSiteFlag();
 PYCXX_EXPORT int &_Py_TabcheckFlag();
 PYCXX_EXPORT int &_Py_VerboseFlag();
 
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
 PYCXX_EXPORT const char *__Py_PackageContext();
+#  else
+PYCXX_EXPORT char *__Py_PackageContext();
+#  endif
 # endif
 
 PYCXX_EXPORT void _XINCREF( PyObject *op );

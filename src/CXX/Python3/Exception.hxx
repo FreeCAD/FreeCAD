@@ -67,6 +67,9 @@ namespace Py
 
         // is the exception this specific exception 'exc'
         bool matches( ExtensionExceptionType &exc );
+
+        Object errorType(); // get the error type of the active exception
+        Object errorValue();// get the error value of the active exception
     };
 
     // for user defined exceptions to be made know to pycxx

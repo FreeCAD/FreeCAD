@@ -340,7 +340,7 @@ namespace Py
                     return false;
                 case 1:
                     return true;
-            }            
+            }
         }
 
         static bool check( const Object &ob )

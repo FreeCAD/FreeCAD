@@ -16,7 +16,11 @@ PYCXX_STANDARD_EXCEPTION( GeneratorExit,        BaseException )
 PYCXX_STANDARD_EXCEPTION( Exception,            BaseException )
 #endif
 PYCXX_STANDARD_EXCEPTION(     StopIteration,        Exception )
-#if (defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03050000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5)
+#if !defined(MS_WINDOWS) && ((defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03050000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5))
+PYCXX_STANDARD_EXCEPTION(     StopAsyncIteration,       Exception )
+#endif
+// Windows builds of python 3.5 do not export the symbol PyExc_StopAsyncIteration - need atleast 3.6
+#if defined(MS_WINDOWS) && ((defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03050000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 6) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5))
 PYCXX_STANDARD_EXCEPTION(     StopAsyncIteration,       Exception )
 #endif
 PYCXX_STANDARD_EXCEPTION(     ArithmeticError,      Exception )
@@ -35,6 +39,7 @@ PYCXX_STANDARD_EXCEPTION(     MemoryError,      Exception )
 PYCXX_STANDARD_EXCEPTION(     NameError,        Exception )
 PYCXX_STANDARD_EXCEPTION(         UnboundLocalError,    NameError )
 PYCXX_STANDARD_EXCEPTION(     OSError,      Exception )
+#if (defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03060000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 6) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 4)
 PYCXX_STANDARD_EXCEPTION(         BlockingIOError,  OSError )
 PYCXX_STANDARD_EXCEPTION(         ChildProcessError,OSError )
 PYCXX_STANDARD_EXCEPTION(         ConnectionError,  OSError )
@@ -50,10 +55,15 @@ PYCXX_STANDARD_EXCEPTION(         NotADirectoryError,   OSError )
 PYCXX_STANDARD_EXCEPTION(         PermissionError,      OSError )
 PYCXX_STANDARD_EXCEPTION(         ProcessLookupError,   OSError )
 PYCXX_STANDARD_EXCEPTION(         TimeoutError,         OSError )
+#endif
 PYCXX_STANDARD_EXCEPTION(     ReferenceError,   Exception )
 PYCXX_STANDARD_EXCEPTION(     RuntimeError,     Exception )
 PYCXX_STANDARD_EXCEPTION(         NotImplementedError,  RuntimeError )
-#if (defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03050000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5)
+#if !defined(MS_WINDOWS) && ((defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03050000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5))
+PYCXX_STANDARD_EXCEPTION(         RecursionError,       RuntimeError )
+#endif
+// Windows builds of python 3.5 do not export the symbol PyExc_RecursionError - need atleast 3.6
+#if defined(MS_WINDOWS) && ((defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03050000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 6) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5))
 PYCXX_STANDARD_EXCEPTION(         RecursionError,       RuntimeError )
 #endif
 PYCXX_STANDARD_EXCEPTION(     SyntaxError,      Exception )

@@ -61,7 +61,7 @@ namespace Py
         PythonType &doc( const char *d );
 
         PythonType &supportClass( void );
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API )
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
         PythonType &supportPrint( void );
 #endif
         PythonType &supportGetattr( void );
@@ -133,27 +133,54 @@ namespace Py
             support_number_xor =                B(13),
             support_number_or =                 B(14),
             support_number_int =                B(15),
-            support_number_float=               B(16)
+            support_number_float =              B(16),
+            support_number_floor_divide =       B(17),
+            support_number_true_divide =        B(18),
+            support_number_index =              B(19),
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+            support_number_matrix_multiply =    B(20),
+#endif
+
+            // start a new bit mask for inplace that avoid using more then 32 bits in methods_to_support
+            support_number_inplace_floor_divide = B(0),
+            support_number_inplace_true_divide = B(1),
+            support_number_inplace_add =        B(2),
+            support_number_inplace_subtract =   B(3),
+            support_number_inplace_multiply =   B(4),
+            support_number_inplace_remainder =  B(5),
+            support_number_inplace_power =      B(6),
+            support_number_inplace_lshift =     B(7),
+            support_number_inplace_rshift =     B(8),
+            support_number_inplace_and =        B(9),
+            support_number_inplace_xor =        B(10),
+            support_number_inplace_or =         B(11)
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+            ,
+            support_number_inplace_matrix_multiply = B(12)
+#endif
         };
-        PythonType &supportNumberType( int methods_to_support=
-                    support_number_add |
-                    support_number_subtract |
-                    support_number_multiply |
-                    support_number_remainder |
-                    support_number_divmod |
-                    support_number_power |
-                    support_number_negative |
-                    support_number_positive |
-                    support_number_absolute |
-                    support_number_invert |
-                    support_number_lshift |
-                    support_number_rshift |
-                    support_number_and |
-                    support_number_xor |
-                    support_number_or |
-                    support_number_int |
-                    support_number_float
-                    );
+        PythonType &supportNumberType(
+            int methods_to_support=
+                support_number_add |
+                support_number_subtract |
+                support_number_multiply |
+                support_number_remainder |
+                support_number_divmod |
+                support_number_power |
+                support_number_negative |
+                support_number_positive |
+                support_number_absolute |
+                support_number_invert |
+                support_number_lshift |
+                support_number_rshift |
+                support_number_and |
+                support_number_xor |
+                support_number_or |
+                support_number_int |
+                support_number_float,
+            int inplace_methods_to_support=0
+            );
+
 #if !defined( Py_LIMITED_API )
         enum {
             support_buffer_getbuffer =          B(0),
