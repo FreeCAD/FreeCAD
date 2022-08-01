@@ -42,18 +42,13 @@ Type BaseClass::classTypeId = Base::Type::badType();
  * A constructor.
  * A more elaborate description of the constructor.
  */
-BaseClass::BaseClass()
-{
-
-}
+BaseClass::BaseClass() = default;
 
 /**
  * A destructor.
  * A more elaborate description of the destructor.
  */
-BaseClass::~BaseClass()
-{
-}
+BaseClass::~BaseClass() = default;
 
 
 //**************************************************************************

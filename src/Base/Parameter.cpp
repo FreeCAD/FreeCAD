@@ -84,17 +84,16 @@ public:
             fSawErrors(false) {
     }
 
-    ~DOMTreeErrorReporter() {
-    }
+    ~DOMTreeErrorReporter() override = default;
 
 
     // -----------------------------------------------------------------------
     //  Implementation of the error handler interface
     // -----------------------------------------------------------------------
-    void warning(const SAXParseException& toCatch);
-    void error(const SAXParseException& toCatch);
-    void fatalError(const SAXParseException& toCatch);
-    void resetErrors();
+    void warning(const SAXParseException& toCatch) override;
+    void error(const SAXParseException& toCatch) override;
+    void fatalError(const SAXParseException& toCatch) override;
+    void resetErrors() override;
 
     // -----------------------------------------------------------------------
     //  Getter methods
@@ -156,20 +155,20 @@ public:
     //@{
 
     /** @name Destructors */
-    ~DOMPrintFilter() {}
+    ~DOMPrintFilter() override = default;
     //@{
 
     /** @ interface from DOMWriterFilter */
-    virtual FilterAction acceptNode(const XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*) const;
+    FilterAction acceptNode(const XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*) const override;
     //@{
 
-    virtual ShowType getWhatToShow() const {
+    ShowType getWhatToShow() const override {
         return fWhatToShow;
     }
 
 private:
     // unimplemented copy ctor and assignment operator
-    DOMPrintFilter(const DOMPrintFilter&);
+    DOMPrintFilter(const DOMPrintFilter&) = delete;
     DOMPrintFilter & operator = (const DOMPrintFilter&);
 
    ShowType fWhatToShow;
@@ -179,11 +178,11 @@ class DOMPrintErrorHandler : public DOMErrorHandler
 {
 public:
 
-    DOMPrintErrorHandler() {}
-    ~DOMPrintErrorHandler() {}
+    DOMPrintErrorHandler() = default;
+    ~DOMPrintErrorHandler() override = default;
 
     /** @name The error handler interface */
-    bool handleError(const DOMError& domError);
+    bool handleError(const DOMError& domError) override;
     void resetErrors() {}
 
 private :
@@ -222,9 +221,7 @@ ParameterGrp::ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode,
 /** Destruction
   * complete destruction of the object
   */
-ParameterGrp::~ParameterGrp()
-{
-}
+ParameterGrp::~ParameterGrp() = default;
 
 //**************************************************************************
 // Access methods
@@ -1072,9 +1069,7 @@ ParameterSerializer::ParameterSerializer(const std::string& fn)
 {
 }
 
-ParameterSerializer::~ParameterSerializer()
-{
-}
+ParameterSerializer::~ParameterSerializer() = default;
 
 void ParameterSerializer::SaveDocument(const ParameterManager& mgr)
 {

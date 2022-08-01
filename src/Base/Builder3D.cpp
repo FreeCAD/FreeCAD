@@ -57,9 +57,7 @@ Builder3D::Builder3D()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-Builder3D::~Builder3D()
-{
-}
+Builder3D::~Builder3D() = default;
 
 
 //**************************************************************************

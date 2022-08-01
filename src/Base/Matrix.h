@@ -72,7 +72,7 @@ public:
   Matrix4D (const Vector3f& rclBase, const Vector3f& rclDir, float fAngle);
   Matrix4D (const Vector3d& rclBase, const Vector3d& rclDir, double fAngle);
   /// Destruction
-  ~Matrix4D () {}
+  ~Matrix4D () = default;
 
   /** @name Operators */
   //@{

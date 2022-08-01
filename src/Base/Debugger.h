@@ -59,11 +59,11 @@ class BaseExport Debugger : public QObject
 
 public:
     Debugger(QObject* parent=nullptr);
-    ~Debugger();
+    ~Debugger() override;
 
     void attach();
     void detach();
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject*, QEvent*) override;
     int exec();
 
 public Q_SLOTS:

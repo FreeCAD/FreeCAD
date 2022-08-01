@@ -113,8 +113,8 @@ public:
     RedirectStdOutput();
 
 protected:
-    int overflow(int c = EOF);
-    int sync();
+    int overflow(int c = EOF) override;
+    int sync() override;
 
 private:
     std::string buffer;
@@ -126,8 +126,8 @@ public:
     RedirectStdError();
 
 protected:
-    int overflow(int c = EOF);
-    int sync();
+    int overflow(int c = EOF) override;
+    int sync() override;
 
 private:
     std::string buffer;
@@ -139,8 +139,8 @@ public:
     RedirectStdLog();
 
 protected:
-    int overflow(int c = EOF);
-    int sync();
+    int overflow(int c = EOF) override;
+    int sync() override;
 
 private:
     std::string buffer;

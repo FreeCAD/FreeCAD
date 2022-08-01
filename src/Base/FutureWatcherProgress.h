@@ -37,7 +37,7 @@ class BaseExport FutureWatcherProgress : public QObject
 
 public:
     FutureWatcherProgress(const char* text, unsigned int steps);
-    ~FutureWatcherProgress();
+    ~FutureWatcherProgress() override;
 
 private Q_SLOTS:
     void progressValueChanged(int v);

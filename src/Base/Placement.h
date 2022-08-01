@@ -51,7 +51,7 @@ public:
     //@}
 
     /// Destruction
-    ~Placement () {}
+    ~Placement () = default;
 
     Matrix4D toMatrix() const;
     void fromMatrix(const Matrix4D& m);

@@ -41,7 +41,7 @@ namespace Base {
 class UnitsSchemaFemMilliMeterNewton: public UnitsSchema
 {
 public:
-    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+    QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
 };
 
 

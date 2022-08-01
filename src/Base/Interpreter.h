@@ -93,7 +93,7 @@ public:
     /// constructor does the whole job
     PyException();
     PyException(const Py::Object &obj);
-    ~PyException() throw();
+    ~PyException() throw() override;
 
     void raiseException();
 
@@ -105,10 +105,10 @@ public:
     ///  this function returns the stack trace
     const std::string &getStackTrace() const {return _stackTrace;}
     const std::string &getErrorType() const {return _errorType;}
-    virtual PyObject *getPyExceptionType() const override {return _exceptionType;}
+    PyObject *getPyExceptionType() const override {return _exceptionType;}
     void ReportException () const override;
     /// Sets the Python error indicator and an error message
-    virtual void setPyException() const override;
+    void setPyException() const override;
 
 protected:
     std::string _stackTrace;
@@ -139,7 +139,7 @@ class BaseExport SystemExitException : public Exception
 {
 public:
     SystemExitException();
-    virtual ~SystemExitException() throw() {}
+    ~SystemExitException() throw() override = default;
     long getExitCode() const { return _exitCode;}
 
 protected:

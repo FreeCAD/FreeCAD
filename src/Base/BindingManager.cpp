@@ -74,9 +74,7 @@ BindingManager::BindingManager()
 {
 }
 
-BindingManager::~BindingManager()
-{
-}
+BindingManager::~BindingManager() = default;
 
 bool BindingManager::hasWrapper(const void *cptr)
 {

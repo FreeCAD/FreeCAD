@@ -40,7 +40,7 @@ class BaseExport Translate : public Py::ExtensionModule<Translate>
 {
 public:
     Translate();
-    virtual ~Translate();
+    ~Translate() override;
 
 private:
     Py::Object translate(const Py::Tuple& args);

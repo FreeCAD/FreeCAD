@@ -52,12 +52,12 @@ public:
     {
         inst = obj;
     }
-    virtual ~ParameterGrpObserver()
+    ~ParameterGrpObserver() override
     {
         Base::PyGILStateLocker lock;
         inst = Py::None();
     }
-    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
+    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override
     {
         Base::PyGILStateLocker lock;
         try {
@@ -93,9 +93,9 @@ public:
     static void init_type();    // announce properties and methods
 
     ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp);
-    ~ParameterGrpPy();
+    ~ParameterGrpPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object getGroup(const Py::Tuple&);
     Py::Object getGroupName(const Py::Tuple&);

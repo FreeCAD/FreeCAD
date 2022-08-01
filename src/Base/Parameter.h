@@ -230,7 +230,7 @@ protected:
     /// constructor is protected (handle concept)
     ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode=nullptr,const char* sName=nullptr);
     /// destructor is protected (handle concept)
-    ~ParameterGrp();
+    ~ParameterGrp() override;
     /// helper function for GetGroup
     Base::Reference<ParameterGrp> _GetGroup(const char* Name);
     bool ShouldRemove() const;
@@ -295,7 +295,7 @@ class BaseExport ParameterManager : public ParameterGrp
 {
 public:
     ParameterManager();
-    ~ParameterManager();
+    ~ParameterManager() override;
     static void Init();
     static void Terminate();
 

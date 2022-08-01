@@ -52,7 +52,7 @@ enum class UnitSystem {
 class UnitsSchema
 {
 public:
-    virtual ~UnitsSchema(){}
+    virtual ~UnitsSchema() = default;
     /** Gets called if this schema gets activated.
       * Here it's theoretically possible that you can change the static factors
       * for certain units (e.g. mi = 1,8km instead of mi=1.6km).

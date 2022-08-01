@@ -41,7 +41,7 @@ public:
     double re = 0.0;
     double du = 0.0;
 public:
-    DualNumber(){}
+    DualNumber() = default;
     DualNumber(double re, double du = 0.0)
         : re(re), du(du)
     {}

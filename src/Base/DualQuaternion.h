@@ -48,7 +48,7 @@ public:
     DualNumber w;
 public:
     ///default constructor: init with zeros
-    DualQuat(){}
+    DualQuat() = default;
     DualQuat(DualNumber x, DualNumber y, DualNumber z, DualNumber w)
         : x(x), y(y), z(z), w(w) {}
     DualQuat(double x,double y,double z,double w,double dx,double dy,double dz,double dw)
