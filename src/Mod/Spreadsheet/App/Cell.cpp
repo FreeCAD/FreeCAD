@@ -370,7 +370,7 @@ void Cell::setContent(const char * value)
             }
         }
 
-        if (!newExpr && *value != '\0') {
+        if (!newExpr && value && *value != '\0') {
             newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
         }
 
