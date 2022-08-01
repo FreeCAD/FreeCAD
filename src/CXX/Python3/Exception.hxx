@@ -54,33 +54,16 @@ namespace Py
 
     class Object;
 
-    class PYCXX_EXPORT Exception
+    class PYCXX_EXPORT BaseException
     {
     public:
-        Exception( ExtensionExceptionType &exception, const std::string &reason );
-        Exception( ExtensionExceptionType &exception, Object &reason );
+        BaseException( ExtensionExceptionType &exception, const std::string &reason );
+        BaseException( ExtensionExceptionType &exception, Object &reason );
+        BaseException( PyObject *exception, Object &reason );
+        BaseException( PyObject *exception, const std::string &reason );
+        explicit BaseException();
 
-        explicit Exception ()
-        {}
-
-        // This overloaded constructor will be removed in future PyCXX versions
-        //Exception (const std::string &reason)
-        //{
-        //    PyErr_SetString( Py::_Exc_RuntimeError(), reason.c_str() );
-        //}
-
-        Exception( PyObject *exception, const std::string &reason )
-        {
-            PyErr_SetString( exception, reason.c_str() );
-        }
-
-        Exception( PyObject *exception, Object &reason );
-
-        void clear() // clear the error
-        // technically but not philosophically const
-        {
-            PyErr_Clear();
-        }
+        void clear(); // clear the error
 
         // is the exception this specific exception 'exc'
         bool matches( ExtensionExceptionType &exc );
@@ -90,13 +73,27 @@ namespace Py
     typedef void (*throw_exception_func_t)( void );
     void addPythonException( ExtensionExceptionType &py_exc_type, throw_exception_func_t throw_func );
 
-    // Abstract
-    class PYCXX_EXPORT StandardError: public Exception
+#if defined( PYCXX_6_2_COMPATIBILITY )
+    class PYCXX_EXPORT Exception : public BaseException
     {
-    protected:
-        explicit StandardError()
+    public:
+        Exception( ExtensionExceptionType &exception, const std::string &reason )
+        : BaseException( exception, reason )
+        {}
+
+        Exception( ExtensionExceptionType &exception, Object &reason )
+        : BaseException( exception, reason )
+        {}
+
+        Exception( PyObject *exception, const std::string &reason )
+        : BaseException( exception, reason )
+        {}
+
+        explicit Exception()
+        : BaseException()
         {}
     };
+#endif
 
 #define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
     class PYCXX_EXPORT eclass : public bclass \
@@ -114,6 +111,56 @@ namespace Py
 #include <CXX/Python3/cxx_standard_exceptions.hxx>
 
 #undef PYCXX_STANDARD_EXCEPTION
+
+#define PYCXX_USER_EXCEPTION_STR_ARG( uclass ) \
+class PYCXX_EXPORT uclass : public Py::BaseException \
+{ \
+public: \
+    uclass( const std::string &reason ) \
+    : Py::BaseException( m_error, reason ) \
+    { } \
+    ~uclass() {} \
+    static void init( Py::ExtensionModuleBase &module ) \
+    { \
+        m_error.init( module, #uclass ); \
+        Py::addPythonException( m_error, throwFunc ); \
+        Py::Dict d( module.moduleDictionary() ); \
+        d[#uclass] = m_error; \
+    } \
+private: \
+    uclass() : Py::BaseException() {} \
+    static void throwFunc() \
+    { \
+        throw uclass(); \
+    } \
+    static Py::ExtensionExceptionType m_error; \
+}; \
+Py::ExtensionExceptionType uclass::m_error;
+
+#define PYCXX_USER_EXCEPTION_NO_ARG( uclass ) \
+class PYCXX_EXPORT uclass : public Py::BaseException \
+{ \
+public: \
+    uclass() \
+    : Py::BaseException() \
+    { } \
+    ~uclass() {} \
+    static void init( Py::ExtensionModuleBase &module ) \
+    { \
+        m_error.init( module, #uclass ); \
+        Py::addPythonException( m_error, throwFunc ); \
+        Py::Dict d( module.moduleDictionary() ); \
+        d[#uclass] = m_error; \
+    } \
+private: \
+    static void throwFunc() \
+    { \
+        throw uclass(); \
+    } \
+    static Py::ExtensionExceptionType m_error; \
+}; \
+Py::ExtensionExceptionType uclass::m_error;
+
 }// Py
 
 #endif

@@ -72,12 +72,94 @@ namespace Py
         PythonType &supportStr( void );
         PythonType &supportHash( void );
         PythonType &supportCall( void );
-        PythonType &supportIter( void );
 
-        PythonType &supportSequenceType( void );
-        PythonType &supportMappingType( void );
-        PythonType &supportNumberType( void );
-        PythonType &supportBufferType( void );
+#define B( n ) (1<<(n))
+        enum {
+            support_iter_iter =                 B(0),
+            support_iter_iternext =             B(1)
+        };
+        PythonType &supportIter( int methods_to_support=
+                        support_iter_iter |
+                        support_iter_iternext );
+
+        enum {
+            support_sequence_length =           B(0),
+            support_sequence_repeat =           B(1),
+            support_sequence_item =             B(2),
+            support_sequence_slice =            B(3),
+            support_sequence_concat =           B(4),
+            support_sequence_ass_item =         B(5),
+            support_sequence_ass_slice =        B(6),
+            support_sequence_inplace_concat =   B(7),
+            support_sequence_inplace_repeat =   B(8),
+            support_sequence_contains =         B(9)
+        };
+        PythonType &supportSequenceType( int methods_to_support=
+                        support_sequence_length |
+                        support_sequence_repeat |
+                        support_sequence_item |
+                        support_sequence_slice |
+                        support_sequence_concat
+                        );
+
+        enum {
+            support_mapping_length =            B(0),
+            support_mapping_subscript =         B(1),
+            support_mapping_ass_subscript =     B(2)
+        };
+        PythonType &supportMappingType( int methods_to_support=
+                        support_mapping_length |
+                        support_mapping_subscript
+                        );
+
+        enum {
+            support_number_add =                B(0),
+            support_number_subtract =           B(1),
+            support_number_multiply =           B(2),
+            support_number_remainder =          B(3),
+            support_number_divmod =             B(4),
+            support_number_power =              B(5),
+            support_number_negative =           B(6),
+            support_number_positive =           B(7),
+            support_number_absolute =           B(8),
+            support_number_invert =             B(9),
+            support_number_lshift =             B(10),
+            support_number_rshift =             B(11),
+            support_number_and =                B(12),
+            support_number_xor =                B(13),
+            support_number_or =                 B(14),
+            support_number_int =                B(15),
+            support_number_float=               B(16)
+        };
+        PythonType &supportNumberType( int methods_to_support=
+                    support_number_add |
+                    support_number_subtract |
+                    support_number_multiply |
+                    support_number_remainder |
+                    support_number_divmod |
+                    support_number_power |
+                    support_number_negative |
+                    support_number_positive |
+                    support_number_absolute |
+                    support_number_invert |
+                    support_number_lshift |
+                    support_number_rshift |
+                    support_number_and |
+                    support_number_xor |
+                    support_number_or |
+                    support_number_int |
+                    support_number_float
+                    );
+
+        enum {
+            support_buffer_getbuffer =          B(0),
+            support_buffer_releasebuffer =      B(1)
+        };
+        PythonType &supportBufferType( int methods_to_support=
+                    support_buffer_getbuffer |
+                    support_buffer_releasebuffer
+                    );
+#undef B
 
         PythonType &set_tp_dealloc( void (*tp_dealloc)( PyObject * ) );
         PythonType &set_tp_init( int (*tp_init)( PyObject *self, PyObject *args, PyObject *kwds ) );

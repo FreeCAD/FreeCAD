@@ -375,7 +375,7 @@ namespace Py
         {
             if( PyObject_SetAttrString( p, const_cast<char*>( s.c_str() ), *value ) == -1 )
             {
-                throw AttributeError( "setAttr failed." );
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -383,7 +383,7 @@ namespace Py
         {
             if( PyObject_DelAttrString( p, const_cast<char*>( s.c_str() ) ) == -1 )
             {
-                throw AttributeError( "delAttr failed." );
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -394,8 +394,7 @@ namespace Py
         {
             if( PyObject_DelItem( p, *key ) == -1 )
             {
-                // failed to link on Windows?
-                throw KeyError( "delItem failed." );
+                ifPyErrorThrowCxxException();
             }
         }
         // Equality and comparison use PyObject_Compare
@@ -1378,7 +1377,7 @@ namespace Py
         {
             if( PySequence_SetItem( ptr(), i, *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -1442,7 +1441,7 @@ namespace Py
         protected:
             friend class SeqBase<T>;
             SeqBase<T> *seq;
-            size_type count;
+            sequence_index_type count;
 
         public:
             ~iterator()
@@ -1453,7 +1452,7 @@ namespace Py
             , count( 0 )
             {}
 
-            iterator( SeqBase<T> *s, size_type where )
+            iterator( SeqBase<T> *s, Py_ssize_t where )
             : seq( s )
             , count( where )
             {}
@@ -1513,29 +1512,29 @@ namespace Py
                 return *this;
             }
 
-            iterator operator+( int n ) const
+            iterator operator+( sequence_index_type n ) const
             {
                 return iterator( seq, count + n );
             }
 
-            iterator operator-( int n ) const
+            iterator operator-( sequence_index_type n ) const
             {
                 return iterator( seq, count - n );
             }
 
-            iterator &operator+=( int n )
+            iterator &operator+=( sequence_index_type n )
             {
                 count = count + n;
                 return *this;
             }
 
-            iterator &operator-=( int n )
+            iterator &operator-=( sequence_index_type n )
             {
                 count = count - n;
                 return *this;
             }
 
-            int operator-( const iterator &other ) const
+            sequence_index_type operator-( const iterator &other ) const
             {
                 if( seq->ptr() != other.seq->ptr() )
                 {
@@ -1612,7 +1611,7 @@ namespace Py
             , count( 0 )
             {}
 
-            const_iterator( const SeqBase<T> *s, size_type where )
+            const_iterator( const SeqBase<T> *s, sequence_index_type where )
             : seq( s )
             , count( where )
             {}
@@ -1642,7 +1641,7 @@ namespace Py
                 return *this;
             }
 
-            const_iterator operator+( int n ) const
+            const_iterator operator+( sequence_index_type n ) const
             {
                 return const_iterator( seq, count + n );
             }
@@ -1677,18 +1676,18 @@ namespace Py
                 return count >= other.count;
             }
 
-            const_iterator operator-( int n )
+            const_iterator operator-( sequence_index_type n )
             {
                 return const_iterator( seq, count - n );
             }
 
-            const_iterator &operator+=( int n )
+            const_iterator &operator+=( sequence_index_type n )
             {
                 count = count + n;
                 return *this;
             }
 
-            const_iterator &operator-=( int n )
+            const_iterator &operator-=( sequence_index_type n )
             {
                 count = count - n;
                 return *this;
@@ -1789,6 +1788,7 @@ namespace Py
         virtual bool accepts( PyObject *pyob ) const
         {
             return pyob != NULL
+// QQQ _Unicode_Check for a Byte???
                 && Py::_Unicode_Check( pyob )
                 && PySequence_Length( pyob ) == 1;
         }
@@ -2176,7 +2176,7 @@ namespace Py
             // note PyTuple_SetItem is a thief...
             if( PyTuple_SetItem( ptr(), offset, new_reference_to( ob ) ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2202,7 +2202,7 @@ namespace Py
             {
                 if( PyTuple_SetItem( ptr(), i, new_reference_to( Py::_None() ) ) == -1 )
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2218,7 +2218,7 @@ namespace Py
             {
                 if( PyTuple_SetItem( ptr(), i, new_reference_to( s[i] ) ) == -1 )
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2385,7 +2385,7 @@ namespace Py
             {
                 if( PyList_SetItem( ptr(), i, new_reference_to( Py::_None() ) ) == -1 )
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2401,7 +2401,7 @@ namespace Py
             {
                 if( PyList_SetItem( ptr(), i, new_reference_to( s[i] ) ) == -1 )
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2439,7 +2439,7 @@ namespace Py
         {
             if( PyList_SetSlice( ptr(), i, j, *v ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2447,7 +2447,7 @@ namespace Py
         {
             if( PyList_Append( ptr(), *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2460,7 +2460,7 @@ namespace Py
         {
             if( PyList_Insert( ptr(), i, *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2468,7 +2468,7 @@ namespace Py
         {
             if( PyList_Sort( ptr() ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2476,7 +2476,7 @@ namespace Py
         {
             if( PyList_Reverse( ptr() ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
     };
@@ -2674,7 +2674,7 @@ namespace Py
         // If you assume that Python mapping is a hash_map...
         // hash_map::value_type is not assignable, but
         //( *it ).second = data must be a valid expression
-        typedef Py_ssize_t size_type;
+        typedef PyCxx_ssize_t size_type;
         typedef Object key_type;
         typedef mapref<T> data_type;
         typedef std::pair< const T, T > value_type;
@@ -2726,7 +2726,7 @@ namespace Py
             }
         }
 
-        virtual size_type size() const
+        virtual Py_ssize_t size() const
         {
             return PyMapping_Length( ptr() );
         }
@@ -2757,7 +2757,7 @@ namespace Py
             return mapref<T>( *this, key );
         }
 
-        size_type length() const
+        Py_ssize_t length() const
         {
             return PyMapping_Length( ptr() );
         }
@@ -2786,7 +2786,7 @@ namespace Py
         {
             if( PyMapping_SetItemString( ptr(), const_cast<char*>( s ), *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2794,7 +2794,7 @@ namespace Py
         {
             if( PyMapping_SetItemString( ptr(), const_cast<char*>( s.c_str() ), *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2802,7 +2802,7 @@ namespace Py
         {
             if( PyObject_SetItem( ptr(), s.ptr(), ob.ptr() ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2810,7 +2810,7 @@ namespace Py
         {
             if( PyMapping_DelItemString( ptr(), const_cast<char*>( s.c_str() ) ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2818,7 +2818,7 @@ namespace Py
         {
             if( PyMapping_DelItem( ptr(), *s ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2853,7 +2853,7 @@ namespace Py
             //
             MapBase<T>          *map;
             List                keys;       // for iterating over the map
-            size_type           pos;        // index into the keys
+            sequence_index_type pos;        // index into the keys
 
         public:
             ~iterator()
@@ -2970,7 +2970,7 @@ namespace Py
             friend class MapBase<T>;
             const MapBase<T>    *map;
             List                keys;   // for iterating over the map
-            size_type           pos;    // index into the keys
+            Py_ssize_t          pos;    // index into the keys
 
         public:
             ~const_iterator()
@@ -2982,7 +2982,7 @@ namespace Py
             , pos()
             {}
 
-            const_iterator( const MapBase<T> *m, List k, size_type p )
+            const_iterator( const MapBase<T> *m, List k, Py_ssize_t p )
             : map( m )
             , keys( k )
             , pos( p )
@@ -3449,7 +3449,7 @@ namespace Py
 
     //------------------------------------------------------------
     // type
-    inline Object type( const Exception &) // return the type of the error
+    inline Object type( const BaseException & ) // return the type of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch( &ptype, &pvalue, &ptrace );
@@ -3460,7 +3460,7 @@ namespace Py
         return result;
     }
 
-    inline Object value( const Exception &) // return the value of the error
+    inline Object value( const BaseException & ) // return the value of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch( &ptype, &pvalue, &ptrace );
@@ -3471,7 +3471,7 @@ namespace Py
         return result;
     }
 
-    inline Object trace( const Exception &) // return the traceback of the error
+    inline Object trace( const BaseException & ) // return the traceback of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch( &ptype, &pvalue, &ptrace );

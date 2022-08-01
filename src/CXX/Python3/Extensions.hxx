@@ -104,7 +104,7 @@ namespace Py
     extern "C" typedef PyObject *(*method_keyword_call_handler_t)( PyObject *_self, PyObject *_args, PyObject *_dict );
 
     template<class T>
-    class MethodDefExt : public PyMethodDef
+    class MethodDefExt
     {
     public:
         typedef Object (T::*method_noargs_function_t)();

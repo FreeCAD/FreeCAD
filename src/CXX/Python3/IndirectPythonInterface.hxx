@@ -49,40 +49,12 @@ bool InitialisePythonIndirectInterface();
 //    Wrap Exception variables as function calls
 //
 PYCXX_EXPORT PyObject * _Exc_Exception();
-PYCXX_EXPORT PyObject * _Exc_StandardError();
-PYCXX_EXPORT PyObject * _Exc_ArithmeticError();
-PYCXX_EXPORT PyObject * _Exc_LookupError();
 
-PYCXX_EXPORT PyObject * _Exc_AssertionError();
-PYCXX_EXPORT PyObject * _Exc_AttributeError();
-PYCXX_EXPORT PyObject * _Exc_EOFError();
-PYCXX_EXPORT PyObject * _Exc_FloatingPointError();
-PYCXX_EXPORT PyObject * _Exc_EnvironmentError();
-PYCXX_EXPORT PyObject * _Exc_IOError();
-PYCXX_EXPORT PyObject * _Exc_OSError();
-PYCXX_EXPORT PyObject * _Exc_ImportError();
-PYCXX_EXPORT PyObject * _Exc_IndexError();
-PYCXX_EXPORT PyObject * _Exc_KeyError();
-PYCXX_EXPORT PyObject * _Exc_KeyboardInterrupt();
-PYCXX_EXPORT PyObject * _Exc_MemoryError();
-PYCXX_EXPORT PyObject * _Exc_NameError();
-PYCXX_EXPORT PyObject * _Exc_OverflowError();
-PYCXX_EXPORT PyObject * _Exc_RuntimeError();
-PYCXX_EXPORT PyObject * _Exc_NotImplementedError();
-PYCXX_EXPORT PyObject * _Exc_SyntaxError();
-PYCXX_EXPORT PyObject * _Exc_SystemError();
-PYCXX_EXPORT PyObject * _Exc_SystemExit();
-PYCXX_EXPORT PyObject * _Exc_TypeError();
-PYCXX_EXPORT PyObject * _Exc_ValueError();
-PYCXX_EXPORT PyObject * _Exc_ZeroDivisionError();
-#ifdef MS_WINDOWS
-PYCXX_EXPORT PyObject * _Exc_WindowsError();
-#endif
+#define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
+    PYCXX_EXPORT PyObject * _Exc_##eclass();
 
-PYCXX_EXPORT PyObject * _Exc_IndentationError();
-PYCXX_EXPORT PyObject * _Exc_TabError();
-PYCXX_EXPORT PyObject * _Exc_UnboundLocalError();
-PYCXX_EXPORT PyObject * _Exc_UnicodeError();
+#include "CXX/Python3/cxx_standard_exceptions.hxx"
+#undef PYCXX_STANDARD_EXCEPTION
 
 //
 //    Wrap Object variables as function calls

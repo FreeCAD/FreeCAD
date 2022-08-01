@@ -34,13 +34,8 @@
 // DAMAGE.
 //
 //-----------------------------------------------------------------------------
-
-#ifndef __PyCXX_version_hxx__
-#define __PyCXX_version_hxx__
-
-#define PYCXX_VERSION_MAJOR 7
-#define PYCXX_VERSION_MINOR 0
-#define PYCXX_VERSION_PATCH 0
-#define PYCXX_MAKEVERSION( major, minor, patch ) ((major<<16)|(minor<<8)|(patch))
-#define PYCXX_VERSION PYCXX_MAKEVERSION( PYCXX_VERSION_MAJOR, PYCXX_VERSION_MINOR, PYCXX_VERSION_PATCH )
+#if PY_MAJOR_VERSION == 2
+#include "CXX/Python2/CxxDebug.hxx"
+#else
+#include "CXX/Python3/CxxDebug.hxx"
 #endif

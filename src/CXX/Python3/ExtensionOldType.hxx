@@ -270,7 +270,7 @@ namespace Py
 
                 return new_reference_to( result.ptr() );
             }
-            catch( Exception & )
+            catch( BaseException & )
             {
                 return 0;
             }
@@ -307,7 +307,7 @@ namespace Py
 
                 return new_reference_to( result.ptr() );
             }
-            catch( Exception & )
+            catch( BaseException & )
             {
                 return 0;
             }
@@ -335,7 +335,7 @@ namespace Py
 
                 return new_reference_to( result.ptr() );
             }
-            catch( Exception & )
+            catch( BaseException & )
             {
                 return 0;
             }
