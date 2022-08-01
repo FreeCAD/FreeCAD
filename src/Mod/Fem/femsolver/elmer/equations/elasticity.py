@@ -82,6 +82,7 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
         )
         obj.EigenmodesCount = 5
         obj.Priority = 10
+        obj.CalculatePrincipal = True
 
 
 class ViewProxy(linear.ViewProxy, equationbase.ElasticityViewProxy):

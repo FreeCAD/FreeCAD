@@ -91,6 +91,7 @@ class Proxy(equation.Proxy):
             "Linear System",
             ""
         )
+        obj.BiCGstablDegree = 3
         obj.addProperty(
             "App::PropertyEnumeration",
             "LinearPreconditioning",
