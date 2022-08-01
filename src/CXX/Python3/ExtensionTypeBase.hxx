@@ -127,9 +127,11 @@ namespace Py
         virtual Object number_or( const Object & );
         virtual Object number_power( const Object &, const Object & );
 
+#if !defined( Py_LIMITED_API )
         // Buffer
         virtual int buffer_get( Py_buffer *, int flags );
         virtual int buffer_release( Py_buffer *buf );
+#endif
 
     public:
         // helper functions to call function fn_name with 0 to 9 args

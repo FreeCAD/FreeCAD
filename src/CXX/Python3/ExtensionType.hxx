@@ -246,10 +246,15 @@ namespace Py
 #ifdef PYCXX_DEBUG
             std::cout << "extension_object_new()" << std::endl;
 #endif
-            PythonClassInstance *o = reinterpret_cast<PythonClassInstance *>( subtype->tp_alloc( subtype, 0 ) );
-            if( o == NULL )
+#if defined( Py_LIMITED_API )
+            PyObject *object = reinterpret_cast<allocfunc>( PyType_GetSlot( subtype, Py_tp_alloc ) )( subtype, 0 );
+#else
+            PyObject *object = subtype->tp_alloc( subtype, 0 );
+#endif
+            if( object == NULL )
                 return NULL;
 
+            PythonClassInstance *o = reinterpret_cast<PythonClassInstance *>( object );
             o->m_pycxx_object = NULL;
 
             PyObject *self = reinterpret_cast<PyObject *>( o );
@@ -304,7 +309,12 @@ namespace Py
             std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned long >( self->m_pycxx_object ) << std::dec << std::endl;
 #endif
             delete self->m_pycxx_object;
+#ifdef Py_LIMITED_API
+            freefunc fn = reinterpret_cast<freefunc>( PyType_GetSlot( _self->ob_type, Py_tp_free ) );
+            fn( _self );
+#else
             _self->ob_type->tp_free( _self );
+#endif
         }
 
     public:

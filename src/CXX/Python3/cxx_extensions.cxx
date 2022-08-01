@@ -152,7 +152,11 @@ PyMethodDef *MethodTable::table()
 //================================================================================
 ExtensionModuleBase::ExtensionModuleBase( const char *name )
 : m_module_name( name )
+#if defined( Py_LIMITED_API )
+, m_full_module_name( m_module_name )
+#else
 , m_full_module_name( __Py_PackageContext() != NULL ? std::string( __Py_PackageContext() ) : m_module_name )
+#endif
 , m_method_table()
 //m_module_def
 , m_module( NULL )
@@ -228,7 +232,7 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API )
     static int print_handler( PyObject *, FILE *, int );
 #endif
     static PyObject *getattr_handler( PyObject *, char * );
@@ -280,8 +284,10 @@ extern "C"
     static PyObject *number_power_handler( PyObject *, PyObject *, PyObject * );
 
     // Buffer
+#if !defined( Py_LIMITED_API )
     static int buffer_get_handler( PyObject *, Py_buffer *, int );
     static void buffer_release_handler( PyObject *, Py_buffer * );
+#endif
 }
 
 extern "C" void standard_dealloc( PyObject *p )
@@ -291,158 +297,142 @@ extern "C" void standard_dealloc( PyObject *p )
 
 bool PythonType::readyType()
 {
+#if defined( Py_LIMITED_API )
+    if( !tp_object )
+    {
+        std::vector<PyType_Slot> spec_slots( slots.size() + 1 );
+        int index = 0;
+
+        for (std::unordered_map<int, void*>::const_iterator i = slots.cbegin(); i != slots.cend(); i++)
+        {
+            spec_slots[ index ].slot = i->first;
+            spec_slots[ index ].pfunc = i->second;
+            index++;
+        }
+        spec_slots[ index ].slot = 0;
+        spec->slots = spec_slots.data();
+        tp_object = reinterpret_cast<PyTypeObject *>( PyType_FromSpec(spec) );
+    }
+    return tp_object != NULL;
+#else
     return PyType_Ready( table ) >= 0;
+#endif
 }
 
-PythonType &PythonType::supportSequenceType( int methods_to_support )
-{
-    if( !sequence_table )
-    {
-        sequence_table = new PySequenceMethods;
-        memset( sequence_table, 0, sizeof( PySequenceMethods ) );   // ensure new fields are 0
-        table->tp_as_sequence = sequence_table;
-        if( methods_to_support&support_sequence_length )
-        {
-            sequence_table->sq_length = sequence_length_handler;
-        }
-        if( methods_to_support&support_sequence_concat )
-        {
-            sequence_table->sq_concat = sequence_concat_handler;
-        }
-        if( methods_to_support&support_sequence_repeat )
-        {
-            sequence_table->sq_repeat = sequence_repeat_handler;
-        }
-        if( methods_to_support&support_sequence_item )
-        {
-            sequence_table->sq_item = sequence_item_handler;
-        }
-        if( methods_to_support&support_sequence_ass_item )
-        {
-            sequence_table->sq_ass_item = sequence_ass_item_handler;
-        }
-        if( methods_to_support&support_sequence_inplace_concat )
-        {
-            sequence_table->sq_inplace_concat = sequence_inplace_concat_handler;
-        }
-        if( methods_to_support&support_sequence_inplace_repeat )
-        {
-            sequence_table->sq_inplace_repeat = sequence_inplace_repeat_handler;
-        }
-        if( methods_to_support&support_sequence_contains )
-        {
-            sequence_table->sq_contains = sequence_contains_handler;
-        }
+#if defined( Py_LIMITED_API )
+#define FILL_SEQUENCE_SLOT(slot) \
+    if( methods_to_support&support_sequence_ ## slot ) { \
+        slots[ Py_sq_ ## slot ] = reinterpret_cast<void *>( sequence_ ## slot ## _handler ); \
     }
+#else
+#define FILL_SEQUENCE_SLOT(slot) \
+    if( methods_to_support&support_sequence_ ## slot ) { \
+        sequence_table->sq_ ## slot = sequence_ ## slot ## _handler; \
+    }
+#endif
+
+PythonType &PythonType::supportSequenceType( int methods_to_support ) {
+#if !defined( Py_LIMITED_API )
+    if(sequence_table)
+    {
+        return *this;
+    }
+    sequence_table = new PySequenceMethods;
+    memset( sequence_table, 0, sizeof( PySequenceMethods ) );   // ensure new fields are 0
+    table->tp_as_sequence = sequence_table;
+#endif
+
+    FILL_SEQUENCE_SLOT(length)
+    FILL_SEQUENCE_SLOT(concat)
+    FILL_SEQUENCE_SLOT(repeat)
+    FILL_SEQUENCE_SLOT(item)
+    FILL_SEQUENCE_SLOT(ass_item)
+    FILL_SEQUENCE_SLOT(inplace_concat)
+    FILL_SEQUENCE_SLOT(inplace_repeat)
+    FILL_SEQUENCE_SLOT(contains)
     return *this;
 }
+
+#undef FILL_SEQUENCE_SLOT
+
+#if defined( Py_LIMITED_API )
+#define FILL_MAPPING_SLOT(slot) \
+    if( methods_to_support&support_mapping_ ## slot ) { \
+        slots[ Py_mp_ ## slot ] = reinterpret_cast<void *>( mapping_ ## slot ## _handler ); \
+    }
+#else
+#define FILL_MAPPING_SLOT(slot) \
+    if( methods_to_support&support_mapping_ ## slot ) { \
+        mapping_table->mp_ ## slot = mapping_ ## slot ## _handler; \
+    }
+#endif
 
 PythonType &PythonType::supportMappingType( int methods_to_support )
 {
-    if( !mapping_table )
+#if !defined( Py_LIMITED_API )
+    if( mapping_table )
     {
-        mapping_table = new PyMappingMethods;
-        memset( mapping_table, 0, sizeof( PyMappingMethods ) );   // ensure new fields are 0
-        table->tp_as_mapping = mapping_table;
-
-        if( methods_to_support&support_mapping_length )
-        {
-            mapping_table->mp_length = mapping_length_handler;
-        }
-        if( methods_to_support&support_mapping_subscript )
-        {
-            mapping_table->mp_subscript = mapping_subscript_handler;
-        }
-        if( methods_to_support&support_mapping_ass_subscript )
-        {
-            mapping_table->mp_ass_subscript = mapping_ass_subscript_handler;
-        }
+        return *this;
     }
+    mapping_table = new PyMappingMethods;
+    memset( mapping_table, 0, sizeof( PyMappingMethods ) );   // ensure new fields are 0
+    table->tp_as_mapping = mapping_table;
+#endif
+    FILL_MAPPING_SLOT(length)
+    FILL_MAPPING_SLOT(subscript)
+    FILL_MAPPING_SLOT(ass_subscript)
     return *this;
 }
+
+#undef FILL_MAPPING_SLOT
+
+#if defined( Py_LIMITED_API )
+#define FILL_NUMBER_SLOT(slot) \
+    if( methods_to_support&support_number_ ## slot ) { \
+        slots[ Py_nb_ ## slot ] = reinterpret_cast<void *>( number_ ## slot ## _handler ); \
+    }
+#else
+#define FILL_NUMBER_SLOT(slot) \
+    if( methods_to_support&support_number_ ## slot ) { \
+        number_table->nb_ ## slot = number_ ## slot ## _handler; \
+    }
+#endif
 
 PythonType &PythonType::supportNumberType( int methods_to_support )
 {
-    if( !number_table )
+#if !defined( Py_LIMITED_API )
+    if( number_table )
     {
-        number_table = new PyNumberMethods;
-        memset( number_table, 0, sizeof( PyNumberMethods ) );   // ensure new fields are 0
-        table->tp_as_number = number_table;
-
-        if( methods_to_support&support_number_add )
-        {
-            number_table->nb_add = number_add_handler;
-        }
-        if( methods_to_support&support_number_subtract )
-        {
-            number_table->nb_subtract = number_subtract_handler;
-        }
-        if( methods_to_support&support_number_multiply )
-        {
-            number_table->nb_multiply = number_multiply_handler;
-        }
-        if( methods_to_support&support_number_remainder )
-        {
-            number_table->nb_remainder = number_remainder_handler;
-        }
-        if( methods_to_support&support_number_divmod )
-        {
-            number_table->nb_divmod = number_divmod_handler;
-        }
-        if( methods_to_support&support_number_power )
-        {
-            number_table->nb_power = number_power_handler;
-        }
-        if( methods_to_support&support_number_negative )
-        {
-            number_table->nb_negative = number_negative_handler;
-        }
-        if( methods_to_support&support_number_positive )
-        {
-            number_table->nb_positive = number_positive_handler;
-        }
-        if( methods_to_support&support_number_absolute )
-        {
-            number_table->nb_absolute = number_absolute_handler;
-        }
-        if( methods_to_support&support_number_invert )
-        {
-            number_table->nb_invert = number_invert_handler;
-        }
-        if( methods_to_support&support_number_lshift )
-        {
-            number_table->nb_lshift = number_lshift_handler;
-        }
-        if( methods_to_support&support_number_rshift )
-        {
-            number_table->nb_rshift = number_rshift_handler;
-        }
-        if( methods_to_support&support_number_and )
-        {
-            number_table->nb_and = number_and_handler;
-        }
-        if( methods_to_support&support_number_xor )
-        {
-            number_table->nb_xor = number_xor_handler;
-        }
-        if( methods_to_support&support_number_or )
-        {
-            number_table->nb_or = number_or_handler;
-        }
-        if( methods_to_support&support_number_int )
-        {
-            number_table->nb_int = number_int_handler;
-        }
-        if( methods_to_support&support_number_float )
-        {
-            number_table->nb_float = number_float_handler;
-        }
-
-        // QQQ lots of new methods to add
+        return *this;
     }
+    number_table = new PyNumberMethods;
+    memset( number_table, 0, sizeof( PyNumberMethods ) );   // ensure new fields are 0
+    table->tp_as_number = number_table;
+#endif
+
+    FILL_NUMBER_SLOT(add)
+    FILL_NUMBER_SLOT(subtract)
+    FILL_NUMBER_SLOT(multiply)
+    FILL_NUMBER_SLOT(remainder)
+    FILL_NUMBER_SLOT(divmod)
+    FILL_NUMBER_SLOT(power)
+    FILL_NUMBER_SLOT(negative)
+    FILL_NUMBER_SLOT(positive)
+    FILL_NUMBER_SLOT(absolute)
+    FILL_NUMBER_SLOT(invert)
+    FILL_NUMBER_SLOT(lshift)
+    FILL_NUMBER_SLOT(rshift)
+    FILL_NUMBER_SLOT(and)
+    FILL_NUMBER_SLOT(xor)
+    FILL_NUMBER_SLOT(or)
+    FILL_NUMBER_SLOT(int)
+    FILL_NUMBER_SLOT(float)
     return *this;
 }
 
+#undef FILL_NUMBER_SLOT
+
+#if !defined( Py_LIMITED_API )
 PythonType &PythonType::supportBufferType( int methods_to_support )
 {
     if( !buffer_table )
@@ -462,10 +452,27 @@ PythonType &PythonType::supportBufferType( int methods_to_support )
     }
     return *this;
 }
+#endif
 
 // if you define one sequence method you must define
 // all of them except the assigns
 
+#if defined( Py_LIMITED_API )
+PythonType::PythonType( size_t basic_size, int itemsize, const char *default_name )
+: spec( new PyType_Spec )
+{
+    memset( spec, 0, sizeof( PyType_Spec ) );
+    spec->name = const_cast<char *>( default_name );
+    spec->basicsize = basic_size;
+    spec->itemsize = itemsize;
+    spec->flags = Py_TPFLAGS_DEFAULT;
+
+    slots[ Py_tp_dealloc ] = reinterpret_cast<void *>( standard_dealloc );
+
+    tp_object = 0;
+}
+
+#else
 PythonType::PythonType( size_t basic_size, int itemsize, const char *default_name )
 : table( new PyTypeObject )
 , sequence_table( NULL )
@@ -562,70 +569,122 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
     table->tp_next = 0;
 #endif
 }
+#endif
 
 PythonType::~PythonType()
 {
+#if defined( Py_LIMITED_API )
+    delete spec;
+    PyObject_Free( tp_object );
+#else
     delete table;
     delete sequence_table;
     delete mapping_table;
     delete number_table;
     delete buffer_table;
+#endif
 }
 
 PyTypeObject *PythonType::type_object() const
 {
+#if defined( Py_LIMITED_API )
+    return tp_object;
+#else
     return table;
+#endif
 }
 
 PythonType &PythonType::name( const char *nam )
 {
+#if defined( Py_LIMITED_API )
+    spec->name = nam;
+#else
     table->tp_name = const_cast<char *>( nam );
+#endif
     return *this;
 }
 
 const char *PythonType::getName() const
 {
+#if defined( Py_LIMITED_API )
+    return spec->name;
+#else
     return table->tp_name;
+#endif
 }
 
 PythonType &PythonType::doc( const char *d )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_doc ] = reinterpret_cast<void *>( const_cast<char *>( d ) );
+#else
     table->tp_doc = const_cast<char *>( d );
+#endif
     return *this;
 }
 
 const char *PythonType::getDoc() const
 {
+#if defined( Py_LIMITED_API )
+    if( tp_object )
+        return reinterpret_cast<char *>( PyType_GetSlot( tp_object, Py_tp_doc ) );
+
+    std::unordered_map<int, void*>::const_iterator slot = slots.find( Py_tp_doc );
+    if( slot == slots.end() )
+        return NULL;
+    return reinterpret_cast<char *>( slot->second );
+#else
     return table->tp_doc;
+#endif
 }
 
 PythonType &PythonType::set_tp_dealloc( void (*tp_dealloc)( PyObject *self ) )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_dealloc ] = reinterpret_cast<void *>( tp_dealloc );
+#else
     table->tp_dealloc = tp_dealloc;
+#endif
     return *this;
 }
 
 PythonType &PythonType::set_tp_init( int (*tp_init)( PyObject *self, PyObject *args, PyObject *kwds ) )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_init ] = reinterpret_cast<void *>( tp_init );
+#else
     table->tp_init = tp_init;
+#endif
     return *this;
 }
 
 PythonType &PythonType::set_tp_new( PyObject *(*tp_new)( PyTypeObject *subtype, PyObject *args, PyObject *kwds ) )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_new ] = reinterpret_cast<void *>( tp_new );
+#else
     table->tp_new = tp_new;
+#endif
     return *this;
 }
 
 PythonType &PythonType::set_methods( PyMethodDef *methods )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_methods ] = reinterpret_cast<void *>( methods );
+#else
     table->tp_methods = methods;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportClass()
 {
+#if defined( Py_LIMITED_API )
+    spec->flags |= Py_TPFLAGS_BASETYPE;
+#else
     table->tp_flags |= Py_TPFLAGS_BASETYPE;
+#endif
     return *this;
 }
 
@@ -641,25 +700,41 @@ PythonType &PythonType::supportPrint()
 
 PythonType &PythonType::supportGetattr()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_getattr ] = reinterpret_cast<void *>( getattr_handler );
+#else
     table->tp_getattr = getattr_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportSetattr()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_setattr ] = reinterpret_cast<void *>( setattr_handler );
+#else
     table->tp_setattr = setattr_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportGetattro()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_getattro ] = reinterpret_cast<void *>( getattro_handler );
+#else
     table->tp_getattro = getattro_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportSetattro()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_setattro ] = reinterpret_cast<void *>( setattro_handler );
+#else
     table->tp_setattro = setattro_handler;
+#endif
     return *this;
 }
 
@@ -673,31 +748,51 @@ PythonType &PythonType::supportCompare( void )
 
 PythonType &PythonType::supportRichCompare()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_richcompare ] = reinterpret_cast<void *>( rich_compare_handler );
+#else
     table->tp_richcompare = rich_compare_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportRepr()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_repr ] = reinterpret_cast<void *>( repr_handler );
+#else
     table->tp_repr = repr_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportStr()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_str ] = reinterpret_cast<void *>( str_handler );
+#else
     table->tp_str = str_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportHash()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_hash ] = reinterpret_cast<void *>( hash_handler );
+#else
     table->tp_hash = hash_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportCall()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_call ] = reinterpret_cast<void *>( call_handler );
+#else
     table->tp_call = call_handler;
+#endif
     return *this;
 }
 
@@ -705,11 +800,19 @@ PythonType &PythonType::supportIter( int methods_to_support )
 {
     if( methods_to_support&support_iter_iter )
     {
+#if defined( Py_LIMITED_API )
+        slots[ Py_tp_iter ] = reinterpret_cast<void *>( iter_handler );
+#else
         table->tp_iter = iter_handler;
+#endif
     }
     if( methods_to_support&support_iter_iternext )
     {
+#if defined( Py_LIMITED_API )
+        slots[ Py_tp_iternext ] = reinterpret_cast<void *>( iternext_handler );
+#else
         table->tp_iternext = iternext_handler;
+#endif
     }
     return *this;
 }
@@ -721,7 +824,7 @@ PythonType &PythonType::supportIter( int methods_to_support )
 //--------------------------------------------------------------------------------
 PythonExtensionBase *getPythonExtensionBase( PyObject *self )
 {
-    if( self->ob_type->tp_flags&Py_TPFLAGS_BASETYPE )
+    if(PyType_HasFeature(self->ob_type, Py_TPFLAGS_BASETYPE))
     {
         PythonClassInstance *instance = reinterpret_cast<PythonClassInstance *>( self );
         return instance->m_pycxx_object;
@@ -732,7 +835,7 @@ PythonExtensionBase *getPythonExtensionBase( PyObject *self )
     }
 }
 
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined ( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined ( Py_LIMITED_API )
 extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
 {
     try
@@ -1262,6 +1365,7 @@ extern "C" PyObject *number_power_handler( PyObject *self, PyObject *x1, PyObjec
 }
 
 // Buffer
+#ifndef Py_LIMITED_API
 extern "C" int buffer_get_handler( PyObject *self, Py_buffer *buf, int flags )
 {
     try
@@ -1281,6 +1385,7 @@ extern "C" void buffer_release_handler( PyObject *self, Py_buffer *buf )
     p->buffer_release( buf );
     // NOTE: No way to indicate error to Python
 }
+#endif
 
 //================================================================================
 //
@@ -1394,7 +1499,7 @@ int PythonExtensionBase::genericSetAttro( const String &name, const Object &valu
     return PyObject_GenericSetAttr( selfPtr(), name.ptr(), value.ptr() );
 }
 
-#if defined( PYCXX_PYTHON_2TO3 )
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API )
 int PythonExtensionBase::print( FILE *, int )
 {
     missing_method( print );
@@ -1611,6 +1716,7 @@ Object PythonExtensionBase::number_power( const Object &, const Object & )
 
 
 // Buffer
+#ifndef Py_LIMITED_API
 int PythonExtensionBase::buffer_get( Py_buffer * /*buf*/, int /*flags*/ )
 {
     missing_method( buffer_get );
@@ -1622,6 +1728,7 @@ int PythonExtensionBase::buffer_release( Py_buffer * /*buf*/ )
     // memory is dynamic.
     return 0;
 }
+#endif
 
 //--------------------------------------------------------------------------------
 //

@@ -16,7 +16,7 @@ PYCXX_STANDARD_EXCEPTION( GeneratorExit,        BaseException )
 PYCXX_STANDARD_EXCEPTION( Exception,            BaseException )
 #endif
 PYCXX_STANDARD_EXCEPTION(     StopIteration,        Exception )
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+#if (defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03050000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5)
 PYCXX_STANDARD_EXCEPTION(     StopAsyncIteration,       Exception )
 #endif
 PYCXX_STANDARD_EXCEPTION(     ArithmeticError,      Exception )
@@ -53,7 +53,7 @@ PYCXX_STANDARD_EXCEPTION(         TimeoutError,         OSError )
 PYCXX_STANDARD_EXCEPTION(     ReferenceError,   Exception )
 PYCXX_STANDARD_EXCEPTION(     RuntimeError,     Exception )
 PYCXX_STANDARD_EXCEPTION(         NotImplementedError,  RuntimeError )
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+#if (defined(Py_LIMITED_API) && Py_LIMITED_API+0 >= 0x03050000 && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5) || (!defined( Py_LIMITED_API )  && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5)
 PYCXX_STANDARD_EXCEPTION(         RecursionError,       RuntimeError )
 #endif
 PYCXX_STANDARD_EXCEPTION(     SyntaxError,      Exception )

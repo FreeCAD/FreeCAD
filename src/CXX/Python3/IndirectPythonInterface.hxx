@@ -48,13 +48,13 @@ bool InitialisePythonIndirectInterface();
 //
 //    Wrap Exception variables as function calls
 //
-PYCXX_EXPORT PyObject * _Exc_Exception();
+PYCXX_EXPORT PyObject * _Exc_BaseException();
 
-#define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
+# define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
     PYCXX_EXPORT PyObject * _Exc_##eclass();
 
-#include "CXX/Python3/cxx_standard_exceptions.hxx"
-#undef PYCXX_STANDARD_EXCEPTION
+# include "CXX/Python3/cxx_standard_exceptions.hxx"
+# undef PYCXX_STANDARD_EXCEPTION
 
 //
 //    Wrap Object variables as function calls
@@ -79,11 +79,13 @@ PYCXX_EXPORT bool _Class_Check( PyObject *op );
 PYCXX_EXPORT PyTypeObject * _Instance_Type();
 PYCXX_EXPORT bool _Instance_Check( PyObject *op );
 
+# if !defined( Py_LIMITED_API )
 PYCXX_EXPORT PyTypeObject * _Method_Type();
 PYCXX_EXPORT bool _Method_Check( PyObject *op );
 
 PYCXX_EXPORT PyTypeObject * _Function_Type();
 PYCXX_EXPORT bool _Function_Check( PyObject *op );
+# endif
 
 PYCXX_EXPORT PyTypeObject * _Complex_Type();
 PYCXX_EXPORT bool _Complex_Check( PyObject *op );
@@ -139,15 +141,16 @@ PYCXX_EXPORT bool _TraceBack_Check( PyObject *v );
 PYCXX_EXPORT PyTypeObject * _Tuple_Type();
 PYCXX_EXPORT bool _Tuple_Check( PyObject *op );
 
+# if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
 PYCXX_EXPORT int &_Py_DebugFlag();
 PYCXX_EXPORT int &_Py_InteractiveFlag();
 PYCXX_EXPORT int &_Py_OptimizeFlag();
 PYCXX_EXPORT int &_Py_NoSiteFlag();
 PYCXX_EXPORT int &_Py_TabcheckFlag();
 PYCXX_EXPORT int &_Py_VerboseFlag();
-PYCXX_EXPORT int &_Py_UnicodeFlag();
 
 PYCXX_EXPORT const char *__Py_PackageContext();
+# endif
 
 PYCXX_EXPORT void _XINCREF( PyObject *op );
 PYCXX_EXPORT void _XDECREF( PyObject *op );

@@ -38,6 +38,10 @@
 #ifndef __CXX_PythonType__h
 #define __CXX_PythonType__h
 
+#if defined( Py_LIMITED_API )
+#include <unordered_map>
+#endif
+
 namespace Py
 {
     class PYCXX_EXPORT PythonType
@@ -57,7 +61,7 @@ namespace Py
         PythonType &doc( const char *d );
 
         PythonType &supportClass( void );
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API )
         PythonType &supportPrint( void );
 #endif
         PythonType &supportGetattr( void );
@@ -150,7 +154,7 @@ namespace Py
                     support_number_int |
                     support_number_float
                     );
-
+#if !defined( Py_LIMITED_API )
         enum {
             support_buffer_getbuffer =          B(0),
             support_buffer_releasebuffer =      B(1)
@@ -159,6 +163,7 @@ namespace Py
                     support_buffer_getbuffer |
                     support_buffer_releasebuffer
                     );
+#endif
 #undef B
 
         PythonType &set_tp_dealloc( void (*tp_dealloc)( PyObject * ) );
@@ -170,16 +175,17 @@ namespace Py
         bool readyType();
 
     protected:
-        void init_sequence();
-        void init_mapping();
-        void init_number();
-        void init_buffer();
-
+#if defined( Py_LIMITED_API )
+        std::unordered_map<int, void*>  slots;
+        PyType_Spec                     *spec;
+        PyTypeObject                    *tp_object;
+#else
         PyTypeObject            *table;
         PySequenceMethods       *sequence_table;
         PyMappingMethods        *mapping_table;
         PyNumberMethods         *number_table;
         PyBufferProcs           *buffer_table;
+#endif
 
     private:
         //
