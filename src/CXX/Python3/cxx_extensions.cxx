@@ -36,6 +36,7 @@
 //-----------------------------------------------------------------------------
 #include "CXX/Extensions.hxx"
 #include "CXX/Exception.hxx"
+#include "CXX/Objects.hxx"
 
 #include <assert.h>
 
@@ -77,10 +78,10 @@ void Object::validate()
         }
 #endif
         release();
-        if( PyErr_Occurred() )
-        { // Error message already set
-            throw Exception();
-        }
+
+        // If error message already set
+        ifPyErrorThrowCxxException();
+
         // Better error message if RTTI available
 #if defined( _CPPRTTI ) || defined( __GNUG__ )
         throw TypeError( s );
@@ -183,8 +184,13 @@ public:
     ExtensionModuleBase *module;
 };
 
+void initExceptions();
+
 void ExtensionModuleBase::initialize( const char *module_doc )
 {
+    // init the exception code
+    initExceptions();
+
     memset( &m_module_def, 0, sizeof( m_module_def ) );
 
     m_module_def.m_name = const_cast<char *>( m_module_name.c_str() );
@@ -1642,6 +1648,12 @@ void ExtensionExceptionType::init( ExtensionModuleBase &module, const std::strin
      module_name += name;
 
     set( PyErr_NewException( const_cast<char *>( module_name.c_str() ), parent.ptr(), NULL ), true );
+}
+
+// is the exception this specific exception 'exc'
+bool Exception::matches( ExtensionExceptionType &exc )
+{
+    return PyErr_ExceptionMatches( exc.ptr() ) != 0;
 }
 
 ExtensionExceptionType::~ExtensionExceptionType()
