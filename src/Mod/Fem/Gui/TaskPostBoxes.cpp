@@ -1101,25 +1101,30 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
 
     // Set the unit for the different known result types.
-    // For the Elmer EigenModes, the names are different and unique. For them we only check
-    // the beginning of the name.
-
+    
+    //  CCX names
     if ( (FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
-        || (FieldName == "Major Principal Stress") || (FieldName == "Intermediate Principal Stress")
-        || (FieldName == "Minor Principal Stress")
+        || (FieldName == "Major Principal Stress") || (FieldName == "Minor Principal Stress")
+        || (FieldName == "Intermediate Principal Stress")
         || (FieldName == "Stress xx component") || (FieldName == "Stress xy component")
         || (FieldName == "Stress xz component") || (FieldName == "Stress yy component")
-        || (FieldName == "Stress yz component") || (FieldName == "Stress zz component")
-        || (FieldName.find("tresca Eigen", 0) == 0) || (FieldName.find("vonmises Eigen", 0) == 0)
-        || (FieldName.find("stress_", 0) == 0)
-        || (FieldName.find("principal stress Eigen", 0) == 0) ) {
+        || (FieldName == "Stress yz component") || (FieldName == "Stress zz component") ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("Pa");
     }
+    // The elmer names are different. If there are EigenModes, the names are unique for
+    // every mode. Therefore we only check for the beginning of the name.
+    else if ( (FieldName.find("tresca", 0) == 0) || (FieldName.find("vonmises", 0) == 0)
+        || (FieldName.find("stress_", 0) == 0) || (FieldName.find("principal stress", 0) == 0) ) {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("Pa");
+    }
     else if ( (FieldName == "Displacement") || (FieldName == "Displacement Magnitude")
-        || (FieldName.find("displacement Eigen", 0) == 0) ) {
+        || (FieldName.find("displacement", 0) == 0) // Elmer name
+        ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("m");
     }
-    else if (FieldName == "Temperature") {
+    else if (FieldName == "Temperature"
+             || (FieldName.find("temperature", 0) == 0) // Elmer name
+        ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
     }
     else if (FieldName == "electric field") {
