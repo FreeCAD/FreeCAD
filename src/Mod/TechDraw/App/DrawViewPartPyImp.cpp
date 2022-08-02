@@ -581,26 +581,6 @@ PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
     return result;
 }
 
-PyObject* DrawViewPartPy::replaceCenterLine(PyObject *args)
-{
-    (void) args;
-    Base::Console().Message("DVPP::replaceCenterLine() - deprecated. do not use.\n");
-    return PyBool_FromLong(0l);
-
-//    Base::Console().Message("DVPPI::replace CenterLine()\n");
-//    PyObject* pNewCL;
-//    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::CenterLinePy::Type), &pNewCL)) {
-//        throw Py::TypeError("expected (CenterLine)");
-//    }
-//    DrawViewPart* dvp = getDrawViewPartPtr();
-//    TechDraw::CenterLinePy* clPy = static_cast<TechDraw::CenterLinePy*>(pNewCL);
-//    TechDraw::CenterLine* cl = clPy->getCenterLinePtr();
-//    bool result = dvp->replaceCenterLine(cl);
-//    dvp->refreshCLGeoms();
-//    dvp->requestPaint();
-//    return PyBool_FromLong((long) result);
-}
-
 PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
 {
 //    Base::Console().Message("DVPPI::removeCenterLine()\n");
