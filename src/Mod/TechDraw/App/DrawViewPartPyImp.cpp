@@ -485,29 +485,6 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
     return result;
 }
 
-PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
-{
-    (void) args;
-    Base::Console().Message("DVPP::replaceCosmeticEdge() - deprecated. do not use.\n");
-    return PyBool_FromLong(0l);
-
-//    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
-//    bool result = false;
-//    PyObject* pNewCE;
-//    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::CosmeticEdgePy::Type), &pNewCE)) {
-//        throw Py::TypeError("expected (CosmeticEdge)");
-//    }
-//    DrawViewPart* dvp = getDrawViewPartPtr();
-//    TechDraw::CosmeticEdgePy* cePy = static_cast<TechDraw::CosmeticEdgePy*>(pNewCE);
-//    TechDraw::CosmeticEdge* ce = cePy->getCosmeticEdgePtr();
-//    if (ce) {
-//        result = dvp->replaceCosmeticEdge(ce);                 //<<<
-//        dvp->refreshCEGeoms();
-//        dvp->requestPaint();
-//    }
-//    return PyBool_FromLong((long) result);
-}
-
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {
 //    Base::Console().Message("DVPPI::removeCosmeticEdge()\n");
