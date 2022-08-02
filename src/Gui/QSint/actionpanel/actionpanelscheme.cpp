@@ -90,7 +90,7 @@ const char* ActionPanelDefaultStyle =
         "color: #006600;"
     "}"
 
-    // set a QGroupBox  to avoid that the OS styles it, see
+    // set a QGroupBox to avoid that the OS style is used, see
     // https://github.com/FreeCAD/FreeCAD/issues/6102
     // the px values are taken from Behave-dark.qss, except the padding
     "QSint--ActionGroup QFrame[class='content'] QGroupBox {"
