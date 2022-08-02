@@ -330,6 +330,8 @@ SET(PathTests_SRCS
     PathTests/TestRefactoredLinuxCNCPost.py
     PathTests/TestRefactoredMach3Mach4Post.py
     PathTests/TestRefactoredTestPost.py
+    PathTests/TestRefactoredTestPostGCodes.py
+    PathTests/TestRefactoredTestPostMCodes.py
     PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
     PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
