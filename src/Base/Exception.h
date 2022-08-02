@@ -89,7 +89,7 @@ namespace Base
 
 class BaseExport Exception : public BaseClass
 {
-  TYPESYSTEM_HEADER();
+  TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
   ~Exception() throw() override = default;
