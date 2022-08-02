@@ -536,8 +536,15 @@ class Writer(object):
         s["Equation"] = "Flux Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
         s["Flux Variable"] = equation.FluxVariable
+        s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
+        s["Average Within Materials"] = equation.AverageWithinMaterials
         s["Calculate Flux"] = equation.CalculateFlux
+        s["Calculate Flux Abs"] = equation.CalculateFluxAbs
+        s["Calculate Flux Magnitude"] = equation.CalculateFluxMagnitude
         s["Calculate Grad"] = equation.CalculateGrad
+        s["Calculate Grad Abs"] = equation.CalculateGradAbs
+        s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
+        s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
         return s
 
     def _handleElectricforce(self):
