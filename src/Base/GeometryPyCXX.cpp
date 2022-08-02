@@ -225,11 +225,6 @@ Py::Object Vector2dPy::number_float()
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_long()
-{
-    throw Py::TypeError("Not defined");
-}
-
 Py::Object Vector2dPy::number_add( const Py::Object & py)
 {
     Vector2d u(Py::toVector2d(py));

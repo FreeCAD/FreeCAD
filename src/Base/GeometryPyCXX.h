@@ -83,7 +83,6 @@ public:
     Py::Object number_invert() override;
     Py::Object number_int() override;
     Py::Object number_float() override;
-    Py::Object number_long() override;
     Py::Object number_add( const Py::Object & ) override;
     Py::Object number_subtract( const Py::Object & ) override;
     Py::Object number_multiply( const Py::Object & ) override;
