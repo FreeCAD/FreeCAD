@@ -22,10 +22,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoShapeHints.h>
-#endif
-
 #include <App/GroupExtension.h>
 #include <Gui/Application.h>
 #include <Gui/Selection.h>
@@ -44,10 +40,6 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostPipeline, FemGui::ViewProviderFemPost
 ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
 {
     sPixmap = "FEM_PostPipelineFromResult";
-
-    // Fixes rendering issue with the annotation node
-    m_shapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
-    m_shapeHints->shapeType = SoShapeHints::SOLID;
 }
 
 ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline()

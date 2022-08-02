@@ -28,7 +28,7 @@
 # include <QMenu>
 # include <QMessageBox>
 # include <QTextStream>
-# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <App/MaterialObject.h>
@@ -58,7 +58,7 @@ using namespace FemGui;
 
 ViewProviderFemHighlighter::ViewProviderFemHighlighter()
 {
-    annotate = new SoAnnotation();
+    annotate = new SoSeparator();
     annotate->ref();
 }
 
