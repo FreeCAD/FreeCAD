@@ -78,21 +78,18 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *hgroup = "Highlight";
 
     //default line weights
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
-    double weight = lg->getWeight("Thick");
+    double weight = TechDraw::LineGroup::getDefaultWidth("Thick");
     ADD_PROPERTY_TYPE(LineWidth,(weight),group,App::Prop_None,"The thickness of visible lines (line groups xx.2");
 
-    weight = lg->getWeight("Thin");
+    weight = TechDraw::LineGroup::getDefaultWidth("Thin");
     ADD_PROPERTY_TYPE(HiddenWidth,(weight),group,App::Prop_None,"The thickness of hidden lines, if enabled (line groups xx.1)");
 
-    weight = lg->getWeight("Graphic");
+    weight = TechDraw::LineGroup::getDefaultWidth("Graphic");
     ADD_PROPERTY_TYPE(IsoWidth,(weight),group,App::Prop_None,"The thickness of isoparameter lines, if enabled");
 
-    weight = lg->getWeight("Extra");
+    weight = TechDraw::LineGroup::getDefaultWidth("Extra");
     ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
-    delete lg;                            //Coverity CID 174664
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");

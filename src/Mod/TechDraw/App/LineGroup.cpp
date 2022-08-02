@@ -178,15 +178,19 @@ LineGroup* LineGroup::lineGroupFactory(int groupNumber)
     return lg;
 }
 
-//valid weight names: Thick, Thin, Graphic, Extra
-double LineGroup::getDefaultWidth(std::string weightName, int groupNumber)
+/**
+ * @brief Returns the default line width given a weight name and group number.
+ * 
+ * @param weightName can be "Thick", "Thin", "Graphic" or "Extra"
+ * @param lineGroupNumber if -1 will then use groupNumber in preferences. Default value is -1.
+ * @return the default line width.
+ */
+double LineGroup::getDefaultWidth(std::string weightName, int lineGroupNumber)
 {
-    //default line weights
-    int lgNumber = groupNumber;
-    if (lgNumber == -1) {
-        lgNumber = Preferences::lineGroup();
+    if (lineGroupNumber == -1) {
+        lineGroupNumber = Preferences::lineGroup();
     }
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lineGroupNumber);
 
     double weight = lg->getWeight(weightName);
     delete lg;

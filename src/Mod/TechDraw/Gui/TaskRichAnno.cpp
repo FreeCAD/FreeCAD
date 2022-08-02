@@ -319,11 +319,7 @@ void TaskRichAnno::onEditorExit(void)
 
 double TaskRichAnno::prefWeight() const
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Graphic");
-    delete lg;                                   //Coverity CID 174670
-    return weight;
+    return TechDraw::LineGroup::getDefaultWidth("Graphic");
 }
 
 App::Color TaskRichAnno::prefLineColor(void)

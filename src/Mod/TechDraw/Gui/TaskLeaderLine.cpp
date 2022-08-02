@@ -778,11 +778,7 @@ int TaskLeaderLine::getPrefArrowStyle()
 
 double TaskLeaderLine::prefWeight() const
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return weight;
+    return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
 App::Color TaskLeaderLine::prefLineColor(void)

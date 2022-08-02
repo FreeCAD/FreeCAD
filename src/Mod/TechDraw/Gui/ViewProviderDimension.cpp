@@ -240,11 +240,7 @@ double ViewProviderDimension::prefFontSize() const
 
 double ViewProviderDimension::prefWeight() const
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return weight;
+    return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
 int ViewProviderDimension::prefStandardAndStyle() const
