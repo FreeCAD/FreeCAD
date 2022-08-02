@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan TrÃ¶ger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,40 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
-#define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+#include <Base/VectorPy.h>
+#include <Base/GeometryPyCXX.h>
 
-#include "ViewProviderFemPostObject.h"
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Fem/FemGlobal.h>
+#include "ViewProviderFemPostPipeline.h"
 
-namespace FemGui
+// inclusion of the generated files (generated out of ViewProviderFemPostPipelinePy.xml)
+#include "ViewProviderFemPostPipelinePy.h"
+#include "ViewProviderFemPostPipelinePy.cpp"
+
+
+using namespace FemGui;
+
+// returns a string which represents the object e.g. when printed in python
+std::string ViewProviderFemPostPipelinePy::representation(void) const
 {
+    return std::string("<ViewProviderFemPostPipeline object>");
+}
 
-class FemGuiExport ViewProviderFemPostPipeline : public ViewProviderFemPostObject {
+PyObject *ViewProviderFemPostPipelinePy::transformElmerFields(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostPipeline);
+    this->getViewProviderFemPostPipelinePtr()->transformFields();
 
-public:
-    /// constructor.
-    ViewProviderFemPostPipeline();
-    ~ViewProviderFemPostPipeline();
+    Py_Return;
+}
 
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
-    virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
-    virtual void updateData(const App::Property* prop);
-    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
-    void transformFields();
+PyObject *ViewProviderFemPostPipelinePy::getCustomAttributes(const char * /*attr*/) const
+{
+    return nullptr;
+}
 
-protected:
-    void updateFunctionSize();
-
-};
-
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemPostPipeline> ViewProviderFemPostPipelinePython;
-
-} //namespace FemGui
-
-
-#endif // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+int ViewProviderFemPostPipelinePy::setCustomAttributes(const char * /*attr*/, PyObject * /*obj*/)
+{
+    return 0;
+}

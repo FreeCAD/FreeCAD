@@ -151,6 +151,7 @@ PyMOD_INIT_FUNC(FemGui)
 #ifdef FC_USE_VTK
     FemGui::ViewProviderFemPostObject                           ::init();
     FemGui::ViewProviderFemPostPipeline                         ::init();
+    FemGui::ViewProviderFemPostPipelinePython                   ::init();
     FemGui::ViewProviderFemPostClip                             ::init();
     FemGui::ViewProviderFemPostCut                              ::init();
     FemGui::ViewProviderFemPostDataAlongLine                    ::init();

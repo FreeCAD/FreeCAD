@@ -49,7 +49,7 @@ public:
 
     short mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
-    PyObject* getPyObject();
+    virtual PyObject *getPyObject(void);
 
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostPipeline";
@@ -81,6 +81,9 @@ private:
         Data.setValue(reader->GetOutput());
     }
 };
+
+typedef App::FeaturePythonT<FemPostPipeline> FemPostPipelinePython;
+
 
 } //namespace Fem
 

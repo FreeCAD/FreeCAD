@@ -22,14 +22,21 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <vtkPointData.h>
+#endif
+
+#include <App/FeaturePythonPyImp.h>
 #include <App/GroupExtension.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Selection.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
-#include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostPipeline.h"
+#include "ViewProviderFemPostPipelinePy.h"
+#include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostFunction.h"
 
 
@@ -120,3 +127,65 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
         }
     }
 }
+
+void ViewProviderFemPostPipeline::transformFields()
+{
+    Base::Console().Error("\nBacklight ");
+    Fem::FemPostPipeline *obj = static_cast<Fem::FemPostPipeline *>(getObject());
+
+    vtkSmartPointer<vtkDataObject> data = obj->Data.getValue();
+    if (!data || !data->IsA("vtkDataSet"))
+        return;
+
+    vtkDataSet *dset = vtkDataSet::SafeDownCast(data);
+    //vtkPointData *pd = dset->GetPointData();
+
+    std::vector<const char*> FieldNames;
+    std::vector<double> FieldFactors;
+    FieldNames[0] = "displacement";
+    FieldFactors[0] = 1e3;
+
+    int FieldSize = FieldNames.size();
+
+    // we step now through all Fields and set a factor we need for the transformation
+    for (int i = 0; i < FieldSize; ++i) {
+        vtkDataArray *pdata = dset->GetPointData()->GetArray(FieldNames[i]);
+        if (!pdata)
+            continue;
+        for (int i = 0; i < dset->GetNumberOfPoints(); ++i) {
+            double value = 0;
+            if (pdata->GetNumberOfComponents() == 1) {
+                value = pdata->GetComponent(i, 0);
+                pdata->SetComponent(i, 0, value * FieldFactors[i]);
+            } else {
+                for (int j = 0; j < pdata->GetNumberOfComponents(); ++j)
+                    value += std::pow(pdata->GetComponent(i, j), 2);
+                value = std::sqrt(value);
+            }
+            
+        }
+    }
+}
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui
+{
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemPostPipelinePython, FemGui::ViewProviderFemPostPipeline)
+/// @endcond
+
+template<>
+PyObject *FemGui::ViewProviderFemPostPipelinePython::getPyObject()
+{
+    if (!pyViewObject) {
+        // ref counter is set to 1
+        pyViewObject = new App::FeaturePythonPyT<FemGui::ViewProviderFemPostPipelinePy>(this);
+    }
+    pyViewObject->IncRef();
+    return pyViewObject;
+}
+
+// explicit template instantiation
+template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemPostPipeline>;
+}// namespace Gui

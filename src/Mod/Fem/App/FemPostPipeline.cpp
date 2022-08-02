@@ -44,6 +44,7 @@
 #include "FemVTKTools.h"
 
 #include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Console.h>
 
 #include "FemPostPipelinePy.h"
@@ -267,6 +268,23 @@ void FemPostPipeline::load(FemResultObject* res) {
 
     Data.setValue(grid);
 }
+
+// Python feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Fem::FemPostPipelinePython, Fem::FemPostPipeline)
+template<>const char *Fem::FemPostPipelinePython::getViewProviderName(void) const
+{
+    return "FemGui::ViewProviderFemPostPipelinePython";
+}
+
+// explicit template instantiation
+template class FemExport FeaturePythonT<Fem::FemPostPipeline>;
+
+/// @endcond
+
+}// namespace App
 
 PyObject* FemPostPipeline::getPyObject(void)
 {
