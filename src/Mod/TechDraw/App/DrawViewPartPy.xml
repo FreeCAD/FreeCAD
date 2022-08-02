@@ -83,11 +83,6 @@
         <UserDocu>ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="replaceCosmeticEdge">
-      <Documentation>
-        <UserDocu>replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False.</UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="removeCosmeticEdge">
       <Documentation>
         <UserDocu>removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None.</UserDocu>

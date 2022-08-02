@@ -250,15 +250,6 @@ void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)
     }
 }
 
-
-bool CosmeticExtension::replaceCosmeticEdge(CosmeticEdge* newCE)
-{
-    (void) newCE;
-    Base::Console().Message("CX::replaceCosmeticEdge() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
-}
-
 //********** Center Line *******************************************************
 
 //returns unique CL id

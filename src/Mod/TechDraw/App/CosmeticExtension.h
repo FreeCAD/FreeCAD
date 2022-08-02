@@ -63,7 +63,6 @@ public:
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(std::string name) const;
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(int i) const;
     virtual CosmeticEdge*   getCosmeticEdge(std::string id) const;
-    virtual bool            replaceCosmeticEdge(CosmeticEdge* newEdge);
     virtual void            removeCosmeticEdge(std::string tag);
     virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
 
