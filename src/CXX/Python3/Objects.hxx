@@ -55,7 +55,7 @@
 
 namespace Py
 {
-    void ifPyErrorThrowCxxException();
+    PYCXX_EXPORT void ifPyErrorThrowCxxException();
 
     typedef Py_ssize_t sequence_index_type;    // type of an index into a sequence
     PYCXX_EXPORT Py_ssize_t numeric_limits_max();
