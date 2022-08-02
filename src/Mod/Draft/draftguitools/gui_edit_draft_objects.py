@@ -189,7 +189,9 @@ class DraftBSplineGuiTools(DraftWireGuiTools):
     def add_point(self, edit_command, obj, pos):
         """Add point to obj.
         """
-        info, pt = edit_command.get_specific_object_info(obj,pos)
+        info, global_pt = edit_command.get_specific_object_info(obj,pos)
+        pt = edit_command.localize_vector(obj, global_pt)
+
         if not info or (pt is None):
             return
 
@@ -198,17 +200,16 @@ class DraftBSplineGuiTools(DraftWireGuiTools):
             curve = obj.Shape.Edges[0].Curve
         else:
             curve = obj.Shape.Curve
-        uNewPoint = curve.parameter(pt)
-        uPoints = []
-        for p in obj.Points:
-            uPoints.append(curve.parameter(p))
+        uNewPoint = curve.parameter(obj.Placement.multVec(pt))
+        uPoints = curve.getKnots()
+
         for i in range(len(uPoints) - 1):
             if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
-                pts.insert(i + 1, edit_command.localize_vector(obj, pt))
+                pts.insert(i + 1, pt)
                 break
         # DNC: fix: add points to last segment if curve is closed
         if obj.Closed and (uNewPoint > uPoints[-1]):
-            pts.append(edit_command.localize_vector(obj, pt))
+            pts.append(pt)
         obj.Points = pts
 
         obj.recompute()
