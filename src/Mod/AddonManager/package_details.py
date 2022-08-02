@@ -162,6 +162,7 @@ class PackageDetails(QWidget):
         self.display_repo_status(self.repo.update_status)
 
     def display_repo_status(self, status):
+        """ Updates the contents of the widget to display the current install status of the widget. """
         repo = self.repo
         self.set_change_branch_button_state()
         self.set_disable_button_state()
@@ -582,6 +583,7 @@ class PackageDetails(QWidget):
         self.ui.progressBar.setValue(progress)
 
     def load_finished(self, load_succeeded: bool):
+        """ Once loading is complete, update the display of the progress bar and loading widget. """
         self.ui.loadingLabel.hide()
         self.ui.slowLoadLabel.hide()
         self.ui.webView.show()
