@@ -79,7 +79,6 @@ public:
     virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
     virtual GeomFormat*     getGeomFormatBySelection(int i) const;
     virtual GeomFormat*     getGeomFormat(std::string id) const;
-    virtual bool            replaceGeomFormat(TechDraw::GeomFormat* gf);
     virtual void            removeGeomFormat(std::string tag);
 
 
