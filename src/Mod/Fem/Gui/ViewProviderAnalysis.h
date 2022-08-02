@@ -28,8 +28,6 @@
 #include <Mod/Fem/FemGlobal.h>
 #include <QCoreApplication>
 
-class SoAnnotation;
-
 namespace FemGui
 {
 
@@ -45,7 +43,7 @@ public:
     void highlightView(Gui::ViewProviderDocumentObject*);
 
 private:
-    SoAnnotation* annotate;
+    SoSeparator* annotate;
 };
 
 class FemGuiExport ViewProviderFemAnalysis : public Gui::ViewProviderDocumentObjectGroup
