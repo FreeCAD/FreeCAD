@@ -249,7 +249,7 @@ public:
     static Quantity MilliNewtonPerMeter;
     static Quantity KiloNewtonPerMeter;
     static Quantity MegaNewtonPerMeter;
-    
+
     static Quantity Pascal;
     static Quantity KiloPascal;
     static Quantity MegaPascal;

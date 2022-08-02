@@ -686,11 +686,11 @@ int InterpreterSingleton::runCommandLine(const char *prompt)
 void InterpreterSingleton::runMethodVoid(PyObject *pobject, const char *method)
 {
     PyGILStateLocker locker;
-    if (PP_Run_Method(pobject ,    // object
-                      method,  // run method
-                      nullptr,			   // no return type
-                      nullptr,		       // so no return object
-                      "()")		   // no arguments
+    if (PP_Run_Method(pobject ,     // object
+                      method,       // run method
+                      nullptr,      // no return type
+                      nullptr,      // so no return object
+                      "()")         // no arguments
             != 0)
         throw PyException(/*"Error running InterpreterSingleton::RunMethodVoid()"*/);
 
@@ -701,11 +701,11 @@ PyObject* InterpreterSingleton::runMethodObject(PyObject *pobject, const char *m
     PyObject *pcO;
 
     PyGILStateLocker locker;
-    if (PP_Run_Method(pobject ,    // object
-                      method,  // run method
-                      "O",		   // return type
-                      &pcO,		   // return object
-                      "()")		   // no arguments
+    if (PP_Run_Method(pobject ,     // object
+                      method,       // run method
+                      "O",          // return type
+                      &pcO,         // return object
+                      "()")         // no arguments
             != 0)
         throw PyException();
 

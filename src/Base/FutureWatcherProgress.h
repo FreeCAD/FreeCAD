@@ -39,8 +39,13 @@ public:
     FutureWatcherProgress(const char* text, unsigned int steps);
     ~FutureWatcherProgress() override;
 
+    FutureWatcherProgress(const FutureWatcherProgress&) = delete;
+    FutureWatcherProgress(FutureWatcherProgress&&) = delete;
+    FutureWatcherProgress& operator= (const FutureWatcherProgress&) = delete;
+    FutureWatcherProgress& operator= (FutureWatcherProgress&&) = delete;
+
 private Q_SLOTS:
-    void progressValueChanged(int v);
+    void progressValueChanged(int value);
 
 private:
     Base::SequencerLauncher seq;

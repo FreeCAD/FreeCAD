@@ -48,7 +48,7 @@ namespace Base {
     btn->setText("Continue");
     btn->show();
     Base::Debugger dbg;
-    connect(btn, SIGNAL(clicked()), &dbg, SLOT(quit()));
+    connect(btn, &QPushButton::clicked, &dbg, &Debugger::quit);
     dbg.exec();
   \endcode
  \author Werner Mayer
@@ -61,9 +61,14 @@ public:
     Debugger(QObject* parent=nullptr);
     ~Debugger() override;
 
+    Debugger(const Debugger&) = delete;
+    Debugger(Debugger&&) = delete;
+    Debugger& operator= (const Debugger&) = delete;
+    Debugger& operator= (Debugger&&) = delete;
+
     void attach();
     void detach();
-    bool eventFilter(QObject*, QEvent*) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
     int exec();
 
 public Q_SLOTS:

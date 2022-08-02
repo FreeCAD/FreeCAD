@@ -18,11 +18,11 @@
 // ============================================================================
 //
 // File          : gzstream.h
-// Revision      : Revision: 1.5 
+// Revision      : Revision: 1.5
 // Revision_date : Date: 2002/04/26 23:30:15 
 // Author(s)     : Deepak Bandyopadhyay, Lutz Kettner
-// 
-// Standard streambuf implementation following Nicolai Josuttis, "The 
+//
+// Standard streambuf implementation following Nicolai Josuttis, "The
 // Standard C++ Library".
 // ============================================================================
 
@@ -31,6 +31,7 @@
 
 #include <sstream>
 #include <zlib.h>
+#include <FCGlobal.h>
 
 #ifdef _MSC_VER
 using std::ostream;

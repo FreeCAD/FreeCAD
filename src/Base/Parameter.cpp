@@ -796,9 +796,9 @@ void ParameterGrp::RemoveBlob(const char* /*Name*/)
     DOMElement *pcElem = FindElement(_pGroupNode,"FCGrp",Name);
     // if not return
     if(!pcElem)
-    	return;
+        return;
     else
-    	_pGroupNode->removeChild(pcElem);
+        _pGroupNode->removeChild(pcElem);
     */
 }
 
@@ -1643,10 +1643,10 @@ short DOMPrintFilter::acceptNode(const DOMNode* node) const
     case DOMNode::ELEMENT_NODE: {
         // for element whose name is "person", skip it
         //if (XMLString::compareString(node->getNodeName(), element_person)==0)
-        //	return DOMNodeFilter::FILTER_SKIP;
+        //  return DOMNodeFilter::FILTER_SKIP;
         // for element whose name is "line", reject it
         //if (XMLString::compareString(node->getNodeName(), element_link)==0)
-        //	return DOMNodeFilter::FILTER_REJECT;
+        //  return DOMNodeFilter::FILTER_REJECT;
         // for rest, accept it
         return DOMNodeFilter::FILTER_ACCEPT;
 

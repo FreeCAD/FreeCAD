@@ -446,7 +446,7 @@ ConsoleSingleton & ConsoleSingleton::Instance()
 //**************************************************************************
 // Python stuff
 
-// ConsoleSingleton Methods						// Methods structure
+// ConsoleSingleton Methods structure
 PyMethodDef ConsoleSingleton::Methods[] = {
     {"PrintMessage",         ConsoleSingleton::sPyMessage, METH_VARARGS,
      "PrintMessage(obj) -> None\n\n"
@@ -479,7 +479,7 @@ PyMethodDef ConsoleSingleton::Methods[] = {
     {"GetObservers",      ConsoleSingleton::sPyGetObservers, METH_VARARGS,
      "GetObservers() -> list of str\n\n"
      "Get the names of the current logging interfaces."},
-    {nullptr, nullptr, 0, nullptr}		/* Sentinel */
+    {nullptr, nullptr, 0, nullptr}  /* Sentinel */
 };
 
 namespace {
