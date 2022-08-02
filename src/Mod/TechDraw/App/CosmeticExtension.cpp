@@ -419,14 +419,6 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
     return getGeomFormatBySelection(eName);
 }
 
-bool CosmeticExtension::replaceGeomFormat(GeomFormat* newGF)
-{
-    (void) newGF;
-    Base::Console().Message("CX::replaceGeomFormat() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
-}
-
 void CosmeticExtension::removeGeomFormat(std::string delTag)
 {
 //    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
