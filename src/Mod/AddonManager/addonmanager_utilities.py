@@ -381,3 +381,9 @@ def get_python_exe() -> str:
 
     prefs.SetString("PythonExecutableForPip", python_exe)
     return python_exe
+
+def get_cache_file_name(file: str) -> str:
+    cache_path = FreeCAD.getUserCachePath()
+    am_path = os.path.join(cache_path, "AddonManager")
+    os.makedirs(am_path, exist_ok=True)
+    return os.path.join(am_path, file)

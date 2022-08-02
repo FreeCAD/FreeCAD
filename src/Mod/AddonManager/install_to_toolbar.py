@@ -32,8 +32,8 @@ translate = FreeCAD.Qt.translate
 
 
 def ask_to_install_toolbar_button(repo: Addon) -> None:
-    """ Presents a dialog to the user asking if they want to install a toolbar button for
-   a particular macro, and walks through that process if they agree to do so. """
+    """Presents a dialog to the user asking if they want to install a toolbar button for
+    a particular macro, and walks through that process if they agree to do so."""
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     do_not_show_dialog = pref.GetBool("dontShowAddMacroButtonDialog", False)
     button_exists = check_for_button(repo)
@@ -52,7 +52,7 @@ def ask_to_install_toolbar_button(repo: Addon) -> None:
 
 
 def check_for_button(repo: Addon) -> bool:
-    """ Returns True if a button already exists for this macro, or False if not. """
+    """Returns True if a button already exists for this macro, or False if not."""
     command = FreeCADGui.Command.findCustomCommand(repo.macro.filename)
     if not command:
         return False
@@ -67,12 +67,10 @@ def check_for_button(repo: Addon) -> bool:
     return False
 
 
-def ask_for_toolbar(
-    repo: Addon, custom_toolbars
-) -> object:
-    """ Determine what toolbar to add the icon to. The first time it is called it prompts the
-   user to select or create a toolbar. After that, the prompt is optional and can be configured
-   via a preference. Returns the pref group for the new toolbar."""
+def ask_for_toolbar(repo: Addon, custom_toolbars) -> object:
+    """Determine what toolbar to add the icon to. The first time it is called it prompts the
+    user to select or create a toolbar. After that, the prompt is optional and can be configured
+    via a preference. Returns the pref group for the new toolbar."""
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
 
     # In this one spot, default True: if this is the first time we got to
@@ -126,8 +124,8 @@ def ask_for_toolbar(
 
 
 def get_toolbar_with_name(name: str) -> object:
-    """ Try to find a toolbar with a given name. Returns the preference group for the toolbar
-   if found, or None if it does not exist. """
+    """Try to find a toolbar with a given name. Returns the preference group for the toolbar
+    if found, or None if it does not exist."""
     top_group = FreeCAD.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar")
     custom_toolbars = top_group.GetGroups()
     for toolbar in custom_toolbars:
@@ -141,7 +139,7 @@ def get_toolbar_with_name(name: str) -> object:
 
 
 def create_new_custom_toolbar() -> object:
-    """ Create a new custom toolbar and returns its preference group. """
+    """Create a new custom toolbar and returns its preference group."""
 
     # We need two names: the name of the auto-created toolbar, as it will be displayed to the
     # user in various menus, and the underlying name of the toolbar group. Both must be
@@ -177,13 +175,13 @@ def create_new_custom_toolbar() -> object:
 
 
 def check_for_toolbar(toolbar_name: str) -> bool:
-    """ Returns True if the toolbar exists, otherwise False """
+    """Returns True if the toolbar exists, otherwise False"""
     return get_toolbar_with_name(toolbar_name) is not None
 
 
 def install_toolbar_button(repo: Addon) -> None:
-    """ If the user has requested a toolbar button be installed, this function is called
-   to continue the process and request any additional required information. """
+    """If the user has requested a toolbar button be installed, this function is called
+    to continue the process and request any additional required information."""
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     custom_toolbar_name = pref.GetString(
         "CustomToolbarName", "Auto-Created Macro Toolbar"
@@ -232,7 +230,7 @@ def install_toolbar_button(repo: Addon) -> None:
 
 
 def install_macro_to_toolbar(repo: Addon, toolbar: object) -> None:
-    """ Adds an icon for the given macro to the given toolbar. """
+    """Adds an icon for the given macro to the given toolbar."""
     menuText = repo.display_name
     tooltipText = f"<b>{repo.display_name}</b>"
     if repo.macro.comment:

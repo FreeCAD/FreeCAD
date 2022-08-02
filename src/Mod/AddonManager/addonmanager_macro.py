@@ -431,7 +431,8 @@ class Macro(object):
                             translate(
                                 "AddonsInstaller",
                                 "Unable to fetch macro-specified file {} from {}",
-                            ).format(other_file, fetch_url) + "\n"
+                            ).format(other_file, fetch_url)
+                            + "\n"
                         )
                 else:
                     warnings.append(

@@ -29,13 +29,31 @@ import shutil
 import stat
 import tempfile
 import hashlib
+import threading
+import json
 from datetime import date, timedelta
 from typing import Dict, List
 
 from PySide2 import QtGui, QtCore, QtWidgets
+import FreeCAD
 import FreeCADGui
 
-from addonmanager_workers import *
+from addonmanager_workers_startup import (
+    CreateAddonListWorker,
+    LoadPackagesFromCacheWorker,
+    LoadMacrosFromCacheWorker,
+    CheckWorkbenchesForUpdatesWorker,
+    CacheMacroCodeWorker,
+    GetMacroDetailsWorker,
+)
+from addonmanager_workers_installation import (
+    InstallWorkbenchWorker,
+    DependencyInstallationWorker,
+    UpdateMetadataCacheWorker,
+    UpdateAllWorker,
+    UpdateSingleWorker,
+)
+from addonmanager_workers_utility import ConnectionChecker
 import addonmanager_utilities as utils
 import AddonManager_rc
 from package_list import PackageList, PackageListItemModel
@@ -51,7 +69,7 @@ from manage_python_dependencies import (
     PythonPackageManager,
 )
 
-from NetworkManager import HAVE_QTNETWORK, InitializeNetworkManager
+import NetworkManager
 
 translate = FreeCAD.Qt.translate
 
@@ -91,7 +109,7 @@ class CommandAddonManager:
 
     workers = [
         "connection_checker",
-        "update_worker",
+        "create_addon_list_worker",
         "check_worker",
         "show_worker",
         "showmacro_worker",
@@ -151,7 +169,7 @@ class CommandAddonManager:
 
     def Activated(self) -> None:
 
-        InitializeNetworkManager()
+        NetworkManager.InitializeNetworkManager()
 
         # display first use dialog if needed
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -454,7 +472,7 @@ class CommandAddonManager:
             self.update_cache = True
         elif not os.path.isdir(am_path):
             self.update_cache = True
-        stopfile = self.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
+        stopfile = utils.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
         if os.path.exists(stopfile):
             self.update_cache = True
             os.remove(stopfile)
@@ -619,19 +637,13 @@ class CommandAddonManager:
             pref.SetString("LastCacheUpdate", date.today().isoformat())
             self.packageList.item_filter.invalidateFilter()
 
-    def get_cache_file_name(self, file: str) -> str:
-        cache_path = FreeCAD.getUserCachePath()
-        am_path = os.path.join(cache_path, "AddonManager")
-        os.makedirs(am_path, exist_ok=True)
-        return os.path.join(am_path, file)
-
     def populate_packages_table(self) -> None:
         self.item_model.clear()
 
         use_cache = not self.update_cache
         if use_cache:
-            if os.path.isfile(self.get_cache_file_name("package_cache.json")):
-                with open(self.get_cache_file_name("package_cache.json"), "r") as f:
+            if os.path.isfile(utils.get_cache_file_name("package_cache.json")):
+                with open(utils.get_cache_file_name("package_cache.json"), "r") as f:
                     data = f.read()
                     try:
                         from_json = json.loads(data)
@@ -644,24 +656,24 @@ class CommandAddonManager:
 
         if not use_cache:
             self.update_cache = True  # Make sure to trigger the other cache updates, if the json file was missing
-            self.update_worker = UpdateWorker()
-            self.update_worker.status_message.connect(self.show_information)
-            self.update_worker.addon_repo.connect(self.add_addon_repo)
+            self.create_addon_list_worker = CreateAddonListWorker()
+            self.create_addon_list_worker.status_message.connect(self.show_information)
+            self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
             self.update_progress_bar(10, 100)
-            self.update_worker.finished.connect(
+            self.create_addon_list_worker.finished.connect(
                 self.do_next_startup_phase
             )  # Link to step 2
-            self.update_worker.start()
+            self.create_addon_list_worker.start()
         else:
-            self.update_worker = LoadPackagesFromCacheWorker(
-                self.get_cache_file_name("package_cache.json")
+            self.create_addon_list_worker = LoadPackagesFromCacheWorker(
+                utils.get_cache_file_name("package_cache.json")
             )
-            self.update_worker.addon_repo.connect(self.add_addon_repo)
+            self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
             self.update_progress_bar(10, 100)
-            self.update_worker.finished.connect(
+            self.create_addon_list_worker.finished.connect(
                 self.do_next_startup_phase
             )  # Link to step 2
-            self.update_worker.start()
+            self.create_addon_list_worker.start()
 
     def cache_package(self, repo: Addon):
         if not hasattr(self, "package_cache"):
@@ -670,7 +682,7 @@ class CommandAddonManager:
 
     def write_package_cache(self):
         if hasattr(self, "package_cache"):
-            package_cache_path = self.get_cache_file_name("package_cache.json")
+            package_cache_path = utils.get_cache_file_name("package_cache.json")
             with open(package_cache_path, "w") as f:
                 f.write(json.dumps(self.package_cache, indent="  "))
 
@@ -680,23 +692,29 @@ class CommandAddonManager:
         self.do_next_startup_phase()
 
     def populate_macros(self) -> None:
-        macro_cache_file = self.get_cache_file_name("macro_cache.json")
+        macro_cache_file = utils.get_cache_file_name("macro_cache.json")
         cache_is_bad = True
         if os.path.isfile(macro_cache_file):
             size = os.path.getsize(macro_cache_file)
             if size > 1000:  # Make sure there is actually data in there
                 cache_is_bad = False
-        if self.update_cache or cache_is_bad:
-            self.update_cache = True
-            self.macro_worker = FillMacroListWorker(self.get_cache_file_name("Macros"))
-            self.macro_worker.status_message_signal.connect(self.show_information)
-            self.macro_worker.progress_made.connect(self.update_progress_bar)
-            self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-            self.macro_worker.finished.connect(self.do_next_startup_phase)
-            self.macro_worker.start()
+        if cache_is_bad:
+            if not self.update_cache:
+                self.update_cache = True  # Make sure to trigger the other cache updates, if the json file was missing
+                self.create_addon_list_worker = CreateAddonListWorker()
+                self.create_addon_list_worker.status_message.connect(self.show_information)
+                self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
+                self.update_progress_bar(10, 100)
+                self.create_addon_list_worker.finished.connect(
+                    self.do_next_startup_phase
+                )  # Link to step 2
+                self.create_addon_list_worker.start()
+            else:
+                # It's already been done in the previous step (TODO: Refactor to eliminate this step)
+                self.do_next_startup_phase()
         else:
             self.macro_worker = LoadMacrosFromCacheWorker(
-                self.get_cache_file_name("macro_cache.json")
+                utils.get_cache_file_name("macro_cache.json")
             )
             self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
             self.macro_worker.finished.connect(self.do_next_startup_phase)
@@ -715,7 +733,7 @@ class CommandAddonManager:
     def write_macro_cache(self):
         if not hasattr(self, "macro_cache"):
             return
-        macro_cache_path = self.get_cache_file_name("macro_cache.json")
+        macro_cache_path = utils.get_cache_file_name("macro_cache.json")
         with open(macro_cache_path, "w") as f:
             f.write(json.dumps(self.macro_cache, indent="  "))
             self.macro_cache = []
@@ -768,7 +786,9 @@ class CommandAddonManager:
 
     def load_macro_metadata(self) -> None:
         if self.update_cache:
-            self.load_macro_metadata_worker = CacheMacroCode(self.item_model.repos)
+            self.load_macro_metadata_worker = CacheMacroCodeWorker(
+                self.item_model.repos
+            )
             self.load_macro_metadata_worker.status_message.connect(
                 self.show_information
             )
@@ -1551,7 +1571,7 @@ class CommandAddonManager:
         )
 
     def write_cache_stopfile(self) -> None:
-        stopfile = self.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
+        stopfile = utils.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
         with open(stopfile, "w", encoding="utf8") as f:
             f.write(
                 "This file indicates that a cache operation was interrupted, and "

@@ -9,7 +9,9 @@ SET(AddonManager_SRCS
     AddonManager.ui
     addonmanager_macro.py
     addonmanager_utilities.py
-    addonmanager_workers.py
+    addonmanager_workers_startup.py
+    addonmanager_workers_installation.py
+    addonmanager_workers_utility.py
     AddonManagerOptions.ui
     ALLOWED_PYTHON_PACKAGES.txt
     change_branch.py
@@ -51,6 +53,9 @@ SET(AddonManagerTestsApp_SRCS
 SET(AddonManagerTestsGui_SRCS
     AddonManagerTest/gui/__init__.py
     AddonManagerTest/gui/test_gui.py
+    AddonManagerTest/gui/test_workers_installation.py
+    AddonManagerTest/gui/test_workers_startup.py
+    AddonManagerTest/gui/test_workers_utility.py
 )
 
 SET(AddonManagerTestsFiles_SRCS
