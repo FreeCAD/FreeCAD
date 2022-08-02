@@ -46,11 +46,14 @@ set(FemGui_LIBS
 
 
 generate_from_xml(ViewProviderFemMeshPy)
+generate_from_xml(ViewProviderFemPostPipelinePy)
 
 
 SET(Python_SRCS
     ViewProviderFemMeshPy.xml
     ViewProviderFemMeshPyImp.cpp
+    ViewProviderFemPostPipelinePy.xml
+    ViewProviderFemPostPipelinePyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
