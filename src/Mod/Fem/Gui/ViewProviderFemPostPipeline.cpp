@@ -22,14 +22,20 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <vtkPointData.h>
+#endif
+
+#include <App/FeaturePythonPyImp.h>
 #include <App/GroupExtension.h>
 #include <Gui/Application.h>
 #include <Gui/Selection.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
-#include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostPipeline.h"
+#include "ViewProviderFemPostPipelinePy.h"
+#include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostFunction.h"
 
 
@@ -121,4 +127,70 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
             analyzeView->highlightView(this);
         }
     }
+}
+
+void ViewProviderFemPostPipeline::transformField(char *FieldName, double FieldFactor)
+{
+    Fem::FemPostPipeline *obj = static_cast<Fem::FemPostPipeline *>(getObject());
+
+    vtkSmartPointer<vtkDataObject> data = obj->Data.getValue();
+    if (!data || !data->IsA("vtkDataSet"))
+        return;
+    
+    vtkDataSet *dset = vtkDataSet::SafeDownCast(data);
+    vtkDataArray *pdata = dset->GetPointData()->GetArray(FieldName);
+    if (!pdata)
+        return;
+
+    auto strFieldName = std::string(FieldName);
+
+    // for EigenModes, we need to step through all available modes
+    if (strFieldName.find("EigenMode") != std::string::npos) {
+        int modeCount;
+        std::string testFieldName;
+        // since a valid FieldName must have been passed
+        // we assume the mode number was < 10 and we can strip the last char
+        strFieldName.pop_back();
+        for (modeCount = 1; pdata; ++modeCount) {
+            testFieldName = strFieldName + std::to_string(modeCount);
+            pdata = dset->GetPointData()->GetArray(testFieldName.c_str());
+            if (pdata) {
+                scaleField(dset, pdata, FieldFactor);
+            }
+        }
+    }
+    else
+        scaleField(dset, pdata, FieldFactor);
+}
+
+void ViewProviderFemPostPipeline::scaleField(vtkDataSet *dset, vtkDataArray *pdata, double FieldFactor)
+{
+    //safe guard
+    if (!dset || !pdata)
+        return;
+
+    // step through all mesh points and scale them
+    for (int i = 0; i < dset->GetNumberOfPoints(); ++i) {
+        double value = 0;
+        if (pdata->GetNumberOfComponents() == 1) {
+            value = pdata->GetComponent(i, 0);
+            pdata->SetComponent(i, 0, value * FieldFactor);
+        }
+        // if field is a vector
+        else {
+            for (int j = 0; j < pdata->GetNumberOfComponents(); ++j) {
+                value = pdata->GetComponent(i, j);
+                pdata->SetComponent(i, j, value * FieldFactor);
+            }
+        }
+    }
+}
+
+PyObject *ViewProviderFemPostPipeline::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ViewProviderFemPostPipelinePy(this), true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
