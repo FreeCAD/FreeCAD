@@ -37,7 +37,8 @@
 #include "CXX/WrapPython.h"
 
 #if defined( PYCXX_6_2_COMPATIBILITY )
-    typedef int PyCxx_ssize_t;
+    //typedef int PyCxx_ssize_t;
+    typedef Py_ssize_t PyCxx_ssize_t;
 #else
     typedef Py_ssize_t PyCxx_ssize_t;
 #endif
