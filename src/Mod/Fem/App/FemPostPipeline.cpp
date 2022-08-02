@@ -23,21 +23,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <SMESH_Mesh.hxx>
+# include <vtkAppendFilter.h>
 # include <vtkDataSetReader.h>
-# include <vtkGeometryFilter.h>
-# include <vtkStructuredGrid.h>
-# include <vtkUnstructuredGrid.h>
 # include <vtkImageData.h>
 # include <vtkRectilinearGrid.h>
-# include <vtkAppendFilter.h>
-# include <vtkXMLUnstructuredGridReader.h>
-# include <vtkXMLPUnstructuredGridReader.h>
-# include <vtkXMLPolyDataReader.h>
-# include <vtkXMLStructuredGridReader.h>
-# include <vtkXMLRectilinearGridReader.h>
+# include <vtkStructuredGrid.h>
+# include <vtkUnstructuredGrid.h>
 # include <vtkXMLImageDataReader.h>
+# include <vtkXMLPolyDataReader.h>
+# include <vtkXMLRectilinearGridReader.h>
+# include <vtkXMLStructuredGridReader.h>
+# include <vtkXMLPUnstructuredGridReader.h>
+# include <vtkXMLUnstructuredGridReader.h>
 #endif
 
 #include "FemPostPipeline.h"
@@ -45,11 +43,10 @@
 #include "FemMeshObject.h"
 #include "FemVTKTools.h"
 
-#include <Base/Console.h>
-#include <App/Document.h>
-
 #include <App/DocumentObjectPy.h>
-#include <Mod/Fem/App/FemPostPipelinePy.h>
+#include <Base/Console.h>
+
+#include "FemPostPipelinePy.h"
 
 
 using namespace Fem;

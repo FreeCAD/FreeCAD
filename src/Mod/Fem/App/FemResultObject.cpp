@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "FemResultObject.h"
 #include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
+
+#include "FemResultObject.h"
+
 
 using namespace Fem;
 using namespace App;
@@ -38,10 +36,10 @@ PROPERTY_SOURCE(Fem::FemResultObject, App::DocumentObject)
 
 FemResultObject::FemResultObject()
 {
-    ADD_PROPERTY_TYPE(Mesh,(nullptr), "General",Prop_None,"Link to the corresponding mesh");
-    ADD_PROPERTY_TYPE(NodeNumbers,(0), "NodeData",Prop_None,"Numbers of the result nodes");
-    ADD_PROPERTY_TYPE(Stats,(0), "Data",Prop_None,"Statistics of the results");
-    ADD_PROPERTY_TYPE(Time,(0), "Data",Prop_None,"Time of analysis increment");
+    ADD_PROPERTY_TYPE(Mesh, (nullptr), "General", Prop_None, "Link to the corresponding mesh");
+    ADD_PROPERTY_TYPE(NodeNumbers, (0), "NodeData", Prop_None, "Numbers of the result nodes");
+    ADD_PROPERTY_TYPE(Stats, (0), "Data", Prop_None, "Statistics of the results");
+    ADD_PROPERTY_TYPE(Time, (0), "Data", Prop_None, "Time of analysis increment");
 
     // make read-only for property editor
     NodeNumbers.setStatus(App::Property::ReadOnly, true);

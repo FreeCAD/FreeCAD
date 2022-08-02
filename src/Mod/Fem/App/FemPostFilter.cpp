@@ -23,16 +23,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
-# include <vtkFieldData.h>
 # include <vtkPointData.h>
 #endif
 
 #include "FemPostFilter.h"
 #include "FemPostPipeline.h"
-#include <Base/Console.h>
 #include <App/Document.h>
-#include <App/DocumentObjectPy.h>
 
 
 using namespace Fem;

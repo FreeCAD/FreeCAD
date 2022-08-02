@@ -46,7 +46,7 @@
 # include <SMESHDS_Mesh.hxx>
 #endif
 
-#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/TimeInfo.h>
