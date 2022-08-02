@@ -113,6 +113,9 @@ protected:
 
 };
 
+
+
+
 //********** CosmeticEdge ******************************************************
 
 class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom

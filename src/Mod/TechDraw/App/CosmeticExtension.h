@@ -55,7 +55,6 @@ public:
     virtual CosmeticVertex* getCosmeticVertexBySelection(std::string name) const;
     virtual CosmeticVertex* getCosmeticVertexBySelection(int i) const;
     virtual CosmeticVertex* getCosmeticVertex(std::string id) const;
-    virtual bool            replaceCosmeticVertex(CosmeticVertex* newVertex);
     virtual void            removeCosmeticVertex(std::string tag);
     virtual void            removeCosmeticVertex(std::vector<std::string> delTags);
 
