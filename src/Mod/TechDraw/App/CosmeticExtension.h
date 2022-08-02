@@ -72,7 +72,6 @@ public:
     virtual CenterLine*     getCenterLineBySelection(std::string name) const;
     virtual CenterLine*     getCenterLineBySelection(int i) const;
     virtual CenterLine*     getCenterLine(std::string tag) const;
-    virtual bool            replaceCenterLine(CenterLine* newLine);
     virtual void            removeCenterLine(std::string tag);
     virtual void            removeCenterLine(std::vector<std::string> delTags);
 

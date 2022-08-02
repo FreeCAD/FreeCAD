@@ -103,11 +103,6 @@
         <UserDocu>cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="replaceCenterLine">
-      <Documentation>
-        <UserDocu>replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False.</UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="removeCenterLine">
       <Documentation>
         <UserDocu>removeCenterLine(cl) - remove CenterLine cl from View. Returns None.</UserDocu>

@@ -356,14 +356,6 @@ void CosmeticExtension::removeCenterLine(std::vector<std::string> delTags)
     }
 }
 
-bool CosmeticExtension::replaceCenterLine(CenterLine* newCL)
-{
-    (void) newCL;
-    Base::Console().Message("CX::replaceCenterLine() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
-}
-
 
 //********** Geometry Formats **************************************************
 //returns unique GF id
