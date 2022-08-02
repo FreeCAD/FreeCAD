@@ -43,11 +43,6 @@
         <UserDocu>cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="replaceCosmeticVertex">
-      <Documentation>
-        <UserDocu>rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False.</UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="removeCosmeticVertex">
       <Documentation>
         <UserDocu>removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None.</UserDocu>

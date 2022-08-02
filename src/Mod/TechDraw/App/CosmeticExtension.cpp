@@ -152,14 +152,6 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
     }
 }
 
-bool CosmeticExtension::replaceCosmeticVertex(CosmeticVertex* newCV)
-{
-    (void) newCV;
-    Base::Console().Message("CX::replaceCosmeticVertex() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
-}
-
 //********** Cosmetic Edge *****************************************************
 
 //returns unique CE id

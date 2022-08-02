@@ -275,14 +275,6 @@ PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
     return Py_None;
 }
 
-PyObject* DrawViewPartPy::replaceCosmeticVertex(PyObject *args)
-{
-    (void) args;
-    Base::Console().Message("DVPP::replaceCosmeticVertex() - deprecated. do not use.\n");
-    return PyBool_FromLong(0l);
-
-}
-
 
 //********* Cosmetic Line Routines *********************************************
 
