@@ -181,11 +181,7 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
 
 double ViewProviderLeader::getDefLineWeight(void)
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double result = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return result;
+    return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
 App::Color ViewProviderLeader::getDefLineColor(void)

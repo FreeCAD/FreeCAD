@@ -104,12 +104,7 @@ std::string LineFormat::toString(void) const
 //static preference getters.
 double LineFormat::getDefEdgeWidth()
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-
-    double width = lg->getWeight("Graphic");
-    delete lg; 
-    return width;
+    return TechDraw::LineGroup::getDefaultWidth("Graphic");
 }
 
 App::Color LineFormat::getDefEdgeColor()
@@ -136,7 +131,7 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     linkGeom = -1;
     color = Preferences::vertexColor();
     size  = Preferences::vertexScale() * 
-            LineGroup::getDefaultWidth("Thick", Preferences::lineGroup());
+            LineGroup::getDefaultWidth("Thick");
     style = 1;
     visible = true;
     hlrVisible = true;
@@ -165,7 +160,7 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
     linkGeom = -1;
     color = Preferences::vertexColor();
     size  = Preferences::vertexScale() * 
-            LineGroup::getDefaultWidth("Thick", Preferences::lineGroup());
+            LineGroup::getDefaultWidth("Thick");
     style = 1;        //TODO: implement styled vertexes
     visible = true;
     hlrVisible = true;

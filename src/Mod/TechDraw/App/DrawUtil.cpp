@@ -522,12 +522,7 @@ double DrawUtil::sensibleScale(double working_scale)
 
 double DrawUtil::getDefaultLineWeight(std::string lineType)
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = LineGroup::lineGroupFactory(lgNumber);
-
-    double weight = lg->getWeight(lineType);
-    delete lg;                                    //Coverity CID 174671
-    return weight;
+    return TechDraw::LineGroup::getDefaultWidth(lineType);
 }
 
 bool DrawUtil::isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2)

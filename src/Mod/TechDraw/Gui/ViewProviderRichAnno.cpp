@@ -168,11 +168,7 @@ double ViewProviderRichAnno::getDefFontSize()
 
 double ViewProviderRichAnno::getDefLineWeight(void)
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double result = lg->getWeight("Graphics");
-    delete lg;
-    return result;
+    return TechDraw::LineGroup::getDefaultWidth("Graphics");
 }
 
 void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)

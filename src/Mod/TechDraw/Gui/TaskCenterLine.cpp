@@ -426,17 +426,12 @@ void TaskCenterLine::enableTaskButtons(bool b)
 
 double TaskCenterLine::getCenterWidth()
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-
-    double width = lg->getWeight("Graphic");
-    delete lg;
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-    if (partVP) {
-        width = partVP->IsoWidth.getValue();
+    if (!partVP) {
+        return TechDraw::LineGroup::getDefaultWidth("Graphic");
     }
-    return width;
+    return partVP->IsoWidth.getValue();
 }
 
 Qt::PenStyle TaskCenterLine::getCenterStyle()

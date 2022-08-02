@@ -178,10 +178,7 @@ void ViewProviderGeomHatch::updateGraphic(void)
 
 void ViewProviderGeomHatch::getParameters(void)
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Graphic");
-    delete lg;                                                    //Coverity CID 174667
+    double weight = TechDraw::LineGroup::getDefaultWidth("Graphic");
     WeightPattern.setValue(weight);
 }
 
