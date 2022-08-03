@@ -23,14 +23,13 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cassert>
+#include <QFontMetrics>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
 #include <QPaintDevice>
-#include <QPainter>
 #include <QPrinter>
 #include <QSvgGenerator>
-#include <QStyleOptionGraphicsItem>
 #endif
 
 #include <App/Application.h>
@@ -165,16 +164,6 @@ void QGCustomText::setColor(QColor c)
 void QGCustomText::setTightBounding(bool tight)
 {
     tightBounding = tight;
-}
-
-void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->setPen(Qt::green);
-//    painter->drawRect(boundingRect());          //good for debugging
-
-    QGraphicsTextItem::paint (painter, &myOption, widget);
 }
 
 QRectF QGCustomText::boundingRect() const

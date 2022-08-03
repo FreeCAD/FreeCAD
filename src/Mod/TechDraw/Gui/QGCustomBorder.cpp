@@ -26,8 +26,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
 #endif
 
 #include <App/Application.h>
@@ -47,11 +45,4 @@ QGCustomBorder::QGCustomBorder()
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-}
-
-void QGCustomBorder::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    QGraphicsRectItem::paint (painter, &myOption, widget);
 }

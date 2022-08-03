@@ -29,11 +29,6 @@
 
 #include "QGCustom.h"
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
-
 namespace TechDrawGui
 {
 
@@ -45,8 +40,6 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 136};
     int type() const { return Type;}
-
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
 
 protected:
 

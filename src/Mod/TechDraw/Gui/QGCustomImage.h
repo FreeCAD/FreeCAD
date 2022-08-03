@@ -34,11 +34,6 @@
 
 #include "QGCustom.h"
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
-
 namespace TechDrawGui
 {
 
@@ -51,9 +46,6 @@ public:
     enum {Type = QGraphicsItem::UserType + 201};
     int type() const override { return Type;}
 
-    virtual void paint( QPainter *painter,
-                        const QStyleOptionGraphicsItem *option,
-                        QWidget *widget = nullptr ) override;
     virtual bool load(QString fileSpec);
     virtual bool load(QPixmap map);
     virtual QSize imageSize(void);

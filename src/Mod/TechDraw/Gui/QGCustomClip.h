@@ -33,11 +33,6 @@
 
 #include "QGCustom.h"
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
-
 namespace TechDrawGui
 {
 
@@ -51,7 +46,6 @@ public:
     int type() const { return Type;}
     virtual QRectF boundingRect() const;
 
-    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual void setRect(QRectF r);
     virtual void setRect(double x, double y, double w, double h);
     virtual QRectF rect();

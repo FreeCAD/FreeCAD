@@ -28,8 +28,10 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsSvgItem>
 #include <QGraphicsTextItem>
+#include <QPainter>
 #include <QPointF>
 #include <QRectF>
+#include <QStyleOptionGraphicsItem>
 #endif
 
 #include <Base/Console.h>
@@ -61,6 +63,18 @@ template<typename T>
 void QGCustom<T>::centerAt(double x, double y)
 {
     centerAt(QPointF(x, y));
+}
+
+template<typename T>
+void QGCustom<T>::paint (QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+
+    //For debugging:
+    // painter->setPen(Qt::green);
+    // painter->drawRect(boundingRect());
+
+    T::paint(painter, &myOption, widget);
 }
 
 template class QGCustom<QGraphicsItemGroup>;

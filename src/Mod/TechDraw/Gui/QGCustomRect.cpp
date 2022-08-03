@@ -48,11 +48,3 @@ QGCustomRect::QGCustomRect()
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 }
-
-void QGCustomRect::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    QGraphicsRectItem::paint (painter, &myOption, widget);
-}
-

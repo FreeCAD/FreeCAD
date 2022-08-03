@@ -21,10 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#endif
 
 #include <Base/Console.h>
 
@@ -70,14 +66,4 @@ bool QGCustomSvg::load(QByteArray *svgBytes)
     prepareGeometryChange();
     setSharedRenderer(m_svgRender);
     return(success);
-}
-
-void QGCustomSvg::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->setPen(Qt::yellow);
-//    painter->drawRect(boundingRect());          //good for debugging
-
-    QGraphicsSvgItem::paint (painter, &myOption, widget);
 }

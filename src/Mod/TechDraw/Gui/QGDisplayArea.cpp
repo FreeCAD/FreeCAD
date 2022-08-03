@@ -26,8 +26,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
 #endif
 
 #include <App/Application.h>
@@ -48,15 +46,6 @@ QGDisplayArea::QGDisplayArea(void)
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-}
-
-void QGDisplayArea::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    //painter->drawRect(boundingRect());          //good for debugging
-
-    QGraphicsItemGroup::paint (painter, &myOption, widget);
 }
 
 QRectF QGDisplayArea::boundingRect() const

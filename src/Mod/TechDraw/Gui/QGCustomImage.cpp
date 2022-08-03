@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
 #include <QtGlobal>
 #endif
 
@@ -73,13 +71,3 @@ QSize QGCustomImage::imageSize(void)
     QSize result = m_px.size() * scale();
     return result;
 }
-
-void QGCustomImage::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    //painter->drawRect(boundingRect());          //good for debugging
-
-    QGraphicsPixmapItem::paint (painter, &myOption, widget);
-}
-

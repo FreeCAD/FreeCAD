@@ -27,11 +27,6 @@
 #include <QGraphicsTextItem>
 #include <QPointF>
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
-
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 
@@ -48,7 +43,6 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 130};
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
     virtual QRectF boundingRect() const override;
     QRectF tightBoundingRect() const;
     QPointF tightBoundingAdjust() const;

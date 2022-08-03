@@ -38,6 +38,7 @@ public:
 
     virtual void centerAt(QPointF position);
     virtual void centerAt(double x, double y);
+    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr ) override;
 };
 
 }

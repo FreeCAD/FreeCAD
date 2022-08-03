@@ -27,10 +27,8 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
 #include <QPaintDevice>
-#include <QPainter>
 #include <QPrinter>
 #include <QSvgGenerator>
-#include <QStyleOptionGraphicsItem>
 #endif
 
 #include <App/Application.h>
@@ -51,13 +49,4 @@ QGCustomLabel::QGCustomLabel()
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-}
-
-void QGCustomLabel::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->drawRect(boundingRect());          //good for debugging
-
-    QGraphicsTextItem::paint (painter, &myOption, widget);
 }
