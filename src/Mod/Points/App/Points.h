@@ -130,15 +130,15 @@ public:
 
     /// get the points
     inline const Base::Vector3d getPoint(const int idx) const {
-        return transformToOutside(_Points[idx]);
+        return transformPointToOutside(_Points[idx]);
     }
     /// set the points
     inline void setPoint(const int idx,const Base::Vector3d& point) {
-        _Points[idx] = transformToInside(point);
+        _Points[idx] = transformPointToInside(point);
     }
     /// insert the points
     inline void push_back(const Base::Vector3d& point) {
-        _Points.push_back(transformToInside(point));
+        _Points.push_back(transformPointToInside(point));
     }
 
     class PointsExport const_point_iterator

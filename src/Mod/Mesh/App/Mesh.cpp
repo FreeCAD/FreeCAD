@@ -174,7 +174,7 @@ Base::BoundBox3d MeshObject::getBoundBox()const
     Base::BoundBox3d Bnd2;
     if (Bnd.IsValid()) {
         for (int i =0 ;i<=7;i++)
-            Bnd2.Add(transformToOutside(Bnd.CalcPoint(i)));
+            Bnd2.Add(transformPointToOutside(Bnd.CalcPoint(i)));
     }
 
     return Bnd2;
@@ -184,7 +184,7 @@ bool MeshObject::getCenterOfGravity(Base::Vector3d& center) const
 {
     MeshCore::MeshAlgorithm alg(_kernel);
     Base::Vector3f pnt = alg.GetGravityPoint();
-    center = transformToOutside(pnt);
+    center = transformPointToOutside(pnt);
     return true;
 }
 
@@ -311,26 +311,9 @@ void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
                            std::vector<Base::Vector3d> &Normals,
                            float /*Accuracy*/, uint16_t /*flags*/) const
 {
-    Base::Matrix4D mat = _Mtrx;
-
-    unsigned long ctpoints = _kernel.CountPoints();
-    Points.reserve(ctpoints);
-    for (unsigned long i=0; i<ctpoints; i++) {
-        Points.push_back(getPoint(i));
-    }
-
-    // nullify translation part
-    mat[0][3] = 0.0;
-    mat[1][3] = 0.0;
-    mat[2][3] = 0.0;
-    Normals.reserve(ctpoints);
+    Points = transformPointsToOutside(_kernel.GetPoints());
     MeshCore::MeshRefNormalToPoints ptNormals(_kernel);
-    for (unsigned long i=0; i<ctpoints; i++) {
-        Base::Vector3f normalf = ptNormals[i];
-        Base::Vector3d normald(normalf.x, normalf.y, normalf.z);
-        normald = mat * normald;
-        Normals.push_back(normald);
-    }
+    Normals = transformVectorsToOutside(ptNormals.GetValues());
 }
 
 Mesh::Facet MeshObject::getMeshFacet(FacetIndex index) const
@@ -1001,12 +984,12 @@ void MeshObject::movePoint(PointIndex index, const Base::Vector3d& v)
     vec.x += _Mtrx[0][3];
     vec.y += _Mtrx[1][3];
     vec.z += _Mtrx[2][3];
-    _kernel.MovePoint(index,transformToInside(vec));
+    _kernel.MovePoint(index, transformPointToInside(vec));
 }
 
 void MeshObject::setPoint(PointIndex index, const Base::Vector3d& p)
 {
-    _kernel.SetPoint(index,transformToInside(p));
+    _kernel.SetPoint(index, transformPointToInside(p));
 }
 
 void MeshObject::smooth(int iterations, float d_max)
@@ -1029,13 +1012,7 @@ void MeshObject::decimate(int targetSize)
 Base::Vector3d MeshObject::getPointNormal(PointIndex index) const
 {
     std::vector<Base::Vector3f> temp = _kernel.CalcVertexNormals();
-    Base::Vector3d normal = transformToOutside(temp[index]);
-
-    // the normal is a vector, hence we must not apply the translation part
-    // of the transformation to the vector
-    normal.x -= _Mtrx[0][3];
-    normal.y -= _Mtrx[1][3];
-    normal.z -= _Mtrx[2][3];
+    Base::Vector3d normal = transformVectorToOutside(temp[index]);
     normal.Normalize();
     return normal;
 }
@@ -1044,19 +1021,10 @@ std::vector<Base::Vector3d> MeshObject::getPointNormals() const
 {
     std::vector<Base::Vector3f> temp = _kernel.CalcVertexNormals();
 
-    std::vector<Base::Vector3d> normals;
-    normals.reserve(temp.size());
-    for (std::vector<Base::Vector3f>::iterator it = temp.begin(); it != temp.end(); ++it) {
-        Base::Vector3d normal = transformToOutside(*it);
-        // the normal is a vector, hence we must not apply the translation part
-        // of the transformation to the vector
-        normal.x -= _Mtrx[0][3];
-        normal.y -= _Mtrx[1][3];
-        normal.z -= _Mtrx[2][3];
-        normal.Normalize();
-        normals.push_back(normal);
+    std::vector<Base::Vector3d> normals = transformVectorsToOutside(temp);
+    for (auto& n : normals) {
+        n.Normalize();
     }
-
     return normals;
 }
 

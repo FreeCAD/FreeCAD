@@ -537,6 +537,9 @@ public:
     /// Rebuilds up data structure
     void Rebuild ();
     const Base::Vector3f& operator[] (PointIndex) const;
+    const std::vector<Base::Vector3f>& GetValues() const {
+        return _norm;
+    }
 
 protected:
     const MeshKernel  &_rclMesh; /**< The mesh kernel. */
