@@ -5,7 +5,6 @@ Header
 End
 
 Solver 1
-  Bubbles = Logical False
   Calculate Pangle = Logical False
   Calculate Principal = Logical True
   Calculate Strains = Logical False
@@ -13,7 +12,7 @@ Solver 1
   Displace mesh = Logical False
   Eigen Analysis = Logical False
   Eigen System Values = Integer 5
-  Equation = String "Elasticity"
+  Equation = String "Stress Solver"
   Exec Solver = String "Always"
   Linear System Abort Not Converged = Logical False
   Linear System Convergence Tolerance = Real 1e-08
@@ -25,7 +24,6 @@ Solver 1
   Linear System Solver = String "Iterative"
   Optimize Bandwidth = Logical True
   Procedure = File "StressSolve" "StressSolver"
-  Stabilize = Logical True
   Steady State Convergence Tolerance = Real 1e-05
   Variable = String "Displacement"
   Variable DOFs = Integer 3
