@@ -49,21 +49,6 @@ QGCustomImage::~QGCustomImage()
 {
 }
 
-void QGCustomImage::centerAt(QPointF centerPos)
-{
-    centerAt(centerPos.x(), centerPos.y());
-}
-
-void QGCustomImage::centerAt(double cX, double cY)
-{
-    QRectF br = boundingRect();
-    double width = br.width() * scale();
-    double height = br.height() * scale();
-    double newX = cX - width/2.;
-    double newY = cY - height/2.;
-    setPos(newX, newY);
-}
-
 bool QGCustomImage::load(QString fileSpec)
 {
     bool success = true;

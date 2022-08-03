@@ -35,10 +35,12 @@ QT_END_NAMESPACE
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 
+#include "QGCustom.h"
+
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGCustomText : public QGraphicsTextItem
+class TechDrawGuiExport QGCustomText : public QGCustom<QGraphicsTextItem>
 {
 public:
     explicit QGCustomText(QGraphicsItem* parent = nullptr);
@@ -56,8 +58,6 @@ public:
     virtual void setPrettyPre();
     virtual void setPrettySel();
 
-    virtual void centerAt(QPointF centerPos);
-    virtual void centerAt(double cX, double cY);
     virtual void justifyLeftAt(QPointF centerPos, bool vCenter = true);
     virtual void justifyLeftAt(double cX, double cY, bool vCenter = true);
     virtual void justifyRightAt(QPointF centerPos, bool vCenter = true);

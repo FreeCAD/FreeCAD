@@ -53,21 +53,6 @@ QGCustomClip::QGCustomClip()
     m_rect = QRectF(0.,0.,10.,10.);
 }
 
-void QGCustomClip::centerAt(QPointF centerPos)
-{
-    centerAt(centerPos.x(), centerPos.y());
-}
-
-void QGCustomClip::centerAt(double cX, double cY)
-{
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = cX - width/2.;
-    double newY = cY - height/2.;
-    setPos(newX,newY);
-}
-
 void QGCustomClip::setRect(QRectF r)
 {
     //prepareGeometryChange();??

@@ -237,6 +237,8 @@ SET(TechDrawGuiView_SRCS
     QGCustomRect.h
     QGCustomSvg.cpp
     QGCustomSvg.h
+    QGCustom.cpp
+    QGCustom.h
     QGCustomClip.cpp
     QGCustomClip.h
     QGCustomLabel.cpp

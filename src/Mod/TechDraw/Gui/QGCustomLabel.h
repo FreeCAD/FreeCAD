@@ -27,6 +27,8 @@
 #include <QGraphicsTextItem>
 #include <QPointF>
 
+#include "QGCustom.h"
+
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
@@ -35,7 +37,7 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGCustomLabel : public QGraphicsTextItem
+class TechDrawGuiExport QGCustomLabel : public QGCustom<QGraphicsTextItem>
 {
 public:
     explicit QGCustomLabel(void);
@@ -45,8 +47,6 @@ public:
     int type() const { return Type;}
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
-    virtual void centerAt(QPointF centerPos);
-    virtual void centerAt(double cX, double cY);
 
 protected:
 

@@ -29,6 +29,7 @@
 #include <QPointF>
 #include <QSvgRenderer>
 
+#include "QGCustom.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -38,7 +39,7 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGCustomSvg : public QGraphicsSvgItem
+class TechDrawGuiExport QGCustomSvg : public QGCustom<QGraphicsSvgItem>
 {
 public:
     explicit QGCustomSvg(void);
@@ -50,8 +51,8 @@ public:
     virtual void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
-    virtual void centerAt(QPointF centerPos);
-    virtual void centerAt(double cX, double cY);
+    virtual void centerAt(QPointF centerPos) override;
+    virtual void centerAt(double cX, double cY) override;
     virtual bool load(QByteArray *svgString);
 
 protected:

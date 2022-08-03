@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2022 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,40 +21,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMBORDER_H
-#define DRAWINGGUI_QGCUSTOMBORDER_H
-
-#include <QGraphicsItem>
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QGraphicsItemGroup>
+#include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
+#include <QGraphicsSvgItem>
+#include <QGraphicsTextItem>
 #include <QPointF>
+#include <QRectF>
+#endif
 
+#include <Base/Console.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 #include "QGCustom.h"
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
+using namespace TechDrawGui;
 
-namespace TechDrawGui
+/**
+ * @brief Centers the object at a given position
+ * 
+ * @param centerPos is the position to center at
+ */
+template<typename T>
+void QGCustom<T>::centerAt(QPointF position)
 {
+    QRectF box = this->boundingRect();
+    box.moveCenter(position);
+    this->setPos(box.topLeft());
+}
 
-class TechDrawGuiExport QGCustomBorder : public QGCustom<QGraphicsRectItem>
+/**
+ * @brief Centers the object at a given position
+ * 
+ * @param x is the x coordinate to center at
+ * @param y is the y coordinate to center at
+ */
+template<typename T>
+void QGCustom<T>::centerAt(double x, double y)
 {
-public:
-    explicit QGCustomBorder(void);
-    ~QGCustomBorder() {}
+    centerAt(QPointF(x, y));
+}
 
-    enum {Type = QGraphicsItem::UserType + 136};
-    int type() const { return Type;}
-
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
-
-protected:
-
-private:
-
-};
-
-} // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGCUSTOMBORDER_H
+template class QGCustom<QGraphicsItemGroup>;
+template class QGCustom<QGraphicsPixmapItem>;
+template class QGCustom<QGraphicsRectItem>;
+template class QGCustom<QGraphicsSvgItem>;
+template class QGCustom<QGraphicsTextItem>;

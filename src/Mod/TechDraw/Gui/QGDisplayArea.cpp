@@ -50,21 +50,6 @@ QGDisplayArea::QGDisplayArea(void)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
-void QGDisplayArea::centerAt(QPointF centerPos)
-{
-    centerAt(centerPos.x(), centerPos.y());
-}
-
-void QGDisplayArea::centerAt(double cX, double cY)
-{
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = cX - width/2.;
-    double newY = cY - height/2.;
-    setPos(newX,newY);
-}
-
 void QGDisplayArea::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;

@@ -31,6 +31,8 @@
 
 #include <Base/Vector3D.h>
 
+#include "QGCustom.h"
+
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
@@ -39,7 +41,7 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGCustomClip : public QGraphicsItemGroup
+class TechDrawGuiExport QGCustomClip : public QGCustom<QGraphicsItemGroup>
 {
 public:
     explicit QGCustomClip(void);
@@ -50,8 +52,6 @@ public:
     virtual QRectF boundingRect() const;
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
-    virtual void centerAt(QPointF centerPos);
-    virtual void centerAt(double cX, double cY);
     virtual void setRect(QRectF r);
     virtual void setRect(double x, double y, double w, double h);
     virtual QRectF rect();

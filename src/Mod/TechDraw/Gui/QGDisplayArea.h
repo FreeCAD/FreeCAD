@@ -27,6 +27,8 @@
 #include <QPointF>
 #include <QRectF>
 
+#include "QGCustom.h"
+
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
@@ -35,7 +37,7 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGDisplayArea : public QGraphicsItemGroup
+class TechDrawGuiExport QGDisplayArea : public QGCustom<QGraphicsItemGroup>
 {
 public:
     explicit QGDisplayArea(void);
@@ -46,8 +48,6 @@ public:
     virtual QRectF boundingRect() const;
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
-    virtual void centerAt(QPointF centerPos);
-    virtual void centerAt(double cX, double cY);
 
 protected:
 
