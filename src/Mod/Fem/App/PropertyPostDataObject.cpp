@@ -217,7 +217,7 @@ void PropertyPostDataObject::Paste(const App::Property &from)
 
 unsigned int PropertyPostDataObject::getMemSize (void) const
 {
-    return m_dataObject->GetActualMemorySize();
+    return m_dataObject ? m_dataObject->GetActualMemorySize() : 0;
 }
 
 void PropertyPostDataObject::getPaths(std::vector<App::ObjectIdentifier> & /*paths*/) const
