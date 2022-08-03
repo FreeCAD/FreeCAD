@@ -179,6 +179,7 @@ public:
     // Save and load in internal format
     void save(std::ostream&) const;
     void load(std::istream&);
+    void writeInventor(std::ostream& str, float creaseangle=0.0f) const;
     //@}
 
     /** @name Manipulation */

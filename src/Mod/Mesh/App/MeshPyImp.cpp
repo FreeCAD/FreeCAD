@@ -25,7 +25,6 @@
 
 #include <Base/VectorPy.h>
 #include <Base/Handle.h>
-#include <Base/Builder3D.h>
 #include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
@@ -311,32 +310,9 @@ PyObject*  MeshPy::writeInventor(PyObject *args)
     if (!PyArg_ParseTuple(args, "|f",&creaseangle))
         return nullptr;
 
-    MeshObject* mesh = getMeshObjectPtr();
-    const MeshCore::MeshFacetArray& faces = mesh->getKernel().GetFacets();
-    std::vector<int> indices;
-    std::vector<Base::Vector3f> coords;
-    coords.reserve(mesh->countPoints());
-    for (MeshObject::const_point_iterator it = mesh->points_begin(); it != mesh->points_end(); ++it)
-        coords.emplace_back((float)it->x,(float)it->y,(float)it->z);
-    indices.reserve(4*faces.size());
-    for (MeshCore::MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
-        indices.push_back(it->_aulPoints[0]);
-        indices.push_back(it->_aulPoints[1]);
-        indices.push_back(it->_aulPoints[2]);
-        indices.push_back(-1);
-    }
-
     std::stringstream result;
-    Base::InventorBuilder builder(result);
-    builder.beginSeparator();
-    builder.addShapeHints(creaseangle);
-    builder.beginPoints();
-    builder.addPoints(coords);
-    builder.endPoints();
-    builder.addIndexedFaceSet(indices);
-    builder.endSeparator();
-    builder.close();
-
+    MeshObject* mesh = getMeshObjectPtr();
+    mesh->writeInventor(result, creaseangle);
     return Py::new_reference_to(Py::String(result.str()));
 }
 

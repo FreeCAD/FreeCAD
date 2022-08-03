@@ -564,6 +564,36 @@ void MeshObject::load(std::istream& in)
 #endif
 }
 
+void MeshObject::writeInventor(std::ostream& str, float creaseangle) const
+{
+    const MeshCore::MeshPointArray& point = getKernel().GetPoints();
+    const MeshCore::MeshFacetArray& faces = getKernel().GetFacets();
+
+    std::vector<Base::Vector3f> coords;
+    coords.reserve(point.size());
+    std::copy(point.begin(), point.end(), std::back_inserter(coords));
+
+    std::vector<int> indices;
+    indices.reserve(4 * faces.size());
+    for (const auto& it : faces) {
+        indices.push_back(it._aulPoints[0]);
+        indices.push_back(it._aulPoints[1]);
+        indices.push_back(it._aulPoints[2]);
+        indices.push_back(-1);
+    }
+
+    Base::InventorBuilder builder(str);
+    builder.beginSeparator();
+    builder.addTransformation(getTransform());
+    builder.addShapeHints(creaseangle);
+    builder.beginPoints();
+    builder.addPoints(coords);
+    builder.endPoints();
+    builder.addIndexedFaceSet(indices);
+    builder.endSeparator();
+    builder.close();
+}
+
 void MeshObject::addFacet(const MeshCore::MeshGeomFacet& facet)
 {
     _kernel.AddFacet(facet);
