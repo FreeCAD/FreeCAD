@@ -1,6 +1,10 @@
 macro(SetupSalomeSMESH)
 # -------------------------------- Salome SMESH --------------------------
 
+    # Allow using external SMESH
+    if (FREECAD_USE_EXTERNAL_SMESH)
+        find_package(SMESH REQUIRED)
+    endif(FREECAD_USE_EXTERNAL_SMESH)
     # Salome SMESH sources are under src/3rdParty now
     if(BUILD_SMESH)
         # set the internal smesh version:
