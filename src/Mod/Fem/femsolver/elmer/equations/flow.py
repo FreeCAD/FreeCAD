@@ -44,6 +44,15 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
+        obj.addProperty(
+            "App::PropertyBool",
+            "Stabilize",
+            "Flow",
+            ""
+        )
+        obj.Stabilize = True
+
         obj.Priority = 10
 
 

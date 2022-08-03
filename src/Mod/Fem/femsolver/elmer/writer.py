@@ -474,8 +474,6 @@ class Writer(object):
         s["Calculate Capacitance Matrix"] = equation.CalculateCapacitanceMatrix
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 
@@ -585,7 +583,7 @@ class Writer(object):
 
     def _getElasticitySolver(self, equation):
         s = self._createLinearSolver(equation)
-        s["Equation"] = equation.Name
+        s["Equation"] = "Stress Solver" # equation.Name
         s["Procedure"] = sifio.FileAttr("StressSolve/StressSolver")
         s["Variable"] = self._getUniqueVarName("Displacement")
         s["Variable DOFs"] = 3
@@ -597,8 +595,6 @@ class Writer(object):
         s["Calculate Pangle"] = equation.CalculatePangle
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 
@@ -771,11 +767,9 @@ class Writer(object):
     def _getFlowSolver(self, equation):
         s = self._createNonlinearSolver(equation)
         s["Equation"] = "Navier-Stokes"
-        # s["Equation"] = equation.Name
         s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
         s["Exec Solver"] = "Always"
         s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 
