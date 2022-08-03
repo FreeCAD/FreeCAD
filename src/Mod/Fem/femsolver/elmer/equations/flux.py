@@ -47,17 +47,29 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
             "App::PropertyBool",
+            "DiscontinuousGalerkin",
+            "Flux",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "AverageWithinMaterials",
+            "Flux",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyBool",
             "CalculateFlux",
             "Flux",
             ""
         )
+        obj.CalculateFlux = True
         obj.addProperty(
             "App::PropertyString",
             "FluxVariable",
             "Flux",
             "Insert variable name for flux calculation"
         )
-        """
         obj.addProperty(
             "App::PropertyBool",
             "CalculateFluxAbs",
@@ -70,14 +82,12 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
             "Flux",
             "Select calculation of magnitude of flux"
         )
-        """
         obj.addProperty(
             "App::PropertyBool",
             "CalculateGrad",
             "Flux",
             "Select calculation of gradient"
         )
-        """
         obj.addProperty(
             "App::PropertyBool",
             "CalculateGradAbs",
@@ -96,7 +106,6 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
             "Flux",
             "Select calculation of positive magnitude"
         )
-        """
         obj.Priority = 5
 
 

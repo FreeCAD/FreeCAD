@@ -474,8 +474,6 @@ class Writer(object):
         s["Calculate Capacitance Matrix"] = equation.CalculateCapacitanceMatrix
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 
@@ -536,8 +534,15 @@ class Writer(object):
         s["Equation"] = "Flux Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
         s["Flux Variable"] = equation.FluxVariable
+        s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
+        s["Average Within Materials"] = equation.AverageWithinMaterials
         s["Calculate Flux"] = equation.CalculateFlux
+        s["Calculate Flux Abs"] = equation.CalculateFluxAbs
+        s["Calculate Flux Magnitude"] = equation.CalculateFluxMagnitude
         s["Calculate Grad"] = equation.CalculateGrad
+        s["Calculate Grad Abs"] = equation.CalculateGradAbs
+        s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
+        s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
         return s
 
     def _handleElectricforce(self):
@@ -578,7 +583,7 @@ class Writer(object):
 
     def _getElasticitySolver(self, equation):
         s = self._createLinearSolver(equation)
-        s["Equation"] = equation.Name
+        s["Equation"] = "Stress Solver" # equation.Name
         s["Procedure"] = sifio.FileAttr("StressSolve/StressSolver")
         s["Variable"] = self._getUniqueVarName("Displacement")
         s["Variable DOFs"] = 3
@@ -590,8 +595,6 @@ class Writer(object):
         s["Calculate Pangle"] = equation.CalculatePangle
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 
@@ -764,11 +767,9 @@ class Writer(object):
     def _getFlowSolver(self, equation):
         s = self._createNonlinearSolver(equation)
         s["Equation"] = "Navier-Stokes"
-        # s["Equation"] = equation.Name
         s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
         s["Exec Solver"] = "Always"
         s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
         s["Optimize Bandwidth"] = True
         return s
 
