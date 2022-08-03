@@ -58,11 +58,10 @@ class ConnectionChecker(QtCore.QThread):
         self.success.emit()
 
     def check_network_connection(self) -> Optional[str]:
-        """ The main work of this object: returns the decoded result of the connection request, or 
+        """ The main work of this object: returns the decoded result of the connection request, or
         None if the request failed """
         url = "https://api.github.com/zen"
         result = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
         if result:
             return result.data().decode("utf8")
         return None
-

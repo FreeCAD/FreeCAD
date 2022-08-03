@@ -23,24 +23,15 @@
 """ Worker thread classes for Addon Manager startup """
 
 import hashlib
-import io
-import itertools
 import json
 import os
-import platform
 import queue
 import re
 import shutil
 import stat
-import subprocess
-import sys
-import tempfile
 import threading
 import time
-import zipfile
-from datetime import datetime
-from typing import Union, List, Dict
-from enum import Enum, auto
+from typing import List
 
 from PySide2 import QtCore
 
@@ -91,7 +82,6 @@ class CreateAddonListWorker(QtCore.QThread):
         self.py2only = []
 
         self.package_names = []
-        
         self.moddir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod")
 
     def run(self):
@@ -100,7 +90,7 @@ class CreateAddonListWorker(QtCore.QThread):
         self.current_thread = QtCore.QThread.currentThread()
         try:
             self._get_freecad_addon_repo_data()
-        except ConnectionError as e:
+        except ConnectionError:
             return
         self._get_custom_addons()
         self._get_official_addons()
@@ -349,6 +339,7 @@ class CreateAddonListWorker(QtCore.QThread):
                     FreeCAD.Console.PrintLog(f"Found macro {repo.name}\n")
                     repo.url = "https://github.com/FreeCAD/FreeCAD-macros.git"
                     utils.update_macro_installation_details(repo)
+                    self.addon_repo.emit(repo)
 
     def _retrieve_macros_from_wiki(self):
         """Retrieve macros from the wiki
@@ -373,7 +364,7 @@ class CreateAddonListWorker(QtCore.QThread):
         macros = re.findall('title="(Macro.*?)"', p)
         macros = [mac for mac in macros if "translated" not in mac]
         macro_names = []
-        for i, mac in enumerate(macros):
+        for _, mac in enumerate(macros):
             if self.current_thread.isInterruptionRequested():
                 return
             macname = mac[6:]  # Remove "Macro ".
@@ -392,6 +383,7 @@ class CreateAddonListWorker(QtCore.QThread):
                 repo = Addon.from_macro(macro)
                 repo.url = "https://wiki.freecad.org/Macros_recipes"
                 utils.update_macro_installation_details(repo)
+                self.addon_repo.emit(repo)
 
     def _remove_readonly(self, func, path, _) -> None:
         """Remove a read-only file."""
@@ -411,7 +403,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
         metadata_cache_path = os.path.join(
             FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
         )
-        with open(self.cache_file, "r") as f:
+        with open(self.cache_file, "r", encoding="utf-8") as f:
             data = f.read()
             if data:
                 dict_data = json.loads(data)
