@@ -54,7 +54,8 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren(v
     if (pipeline->Functions.getValue())
         children.push_back(pipeline->Functions.getValue());
 
-    children.insert(children.end(), pipeline->Filter.getValues().begin(), pipeline->Filter.getValues().end());
+    children.insert(children.end(), pipeline->Filter.getValues().begin(),
+        pipeline->Filter.getValues().end());
     return children;
 }
 
@@ -66,10 +67,8 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren3D
 void ViewProviderFemPostPipeline::updateData(const App::Property* prop) {
     FemGui::ViewProviderFemPostObject::updateData(prop);
 
-    if (strcmp(prop->getName(), "Function") == 0) {
+    if (strcmp(prop->getName(), "Function") == 0)
         updateFunctionSize();
-    }
-
 }
 
 void ViewProviderFemPostPipeline::updateFunctionSize() {
@@ -77,7 +76,8 @@ void ViewProviderFemPostPipeline::updateFunctionSize() {
     //we need to get the bounding box and set the function provider size
     Fem::FemPostPipeline* obj = static_cast<Fem::FemPostPipeline*>(getObject());
 
-    if (!obj->Functions.getValue() || !obj->Functions.getValue()->isDerivedFrom(Fem::FemPostFunctionProvider::getClassTypeId()))
+    if (!obj->Functions.getValue()
+        || !obj->Functions.getValue()->isDerivedFrom(Fem::FemPostFunctionProvider::getClassTypeId()))
         return;
 
     //get the function provider
@@ -112,6 +112,8 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
     if (sel.Type == Gui::SelectionChanges::AddSelection) {
         if (this->getObject()->Visibility.getValue())
             updateMaterial();
+        else
+            return; // purposely nothing should be done
 
         // Access analysis object
         ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
