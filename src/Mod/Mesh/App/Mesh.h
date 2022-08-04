@@ -31,7 +31,7 @@
 #include <map>
 
 #include <Base/Matrix.h>
-#include <Base/Vector3D.h>
+#include <Base/Tools3D.h>
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
@@ -88,9 +88,12 @@ public:
     enum GeometryType {PLANE, CYLINDER, SPHERE};
     enum CutType {INNER, OUTER};
 
+    using TFacePair = std::pair<FacetIndex, FacetIndex>;
+    using TFacePairs = std::vector<TFacePair>;
+
     // typedef needed for cross-section
-    typedef std::pair<Base::Vector3f, Base::Vector3f> TPlane;
-    typedef std::list<std::vector<Base::Vector3f> > TPolylines;
+    using TPlane =  std::pair<Base::Vector3f, Base::Vector3f>;
+    using TPolylines = std::list<std::vector<Base::Vector3f>>;
 
     MeshObject();
     explicit MeshObject(const MeshCore::MeshKernel& Kernel);
@@ -308,6 +311,8 @@ public:
     void removeNonManifolds();
     void removeNonManifoldPoints();
     bool hasSelfIntersections() const;
+    TFacePairs getSelfIntersections() const;
+    std::vector<Base::Line3d> getSelfIntersections(const TFacePairs&) const;
     void removeSelfIntersections();
     void removeSelfIntersections(const std::vector<FacetIndex>&);
     void removeFoldsOnSurface();

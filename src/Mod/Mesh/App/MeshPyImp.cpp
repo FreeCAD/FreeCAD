@@ -1043,19 +1043,19 @@ PyObject*  MeshPy::getSelfIntersections(PyObject *args)
         return nullptr;
 
     std::vector<std::pair<FacetIndex, FacetIndex> > selfIndices;
-    std::vector<std::pair<Base::Vector3f, Base::Vector3f> > selfPoints;
-    MeshCore::MeshEvalSelfIntersection eval(getMeshObjectPtr()->getKernel());
-    eval.GetIntersections(selfIndices);
-    eval.GetIntersections(selfIndices, selfPoints);
+    std::vector<Base::Line3d> selfLines;
+
+    selfIndices = getMeshObjectPtr()->getSelfIntersections();
+    selfLines = getMeshObjectPtr()->getSelfIntersections(selfIndices);
 
     Py::Tuple tuple(selfIndices.size());
-    if (selfIndices.size() == selfPoints.size()) {
+    if (selfIndices.size() == selfLines.size()) {
         for (std::size_t i=0; i<selfIndices.size(); i++) {
             Py::Tuple item(4);
             item.setItem(0, Py::Long(selfIndices[i].first));
             item.setItem(1, Py::Long(selfIndices[i].second));
-            item.setItem(2, Py::Vector(selfPoints[i].first));
-            item.setItem(3, Py::Vector(selfPoints[i].second));
+            item.setItem(2, Py::Vector(selfLines[i].p1));
+            item.setItem(3, Py::Vector(selfLines[i].p2));
             tuple.setItem(i, item);
         }
     }

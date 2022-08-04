@@ -1436,6 +1436,32 @@ bool MeshObject::hasSelfIntersections() const
     return !cMeshEval.Evaluate();
 }
 
+MeshObject::TFacePairs MeshObject::getSelfIntersections() const
+{
+    MeshCore::MeshEvalSelfIntersection eval(getKernel());
+    MeshObject::TFacePairs pairs;
+    eval.GetIntersections(pairs);
+    return pairs;
+}
+
+std::vector<Base::Line3d> MeshObject::getSelfIntersections(const MeshObject::TFacePairs& facets) const
+{
+    MeshCore::MeshEvalSelfIntersection eval(getKernel());
+    using Section = std::pair<Base::Vector3f, Base::Vector3f>;
+    std::vector<Section> selfPoints;
+    eval.GetIntersections(facets, selfPoints);
+
+    std::vector<Base::Line3d> lines;
+    lines.reserve(selfPoints.size());
+
+    Base::Matrix4D mat(getTransform());
+    std::transform(selfPoints.begin(), selfPoints.end(), std::back_inserter(lines), [&mat](const Section& l){
+        return Base::Line3d(mat * Base::convertTo<Base::Vector3d>(l.first),
+                            mat * Base::convertTo<Base::Vector3d>(l.second));
+    });
+    return lines;
+}
+
 void MeshObject::removeSelfIntersections()
 {
     std::vector<std::pair<FacetIndex, FacetIndex> > selfIntersections;
