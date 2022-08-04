@@ -1076,7 +1076,10 @@ void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, st
 void MeshObject::cut(const Base::Polygon2d& polygon2d,
                      const Base::ViewProjMethod& proj, MeshObject::CutType type)
 {
-    MeshCore::MeshAlgorithm meshAlg(this->_kernel);
+    MeshCore::MeshKernel kernel(this->_kernel);
+    kernel.Transform(getTransform());
+
+    MeshCore::MeshAlgorithm meshAlg(kernel);
     std::vector<FacetIndex> check;
 
     bool inner;
@@ -1092,7 +1095,7 @@ void MeshObject::cut(const Base::Polygon2d& polygon2d,
         break;
     }
 
-    MeshCore::MeshFacetGrid meshGrid(this->_kernel);
+    MeshCore::MeshFacetGrid meshGrid(kernel);
     meshAlg.CheckFacets(meshGrid, &proj, polygon2d, inner, check);
     if (!check.empty())
         this->deleteFacets(check);
@@ -1101,7 +1104,10 @@ void MeshObject::cut(const Base::Polygon2d& polygon2d,
 void MeshObject::trim(const Base::Polygon2d& polygon2d,
                       const Base::ViewProjMethod& proj, MeshObject::CutType type)
 {
-    MeshCore::MeshTrimming trim(this->_kernel, &proj, polygon2d);
+    MeshCore::MeshKernel kernel(this->_kernel);
+    kernel.Transform(getTransform());
+
+    MeshCore::MeshTrimming trim(kernel, &proj, polygon2d);
     std::vector<FacetIndex> check;
     std::vector<MeshCore::MeshGeomFacet> triangle;
 
@@ -1114,13 +1120,20 @@ void MeshObject::trim(const Base::Polygon2d& polygon2d,
         break;
     }
 
-    MeshCore::MeshFacetGrid meshGrid(this->_kernel);
+    MeshCore::MeshFacetGrid meshGrid(kernel);
     trim.CheckFacets(meshGrid, check);
     trim.TrimFacets(check, triangle);
     if (!check.empty())
         this->deleteFacets(check);
-    if (!triangle.empty())
+
+    // Re-add some triangles
+    if (!triangle.empty()) {
+        Base::Matrix4D mat(getTransform());
+        mat.inverse();
+        for (auto& it : triangle)
+            it.Transform(mat);
         this->_kernel.AddFacets(triangle);
+    }
 }
 
 void MeshObject::trimByPlane(const Base::Vector3f& base, const Base::Vector3f& normal)
@@ -1129,9 +1142,17 @@ void MeshObject::trimByPlane(const Base::Vector3f& base, const Base::Vector3f& n
     std::vector<FacetIndex> trimFacets, removeFacets;
     std::vector<MeshCore::MeshGeomFacet> triangle;
 
+    // Apply the inverted mesh placement to the plane because the trimming is done
+    // on the untransformed mesh data
+    Base::Vector3f baseL, normalL;
+    Base::Placement meshPlacement = getPlacement();
+    meshPlacement.invert();
+    meshPlacement.multVec(base, baseL);
+    meshPlacement.getRotation().multVec(normal, normalL);
+
     MeshCore::MeshFacetGrid meshGrid(this->_kernel);
-    trim.CheckFacets(meshGrid, base, normal, trimFacets, removeFacets);
-    trim.TrimFacets(trimFacets, base, normal, triangle);
+    trim.CheckFacets(meshGrid, baseL, normalL, trimFacets, removeFacets);
+    trim.TrimFacets(trimFacets, baseL, normalL, triangle);
     if (!removeFacets.empty())
         this->deleteFacets(removeFacets);
     if (!triangle.empty())

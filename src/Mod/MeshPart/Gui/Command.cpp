@@ -135,13 +135,6 @@ void CmdMeshPartTrimByPlane::activated(int)
 
         Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(*it)->Mesh.startEditing();
 
-        // Apply the inverted mesh placement to the plane because the trimming is done
-        // on the untransformed mesh data
-        Base::Placement meshPlacement = mesh->getPlacement();
-        meshPlacement.invert();
-        meshPlacement.multVec(base, base);
-        meshPlacement.getRotation().multVec(normal, normal);
-
         Base::Vector3f plnBase = Base::convertTo<Base::Vector3f>(base);
         Base::Vector3f plnNormal = Base::convertTo<Base::Vector3f>(normal);
 
