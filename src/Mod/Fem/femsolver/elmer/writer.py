@@ -354,8 +354,8 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("HeatSolve/HeatSolver")
         s["Variable"] = self._getUniqueVarName("Temperature")
         s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
         s["Bubbles"] = equation.Bubbles
+        s["Stabilize"] = equation.Stabilize
         s["Optimize Bandwidth"] = True
         return s
 
@@ -475,6 +475,7 @@ class Writer(object):
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
+        s["Stabilize"] = equation.Stabilize
         return s
 
     def _handleElectrostaticConstants(self):
@@ -543,6 +544,7 @@ class Writer(object):
         s["Calculate Grad Abs"] = equation.CalculateGradAbs
         s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
         s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
+        s["Stabilize"] = equation.Stabilize
         return s
 
     def _handleElectricforce(self):
@@ -561,6 +563,7 @@ class Writer(object):
         s = self._createEmptySolver(equation)
         s["Equation"] = "Electric Force"  # equation.Name
         s["Procedure"] = sifio.FileAttr("ElectricForce/StatElecForce")
+        s["Stabilize"] = equation.Stabilize
         return s
 
     def _handleElasticity(self):
@@ -596,6 +599,7 @@ class Writer(object):
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
+        s["Stabilize"] = equation.Stabilize
         return s
 
     def _handleElasticityConstants(self):

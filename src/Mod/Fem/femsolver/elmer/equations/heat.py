@@ -46,13 +46,7 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
         super(Proxy, self).__init__(obj)
         
         # according to the Elmer models manual Bubbles is by default True
-        # Stabilize is False
-        obj.addProperty(
-            "App::PropertyBool",
-            "Stabilize",
-            "Heat",
-            ""
-        )
+        # and Stabilize is False (Stabilize is added in linear.py)
         obj.addProperty(
             "App::PropertyBool",
             "Bubbles",
@@ -60,6 +54,7 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
             ""
         )
         obj.Bubbles = True
+        obj.Stabilize = False
 
         obj.Priority = 20
 

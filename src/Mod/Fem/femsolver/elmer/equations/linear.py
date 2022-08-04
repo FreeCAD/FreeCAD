@@ -127,6 +127,14 @@ class Proxy(equation.Proxy):
         # same as with LinearTolerance
         obj.setExpression('SteadyStateTolerance', "1e-5")
 
+        obj.addProperty(
+            "App::PropertyBool",
+            "Stabilize",
+            "Base",
+            ""
+        )
+        obj.Stabilize = True
+
 
 class ViewProxy(equation.ViewProxy):
     pass
