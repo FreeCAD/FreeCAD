@@ -62,7 +62,6 @@ public:
 
     virtual void onChanged(const App::Property *prop) override;
     virtual void updateData(const App::Property*) override;
-    virtual void unsetEdit(int ModNum) override;
 
     QGIView* getQView(void);
     MDIViewPage* getMDIViewPage() const;

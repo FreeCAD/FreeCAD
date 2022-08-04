@@ -103,16 +103,6 @@ bool ViewProviderBalloon::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderBalloon::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
 void ViewProviderBalloon::updateData(const App::Property* p)
 {
     //Balloon handles X,Y updates differently that other QGIView

@@ -51,7 +51,6 @@ public:
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property *prop);
     virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
 
     void updateGraphic(void);

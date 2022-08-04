@@ -73,7 +73,6 @@ public:
     virtual void onChanged(const App::Property* p);
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
     virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;

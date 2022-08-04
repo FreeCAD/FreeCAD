@@ -99,17 +99,6 @@ bool ViewProviderProjGroup::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderProjGroup::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
 bool ViewProviderProjGroup::doubleClicked(void)
 {
     setEdit(0);
