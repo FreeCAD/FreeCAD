@@ -23,9 +23,12 @@
 #ifndef DRAWINGGUI_QGCUSTOMTEXT_H
 #define DRAWINGGUI_QGCUSTOMTEXT_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPointF>
+#endif
 
 QT_BEGIN_NAMESPACE
 class QPainter;

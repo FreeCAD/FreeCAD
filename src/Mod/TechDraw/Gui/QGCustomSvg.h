@@ -23,11 +23,14 @@
 #ifndef DRAWINGGUI_QGCUSTOMSVG_H
 #define DRAWINGGUI_QGCUSTOMSVG_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QByteArray>
 #include <QGraphicsItem>
 #include <QGraphicsSvgItem>
 #include <QPointF>
 #include <QSvgRenderer>
+#endif
 
 
 QT_BEGIN_NAMESPACE

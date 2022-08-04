@@ -23,8 +23,12 @@
 #ifndef DRAWINGGUI_QGIProjGroup_H
 #define DRAWINGGUI_QGIProjGroup_H
 
-#include "QGIViewCollection.h"
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QObject>
+#endif
+
+#include "QGIViewCollection.h"
 
 
 QT_BEGIN_NAMESPACE

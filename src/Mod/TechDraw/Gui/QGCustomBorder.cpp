@@ -27,6 +27,7 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QRectF>
 #include <QStyleOptionGraphicsItem>
 #endif
 
@@ -36,7 +37,6 @@
 #include <Base/Parameter.h>
 
 #include <qmath.h>
-#include <QRectF>
 #include "QGCustomBorder.h"
 
 using namespace TechDrawGui;

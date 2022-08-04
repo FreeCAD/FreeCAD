@@ -26,14 +26,13 @@
 #include <cmath>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
-
-#endif // #ifndef _PreComp_
-
-#include <BRepBuilderAPI_MakeEdge.hxx>
-
 #include <QButtonGroup>
 #include <QStatusBar>
 #include <QGraphicsScene>
+#endif
+
+#include <BRepBuilderAPI_MakeEdge.hxx>
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>

@@ -23,12 +23,16 @@
 #ifndef TECHDRAWGUI_QGVIEW_H
 #define TECHDRAWGUI_QGVIEW_H
 
-#include <memory>
-#include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QGraphicsView>
 #include <QLabel>
 #include <QPainterPath>
+#endif
+
+#include <memory>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Base/Type.h>
 

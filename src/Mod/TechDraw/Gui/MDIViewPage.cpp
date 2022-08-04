@@ -24,6 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+    #include <cmath>
     #include <QAction>
     #include <QTimer>
     #include <QApplication>
@@ -43,7 +44,6 @@
     #include <boost_signals2.hpp>
 #endif  // #ifndef _PreComp_
 
-#include <cmath>
 
 #include "MDIViewPage.h"
 

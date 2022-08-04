@@ -26,8 +26,12 @@
 #ifndef TECHDRAWGUI_MOVABLETEXT_H
 #define TECHDRAWGUI_MOVABLETEXT_H
 
-#include "QGCustomText.h"
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QObject>
+#endif
+
+#include "QGCustomText.h"
 
 
 QT_BEGIN_NAMESPACE

@@ -24,10 +24,10 @@
 
 #ifndef _PreComp_
 #include <cmath>
-#endif
-
 #include <QStatusBar>
 #include <QGraphicsScene>
+#endif
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>

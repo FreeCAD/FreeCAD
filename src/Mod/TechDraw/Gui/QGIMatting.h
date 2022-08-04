@@ -23,11 +23,14 @@
 #ifndef DRAWINGGUI_QGIMATTING_H
 #define DRAWINGGUI_QGIMATTING_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QGraphicsItem>
 #include <QGraphicsItemGroup>
 #include <QGraphicsPathItem>
+#endif
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 QT_BEGIN_NAMESPACE

@@ -23,6 +23,11 @@
 #ifndef _PreferencesGui_h_
 #define _PreferencesGui_h_
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QColor>
+#endif
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 class QFont;
@@ -30,7 +35,6 @@ class QString;
 class QColor;
 
 #include <Mod/TechDraw/App/Preferences.h>
-#include <QColor>
 
 namespace TechDrawGui
 {

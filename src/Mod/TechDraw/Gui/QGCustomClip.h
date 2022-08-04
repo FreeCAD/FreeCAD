@@ -23,11 +23,14 @@
 #ifndef DRAWINGGUI_QGCUSTOMCLIP_H
 #define DRAWINGGUI_QGCUSTOMCLIP_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QGraphicsItem>
 #include <QPointF>
 #include <QRectF>
+#endif
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Base/Vector3D.h>
 

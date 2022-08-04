@@ -22,10 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <cmath>
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
 #include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QTransform>
 #include <QMouseEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
@@ -34,18 +37,10 @@
 #include <QBitmap>
 #include <QFile>
 #include <QFileInfo>
-#endif
-
-#include <QFile>
 #include <QTextStream>
 #include <QRectF>
 #include <QPointF>
-
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QTransform>
-
-#include <cmath>
+#endif
 
 #include <App/Application.h>
 #include <App/Material.h>

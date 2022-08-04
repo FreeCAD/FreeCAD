@@ -25,8 +25,11 @@
  * includes changes by wandererfan@gmail.com
  * for FreeCAD project https://www.freecadweb.org/
  ********************************/
-#include "PreCompiled.h"
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <algorithm>
+#include <iostream>
 #include <QApplication>
 #include <QClipboard>
 #include <QMimeData>
@@ -44,9 +47,7 @@
 #include <QMenu>
 #include <QDialog>
 #include <QBitmap>
-
-#include <iostream>
-#include <algorithm>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>

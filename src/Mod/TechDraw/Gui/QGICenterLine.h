@@ -23,8 +23,11 @@
 #ifndef TECHDRAWGUI_QGICENTERLINE_H
 #define TECHDRAWGUI_QGICENTERLINE_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QColor>
 #include <QPointF>
+#endif
 
 #include "QGIDecoration.h"
 

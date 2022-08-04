@@ -22,7 +22,10 @@
 #ifndef TECHDRAWGUI_SYMBOLCHOOSER_H
 #define TECHDRAWGUI_SYMBOLCHOOSER_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QDialog>
+#endif
 
 class QListWidgetItem;
 

@@ -22,23 +22,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <QCoreApplication>
-# include <QDir>
-# include <QFile>
-# include <QFileInfo>
-# include <QMessageBox>
-# include <QRegExp>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QGraphicsView>
+#include <QMessageBox>
+#include <QPainter>
+#include <QRegExp>
+#include <QStringBuilder>
+#include <QSvgGenerator>
+#include <QSvgRenderer>
+#include <sstream>
+#include <vector>
 #endif
 
-#include <QStringBuilder>
 
-#include <QGraphicsView>
-#include <QPainter>
-#include <QSvgRenderer>
-#include <QSvgGenerator>
 
-#include <vector>
 
 #include <App/Application.h>
 #include <App/Document.h>

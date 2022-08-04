@@ -23,9 +23,12 @@
 #ifndef TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 #define TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QGraphicsScene>
 #include <QObject>
 #include <QPointF>
+#endif
 
 #include "QGIHighlight.h"
 
