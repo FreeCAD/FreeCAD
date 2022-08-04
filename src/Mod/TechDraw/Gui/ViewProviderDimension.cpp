@@ -135,16 +135,6 @@ bool ViewProviderDimension::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderDimension::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
 void ViewProviderDimension::updateData(const App::Property* p)
 {
     if (p == &(getViewObject()->Type)) {

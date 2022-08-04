@@ -65,7 +65,6 @@ public:
     virtual bool onDelete(const std::vector<std::string> &);
     virtual bool canDelete(App::DocumentObject* obj) const;
     virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
 
 public:

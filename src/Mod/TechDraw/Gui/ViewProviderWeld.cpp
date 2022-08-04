@@ -107,17 +107,6 @@ bool ViewProviderWeld::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderWeld::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
 bool ViewProviderWeld::doubleClicked(void)
 {
 //    Base::Console().Message("VPW::doubleClicked()\n");

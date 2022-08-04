@@ -209,16 +209,6 @@ void ViewProviderDrawingView::updateData(const App::Property* prop)
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-void ViewProviderDrawingView::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        Gui::ViewProviderDocumentObject::unsetEdit(ModNum);
-    }
-}
-
 MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 {
     MDIViewPage* result = nullptr;

@@ -86,16 +86,6 @@ bool ViewProviderHatch::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderHatch::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDocumentObject::unsetEdit(ModNum);
-    }
-}
-
 bool ViewProviderHatch::doubleClicked(void)
 {
     setEdit(0);

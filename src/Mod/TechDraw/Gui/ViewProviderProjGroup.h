@@ -52,7 +52,6 @@ public:
 
     TechDraw::DrawProjGroup* getObject() const;
     virtual TechDraw::DrawProjGroup* getViewObject() const;
-    void unsetEdit(int ModNum);
     virtual bool onDelete(const std::vector<std::string> &);
     virtual bool canDelete(App::DocumentObject* obj) const;
 

@@ -92,16 +92,6 @@ bool ViewProviderGeomHatch::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderGeomHatch::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDocumentObject::unsetEdit(ModNum);
-    }
-}
-
 bool ViewProviderGeomHatch::doubleClicked(void)
 {
     setEdit(0);

@@ -50,7 +50,6 @@ public:
     virtual void onChanged(const App::Property* p);
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
     virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
 
     virtual TechDraw::DrawWeldSymbol* getViewObject() const;
