@@ -1635,7 +1635,7 @@ PyObject*  MeshPy::collapseFacets(PyObject *args)
     Py_Return;
 }
 
-PyObject*  MeshPy::foraminate(PyObject *args)
+PyObject* MeshPy::foraminate(PyObject *args)
 {
     PyObject* pnt_p;
     PyObject* dir_p;
@@ -1644,28 +1644,20 @@ PyObject*  MeshPy::foraminate(PyObject *args)
         return nullptr;
 
     try {
-        Py::Tuple pnt_t(pnt_p);
-        Py::Tuple dir_t(dir_p);
-        Base::Vector3f pnt((float)Py::Float(pnt_t.getItem(0)),
-                           (float)Py::Float(pnt_t.getItem(1)),
-                           (float)Py::Float(pnt_t.getItem(2)));
-        Base::Vector3f dir((float)Py::Float(dir_t.getItem(0)),
-                           (float)Py::Float(dir_t.getItem(1)),
-                           (float)Py::Float(dir_t.getItem(2)));
+        Py::Vector pnt_t(pnt_p, false);
+        Py::Vector dir_t(dir_p, false);
 
-        Base::Vector3f res;
-        MeshCore::MeshFacetIterator f_it(getMeshObjectPtr()->getKernel());
-        int index = 0;
+        MeshObject::TRay ray = std::make_pair(pnt_t.toVector(),
+                                              dir_t.toVector());
+        auto output = getMeshObjectPtr()->foraminate(ray, maxAngle);
 
         Py::Dict dict;
-        for (f_it.Begin(); f_it.More(); f_it.Next(), index++) {
-            if (f_it->Foraminate(pnt, dir, res, static_cast<float>(maxAngle))) {
-                Py::Tuple tuple(3);
-                tuple.setItem(0, Py::Float(res.x));
-                tuple.setItem(1, Py::Float(res.y));
-                tuple.setItem(2, Py::Float(res.z));
-                dict.setItem(Py::Long(index), tuple);
-            }
+        for (const auto& it : output) {
+            Py::Tuple tuple(3);
+            tuple.setItem(0, Py::Float(it.second.x));
+            tuple.setItem(1, Py::Float(it.second.y));
+            tuple.setItem(2, Py::Float(it.second.z));
+            dict.setItem(Py::Long(it.first), tuple);
         }
 
         return Py::new_reference_to(dict);

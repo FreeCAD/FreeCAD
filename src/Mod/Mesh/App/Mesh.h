@@ -155,6 +155,7 @@ public:
         float Accuracy, uint16_t flags=0) const;
     std::vector<PointIndex> getPointsFromFacets(const std::vector<FacetIndex>& facets) const;
     bool nearestFacetOnRay(const TRay& ray, double maxAngle, TFaceSection& output) const;
+    std::vector<TFaceSection> foraminate(const TRay& ray, double maxAngle) const;
     //@}
 
     void setKernel(const MeshCore::MeshKernel& m);

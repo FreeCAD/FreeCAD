@@ -841,6 +841,37 @@ bool MeshObject::nearestFacetOnRay(const MeshObject::TRay& ray, double maxAngle,
     return false;
 }
 
+std::vector<MeshObject::TFaceSection> MeshObject::foraminate(const TRay& ray, double maxAngle) const
+{
+    Base::Vector3f pnt = Base::toVector<float>(ray.first);
+    Base::Vector3f dir = Base::toVector<float>(ray.second);
+
+    Base::Placement plm = getPlacement();
+    Base::Placement inv = plm.inverse();
+
+    // transform the ray relative to the mesh kernel
+    inv.multVec(pnt, pnt);
+    inv.getRotation().multVec(dir, dir);
+
+    Base::Vector3f res;
+    MeshCore::MeshFacetIterator f_it(getKernel());
+    int index = 0;
+
+    std::vector<MeshObject::TFaceSection> output;
+    for (f_it.Begin(); f_it.More(); f_it.Next(), index++) {
+        if (f_it->Foraminate(pnt, dir, res, static_cast<float>(maxAngle))) {
+            plm.multVec(res, res);
+
+            MeshObject::TFaceSection section;
+            section.first = index;
+            section.second = Base::toVector<double>(res);
+            output.push_back(section);
+        }
+    }
+
+    return output;
+}
+
 void MeshObject::updateMesh(const std::vector<FacetIndex>& facets) const
 {
     std::vector<PointIndex> points;

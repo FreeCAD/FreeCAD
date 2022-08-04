@@ -229,6 +229,24 @@ class MeshSplitTestCases(unittest.TestCase):
 
         self.assertEqual(filtered_result, list(self.mesh.foraminate((0.0, 0.0, 0.0), (0,1,1), math.pi/2).keys()))
 
+    def testForaminatePlacement(self):
+        pnt = Base.Vector(0.0, 0.0, 0.0)
+        vec = Base.Vector(0.0, 1.0, 1.0)
+        results = self.mesh.foraminate(pnt, vec)
+        self.assertEqual(len(results), 4)
+
+        # Apply placement to mesh
+        plm = Base.Placement(Base.Vector(1,2,3), Base.Rotation(1,1,1,1))
+        self.mesh.Placement = plm
+        self.assertEqual(len(self.mesh.foraminate(pnt, vec)), 0)
+
+        # Apply the placement on the ray as well
+        pnt = plm.multVec(pnt)
+        vec = plm.Rotation.multVec(vec)
+        results2 = self.mesh.foraminate(pnt, vec)
+        self.assertEqual(len(results2), 4)
+        self.assertEqual(list(results.keys()), list(results2.keys()))
+
 class MeshGeoTestCases(unittest.TestCase):
     def setUp(self):
         # set up a planar face with 2 triangles
