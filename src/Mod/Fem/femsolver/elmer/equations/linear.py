@@ -84,7 +84,7 @@ class Proxy(equation.Proxy):
             ""
         )
         obj.LinearIterativeMethod = LINEAR_ITERATIVE
-        obj.LinearIterativeMethod = "BiCGStab"
+        obj.LinearIterativeMethod = "BiCGStabl"
         obj.addProperty(
             "App::PropertyInteger",
             "BiCGstablDegree",
