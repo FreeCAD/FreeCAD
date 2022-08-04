@@ -125,11 +125,14 @@ private:
             }
         }
 
-        if (ext == QLatin1String("inp")) {
+        if ( (ext == QLatin1String("inp"))
+            || (ext == QLatin1String("sif"))
+            || (ext == QLatin1String("txt")) ) {
             Gui::TextEditor* editor = new Gui::TextEditor();
             editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/fem-solver-inp-editor.svg"));
             Gui::EditorView* edit = new Gui::EditorView(editor, Gui::getMainWindow());
-            editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
+            if (ext == QLatin1String("inp"))
+                editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
             edit->setDisplayName(Gui::EditorView::FileName);
             edit->open(fileName);
             edit->resize(400, 300);
