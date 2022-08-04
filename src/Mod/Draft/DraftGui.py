@@ -156,6 +156,11 @@ inCommandShortcuts = {
         translate("draft","Toggle near snap on/off"),
         None
         ],
+    "Undo": [
+        Draft.getParam("inCommandShortcutNearSnap", "/"),
+        translate("draft","Undo last segment"),
+        None
+        ],
 }
 
 from draftutils.todo import todo
@@ -785,7 +790,7 @@ class DraftToolBar:
         # self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
         # self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
 
-        self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
+        self.undoButton.setText(translate("draft", "&Undo")+" ("+inCommandShortcuts["Undo"][0]+")")
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
         self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line"))
@@ -1631,6 +1636,7 @@ class DraftToolBar:
         #Length
         #Wipe
         #SetWP
+        #Undo
 
         spec = False
         if txt.upper().startswith(inCommandShortcuts["Relative"][0]):
@@ -1704,6 +1710,9 @@ class DraftToolBar:
         elif txt.upper().startswith(inCommandShortcuts["Copy"][0]):
             if self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
+            spec = True
+        elif txt.upper().startswith(inCommandShortcuts["Undo"][0]):
+            self.undoSegment()
             spec = True
         elif txt.upper().startswith(inCommandShortcuts["SubelementMode"][0]):
             if self.isSubelementMode.isVisible():
