@@ -110,6 +110,51 @@ Vector3<float_type> Line3<float_type>::GetDirection() const
 }
 
 template <typename float_type>
+void Line3<float_type>::Transform(const Base::Matrix4D& mat)
+{
+    mat.multVec(p1, p1);
+    mat.multVec(p2, p2);
+}
+
+template <typename float_type>
+void Line3<float_type>::Transform(const Base::Placement& plm)
+{
+    plm.multVec(p1, p1);
+    plm.multVec(p2, p2);
+}
+
+template <typename float_type>
+void Line3<float_type>::Transform(const Base::Rotation& rot)
+{
+    rot.multVec(p1, p1);
+    rot.multVec(p2, p2);
+}
+
+template <typename float_type>
+Line3<float_type> Line3<float_type>::Transformed(const Base::Matrix4D& mat) const
+{
+    Line3<float_type> line(*this);
+    line.Transform(mat);
+    return line;
+}
+
+template <typename float_type>
+Line3<float_type> Line3<float_type>::Transformed(const Base::Placement& plm) const
+{
+    Line3<float_type> line(*this);
+    line.Transform(plm);
+    return line;
+}
+
+template <typename float_type>
+Line3<float_type> Line3<float_type>::Transformed(const Base::Rotation& rot) const
+{
+    Line3<float_type> line(*this);
+    line.Transform(rot);
+    return line;
+}
+
+template <typename float_type>
 bool Line3<float_type>::Contains(const Vector3<float_type>& pt) const
 {
     return Contains(pt, Vector3<float_type>::epsilon());
@@ -199,6 +244,51 @@ BoundBox3<float_type> Polygon3<float_type>::CalcBoundBox() const
     for (const auto& it : points)
         box.Add(it);
     return box;
+}
+
+template <typename float_type>
+void Polygon3<float_type>::Transform(const Base::Matrix4D& mat)
+{
+    for (auto& it : points)
+        mat.multVec(it, it);
+}
+
+template <typename float_type>
+void Polygon3<float_type>::Transform(const Base::Placement& plm)
+{
+    for (auto& it : points)
+        plm.multVec(it, it);
+}
+
+template <typename float_type>
+void Polygon3<float_type>::Transform(const Base::Rotation& rot)
+{
+    for (auto& it : points)
+        rot.multVec(it, it);
+}
+
+template <typename float_type>
+Polygon3<float_type> Polygon3<float_type>::Transformed(const Base::Matrix4D& mat) const
+{
+    Polygon3<float_type> poly(*this);
+    poly.Transform(mat);
+    return poly;
+}
+
+template <typename float_type>
+Polygon3<float_type> Polygon3<float_type>::Transformed(const Base::Placement& plm) const
+{
+    Polygon3<float_type> poly(*this);
+    poly.Transform(plm);
+    return poly;
+}
+
+template <typename float_type>
+Polygon3<float_type> Polygon3<float_type>::Transformed(const Base::Rotation& rot) const
+{
+    Polygon3<float_type> poly(*this);
+    poly.Transform(rot);
+    return poly;
 }
 
 // explicit template instantiation

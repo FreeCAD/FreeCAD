@@ -33,7 +33,7 @@
 #include <vector>
 
 #include <Base/BoundBox.h>
-#include <Base/Vector3D.h>
+#include <Base/Placement.h>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -58,14 +58,14 @@ public:
 
     Line3() = default;
     ~Line3() = default;
-    Line3(const Line3<float_type>& line);
-    Line3(Line3<float_type>&& line);
+    Line3(const Line3& line);
+    Line3(Line3&& line);
     Line3(const Vector3<float_type>& p1, const Vector3<float_type>& p2);
 
     // operators
-    Line3& operator= (const Line3<float_type>& line);
-    Line3& operator= (Line3<float_type>&& line);
-    bool operator== (const Line3<float_type>& line) const;
+    Line3& operator= (const Line3& line);
+    Line3& operator= (Line3&& line);
+    bool operator== (const Line3& line) const;
 
     // methods
     double Length () const;
@@ -73,6 +73,12 @@ public:
     BoundBox3<float_type> CalcBoundBox() const;
     Vector3<float_type> GetBase() const;
     Vector3<float_type> GetDirection() const;
+    void Transform(const Base::Matrix4D&);
+    void Transform(const Base::Placement&);
+    void Transform(const Base::Rotation&);
+    Line3 Transformed(const Base::Matrix4D&) const;
+    Line3 Transformed(const Base::Placement&) const;
+    Line3 Transformed(const Base::Rotation&) const;
 
     /*!
      * \brief Contains
@@ -119,6 +125,12 @@ public:
 
     // misc
     BoundBox3<float_type> CalcBoundBox() const;
+    void Transform(const Base::Matrix4D&);
+    void Transform(const Base::Placement&);
+    void Transform(const Base::Rotation&);
+    Polygon3 Transformed(const Base::Matrix4D&) const;
+    Polygon3 Transformed(const Base::Placement&) const;
+    Polygon3 Transformed(const Base::Rotation&) const;
 
 private:
     std::vector<Vector3<float_type>> points;
