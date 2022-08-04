@@ -28,6 +28,11 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import glob
+import os
+
+import FreeCAD
+
 from . import tasks
 from .equations import elasticity
 from .equations import electrostatic
@@ -38,6 +43,9 @@ from .equations import heat
 from .. import run
 from .. import solverbase
 from femtools import femutils
+
+if FreeCAD.GuiUp:
+    import FemGui
 
 
 def create(doc, name="ElmerSolver"):
@@ -108,6 +116,15 @@ class Proxy(solverbase.Proxy):
 
     def isSupported(self, eqId):
         return eqId in self._EQUATIONS
+
+    def editSupported(self):
+        return True
+
+    def edit(self, directory):
+        pattern = os.path.join(directory, "case.sif")
+        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        f = glob.glob(pattern)[0]
+        FemGui.open(f)
 
 
 class ViewProxy(solverbase.ViewProxy):
