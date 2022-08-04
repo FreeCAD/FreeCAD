@@ -21,6 +21,7 @@ Solver 1
   Linear System Solver = String "Direct"
   Optimize Bandwidth = Logical True
   Procedure = File "StressSolve" "StressSolver"
+  Stabilize = Logical True
   Steady State Convergence Tolerance = Real 1e-05
   Variable = String "Displacement"
   Variable DOFs = Integer 3
