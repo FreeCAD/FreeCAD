@@ -48,7 +48,7 @@ void SvgString::addLine(int x1, int y1, int x2, int y2)
     svgStream << "<path stroke='#000' stroke-width='1' d='";
     svgStream << " M" << x1 << "," << y1; // startpoint
     svgStream << " L" << x2 << "," << y2; // endpoint
-    svgStream << "' />\n";
+    svgStream << "' stroke-linecap='round' />\n"; //round cap
 }
 
 void SvgString::addCircle(int xCenter, int yCenter, int radius)
