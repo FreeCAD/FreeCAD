@@ -3,6 +3,7 @@
     <PythonExport 
         Father="BaseClassPy" 
         Name="VoronoiEdgePy" 
+        PythonName="Path.Voronoi.Edge"
         Twin="VoronoiEdge" 
         TwinPointer="VoronoiEdge" 
         Include="Mod/Path/App/VoronoiEdge.h" 
@@ -98,6 +99,11 @@
         <Methode Name="isSecondary" Const="true">
             <Documentation>
                 <UserDocu>Returns true if edge goes through endpoint of the segment site</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isBorderline" Const="true">
+            <Documentation>
+                <UserDocu>Returns true if the point is on the segment</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toShape" Const="true">

@@ -45,7 +45,7 @@ std::string VoronoiPy::representation(void) const
 {
   std::stringstream ss;
   ss.precision(5);
-  ss << "Voronoi("
+  ss << "VoronoiDiagram("
     << "{" << getVoronoiPtr()->numSegments() << ", " << getVoronoiPtr()->numPoints() << "}"
     << " -> "
     << "{" << getVoronoiPtr()->numCells() << ", " << getVoronoiPtr()->numEdges() << ", " << getVoronoiPtr()->numVertices() << "}"

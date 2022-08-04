@@ -137,6 +137,21 @@ Py::Int VoronoiCellPy::getSourceCategory(void) const
   return Py::Int(c->ptr->source_category());
 }
 
+Py::String VoronoiCellPy::getSourceCategoryName(void) const
+{
+  VoronoiCell *c = getVoronoiCellFromPy(this);
+  switch (c->ptr->source_category()) {
+    case boost::polygon::SOURCE_CATEGORY_SINGLE_POINT:        return Py::String("SINGLE_POINT");
+    case boost::polygon::SOURCE_CATEGORY_SEGMENT_START_POINT: return Py::String("SEGMENT_START_POINT");
+    case boost::polygon::SOURCE_CATEGORY_SEGMENT_END_POINT:   return Py::String("SEGMENT_END_POINT");
+    case boost::polygon::SOURCE_CATEGORY_INITIAL_SEGMENT:     return Py::String("INITIAL_SEGMENT");
+    case boost::polygon::SOURCE_CATEGORY_REVERSE_SEGMENT:     return Py::String("REVERSE_SEGMENT");
+    case boost::polygon::SOURCE_CATEGORY_GEOMETRY_SHIFT:      return Py::String("GEOMETRY_SHIFT");
+    case boost::polygon::SOURCE_CATEGORY_BITMASK:             return Py::String("BITMASK");
+  }
+  return Py::String("");
+}
+
 Py::Object VoronoiCellPy::getIncidentEdge(void) const
 {
   VoronoiCell *c = getVoronoiCellFromPy(this);
