@@ -1998,26 +1998,25 @@ PyObject* MeshPy::getCurvaturePerVertex(PyObject* args)
         return nullptr;
 
     const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
-    MeshCore::MeshSegmentAlgorithm finder(kernel);
     MeshCore::MeshCurvature meshCurv(kernel);
     meshCurv.ComputePerVertex();
 
     const std::vector<MeshCore::CurvatureInfo>& curv = meshCurv.GetCurvature();
+    Base::Placement plm = getMeshObjectPtr()->getPlacement();
+    plm.setPosition(Base::Vector3d());
+
     Py::List list;
     for (const auto& it : curv) {
+        Base::Vector3d maxCurve = Base::convertTo<Base::Vector3d>(it.cMaxCurvDir);
+        Base::Vector3d minCurve = Base::convertTo<Base::Vector3d>(it.cMinCurvDir);
+        plm.multVec(maxCurve, maxCurve);
+        plm.multVec(minCurve, minCurve);
+
         Py::Tuple tuple(4);
         tuple.setItem(0, Py::Float(it.fMaxCurvature));
         tuple.setItem(1, Py::Float(it.fMinCurvature));
-        Py::Tuple maxDir(3);
-        maxDir.setItem(0, Py::Float(it.cMaxCurvDir.x));
-        maxDir.setItem(1, Py::Float(it.cMaxCurvDir.y));
-        maxDir.setItem(2, Py::Float(it.cMaxCurvDir.z));
-        tuple.setItem(2, maxDir);
-        Py::Tuple minDir(3);
-        minDir.setItem(0, Py::Float(it.cMinCurvDir.x));
-        minDir.setItem(1, Py::Float(it.cMinCurvDir.y));
-        minDir.setItem(2, Py::Float(it.cMinCurvDir.z));
-        tuple.setItem(3, minDir);
+        tuple.setItem(2, Py::Vector(maxCurve));
+        tuple.setItem(3, Py::Vector(minCurve));
         list.append(tuple);
     }
 
