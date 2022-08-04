@@ -68,7 +68,7 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
       invalidParameter(false), canEmbedScrollArea(true)
 {
     ui->setupUi(this);
-    ui->listBox->setFixedWidth(108);
+    ui->listBox->setFixedWidth(120);
     ui->listBox->setGridSize(QSize(108, 75));
 
     connect(ui->buttonBox,  SIGNAL (helpRequested()),
