@@ -39,8 +39,6 @@ public:
      ViewProviderProjGroup();  /// constructor
      ~ViewProviderProjGroup(); /// destructor
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
     virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
@@ -51,12 +49,10 @@ public:
     /// Is called by the tree if the user double click on the object
     virtual bool doubleClicked(void);
     void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual void updateData(const App::Property*);
 
     TechDraw::DrawProjGroup* getObject() const;
     virtual TechDraw::DrawProjGroup* getViewObject() const;
     void unsetEdit(int ModNum);
-    virtual void onChanged(const App::Property *prop);
     virtual bool onDelete(const std::vector<std::string> &);
     virtual bool canDelete(App::DocumentObject* obj) const;
 

@@ -127,11 +127,6 @@ ViewProviderViewPart::~ViewProviderViewPart()
 
 }
 
-void ViewProviderViewPart::updateData(const App::Property* prop)
-{
-    ViewProviderDrawingView::updateData(prop);
-}
-
 void ViewProviderViewPart::onChanged(const App::Property* prop)
 {
     if (prop == &(LineWidth)   ||
@@ -171,20 +166,6 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 
     ViewProviderDrawingView::attach(pcFeat);
 }
-
-void ViewProviderViewPart::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderViewPart::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
 
 std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) const
 {

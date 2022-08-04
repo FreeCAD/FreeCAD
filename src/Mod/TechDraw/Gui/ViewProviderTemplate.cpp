@@ -67,25 +67,6 @@ ViewProviderTemplate::~ViewProviderTemplate()
 {
 }
 
-void ViewProviderTemplate::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
-}
-
-void ViewProviderTemplate::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderTemplate::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-
-    return StrList;
-}
-
 void ViewProviderTemplate::updateData(const App::Property* prop)
 {
     if (getTemplate()->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {

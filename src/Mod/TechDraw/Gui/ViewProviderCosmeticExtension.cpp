@@ -50,11 +50,6 @@ QIcon ViewProviderCosmeticExtension::extensionMergeGreyableOverlayIcons(const QI
     return mergedicon;
 }
 
-void ViewProviderCosmeticExtension::extensionUpdateData(const App::Property* prop)
-{
-    Gui::ViewProviderExtension::extensionUpdateData(prop);
-}
-
 namespace Gui {
     EXTENSION_PROPERTY_SOURCE_TEMPLATE(TechDrawGui::ViewProviderCosmeticExtensionPython, TechDrawGui::ViewProviderCosmeticExtension)
 

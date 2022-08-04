@@ -72,11 +72,6 @@ ViewProviderRichAnno::~ViewProviderRichAnno()
 {
 }
 
-void ViewProviderRichAnno::attach(App::DocumentObject *pcFeat)
-{
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
 bool ViewProviderRichAnno::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);

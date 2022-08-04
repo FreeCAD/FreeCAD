@@ -59,33 +59,12 @@ ViewProviderProjGroup::~ViewProviderProjGroup()
 {
 }
 
-void ViewProviderProjGroup::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderProjGroup::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
 std::vector<std::string> ViewProviderProjGroup::getDisplayModes(void) const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
     StrList.push_back("Drawing");
     return StrList;
-}
-
-void ViewProviderProjGroup::updateData(const App::Property* prop)
-{
-    ViewProviderDrawingView::updateData(prop);
- }
-
-void ViewProviderProjGroup::onChanged(const App::Property *prop)
-{
-    ViewProviderDrawingView::onChanged(prop);
 }
 
 void ViewProviderProjGroup::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

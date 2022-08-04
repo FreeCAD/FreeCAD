@@ -47,25 +47,6 @@ ViewProviderAnnotation::~ViewProviderAnnotation()
 {
 }
 
-void ViewProviderAnnotation::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderAnnotation::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderAnnotation::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
     if (prop == &(getViewObject()->Text)   ||

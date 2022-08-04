@@ -46,25 +46,6 @@ ViewProviderSymbol::~ViewProviderSymbol()
 {
 }
 
-void ViewProviderSymbol::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderSymbol::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderSymbol::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
 void ViewProviderSymbol::updateData(const App::Property* prop)
 {
     if (prop == &getViewObject()->Scale) {

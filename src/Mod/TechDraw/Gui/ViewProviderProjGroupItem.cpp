@@ -51,17 +51,6 @@ ViewProviderProjGroupItem::~ViewProviderProjGroupItem()
 {
 }
 
-void ViewProviderProjGroupItem::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderViewPart::attach(pcFeat);
-}
-
-void ViewProviderProjGroupItem::setDisplayMode(const char* ModeName)
-{
-    ViewProviderViewPart::setDisplayMode(ModeName);
-}
-
 std::vector<std::string> ViewProviderProjGroupItem::getDisplayModes(void) const
 {
     // get the modes of the father

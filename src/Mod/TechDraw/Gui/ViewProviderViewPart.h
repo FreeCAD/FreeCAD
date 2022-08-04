@@ -61,10 +61,7 @@ public:
     static const char* LineStyleEnums[];
 
     virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
     virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
     virtual bool onDelete(const std::vector<std::string> &);
     virtual bool canDelete(App::DocumentObject* obj) const;
     virtual bool setEdit(int ModNum);
@@ -73,7 +70,6 @@ public:
 
 public:
     virtual void onChanged(const App::Property *prop);
-    virtual void updateData(const App::Property*);
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
     App::Color prefSectionColor(void);
     App::Color prefHighlightColor(void);

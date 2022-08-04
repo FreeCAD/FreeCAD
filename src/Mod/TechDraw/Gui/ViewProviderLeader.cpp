@@ -77,11 +77,6 @@ ViewProviderLeader::~ViewProviderLeader()
 {
 }
 
-void ViewProviderLeader::attach(App::DocumentObject *pcFeat)
-{
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
 bool ViewProviderLeader::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPL::setEdit(%d)\n",ModNum);
