@@ -1103,8 +1103,7 @@ class SurveyTaskPanel:
         if rows:
             filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
             if filename:
-                mode = 'w'
-                with open(filename[0].encode("utf8"), mode) as csvfile:
+                with open(filename[0].encode("utf8"), "w") as csvfile:
                     csvfile = csv.writer(csvfile,delimiter="\t")
                     suml = 0
                     for i in range(rows):
