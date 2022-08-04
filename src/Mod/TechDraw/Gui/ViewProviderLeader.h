@@ -52,7 +52,6 @@ public:
     App::PropertyEnumeration        LineStyle;
     App::PropertyColor              Color;
 
-    virtual void attach(App::DocumentObject *);
 /*    virtual void setDisplayMode(const char* ModeName);*/
     virtual bool useNewSelectionModel(void) const {return false;}
 /*    virtual std::vector<std::string> getDisplayModes(void) const;*/

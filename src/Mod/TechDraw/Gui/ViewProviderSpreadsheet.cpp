@@ -45,30 +45,6 @@ ViewProviderSpreadsheet::~ViewProviderSpreadsheet()
 {
 }
 
-void ViewProviderSpreadsheet::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderSymbol::attach(pcFeat);
-}
-
-void ViewProviderSpreadsheet::setDisplayMode(const char* ModeName)
-{
-    ViewProviderSymbol::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderSpreadsheet::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderSymbol::getDisplayModes();
-
-    return StrList;
-}
-
-void ViewProviderSpreadsheet::updateData(const App::Property* prop)
-{
-    ViewProviderSymbol::updateData(prop);
-}
-
 TechDraw::DrawViewSpreadsheet* ViewProviderSpreadsheet::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawViewSpreadsheet*>(pcObject);

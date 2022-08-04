@@ -50,7 +50,6 @@ public:
     App::PropertyEnumeration LineStyle;
     App::PropertyColor       LineColor;
 
-    virtual void attach(App::DocumentObject *);
     virtual bool useNewSelectionModel(void) const {return false;}
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property* p);

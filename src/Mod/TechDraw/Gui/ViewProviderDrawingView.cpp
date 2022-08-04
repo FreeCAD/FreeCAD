@@ -84,17 +84,6 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
     }
 }
 
-void ViewProviderDrawingView::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderDrawingView::getDisplayModes(void) const
-{
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-    return StrList;
-}
-
 void ViewProviderDrawingView::onChanged(const App::Property *prop)
 {
     App::DocumentObject* obj = getObject();

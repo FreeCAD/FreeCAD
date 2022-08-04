@@ -70,25 +70,6 @@ ViewProviderGeomHatch::~ViewProviderGeomHatch()
 {
 }
 
-void ViewProviderGeomHatch::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
-}
-
-void ViewProviderGeomHatch::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderGeomHatch::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-
-    return StrList;
-}
-
 bool ViewProviderGeomHatch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);

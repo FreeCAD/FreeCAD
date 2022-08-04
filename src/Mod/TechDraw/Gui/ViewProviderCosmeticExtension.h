@@ -38,9 +38,6 @@ public:
     virtual ~ViewProviderCosmeticExtension() = default;
 
     virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const override;
-
-    virtual void extensionUpdateData(const App::Property*) override;
-
 };
 
 typedef Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExtension> ViewProviderCosmeticExtensionPython;

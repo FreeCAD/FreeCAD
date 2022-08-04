@@ -71,25 +71,6 @@ ViewProviderHatch::~ViewProviderHatch()
 {
 }
 
-void ViewProviderHatch::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
-}
-
-void ViewProviderHatch::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderHatch::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-
-    return StrList;
-}
-
 bool ViewProviderHatch::setEdit(int ModNum)
 {
     if (ModNum != ViewProvider::Default) {
@@ -132,11 +113,6 @@ void ViewProviderHatch::onChanged(const App::Property* prop)
             }
         }
     }
-}
-
-void ViewProviderHatch::updateData(const App::Property* prop)
-{
-    Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
 TechDraw::DrawHatch* ViewProviderHatch::getViewObject() const

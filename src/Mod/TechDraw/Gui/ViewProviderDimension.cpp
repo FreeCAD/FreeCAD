@@ -102,19 +102,6 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
     }
 }
 
-void ViewProviderDimension::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderDimension::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
 bool ViewProviderDimension::doubleClicked(void)
 {
     startDefaultEditMode();

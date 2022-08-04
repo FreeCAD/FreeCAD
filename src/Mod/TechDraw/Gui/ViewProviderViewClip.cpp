@@ -50,29 +50,6 @@ ViewProviderViewClip::~ViewProviderViewClip()
 {
 }
 
-void ViewProviderViewClip::updateData(const App::Property* prop)
-{
-     ViewProviderDrawingView::updateData(prop);
-}
-
-void ViewProviderViewClip::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderViewClip::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderViewClip::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList;
-    return StrList;
-}
-
 std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) const
 {
     // Collect any child views

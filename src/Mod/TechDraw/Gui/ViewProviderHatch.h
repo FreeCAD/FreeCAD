@@ -49,16 +49,11 @@ public:
     App::PropertyColor       HatchColor;
     App::PropertyFloatConstraint HatchScale;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual void setDisplayMode(const char* ModeName) override;
     virtual bool useNewSelectionModel(void) const override {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const override;
     virtual void onChanged(const App::Property* prop) override;
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
     virtual bool doubleClicked(void) override;
-    virtual void updateData(const App::Property*) override;
     virtual bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawHatch* getViewObject() const;

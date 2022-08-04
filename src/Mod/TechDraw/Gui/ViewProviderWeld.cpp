@@ -63,30 +63,6 @@ ViewProviderWeld::~ViewProviderWeld()
 {
 }
 
-void ViewProviderWeld::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderWeld::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderWeld::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
-void ViewProviderWeld::updateData(const App::Property* prop)
-{
-    ViewProviderDrawingView::updateData(prop);
-}
-
 void ViewProviderWeld::onChanged(const App::Property* p)
 {
     QGIView* qgiv = getQView();

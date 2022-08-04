@@ -48,18 +48,11 @@ public:
     App::PropertyColor  GeomHatchColor;
     App::PropertyFloat  WeightPattern;
 
-
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property *prop);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
-
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
 
     void updateGraphic(void);
     void getParameters(void);

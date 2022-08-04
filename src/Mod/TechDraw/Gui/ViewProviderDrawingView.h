@@ -53,10 +53,7 @@ public:
     App::PropertyBool  KeepLabel;
 
     virtual void attach(App::DocumentObject *) override;
-    virtual void setDisplayMode(const char* ModeName) override;
     virtual bool useNewSelectionModel(void) const override {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const override;
     /// Hide the object in the view
     virtual void hide(void) override;
     /// Show the object in the view
