@@ -393,16 +393,21 @@ class CreateAddonListWorker(QtCore.QThread):
 
 
 class LoadPackagesFromCacheWorker(QtCore.QThread):
+    """ A subthread worker that loads package information from its cache file. """
     addon_repo = QtCore.Signal(object)
 
     def __init__(self, cache_file: str):
         QtCore.QThread.__init__(self)
         self.cache_file = cache_file
-
-    def run(self):
-        metadata_cache_path = os.path.join(
+        self.metadata_cache_path = os.path.join(
             FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
         )
+
+    def override_metadata_cache_path(self, path):
+        """ For testing purposes, override the location to fetch the package metadata from. """
+        self.metadata_cache_path = path
+
+    def run(self):
         with open(self.cache_file, "r", encoding="utf-8") as f:
             data = f.read()
             if data:
@@ -412,7 +417,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                         return
                     repo = Addon.from_cache(item)
                     repo_metadata_cache_path = os.path.join(
-                        metadata_cache_path, repo.name, "package.xml"
+                        self.metadata_cache_path, repo.name, "package.xml"
                     )
                     if os.path.isfile(repo_metadata_cache_path):
                         try:
@@ -510,6 +515,10 @@ class UpdateChecker:
     def __init__(self):
         self.basedir = FreeCAD.getUserAppDataDir()
         self.moddir = os.path.join(self.basedir, "Mod")
+
+    def override_mod_directory(self, moddir):
+        """ Primarily for use when testing, sets an alternate directory to use for mods """
+        self.moddir = moddir
 
     def check_workbench(self, wb):
         if not have_git or NOGIT:

@@ -52,9 +52,18 @@ class TestWorkersStartup(unittest.TestCase):
         self.macro_counter = 0
         self.workbench_counter = 0
         self.prefpack_counter = 0
+        
+        # Populated when the addon list is created in the first test
+        self.package_cache = {}
+        self.macro_cache = {}
+
+        self.package_cache_file = tempfile.NamedTemporaryFile(mode='w', encoding="utf-8", delete=False)
+        self.macro_cache_file = tempfile.NamedTemporaryFile(mode='w', encoding="utf-8", delete=False)
 
     def test_create_addon_list_worker(self):
-        """ Test whether any addons are added: runs the full query, so this potentially is a SLOW test """
+        """ Test whether any addons are added: runs the full query, so this potentially is a SLOW 
+        test. Note that this test must be run before any of the other tests, so that the cache gets
+        created. """
         worker = CreateAddonListWorker()
         worker.addon_repo.connect(self._addon_added)
         worker.start()
@@ -64,6 +73,14 @@ class TestWorkersStartup(unittest.TestCase):
         self.assertGreater(self.macro_counter,0, "No macros returned")
         self.assertGreater(self.workbench_counter,0, "No workbenches returned")
         self.assertGreater(self.prefpack_counter,0, "No preference packs returned")
+
+        # Write the cache data
+        if hasattr(self, "package_cache"):
+            self.package_cache_file.write(json.dumps(self.package_cache, indent="  "))
+            self.package_cache_file.close()
+        if hasattr(self, "macro_cache"):
+            self.macro_cache_file.write(json.dumps(self.macro_cache, indent="  "))
+            self.macro_cache_file.close()
 
     def _addon_added(self, addon:Addon):
         """ Callback for adding an Addon: tracks the list, and counts the various types """
@@ -76,3 +93,14 @@ class TestWorkersStartup(unittest.TestCase):
         if addon.contains_preference_pack():
             self.prefpack_counter += 1
 
+        # Also record the information for cache purposes
+        self.package_cache[addon.name] = addon.to_cache()
+        
+        if addon.macro is not None:
+            self.macro_cache.append(addon.macro.to_cache())
+
+    def test_load_packages_from_cache_worker(self):
+        pass
+
+    def test_load_macros_from_cache_worker(self):
+        pass
