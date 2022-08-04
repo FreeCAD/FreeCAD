@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>250</width>
-    <height>477</height>
+    <height>489</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -196,7 +196,7 @@
      <item row="0" column="1">
       <widget class="QPushButton" name="butTopRotate">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -302,7 +302,7 @@
        </property>
       </spacer>
      </item>
-    <item row="2" column="1">
+     <item row="2" column="1">
       <widget class="QPushButton" name="butDownRotate">
        <property name="toolTip">
         <string>Rotate down</string>
@@ -336,7 +336,7 @@
        </property>
       </spacer>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_2">
@@ -384,7 +384,7 @@ height: 24px;
        </property>
       </widget>
      </item>
-    <item row="2" column="2">
+     <item row="2" column="2">
       <widget class="QCheckBox" name="chkView1">
        <property name="toolTip">
         <string>Top</string>
@@ -572,7 +572,7 @@ height: 24px;
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -693,7 +693,7 @@ using the given X/Y Spacing</string>
       </spacer>
      </item>
      <item row="0" column="2">
-      <widget class="Gui::QuantitySpinBox" name="sbXSpacing">
+      <widget class="Gui::QuantitySpinBox" name="sbXSpacing" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -709,13 +709,13 @@ using the given X/Y Spacing</string>
        <property name="toolTip">
         <string>Horizontal space between border of projections</string>
        </property>
-       <property name="keyboardTracking">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
       </widget>
@@ -740,7 +740,7 @@ using the given X/Y Spacing</string>
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="Gui::QuantitySpinBox" name="sbYSpacing">
+      <widget class="Gui::QuantitySpinBox" name="sbYSpacing" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -756,13 +756,13 @@ using the given X/Y Spacing</string>
        <property name="toolTip">
         <string>Vertical space between border of projections</string>
        </property>
-       <property name="keyboardTracking">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
       </widget>
@@ -778,9 +778,7 @@ using the given X/Y Spacing</string>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources/TechDraw.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>cbAutoDistribute</sender>
