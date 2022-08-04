@@ -94,6 +94,8 @@ public:
     // typedef needed for cross-section
     using TPlane =  std::pair<Base::Vector3f, Base::Vector3f>;
     using TPolylines = std::list<std::vector<Base::Vector3f>>;
+    using TRay = std::pair<Base::Vector3d, Base::Vector3d>;
+    using TFaceSection = std::pair<FacetIndex, Base::Vector3d>;
 
     MeshObject();
     explicit MeshObject(const MeshCore::MeshKernel& Kernel);
@@ -152,6 +154,7 @@ public:
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
         float Accuracy, uint16_t flags=0) const;
     std::vector<PointIndex> getPointsFromFacets(const std::vector<FacetIndex>& facets) const;
+    bool nearestFacetOnRay(const TRay& ray, double maxAngle, TFaceSection& output) const;
     //@}
 
     void setKernel(const MeshCore::MeshKernel& m);

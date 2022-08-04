@@ -815,6 +815,32 @@ std::vector<PointIndex> MeshObject::getPointsFromFacets(const std::vector<FacetI
     return _kernel.GetFacetPoints(facets);
 }
 
+bool MeshObject::nearestFacetOnRay(const MeshObject::TRay& ray, double maxAngle, MeshObject::TFaceSection& output) const
+{
+    Base::Vector3f pnt = Base::toVector<float>(ray.first);
+    Base::Vector3f dir = Base::toVector<float>(ray.second);
+
+    Base::Placement plm = getPlacement();
+    Base::Placement inv = plm.inverse();
+
+    // transform the ray relative to the mesh kernel
+    inv.multVec(pnt, pnt);
+    inv.getRotation().multVec(dir, dir);
+
+    FacetIndex index = 0;
+    Base::Vector3f res;
+    MeshCore::MeshAlgorithm alg(getKernel());
+
+    if (alg.NearestFacetOnRay(pnt, dir, static_cast<float>(maxAngle), res, index)) {
+        plm.multVec(res, res);
+        output.first = index;
+        output.second = Base::toVector<double>(res);
+        return true;
+    }
+
+    return false;
+}
+
 void MeshObject::updateMesh(const std::vector<FacetIndex>& facets) const
 {
     std::vector<PointIndex> points;

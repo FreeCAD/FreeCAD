@@ -200,6 +200,18 @@ class MeshSplitTestCases(unittest.TestCase):
                          len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0,-1))))
         self.assertEqual(len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0, 1), math.pi/2)),
                          len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0,-1), math.pi/2)))
+        # Apply placement to mesh
+        plm = Base.Placement(Base.Vector(1,2,3), Base.Rotation(1,1,1,1))
+        pnt = Base.Vector(0.5, 0.5, 0.5)
+        vec = Base.Vector(0.0, 0.0, 1.0)
+
+        self.mesh.Placement = plm
+        self.assertEqual(len(self.mesh.nearestFacetOnRay(pnt,vec)), 0)
+
+        # Apply the placement on the ray as well
+        pnt = plm.multVec(pnt)
+        vec = plm.Rotation.multVec(vec)
+        self.assertEqual(len(self.mesh.nearestFacetOnRay(pnt,vec)), 1)
 
     def testForaminate(self):
         class FilterAngle:
