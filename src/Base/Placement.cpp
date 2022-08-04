@@ -160,6 +160,12 @@ void Placement::multVec(const Vector3d & src, Vector3d & dst) const
     dst += this->_pos;
 }
 
+void Placement::multVec(const Vector3f & src, Vector3f & dst) const
+{
+    this->_rot.multVec(src, dst);
+    dst += Base::toVector<float>(this->_pos);
+}
+
 Placement Placement::slerp(const Placement & p0, const Placement & p1, double t)
 {
     Rotation rot = Rotation::slerp(p0.getRotation(), p1.getRotation(), t);

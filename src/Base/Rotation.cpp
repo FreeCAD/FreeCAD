@@ -445,6 +445,20 @@ void Rotation::multVec(const Vector3d & src, Vector3d & dst) const
     dst.z = dz;
 }
 
+void Rotation::multVec(const Vector3f & src, Vector3f & dst) const
+{
+    Base::Vector3d srcd = Base::toVector<double>(src);
+    multVec(srcd, srcd);
+    dst = Base::toVector<float>(srcd);
+}
+
+Vector3f Rotation::multVec(const Vector3f & src) const
+{
+    Vector3f dst;
+    multVec(src,dst);
+    return dst;
+}
+
 void Rotation::scaleAngle(const double scaleFactor)
 {
     Vector3d axis;

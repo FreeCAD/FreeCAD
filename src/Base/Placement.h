@@ -76,6 +76,7 @@ public:
     Placement pow(double t, bool shorten = true) const;
 
     void multVec(const Vector3d & src, Vector3d & dst) const;
+    void multVec(const Vector3f & src, Vector3f & dst) const;
     //@}
 
     static Placement slerp(const Placement & p0, const Placement & p1, double t);

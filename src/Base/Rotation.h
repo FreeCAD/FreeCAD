@@ -135,6 +135,8 @@ public:
 
     void multVec(const Vector3d & src, Vector3d & dst) const;
     Vector3d multVec(const Vector3d & src) const;
+    void multVec(const Vector3f & src, Vector3f & dst) const;
+    Vector3f multVec(const Vector3f & src) const;
     void scaleAngle(const double scaleFactor);
     bool isSame(const Rotation&) const;
     bool isSame(const Rotation&, double tol) const;
