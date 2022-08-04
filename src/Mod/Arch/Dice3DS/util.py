@@ -8,8 +8,6 @@ Defines some routines for calculating normals and transforming points.
 
 import numpy
 
-# xrange is not available in python3
-xrange = range
 
 # Can push numpy.float64 (or even numpy.float80) into this if you
 # would like to use higher precision when calculating; results will be
@@ -151,7 +149,7 @@ def calculate_normals_by_cross_product(pointarray,facearray,smarray):
     rslice = numpy.empty((len(brs)+1,),numpy.int)
     rslice[:-1] = brs
     rslice[-1] = 3*m
-    for i in xrange(len(brs)+1):
+    for i in range(len(brs)+1):
         rgroup = lex[lslice[i]:rslice[i]]
         xgroup = exarray[rgroup]
         normpat = numpy.logical_or(
@@ -256,7 +254,7 @@ def calculate_normals_by_angle_subtended(pointarray,facearray,smarray):
     rslice = numpy.empty((len(brs)+1,),numpy.int)
     rslice[:-1] = brs
     rslice[-1] = 3*m
-    for i in xrange(len(brs)+1):
+    for i in range(len(brs)+1):
         rgroup = lex[lslice[i]:rslice[i]]
         xgroup = exarray[rgroup]
         normpat = numpy.logical_or(
