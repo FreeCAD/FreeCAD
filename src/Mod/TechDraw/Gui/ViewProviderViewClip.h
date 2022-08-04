@@ -50,7 +50,6 @@ public:
     virtual void hide(void);
     /// Show the object in the view
     virtual void show(void);
-    virtual bool isShow(void) const;
     std::vector<App::DocumentObject*> claimChildren(void) const;
 
     virtual bool canDelete(App::DocumentObject* obj) const;

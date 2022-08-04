@@ -87,11 +87,6 @@ void ViewProviderViewClip::hide(void)
     ViewProviderDrawingView::hide();
 }
 
-bool ViewProviderViewClip::isShow(void) const
-{
-    return Visibility.getValue();
-}
-
 bool ViewProviderViewClip::canDelete(App::DocumentObject *obj) const
 {
     // deletions of Clip objects don't destroy anything
