@@ -259,6 +259,7 @@ class Results(run.Results):
         self.solver.ElmerResult = self.analysis.Document.addObject(
             "Fem::FemPostPipeline", self.solver.Name + "Result")
         self.solver.ElmerResult.Label = self.solver.Label + "Result"
+        self.solver.ElmerResult.ViewObject.SelectionStyle = "BoundBox"
         self.analysis.addObject(self.solver.ElmerResult)
         # to assure the user sees something, set the default to Surface
         self.solver.ElmerResult.ViewObject.DisplayMode = "Surface"
