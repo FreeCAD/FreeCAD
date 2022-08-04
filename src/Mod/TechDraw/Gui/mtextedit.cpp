@@ -21,14 +21,17 @@
 ** $QT_END_LICENSE$
 */
 // clazy:excludeall=qstring-arg
-#include "PreCompiled.h"
 
-#include "mtextedit.h"
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QTextDocument>
 #include <QTextCursor>
 #include <QImage>
 #include <QByteArray>
 #include <QBuffer>
+#endif
+
+#include "mtextedit.h"
 #include <cstdlib>
 
 

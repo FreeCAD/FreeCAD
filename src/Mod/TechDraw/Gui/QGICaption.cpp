@@ -29,6 +29,7 @@
 #include <QPaintDevice>
 #include <QPainter>
 #include <QPrinter>
+#include <QRectF>
 #include <QSvgGenerator>
 #include <QStyleOptionGraphicsItem>
 #endif
@@ -39,7 +40,6 @@
 #include <Base/Parameter.h>
 
 #include <qmath.h>
-#include <QRectF>
 #include "QGICaption.h"
 
 using namespace TechDrawGui;

@@ -23,9 +23,13 @@
 #ifndef DRAWINGGUI_REZ_H
 #define DRAWINGGUI_REZ_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QPointF>
 #include <QRectF>
 #include <QSize>
+#endif
+
 #include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
 

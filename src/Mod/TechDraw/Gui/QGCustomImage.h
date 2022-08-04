@@ -23,14 +23,17 @@
 #ifndef DRAWINGGUI_QGCUSTOMIMAGE_H
 #define DRAWINGGUI_QGCUSTOMIMAGE_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QByteArray>
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QPointF>
 #include <QSize>
 #include <QPixmap>
+#endif
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 QT_BEGIN_NAMESPACE

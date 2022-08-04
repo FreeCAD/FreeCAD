@@ -23,8 +23,11 @@
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QPointF>
 #include <QPrinter>
+#endif
 
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>

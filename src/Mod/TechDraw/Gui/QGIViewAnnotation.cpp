@@ -36,18 +36,18 @@
 #include <QString>
 #include <QTextOption>
 #include <QVBoxLayout>
-#include <sstream>
-#endif
-
 #include <string>
-#include <regex>
-
-#include <qmath.h>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextBlockFormat>
 #include <QTextFrame>
 #include <QSizeF>
+#endif
+
+#include <sstream>
+#include <regex>
+
+#include <qmath.h>
 
 #include <App/Application.h>
 #include <App/Material.h>

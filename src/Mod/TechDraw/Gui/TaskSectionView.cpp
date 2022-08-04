@@ -24,12 +24,12 @@
 
 #ifndef _PreComp_
 #include <cmath>
-#endif // #ifndef _PreComp_
-
 #include <QApplication>
 #include <QStatusBar>
 #include <QGraphicsScene>
 #include <QMessageBox>
+#endif // #ifndef _PreComp_
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>

@@ -23,7 +23,10 @@
 #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
 #define DRAWINGGUI_TEMPLATETEXTFIELD_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QGraphicsRectItem>
+#endif
 
 namespace TechDraw {
 class DrawTemplate;

@@ -24,12 +24,15 @@
 #ifndef TECHDRAWGUI_QGIVBALLOON_H
 #define TECHDRAWGUI_QGIVBALLOON_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
 #include <QGraphicsObject>
 #include <QObject>
 #include <QStyleOptionGraphicsItem>
+#endif
 
 #include <Base/Vector3D.h>
 

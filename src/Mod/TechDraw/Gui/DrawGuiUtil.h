@@ -23,8 +23,11 @@
 #ifndef _DrawGuiUtil_h_
 #define _DrawGuiUtil_h_
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <string>
 #include <QCoreApplication>
+#endif
 
 #include <Base/Vector3D.h>
 

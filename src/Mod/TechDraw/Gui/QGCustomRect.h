@@ -23,9 +23,12 @@
 #ifndef DRAWINGGUI_QGCUSTOMRECT_H
 #define DRAWINGGUI_QGCUSTOMRECT_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>
+#endif
 
 QT_BEGIN_NAMESPACE
 class QPainter;

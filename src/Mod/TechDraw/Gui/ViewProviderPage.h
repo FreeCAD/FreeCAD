@@ -24,10 +24,14 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
 #define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QPointer>
+#endif
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp> 
-#include <QPointer>
+#include <boost_signals2.hpp>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>

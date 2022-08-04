@@ -23,14 +23,13 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QPainter>
+#include <QPixmap>
+#include <QRectF>
 #include <QStyleOptionGraphicsItem>
 #include <QtGlobal>
 #endif
 
 #include <Base/Console.h>
-
-#include <QRectF>
-#include <QPixmap>
 
 #include "QGCustomImage.h"
 
