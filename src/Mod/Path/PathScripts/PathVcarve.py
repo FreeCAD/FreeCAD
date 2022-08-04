@@ -43,6 +43,7 @@ EXTERIOR1 = 2
 EXTERIOR2 = 3
 COLINEAR = 4
 TWIN = 5
+BORDERLINE = 6
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -196,7 +197,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
     """Proxy class for Vcarve operation."""
 
     def opFeatures(self, obj):
-        """opFeatures(obj) ... return all standard features and edges based geomtries"""
+        """opFeatures(obj) ... return all standard features and edges based geometries"""
         return (
             PathOp.FeatureTool
             | PathOp.FeatureHeights
@@ -291,13 +292,19 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         voronoiWires = []
         for f in faces:
-            vd = Path.Voronoi()
+            vd = Path.Voronoi.Diagram()
             insert_many_wires(vd, f.Wires)
 
             vd.construct()
 
             for e in vd.Edges:
-                e.Color = PRIMARY if e.isPrimary() else SECONDARY
+                if e.isPrimary():
+                    if e.isBorderline():
+                        e.Color = BORDERLINE
+                    else:
+                        e.Color = PRIMARY
+                else:
+                    e.Color = SECONDARY
             vd.colorExterior(EXTERIOR1)
             vd.colorExterior(
                 EXTERIOR2,
