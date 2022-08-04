@@ -83,6 +83,10 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
         obj.EigenmodesCount = 5
         obj.Priority = 10
         obj.CalculatePrincipal = True
+        # according to the Elmer tutorial and forum, for stresses direct solving
+        # is recommended -> test showed 10 times faster and even more accurate
+        obj.LinearSolverType = "Direct"
+        obj.LinearDirectMethod = "Umfpack"
 
 
 class ViewProxy(linear.ViewProxy, equationbase.ElasticityViewProxy):

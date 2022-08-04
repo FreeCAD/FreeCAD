@@ -16,13 +16,10 @@ Solver 1
   Equation = String "Elasticity"
   Exec Solver = String "Always"
   Linear System Abort Not Converged = Logical False
-  Linear System Convergence Tolerance = Real 1e-08
-  Linear System Iterative Method = String "BiCGStab"
-  Linear System Max Iterations = Integer 500
+  Linear System Direct Method = String "Umfpack"
   Linear System Precondition Recompute = Integer 1
-  Linear System Preconditioning = String "ILU0"
   Linear System Residual Output = Integer 1
-  Linear System Solver = String "Iterative"
+  Linear System Solver = String "Direct"
   Optimize Bandwidth = Logical True
   Procedure = File "StressSolve" "StressSolver"
   Stabilize = Logical True
