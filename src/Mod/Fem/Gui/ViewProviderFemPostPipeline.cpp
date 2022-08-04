@@ -137,6 +137,8 @@ void ViewProviderFemPostPipeline::transformFields()
     if (!data || !data->IsA("vtkDataSet"))
         return;
 
+    return;
+
     vtkDataSet *dset = vtkDataSet::SafeDownCast(data);
     //vtkPointData *pd = dset->GetPointData();
 
@@ -167,25 +169,11 @@ void ViewProviderFemPostPipeline::transformFields()
     }
 }
 
-// Python feature -----------------------------------------------------------------------
-
-namespace Gui
+PyObject *ViewProviderFemPostPipeline::getPyObject(void)
 {
-/// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemPostPipelinePython, FemGui::ViewProviderFemPostPipeline)
-/// @endcond
-
-template<>
-PyObject *FemGui::ViewProviderFemPostPipelinePython::getPyObject()
-{
-    if (!pyViewObject) {
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        pyViewObject = new App::FeaturePythonPyT<FemGui::ViewProviderFemPostPipelinePy>(this);
+        PythonObject = Py::Object(new ViewProviderFemPostPipelinePy(this), true);
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    return Py::new_reference_to(PythonObject);
 }
-
-// explicit template instantiation
-template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemPostPipeline>;
-}// namespace Gui

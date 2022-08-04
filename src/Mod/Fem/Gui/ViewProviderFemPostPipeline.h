@@ -45,13 +45,15 @@ public:
     virtual void updateData(const App::Property* prop);
     virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
     void transformFields();
+    PyObject *getPyObject();
+
+private:
+    Py::Object PythonObject;
 
 protected:
     void updateFunctionSize();
 
 };
-
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemPostPipeline> ViewProviderFemPostPipelinePython;
 
 } //namespace FemGui
 

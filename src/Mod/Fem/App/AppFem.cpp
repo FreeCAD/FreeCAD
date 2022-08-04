@@ -177,7 +177,6 @@ PyMOD_INIT_FUNC(Fem)
 #ifdef FC_USE_VTK
     Fem::FemPostObject                        ::init();
     Fem::FemPostPipeline                      ::init();
-    Fem::FemPostPipelinePython                ::init();
     Fem::FemPostFilter                        ::init();
     Fem::FemPostClipFilter                    ::init();
     Fem::FemPostCutFilter                     ::init();
