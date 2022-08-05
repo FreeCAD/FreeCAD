@@ -441,7 +441,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         names.reserve(DocMap.size());
         std::map<string,Document*>::const_iterator pos;
         for (pos = DocMap.begin();pos != DocMap.end();++pos) {
-            names.push_back(pos->second->Label.getValue());
+            names.emplace_back(pos->second->Label.getValue());
         }
 
         if (!names.empty())
@@ -601,9 +601,9 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
     if(!_docReloadAttempts[FileName].emplace(objName).second)
         return -1;
     auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
-    ret.first->second.push_back(objName);
+    ret.first->second.emplace_back(objName);
     if(ret.second) {
-        _pendingDocs.push_back(ret.first->first.c_str());
+        _pendingDocs.emplace_back(ret.first->first.c_str());
         return 1;
     }
     return -1;
@@ -717,7 +717,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
     for (auto &name : filenames)
-        _pendingDocs.push_back(name.c_str());
+        _pendingDocs.emplace_back(name.c_str());
 
     std::map<DocumentT, DocTiming> timings;
 
@@ -853,7 +853,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             FC_TIME_INIT(t1);
             // Finalize document restoring with the correct order
             if(doc->afterRestore(true)) {
-                openedDocs.push_back(doc);
+                openedDocs.emplace_back(doc);
                 it = docs.erase(it);
             } else {
                 ++it;
@@ -864,7 +864,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 // 'touched' object requires recomputation. And an object may
                 // become touched during restoring if externally linked
                 // document time stamp mismatches with the stamp saved.
-                _pendingDocs.push_back(doc->FileName.getValue());
+                _pendingDocs.emplace_back(doc->FileName.getValue());
                 _pendingDocMap.erase(doc->FileName.getValue());
             }
             FC_DURATION_PLUS(timing.d2,t1);
@@ -937,7 +937,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // close and reopen the document immediately here, but
                         // add it to _pendingDocsReopen to delay reloading.
                         for(auto obj : doc->getObjects())
-                            objNames.push_back(obj->getNameInDocument());
+                            objNames.emplace_back(obj->getNameInDocument());
                         _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
                         break;
                     }
@@ -2205,7 +2205,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
             args.back() += av[i];
         }
         else {
-            args.push_back(av[i]);
+            args.emplace_back(av[i]);
         }
         if (strcmp(av[i],"-style") == 0) {
             merge = true;
