@@ -25,6 +25,10 @@ INSTALL(
         Mod/Path
 )
 
+SET(PathPython_SRCS
+    Path/__init__.py
+)
+
 SET(PathScripts_SRCS
     PathScripts/drillableLib.py
     PathScripts/PathAdaptive.py
@@ -313,6 +317,7 @@ SET(Path_Data
 
 SET(all_files
     ${PathScripts_SRCS}
+    ${PathPython_SRCS}
     ${Generator_SRCS}
     ${PathScripts_post_SRCS}
     ${PathPythonGui_SRCS}
@@ -345,6 +350,13 @@ INSTALL(
         ${PathScripts_SRCS}
     DESTINATION
         Mod/Path/PathScripts
+)
+
+INSTALL(
+    FILES
+        ${PathPython_SRCS}
+    DESTINATION
+        Mod/Path/Path
 )
 
 INSTALL(
