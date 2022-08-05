@@ -222,7 +222,6 @@ class Writer(object):
                     _ELMERGRID_IFORMAT,
                     _ELMERGRID_OFORMAT,
                     unvPath,
-                    "-scale", "0.001", "0.001", "0.001",
                     "-out", self.directory]
             # hide the popups on Windows
             if system() == "Windows":
@@ -297,12 +296,9 @@ class Writer(object):
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
-        # not necessary anymore since we use SI units
-        #if self.unit_schema == Units.Scheme.SI2:
-        #self._simulation("Coordinate Scaling", 0.001)
-        #    Console.PrintMessage(
-        #        "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
-        #    )
+        # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
+        # the solver that we have another scale
+        self._simulation("Coordinate Scaling", 0.001)
         self._simulation("Simulation Type", "Steady state")
         self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)
