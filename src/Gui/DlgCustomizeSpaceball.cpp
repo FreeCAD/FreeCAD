@@ -316,7 +316,7 @@ void CommandView::goChangeCommandSelection(const QString& commandName)
         return;
     QModelIndexList index(this->model()->match(this->model()->index(0,0), Qt::UserRole, QVariant(commandName), 1,
                                                Qt::MatchWrap | Qt::MatchRecursive));
-    if (index.size() < 1)
+    if (index.empty())
         return;
     this->expand(index.at(0));
     this->setCurrentIndex(index.at(0));
@@ -421,7 +421,7 @@ QVariant CommandModel::data(const QModelIndex &index, int role) const
             return QVariant(qApp->translate(node->aCommand->className(), node->aCommand->getMenuText()));
         if (node->nodeType == CommandNode::GroupType)
         {
-            if (node->children.size() < 1)
+            if (node->children.empty())
                 return QVariant();
             CommandNode *childNode = node->children.at(0);
             return QVariant(childNode->aCommand->translatedGroupName());
@@ -446,7 +446,7 @@ QVariant CommandModel::data(const QModelIndex &index, int role) const
             return QVariant(QString::fromLatin1(node->aCommand->getName()));
         if (node->nodeType == CommandNode::GroupType)
         {
-            if (node->children.size() < 1)
+            if (node->children.empty())
                 return QVariant();
             CommandNode *childNode = node->children.at(0);
             return QVariant(QString::fromLatin1(childNode->aCommand->getGroupName()));
@@ -490,7 +490,7 @@ void CommandModel::goAddMacro(const QByteArray &macroName)
     QModelIndexList indexList(this->match(this->index(0,0), Qt::UserRole, QVariant(QString::fromLatin1("Macros")),
                                           1, Qt::MatchWrap | Qt::MatchRecursive));
     QModelIndex macrosIndex;
-    if (indexList.size() < 1)
+    if (indexList.empty())
     {
         //this is the first macro and we have to add the Macros item.
         //figure out where to insert it. Should be in the command groups now.

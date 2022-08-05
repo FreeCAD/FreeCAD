@@ -4339,7 +4339,7 @@ void LinkLabel::updatePropertyLink()
                      linkcolor,
                      DlgPropertyLink::formatObject(
                          owner->getDocument(), sobj.getObject(), sobj.getSubName().c_str()));
-        } else if (links.size()) {
+        } else if (!links.empty()) {
             text = DlgPropertyLink::formatLinks(owner->getDocument(), links);
         }
     }
@@ -4396,7 +4396,7 @@ PropertyLinkItem::PropertyLinkItem()
 QVariant PropertyLinkItem::toString(const QVariant& prop) const
 {
     QString res;
-    if(propertyItems.size()) {
+    if(!propertyItems.empty()) {
         App::DocumentObjectT owner(propertyItems[0]);
         res = DlgPropertyLink::formatLinks(owner.getDocument(),
                                            qvariant_cast<QList<App::SubObjectT> >(prop));
@@ -4405,7 +4405,7 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 }
 
 QVariant PropertyLinkItem::data(int column, int role) const {
-    if(propertyItems.size() && column == 1 
+    if(!propertyItems.empty() && column == 1
             && (role == Qt::ForegroundRole || role == Qt::ToolTipRole))
     {
         auto propLink = Base::freecad_dynamic_cast<const App::PropertyLinkBase>(propertyItems[0]);

@@ -77,7 +77,7 @@ void Gui::ExpressionBinding::setExpression(std::shared_ptr<Expression> expr)
     if (expr) {
         const std::string error = docObj->ExpressionEngine.validateExpression(path, expr);
 
-        if (error.size())
+        if (!error.empty())
             throw Base::RuntimeError(error.c_str());
 
     }

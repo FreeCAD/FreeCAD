@@ -450,7 +450,7 @@ static void linkConvert(bool unlink) {
             if(obj)
                 recomputes.push_back(obj);
         }
-        if(recomputes.size())
+        if(!recomputes.empty())
             recomputes.front()->getDocument()->recompute(recomputes);
 
         Command::commitCommand();
@@ -726,7 +726,7 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
 
         if(found) {
             linked = sels[0].pObject;
-            *subname = prefix.size()?prefix:prefix2 + *subname;
+            *subname = !prefix.empty()?prefix:prefix2 + *subname;
         }
     }
 
@@ -747,7 +747,7 @@ void StdCmdLinkSelectLinked::activated(int)
     }
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    if(subname.size()) {
+    if(!subname.empty()) {
         Selection().addSelection(linked->getDocument()->getName(),linked->getNameInDocument(),subname.c_str());
         auto doc = Application::Instance->getDocument(linked->getDocument());
         if(doc) {

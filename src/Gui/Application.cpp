@@ -914,7 +914,7 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
         if (!d->isClosing && pcDoc) {
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last open document.
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
-            if (!d->activeDocument && d->documents.size()) {
+            if (!d->activeDocument && !d->documents.empty()) {
                 Document *gdoc = nullptr;
                 for(auto &v : d->documents) {
                     if (v.second->getDocument()->testStatus(App::Document::TempDoc))

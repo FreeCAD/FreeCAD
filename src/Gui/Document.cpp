@@ -925,7 +925,7 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
     }
     if(!obj)
         obj = doc.getActiveObject();
-    if(!obj || !obj->getNameInDocument() || (objs.size() && objs.front()!=obj))
+    if(!obj || !obj->getNameInDocument() || (!objs.empty() && objs.front()!=obj))
         return;
     obj->recomputeFeature(true);
 }
@@ -1886,7 +1886,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
         d->baseViews.remove(pcView);
 
         // last view?
-        if (d->baseViews.size() == 0) {
+        if (d->baseViews.empty()) {
             // decouple a passive view
             std::list<Gui::BaseView*>::iterator it = d->passiveViews.begin();
             while (it != d->passiveViews.end()) {
@@ -1974,7 +1974,7 @@ bool Document::canClose (bool checkModify, bool checkLink)
     //    }
     //}
 
-    if (checkLink && App::PropertyXLink::getDocumentInList(getDocument()).size())
+    if (checkLink && !App::PropertyXLink::getDocumentInList(getDocument()).empty())
         return true;
 
     if (getDocument()->testStatus(App::Document::TempDoc))
@@ -2314,7 +2314,7 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
                 currentSteps = steps;
         }
     }
-    if(prompts.size()) {
+    if(!prompts.empty()) {
         std::ostringstream str;
         int i=0;
         for(auto doc : prompts) {

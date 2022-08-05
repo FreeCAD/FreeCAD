@@ -323,7 +323,7 @@ void InputField::pushToHistory(const QString &valueq)
             snprintf(hist1,20,"Hist%i",i+1);
             snprintf(hist0,20,"Hist%i",i);
             std::string tHist = _handle->GetASCII(hist0,"");
-            if(tHist != "")
+            if(!tHist.empty())
                 _handle->SetASCII(hist1,tHist.c_str());
         }
         _handle->SetASCII("Hist0",value.c_str());
@@ -340,7 +340,7 @@ std::vector<QString> InputField::getHistory(void)
         for(int i = 0 ; i< HistorySize ;i++){
             snprintf(hist,20,"Hist%i",i);
             tmp = _handle->GetASCII(hist,"");
-            if( tmp != "")
+            if( !tmp.empty())
                 res.push_back(QString::fromUtf8(tmp.c_str()));
             else
                 break; // end of history reached
@@ -371,7 +371,7 @@ void InputField::pushToSavedValues(const QString &valueq)
             snprintf(hist1,20,"Save%i",i+1);
             snprintf(hist0,20,"Save%i",i);
             std::string tHist = _handle->GetASCII(hist0,"");
-            if(tHist != "")
+            if(!tHist.empty())
                 _handle->SetASCII(hist1,tHist.c_str());
         }
         _handle->SetASCII("Save0",value.c_str());
@@ -388,7 +388,7 @@ std::vector<QString> InputField::getSavedValues(void)
         for(int i = 0 ; i< SaveSize ;i++){
             snprintf(hist,20,"Save%i",i);
             tmp = _handle->GetASCII(hist,"");
-            if( tmp != "")
+            if( !tmp.empty())
                 res.push_back(QString::fromUtf8(tmp.c_str()));
             else
                 break; // end of history reached

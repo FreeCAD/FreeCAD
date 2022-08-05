@@ -398,7 +398,7 @@ void StdCmdExport::activated(int iMsg)
     static QString lastExportFilterUsed = QString();
 
     auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
             QString::fromUtf8(QT_TR_NOOP("No selection")),
             QString::fromUtf8(QT_TR_NOOP("Select the objects to export before choosing Export.")));
@@ -1175,7 +1175,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         }
         std::vector<App::Document*> unsaved;
         hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
-        if(unsaved.size()) {
+        if(!unsaved.empty()) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Unsaved document"),
                 QObject::tr("The exported object contains external link. Please save the document"
                    "at least once before exporting."));
@@ -1362,7 +1362,7 @@ void StdCmdDelete::activated(int iMsg)
                 }
             }
         }
-        if(docs.size()) {
+        if(!docs.empty()) {
             const auto &outList = App::PropertyXLink::getDocumentOutList();
             for(auto it=docs.begin();it!=docs.end();++it) {
                 auto itd = outList.find(*it);
@@ -1392,7 +1392,7 @@ void StdCmdDelete::activated(int iMsg)
 
 bool StdCmdDelete::isActive(void)
 {
-    return Selection().getCompleteSelection().size() > 0;
+    return !Selection().getCompleteSelection().empty();
 }
 
 //===========================================================================
@@ -1640,7 +1640,7 @@ void StdCmdEdit::activated(int iMsg)
         if (viewer->isEditingViewProvider()) {
             doCommand(Command::Gui,"Gui.activeDocument().resetEdit()");
         } else {
-            if (Selection().getCompleteSelection().size() > 0) {
+            if (!Selection().getCompleteSelection().empty()) {
                 SelectionSingleton::SelObj obj = Selection().getCompleteSelection()[0];
                 doCommand(Command::Gui,"Gui.activeDocument().setEdit(\"%s\",0)",obj.FeatName);
             }
@@ -1650,7 +1650,7 @@ void StdCmdEdit::activated(int iMsg)
 
 bool StdCmdEdit::isActive(void)
 {
-    return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != nullptr);
+    return (!Selection().getCompleteSelection().empty()) || (Gui::Control().activeDialog() != nullptr);
 }
 
 //======================================================================
@@ -1733,7 +1733,7 @@ protected:
                            << obj->getFullName() << '.' << p->getName()
                            << " (" << obj->Label.getValue() << ')' << std::endl;
                         ss << "##@@";
-                        if(v.second->comment.size()) {
+                        if(!v.second->comment.empty()) {
                             if(v.second->comment[0] == '&'
                                     || v.second->comment.find('\n') != std::string::npos
                                     || v.second->comment.find('\r') != std::string::npos)
@@ -1802,7 +1802,7 @@ protected:
             size_t len = (found?m2[0].first:tend) - m[0].second;
             try {
                 App::ExpressionPtr expr(App::Expression::parse(obj,std::string(m[0].second,len)));
-                if(expr && comment.size()) {
+                if(expr && !comment.empty()) {
                     if(comment[0] == '&') {
                         expr->comment = comment.c_str()+1;
                         boost::replace_all(expr->comment,"&amp;","&");
@@ -1836,7 +1836,7 @@ protected:
                         if(iter != old.end() && it->second->isSame(*iter->second))
                             expressions.erase(it);
                     }
-                    if(expressions.size())
+                    if(!expressions.empty())
                         v2.first->setExpressions(std::move(expressions));
                 }
             }

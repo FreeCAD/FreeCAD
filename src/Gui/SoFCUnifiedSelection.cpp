@@ -723,7 +723,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         if (mymode == AUTO || mymode == ON) {
             // check to see if the mouse is over our geometry...
             auto infos = this->getPickedList(action,true);
-            if(infos.size())
+            if(!infos.empty())
                 setHighlight(infos[0]);
             else {
                 setHighlight(PickedInfo());
@@ -1103,7 +1103,7 @@ void SoFCSelectionRoot::finish()
 }
 
 SoNode *SoFCSelectionRoot::getCurrentRoot(bool front, SoNode *def) {
-    if(SelStack.size())
+    if(!SelStack.empty())
         return front?SelStack.front():SelStack.back();
     return def;
 }

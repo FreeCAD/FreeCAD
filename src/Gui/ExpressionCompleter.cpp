@@ -407,9 +407,9 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 
             std::vector<std::string> sl = p.getStringList();
             std::vector<std::string>::const_iterator sli = sl.begin();
-            if(retry && sl.size())
+            if(retry && !sl.empty())
                 sl.pop_back();
-            if(trim.size() && boost::ends_with(sl.back(),trim))
+            if(!trim.empty() && boost::ends_with(sl.back(),trim))
                 sl.back().resize(sl.back().size()-trim.size());
             while (sli != sl.end()) {
                 l << Base::Tools::fromStdString(*sli);

@@ -68,7 +68,7 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     }
 
     bool isSelectAll() const{
-        return selectionIndex.size() && *selectionIndex.begin()<0;
+        return !selectionIndex.empty() && *selectionIndex.begin()<0;
     }
 
     bool isHighlighted() const {
