@@ -328,9 +328,9 @@ ColorLegend::ColorLegend ()
     colorFields.emplace_back(0, 1, 0);
     colorFields.emplace_back(1, 0, 0);
 
-    names.push_back("Min");
-    names.push_back("Mid");
-    names.push_back("Max");
+    names.emplace_back("Min");
+    names.emplace_back("Mid");
+    names.emplace_back("Max");
 
     values.push_back(-1.0f);
     values.push_back(-0.333f);

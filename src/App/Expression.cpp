@@ -3284,7 +3284,7 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
     column = 0;
     try {
         while ( (token  = ExpressionParserlex()) != 0)
-            result.push_back(std::make_tuple(token, ExpressionParser::last_column, yytext));
+            result.emplace_back(token, ExpressionParser::last_column, yytext);
     }
     catch (...) {
         // Ignore all exceptions

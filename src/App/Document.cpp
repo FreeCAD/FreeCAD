@@ -2020,7 +2020,7 @@ Document::readObjects(Base::XMLReader& reader)
         std::vector<std::string> objs;
         objs.reserve(d->partialLoadObjects.size());
         for(auto &v : d->partialLoadObjects)
-            objs.push_back(v.first.c_str());
+            objs.emplace_back(v.first.c_str());
         for(auto &name : objs)
             _loadDeps(name,d->partialLoadObjects,deps);
         if(Cnt > (int)d->partialLoadObjects.size())

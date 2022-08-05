@@ -906,7 +906,7 @@ void LinkBaseExtension::monitorOnChangeCopyObjects(
         return;
     for(auto obj : objs) {
         obj->setStatus(App::ObjectStatus::TouchOnColorChange, true);
-        copyOnChangeSrcConns.push_back(obj->signalChanged.connect(
+        copyOnChangeSrcConns.emplace_back(obj->signalChanged.connect(
             [this](const DocumentObject &, const Property &) {
                 if (auto prop = this->getLinkCopyOnChangeTouchedProperty()) {
                     if (this->getLinkCopyOnChangeValue() != CopyOnChangeDisabled)
@@ -1247,7 +1247,7 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, in
                 char index[30];
                 for(int i=0,count=_getElementCountValue();i<count;++i) {
                     snprintf(index,sizeof(index),"%d.",i);
-                    ret.push_back(index);
+                    ret.emplace_back(index);
                 }
             }
         }
@@ -1496,13 +1496,13 @@ void LinkBaseExtension::parseSubName() const {
             mySubElements.emplace_back("");
         return;
     }
-    mySubElements.push_back(element);
+    mySubElements.emplace_back(element);
     mySubName = std::string(subname,element-subname);
     for(std::size_t i=1;i<subs.size();++i) {
         auto &sub = subs[i];
         element = Data::ComplexGeoData::findElementName(sub.c_str());
         if(element && element[0] && boost::starts_with(sub,mySubName))
-            mySubElements.push_back(element);
+            mySubElements.emplace_back(element);
     }
 }
 
@@ -2109,7 +2109,7 @@ void LinkBaseExtension::detachElements()
 {
     std::vector<App::DocumentObjectT> objs;
     for (auto obj : getElementListValue())
-        objs.push_back(obj);
+        objs.emplace_back(obj);
     getElementListProperty()->setValue();
     for(const auto &objT : objs)
         detachElement(objT.getObject());

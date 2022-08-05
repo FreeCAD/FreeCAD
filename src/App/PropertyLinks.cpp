@@ -4328,7 +4328,7 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject *> &objs,
             if(obj && obj->getNameInDocument()) {
                 auto subnames = l.getSubValues(newStyle);
                 if (subnames.empty())
-                    subnames.push_back("");
+                    subnames.emplace_back("");
                 for(auto &sub : subnames) {
                     objs.push_back(obj);
                     subs->push_back(std::move(sub));

@@ -181,10 +181,10 @@ void PropertyExpressionEngine::hasSetValue()
                         auto &propDeps = pimpl->propMap[key];
                         if(propDeps.empty()) {
                             if(propName.size()) 
-                                pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
+                                pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
                                             &PropertyExpressionEngine::slotChangedProperty,this,_1,_2)));
                             else
-                                pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
+                                pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
                                             &PropertyExpressionEngine::slotChangedObject,this,_1,_2)));
                         }
                         propDeps.push_back(e.first);
