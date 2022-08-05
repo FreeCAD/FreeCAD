@@ -90,7 +90,7 @@
         PyErr_SetString(Base::PyExc_FC_GeneralError,e);         \
     } throw Py::Exception();
 
-namespace Path {
+namespace PathApp {
   class VoronoiModule : public Py::ExtensionModule<VoronoiModule>
   {
   public:
@@ -106,7 +106,7 @@ namespace Path {
       VoronoiModule voronoi;
   public:
 
-      Module() : Py::ExtensionModule<Module>("Path")
+      Module() : Py::ExtensionModule<Module>("PathApp")
       {
           add_varargs_method("write",&Module::write,
               "write(object,filename): Exports a given path object to a GCode file"
@@ -161,8 +161,8 @@ namespace Path {
 
           if (PyObject_TypeCheck(pObj, &(App::DocumentObjectPy::Type))) {
               App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
-              if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Path::Feature"))) {
-                  const Toolpath& path = static_cast<Path::Feature*>(obj)->Path.getValue();
+              if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("PathApp::Feature"))) {
+                  const Path::Toolpath& path = static_cast<Path::Feature*>(obj)->Path.getValue();
                   std::string gcode = path.toGCode();
                   Base::ofstream ofile(file);
                   ofile << gcode;
@@ -204,9 +204,9 @@ namespace Path {
               std::stringstream buffer;
               buffer << filestr.rdbuf();
               std::string gcode = buffer.str();
-              Toolpath path;
+              Path::Toolpath path;
               path.setFromGCode(gcode);
-              Path::Feature *object = static_cast<Path::Feature *>(pcDoc->addObject("Path::Feature",file.fileNamePure().c_str()));
+              Path::Feature *object = static_cast<Path::Feature *>(pcDoc->addObject("PathApp::Feature",file.fileNamePure().c_str()));
               object->Path.setValue(path);
               pcDoc->recompute();
           }
@@ -222,15 +222,15 @@ namespace Path {
       {
           PyObject *pcObj;
           char *name = "Path";
-          if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PathPy::Type), &pcObj, &name))
+          if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(Path::PathPy::Type), &pcObj, &name))
               throw Py::Exception();
 
           try {
               App::Document *pcDoc = App::GetApplication().getActiveDocument();
               if (!pcDoc)
                   pcDoc = App::GetApplication().newDocument();
-              PathPy* pPath = static_cast<PathPy*>(pcObj);
-              Path::Feature *pcFeature = static_cast<Path::Feature*>(pcDoc->addObject("Path::Feature", name));
+              Path::PathPy* pPath = static_cast<Path::PathPy*>(pcObj);
+              Path::Feature *pcFeature = static_cast<Path::Feature*>(pcDoc->addObject("PathApp::Feature", name));
               Path::Toolpath* pa = pPath->getToolpathPtr();
               if (!pa) {
                   throw Py::Exception(PyExc_ReferenceError, "object doesn't reference a valid path");
@@ -313,7 +313,7 @@ namespace Path {
                           }
                           ExpEdges.Next();
                       }
-                      return Py::asObject(new PathPy(new Path::Toolpath(result)));
+                      return Py::asObject(new Path::PathPy(new Path::Toolpath(result)));
                   } else {
                       throw Py::TypeError("the given shape must be a wire");
                   }
@@ -365,13 +365,13 @@ namespace Path {
 
           try {
               gp_Pnt pend;
-              std::unique_ptr<Toolpath> path(new Toolpath);
-              Area::toPath(*path,shapes,start?&pstart:nullptr, &pend,
+              std::unique_ptr<Path::Toolpath> path(new Path::Toolpath);
+              Path::Area::toPath(*path,shapes,start?&pstart:nullptr, &pend,
                       PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
               if (!Base::asBoolean(return_end))
-                  return Py::asObject(new PathPy(path.release()));
+                  return Py::asObject(new Path::PathPy(path.release()));
               Py::Tuple tuple(2);
-              tuple.setItem(0, Py::asObject(new PathPy(path.release())));
+              tuple.setItem(0, Py::asObject(new Path::PathPy(path.release())));
               tuple.setItem(1, Py::asObject(new Base::VectorPy(Base::Vector3d(pend.X(),pend.Y(),pend.Z()))));
               return tuple;
           } PATH_CATCH
@@ -419,8 +419,8 @@ namespace Path {
           }
 
           try {
-              bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
-              std::list<TopoDS_Shape> wires = Area::sortWires(shapes, start != nullptr, &pstart,
+              bool need_arc_plane = arc_plane == Path::Area::ArcPlaneAuto;
+              std::list<TopoDS_Shape> wires = Path::Area::sortWires(shapes, start != nullptr, &pstart,
                       &pend, nullptr, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
               Py::List list;
               for(auto &wire : wires) {

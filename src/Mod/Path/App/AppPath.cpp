@@ -52,12 +52,12 @@
 #include "VoronoiVertexPy.h"
 
 
-namespace Path {
+namespace PathApp {
   extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMOD_INIT_FUNC(Path)
+PyMOD_INIT_FUNC(PathApp)
 {
     // load dependent module
     try {
@@ -68,7 +68,7 @@ PyMOD_INIT_FUNC(Path)
         PyMOD_Return(nullptr);
     }
 
-    PyObject* pathModule = Path::initModule();
+    PyObject* pathModule = PathApp::initModule();
     Base::Console().Log("Loading Path module... done\n");
 
     Py::Object module(pathModule);
