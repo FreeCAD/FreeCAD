@@ -44,49 +44,119 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyBool",
-            "DoFrequencyAnalysis",
-            "Elasticity",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "EigenmodesCount",
-            "Elasticity",
-            ""
-        )
+        
         obj.addProperty(
             "App::PropertyBool",
             "CalculateStrains",
             "Elasticity",
-            ""
+            "Compute the strain tensor"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateStresses",
             "Elasticity",
-            ""
+            "Compute stress tensor and vanMises"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculatePrincipal",
             "Elasticity",
-            ""
+            "Compute principal stress components"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculatePangle",
             "Elasticity",
-            ""
+            "Compute principal stress angles"
         )
-        obj.EigenmodesCount = 5
+        obj.addProperty(
+            "App::PropertyBool",
+            "ConstantBulkSystem",
+            "Elasticity",
+            "See Elmer manual for info"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "DisplaceMesh",
+            "Elasticity",
+            "If mesh is deformed by displacement field.\nSet to False for 'Eigen Analysis'."
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "EigenAnalysis",
+            "Elasticity",
+            "If true, modal analysis"
+        )
+        obj.addProperty(
+            "App::PropertyInteger",
+            "EigenSystemValues",
+            "Elasticity",
+            "Number of lowest eigen modes"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FixDisplacement",
+            "Elasticity",
+            "If displacements or forces are set,\nthereby model lumping is used"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "GeometricStiffness",
+            "Elasticity",
+            "Consider geometric stiffness"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Incompressible",
+            "Elasticity",
+            "Computation of incompressible material in connection\nwith viscoelastic Maxwell material and a custom 'Variable'"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "MaxwellMaterial",
+            "Elasticity",
+            "Compute viscoelastic material model"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ModelLumping",
+            "Elasticity",
+            "Use model lumping"
+        )
+        obj.addProperty(
+            "App::PropertyFile",
+            "ModelLumpingFilename",
+            "Elasticity",
+            "File to save results from model lumping to"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "StabilityAnalysis",
+            "Elasticity",
+            "If true, 'Eigen Analysis' is stability analysis.\nOtherwise modal analysis is performed."
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UpdateTransientSystem",
+            "Elasticity",
+            "See Elmer manual for info"
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "Variable",
+            "Elasticity",
+            "Only change this if 'Incompressible' is set to true\naccording to the Elmer manual."
+        )
+
+        obj.EigenSystemValues = 5
         obj.Priority = 10
         obj.CalculatePrincipal = True
+        obj.DisplaceMesh = True
         # according to the Elmer tutorial and forum, for stresses direct solving
         # is recommended -> test showed 10 times faster and even more accurate
         obj.LinearSolverType = "Direct"
         obj.LinearDirectMethod = "Umfpack"
+        obj.Variable = "Displacement"
 
 
 class ViewProxy(linear.ViewProxy, equationbase.ElasticityViewProxy):

@@ -583,21 +583,144 @@ class Writer(object):
 
     def _getElasticitySolver(self, equation):
         s = self._createLinearSolver(equation)
+        # check if we need to update the equation
+        self._updateElasticitySolver(equation)
+        # output the equation parameters
         s["Equation"] = "Stress Solver" # equation.Name
         s["Procedure"] = sifio.FileAttr("StressSolve/StressSolver")
-        s["Variable"] = self._getUniqueVarName("Displacement")
+        s["Variable"] = equation.Variable
         s["Variable DOFs"] = 3
-        s["Eigen Analysis"] = equation.DoFrequencyAnalysis
-        s["Eigen System Values"] = equation.EigenmodesCount
         s["Calculate Strains"] = equation.CalculateStrains
         s["Calculate Stresses"] = equation.CalculateStresses
         s["Calculate Principal"] = equation.CalculatePrincipal
         s["Calculate Pangle"] = equation.CalculatePangle
-        s["Displace mesh"] = False
-        s["Exec Solver"] = "Always"
+        s["Constant Bulk System"] = equation.ConstantBulkSystem
+        s["Displace mesh"] = equation.DisplaceMesh
+        s["Eigen Analysis"] = equation.EigenAnalysis
+        s["Eigen System Values"] = equation.EigenSystemValues
+        s["Fix Displacement"] = equation.FixDisplacement
+        s["Geometric Stiffness"] = equation.GeometricStiffness
+        s["Incompressible"] = equation.Incompressible
+        s["Maxwell Material"] = equation.MaxwellMaterial
+        s["Model Lumping"] = equation.ModelLumping
+        s["Model Lumping Filename"] = equation.ModelLumpingFilename
         s["Optimize Bandwidth"] = True
+        s["Stability Analysis"] = equation.StabilityAnalysis
         s["Stabilize"] = equation.Stabilize
+        s["Update Transient System"] = equation.UpdateTransientSystem
         return s
+
+    def _updateElasticitySolver(self, equation):
+        # updates older Elasticity equations
+        if not hasattr(equation, "Variable"):
+            equation.addProperty(
+            "App::PropertyString",
+            "Variable",
+            "Elasticity",
+            "Only change this if 'Incompressible' is set to true\naccording to the Elmer manual."
+            )
+            equation.Variable = "Displacement"
+        if hasattr(equation, "Bubbles"):
+            # Bubbles was removed because it is unused by Elmer for the stress solver
+            equation.removeProperty("Bubbles")
+        if not hasattr(equation, "ConstantBulkSystem"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "ConstantBulkSystem",
+            "Elasticity",
+            "See Elmer manual for info")
+        if not hasattr(equation, "DisplaceMesh"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "DisplaceMesh",
+            "Elasticity",
+            "If mesh is deformed by displacement field.\nSet to False for 'Eigen Analysis'."
+            )
+            # DisplaceMesh is true except if DoFrequencyAnalysis is true
+            equation.DisplaceMesh = True
+            if hasattr(equation, "DoFrequencyAnalysis"):
+                if equation.DoFrequencyAnalysis == True:
+                    equation.DisplaceMesh = False
+        if not hasattr(equation, "EigenAnalysis"):
+            # DoFrequencyAnalysis was renamed to EigenAnalysis
+            # to follow the Elmer manual
+            equation.addProperty(
+            "App::PropertyBool",
+            "EigenAnalysis",
+            "Elasticity",
+            "If true, modal analysis"
+            )
+            if hasattr(equation, "DoFrequencyAnalysis"):
+                equation.EigenAnalysis = equation.DoFrequencyAnalysis
+                equation.removeProperty("DoFrequencyAnalysis")
+        if not hasattr(equation, "EigenSystemValues"):
+            # EigenmodesCount was renamed to EigenSystemValues
+            # to follow the Elmer manual
+            equation.addProperty(
+            "App::PropertyInteger",
+            "EigenSystemValues",
+            "Elasticity",
+            "Number of lowest eigen modes"
+            )
+            if hasattr(equation, "EigenmodesCount"):
+                equation.EigenSystemValues = equation.EigenmodesCount
+                equation.removeProperty("EigenmodesCount")
+        if not hasattr(equation, "FixDisplacement"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "FixDisplacement",
+            "Elasticity",
+            "If displacements or forces are set,\nthereby model lumping is used"
+            )
+        if not hasattr(equation, "GeometricStiffness"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "GeometricStiffness",
+            "Elasticity",
+            "Consider geometric stiffness"
+            )
+        if not hasattr(equation, "Incompressible"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "Incompressible",
+            "Elasticity",
+            "Computation of incompressible material in connection\nwith viscoelastic Maxwell material and a custom 'Variable'"
+            )
+        if not hasattr(equation, "MaxwellMaterial"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "MaxwellMaterial",
+            "Elasticity",
+            "Compute viscoelastic material model"
+            )
+        if not hasattr(equation, "ModelLumping"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "ModelLumping",
+            "Elasticity",
+            "Use model lumping"
+            )
+        if not hasattr(equation, "ModelLumpingFilename"):
+            equation.addProperty(
+            "App::PropertyFile",
+            "ModelLumpingFilename",
+            "Elasticity",
+            "File to save results from model lumping to"
+            )
+        if not hasattr(equation, "StabilityAnalysis"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "StabilityAnalysis",
+            "Elasticity",
+            "If true, 'Eigen Analysis' is stability analysis.\nOtherwise modal analysis is performed."
+            )
+        if not hasattr(equation, "UpdateTransientSystem"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "UpdateTransientSystem",
+            "Elasticity",
+            "See Elmer manual for info"
+            )
 
     def _handleElasticityConstants(self):
         pass
@@ -688,7 +811,7 @@ class Writer(object):
         density_needed = False
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
-                if equation.DoFrequencyAnalysis is True:
+                if equation.EigenAnalysis is True:
                     density_needed = True
                     break  # there could be a second equation without frequency
         gravObj = self._getSingleMember("Fem::ConstraintSelfWeight")
