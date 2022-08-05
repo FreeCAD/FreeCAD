@@ -200,7 +200,7 @@ public:
     }
     const char* getViewProviderNameOverride() const override {
         viewProviderName = imp->getViewProviderName();
-        if(viewProviderName.size())
+        if(!viewProviderName.empty())
             return viewProviderName.c_str();
         return FeatureT::getViewProviderNameOverride();
     }

@@ -1014,7 +1014,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
                     continue;
                 std::string imported = PropertyLinkBase::tryImportSubName(
                                obj,key.second.c_str(),owner->getDocument(), nameMap);
-                if(imported.size())
+                if(!imported.empty())
                     subNameMap.emplace(std::move(key),std::move(imported));
             }
         }
@@ -1112,7 +1112,7 @@ App::any Expression::getValueAsAny() const {
 Py::Object Expression::getPyValue() const {
     try {
         Py::Object pyobj = _getPyValue();
-        if(components.size()) {
+        if(!components.empty()) {
             for(auto &c : components)
                 pyobj = c->get(this,pyobj);
         }
@@ -1772,7 +1772,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MAX:
     case CREATE:
     case MSCALE:
-        if (args.size() == 0)
+        if (args.empty())
             EXPR_THROW("Invalid number of arguments: at least one required.");
         break;
     case LIST:
@@ -2531,7 +2531,7 @@ const Property * VariableExpression::getProperty() const
 
 void VariableExpression::addComponent(Component *c) {
     do {
-        if(components.size())
+        if(!components.empty())
             break;
         if(!c->e1 && !c->e2) {
             var << c->comp;

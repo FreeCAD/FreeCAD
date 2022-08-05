@@ -451,7 +451,7 @@ bool ColorLegend::remove (std::size_t ulPos)
 
 void ColorLegend::removeFirst ()
 {
-    if (colorFields.size() > 0) {
+    if (!colorFields.empty()) {
         colorFields.erase(colorFields.begin());
         names.erase(names.begin());
         values.erase(values.begin());
@@ -460,7 +460,7 @@ void ColorLegend::removeFirst ()
 
 void ColorLegend::removeLast ()
 {
-    if (colorFields.size() > 0) {
+    if (!colorFields.empty()) {
         colorFields.erase(colorFields.end()-1);
         names.erase(names.end()-1);
         values.erase(values.end()-1);

@@ -449,7 +449,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
 
     std::stack<DocumentObject*> pendings;
     pendings.push(const_cast<DocumentObject*>(this));
-    while(pendings.size()) {
+    while(!pendings.empty()) {
         auto obj = pendings.top();
         pendings.pop();
         for(auto o : obj->getInList()) {

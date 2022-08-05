@@ -1407,7 +1407,7 @@ void PropertyString::setValue(const char* newLabel)
             propChanges = PropertyLinkBase::updateLabelReferences(obj,newLabel);
         }
 
-        if(propChanges.size() && !GetApplication().getActiveTransaction()) {
+        if(!propChanges.empty() && !GetApplication().getActiveTransaction()) {
             commit = true;
             std::ostringstream str;
             str << "Change " << obj->getNameInDocument() << ".Label";

@@ -171,7 +171,7 @@ struct PropertyCleaner {
         if(--_PropCleanerCounter)
             return;
         bool found = false;
-        while (_RemovedProps.size()) {
+        while (!_RemovedProps.empty()) {
             auto p = _RemovedProps.back();
             _RemovedProps.pop_back();
             if(p != prop)

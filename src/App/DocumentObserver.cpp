@@ -243,7 +243,7 @@ std::string DocumentObjectT::getPropertyPython() const
 {
     std::stringstream str;
     str << getObjectPython();
-    if (property.size())
+    if (!property.empty())
         str << '.' << property;
     return str.str();
 }
@@ -422,7 +422,7 @@ std::string SubObjectT::getObjectFullName(const char *docName) const
         ss << "#";
     }
     ss << getObjectName();
-    if (getObjectLabel().size() && getObjectLabel() != getObjectName())
+    if (!getObjectLabel().empty() && getObjectLabel() != getObjectName())
         ss << " (" << getObjectLabel() << ")";
     return ss.str();
 }

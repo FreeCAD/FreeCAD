@@ -957,7 +957,7 @@ bool Document::undo(int id)
             if(it == mUndoMap.end())
                 return false;
             if(it->second != d->activeUndoTransaction) {
-                while(mUndoTransactions.size() && mUndoTransactions.back()!=it->second)
+                while(!mUndoTransactions.empty() && mUndoTransactions.back()!=it->second)
                     undo(0);
             }
         }
@@ -1008,7 +1008,7 @@ bool Document::redo(int id)
             auto it = mRedoMap.find(id);
             if(it == mRedoMap.end())
                 return false;
-            while(mRedoTransactions.size() && mRedoTransactions.back()!=it->second)
+            while(!mRedoTransactions.empty() && mRedoTransactions.back()!=it->second)
                 redo(0);
         }
 
@@ -1999,7 +1999,7 @@ Document::readObjects(Base::XMLReader& reader)
 
     if(!reader.hasAttribute(FC_ATTR_DEPENDENCIES))
         d->partialLoadObjects.clear();
-    else if(d->partialLoadObjects.size()) {
+    else if(!d->partialLoadObjects.empty()) {
         std::unordered_map<std::string,DepInfo> deps;
         for (int i=0 ;i<Cnt ;i++) {
             reader.readElement(FC_ELEMENT_OBJECT_DEPS);
@@ -2045,7 +2045,7 @@ Document::readObjects(Base::XMLReader& reader)
         std::string viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):"";
 
         bool partial = false;
-        if(d->partialLoadObjects.size()) {
+        if(!d->partialLoadObjects.empty()) {
             auto it = d->partialLoadObjects.find(name);
             if(it == d->partialLoadObjects.end())
                 continue;
@@ -2368,7 +2368,7 @@ private:
                     if (file.substr(0,fn.length()) == fn) {
                         // starts with the same file name
                         std::string suf(file.substr(fn.length()));
-                        if (suf.size() > 0) {
+                        if (!suf.empty()) {
                             std::string::size_type nPos = suf.find_first_not_of("0123456789");
                             if (nPos==std::string::npos) {
                                 // store all backup files
@@ -2500,7 +2500,7 @@ private:
                         fn = str.str();
                         bool done = false;
 
-                        if ((fn == "") || (fn[fn.length()-1] == ' ') || (fn[fn.length()-1] == '-')) {
+                        if ((fn.empty()) || (fn[fn.length()-1] == ' ') || (fn[fn.length()-1] == '-')) {
                             if (fn[fn.length()-1] == ' ') {
                                 fn = fn.substr(0,fn.length()-1);
                             }
@@ -2817,7 +2817,7 @@ bool Document::afterRestore(bool checkPartial) {
 bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkPartial)
 {
     checkPartial = checkPartial && testStatus(Document::PartialDoc);
-    if(checkPartial && d->touchedObjs.size())
+    if(checkPartial && !d->touchedObjs.empty())
         return false;
 
     // some link type property cannot restore link information until other
@@ -2840,7 +2840,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         }
     }
 
-    if(checkPartial && d->touchedObjs.size()) {
+    if(checkPartial && !d->touchedObjs.empty()) {
         // partial document touched, signal full reload
         return false;
     }
@@ -2901,7 +2901,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             }
         }
 
-        if(checkPartial && d->touchedObjs.size()) {
+        if(checkPartial && !d->touchedObjs.empty()) {
             // partial document touched, signal full reload
             return false;
         } else if(!d->touchedObjs.count(obj))
@@ -3001,7 +3001,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 {
     std::map<const App::DocumentObject*, std::vector<App::DocumentObject*> > linkMap;
 
-    for(auto o : objs.size()?objs:d->objectArray) {
+    for(auto o : !objs.empty()?objs:d->objectArray) {
         if(o == obj) continue;
         auto linked = o;
         if(options & GetLinkArrayElement)
@@ -3035,7 +3035,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
         return;
 
     std::vector<const DocumentObject*> current(1,obj);
-    for(int depth=0;current.size();++depth) {
+    for(int depth=0;!current.empty();++depth) {
         if(!GetApplication().checkLinkDepth(depth,true))
             break;
         std::vector<const DocumentObject*> next;
@@ -3105,7 +3105,7 @@ static void _buildDependencyList(const std::vector<App::DocumentObject*> &object
     int op = (options & Document::DepNoXLinked)?DocumentObject::OutListNoXLinked:0;
     for (auto obj : objectArray) {
         objs.push_back(obj);
-        while(objs.size()) {
+        while(!objs.empty()) {
             auto obj = objs.front();
             objs.pop_front();
             if(!obj || !obj->getNameInDocument())
@@ -3241,7 +3241,7 @@ std::vector<App::Document*> Document::getDependentDocuments(
         for(auto doc : pending)
             docMap[doc] = add_vertex(depList);
     }
-    while(pending.size()) {
+    while(!pending.empty()) {
         auto doc = pending.back();
         pending.pop_back();
 
@@ -3592,7 +3592,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
     FC_TIME_LOG(t,"Recompute total");
 
-    if (d->_RecomputeLog.size()) {
+    if (!d->_RecomputeLog.empty()) {
         d->pendingRemove.clear();
         if (!testStatus(Status::IgnoreErrorOnRecompute))
             Base::Console().Error("Recompute failed! Please check report view.\n");
