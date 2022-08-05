@@ -182,19 +182,19 @@ public:
             }
 
             // Auto Constraint center point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
 
             // Auto Constraint first picked point
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), (arcAngle > 0) ? Sketcher::PointPos::start : Sketcher::PointPos::end );
                 sugConstr2.clear();
             }
 
             // Auto Constraint second picked point
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, getHighestCurveIndex(), (arcAngle > 0) ? Sketcher::PointPos::end : Sketcher::PointPos::start);
                 sugConstr3.clear();
             }
@@ -423,19 +423,19 @@ public:
             }
 
             // Auto Constraint first picked point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), arcPos1);
                 sugConstr1.clear();
             }
 
             // Auto Constraint second picked point
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), arcPos2);
                 sugConstr2.clear();
             }
 
             // Auto Constraint third picked point
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr3.clear();
             }

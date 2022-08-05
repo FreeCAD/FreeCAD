@@ -119,7 +119,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
         ui->lw_dis_cylin->addItem(makeText(nDispl[i]));
     }
 
-    if (Objects.size() > 0) {
+    if (!Objects.empty()) {
         for (std::size_t i = 0; i < Objects.size(); i++) {
             ui->lw_Rect->addItem(makeRefText(Objects[i], SubElements[i]));
         }
@@ -137,7 +137,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     connect(ui->btnRemove, SIGNAL(clicked()), this, SLOT(removeFromSelection()));
 
     updateUI();
-    if ((p == 0) && (Objects.size() > 0)) {
+    if ((p == 0) && (!Objects.empty())) {
         QMessageBox::warning(this, tr("Constraint update error"), tr("The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!"));
         return;
     }
@@ -201,7 +201,7 @@ void TaskFemConstraintTransform::Rect() {
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.TransformType = %s", name.c_str(), get_transform_type().c_str());
     Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-    if (Objects.size() > 0) {
+    if (!Objects.empty()) {
         setSelection(ui->lw_Rect->item(0));
         removeFromSelection();
     }
@@ -216,7 +216,7 @@ void TaskFemConstraintTransform::Cyl() {
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.TransformType = %s", name.c_str(), get_transform_type().c_str());
     Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-    if (Objects.size() > 0) {
+    if (!Objects.empty()) {
         setSelection(ui->lw_Rect->item(0));
         removeFromSelection();
     }
@@ -227,7 +227,7 @@ void TaskFemConstraintTransform::addToSelection()
 {
     int rows = ui->lw_Rect->model()->rowCount();
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -299,7 +299,7 @@ void TaskFemConstraintTransform::addToSelection()
                             this, SLOT(setSelection(QListWidgetItem*)));
                     }
                 }
-                if (Objects.size() == 0) {
+                if (Objects.empty()) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface"));
                     Gui::Selection().clearSelection();
                     return;
@@ -347,7 +347,7 @@ void TaskFemConstraintTransform::addToSelection()
 void TaskFemConstraintTransform::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -375,7 +375,7 @@ void TaskFemConstraintTransform::removeFromSelection()
         }
     }
     std::sort(itemsToDel.begin(), itemsToDel.end());
-    while (itemsToDel.size() > 0) {
+    while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();

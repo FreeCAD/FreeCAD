@@ -74,7 +74,7 @@ std::string Spreadsheet::rowName(int row)
 
 void Spreadsheet::createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles)
 {
-    while (cells.size() != 0) {
+    while (!cells.empty()) {
         int row, col;
         int orgRow;
         int rows = 1;

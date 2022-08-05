@@ -69,7 +69,7 @@ void LuxProject::onDocumentRestored()
 
 App::DocumentObjectExecReturn *LuxProject::execute(void)
 {
-    if (std::string(PageResult.getValue()) == "")
+    if (std::string(PageResult.getValue()).empty())
         PageResult.setValue(Template.getValue());
 
     Base::FileInfo fi(Template.getValue());

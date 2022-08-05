@@ -4111,7 +4111,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
     std::vector<int> newgeoIdList(geoIdList);
 
-    if(newgeoIdList.size() == 0) {// default option to operate on all the geometry
+    if(newgeoIdList.empty()) {// default option to operate on all the geometry
         for(int i = 0; i < int(geovals.size()); i++)
             newgeoIdList.push_back(i);
     }
@@ -5361,7 +5361,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
 
-        if (delgeometries.size()>0) {
+        if (!delgeometries.empty()) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
                 delGeometry(*it,false);
             }
@@ -5453,7 +5453,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
 
-        if (delgeometries.size()>0) {
+        if (!delgeometries.empty()) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
                 delGeometry(*it,false);
             }
@@ -7494,7 +7494,7 @@ void SketchObject::appendConstraintsMsg(const std::vector<int> &vector,
     std::stringstream ss;
     if (msg.length() > 0)
         ss << msg;
-    if (vector.size() > 0) {
+    if (!vector.empty()) {
         if (vector.size() == 1)
             ss << singularmsg << std::endl;
         else
@@ -8432,7 +8432,7 @@ int SketchObject::autoRemoveRedundants(bool updategeo)
 {
     auto redundants = getLastRedundant();
 
-    if(redundants.size() == 0)
+    if(redundants.empty())
         return 0;
 
     for(size_t i=0;i<redundants.size();i++) // getLastRedundant is base 1, while delConstraints is base 0

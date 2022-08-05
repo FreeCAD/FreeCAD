@@ -97,7 +97,7 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
     auto linked = axisLink.getValue();
 
     TopoDS_Shape axEdge;
-    if (axisLink.getSubValues().size() > 0 && axisLink.getSubValues()[0].length() > 0) {
+    if (!axisLink.getSubValues().empty() && axisLink.getSubValues()[0].length() > 0) {
         axEdge = Feature::getTopoShape(linked, axisLink.getSubValues()[0].c_str(), true /*need element*/).getShape();
     }
     else {

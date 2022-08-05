@@ -646,7 +646,7 @@ unsigned long MeshGrid::GetElements (unsigned long ulX, unsigned long ulY, unsig
                                      std::set<ElementIndex> &raclInd) const
 {
   const std::set<ElementIndex> &rclSet = _aulGrid[ulX][ulY][ulZ];
-  if (rclSet.size() > 0)
+  if (!rclSet.empty())
   {
     raclInd.insert(rclSet.begin(), rclSet.end());
     return rclSet.size();

@@ -126,7 +126,7 @@ public:
             //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
             // add auto constraints on pole
-            if (sugConstr.back().size() > 0) {
+            if (!sugConstr.back().empty()) {
                 createAutoConstraints(sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
             }
 
@@ -185,7 +185,7 @@ public:
             //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
             // add auto constraints on pole
-            if (sugConstr.back().size() > 0) {
+            if (!sugConstr.back().empty()) {
                 createAutoConstraints(sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
             }
 

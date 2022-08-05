@@ -1132,7 +1132,7 @@ void SoFCMeshObjectShape::generatePrimitives(SoAction* action)
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
     if (rPoints.size() < 3)
         return;
-    if (rFacets.size() < 1)
+    if (rFacets.empty())
         return;
 
     // get material binding
@@ -1544,7 +1544,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
     if (rPoints.size() < 3)
         return;
-    if (rFacets.size() < 1)
+    if (rFacets.empty())
         return;
     if (mesh->countSegments() <= this->index.getValue())
         return;
@@ -1788,7 +1788,7 @@ void SoFCMeshObjectBoundary::computeBBox(SoAction *action, SbBox3f &box, SbVec3f
     if (!mesh)
         return;
     const MeshCore::MeshPointArray & rPoints = mesh->getKernel().GetPoints();
-    if (rPoints.size() > 0) {
+    if (!rPoints.empty()) {
         Base::BoundBox3f cBox;
         for (MeshCore::MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it)
             cBox.Add(*it);

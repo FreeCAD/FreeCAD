@@ -674,7 +674,7 @@ void PartGui::TaskMeasureLinear::selection1Slot(bool checked)
 {
   if (!checked)
   {
-    if (selections1.selections.size() > 0)
+    if (!selections1.selections.empty())
       stepped->setIconDone(0);
     return;
   }
@@ -1820,7 +1820,7 @@ void PartGui::TaskMeasureAngular::selection1Slot(bool checked)
   }
   else
   {
-    if (selections1.selections.size() > 0)
+    if (!selections1.selections.empty())
       stepped->setIconDone(0);
   }
 }

@@ -74,7 +74,7 @@ public:
             }
 
             // add auto constraints for the line segment start
-            if (sugConstr.size() > 0) {
+            if (!sugConstr.empty()) {
                 createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::PointPos::start);
                 sugConstr.clear();
             }

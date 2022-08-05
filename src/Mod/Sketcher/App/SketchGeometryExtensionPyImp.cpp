@@ -40,7 +40,7 @@ std::string SketchGeometryExtensionPy::representation(void) const
     std::stringstream str;
     str << "<SketchGeometryExtension (";
 
-    if(getSketchGeometryExtensionPtr()->getName().size()>0)
+    if(!getSketchGeometryExtensionPtr()->getName().empty())
         str << "\'" << getSketchGeometryExtensionPtr()->getName() << "\', ";
 
     str << "\"";

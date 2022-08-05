@@ -1429,7 +1429,7 @@ void System::initSolution(Algorithm alg)
             return;
     }
     std::vector<Constraint *> clistR;
-    if (redundant.size()) {
+    if (!redundant.empty()) {
         for (std::vector<Constraint *>::const_iterator constr=clist.begin(); constr != clist.end(); ++constr) {
             if (redundant.count(*constr) == 0)
                 clistR.push_back(*constr);
@@ -1523,9 +1523,9 @@ void System::initSolution(Algorithm alg)
 
         subSystems.push_back(nullptr);
         subSystemsAux.push_back(nullptr);
-        if (clist0.size() > 0)
+        if (!clist0.empty())
             subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
-        if (clist1.size() > 0)
+        if (!clist1.empty())
             subSystemsAux[cid] = new SubSystem(clist1, plists[cid], reductionmaps[cid]);
     }
 

@@ -52,7 +52,7 @@ public:
         return !operator==(c);
     }
 
-    bool isEmpty() const { return stringRep.size() == 0; }
+    bool isEmpty() const { return stringRep.empty(); }
 
 };
 

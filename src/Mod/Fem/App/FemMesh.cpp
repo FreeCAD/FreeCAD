@@ -1560,7 +1560,7 @@ void FemMesh::readNastran(const std::string &Filename)
     do
     {
         std::getline(inputfile,line1);
-        if (line1.size() == 0)
+        if (line1.empty())
             continue;
         if (line1.find(',') != std::string::npos)
             nastranFormat = Format::FreeField;
@@ -1650,7 +1650,7 @@ void FemMesh::readNastran95(const std::string &Filename)
         NastranElementPtr elem;
         std::getline(inputfile, line1);
         //cout << line1 << endl;
-        if (line1.size() == 0)
+        if (line1.empty())
             continue;
 
         tcard = line1.substr(0, 8).c_str();
@@ -2199,7 +2199,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
                 anABAQUS_Output << std::endl;
             }
         }
-        if (elsetname == "")
+        if (elsetname.empty())
             elsetname += "Efaces";
         else
             elsetname += ", Efaces";
@@ -2219,7 +2219,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
                 anABAQUS_Output << std::endl;
             }
         }
-        if (elsetname == "")
+        if (elsetname.empty())
             elsetname += "Eedges";
         else
             elsetname += ", Eedges";

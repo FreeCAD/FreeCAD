@@ -102,7 +102,7 @@ void AbstractPolygonTriangulator::SetVerifier(TriangulationVerifier* v)
 void AbstractPolygonTriangulator::SetPolygon(const std::vector<Base::Vector3f>& raclPoints)
 {
     this->_points = raclPoints;
-    if (this->_points.size() > 0) {
+    if (!this->_points.empty()) {
         if (this->_points.front() == this->_points.back())
             this->_points.pop_back();
     }

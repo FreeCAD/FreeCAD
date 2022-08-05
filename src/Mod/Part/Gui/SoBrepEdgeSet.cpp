@@ -129,7 +129,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
 
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size()) {
+    if(ctx && !ctx->selectionIndex.empty()) {
         if(ctx->isSelectAll()) {
             if(ctx2) {
                 ctx2->selectionColor = ctx->selectionColor;
@@ -143,7 +143,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
         if(!action->isRenderingDelayedPaths())
             renderSelection(action,ctx); 
     }
-    if(ctx2 && ctx2->selectionIndex.size())
+    if(ctx2 && !ctx2->selectionIndex.empty())
         renderSelection(action,ctx2,false);
     else
         inherited::GLRender(action);
@@ -152,7 +152,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
 //#if !defined(FC_OS_WIN32)
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size())
+    if(ctx && !ctx->selectionIndex.empty())
         renderSelection(action,ctx);
     if(action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
@@ -373,7 +373,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             }else if(section == index)
                 ctx->hl.push_back(cindices[i]);
         }
-        if(ctx->hl.size())
+        if(!ctx->hl.empty())
             ctx->highlightIndex = index;
         else
             ctx->highlightIndex = -1;
@@ -440,7 +440,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
                     return;
             }
             ctx->sl.clear();
-            if(ctx->selectionIndex.size()) {
+            if(!ctx->selectionIndex.empty()) {
                 const int32_t* cindices = this->coordIndex.getValues(0);
                 int numcindices = this->coordIndex.getNum();
                 auto it = ctx->selectionIndex.begin();

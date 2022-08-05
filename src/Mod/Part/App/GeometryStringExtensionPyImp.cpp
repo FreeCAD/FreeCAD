@@ -38,7 +38,7 @@ std::string GeometryStringExtensionPy::representation(void) const
     std::stringstream str;
     str << "<GeometryStringExtension (" ;
 
-    if(getGeometryStringExtensionPtr()->getName().size()>0)
+    if(!getGeometryStringExtensionPtr()->getName().empty())
         str << "\'" << getGeometryStringExtensionPtr()->getName() << "\', ";
 
     str << getGeometryStringExtensionPtr()->getValue() << ") >";

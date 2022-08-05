@@ -276,7 +276,7 @@ void DlgExtrusion::onSelectionChanged(const Gui::SelectionChanges& msg)
 App::DocumentObject& DlgExtrusion::getShapeToExtrude() const
 {
     std::vector<App::DocumentObject*> objs = this->getShapesToExtrude();
-    if (objs.size() == 0)
+    if (objs.empty())
         throw Base::ValueError("No shapes selected");
     return *(objs[0]);
 }

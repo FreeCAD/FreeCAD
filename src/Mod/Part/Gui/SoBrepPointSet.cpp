@@ -119,9 +119,9 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size()) {
+    if(ctx && !ctx->selectionIndex.empty()) {
         if(ctx->isSelectAll()) {
-            if(ctx2 && ctx2->selectionIndex.size()) {
+            if(ctx2 && !ctx2->selectionIndex.empty()) {
                 ctx2->selectionColor = ctx->selectionColor;
                 renderSelection(action,ctx2); 
             }else
@@ -133,7 +133,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         if(!action->isRenderingDelayedPaths())
             renderSelection(action,ctx); 
     }
-    if(ctx2 && ctx2->selectionIndex.size())
+    if(ctx2 && !ctx2->selectionIndex.empty())
         renderSelection(action,ctx2,false);
     else
         inherited::GLRender(action);
@@ -142,7 +142,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 //#if !defined(FC_OS_WIN32)
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size())
+    if(ctx && !ctx->selectionIndex.empty())
         renderSelection(action,ctx);
     if(action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);

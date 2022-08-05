@@ -232,13 +232,13 @@ public:
 
             if(constructionMethod == Diagonal) {
                 // add auto constraints at the start of the first side
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
@@ -246,13 +246,13 @@ public:
             }
             else if (constructionMethod == CenterAndCorner) {
                 // add auto constraints at the start of the first side
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 3, Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
@@ -525,13 +525,13 @@ public:
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the StartPos auxiliary point
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex() - 1, Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the EndPos auxiliary point
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr2.clear();
                 }

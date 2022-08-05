@@ -118,11 +118,11 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     ui->cells->setPalette(palette);
 
     QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_BackgroundColor"));
-    if (bgList.size() > 0)
+    if (!bgList.empty())
         bgList[0]->setCurrentColor(palette.color(QPalette::Base));
 
     QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_ForegroundColor"));
-    if (fgList.size() > 0)
+    if (!fgList.empty())
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
 
     // Set document object to create auto completer
@@ -312,7 +312,7 @@ void SheetView::updateAliasLine()
 
 void SheetView::columnResizeFinished()
 {
-    if (newColumnSizes.size() == 0)
+    if (newColumnSizes.empty())
         return;
 
     blockSignals(true);
@@ -324,7 +324,7 @@ void SheetView::columnResizeFinished()
 
 void SheetView::rowResizeFinished()
 {
-    if (newRowSizes.size() == 0)
+    if (newRowSizes.empty())
         return;
 
     blockSignals(true);

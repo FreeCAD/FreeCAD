@@ -148,7 +148,7 @@ void Trajectory::deleteLast(unsigned int n)
 
 void Trajectory::generateTrajectory(void)
 {
-    if (vpcWaypoints.size() == 0)
+    if (vpcWaypoints.empty())
         return;
 
     // delete the old and create a new one
@@ -268,7 +268,7 @@ std::string Trajectory::getUniqueWaypointName(const char *Name) const
             const std::string &ObjName = (*it)->Name;
             if (ObjName.substr(0, CleanName.length()) == CleanName) { // same prefix
                 std::string clSuffix(ObjName.substr(CleanName.length()));
-                if (clSuffix.size() > 0) {
+                if (!clSuffix.empty()) {
                     std::string::size_type nPos = clSuffix.find_first_not_of("0123456789");
                     if (nPos==std::string::npos)
                         nSuff = std::max<int>(nSuff, std::atol(clSuffix.c_str()));

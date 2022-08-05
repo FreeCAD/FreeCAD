@@ -320,7 +320,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
 void Sketch::fixParametersAndDiagnose(std::vector<double *> &params_to_block)
 {
-    if(params_to_block.size() > 0) { // only there are parameters to fix
+    if(!params_to_block.empty()) { // only there are parameters to fix
         for( auto p : params_to_block ) {
             auto findparam = std::find(Parameters.begin(),Parameters.end(), p);
 
@@ -411,7 +411,7 @@ bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &block
     bool unsatisfied_groups = false;
     for(size_t i = 0; i < prop_groups.size(); i++) {
         // 4.1. unsatisfiable group
-        if(prop_groups[i].blockable_params_in_group.size() == 0) {
+        if(prop_groups[i].blockable_params_in_group.empty()) {
         // this group does not contain any blockable parameter, so it is by definition satisfied (or impossible to satisfy by block constraints)
             continue;
         }
@@ -4269,7 +4269,7 @@ TopoShape Sketch::toShape(void) const
     // Hint: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
     //
     // sort them together to wires
-    while (edge_list.size() > 0) {
+    while (!edge_list.empty()) {
         BRepBuilderAPI_MakeWire mkWire;
         // add and erase first edge
         mkWire.Add(edge_list.front());

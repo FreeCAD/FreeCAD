@@ -181,7 +181,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                             Gui::Application::Instance->getViewProvider(pcBody));
                 if (vp)
                     vp->show();
-                if (bodies.size() == 0) {
+                if (bodies.empty()) {
                     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
                                 Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
                     if (vp)

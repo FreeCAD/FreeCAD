@@ -201,7 +201,7 @@ void QGTracker::sleep(bool b)
 QPointF QGTracker::snapToAngle(QPointF dumbPt)
 {
     // If no point selected yet, snapping has no sense
-    if (m_points.size() < 1)
+    if (m_points.empty())
         return dumbPt;
 
     QPointF result(dumbPt);

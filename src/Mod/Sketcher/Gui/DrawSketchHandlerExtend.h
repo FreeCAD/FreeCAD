@@ -253,7 +253,7 @@ public:
                     Gui::Command::updateActive();
 
                 // constrain chosen point
-                if (SugConstr.size() > 0) {
+                if (!SugConstr.empty()) {
                     createAutoConstraints(SugConstr, BaseGeoId, (ExtendFromStart) ? Sketcher::PointPos::start : Sketcher::PointPos::end);
                     SugConstr.clear();
                 }

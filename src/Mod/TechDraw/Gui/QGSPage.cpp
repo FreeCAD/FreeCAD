@@ -556,7 +556,7 @@ QGIView *QGSPage::findParent(QGIView *view) const
     if (dim) {
         std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
 
-        if (objs.size() > 0) {
+        if (!objs.empty()) {
             std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
             // Attach the dimension to the first object's group
             for (std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {

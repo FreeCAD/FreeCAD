@@ -134,7 +134,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         if (*i)
             ui->listTransformFeatures->addItem(QString::fromUtf8((*i)->Label.getValue()));
     }
-    if (transformFeatures.size() > 0) {
+    if (!transformFeatures.empty()) {
         ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
         editHint = false;
     } else {

@@ -223,7 +223,7 @@ void SheetTableView::onRecompute() {
 
 void SheetTableView::onBind() {
     auto ranges = selectedRanges();
-    if(ranges.size()>=1 && ranges.size()<=2) {
+    if(!ranges.empty() && ranges.size()<=2) {
         DlgBindSheet dlg(sheet,ranges,this);
         dlg.exec();
     }
@@ -599,7 +599,7 @@ void SheetTableView::deleteSelection()
 {
     QModelIndexList selection = selectionModel()->selectedIndexes();
 
-    if (selection.size() > 0) {
+    if (!selection.empty()) {
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
         std::vector<Range> ranges = selectedRanges();
         std::vector<Range>::const_iterator i = ranges.begin();
@@ -672,7 +672,7 @@ void SheetTableView::pasteClipboard()
             ranges = sheet->getCopyOrCutRange(copy);
         }
 
-        if(ranges.size())
+        if(!ranges.empty())
             _copySelection(ranges, copy);
 
         const QMimeData* mimeData = QApplication::clipboard()->mimeData();
@@ -1004,7 +1004,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *)
     }
 
     auto ranges = selectedRanges();
-    actionBind->setEnabled(ranges.size()>=1 && ranges.size()<=2);
+    actionBind->setEnabled(!ranges.empty() && ranges.size()<=2);
 
     contextMenu->exec(QCursor::pos());
 }

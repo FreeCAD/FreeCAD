@@ -399,7 +399,7 @@ void CmdTechDrawView::activated(int iMsg)
     }
     dvp->Source.setValues(shapes);
     dvp->XSource.setValues(xShapes);
-    if (faceName.size()) {
+    if (!faceName.empty()) {
         std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj, faceName);
         projDir = dirs.first;
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
@@ -677,7 +677,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     multiView->XSource.setValues(xShapes);
     doCommand(Doc, "App.activeDocument().%s.addProjection('Front')", multiViewName.c_str());
 
-    if (faceName.size()) {
+    if (!faceName.empty()) {
         std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj, faceName);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc, "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
@@ -779,7 +779,7 @@ bool CmdTechDrawProjectionGroup::isActive(void)
 //non-empty selection, no more than maxObjs selected and at least 1 DrawingPage exists
 bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("Select an object first"));
         return false;

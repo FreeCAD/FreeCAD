@@ -757,14 +757,14 @@ bool GeomCurve::intersect(const Handle(Geom_Curve) curve1, const Handle(Geom_Cur
     }
     catch (Standard_Failure& e) {
         // Yes Extrema finding failed, but if we got an intersection then go on with it
-        if(points.size()>0)
-            return points.size()>0?true:false;
+        if(!points.empty())
+            return !points.empty()?true:false;
         else
             THROWM(Base::CADKernelError,e.GetMessageString())
     }
 
 
-    return points.size()>0?true:false;
+    return !points.empty()?true:false;
 }
 
 bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const

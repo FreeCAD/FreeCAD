@@ -186,7 +186,7 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
     /* Remove dependencies */
     owner->removeDependencies(address);
 
-    if(expr && expr->comment.size()) {
+    if(expr && !expr->comment.empty()) {
         if(!boost::starts_with(expr->comment,"<Cell "))
             FC_WARN("Unknown style of cell "
                 << owner->sheet()->getFullName() << '.' << address.toString());
@@ -423,7 +423,7 @@ void Cell::setStyle(const std::set<std::string> & _style)
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         style = _style;
-        setUsed(STYLE_SET, style.size() > 0);
+        setUsed(STYLE_SET, !style.empty());
         setDirty();
 
         signaller.tryInvoke();
@@ -509,7 +509,7 @@ bool Cell::getBackground(App::Color &color) const
 void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
-    if (unit.size() > 0) {
+    if (!unit.empty()) {
         std::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
         if (!e)
@@ -641,7 +641,7 @@ bool Cell::getSpans(int &rows, int &columns) const
 
 void Cell::setException(const std::string &e, bool silent)
 {
-    if(!silent && e.size() && owner && owner->sheet()) {
+    if(!silent && !e.empty() && owner && owner->sheet()) {
         FC_ERR(owner->sheet()->getFullName() << '.' 
                 << address.toString() << ": " << e);
     }
@@ -651,7 +651,7 @@ void Cell::setException(const std::string &e, bool silent)
 
 void Cell::setParseException(const std::string &e)
 {
-    if(e.size() && owner && owner->sheet()) {
+    if(!e.empty() && owner && owner->sheet()) {
         FC_ERR(owner->sheet()->getFullName() << '.' 
                 << address.toString() << ": " << e);
     }
@@ -661,7 +661,7 @@ void Cell::setParseException(const std::string &e)
 
 void Cell::setResolveException(const std::string &e)
 {
-    if(e.size() && owner && owner->sheet()) {
+    if(!e.empty() && owner && owner->sheet()) {
         FC_LOG(owner->sheet()->getFullName() << '.' 
                 << address.toString() << ": " << e);
     }
@@ -899,7 +899,7 @@ int Cell::decodeAlignment(const std::string & itemStr, int alignment)
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_VCENTER;
     else if (itemStr == "bottom")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_BOTTOM;
-    else if(itemStr.size())
+    else if(!itemStr.empty())
         throw Base::ValueError("Invalid alignment.");
 
     return alignment;

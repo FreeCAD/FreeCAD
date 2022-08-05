@@ -478,7 +478,7 @@ public:
                     }
                 }
 
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     // exclude any coincidence constraints
                     std::vector<AutoConstraint> sugConstr;
                     for (unsigned int i=0; i < sugConstr2.size(); i++) {
@@ -528,7 +528,7 @@ public:
                 Gui::Command::commitCommand();
 
                 // Add auto constraints
-                if (sugConstr1.size() > 0) { // this is relevant only to the very first point
+                if (!sugConstr1.empty()) { // this is relevant only to the very first point
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
@@ -545,7 +545,7 @@ public:
 
                 virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
 
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(),
                                           (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
                                             Sketcher::PointPos::start : Sketcher::PointPos::end);

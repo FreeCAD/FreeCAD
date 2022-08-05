@@ -317,7 +317,7 @@ TopoDS_Face ProfileBased::getSupportFace(const Part::Part2DObject* sketch) const
             const std::vector<std::string>& sub = Support.getSubValues();
             assert(sub.size() == 1);
 
-            if (sub.at(0) == "") {
+            if (sub.at(0).empty()) {
                 // This seems to happen when sketch is on a datum plane
                 return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
             }
@@ -1150,7 +1150,7 @@ void ProfileBased::handleChangedPropertyName(Base::XMLReader & reader, const cha
         // get the value of my attribute
         std::string name = reader.getAttribute("value");
 
-        if (name != "") {
+        if (!name.empty()) {
             App::Document* document = getDocument();
             DocumentObject* object = document ? document->getObject(name.c_str()) : nullptr;
             Profile.setValue(object, vec);

@@ -59,7 +59,7 @@ public:
 
     virtual void Restore(Base::XMLReader & reader);
 
-    bool isDirty() const { return dirty.size() > 0; }
+    bool isDirty() const { return !dirty.empty(); }
 
     void clearDirty() { dirty.clear(); }
 

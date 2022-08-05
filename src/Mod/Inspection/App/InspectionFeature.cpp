@@ -374,9 +374,9 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
     unsigned long ulX, ulY, ulZ;
     _pGrid->Position(point, ulX, ulY, ulZ);
     unsigned long ulLevel = 0;
-    while (indices.size() == 0 && ulLevel <= max_level)
+    while (indices.empty() && ulLevel <= max_level)
         _pGrid->GetHull(ulX, ulY, ulZ, ulLevel++, indices);
-    if (indices.size() == 0 || ulLevel==1)
+    if (indices.empty() || ulLevel==1)
         _pGrid->GetHull(ulX, ulY, ulZ, ulLevel, indices);
 #endif
 

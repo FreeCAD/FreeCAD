@@ -230,7 +230,7 @@ Py::List AttachEnginePy::getImplementedModes(void) const
         Py::List ret;
         AttachEngine &attacher = *(this->getAttachEnginePtr());
         for(int imode = 0   ;   imode < mmDummy_NumberOfModes   ;   imode++){
-            if(attacher.modeRefTypes[imode].size() > 0){
+            if(!attacher.modeRefTypes[imode].empty()){
                 ret.append(Py::String(attacher.getModeName(eMapMode(imode))));
             }
         }

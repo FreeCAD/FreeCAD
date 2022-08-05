@@ -138,7 +138,7 @@ void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<
 {
     // Hint: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
     std::list<TopoDS_Edge> edge_list = edges;
-    while (edge_list.size() > 0) {
+    while (!edge_list.empty()) {
         BRepBuilderAPI_MakeWire mkWire;
         // add and erase first edge
         mkWire.Add(edge_list.front());

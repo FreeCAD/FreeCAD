@@ -2138,7 +2138,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 2) {
+    if (SubNames.empty() || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select exactly one line or one point and one line or two points from the sketch."));
         return;
@@ -2529,8 +2529,8 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             points.push_back(id);
     }
 
-    if ((points.size() == 1 && curves.size() >= 1) ||
-        (points.size() >= 1 && curves.size() == 1)) {
+    if ((points.size() == 1 && !curves.empty()) ||
+        (!points.empty() && curves.size() == 1)) {
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add point on object constraint"));
         int cnt = 0;
@@ -2735,7 +2735,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 2) {
+    if (SubNames.empty() || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select exactly one line or up to two points from the sketch."));
         return;
@@ -2987,7 +2987,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 2) {
+    if (SubNames.empty() || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select exactly one line or up to two points from the sketch."));
         return;
@@ -5777,7 +5777,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 3) {
+    if (SubNames.empty() || SubNames.size() > 3) {
         //goto ExitWithMessage;
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one or two lines from the sketch. Or select two edges and a point."));
@@ -7093,12 +7093,12 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         }
 
         // if some element is missing and we are adding an element of that type
-        if((!(focus1 && focus2) && pointids.size() >= 1) ||
-           (!(major && minor) && lineids.size() >= 1) ){
+        if((!(focus1 && focus2) && !pointids.empty()) ||
+           (!(major && minor) && !lineids.empty()) ){
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add internal alignment constraint"));
 
-            if(pointids.size()>=1)
+            if(!pointids.empty())
             {
                 if(!focus1) {
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -7126,7 +7126,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
                     extra_elements=true;
             }
 
-            if(lineids.size()>=1)
+            if(!lineids.empty())
             {
                 if(!major) {
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -7210,7 +7210,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             return;
         }
 
-        if(ellipseids.size()>0){
+        if(!ellipseids.empty()){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("You cannot internally constrain an ellipse "
                             "on an arc of ellipse. "
@@ -7271,12 +7271,12 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         }
 
         // if some element is missing and we are adding an element of that type
-        if((!(focus1 && focus2) && pointids.size() >= 1) ||
-           (!(major && minor) && lineids.size() >= 1) ){
+        if((!(focus1 && focus2) && !pointids.empty()) ||
+           (!(major && minor) && !lineids.empty()) ){
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add internal alignment constraint"));
 
-            if(pointids.size()>=1)
+            if(!pointids.empty())
             {
                 if(!focus1) {
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -7304,7 +7304,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
                     extra_elements=true;
             }
 
-            if(lineids.size()>=1)
+            if(!lineids.empty())
             {
                 if(!major) {
                     Gui::cmdAppObjectArgs(selection[0].getObject(),

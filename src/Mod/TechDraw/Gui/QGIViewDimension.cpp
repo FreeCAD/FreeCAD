@@ -974,7 +974,7 @@ double QGIViewDimension::computeArcStrikeFactor(const Base::BoundBox2d &labelRec
                              const Base::Vector2d &arcCenter, double arcRadius,
                              const std::vector<std::pair<double, bool>> &drawMarking)
 {
-    if (drawMarking.size() < 1) {
+    if (drawMarking.empty()) {
         return 0.0;
     }
 
@@ -1312,7 +1312,7 @@ void QGIViewDimension::drawSingleArc(QPainterPath &painterPath, const Base::Vect
 void QGIViewDimension::drawMultiArc(QPainterPath &painterPath, const Base::Vector2d &arcCenter, double arcRadius,
                                     const std::vector<std::pair<double, bool>> &drawMarking) const
 {
-    if (drawMarking.size() < 1) {
+    if (drawMarking.empty()) {
         return;
     }
 

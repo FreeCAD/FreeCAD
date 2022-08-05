@@ -614,7 +614,7 @@ void CmdRaytracingRender::activated(int)
     std::string renderer;
     if (renderType == Raytracing::RayProject::getClassTypeId()) {
         renderer = hGrp->GetASCII("PovrayExecutable", "");
-        if (renderer == "") {
+        if (renderer.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("POV-Ray not found"),
                 QObject::tr("Please set the path to the POV-Ray executable in the preferences."));
             return;
@@ -628,7 +628,7 @@ void CmdRaytracingRender::activated(int)
         }
     } else {
         renderer = hGrp->GetASCII("LuxrenderExecutable", "");
-        if (renderer == "") {
+        if (renderer.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Luxrender not found"),
                 QObject::tr("Please set the path to the luxrender or luxconsole executable in the preferences."));
             return;

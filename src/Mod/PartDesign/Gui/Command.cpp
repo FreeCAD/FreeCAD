@@ -939,7 +939,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
             else
                 ++o;
         }
-        if (inList.size() > 0) {
+        if (!inList.empty()) {
             status.push_back(PartDesignGui::TaskFeaturePick::isUsed);
             continue;
         }
@@ -1886,7 +1886,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
 
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select an edge, face, or body."));
         return false;
@@ -1924,7 +1924,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 
     // if 1 Part::Feature object selected, but no subobjects, select all edges for the user
     // but only for fillet and chamfer (not for draft or thickness)
-    if (selection[0].getSubNames().size() == 0 && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)){
+    if (selection[0].getSubNames().empty() && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)){
         useAllEdges = true;
         std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
         int count = TopShape.countSubElements(edgeTypeName.c_str());
@@ -1946,7 +1946,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
         Part::Feature *base, const std::vector<std::string> & SubNames, const bool useAllEdges)
 {
-    if (SubNames.size() == 0) {
+    if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QString::fromStdString(which) + QObject::tr(" not possible on selected faces/edges."));
         return;
@@ -2210,7 +2210,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     // First check selections
     std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::Feature::getClassTypeId());
     // Next create a list of all eligible objects
-    if (features.size() == 0) {
+    if (features.empty()) {
         features = cmd->getDocument()->getObjectsOfType(PartDesign::Feature::getClassTypeId());
         // If there is more than one selected or eligible object, show dialog and let user pick one
         if (features.size() > 1) {

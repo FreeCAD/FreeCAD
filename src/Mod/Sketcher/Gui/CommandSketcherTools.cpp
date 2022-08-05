@@ -1181,13 +1181,13 @@ public:
 
             if (Op != SketcherCopy::Move) {
                 // add auto constraints for the destination copy
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, currentgeoid+nElements, OriginPos);
                     sugConstr1.clear();
                 }
             }
             else {
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, OriginGeoId, OriginPos);
                     sugConstr1.clear();
                 }
@@ -1725,7 +1725,7 @@ public:
             }
 
             // add auto constraints for the destination copy
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, OriginGeoId+nElements, OriginPos);
                 sugConstr1.clear();
             }

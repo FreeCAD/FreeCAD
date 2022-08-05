@@ -739,30 +739,30 @@ private:
 
         if (method == CENTER_PERIAPSIS_B) {
             // add auto constraints for the center point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, currentgeoid, Sketcher::PointPos::none);
                 sugConstr3.clear();
             }
         }
 
         if (method == PERIAPSIS_APOAPSIS_B) {
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::none);
                 sugConstr1.clear();
             }
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, currentgeoid, Sketcher::PointPos::none);
                 sugConstr3.clear();
             }

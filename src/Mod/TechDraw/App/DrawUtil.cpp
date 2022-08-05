@@ -848,7 +848,7 @@ unsigned int DrawUtil::intervalMerge(std::vector<std::pair<double, bool>> &marki
     unsigned int i = 0;
     bool last = false;
 
-    if (wraps && marking.size() > 0) {
+    if (wraps && !marking.empty()) {
         last = marking.back().second;
     }
 
