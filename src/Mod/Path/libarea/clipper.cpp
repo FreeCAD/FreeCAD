@@ -1923,7 +1923,7 @@ void Clipper::InsertLocalMinimaIntoAEL(const cInt botY)
 
     //if any output polygons share an edge, they'll need joining later ...
     if (Op1 && IsHorizontal(*rb) && 
-      m_GhostJoins.size() > 0 && (rb->WindDelta != 0))
+      !m_GhostJoins.empty() && (rb->WindDelta != 0))
     {
       for (JoinList::size_type i = 0; i < m_GhostJoins.size(); ++i)
       {
@@ -3798,7 +3798,7 @@ void ClipperOffset::Execute(Paths& solution, double delta)
     clpr.AddPath(outer, ptSubject, true);
     clpr.ReverseSolution(true);
     clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
-    if (solution.size() > 0) solution.erase(solution.begin());
+    if (!solution.empty()) solution.erase(solution.begin());
   }
 }
 //------------------------------------------------------------------------------

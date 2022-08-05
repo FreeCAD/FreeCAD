@@ -86,7 +86,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
     getContinuousEdges(TopShape, SubNames);
 
-    if (SubNames.size() == 0)
+    if (SubNames.empty())
         return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
     
     double radius = Radius.getValue();

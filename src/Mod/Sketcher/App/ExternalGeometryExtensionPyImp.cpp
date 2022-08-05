@@ -45,7 +45,7 @@ std::string ExternalGeometryExtensionPy::representation(void) const
 
     str << "<ExternalGeometryExtension (";
 
-    if(getExternalGeometryExtensionPtr()->getName().size()>0)
+    if(!getExternalGeometryExtensionPtr()->getName().empty())
         str << "\'" << getExternalGeometryExtensionPtr()->getName() << "\', ";
 
     str << "\"" << ref;

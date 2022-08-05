@@ -130,7 +130,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
 
     getContinuousEdges(TopShape, SubNames, FaceNames);
 
-    if (SubNames.size() == 0)
+    if (SubNames.empty())
         return new App::DocumentObjectExecReturn("No edges specified");
 
     const int chamferType = ChamferType.getValue();

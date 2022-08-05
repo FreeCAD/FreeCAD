@@ -125,7 +125,7 @@ void Toolpath::deleteCommand(int pos)
 
 double Toolpath::getLength()
 {
-    if(vpcCommands.size()==0)
+    if(vpcCommands.empty())
         return 0;
     double l = 0;
     Vector3d last(0,0,0);
@@ -168,7 +168,7 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
         vRapid = vFeed;
     }
 
-    if (vpcCommands.size() == 0) {
+    if (vpcCommands.empty()) {
         return 0;
     }
     double l = 0;
@@ -370,7 +370,7 @@ std::string Toolpath::toGCode(void) const
 void Toolpath::recalculate(void) // recalculates the path cache
 {
 
-    if(vpcCommands.size()==0)
+    if(vpcCommands.empty())
         return;
 
     // TODO recalculate the KDL stuff. At the moment, this is unused.

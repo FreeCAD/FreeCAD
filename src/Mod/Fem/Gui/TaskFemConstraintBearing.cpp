@@ -94,7 +94,7 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
-    if (Objects.size() > 0)
+    if (!Objects.empty())
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     ui->lineLocation->setText(loc);
     ui->checkAxial->setChecked(axialfree);
@@ -152,7 +152,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
             std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-            if (Objects.size() > 0) {
+            if (!Objects.empty()) {
                 QMessageBox::warning(this, tr("Selection error"), tr("Please use only a single reference for bearing constraint"));
                 return;
             }

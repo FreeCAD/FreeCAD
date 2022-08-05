@@ -774,7 +774,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
-    if (selection.size() < 1) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("CmdSketcherMirrorSketch", "Wrong selection"),
             qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches."));

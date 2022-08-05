@@ -344,7 +344,7 @@ void ViewProviderPath::onChanged(const App::Property* prop)
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
     } else if (prop == &NormalColor) {
-        if (colorindex.size() > 0 && coordStart>=0 && coordStart<(int)colorindex.size()) {
+        if (!colorindex.empty() && coordStart>=0 && coordStart<(int)colorindex.size()) {
             const App::Color& c = NormalColor.getValue();
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
             unsigned long rcol = hGrp->GetUnsigned("DefaultRapidPathColor",2852126975UL); // dark red (170,0,0)

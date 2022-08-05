@@ -85,7 +85,7 @@ App::ObjectIdentifier PropertyConstraintList::makeSimplePath(const Constraint * 
 
 App::ObjectIdentifier PropertyConstraintList::makePath(int idx, const Constraint * c)
 {
-    return c->Name.size() == 0 ? makeArrayPath(idx) : makeSimplePath(c);
+    return c->Name.empty() ? makeArrayPath(idx) : makeSimplePath(c);
 }
 
 void PropertyConstraintList::setSize(int newSize)
@@ -99,7 +99,7 @@ void PropertyConstraintList::setSize(int newSize)
     }
 
     /* Signal removed elements */
-    if (removed.size() > 0)
+    if (!removed.empty())
         signalConstraintsRemoved(removed);
 
     /* Actually delete them */
@@ -126,7 +126,7 @@ void PropertyConstraintList::set1Value(const int idx, const Constraint* lValue)
             std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
 
             renamed[makePath(idx, _lValueList[idx])] = makePath(idx, lValue);
-            if (renamed.size() > 0)
+            if (!renamed.empty())
                 signalConstraintsRenamed(renamed);
         }
 
@@ -148,13 +148,13 @@ void PropertyConstraintList::setValue(const Constraint* lValue)
         int start = 0;
 
         /* Determine if it is a rename or not * */
-        if (_lValueList.size() > 0 && lValue->tag == _lValueList[0]->tag) {
+        if (!_lValueList.empty() && lValue->tag == _lValueList[0]->tag) {
             renamed[makePath(0, _lValueList[0])] = makePath(0, lValue);
             start = 1;
         }
 
         /* Signal rename changes */
-        if (renamed.size() > 0)
+        if (!renamed.empty())
             signalConstraintsRenamed(renamed);
 
         /* Collect info about removals */
@@ -164,7 +164,7 @@ void PropertyConstraintList::setValue(const Constraint* lValue)
         }
 
         /* Signal removes */
-        if (removed.size() > 0)
+        if (!removed.empty())
             signalConstraintsRemoved(removed);
 
         // Cleanup
@@ -228,11 +228,11 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
     valueMap = std::move(newValueMap);
 
     /* Signal removes first, in case renamed values below have the same names as some of the removed ones. */
-    if (removed.size() > 0 && !restoreFromTransaction)
+    if (!removed.empty() && !restoreFromTransaction)
         signalConstraintsRemoved(removed);
 
     /* Signal renames */
-    if (renamed.size() > 0 && !restoreFromTransaction)
+    if (!renamed.empty() && !restoreFromTransaction)
         signalConstraintsRenamed(renamed);
 
     _lValueList = std::move(lValue);
@@ -477,7 +477,7 @@ string PropertyConstraintList::getConstraintName(int i)
 
 bool PropertyConstraintList::validConstraintName(const std::string & name)
 {
-    return name.size() > 0;
+    return !name.empty();
 }
 
 ObjectIdentifier PropertyConstraintList::createPath(int ConstrNbr) const
@@ -582,7 +582,7 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
 
     if (c1.isArray()) {
         size_t idx = c1.getIndex();
-        if (idx < _lValueList.size() && _lValueList[idx]->Name.size() > 0)
+        if (idx < _lValueList.size() && !_lValueList[idx]->Name.empty())
             return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(_lValueList[idx]->Name);
         return p;
     }
@@ -595,7 +595,7 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
 void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
     for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        if ((*it)->Name.size() > 0)
+        if (!(*it)->Name.empty())
             paths.push_back(ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent((*it)->Name));
     }
 }

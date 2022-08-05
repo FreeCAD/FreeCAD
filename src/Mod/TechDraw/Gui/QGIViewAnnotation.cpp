@@ -195,7 +195,7 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 
     const std::vector<std::string> &values = annotation->Text.getValues();
     QString text;
-    if (values.size() > 0) {
+    if (!values.empty()) {
         text = QString::fromUtf8(values[0].c_str());
 
         for (unsigned int i = 1; i < values.size(); ++i) {

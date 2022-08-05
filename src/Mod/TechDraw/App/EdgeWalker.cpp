@@ -376,7 +376,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
         }
     }
     std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(closedWires,false);           //biggest 1st
-    if (!sortedWires.size()) {
+    if (sortedWires.empty()) {
         Base::Console().Log("INFO - EW::sortStrip - no sorted Wires!\n");
         return sortedWires;                                     // might happen in the middle of changes?
     }

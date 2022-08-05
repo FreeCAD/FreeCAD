@@ -246,25 +246,25 @@ public:
             Gui::Command::commitCommand();
 
             // add auto constraints for the focus point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, currentgeoid+1, Sketcher::PointPos::start);
                 sugConstr1.clear();
             }
 
             // add suggested constraints for vertex point
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::mid);
                 sugConstr2.clear();
             }
 
             // add suggested constraints for start of arc
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::start:Sketcher::PointPos::end);
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
-            if (sugConstr4.size() > 0) {
+            if (!sugConstr4.empty()) {
                 createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::end:Sketcher::PointPos::start);
                 sugConstr4.clear();
             }

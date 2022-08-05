@@ -164,7 +164,7 @@ std::vector<std::string> DrawViewDimExtent::getSubNames(void)
 {
     std::vector<std::string> edgeNames = Source.getSubValues();
     if (edgeNames.empty() ||
-        edgeNames[0].size() != 0) {
+        !edgeNames[0].empty()) {
         return std::vector<std::string>(); //garbage first entry - nop
     }
     return edgeNames;
@@ -184,7 +184,7 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
     }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() < 1) {
+    if (cTags.empty()) {
         return errorValue;
     }
     
@@ -206,7 +206,7 @@ bool DrawViewDimExtent::checkReferences2D() const
     }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() < 1) {
+    if (cTags.empty()) {
         return false;
     }
     

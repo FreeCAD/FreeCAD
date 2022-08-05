@@ -522,7 +522,7 @@ void DlgRevolution::onSelectionChanged(const Gui::SelectionChanges& msg)
 App::DocumentObject&DlgRevolution::getShapeToRevolve() const
 {
     std::vector<App::DocumentObject*> objs = this->getShapesToRevolve();
-    if (objs.size() == 0)
+    if (objs.empty())
         throw Base::ValueError("No shapes selected");
     return *(objs[0]);
 }

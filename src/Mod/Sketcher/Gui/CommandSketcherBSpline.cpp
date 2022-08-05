@@ -1167,7 +1167,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    if (SubNames.size() == 0) {
+    if (SubNames.empty()) {
       // Check that only one object is selected,
       // as we need only one object to get the new GeoId after multiplicity change
       QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is empty"),

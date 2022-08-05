@@ -100,7 +100,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
 
         // if there are no flipped triangles -> stop
         //int f =fliped.size();
-        if(fliped.size() == 0)
+        if(fliped.empty())
             break;
 
         for(std::set<MeshCore::FacetIndex>::iterator It= fliped.begin();It!=fliped.end();++It)

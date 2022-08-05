@@ -37,7 +37,7 @@ std::string GeometryDoubleExtensionPy::representation(void) const
     double val = getGeometryDoubleExtensionPtr()->getValue();
     str << "<GeometryDoubleExtension (" ;
 
-    if(getGeometryDoubleExtensionPtr()->getName().size()>0)
+    if(!getGeometryDoubleExtensionPtr()->getName().empty())
         str << "\'" << getGeometryDoubleExtensionPtr()->getName() << "\', ";
 
     str << val << ") >";

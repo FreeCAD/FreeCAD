@@ -391,7 +391,7 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
     // Get the point specified by Location and Distance
     App::DocumentObject* objLoc = location.getValue();
     std::vector<std::string> names = location.getSubValues();
-    if (names.size() == 0)
+    if (names.empty())
         return Base::Vector3d(0,0,0);
     std::string subName = names.front();
     Part::Feature* featLoc = static_cast<Part::Feature*>(objLoc);
@@ -458,7 +458,7 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
     }
 
     std::vector<std::string> names = direction.getSubValues();
-    if (names.size() == 0)
+    if (names.empty())
         return Base::Vector3d(0,0,0);
     std::string subName = names.front();
     Part::Feature* feat = static_cast<Part::Feature*>(obj);

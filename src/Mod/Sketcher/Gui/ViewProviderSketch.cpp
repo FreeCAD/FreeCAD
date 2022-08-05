@@ -1564,7 +1564,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     // are we in edit?
     if (isInEditMode()) {
         // ignore external object
-        if(msg.Object.getObjectName().size() && msg.Object.getDocument()!=getObject()->getDocument())
+        if(!msg.Object.getObjectName().empty() && msg.Object.getDocument()!=getObject()->getDocument())
             return;
 
         bool handled=false;
@@ -2883,7 +2883,7 @@ QString ViewProviderSketch::appendConstraintMsg(const QString & singularmsg,
 {
     QString msg;
     QTextStream ss(&msg);
-    if (vector.size() > 0) {
+    if (!vector.empty()) {
         if (vector.size() == 1)
             ss << singularmsg;
         else
@@ -3168,7 +3168,7 @@ void ViewProviderSketch::deleteSelected()
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
 
-    if(SubNames.size()>0) {
+    if(!SubNames.empty()) {
         App::Document* doc = getSketchObject()->getDocument();
 
         doc->openTransaction("Delete sketch geometry");

@@ -119,13 +119,13 @@ public:
             }
 
             // add auto constraints for the center point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
 
             // add suggested constraints for circumference
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
@@ -288,19 +288,19 @@ public:
             }
 
             // Auto Constraint first picked point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr1.clear();
             }
 
             // Auto Constraint second picked point
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
 
             // Auto Constraint third picked point
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr3.clear();
             }

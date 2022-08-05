@@ -469,7 +469,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
     if(type) {
         initShapeNameMap();
         for(size_t idx=0;idx<_ShapeNames.size();++idx) {
-            if(_ShapeNames[idx].size() && boost::starts_with(type,_ShapeNames[idx]))
+            if(!_ShapeNames[idx].empty() && boost::starts_with(type,_ShapeNames[idx]))
                 return (TopAbs_ShapeEnum)idx;
         }
     }
@@ -507,7 +507,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(bool silent) const {
 
 const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type, bool silent) {
     initShapeNameMap();
-    if(type>=0 && type<_ShapeNames.size() && _ShapeNames[type].size())
+    if(type>=0 && type<_ShapeNames.size() && !_ShapeNames[type].empty())
         return _ShapeNames[type];
     if(!silent)
         FC_THROWM(Base::CADKernelError, "invalid shape type '" << type << "'");
@@ -2800,7 +2800,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         shapesToProcess.push_back(this->_Shape);
     }
 
-    if(shapesToProcess.size() > 0) {
+    if(!shapesToProcess.empty()) {
 
         //although 2d offset supports offsetting a face directly, it seems there is
         //no way to do a collective offset of multiple faces. So, we are doing it
@@ -2952,7 +2952,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                     openWires.push_back(w);
 
             wiresForMakingFaces = closedWires;
-            if (!allowOpenResult || openWires.size() == 0){
+            if (!allowOpenResult || openWires.empty()){
                 //just ignore all open wires
             }
             else {
@@ -3027,7 +3027,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         }
 
         //make faces
-        if (wiresForMakingFaces.size()>0){
+        if (!wiresForMakingFaces.empty()){
             FaceMakerBullseye mkFace;
             mkFace.setPlane(workingPlane);
             for(TopoDS_Wire &w : wiresForMakingFaces){
@@ -4016,7 +4016,7 @@ TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix
     wires.reserve(edge_list.size());
 
     // sort them together to wires
-    while (edge_list.size() > 0) {
+    while (!edge_list.empty()) {
         BRepBuilderAPI_MakeWire mkWire;
         // add and erase first edge
         edges.push_back(edge_list.front());

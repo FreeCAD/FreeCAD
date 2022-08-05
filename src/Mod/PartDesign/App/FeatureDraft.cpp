@@ -109,7 +109,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
     // Faces where draft should be applied
     // Note: Cannot be const reference currently because of BRepOffsetAPI_DraftAngle::Remove() bug, see below
     std::vector<std::string> SubVals = Base.getSubValuesStartsWith("Face");
-    if (SubVals.size() == 0)
+    if (SubVals.empty())
         return new App::DocumentObjectExecReturn("No faces specified");
 
     // Draft angle

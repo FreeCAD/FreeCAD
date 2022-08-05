@@ -126,7 +126,7 @@ std::string PythonConverter::convert(const std::string & doc, const std::vector<
             constraintlist % cg);
     }
 
-    if(constraints.size() > 0) {
+    if(!constraints.empty()) {
         constraintlist = boost::str(boost::format("%s\n%s.addConstraint(constraintList)\ndel constraintList\n") %
                                constraintlist % doc);
     }

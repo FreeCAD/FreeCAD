@@ -398,7 +398,7 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
                 }
             }
             if (score > 0){
-                if(mlist.size() == 0)
+                if(mlist.empty())
                     mlist.push_back(eMapMode(iMode));
                 else if (mlist.back() != eMapMode(iMode))
                     mlist.push_back(eMapMode(iMode));
@@ -413,7 +413,7 @@ void AttachEngine::EnableAllSupportedModes()
     this->modeEnabled.resize(mmDummy_NumberOfModes,false);
     assert(modeRefTypes.size() > 0);
     for (std::size_t i = 0; i < this->modeEnabled.size(); i++) {
-        modeEnabled[i] = modeRefTypes[i].size() > 0;
+        modeEnabled[i] = !modeRefTypes[i].empty();
     }
 }
 
@@ -988,7 +988,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
     std::vector<eRefType> types;
     readLinks(this->references, parts, shapes, copiedShapeStorage, types);
 
-    if (parts.size() == 0)
+    if (parts.empty())
         throw ExceptionCancel();
 
 
@@ -1010,7 +1010,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         //should have been filtered out already!
         break;
     case mmTranslate:{
-        if (shapes.size() < 1)
+        if (shapes.empty())
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (need one vertex).");
         const TopoDS_Shape &sh = *shapes[0];
         if (sh.IsNull())
@@ -1116,7 +1116,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         SketchBasePoint = gpr.CentreOfMass();
     }break;
     case mmFlatFace:{
-        if (shapes.size() < 1)
+        if (shapes.empty())
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (needed one planar face).");
 
         const TopoDS_Face &face = TopoDS::Face(*(shapes[0]));
@@ -1222,7 +1222,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
     case mmFrenetTB:
     case mmRevolutionSection:
     case mmConcentric: {//all alignments to point on curve
-        if (shapes.size() < 1)
+        if (shapes.empty())
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subshapes specified (need one edge, and an optional vertex).");
 
         bool bThruVertex = false;
@@ -1756,7 +1756,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         std::vector<eRefType> types;
         readLinks(this->references, parts, shapes, copiedShapeStorage, types);
 
-        if (parts.size() == 0)
+        if (parts.empty())
             throw ExceptionCancel();
 
 

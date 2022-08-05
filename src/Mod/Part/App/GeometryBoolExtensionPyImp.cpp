@@ -35,7 +35,7 @@ std::string GeometryBoolExtensionPy::representation(void) const
     bool val = getGeometryBoolExtensionPtr()->getValue();
     str << "<GeometryBoolExtension (" ;
 
-    if(getGeometryBoolExtensionPtr()->getName().size()>0)
+    if(!getGeometryBoolExtensionPtr()->getName().empty())
         str << "\'" << getGeometryBoolExtensionPtr()->getName() << "\', ";
 
     str << (val?"True":"False") << ") >";

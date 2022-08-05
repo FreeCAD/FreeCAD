@@ -342,7 +342,7 @@ bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos, int iSide, const std::vec
         return false;
 
     // no intersection point found => triangle is only touched at a corner point
-    if (raclPoints.size() == 0) {
+    if (raclPoints.empty()) {
         MeshFacet& facet = myMesh._aclFacetArray[ulFacetPos];
         int iCtPtsIn=0;
         int iCtPtsOn=0;

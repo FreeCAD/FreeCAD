@@ -345,7 +345,7 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
 
     if (PartDesign::Feature::isDatum(obj))
         return QString::fromLatin1(obj->getNameInDocument());
-    else if (sub.size()>0)
+    else if (!sub.empty())
         return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") +
                QString::fromLatin1(sub.front().c_str());
     else

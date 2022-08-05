@@ -423,7 +423,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 subObj = owner->resolve(sub.c_str(), &parent, &childName,nullptr,nullptr,&mat,false);
                 if(!parent || !subObj)
                     continue;
-                if(linkStack.size() 
+                if(!linkStack.empty()
                     && parent->getExtensionByType<App::GroupExtension>(true,false))
                 {
                     visible = linkStack.back()->isElementVisible(childName.c_str());
@@ -450,7 +450,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             shapes.push_back(shape);
         }
 
-        if(linkStack.size() && linkStack.back()==owner)
+        if(!linkStack.empty() && linkStack.back()==owner)
             linkStack.pop_back();
 
         if(shapes.empty()) 

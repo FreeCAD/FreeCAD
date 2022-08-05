@@ -2214,7 +2214,7 @@ private:
         }
 
         Py::List root_list;
-        while(edges.size()) {
+        while(!edges.empty()) {
             std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
             Py::List sorted_list;
             for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
@@ -2338,7 +2338,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "sss",&sub,&mapped,&element))
             throw Py::Exception();
         std::string subname(sub);
-        if (subname.size() && subname[subname.size()-1]!='.')
+        if (!subname.empty() && subname[subname.size()-1]!='.')
             subname += '.';
         if (mapped && mapped[0]) {
             if (!Data::ComplexGeoData::isMappedElement(mapped))
@@ -2346,7 +2346,7 @@ private:
             subname += mapped;
         }
         if (element && element[0]) {
-            if (subname.size() && subname[subname.size()-1]!='.')
+            if (!subname.empty() && subname[subname.size()-1]!='.')
                 subname += '.';
             subname += element;
         }

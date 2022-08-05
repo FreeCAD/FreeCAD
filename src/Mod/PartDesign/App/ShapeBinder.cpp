@@ -449,7 +449,7 @@ void SubShapeBinder::setupCopyOnChange() {
             if (!prop.testStatus(App::Property::Output)
                 && !prop.testStatus(App::Property::PropOutput))
             {
-                if (this->_CopiedObjs.size()) {
+                if (!this->_CopiedObjs.empty()) {
                     FC_LOG("Clear binder " << getFullName() << " cache on change of "
                         << prop.getFullName());
                     this->clearCopiedObjects();
@@ -560,7 +560,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         App::DocumentObject* copied = nullptr;
 
         if (BindCopyOnChange.getValue() == 2 && Support.getSubListValues().size() == 1) {
-            if (_CopiedObjs.size())
+            if (!_CopiedObjs.empty())
                 copied = _CopiedObjs.front().getObject();
 
             bool recomputeCopy = false;

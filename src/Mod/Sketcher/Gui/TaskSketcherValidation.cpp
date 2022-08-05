@@ -230,7 +230,7 @@ void SketcherValidation::on_findReversed_clicked()
         }
     }
     hidePoints();
-    if(points.size()>0){
+    if(!points.empty()){
         int nc = sketch->port_reversedExternalArcs(/*justAnalyze=*/true);
         showPoints(points);
         if(nc>0){

@@ -322,7 +322,7 @@ void PartGui::DlgProjectionOnSurface::onSelectionChanged(const Gui::SelectionCha
     {
       m_projectionSurfaceVec.clear();
       store_current_selected_parts(m_projectionSurfaceVec, 0xffff0000);
-      if (m_projectionSurfaceVec.size())
+      if (!m_projectionSurfaceVec.empty())
       {
         PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(m_projectionSurfaceVec.back().partFeature));
         if (vp)
@@ -363,7 +363,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
   if (!m_partDocument)
       return;
   std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx();
-  if (selObj.size())
+  if (!selObj.empty())
   {
     for (auto it = selObj.begin(); it != selObj.end(); ++it)
     {
@@ -383,7 +383,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
           currentShapeStore.is_selectable = vp->Selectable.getValue();
           currentShapeStore.transparency = vp->Transparency.getValue();
         }
-        if (it->getSubNames().size() )
+        if (!it->getSubNames().empty() )
         {
           auto parentShape = currentShapeStore.inputShape;
           for (auto itName = selObj.front().getSubNames().begin(); itName != selObj.front().getSubNames().end(); ++itName)
@@ -451,7 +451,7 @@ bool PartGui::DlgProjectionOnSurface::store_part_in_vector(SShapeStore& iCurrent
   auto valZ = ui->doubleSpinBoxDirZ->value();
 
   iCurrentShape.aProjectionDir = gp_Dir(valX, valY, valZ);
-  if ( m_projectionSurfaceVec.size() )
+  if ( !m_projectionSurfaceVec.empty() )
   {
     iCurrentShape.surfaceToProject = m_projectionSurfaceVec.front().aFace;
   }
@@ -468,9 +468,9 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
     for ( auto &itCurrentShape : iCurrentShape )
     {
       if (m_projectionSurfaceVec.empty()) continue;;
-      if (itCurrentShape.aProjectedEdgeVec.size()) continue;;
+      if (!itCurrentShape.aProjectedEdgeVec.empty()) continue;;
       if (!itCurrentShape.aProjectedFace.IsNull()) continue;;
-      if (itCurrentShape.aProjectedWireVec.size()) continue;;
+      if (!itCurrentShape.aProjectedWireVec.empty()) continue;;
 
       if (!itCurrentShape.aFace.IsNull())
       {
@@ -573,7 +573,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
       {
         aBuilder.Add(aCompound, it.aProjectedFace);
       }
-      else if (it.aProjectedWireVec.size())
+      else if (!it.aProjectedWireVec.empty())
       {
         for (const auto& itWire : it.aProjectedWireVec )
         {
@@ -581,7 +581,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
           aBuilder.Add(aCompound, itWire);
         }
       }
-      else if (it.aProjectedEdgeVec.size())
+      else if (!it.aProjectedEdgeVec.empty())
       {
         for (const auto& itEdge : it.aProjectedEdgeVec)
         {

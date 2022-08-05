@@ -224,7 +224,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             if(cell->getExpression()) {
                 std::string str;
                 if (cell->getStringContent(str))
-                    if (str.size() > 0 && str[0] == '=')
+                    if (!str.empty() && str[0] == '=')
                         // If this is a real computed value, indicate that a recompute is
                         // needed before we can display it
                         return QVariant(QLatin1String("#PENDING"));

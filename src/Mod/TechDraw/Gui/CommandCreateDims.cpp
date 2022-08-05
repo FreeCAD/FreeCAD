@@ -1426,7 +1426,7 @@ void CreateTechDrawCommandsDims(void)
 //non-empty selection, no more than maxObjs selected and at least 1 DrawingPage exists
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("Select an object first"));
         return false;

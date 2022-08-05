@@ -106,7 +106,7 @@ void CylinderFit::SetApproximations(const Base::Vector3d &base, const Base::Vect
 	_vAxis = axis;
 	_vAxis.Normalize();
 	_dRadius = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		for (std::list< Base::Vector3f >::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
 			_dRadius += Base::Vector3d(cIt->x, cIt->y, cIt->z).DistanceToLine(_vBase, _vAxis);
@@ -238,7 +238,7 @@ void CylinderFit::ComputeApproximationsLine()
 	_vBase.Set(0.0, 0.0, 0.0);
 	_vAxis.Set(0.0, 0.0, 0.0);
 	_dRadius = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		std::vector<Wm4::Vector3d> input;
 		std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
@@ -388,7 +388,7 @@ void CylinderFit::findBestSolDirection(SolutionD &solDir)
 double CylinderFit::meanXObs()
 {
 	double mx = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
 			mx += cIt->x;
@@ -400,7 +400,7 @@ double CylinderFit::meanXObs()
 double CylinderFit::meanYObs()
 {
 	double my = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
 			my += cIt->y;
@@ -412,7 +412,7 @@ double CylinderFit::meanYObs()
 double CylinderFit::meanZObs()
 {
 	double mz = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
 			mz += cIt->z;

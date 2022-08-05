@@ -392,7 +392,7 @@ private:
             if(ew.perform()) {
                 std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
                 std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,true);
-                if(sortedWires.size()) {
+                if(!sortedWires.empty()) {
                     outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
                     success = true;
                 }

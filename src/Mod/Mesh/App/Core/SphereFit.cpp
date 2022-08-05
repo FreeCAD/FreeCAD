@@ -162,7 +162,7 @@ void SphereFit::ComputeApproximations()
 	_numIter = 0;
 	_vCenter.Set(0.0, 0.0, 0.0);
 	_dRadius = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		std::list< Base::Vector3f >::const_iterator cIt;
 		for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)

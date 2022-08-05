@@ -81,7 +81,7 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemCo
     for (std::size_t i = 0; i < Objects.size(); i++) {
         ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
     }
-    if (Objects.size() > 0) {
+    if (!Objects.empty()) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
@@ -116,7 +116,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
     }
     else {
         std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-        if (selection.size() == 0) {
+        if (selection.empty()) {
             QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
             return;
         }
@@ -177,7 +177,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
 void TaskFemConstraintPlaneRotation::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -205,7 +205,7 @@ void TaskFemConstraintPlaneRotation::removeFromSelection()
         }
     }
     std::sort(itemsToDel.begin(), itemsToDel.end());
-    while (itemsToDel.size() > 0) {
+    while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();

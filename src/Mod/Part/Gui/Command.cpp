@@ -2093,7 +2093,7 @@ void CmdPartRuledSurface::activated(int iMsg)
     }
 
     if (ok && selobjs.size() <= 2) {
-        if (selobjs.size() >= 1) {
+        if (!selobjs.empty()) {
             const std::vector<std::string>& subnames1= selobjs[0].getSubNames();
             docobj1 = selobjs[0].getObject();
             obj1 = docobj1->getNameInDocument();
@@ -2103,7 +2103,7 @@ void CmdPartRuledSurface::activated(int iMsg)
                 ok = false;
             }
             if (ok && subnames1.size() <= 2) {
-                if (subnames1.size() >= 1) {
+                if (!subnames1.empty()) {
                     curve1 = Part::Feature::getTopoShape(docobj1, subnames1[0].c_str(), true /*need element*/).getShape();
                     link1 = subnames1[0];
                 }
@@ -2111,7 +2111,7 @@ void CmdPartRuledSurface::activated(int iMsg)
                     curve2 = Part::Feature::getTopoShape(docobj1, subnames1[1].c_str(), true /*need element*/).getShape();
                     link2 = subnames1[1];
                 }
-                if (subnames1.size() == 0) {
+                if (subnames1.empty()) {
                     curve1 = shape1.getShape();
                 }
             } else {
@@ -2131,7 +2131,7 @@ void CmdPartRuledSurface::activated(int iMsg)
                 curve2 = Part::Feature::getTopoShape(docobj2, subnames2[0].c_str(), true /*need element*/).getShape();
                 link2 = subnames2[0];
             } else {
-                if (subnames2.size() == 0) {
+                if (subnames2.empty()) {
                     curve2 = shape2.getShape();
                 }
             }

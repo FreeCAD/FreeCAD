@@ -35,7 +35,7 @@ std::string GeometryIntExtensionPy::representation(void) const
     long val = getGeometryIntExtensionPtr()->getValue();
     str << "<GeometryIntExtension (" ;
 
-    if(getGeometryIntExtensionPtr()->getName().size()>0)
+    if(!getGeometryIntExtensionPtr()->getName().empty())
         str << "\'" << getGeometryIntExtensionPtr()->getName() << "\', ";
 
     str << val << ") >";

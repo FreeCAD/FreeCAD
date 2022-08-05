@@ -622,7 +622,7 @@ void PropertySheet::setDisplayUnit(CellAddress address, const std::string &unit)
 
 void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 {
-    if (alias.size() > 0 && !isValidAlias(alias))
+    if (!alias.empty() && !isValidAlias(alias))
         throw Base::ValueError("Invalid alias");
 
     const Cell * aliasedCell = getValueFromAlias(alias);
@@ -654,7 +654,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
     cell->getAlias(oldAlias);
     cell->setAlias(alias);
 
-    if (oldAlias.size() > 0) {
+    if (!oldAlias.empty()) {
         std::map<App::ObjectIdentifier, App::ObjectIdentifier> m;
 
         App::ObjectIdentifier key(owner, oldAlias);
@@ -1158,7 +1158,7 @@ void PropertySheet::addDependencies(CellAddress key)
                 cellToPropertyNameMap[key].insert(propName);
 
                 // Also an alias?
-                if (name.size() && docObj->isDerivedFrom(Sheet::getClassTypeId())) {
+                if (!name.empty() && docObj->isDerivedFrom(Sheet::getClassTypeId())) {
                     auto other = static_cast<Sheet*>(docObj);
                     auto j = other->cells.revAliasProp.find(name);
 
@@ -1219,7 +1219,7 @@ void PropertySheet::removeDependencies(CellAddress key)
             if (k != documentObjectToCellMap.end()) {
                 k->second.erase(key);
 
-                if (k->second.size() == 0)
+                if (k->second.empty())
                     documentObjectToCellMap.erase(*j);
             }
 
