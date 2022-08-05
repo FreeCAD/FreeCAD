@@ -617,17 +617,17 @@ void NaviCubeImplementation::addFace(float gap, const Vector3f& x, const Vector3
 
 	int t = m_VertexArray.size();
 
-	m_VertexArray.push_back(z - x - y);
-	m_VertexArray2.push_back(z - x2 - y2);
+	m_VertexArray.emplace_back(z - x - y);
+	m_VertexArray2.emplace_back(z - x2 - y2);
 	m_TextureCoordArray.emplace_back(0, 0);
-	m_VertexArray.push_back(z + x - y);
-	m_VertexArray2.push_back(z + x2 - y2);
+	m_VertexArray.emplace_back(z + x - y);
+	m_VertexArray2.emplace_back(z + x2 - y2);
 	m_TextureCoordArray.emplace_back(1, 0);
-	m_VertexArray.push_back(z + x + y);
-	m_VertexArray2.push_back(z + x2 + y2);
+	m_VertexArray.emplace_back(z + x + y);
+	m_VertexArray2.emplace_back(z + x2 + y2);
 	m_TextureCoordArray.emplace_back(1, 1);
-	m_VertexArray.push_back(z - x + y);
-	m_VertexArray2.push_back(z - x2 + y2);
+	m_VertexArray.emplace_back(z - x + y);
+	m_VertexArray2.emplace_back(z - x2 + y2);
 	m_TextureCoordArray.emplace_back(0, 1);
 
 	// TEX_TOP, TEX_FRONT_FACE, TEX_TOP
@@ -1790,11 +1790,11 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu() {
 
 	vector<string> commands = NaviCubeImplementation::m_commands;
 	if (commands.empty()) {
-		commands.push_back("ViewOrthographicCmd");
-		commands.push_back("ViewPerspectiveCmd");
-		commands.push_back("ViewIsometricCmd");
-		commands.push_back("Separator");
-		commands.push_back("ViewZoomToFit");
+		commands.emplace_back("ViewOrthographicCmd");
+		commands.emplace_back("ViewPerspectiveCmd");
+		commands.emplace_back("ViewIsometricCmd");
+		commands.emplace_back("Separator");
+		commands.emplace_back("ViewZoomToFit");
 	}
 
 	for (vector<string>::iterator i = commands.begin(); i != commands.end(); ++i) {

@@ -167,8 +167,8 @@ std::vector<std::string> ViewProviderAnnotation::getDisplayModes(void) const
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Screen");
-    StrList.push_back("World");
+    StrList.emplace_back("Screen");
+    StrList.emplace_back("World");
     return StrList;
 }
 
@@ -337,8 +337,8 @@ std::vector<std::string> ViewProviderAnnotationLabel::getDisplayModes(void) cons
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Line");
-    StrList.push_back("Object");
+    StrList.emplace_back("Line");
+    StrList.emplace_back("Object");
     return StrList;
 }
 

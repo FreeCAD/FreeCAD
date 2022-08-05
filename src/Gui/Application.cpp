@@ -2438,7 +2438,7 @@ App::Document *Application::reopen(App::Document *doc) {
         for(auto d : doc->getDependentDocuments(true)) {
             if(d->testStatus(App::Document::PartialDoc)
                     || d->testStatus(App::Document::PartialRestore) )
-                docs.push_back(d->FileName.getValue());
+                docs.emplace_back(d->FileName.getValue());
         }
 
         if(docs.empty()) {

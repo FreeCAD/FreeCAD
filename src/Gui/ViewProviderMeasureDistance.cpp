@@ -145,7 +145,7 @@ std::vector<std::string> ViewProviderMeasureDistance::getDisplayModes(void) cons
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Base");
+    StrList.emplace_back("Base");
     return StrList;
 }
 

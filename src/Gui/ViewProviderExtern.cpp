@@ -97,7 +97,7 @@ void ViewProviderExtern::setModeBySoInput(const char* name, SoInput &ivFileInput
            ::iterator,string>(modes.begin(),modes.end(),string(name));
         if (pos == modes.end()) {
             // new mode
-            modes.push_back(name);
+            modes.emplace_back(name);
             addDisplayMaskMode(root, name);
             setDisplayMaskMode(name);
         }

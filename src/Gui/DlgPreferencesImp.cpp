@@ -205,7 +205,7 @@ void DlgPreferencesImp::addPage(const std::string& className, const std::string&
         // This is a new group: create it, with its one page
         std::list<std::string> pages;
         pages.push_back(className);
-        _pages.push_back(std::make_pair(group, pages));
+        _pages.emplace_back(group, pages);
     }
 
     if (DlgPreferencesImp::_activeDialog) {

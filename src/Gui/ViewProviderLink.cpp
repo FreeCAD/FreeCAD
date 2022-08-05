@@ -1675,8 +1675,8 @@ void ViewProviderLink::reattach(App::DocumentObject *obj) {
 std::vector<std::string> ViewProviderLink::getDisplayModes(void) const
 {
     std::vector<std::string> StrList = inherited::getDisplayModes();
-    StrList.push_back("Link");
-    StrList.push_back("ChildView");
+    StrList.emplace_back("Link");
+    StrList.emplace_back("ChildView");
     return StrList;
 }
 

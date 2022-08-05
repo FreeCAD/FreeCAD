@@ -135,7 +135,7 @@ std::vector<std::string> ViewProviderGeoFeatureGroupExtension::extensionGetDispl
     std::vector<std::string> StrList = ViewProviderGroupExtension::extensionGetDisplayModes();
 
     // add your own modes
-    StrList.push_back("Group");
+    StrList.emplace_back("Group");
 
     return StrList;
 }

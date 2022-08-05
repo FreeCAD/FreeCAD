@@ -4308,7 +4308,7 @@ DocumentObjectItem* DocumentItem::findItem(
         if (select) {
             item->selected += 2;
             if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
-                item->mySubs.push_back(subname);
+                item->mySubs.emplace_back(subname);
         }
         return item;
     }
@@ -4322,7 +4322,7 @@ DocumentObjectItem* DocumentItem::findItem(
         if (select) {
             item->selected += 2;
             if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
-                item->mySubs.push_back(subname);
+                item->mySubs.emplace_back(subname);
         }
         return item;
     }
@@ -4367,7 +4367,7 @@ DocumentObjectItem* DocumentItem::findItem(
         TREE_TRACE("element " << subname << " not found");
         item->selected += 2;
         if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
-            item->mySubs.push_back(subname);
+            item->mySubs.emplace_back(subname);
     }
     return res;
 }

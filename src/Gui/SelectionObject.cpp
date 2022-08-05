@@ -50,7 +50,7 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
     DocName = msg.pDocName ? msg.pDocName : "";
     TypeName = msg.pTypeName ? msg.pTypeName : "";
     if (msg.pSubName) {
-        SubNames.push_back(msg.pSubName);
+        SubNames.emplace_back(msg.pSubName);
         SelPoses.emplace_back(msg.x, msg.y, msg.z);
     }
 }
