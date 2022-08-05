@@ -182,7 +182,7 @@ void Transaction::apply(Document &Doc, bool forward)
     }catch(...) {
         errMsg = "Unknown exception";
     }
-    if(errMsg.size()) {
+    if(!errMsg.empty()) {
         FC_ERR("Exception on " << (forward?"redo":"undo") << " '" 
                 << Name << "':" << errMsg);
     }
@@ -310,7 +310,7 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
             // been destroies. We must prepare for the case where user removed
             // a dynamic property but does not recordered as transaction.
             auto name = pcObj->getPropertyName(prop);
-            if(!name || (data.name.size() && data.name != name) || data.propertyType != prop->getTypeId()) {
+            if(!name || (!data.name.empty() && data.name != name) || data.propertyType != prop->getTypeId()) {
                 // Here means the original property is not found, probably removed
                 if(data.name.empty()) {
                     // not a dynamic property, nothing to do
@@ -380,7 +380,7 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
         return;
 
     auto &data = _PropChangeMap[pcProp->getID()];
-    if(data.name.size()) {
+    if(!data.name.empty()) {
         if(!add && !data.property) {
             // this means add and remove the same property inside a single
             // transaction, so they cancel each other out.

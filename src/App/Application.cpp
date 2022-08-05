@@ -652,7 +652,7 @@ public:
 Document* Application::openDocument(const char * FileName, bool createView) {
     std::vector<std::string> filenames(1,FileName);
     auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createView);
-    if(docs.size())
+    if(!docs.empty())
         return docs.front();
     return nullptr;
 }
@@ -663,7 +663,7 @@ Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCa
     if(DocFileMap.empty()) {
         for(const auto &v : DocMap) {
             const auto &file = v.second->FileName.getStrValue();
-            if(file.size())
+            if(!file.empty())
                 DocFileMap[FileInfo(file.c_str()).filePath()] = v.second;
         }
     }
@@ -977,7 +977,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     try {
         // read the document
         newDoc->restore(File.filePath().c_str(),true,objNames);
-        if(DocFileMap.size())
+        if(!DocFileMap.empty())
             DocFileMap[FileInfo(newDoc->FileName.getValue()).filePath()] = newDoc;
         return newDoc;
     }

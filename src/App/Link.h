@@ -270,7 +270,7 @@ public:
 
     const char *getSubName() const {
         parseSubName();
-        return mySubName.size()?mySubName.c_str():nullptr;
+        return !mySubName.empty()?mySubName.c_str():nullptr;
     }
 
     const std::vector<std::string> &getSubElements() const {

@@ -917,7 +917,7 @@ void LinkBaseExtension::monitorOnChangeCopyObjects(
 }
 
 App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
-    if(mySubElements.size() && mySubElements[0].size())
+    if(!mySubElements.empty() && !mySubElements[0].empty())
         return nullptr;
     auto linked = getTrueLinkedObject(false);
     if(!linked)
@@ -970,7 +970,7 @@ int LinkBaseExtension::_getElementCountValue() const {
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
-    if(_getElementListValue().size()
+    if(!_getElementListValue().empty()
             || (_getElementCountValue() && _getShowElementValue()))
         return true;
     if (getLinkClaimChildValue())
@@ -1309,7 +1309,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     int idx = getElementIndex(subname,&subname);
     if(idx>=0) {
         const auto &elements = _getElementListValue();
-        if(elements.size()) {
+        if(!elements.empty()) {
             if(idx>=(int)elements.size() || !elements[idx] || !elements[idx]->getNameInDocument())
                 return true;
             ret = elements[idx]->getSubObject(subname,pyObj,mat,true,depth+1);
@@ -1402,7 +1402,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
                 *mat = matNext;
         }
     }
-    checkGeoElementMap(obj,linked,pyObj,postfix.size()?postfix.c_str():nullptr);
+    checkGeoElementMap(obj,linked,pyObj,!postfix.empty()?postfix.c_str():nullptr);
     return true;
 }
 
@@ -1531,7 +1531,7 @@ void LinkBaseExtension::updateGroup() {
         }
     }
     std::vector<App::DocumentObject*> children;
-    if(groups.size()) {
+    if(!groups.empty()) {
         children = getElementListValue();
         std::set<DocumentObject*> childSet(children.begin(),children.end());
         for(auto ext : groups) {
@@ -1909,7 +1909,7 @@ void LinkBaseExtension::syncElementList() {
             }
         }
         else if (element->LinkedObject.getValue() != link->getValue()
-                 || element->LinkedObject.getSubValues().size()) {
+                 || !element->LinkedObject.getSubValues().empty()) {
             element->setLink(-1, link->getValue());
         }
     }
@@ -2036,7 +2036,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
             int idx = -1;
             if(getLinkModeValue()>=LinkModeAutoLink ||
                (subname && subname[0]) ||
-               subElements.size() ||
+               !subElements.empty() ||
                obj->getDocument()!=parent->getDocument() ||
                (getElementListProperty()->find(obj->getNameInDocument(),&idx) && idx!=index))
             {
@@ -2087,14 +2087,14 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
     }
 
     if(!xlink) {
-        if(subElements.size() || (subname && subname[0]))
+        if(!subElements.empty() || (subname && subname[0]))
             LINK_THROW(Base::RuntimeError,"SubName/SubElement link requires PropertyXLink");
         linkProp->setValue(obj);
         return;
     }
 
     std::vector<std::string> subs;
-    if(subElements.size()) {
+    if(!subElements.empty()) {
         subs.reserve(subElements.size());
         for(const auto &s : subElements) {
             subs.emplace_back(subname?subname:"");

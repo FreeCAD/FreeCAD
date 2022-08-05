@@ -180,7 +180,7 @@ void PropertyExpressionEngine::hasSetValue()
                         std::string key = objName + propName;
                         auto &propDeps = pimpl->propMap[key];
                         if(propDeps.empty()) {
-                            if(propName.size()) 
+                            if(!propName.empty())
                                 pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
                                             &PropertyExpressionEngine::slotChangedProperty,this,_1,_2)));
                             else
@@ -482,7 +482,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, std::shar
 
     if (expr) {
         std::string error = validateExpression(usePath, expr);
-        if (error.size() > 0)
+        if (!error.empty())
             throw Base::RuntimeError(error.c_str());
         AtomicPropertyChange signaller(*this);
         expressions[usePath] = ExpressionInfo(expr);
@@ -766,7 +766,7 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
 
     if (validator) {
         error = validator(usePath, expr);
-        if (error.size() > 0)
+        if (!error.empty())
             return error;
     }
 
