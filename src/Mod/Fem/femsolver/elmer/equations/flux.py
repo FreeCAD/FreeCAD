@@ -45,42 +45,30 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyBool",
-            "DiscontinuousGalerkin",
-            "Flux",
-            ""
-        )
+
         obj.addProperty(
             "App::PropertyBool",
             "AverageWithinMaterials",
             "Flux",
-            ""
+            "Enforces continuity within the same material\nin the 'Discontinuous Galerkin' discretization"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateFlux",
             "Flux",
-            ""
-        )
-        obj.CalculateFlux = True
-        obj.addProperty(
-            "App::PropertyString",
-            "FluxVariable",
-            "Flux",
-            "Insert variable name for flux calculation"
+            "Computes flux vector"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateFluxAbs",
             "Flux",
-            "Select calculation of abs of flux"
+            "Computes absolute of flux vector"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateFluxMagnitude",
             "Flux",
-            "Select calculation of magnitude of flux"
+            "Computes magnitude of flux vector field"
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -92,21 +80,44 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
             "App::PropertyBool",
             "CalculateGradAbs",
             "Flux",
-            "Select calculation of abs of gradient"
+            "Computes absolute of gradient field"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateGradMagnitude",
             "Flux",
-            "Select calculation of magnitude of gradient"
+            "Computes magnitude of gradient field"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "DiscontinuousGalerkin",
+            "Flux",
+            "Enable if standard Galerkin approximation leads to\nunphysical results when there are discontinuities"
         )
         obj.addProperty(
             "App::PropertyBool",
             "EnforcePositiveMagnitude",
             "Flux",
-            "Select calculation of positive magnitude"
+            "If true, negative values of computed magnitude fields\nare a posteriori set to zero."
         )
+        obj.addProperty(
+            "App::PropertyString",
+            "FluxCoefficient",
+            "Flux",
+            "Name of proportionality coefficient\nto compute the flux"
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "FluxVariable",
+            "Flux",
+            "Variable name for flux calculation"
+        )
+        
         obj.Priority = 5
+        obj.CalculateFlux = True
+        # set defaults according to the Elmer manual
+        obj.FluxCoefficient = "Temperature"
+        obj.FluxVariable = "Heat Conductivity"
 
 
 class ViewProxy(linear.ViewProxy, equationbase.FluxViewProxy):

@@ -523,16 +523,17 @@ class Writer(object):
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllBodies()
-                solverSection = self._getFlux(equation)
+                solverSection = self._getFluxSolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
 
-    def _getFlux(self, equation):
+    def _getFluxSolver(self, equation):
         s = self._createLinearSolver(equation)
+        # check if we need to update the equation
+        self._updateFluxSolver(equation)
+        # output the equation parameters
         s["Equation"] = "Flux Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
-        s["Flux Variable"] = equation.FluxVariable
-        s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
         s["Average Within Materials"] = equation.AverageWithinMaterials
         s["Calculate Flux"] = equation.CalculateFlux
         s["Calculate Flux Abs"] = equation.CalculateFluxAbs
@@ -540,9 +541,74 @@ class Writer(object):
         s["Calculate Grad"] = equation.CalculateGrad
         s["Calculate Grad Abs"] = equation.CalculateGradAbs
         s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
+        s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
         s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
+        s["Flux Coefficient"] = equation.FluxCoefficient
+        s["Flux Variable"] = equation.FluxVariable
         s["Stabilize"] = equation.Stabilize
         return s
+
+    def _updateFluxSolver(self, equation):
+        # updates older Flux equations
+        if not hasattr(equation, "AverageWithinMaterials"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "AverageWithinMaterials",
+            "Flux",
+            "Enforces continuity within the same material\nin the 'Discontinuous Galerkin' discretization"
+            )
+        if hasattr(equation, "Bubbles"):
+            # Bubbles was removed because it is unused by Elmer for the flux solver
+            equation.removeProperty("Bubbles")
+        if not hasattr(equation, "CalculateFluxAbs"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "CalculateFluxAbs",
+            "Flux",
+            "Computes absolute of flux vector"
+            )
+        if not hasattr(equation, "CalculateFluxMagnitude"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "CalculateFluxMagnitude",
+            "Flux",
+            "Computes magnitude of flux vector field"
+            )
+        if not hasattr(equation, "CalculateGradAbs"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "CalculateGradAbs",
+            "Flux",
+            "Computes absolute of gradient field"
+            )
+        if not hasattr(equation, "CalculateGradMagnitude"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "CalculateGradMagnitude",
+            "Flux",
+            "Computes magnitude of gradient field"
+            )
+        if not hasattr(equation, "DiscontinuousGalerkin"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "DiscontinuousGalerkin",
+            "Flux",
+            "Enable if standard Galerkin approximation leads to\nunphysical results when there are discontinuities"
+            )
+        if not hasattr(equation, "EnforcePositiveMagnitude"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "EnforcePositiveMagnitude",
+            "Flux",
+            "If true, negative values of computed magnitude fields\nare a posteriori set to zero."
+            )
+        if not hasattr(equation, "FluxCoefficient"):
+            equation.addProperty(
+            "App::PropertyString",
+            "FluxCoefficient",
+            "Flux",
+            "Name of proportionality coefficient\nto compute the flux"
+            )
 
     def _handleElectricforce(self):
         activeIn = []
