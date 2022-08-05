@@ -160,7 +160,7 @@ std::vector<std::string> ViewProviderOriginFeature::getDisplayModes () const
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Base");
+    StrList.emplace_back("Base");
     return StrList;
 }
 

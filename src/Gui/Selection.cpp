@@ -536,7 +536,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
             if (subelement && *subelement) {
                 if (resolve != ResolveMode::NoResolve && !temp[it->second]._SubNameSet.insert(subelement).second)
                     continue;
-                temp[it->second].SubNames.push_back(subelement);
+                temp[it->second].SubNames.emplace_back(subelement);
                 temp[it->second].SelPoses.emplace_back(sel.x,sel.y,sel.z);
             }
         }
@@ -548,7 +548,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
             // create a new entry
             temp.emplace_back(obj);
             if (subelement && *subelement) {
-                temp.back().SubNames.push_back(subelement);
+                temp.back().SubNames.emplace_back(subelement);
                 temp.back().SelPoses.emplace_back(sel.x,sel.y,sel.z);
                 if (resolve != ResolveMode::NoResolve)
                     temp.back()._SubNameSet.insert(subelement);

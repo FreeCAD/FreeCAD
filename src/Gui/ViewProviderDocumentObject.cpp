@@ -339,7 +339,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     aDisplayModesArray = this->getDisplayModes();
 
     if (aDisplayModesArray.empty())
-        aDisplayModesArray.push_back("");
+        aDisplayModesArray.emplace_back("");
 
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.

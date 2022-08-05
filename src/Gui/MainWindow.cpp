@@ -1188,7 +1188,7 @@ void MainWindow::processMessages(const QList<QByteArray> & msg)
         QByteArray action("OpenFile:");
         for (QList<QByteArray>::const_iterator it = msg.begin(); it != msg.end(); ++it) {
             if (it->startsWith(action))
-                files.push_back(std::string(it->mid(action.size()).constData()));
+                files.emplace_back(it->mid(action.size()).constData());
         }
         files = App::Application::processFiles(files);
         for (std::list<std::string>::iterator it = files.begin(); it != files.end(); ++it) {
