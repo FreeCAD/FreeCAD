@@ -144,7 +144,7 @@ void DlgExpressionInput::textChanged(const QString &text)
         if (expr) {
             std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
 
-            if (error.size() > 0)
+            if (!error.empty())
                 throw Base::RuntimeError(error.c_str());
 
             std::unique_ptr<Expression> result(expr->eval());

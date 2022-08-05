@@ -994,7 +994,7 @@ void GestureNavigationStyle::onRollGesture(int direction)
         cmd = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View")->GetASCII("GestureRollBackCommand");
     }
-    if (cmd.size() == 0)
+    if (cmd.empty())
         return;
     std::stringstream code;
     code << "Gui.runCommand(\"" << cmd << "\")";

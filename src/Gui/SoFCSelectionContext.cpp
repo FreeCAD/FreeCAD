@@ -170,7 +170,7 @@ bool SoFCSelectionContextEx::applyColor(int idx, std::vector<uint32_t> &packedCo
 }
 
 bool SoFCSelectionContextEx::isSingleColor(uint32_t &color, bool &hasTransparency) {
-    if(colors.size() && colors.begin()->first<0) {
+    if(!colors.empty() && colors.begin()->first<0) {
         color = packColor(colors.begin()->second,hasTransparency);
         return colors.size()==1;
     }

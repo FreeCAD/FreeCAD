@@ -2721,7 +2721,7 @@ static std::vector<std::string> getBoxSelection(
             continue;
 
         const auto &sels = getBoxSelection(svp,mode,selectElement,proj,polygon,smat,false,depth+1);
-        if(sels.size()==1 && sels[0] == "")
+        if(sels.size()==1 && sels[0].empty())
             ++count;
         for(auto &sel : sels)
             ret.emplace_back(sub+sel);
@@ -3564,8 +3564,8 @@ public:
 
         addCommand();
 
-        addCommand(new StdTreeDrag(),cmds.size());
-        addCommand(new StdTreeSelection(),cmds.size());
+        addCommand(new StdTreeDrag(),!cmds.empty());
+        addCommand(new StdTreeSelection(),!cmds.empty());
     };
     virtual const char* className() const {return "StdCmdTreeViewActions";}
 };

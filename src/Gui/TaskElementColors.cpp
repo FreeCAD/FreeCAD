@@ -206,7 +206,7 @@ public:
     }
 
     void removeAll() {
-        if(elements.size()) {
+        if(!elements.empty()) {
             hiddenSub.clear();
             ui->elementList->clear();
             elements.clear();
@@ -386,7 +386,7 @@ void ElementColors::on_hideSelection_clicked() {
         if(d->editObj!=sel.getFeatName())
             continue;
         const auto &subs = sel.getSubNames();
-        if(subs.size()) {
+        if(!subs.empty()) {
             for(auto &sub : subs) {
                 if(boost::starts_with(sub,d->editSub)) {
                     auto name = Data::ComplexGeoData::noElementName(sub.c_str()+d->editSub.size());
@@ -422,7 +422,7 @@ void ElementColors::on_addSelection_clicked()
             break;
         }
     }
-    if(d->items.size()) {
+    if(!d->items.empty()) {
         auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, this);
         cd.setOption(QColorDialog::ShowAlphaChannel);
@@ -470,7 +470,7 @@ void ElementColors::changeEvent(QEvent *e)
 void ElementColors::leaveEvent(QEvent *e) {
     QWidget::leaveEvent(e);
     Selection().rmvPreselect();
-    if(d->hiddenSub.size()) {
+    if(!d->hiddenSub.empty()) {
         d->vp->partialRender({d->hiddenSub},false);
         d->hiddenSub.clear();
     }
@@ -478,7 +478,7 @@ void ElementColors::leaveEvent(QEvent *e) {
 
 void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
     std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
-    if(d->hiddenSub.size()) {
+    if(!d->hiddenSub.empty()) {
         d->vp->partialRender({d->hiddenSub},false);
         d->hiddenSub.clear();
     }

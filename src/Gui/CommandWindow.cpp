@@ -183,7 +183,7 @@ void StdCmdCloseAllWindows::activated(int iMsg)
 
 bool StdCmdCloseAllWindows::isActive(void)
 {
-    return !(getMainWindow()->windows().isEmpty()) || App::GetApplication().getDocuments().size();
+    return !(getMainWindow()->windows().isEmpty()) || !App::GetApplication().getDocuments().empty();
 }
 
 //===========================================================================

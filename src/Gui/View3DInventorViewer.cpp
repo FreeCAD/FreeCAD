@@ -665,7 +665,7 @@ void View3DInventorViewer::initialize()
 }
 
 void View3DInventorViewer::clearGroupOnTop() {
-    if(objectsOnTop.size() || objectsOnTopPreSel.size()) {
+    if(!objectsOnTop.empty() || !objectsOnTopPreSel.empty()) {
         objectsOnTop.clear();
         objectsOnTopPreSel.clear();
         SoSelectionElementAction action(SoSelectionElementAction::None,true);
@@ -2739,7 +2739,7 @@ const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) co
 {
     if (selectionRoot) {
         auto ret = selectionRoot->getPickedList(n->getAction(), true);
-        if(ret.size())
+        if(!ret.empty())
             return ret[0].pp;
         return nullptr;
     }

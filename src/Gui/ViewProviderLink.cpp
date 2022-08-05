@@ -245,7 +245,7 @@ public:
         FC_LOG("link detach " << getLinkedNameSafe());
         auto me = LinkInfoPtr(this);
         if(unlink) {
-            while(links.size()) {
+            while(!links.empty()) {
                 auto link = *links.begin();
                 links.erase(links.begin());
                 link->unlink(me);
@@ -1101,7 +1101,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         const boost::dynamic_bitset<> &vis, SnapshotType type)
 {
     if(children.empty()) {
-        if(nodeArray.size()) {
+        if(!nodeArray.empty()) {
             nodeArray.clear();
             nodeMap.clear();
             childType = SnapshotContainer;
@@ -1146,7 +1146,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
     for(size_t i=0;i<nodeArray.size();++i) {
         auto &info = *nodeArray[i];
         nodeMap.emplace(info.pcSwitch,i);
-        if(info.isLinked() && groups.size()) {
+        if(info.isLinked() && !groups.empty()) {
             auto iter = groups.find(App::GroupExtension::getGroupOfObject(
                             info.linkInfo->pcLinked->getObject()));
             if(iter != groups.end()) {
@@ -1333,7 +1333,7 @@ void LinkView::updateLink() {
         linkedRoot->addChild(sub.pcNode);
         setTransform(sub.pcTransform,mat);
 
-        if(sub.subElements.size()) {
+        if(!sub.subElements.empty()) {
             path.truncate(1);
             appendPath(&path,sub.pcNode);
             SoSelectionElementAction action(SoSelectionElementAction::Append,true);
@@ -1356,7 +1356,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
 {
     std::ostringstream ss;
     CoinPtr<SoPath> path = pp->getPath();
-    if(nodeArray.size()) {
+    if(!nodeArray.empty()) {
         auto idx = path->findNode(pcLinkRoot);
         if(idx<0 || idx+2>=path->getLength())
             return false;
@@ -1413,7 +1413,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         if(!sub.linkInfo->getElementPicked(false,SnapshotTransform,pp,ss2))
             return false;
         const std::string &element = ss2.str();
-        if(sub.subElements.size()) {
+        if(!sub.subElements.empty()) {
             if(sub.subElements.find(element)==sub.subElements.end()) {
                 auto pos = element.find('.');
                 if(pos==std::string::npos ||
@@ -1528,7 +1528,7 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
                         continue;
                     ++nextsub;
                 }
-                if(*nextsub && sub.subElements.size() &&
+                if(*nextsub && !sub.subElements.empty() &&
                    sub.subElements.find(nextsub)==sub.subElements.end())
                     break;
                 appendPath(path,sub.pcNode);
@@ -1584,7 +1584,7 @@ QIcon LinkView::getLinkedIcon(QPixmap px) const {
 }
 
 bool LinkView::hasSubs() const {
-    return isLinked() && subInfo.size();
+    return isLinked() && !subInfo.empty();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1856,7 +1856,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 subs.push_back(sub+s);
             }
 
-            if(subs.empty() && sub.size())
+            if(subs.empty() && !sub.empty())
                 subs.push_back(sub);
 
             hasSubName = !subs.empty();
@@ -1891,7 +1891,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
 
             const auto &elements = ext->_getElementListValue();
             // elements is about to be collapsed, preserve the materials
-            if(elements.size()) {
+            if(!elements.empty()) {
                 std::vector<App::Material> materials;
                 boost::dynamic_bitset<> overrideMaterials;
                 overrideMaterials.resize(elements.size(),false);
@@ -2075,7 +2075,7 @@ bool ViewProviderLink::hasElements(const App::LinkBaseExtension *ext) const {
             return false;
     }
     const auto &elements = ext->getElementListValue();
-    return elements.size() && (int)elements.size()==ext->_getElementCountValue();
+    return !elements.empty() && (int)elements.size()==ext->_getElementCountValue();
 }
 
 bool ViewProviderLink::isGroup(const App::LinkBaseExtension *ext, bool plainGroup) const {
@@ -2242,11 +2242,11 @@ std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
             return linked->dropObjectEx(obj,owner,subname,subElements);
     }
     if(owner) {
-        if(ext->getSubElements().size())
+        if(!ext->getSubElements().empty())
             ext->setLink(-1,owner,subname,subElements);
         else
             ext->setLink(-1,owner,subname);
-    } else if(ext->getSubElements().size())
+    } else if(!ext->getSubElements().empty())
         ext->setLink(-1,obj,nullptr,subElements);
     else
         ext->setLink(-1,obj,nullptr);
@@ -3046,7 +3046,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
             if(wildcard.size()==4)
                 return colors;
         }
-        if(wildcard.size())
+        if(!wildcard.empty())
             wildcard.resize(4);
     }else if(wildcard == "Edge*")
         wildcard.resize(4);
@@ -3058,7 +3058,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         wildcard.clear();
 
     int i=-1;
-    if(wildcard.size()) {
+    if(!wildcard.empty()) {
         for(const auto &sub : subs) {
             if(++i >= size)
                 break;
@@ -3122,7 +3122,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
 
         int offset = 0;
 
-        if(sub.second.size() && element_count && !std::isdigit(sub.second[0])) {
+        if(!sub.second.empty() && element_count && !std::isdigit(sub.second[0])) {
             // For checking and expanding color override of array base
             if(!subname[0]) {
                 std::ostringstream ss;
@@ -3207,7 +3207,7 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
             continue;
         }
 
-        if(element_count && v.first.size() && std::isdigit(v.first[0])) {
+        if(element_count && !v.first.empty() && std::isdigit(v.first[0])) {
             // In case of array, check if there are override of the same
             // sub-element for every array element. And collapse those overrides
             // into one without the index.
@@ -3303,7 +3303,7 @@ void ViewProviderLink::applyColors() {
     for(const auto &sub : hideList) {
         SoDetail *det=nullptr;
         path.truncate(0);
-        if(sub.size() && getDetailPath(sub.c_str(), &path, false, det))
+        if(!sub.empty() && getDetailPath(sub.c_str(), &path, false, det))
             action.apply(&path);
         delete det;
     }

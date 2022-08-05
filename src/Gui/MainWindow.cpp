@@ -1239,7 +1239,7 @@ void MainWindow::delayedStartup()
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
-        if (App::GetApplication().getDocuments().size()==0){
+        if (App::GetApplication().getDocuments().empty()){
             App::GetApplication().newDocument();
             Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.activeDocument().activeView().viewDefaultOrientation()");
@@ -1623,7 +1623,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
 
     std::vector<App::Document*> unsaved;
     bool hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
-    if(unsaved.size()) {
+    if(!unsaved.empty()) {
         QMessageBox::critical(getMainWindow(), tr("Unsaved document"),
             tr("The exported object contains external link. Please save the document"
                 "at least once before exporting."));

@@ -176,7 +176,7 @@ void MacroManager::addLine(LineType Type, const char* sLine, bool pending)
     if(!sLine)
         return;
 
-    if(pendingLine.size()) {
+    if(!pendingLine.empty()) {
         if(Type == Cmt) {
             pendingLine.emplace_back(Type,sLine);
             return;

@@ -1483,7 +1483,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
                     auto obj = vpd->getObject();
                     if (!obj)
                         return ret;
-                    if (subname.size()) {
+                    if (!subname.empty()) {
                         std::pair<std::string,std::string> elementName;
                         auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
                         if (!sobj)
@@ -1493,7 +1493,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
                             dict.setItem("SubName",Py::String(subname));
                             obj = sobj;
                         }
-                        subname = elementName.second.size()?elementName.second:elementName.first;
+                        subname = !elementName.second.empty()?elementName.second:elementName.first;
                     }
                     dict.setItem("Document",
                         Py::String(obj->getDocument()->getName()));
@@ -1595,7 +1595,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                         auto obj = vpd->getObject();
                         if (!obj)
                             continue;
-                        if (subname.size()) {
+                        if (!subname.empty()) {
                             std::pair<std::string,std::string> elementName;
                             auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
                             if (!sobj)
@@ -1605,7 +1605,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                                 dict.setItem("SubName",Py::String(subname));
                                 obj = sobj;
                             }
-                            subname = elementName.second.size()?elementName.second:elementName.first;
+                            subname = !elementName.second.empty()?elementName.second:elementName.first;
                         }
                         dict.setItem("Document",
                             Py::String(obj->getDocument()->getName()));

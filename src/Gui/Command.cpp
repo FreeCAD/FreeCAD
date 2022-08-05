@@ -838,7 +838,7 @@ bool Command::isActiveObjectValid(void)
 /// Updates the (all or listed) documents (propagate changes)
 void Command::updateAll(std::list<Gui::Document*> cList)
 {
-    if (cList.size()>0) {
+    if (!cList.empty()) {
         for (std::list<Gui::Document*>::iterator It= cList.begin();It!=cList.end();++It)
             (*It)->onUpdate();
     }
@@ -1212,7 +1212,7 @@ void MacroCommand::save()
     hGrp->Clear();
 
     std::vector<Command*> macros = Application::Instance->commandManager().getGroupCommands("Macros");
-    if ( macros.size() > 0 ) {
+    if ( !macros.empty() ) {
         for (std::vector<Command*>::iterator it = macros.begin(); it!=macros.end(); ++it ) {
             MacroCommand* macro = (MacroCommand*)(*it);
             ParameterGrp::handle hMacro = hGrp->GetGroup(macro->getName());

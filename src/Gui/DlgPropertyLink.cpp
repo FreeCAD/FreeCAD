@@ -466,7 +466,7 @@ void DlgPropertyLink::detachObserver() {
         detachSelection();
 
     auto view = qobject_cast<Gui::PropertyView*>(parentView.data());
-    if(view && savedSelections.size()) {
+    if(view && !savedSelections.empty()) {
         try {
             Gui::Selection().clearSelection();
         }
@@ -501,7 +501,7 @@ void DlgPropertyLink::onItemSelectionChanged()
     selections = newSelections;
 
     auto sobjs = getLinkFromItem(newSelections.back());
-    App::DocumentObject *obj = sobjs.size()?sobjs.front().getObject():nullptr;
+    App::DocumentObject *obj = !sobjs.empty()?sobjs.front().getObject():nullptr;
     if(!obj) {
         Gui::Selection().clearSelection();
         return;
@@ -760,7 +760,7 @@ QString DlgPropertyLink::linksToPython(const QList<App::SubObjectT>& links) {
         ss << '(' << links.front().getObjectPython() << ", [";
         for(const auto& link : links) {
             const auto &sub = link.getSubName();
-            if(sub.size())
+            if(!sub.empty())
                 ss << "u'" << Base::Tools::escapedUnicodeFromUtf8(sub.c_str()) << "',";
         }
         ss << "])";
@@ -900,7 +900,7 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
     item->setData(0, Qt::UserRole+1, QByteArray(obj->getDocument()->getName()));
 
     if(allowSubObject) {
-        item->setChildIndicatorPolicy(obj->getLinkedObject(true)->getOutList().size()?
+        item->setChildIndicatorPolicy(!obj->getLinkedObject(true)->getOutList().empty()?
                 QTreeWidgetItem::ShowIndicator:QTreeWidgetItem::DontShowIndicator);
         item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
     }
