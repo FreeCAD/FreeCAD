@@ -464,7 +464,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
         for (auto&& it : items) {
             auto ci = static_cast<ConstraintItem*>(it);
             std::string constraint_name = Sketcher::PropertyConstraintList::getConstraintName(ci->ConstraintNbr);
-            constraintSubNames.push_back(constraint_name.c_str());
+            constraintSubNames.emplace_back(constraint_name.c_str());
         }
 
         if(!constraintSubNames.empty())

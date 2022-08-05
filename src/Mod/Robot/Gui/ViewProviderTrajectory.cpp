@@ -133,7 +133,7 @@ void ViewProviderTrajectory::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderTrajectory::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Waypoints");
+    StrList.emplace_back("Waypoints");
     return StrList;
 }
 

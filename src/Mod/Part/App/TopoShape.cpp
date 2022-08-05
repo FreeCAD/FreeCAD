@@ -1378,33 +1378,33 @@ namespace Part {
 std::vector<std::string> buildShapeEnumVector()
 {
    std::vector<std::string> names;
-   names.push_back("Compound");             //TopAbs_COMPOUND
-   names.push_back("Compound Solid");       //TopAbs_COMPSOLID
-   names.push_back("Solid");                //TopAbs_SOLID
-   names.push_back("Shell");                //TopAbs_SHELL
-   names.push_back("Face");                 //TopAbs_FACE
-   names.push_back("Wire");                 //TopAbs_WIRE
-   names.push_back("Edge");                 //TopAbs_EDGE
-   names.push_back("Vertex");               //TopAbs_VERTEX
-   names.push_back("Shape");                //TopAbs_SHAPE
+   names.emplace_back("Compound");             //TopAbs_COMPOUND
+   names.emplace_back("Compound Solid");       //TopAbs_COMPSOLID
+   names.emplace_back("Solid");                //TopAbs_SOLID
+   names.emplace_back("Shell");                //TopAbs_SHELL
+   names.emplace_back("Face");                 //TopAbs_FACE
+   names.emplace_back("Wire");                 //TopAbs_WIRE
+   names.emplace_back("Edge");                 //TopAbs_EDGE
+   names.emplace_back("Vertex");               //TopAbs_VERTEX
+   names.emplace_back("Shape");                //TopAbs_SHAPE
    return names;
 }
 
 std::vector<std::string> buildBOPCheckResultVector()
 {
   std::vector<std::string> results;
-  results.push_back("BOPAlgo CheckUnknown");               //BOPAlgo_CheckUnknown
-  results.push_back("BOPAlgo BadType");                    //BOPAlgo_BadType
-  results.push_back("BOPAlgo SelfIntersect");              //BOPAlgo_SelfIntersect
-  results.push_back("BOPAlgo TooSmallEdge");               //BOPAlgo_TooSmallEdge
-  results.push_back("BOPAlgo NonRecoverableFace");         //BOPAlgo_NonRecoverableFace
-  results.push_back("BOPAlgo IncompatibilityOfVertex");    //BOPAlgo_IncompatibilityOfVertex
-  results.push_back("BOPAlgo IncompatibilityOfEdge");      //BOPAlgo_IncompatibilityOfEdge
-  results.push_back("BOPAlgo IncompatibilityOfFace");      //BOPAlgo_IncompatibilityOfFace
-  results.push_back("BOPAlgo OperationAborted");           //BOPAlgo_OperationAborted
-  results.push_back("BOPAlgo GeomAbs_C0");                 //BOPAlgo_GeomAbs_C0
-  results.push_back("BOPAlgo_InvalidCurveOnSurface");      //BOPAlgo_InvalidCurveOnSurface
-  results.push_back("BOPAlgo NotValid");                   //BOPAlgo_NotValid
+  results.emplace_back("BOPAlgo CheckUnknown");               //BOPAlgo_CheckUnknown
+  results.emplace_back("BOPAlgo BadType");                    //BOPAlgo_BadType
+  results.emplace_back("BOPAlgo SelfIntersect");              //BOPAlgo_SelfIntersect
+  results.emplace_back("BOPAlgo TooSmallEdge");               //BOPAlgo_TooSmallEdge
+  results.emplace_back("BOPAlgo NonRecoverableFace");         //BOPAlgo_NonRecoverableFace
+  results.emplace_back("BOPAlgo IncompatibilityOfVertex");    //BOPAlgo_IncompatibilityOfVertex
+  results.emplace_back("BOPAlgo IncompatibilityOfEdge");      //BOPAlgo_IncompatibilityOfEdge
+  results.emplace_back("BOPAlgo IncompatibilityOfFace");      //BOPAlgo_IncompatibilityOfFace
+  results.emplace_back("BOPAlgo OperationAborted");           //BOPAlgo_OperationAborted
+  results.emplace_back("BOPAlgo GeomAbs_C0");                 //BOPAlgo_GeomAbs_C0
+  results.emplace_back("BOPAlgo_InvalidCurveOnSurface");      //BOPAlgo_InvalidCurveOnSurface
+  results.emplace_back("BOPAlgo NotValid");                   //BOPAlgo_NotValid
   return results;
 }
 }
@@ -4010,7 +4010,7 @@ TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix
     TopTools_IndexedMapOfShape anIndices;
     TopExp::MapShapes(shape.getShape(), TopAbs_EDGE, anIndices);
     for(int i=1;i<=anIndices.Extent();++i)
-        edge_list.push_back(anIndices.FindKey(i));
+        edge_list.emplace_back(anIndices.FindKey(i));
 
     edges.reserve(edge_list.size());
     wires.reserve(edge_list.size());
@@ -4053,7 +4053,7 @@ TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix
         // Assuming FixReorder() just reorder and don't change the underlying
         // edges, we get the wire and do a name mapping now, as the following
         // two operations (FixConnected and FixClosed) may change the edges.
-        wires.push_back(aFix.Wire());
+        wires.emplace_back(aFix.Wire());
 
         aFix.FixConnected();
         aFix.FixClosed();
@@ -4099,7 +4099,7 @@ TopoShape &TopoShape::makeFace(const TopoShape &shape, const char *op, const cha
     std::vector<TopoShape> shapes;
     if(shape.shapeType() == TopAbs_COMPOUND) {
         for(TopoDS_Iterator it(shape.getShape());it.More();it.Next())
-            shapes.push_back(it.Value());
+            shapes.emplace_back(it.Value());
     } else
         shapes.push_back(shape);
     return makeFace(shapes,op,maker);

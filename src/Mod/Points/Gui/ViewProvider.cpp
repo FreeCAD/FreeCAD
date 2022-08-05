@@ -249,16 +249,16 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderPoints::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Points");
+    StrList.emplace_back("Points");
 
     // FIXME: This way all display modes are added even if the points feature
     // doesn't support it.
     // For the future a more flexible way is needed to add new display modes
     // at a later time
 #if 1
-    StrList.push_back("Color");
-    StrList.push_back("Shaded");
-    StrList.push_back("Intensity");
+    StrList.emplace_back("Color");
+    StrList.emplace_back("Shaded");
+    StrList.emplace_back("Intensity");
 
 #else
     if (pcObject) {

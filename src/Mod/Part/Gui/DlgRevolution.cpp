@@ -181,7 +181,7 @@ void DlgRevolution::getAxisLink(App::PropertyLinkSub &lnk) const
             return;
         } else if (parts.size() == 2) {
             std::vector<std::string> subs;
-            subs.push_back(std::string(parts[1].toLatin1().constData()));
+            subs.emplace_back(parts[1].toLatin1().constData());
             lnk.setValue(obj,subs);
         }
     }

@@ -135,7 +135,7 @@ std::vector<std::string> ViewProviderCurveNet::getDisplayModes(void) const
     std::vector<std::string> StrList;
 
     // add your own modes
-    StrList.push_back("Edge");
+    StrList.emplace_back("Edge");
 
     return StrList;
 }

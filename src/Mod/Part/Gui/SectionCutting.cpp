@@ -112,7 +112,7 @@ SectionCut::SectionCut(QWidget* parent)
     // now store those that are currently visible
     for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
         if ((*it)->Visibility.getValue())
-            ObjectsListVisible.push_back(*it);
+            ObjectsListVisible.emplace_back(*it);
     }
 
     // lambda function to set color and transparency
@@ -1532,7 +1532,7 @@ void SectionCut::onRefreshCutPBclicked()
     // now store those that are currently visible
     for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
         if ((*it)->Visibility.getValue()) {
-            ObjectsListVisible.push_back(*it);
+            ObjectsListVisible.emplace_back(*it);
         }
     }
     // reset defaults

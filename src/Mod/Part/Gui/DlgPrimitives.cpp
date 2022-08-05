@@ -167,7 +167,7 @@ public:
     bool pickedPoint(const SoPickedPoint * point)
     {
         SbVec3f pnt = point->getPoint();
-        points.push_back(gp_Pnt(pnt[0],pnt[1],pnt[2]));
+        points.emplace_back(pnt[0],pnt[1],pnt[2]);
         return points.size() == 3;
     }
     QString command(App::Document* doc) const

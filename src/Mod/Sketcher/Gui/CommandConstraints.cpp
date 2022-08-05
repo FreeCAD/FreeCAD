@@ -4779,10 +4779,10 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             double radius = arc->getRadius();
 
             if(issegmentfixed) {
-                externalGeoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+                externalGeoIdRadiusMap.emplace_back(GeoId, radius);
             }
             else {
-                geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+                geoIdRadiusMap.emplace_back(GeoId, radius);
             }
 
             nonpoles = true;
@@ -4792,10 +4792,10 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             double radius = circle->getRadius();
 
             if(issegmentfixed) {
-                externalGeoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+                externalGeoIdRadiusMap.emplace_back(GeoId, radius);
             }
             else {
-                geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+                geoIdRadiusMap.emplace_back(GeoId, radius);
             }
 
             if(isBsplinePole(geom))
@@ -5076,10 +5076,10 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             double radius = arc->getRadius();
 
             if(issegmentfixed) {
-                externalGeoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
+                externalGeoIdDiameterMap.emplace_back(GeoId, 2*radius);
             }
             else {
-                geoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
+                geoIdDiameterMap.emplace_back(GeoId, 2*radius);
             }
         }
         else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -5093,10 +5093,10 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             }
 
             if(issegmentfixed) {
-                externalGeoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
+                externalGeoIdDiameterMap.emplace_back(GeoId, 2*radius);
             }
             else {
-                geoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
+                geoIdDiameterMap.emplace_back(GeoId, 2*radius);
             }
         }
     }
@@ -5366,10 +5366,10 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
             continue;
 
         if(issegmentfixed) {
-            externalGeoIdRadiamMap.push_back(std::make_pair(GeoId, radius));
+            externalGeoIdRadiamMap.emplace_back(GeoId, radius);
         }
         else {
-            geoIdRadiamMap.push_back(std::make_pair(GeoId, radius));
+            geoIdRadiamMap.emplace_back(GeoId, radius);
         }
     }
 

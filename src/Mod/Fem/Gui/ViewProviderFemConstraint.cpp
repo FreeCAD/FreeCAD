@@ -126,7 +126,7 @@ std::vector<std::string> ViewProviderFemConstraint::getDisplayModes(void) const
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Base");
+    StrList.emplace_back("Base");
     return StrList;
 }
 

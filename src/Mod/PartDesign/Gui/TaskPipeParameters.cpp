@@ -486,11 +486,10 @@ bool TaskPipeParameters::accept()
             for (auto &subSet : pcPipe->Sections.getSubListValues()) {
                 if (!pcActiveBody->hasObject(subSet.first) &&
                     !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
-                    subSets.push_back(
-                        std::make_pair(
+                    subSets.emplace_back(
                             PartDesignGui::TaskFeaturePick::makeCopy(
                                 subSet.first, "", dlg.radioIndependent->isChecked()),
-                            subSet.second));
+                            subSet.second);
                     copies.push_back(subSets.back().first);
                 }
                 else {

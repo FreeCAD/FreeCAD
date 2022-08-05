@@ -55,7 +55,7 @@ std::vector<std::string> ViewProviderProjGroupItem::getDisplayModes(void) const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderViewPart::getDisplayModes();
-    StrList.push_back("Drawing");
+    StrList.emplace_back("Drawing");
     return StrList;
 }
 

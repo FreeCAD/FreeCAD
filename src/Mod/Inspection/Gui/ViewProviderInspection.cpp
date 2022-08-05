@@ -380,7 +380,7 @@ std::vector<std::string> ViewProviderInspection::getDisplayModes(void) const
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Visual Inspection");
+    StrList.emplace_back("Visual Inspection");
     return StrList;
 }
 

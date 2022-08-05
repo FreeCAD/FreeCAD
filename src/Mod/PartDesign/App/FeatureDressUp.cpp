@@ -159,7 +159,7 @@ void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::str
 
             }
 
-            FaceNames.push_back(aSubName.c_str());
+            FaceNames.emplace_back(aSubName.c_str());
             SubNames.erase(SubNames.begin()+i);
         }
         // empty name or any other sub-element
@@ -231,7 +231,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 baseShape.move(base->getLocation().Inverted());
                 if (base->getAddSubType() == Additive) {
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
-                        shapes.push_back(shape.cut(baseShape.getShape()));
+                        shapes.emplace_back(shape.cut(baseShape.getShape()));
                     else
                         shapes.push_back(shape);
                 } else {
@@ -241,15 +241,15 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                     // push an empty compound to indicate null additive shape
                     shapes.emplace_back(comp);
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
-                        shapes.push_back(baseShape.cut(shape.getShape()));
+                        shapes.emplace_back(baseShape.cut(shape.getShape()));
                     else
                         shapes.push_back(shape);
                 }
             } else {
                 baseShape = getBaseTopoShape();
                 baseShape.move(getLocation().Inverted());
-                shapes.push_back(shape.cut(baseShape.getShape()));
-                shapes.push_back(baseShape.cut(shape.getShape()));
+                shapes.emplace_back(shape.cut(baseShape.getShape()));
+                shapes.emplace_back(baseShape.cut(shape.getShape()));
             }
 
             // Make a compound to contain both additive and subtractive shape,

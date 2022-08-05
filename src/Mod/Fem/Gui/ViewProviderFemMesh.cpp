@@ -334,12 +334,12 @@ void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderFemMesh::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back(Private::dm_face_wire);
-    StrList.push_back(Private::dm_face_wire_node);
-    StrList.push_back(Private::dm_face);
-    StrList.push_back(Private::dm_wire);
-    StrList.push_back(Private::dm_node);
-    StrList.push_back(Private::dm_wire_node);
+    StrList.emplace_back(Private::dm_face_wire);
+    StrList.emplace_back(Private::dm_face_wire_node);
+    StrList.emplace_back(Private::dm_face);
+    StrList.emplace_back(Private::dm_wire);
+    StrList.emplace_back(Private::dm_node);
+    StrList.emplace_back(Private::dm_wire_node);
     return StrList;
 }
 

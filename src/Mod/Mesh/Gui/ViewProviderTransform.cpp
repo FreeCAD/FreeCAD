@@ -109,7 +109,7 @@ const char* ViewProviderMeshTransform::getDefaultDisplayMode() const
 std::vector<std::string> ViewProviderMeshTransform::getDisplayModes() const
 {
   std::vector<std::string> StrList = ViewProviderMesh::getDisplayModes();
-  StrList.push_back("Transform");
+  StrList.emplace_back("Transform");
   return StrList;
 }
 

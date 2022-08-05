@@ -397,7 +397,7 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::size_t count = objects.size();
             objects.push_back(sel.getObject());
             auto element = editedObject->UnboundEdges.getSubValues();
-            element.push_back(msg.pSubName);
+            element.emplace_back(msg.pSubName);
             editedObject->UnboundEdges.setValues(objects, element);
 
             // extend faces and continuities lists if needed

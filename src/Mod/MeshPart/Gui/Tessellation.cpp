@@ -370,7 +370,7 @@ std::vector<App::Color> Tessellation::getUniqueColors(const std::vector<App::Col
 
     std::vector<App::Color> unique;
     for (const auto& it : col_set)
-        unique.push_back(App::Color(it));
+        unique.emplace_back(it);
     return unique;
 }
 

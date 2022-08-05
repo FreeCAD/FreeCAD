@@ -50,8 +50,8 @@ std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) cons
 {
     // add your own modes
     std::vector<std::string> StrList;
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }
@@ -81,8 +81,8 @@ std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) con
 {
     // add your own modes
     std::vector<std::string> StrList;
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }
