@@ -285,13 +285,13 @@ void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderFemPostObject::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Outline");
-    StrList.push_back("Nodes");
+    StrList.emplace_back("Outline");
+    StrList.emplace_back("Nodes");
     //StrList.push_back("Nodes (surface only)"); somehow this filter does not work
-    StrList.push_back("Surface");
-    StrList.push_back("Surface with Edges");
-    StrList.push_back("Wireframe");
-    StrList.push_back("Wireframe (surface only)");
+    StrList.emplace_back("Surface");
+    StrList.emplace_back("Surface with Edges");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Wireframe (surface only)");
     return StrList;
 }
 
@@ -316,7 +316,7 @@ void ViewProviderFemPostObject::updateProperties() {
         val = Field.getValueAsString();
 
     std::vector<std::string> colorArrays;
-    colorArrays.push_back("None");
+    colorArrays.emplace_back("None");
 
     vtkPointData* point = poly->GetPointData();
     for (int i = 0; i < point->GetNumberOfArrays(); ++i) {
@@ -327,7 +327,7 @@ void ViewProviderFemPostObject::updateProperties() {
 
     vtkCellData* cell = poly->GetCellData();
     for (int i = 0; i < cell->GetNumberOfArrays(); ++i)
-        colorArrays.push_back(cell->GetArrayName(i));
+        colorArrays.emplace_back(cell->GetArrayName(i));
 
     App::Enumeration empty;
     Field.setValue(empty);
@@ -346,22 +346,22 @@ void ViewProviderFemPostObject::updateProperties() {
 
     colorArrays.clear();
     if (Field.getValue() == 0)
-        colorArrays.push_back("Not a vector");
+        colorArrays.emplace_back("Not a vector");
     else {
         int array = Field.getValue() - 1; //0 is none
         vtkPolyData* pd = m_currentAlgorithm->GetOutput();
         vtkDataArray* data = pd->GetPointData()->GetArray(array);
 
         if (data->GetNumberOfComponents() == 1)
-            colorArrays.push_back("Not a vector");
+            colorArrays.emplace_back("Not a vector");
         else {
-            colorArrays.push_back("Magnitude");
+            colorArrays.emplace_back("Magnitude");
             if (data->GetNumberOfComponents() >= 2) {
-                colorArrays.push_back("X");
-                colorArrays.push_back("Y");
+                colorArrays.emplace_back("X");
+                colorArrays.emplace_back("Y");
             }
             if (data->GetNumberOfComponents() >= 3)
-                colorArrays.push_back("Z");
+                colorArrays.emplace_back("Z");
         }
     }
 

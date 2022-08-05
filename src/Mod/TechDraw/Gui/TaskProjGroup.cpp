@@ -160,7 +160,7 @@ void TaskProjGroup::saveGroupState()
     for( const auto it : multiView->Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if (view) {
-            m_saveViewNames.push_back(view->Type.getValueAsString());
+            m_saveViewNames.emplace_back(view->Type.getValueAsString());
         }
     }
 }

@@ -90,7 +90,7 @@ int Measurement::addReference3D(App::DocumentObject *obj, const char* subName)
   std::vector<std::string> subElements = References3D.getSubValues();
 
   objects.push_back(obj);
-  subElements.push_back(subName);
+  subElements.emplace_back(subName);
 
   References3D.setValues(objects, subElements);
 

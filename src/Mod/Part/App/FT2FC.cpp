@@ -224,7 +224,7 @@ static int move_cb(const FT_Vector* pt, void* p) {
    }
    dc->LastVert = *pt;
    if (dc->polyPoints.empty()) {
-        dc->polyPoints.push_back(Base::Vector3d(pt->x, pt->y, 0.0));
+        dc->polyPoints.emplace_back(pt->x, pt->y, 0.0);
    }
 
    return 0;
@@ -240,7 +240,7 @@ static int line_cb(const FT_Vector* pt, void* p) {
        TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg , dc->surf);
        dc->Edges.push_back(edge);
        dc->LastVert = *pt;
-       dc->polyPoints.push_back(Base::Vector3d(pt->x, pt->y, 0.0));
+       dc->polyPoints.emplace_back(pt->x, pt->y, 0.0);
    }
    return 0;
 }
@@ -268,7 +268,7 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(spline , dc->surf);
    dc->Edges.push_back(edge);
    dc->LastVert = *pt1;
-   dc->polyPoints.push_back(Base::Vector3d(pt1->x, pt1->y, 0.0));
+   dc->polyPoints.emplace_back(pt1->x, pt1->y, 0.0);
    return 0;
 }
 
@@ -297,7 +297,7 @@ static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector*
    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(spline , dc->surf);
    dc->Edges.push_back(edge);
    dc->LastVert = *pt2;
-   dc->polyPoints.push_back(Base::Vector3d(pt2->x, pt2->y, 0.0));
+   dc->polyPoints.emplace_back(pt2->x, pt2->y, 0.0);
    return 0;
 }
 

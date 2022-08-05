@@ -373,8 +373,8 @@ void FillingPanel::open()
 
     // highlight the referenced face
     std::vector<App::PropertyLinkSubList::SubSet> links;
-    links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
-                                   editedObject->InitialFace.getSubValues()));
+    links.emplace_back(editedObject->InitialFace.getValue(),
+                                   editedObject->InitialFace.getSubValues());
     this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
 
     Gui::Selection().clearSelection();
@@ -420,8 +420,8 @@ void FillingPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 
         // unhighlight the referenced face
         std::vector<App::PropertyLinkSubList::SubSet> links;
-        links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
-                                       editedObject->InitialFace.getSubValues()));
+        links.emplace_back(editedObject->InitialFace.getValue(),
+                                       editedObject->InitialFace.getSubValues());
         this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
     }
 }
@@ -444,8 +444,8 @@ bool FillingPanel::accept()
 
     // unhighlight the referenced face
     std::vector<App::PropertyLinkSubList::SubSet> links;
-    links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
-                                   editedObject->InitialFace.getSubValues()));
+    links.emplace_back(editedObject->InitialFace.getValue(),
+                                   editedObject->InitialFace.getSubValues());
     this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
 
     return true;
@@ -458,8 +458,8 @@ bool FillingPanel::reject()
 
     // unhighlight the referenced face
     std::vector<App::PropertyLinkSubList::SubSet> links;
-    links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
-                                   editedObject->InitialFace.getSubValues()));
+    links.emplace_back(editedObject->InitialFace.getValue(),
+                                   editedObject->InitialFace.getSubValues());
     this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
 
     selectionMode = None;
@@ -475,8 +475,8 @@ void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
 
         // unhighlight the referenced face
         std::vector<App::PropertyLinkSubList::SubSet> links;
-        links.push_back(std::make_pair(editedObject->InitialFace.getValue(),
-                                       editedObject->InitialFace.getSubValues()));
+        links.emplace_back(editedObject->InitialFace.getValue(),
+                                       editedObject->InitialFace.getSubValues());
         this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
 
         editedObject->InitialFace.setValue(nullptr);
@@ -586,12 +586,12 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->lineInitFaceName->setText(text);
 
             std::vector<std::string> subList;
-            subList.push_back(msg.pSubName);
+            subList.emplace_back(msg.pSubName);
             editedObject->InitialFace.setValue(sel.getObject(), subList);
 
             // highlight the referenced face
             std::vector<App::PropertyLinkSubList::SubSet> links;
-            links.push_back(std::make_pair(sel.getObject(), subList));
+            links.emplace_back(sel.getObject(), subList);
             this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
 
             Gui::Selection().rmvSelectionGate();
@@ -619,7 +619,7 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::size_t count = objects.size();
             objects.push_back(sel.getObject());
             auto element = editedObject->BoundaryEdges.getSubValues();
-            element.push_back(msg.pSubName);
+            element.emplace_back(msg.pSubName);
             editedObject->BoundaryEdges.setValues(objects, element);
 
             // extend faces and continuities lists if needed

@@ -437,7 +437,7 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto objects = editedObject->BoundaryList.getValues();
             objects.push_back(sel.getObject());
             auto element = editedObject->BoundaryList.getSubValues();
-            element.push_back(msg.pSubName);
+            element.emplace_back(msg.pSubName);
             editedObject->BoundaryList.setValues(objects, element);
             auto booleans = editedObject->ReversedList.getValues();
             booleans.push_back(false);

@@ -1357,66 +1357,61 @@ void E57Reader::read(const std::string& filename)
                     if ((n.type() == e57::E57_FLOAT) || (n.type() == e57::E57_SCALED_INTEGER)) {
                         if (n.elementName() == "cartesianX") {
                             ptr_xyz[0] = cnt_xyz++;
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(xyz[0])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                         else if (n.elementName() == "cartesianY") {
                             ptr_xyz[1] = cnt_xyz++;
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(xyz[buf_size])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                         else if (n.elementName() == "cartesianZ") {
                             ptr_xyz[2] = cnt_xyz++;
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(xyz[2 * buf_size])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                         else if (n.elementName() == "intensity") {
                             inty = true;
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(intensity[0])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                         else {
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(nil[0])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
 
@@ -1424,66 +1419,61 @@ void E57Reader::read(const std::string& filename)
                     else if (n.type() == e57::E57_INTEGER) {
                         if (n.elementName() == "colorRed") {
                             ptr_rgb[0] = cnt_rgb++;
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(rgb[0])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                         else if (n.elementName() == "colorGreen") {
                             ptr_rgb[1] = cnt_rgb++;
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(rgb[buf_size])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                         else if (n.elementName() == "colorBlue") {
                             ptr_rgb[2] = cnt_rgb++;
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(rgb[2 * buf_size])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                         else if (n.elementName() == "cartesianInvalidState") {
                             inv_state = true;
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(state[0])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                         else {
-                            sdb.push_back(
-                                e57::SourceDestBuffer(
+                            sdb.emplace_back(
                                     imfi
                                     , n.elementName()
                                     , &(nil[0])
                                     , buf_size
                                     , true
                                     , true
-                                )
+
                             );
                         }
                     }
@@ -1619,9 +1609,9 @@ PlyWriter::~PlyWriter()
 void PlyWriter::write(const std::string& filename)
 {
     std::list<std::string> properties;
-    properties.push_back("float x");
-    properties.push_back("float y");
-    properties.push_back("float z");
+    properties.emplace_back("float x");
+    properties.emplace_back("float y");
+    properties.emplace_back("float z");
 
     ConverterPtr convert_float(new ConverterT<float>);
     ConverterPtr convert_uint(new ConverterT<uint32_t>);
@@ -1636,19 +1626,19 @@ void PlyWriter::write(const std::string& filename)
     bool hasNormals = (normals.size() == points.size());
 
     if (hasNormals) {
-        properties.push_back("float nx");
-        properties.push_back("float ny");
-        properties.push_back("float nz");
+        properties.emplace_back("float nx");
+        properties.emplace_back("float ny");
+        properties.emplace_back("float nz");
         converters.push_back(convert_float);
         converters.push_back(convert_float);
         converters.push_back(convert_float);
     }
 
     if (hasColors) {
-        properties.push_back("uchar red");
-        properties.push_back("uchar green");
-        properties.push_back("uchar blue");
-        properties.push_back("uchar alpha");
+        properties.emplace_back("uchar red");
+        properties.emplace_back("uchar green");
+        properties.emplace_back("uchar blue");
+        properties.emplace_back("uchar alpha");
         converters.push_back(convert_uint);
         converters.push_back(convert_uint);
         converters.push_back(convert_uint);
@@ -1656,7 +1646,7 @@ void PlyWriter::write(const std::string& filename)
     }
 
     if (hasIntensity) {
-        properties.push_back("float intensity");
+        properties.emplace_back("float intensity");
         converters.push_back(convert_float);
     }
 
@@ -1778,14 +1768,14 @@ PcdWriter::~PcdWriter()
 void PcdWriter::write(const std::string& filename)
 {
     std::list<std::string> fields;
-    fields.push_back("x");
-    fields.push_back("y");
-    fields.push_back("z");
+    fields.emplace_back("x");
+    fields.emplace_back("y");
+    fields.emplace_back("z");
 
     std::list<std::string> types;
-    types.push_back("F");
-    types.push_back("F");
-    types.push_back("F");
+    types.emplace_back("F");
+    types.emplace_back("F");
+    types.emplace_back("F");
 
     ConverterPtr convert_float(new ConverterT<float>);
     ConverterPtr convert_uint(new ConverterT<uint32_t>);
@@ -1800,26 +1790,26 @@ void PcdWriter::write(const std::string& filename)
     bool hasNormals = (normals.size() == points.size());
 
     if (hasNormals) {
-        fields.push_back("normal_x");
-        fields.push_back("normal_y");
-        fields.push_back("normal_z");
-        types.push_back("F");
-        types.push_back("F");
-        types.push_back("F");
+        fields.emplace_back("normal_x");
+        fields.emplace_back("normal_y");
+        fields.emplace_back("normal_z");
+        types.emplace_back("F");
+        types.emplace_back("F");
+        types.emplace_back("F");
         converters.push_back(convert_float);
         converters.push_back(convert_float);
         converters.push_back(convert_float);
     }
 
     if (hasColors) {
-        fields.push_back("rgba");
-        types.push_back("U");
+        fields.emplace_back("rgba");
+        types.emplace_back("U");
         converters.push_back(convert_uint);
     }
 
     if (hasIntensity) {
-        fields.push_back("intensity");
-        types.push_back("F");
+        fields.emplace_back("intensity");
+        types.emplace_back("F");
         converters.push_back(convert_float);
     }
 

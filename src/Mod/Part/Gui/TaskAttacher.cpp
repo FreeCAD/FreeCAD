@@ -106,7 +106,7 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
                 refnames[r] = refs[r]->getNameInDocument();
         } else {
             refstrings.push_back(QObject::tr("No reference selected"));
-            refnames.push_back("");
+            refnames.emplace_back("");
         }
     }
 }
@@ -661,7 +661,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         refnames[idx] = subElement.c_str();
     } else {
         refs.push_back(obj);
-        refnames.push_back(subElement.c_str());
+        refnames.emplace_back(subElement.c_str());
     }
     pcAttach->Support.setValues(refs, refnames);
     updateListOfModes();

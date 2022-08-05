@@ -1901,7 +1901,7 @@ void CmdPartThickness::activated(int iMsg)
         topoShape = Part::Feature::getTopoShape(obj);
         if (!topoShape.isNull()) {
             for (std::vector<std::string>::const_iterator it = subnames.begin(); it != subnames.end(); ++it) {
-                subShapes.push_back(topoShape.getSubShape(subnames[0].c_str()));
+                subShapes.emplace_back(topoShape.getSubShape(subnames[0].c_str()));
             }
             for (std::vector<Part::TopoShape>::iterator it = subShapes.begin(); it != subShapes.end(); ++it) {
                 TopoDS_Shape dsShape = (*it).getShape();

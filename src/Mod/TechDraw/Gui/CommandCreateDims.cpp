@@ -1347,8 +1347,8 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     std::vector<App::DocumentObject*> refs2d;
 
     std::vector<std::string> subs;
-    subs.push_back("Vertex1");
-    subs.push_back("Vertex1");
+    subs.emplace_back("Vertex1");
+    subs.emplace_back("Vertex1");
     TechDraw::DrawPage* page = dvp->findParentPage();
     std::string parentName = dvp->getNameInDocument();
     std::string PageName = page->getNameInDocument();

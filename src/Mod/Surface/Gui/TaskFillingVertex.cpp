@@ -272,7 +272,7 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto objects = editedObject->Points.getValues();
             objects.push_back(sel.getObject());
             auto element = editedObject->Points.getSubValues();
-            element.push_back(msg.pSubName);
+            element.emplace_back(msg.pSubName);
             editedObject->Points.setValues(objects, element);
             this->vp->highlightReferences(ViewProviderFilling::Vertex,
                 editedObject->Points.getSubListValues(), true);

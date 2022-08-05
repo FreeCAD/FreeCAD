@@ -289,7 +289,7 @@ SoTransformManip* ViewProviderFemPostFunction::setupManipulator() {
 std::vector<std::string> ViewProviderFemPostFunction::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Default");
+    StrList.emplace_back("Default");
     return StrList;
 }
 

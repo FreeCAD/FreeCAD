@@ -54,8 +54,8 @@ std::vector<std::string> ViewProviderCircleParametric::getDisplayModes(void) con
   std::vector<std::string> StrList;
 
   // add your own modes
-  StrList.push_back("Wireframe");
-  StrList.push_back("Points");
+  StrList.emplace_back("Wireframe");
+  StrList.emplace_back("Points");
 
   return StrList;
 }

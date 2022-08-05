@@ -469,7 +469,7 @@ DocumentObjectExecReturn* FemPostScalarClipFilter::execute(void) {
 
     for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
         if (pd->GetArray(i)->GetNumberOfComponents() == 1)
-            array.push_back(pd->GetArrayName(i));
+            array.emplace_back(pd->GetArrayName(i));
     }
 
     App::Enumeration empty;
@@ -572,7 +572,7 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
 
     for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
         if (pd->GetArray(i)->GetNumberOfComponents() == 3)
-            array.push_back(pd->GetArrayName(i));
+            array.emplace_back(pd->GetArrayName(i));
     }
 
     App::Enumeration empty;

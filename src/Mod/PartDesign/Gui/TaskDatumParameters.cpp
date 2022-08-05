@@ -144,7 +144,7 @@ bool TaskDlgDatumParameters::accept() {
                     if (copy) {
                         copyObjects.push_back(copy);
                         copies.push_back(copyObjects.back());
-                        copySubValues.push_back(std::string());
+                        copySubValues.emplace_back();
                     }
                 }
                 else {

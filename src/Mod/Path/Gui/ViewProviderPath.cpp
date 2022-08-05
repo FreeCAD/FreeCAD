@@ -294,7 +294,7 @@ void ViewProviderPath::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderPath::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Waypoints");
+    StrList.emplace_back("Waypoints");
     return StrList;
 }
 

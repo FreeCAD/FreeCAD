@@ -131,7 +131,7 @@ std::vector<std::string> DrawViewSymbol::getEditableFields()
         while (!queryResult.next().isNull()) {
             QDomElement tspan = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
             QString editableValue = tspan.firstChild().nodeValue();
-            editables.push_back(std::string(editableValue.toUtf8().constData()));
+            editables.emplace_back(editableValue.toUtf8().constData());
         }
     }
     return editables;

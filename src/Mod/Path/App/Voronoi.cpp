@@ -153,7 +153,7 @@ void Voronoi::addSegment(const Voronoi::segment_type &s) {
   pil.y(low(s).y() * vd->getScale());
   pih.x(high(s).x() * vd->getScale());
   pih.y(high(s).y() * vd->getScale());
-  vd->segments.push_back(segment_type(pil, pih));
+  vd->segments.emplace_back(pil, pih);
 }
 
 long Voronoi::numPoints() const {

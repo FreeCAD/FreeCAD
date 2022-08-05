@@ -444,7 +444,7 @@ void SubShapeBinder::setupCopyOnChange() {
     hasCopyOnChange = App::LinkBaseExtension::setupCopyOnChange(this, linked,
         BindCopyOnChange.getValue() == 1 ? &copyOnChangeConns : nullptr, hasCopyOnChange);
     if (hasCopyOnChange) {
-        copyOnChangeConns.push_back(linked->signalChanged.connect(
+        copyOnChangeConns.emplace_back(linked->signalChanged.connect(
             [this](const App::DocumentObject&, const App::Property& prop) {
             if (!prop.testStatus(App::Property::Output)
                 && !prop.testStatus(App::Property::PropOutput))
@@ -907,7 +907,7 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject*, std::vector<std::st
             FC_THROWM(Base::ValueError, "Cyclic reference to " << v.first->getFullName());
 
         if (v.second.empty()) {
-            v.second.push_back("");
+            v.second.emplace_back("");
             continue;
         }
 

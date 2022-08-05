@@ -74,7 +74,7 @@ std::vector<std::string> ViewProviderProjGroup::getDisplayModes(void) const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-    StrList.push_back("Drawing");
+    StrList.emplace_back("Drawing");
     return StrList;
 }
 
@@ -158,21 +158,21 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
         // add names to a list
         if (!viewSection.empty()) {
             for (auto SecIterator : viewSection) {
-                ViewList.push_back(SecIterator->Label.getValue());
+                ViewList.emplace_back(SecIterator->Label.getValue());
             }
         }
         // get its detail views
         auto viewDetail = Item->getDetailRefs();
         if (!viewDetail.empty()) {
             for (auto DetIterator : viewDetail) {
-                ViewList.push_back(DetIterator->Label.getValue());
+                ViewList.emplace_back(DetIterator->Label.getValue());
             }
         }
         // get its leader lines
         auto viewLead = Item->getLeaders();
         if (!viewLead.empty()) {
             for (auto LeadIterator : viewLead) {
-                ViewList.push_back(LeadIterator->Label.getValue());
+                ViewList.emplace_back(LeadIterator->Label.getValue());
             }
         }
     }
