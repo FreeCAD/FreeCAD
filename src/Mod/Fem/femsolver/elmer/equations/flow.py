@@ -32,6 +32,10 @@ from femtools import femutils
 from . import nonlinear
 from ... import equationbase
 
+CONVECTION_TYPE = ["None", "Computed", "Constant"]
+
+def getConvectionType():
+    return CONVECTION_TYPE
 
 def create(doc, name="Flow"):
     return femutils.createObject(
@@ -45,6 +49,24 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
 
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Convection",
+            "Equation",
+            "Type of convection to be used"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "MagneticInduction",
+            "Equation",
+            (
+                "Magnetic induction equation will be solved\n"
+                "along with the Navier-Stokes equations"
+            )
+        )
+
+        obj.Convection = CONVECTION_TYPE
+        obj.Convection = "Computed"
         obj.Priority = 10
 
 

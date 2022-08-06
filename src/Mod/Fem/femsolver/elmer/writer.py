@@ -46,6 +46,7 @@ from femmesh import gmshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
+from .equations import flow
 
 
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
@@ -1169,6 +1170,7 @@ class Writer(object):
                 for body in activeIn:
                     if self._isMaterialFlow(body):
                         self._addSolver(body, solverSection)
+                self._handleFlowEquation(activeIn, equation)
         if activeIn:
             self._handleFlowConstants()
             self._handleFlowBndConditions()
@@ -1176,9 +1178,11 @@ class Writer(object):
             # self._handleFlowInitial(activeIn)
             # self._handleFlowBodyForces(activeIn)
             self._handleFlowMaterial(activeIn)
-            self._handleFlowEquation(activeIn)
 
     def _getFlowSolver(self, equation):
+        # check if we need to update the equation
+        self._updateFlowSolver(equation)
+        # output the equation parameters
         s = self._createNonlinearSolver(equation)
         s["Equation"] = "Navier-Stokes"
         s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
@@ -1190,6 +1194,28 @@ class Writer(object):
     def _handleFlowConstants(self):
         gravity = self._getConstant("Gravity", "L/T^2")
         self._constant("Gravity", (0.0, -1.0, 0.0, gravity))
+
+    def _updateFlowSolver(self, equation):
+        # updates older Flow equations
+        if not hasattr(equation, "Convection"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "Convection",
+                "Equation",
+                "Type of convection to be used"
+            )
+            equation.Convection = flow.getConvectionType()
+            equation.Convection = "Computed"
+        if not hasattr(equation, "MagneticInduction"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "MagneticInduction",
+                "Equation",
+                (
+                    "Magnetic induction equation will be solved\n"
+                    "along with the Navier-Stokes equations"
+                )
+            )
 
     def _handleFlowMaterial(self, bodies):
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
@@ -1269,9 +1295,12 @@ class Writer(object):
                         self._boundary(name, "Normal-Tangential Velocity", True)
                 self._handled(obj)
 
-    def _handleFlowEquation(self, bodies):
+    def _handleFlowEquation(self, bodies, equation):
         for b in bodies:
-            self._equation(b, "Convection", "Computed")
+            if equation.Convection != "None":
+                self._equation(b, "Convection", equation.Convection)
+            if equation.MagneticInduction is True:
+                self._equation(b, "Magnetic Induction", equation.MagneticInduction)
 
     def _createEmptySolver(self):
         s = sifio.createSection(sifio.SOLVER)
