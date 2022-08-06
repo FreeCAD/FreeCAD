@@ -349,11 +349,11 @@ class Writer(object):
         s = self._createNonlinearSolver(equation)
         s["Equation"] = equation.Name
         s["Procedure"] = sifio.FileAttr("HeatSolve/HeatSolver")
-        s["Variable"] = self._getUniqueVarName("Temperature")
-        s["Exec Solver"] = "Always"
         s["Bubbles"] = equation.Bubbles
-        s["Stabilize"] = equation.Stabilize
+        s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
+        s["Stabilize"] = equation.Stabilize
+        s["Variable"] = self._getUniqueVarName("Temperature")
         return s
 
     def _handleHeatConstants(self):
@@ -534,15 +534,22 @@ class Writer(object):
         # output the equation parameters
         s["Equation"] = "Flux Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
-        s["Average Within Materials"] = equation.AverageWithinMaterials
+        if equation.AverageWithinMaterials == True:
+            s["Average Within Materials"] = equation.AverageWithinMaterials
         s["Calculate Flux"] = equation.CalculateFlux
-        s["Calculate Flux Abs"] = equation.CalculateFluxAbs
-        s["Calculate Flux Magnitude"] = equation.CalculateFluxMagnitude
+        if equation.CalculateFluxAbs == True:
+            s["Calculate Flux Abs"] = equation.CalculateFluxAbs
+        if equation.CalculateFluxMagnitude == True:
+            s["Calculate Flux Magnitude"] = equation.CalculateFluxMagnitude
         s["Calculate Grad"] = equation.CalculateGrad
-        s["Calculate Grad Abs"] = equation.CalculateGradAbs
-        s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
-        s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
-        s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
+        if equation.CalculateGradAbs == True:
+            s["Calculate Grad Abs"] = equation.CalculateGradAbs
+        if equation.CalculateGradMagnitude == True:
+            s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
+        if equation.DiscontinuousGalerkin == True:
+            s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
+        if equation.EnforcePositiveMagnitude == True:
+            s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
         s["Flux Coefficient"] = equation.FluxCoefficient
         s["Flux Variable"] = equation.FluxVariable
         s["Stabilize"] = equation.Stabilize
@@ -654,26 +661,39 @@ class Writer(object):
         # output the equation parameters
         s["Equation"] = "Stress Solver" # equation.Name
         s["Procedure"] = sifio.FileAttr("StressSolve/StressSolver")
-        s["Variable"] = equation.Variable
-        s["Variable DOFs"] = 3
-        s["Calculate Strains"] = equation.CalculateStrains
-        s["Calculate Stresses"] = equation.CalculateStresses
-        s["Calculate Principal"] = equation.CalculatePrincipal
-        s["Calculate Pangle"] = equation.CalculatePangle
-        s["Constant Bulk System"] = equation.ConstantBulkSystem
+        if equation.CalculateStrains == True:
+            s["Calculate Strains"] = equation.CalculateStrains
+        if equation.CalculateStresses == True:
+            s["Calculate Stresses"] = equation.CalculateStresses
+        if equation.CalculatePrincipal == True:
+            s["Calculate Principal"] = equation.CalculatePrincipal
+        if equation.CalculatePangle == True:
+            s["Calculate Pangle"] = equation.CalculatePangle
+        if equation.ConstantBulkSystem == True:
+            s["Constant Bulk System"] = equation.ConstantBulkSystem
         s["Displace mesh"] = equation.DisplaceMesh
         s["Eigen Analysis"] = equation.EigenAnalysis
-        s["Eigen System Values"] = equation.EigenSystemValues
-        s["Fix Displacement"] = equation.FixDisplacement
+        if equation.EigenAnalysis == True:
+            s["Eigen System Values"] = equation.EigenSystemValues
+        if equation.FixDisplacement == True:
+            s["Fix Displacement"] = equation.FixDisplacement
         s["Geometric Stiffness"] = equation.GeometricStiffness
-        s["Incompressible"] = equation.Incompressible
-        s["Maxwell Material"] = equation.MaxwellMaterial
-        s["Model Lumping"] = equation.ModelLumping
-        s["Model Lumping Filename"] = equation.ModelLumpingFilename
+        if equation.Incompressible == True:
+            s["Incompressible"] = equation.Incompressible
+        if equation.MaxwellMaterial == True:
+            s["Maxwell Material"] = equation.MaxwellMaterial
+        if equation.ModelLumping == True:
+            s["Model Lumping"] = equation.ModelLumping
+        if equation.ModelLumping == True:
+            s["Model Lumping Filename"] = equation.ModelLumpingFilename
         s["Optimize Bandwidth"] = True
-        s["Stability Analysis"] = equation.StabilityAnalysis
+        if equation.StabilityAnalysis == True:
+            s["Stability Analysis"] = equation.StabilityAnalysis
         s["Stabilize"] = equation.Stabilize
-        s["Update Transient System"] = equation.UpdateTransientSystem
+        if equation.UpdateTransientSystem == True:
+            s["Update Transient System"] = equation.UpdateTransientSystem
+        s["Variable"] = equation.Variable
+        s["Variable DOFs"] = 3
         return s
 
     def _updateElasticitySolver(self, equation):
