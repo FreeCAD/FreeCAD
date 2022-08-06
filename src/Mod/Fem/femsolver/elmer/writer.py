@@ -580,8 +580,10 @@ class Writer(object):
             s["Constant Weights"] = equation.ConstantWeights
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
-        if equation.CalculateCapacitanceMatrix is False\
-            and (equation.PotentialDifference != 0.0):
+        if (
+            equation.CalculateCapacitanceMatrix is False
+            and (equation.PotentialDifference != 0.0)
+        ):
             s["Potential Difference"] = equation.PotentialDifference
         s["Stabilize"] = equation.Stabilize
         return s
@@ -1256,9 +1258,9 @@ class Writer(object):
             equation.Convection = "Computed"
         if not hasattr(equation, "DivDiscretization"):
             equation.addProperty(
-            "App::PropertyBool",
-            "DivDiscretization",
-            "Flow",
+                "App::PropertyBool",
+                "DivDiscretization",
+                "Flow",
                 (
                     "Set to true for incompressible flow for more stable\n"
                     "discretization when Reynolds number increases"

@@ -44,7 +44,7 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        
+
         obj.addProperty(
             "App::PropertyBool",
             "CalculateCapacitanceMatrix",
