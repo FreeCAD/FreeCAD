@@ -83,26 +83,21 @@ class Proxy(solverbase.Proxy):
         obj.BDFOrder = (2, 1, 5, 1)
 
         obj.addProperty(
-            "App::PropertyIntegerConstraint",
+            "App::PropertyIntegerList",
             "TimestepIntervals",
             "Timestepping",
-            "Maximum optimization rounds if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+            "List of maximum optimization rounds if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
         )
         obj.addProperty(
-            "App::PropertyFloatConstraint",
+            "App::PropertyFloatList",
             "TimestepSizes",
             "Timestepping",
-            "Time step of optimization if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+            "List of time steps of optimization if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
         )
         # there is no universal default, it all depends on the analysis, however
         # we have to set something and set 10 seconds in steps of 0.1s
-        # since the Emler manual lacks proper info, here a link to a forum thread:
-        # http://www.elmerfem.org/forum/viewtopic.php?p=18057&sid=73169c4ec544fd7f181f85178bbc8ffe#p18057
-        # -----
-        # Set maximum to 1e8 because on Win the max int is always 32bit (4.29e9)
-        # for TimestepSizes also 1e8 just to set something
-        obj.TimestepIntervals = (100, 1, int(1e8), 10)
-        obj.TimestepSizes = (0.1, 1e-8, 1e8, 0.1)
+        obj.TimestepIntervals = [100]
+        obj.TimestepSizes = [0.1]
 
         obj.addProperty(
             "App::PropertyEnumeration",

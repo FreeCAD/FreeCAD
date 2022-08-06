@@ -341,6 +341,8 @@ class Writer(object):
         ):
             self._simulation("Timestep Intervals", self.solver.TimestepIntervals)
             self._simulation("Timestep Sizes", self.solver.TimestepSizes)
+            # Output Intervals must be equal to Timestep Intervals
+            self._simulation("Output Intervals", self.solver.TimestepIntervals)
         if hasHeat:
             self._simulation("Timestepping Method", "BDF")
         self._simulation("Use Mesh Names", True)
@@ -366,26 +368,26 @@ class Writer(object):
             solver.SimulationType = "Steady State"
         if not hasattr(self.solver, "TimestepIntervals"):
             solver.addProperty(
-                "App::PropertyIntegerConstraint",
+                "App::PropertyIntegerList",
                 "TimestepIntervals",
                 "Timestepping",
                 (
-                    "Maximum optimization rounds if 'Simulation Type'\n"
+                    "List of maximum optimization rounds if 'Simulation Type'\n"
                     "is either 'Scanning' or 'Transient'"
                 )
             )
-            solver.TimestepIntervals = (100, 1, int(1e8), 10)
+            solver.TimestepIntervals = [100]
         if not hasattr(self.solver, "TimestepSizes"):
             solver.addProperty(
-                "App::PropertyFloatConstraint",
+                "App::PropertyFloatList",
                 "TimestepSizes",
                 "Timestepping",
                 (
-                    "Time step of optimization if 'Simulation Type'\n"
+                    "List of time steps of optimization if 'Simulation Type'\n"
                     "is either 'Scanning' or 'Transient'"
                 )
             )
-            solver.TimestepSizes = (0.1, 1e-8, 1e8, 0.1)
+            solver.TimestepSizes = [0.1]
 
     def _handleHeat(self):
         activeIn = []
