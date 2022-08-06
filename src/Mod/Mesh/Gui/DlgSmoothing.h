@@ -45,7 +45,8 @@ public:
     enum Smooth {
         None,
         Taubin,
-        Laplace
+        Laplace,
+        MedianFilter
     };
 
     DlgSmoothing(QWidget* parent = nullptr);

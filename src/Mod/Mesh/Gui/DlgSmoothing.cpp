@@ -212,6 +212,16 @@ bool TaskSmoothing::accept()
                         s.Smooth(widget->iterations());
                     }
                 }   break;
+            case MeshGui::DlgSmoothing::MedianFilter:
+                {
+                    MeshCore::MedianFilterSmoothing s(mm->getKernel());
+                    if (widget->smoothSelection()) {
+                        s.SmoothPoints(widget->iterations(), selection);
+                    }
+                    else {
+                        s.Smooth(widget->iterations());
+                    }
+                }   break;
             default:
                 break;
         }

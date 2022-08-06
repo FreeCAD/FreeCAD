@@ -328,6 +328,12 @@ public:
    */
   bool HasNeighbour (unsigned short usSide) const
   { return (_aulNeighbours[usSide] != FACET_INDEX_MAX); }
+  /**
+   * Checks if the given index is a neighbour facet.
+   */
+  bool IsNeighbour(FacetIndex index) const {
+      return Side(index) < 3;
+  }
   /** Counts the number of edges without neighbour. */
   inline unsigned short CountOpenEdges() const;
   /** Returns true if there is an edge without neighbour, otherwise false. */

@@ -1751,15 +1751,17 @@ PyObject*  MeshPy::trimByPlane(PyObject *args)
     Py_Return;
 }
 
-PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
+PyObject* MeshPy::smooth(PyObject *args, PyObject *kwds)
 {
     char* method = "Laplace";
     int iter=1;
     double lambda = 0;
     double micro = 0;
-    static char* keywords_smooth[] = {"Method","Iteration","Lambda","Micro",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sidd",keywords_smooth,
-                                     &method, &iter, &lambda, &micro))
+    double maximum = 1000;
+    int weight = 1;
+    static char* keywords_smooth[] = {"Method", "Iteration", "Lambda", "Micro", "Maximum", "Weight", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sidddi",keywords_smooth,
+                                     &method, &iter, &lambda, &micro, &maximum, &weight))
         return nullptr;
 
     PY_TRY {
@@ -1781,6 +1783,12 @@ PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
         }
         else if (strcmp(method, "PlaneFit") == 0) {
             MeshCore::PlaneFitSmoothing smooth(kernel);
+            smooth.SetMaximum(maximum);
+            smooth.Smooth(iter);
+        }
+        else if (strcmp(method, "MedianFilter") == 0) {
+            MeshCore::MedianFilterSmoothing smooth(kernel);
+            smooth.SetWeight(weight);
             smooth.Smooth(iter);
         }
         else {
