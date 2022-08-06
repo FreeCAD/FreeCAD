@@ -40,6 +40,7 @@ class Proxy(linear.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyFloat",
             "NonlinearTolerance",
@@ -50,13 +51,7 @@ class Proxy(linear.Proxy):
             "App::PropertyInteger",
             "NonlinearIterations",
             "Nonlinear System",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyFloat",
-            "RelaxationFactor",
-            "Nonlinear System",
-            ""
+            "Maxmimum number of iterations"
         )
         obj.addProperty(
             "App::PropertyInteger",
@@ -70,6 +65,16 @@ class Proxy(linear.Proxy):
             "Nonlinear System",
             ""
         )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "RelaxationFactor",
+            "Nonlinear System",
+            (
+                "Value below 1.0 might be necessary to achieve convergence\n"
+                "Typical values are in the range [0.3, 1.0]"
+            )
+        )
+
         obj.NonlinearIterations = 500
         obj.NonlinearNewtonAfterIterations = 3
         # for small numbers we must set an expression because we don't have a UI,
@@ -78,7 +83,7 @@ class Proxy(linear.Proxy):
         # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
         obj.setExpression("NonlinearTolerance", "1e-8")
         obj.setExpression("NonlinearNewtonAfterTolerance", "1e-3")
-        obj.setExpression("RelaxationFactor", "1.0")  # must often be < 1 down to 0.01
+        obj.RelaxationFactor = 1.0
 
 
 class ViewProxy(linear.ViewProxy):
