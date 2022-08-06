@@ -1223,7 +1223,24 @@ class Writer(object):
         s = sifio.createSection(sifio.SOLVER)
         return s
 
+    def _hasExpression(self, equation):
+        obj = None
+        exp = None
+        for (obj, exp) in equation.ExpressionEngine:
+            if obj == equation:
+                return exp
+        return None
+
+    def _updateLinearSolver(self, equation):
+        if self._hasExpression(equation) != equation.LinearTolerance:
+            equation.setExpression("LinearTolerance", str(equation.LinearTolerance))
+        if self._hasExpression(equation) != equation.SteadyStateTolerance:
+            equation.setExpression("SteadyStateTolerance", str(equation.SteadyStateTolerance))
+
     def _createLinearSolver(self, equation):
+        # first check if we have to update
+        self._updateLinearSolver(equation)
+        # write the solver
         s = sifio.createSection(sifio.SOLVER)
         s.priority = equation.Priority
         s["Linear System Solver"] = equation.LinearSolverType
@@ -1249,8 +1266,19 @@ class Writer(object):
         s["Linear System Precondition Recompute"] = 1
         return s
 
+    def _updateNonlinearSolver(self, equation):
+        if self._hasExpression(equation) != equation.NonlinearTolerance:
+            equation.setExpression("NonlinearTolerance", str(equation.NonlinearTolerance))
+        if self._hasExpression(equation) != equation.NonlinearNewtonAfterTolerance:
+            equation.setExpression("NonlinearNewtonAfterTolerance",\
+                str(equation.NonlinearNewtonAfterTolerance))
+
     def _createNonlinearSolver(self, equation):
+        # first check if we have to update
+        self._updateNonlinearSolver(equation)
+        # write the linear solver
         s = self._createLinearSolver(equation)
+        # write the nonlinear solver
         s["Nonlinear System Max Iterations"] = \
             equation.NonlinearIterations
         s["Nonlinear System Convergence Tolerance"] = \

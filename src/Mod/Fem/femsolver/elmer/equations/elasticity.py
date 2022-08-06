@@ -235,7 +235,9 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
         obj.EigenSystemSelect = "Smallest Magnitude"
         # according to Elmer manual default is 100 times the Linear Tolerance
         # since this is a small value we must set an expression, see linear.py for background
-        obj.setExpression("EigenSystemTolerance", str(100 * obj.LinearTolerance))
+        for (prop, expr) in obj.ExpressionEngine:
+            if (prop == "LinearTolerance"):
+                obj.setExpression("EigenSystemTolerance", str(100 * obj.evalExpression(expr)))
         obj.Variable = "Displacement"
 
 
