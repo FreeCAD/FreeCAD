@@ -745,6 +745,14 @@ class Writer(object):
         s["Displace mesh"] = equation.DisplaceMesh
         s["Eigen Analysis"] = equation.EigenAnalysis
         if equation.EigenAnalysis is True:
+            s["Eigen System Convergence Tolerance"] = \
+                equation.EigenSystemTolerance
+            s["Eigen System Complex"] = equation.EigenSystemComplex
+            if equation.EigenSystemComputeResiduals is True:
+                s["Eigen System Compute Residuals"] = equation.EigenSystemComputeResiduals
+            s["Eigen System Damped"] = equation.EigenSystemDamped
+            s["Eigen System Max Iterations"] = equation.EigenSystemMaxIterations
+            s["Eigen System Select"] = equation.EigenSystemSelect
             s["Eigen System Values"] = equation.EigenSystemValues
         if equation.FixDisplacement is True:
             s["Fix Displacement"] = equation.FixDisplacement
@@ -811,19 +819,77 @@ class Writer(object):
             equation.addProperty(
                 "App::PropertyBool",
                 "EigenAnalysis",
-                "Elasticity",
+                "Eigen Values",
                 "If true, modal analysis"
             )
             if hasattr(equation, "DoFrequencyAnalysis"):
                 equation.EigenAnalysis = equation.DoFrequencyAnalysis
                 equation.removeProperty("DoFrequencyAnalysis")
+        if not hasattr(equation, "EigenSystemComplex"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "EigenSystemComplex",
+                "Eigen Values",
+                (
+                    "Should be true if eigen system is complex\n"
+                    "Must be false for a damped eigen value analysis."
+                )
+            )
+            equation.EigenSystemComplex = True
+        if not hasattr(equation, "EigenSystemComputeResiduals"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "EigenSystemComputeResiduals",
+                "Eigen Values",
+                "Computes residuals of eigen value system"
+                )
+        if not hasattr(equation, "EigenSystemDamped"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "EigenSystemDamped",
+                "Eigen Values",
+                (
+                    "Set a damped eigen analysis. Can only be\n"
+                    "used if 'Linear Solver Type' is 'Iterative'."
+                )
+            )
+        if not hasattr(equation, "EigenSystemMaxIterations"):
+            equation.addProperty(
+                "App::PropertyIntegerConstraint",
+                "EigenSystemMaxIterations",
+                "Eigen Values",
+                "Max iterations for iterative eigensystem solver"
+            )
+            equation.EigenSystemMaxIterations = (300, 1, int(1e8), 1)
+        EIGEN_SYSTEM_SELECT = ["Smallest Magnitude", "Largest Magnitude", "Smallest Real Part",\
+            "Largest Real Part", "Smallest Imag Part", "Largest Imag Part"]
+        if not hasattr(equation, "EigenSystemSelect"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "EigenSystemSelect",
+                "Eigen Values",
+                "Which eigenvalues are computed"
+            )
+            equation.EigenSystemSelect = EIGEN_SYSTEM_SELECT
+            equation.EigenSystemSelect = "Smallest Magnitude"
+        if not hasattr(equation, "EigenSystemTolerance"):
+            equation.addProperty(
+                "App::PropertyFloat",
+                "EigenSystemTolerance",
+                "Eigen Values",
+                (
+                    "Convergence tolerance for iterative eigensystem solve\n"
+                    "Default is 100 times the 'Linear Tolerance'"
+                )
+            )
+            equation.setExpression("EigenSystemTolerance", str(100 * equation.LinearTolerance))
         if not hasattr(equation, "EigenSystemValues"):
             # EigenmodesCount was renamed to EigenSystemValues
             # to follow the Elmer manual
             equation.addProperty(
                 "App::PropertyInteger",
                 "EigenSystemValues",
-                "Elasticity",
+                "Eigen Values",
                 "Number of lowest eigen modes"
             )
             if hasattr(equation, "EigenmodesCount"):

@@ -32,6 +32,8 @@ from femtools import femutils
 from ... import equationbase
 from . import linear
 
+EIGEN_SYSTEM_SELECT = ["Smallest Magnitude", "Largest Magnitude", "Smallest Real Part",\
+    "Largest Real Part", "Smallest Imag Part", "Largest Imag Part"]
 
 def create(doc, name="Elasticity"):
     return femutils.createObject(
@@ -87,13 +89,58 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
         obj.addProperty(
             "App::PropertyBool",
             "EigenAnalysis",
-            "Elasticity",
+            "Eigen Values",
             "If true, modal analysis"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "EigenSystemComplex",
+            "Eigen Values",
+            (
+                "Should be true if eigen system is complex\n"
+                "Must be false for a damped eigen value analysis."
+            )
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "EigenSystemComputeResiduals",
+            "Eigen Values",
+            "Computes residuals of eigen value system"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "EigenSystemDamped",
+            "Eigen Values",
+            (
+                "Set a damped eigen analysis. Can only be\n"
+                "used if 'Linear Solver Type' is 'Iterative'."
+            )
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "EigenSystemMaxIterations",
+            "Eigen Values",
+            "Max iterations for iterative eigensystem solver"
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "EigenSystemSelect",
+            "Eigen Values",
+            "Which eigenvalues are computed"
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "EigenSystemTolerance",
+            "Eigen Values",
+            (
+                "Convergence tolerance for iterative eigensystem solve\n"
+                "Default is 100 times the 'Linear Tolerance'"
+            )
         )
         obj.addProperty(
             "App::PropertyInteger",
             "EigenSystemValues",
-            "Elasticity",
+            "Eigen Values",
             "Number of lowest eigen modes"
         )
         obj.addProperty(
@@ -160,14 +207,35 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             )
         )
 
+        obj.addProperty(
+            "App::PropertyBool",
+            "PlaneStress",
+            "Equation",
+            (
+                "Computes solution according to plane\nstress situation.\n"
+                "Applies only for 2D geometry."
+            )
+        )
+
         obj.EigenSystemValues = 5
         obj.Priority = 10
         obj.CalculatePrincipal = True
         obj.DisplaceMesh = True
-        # according to the Elmer tutorial and forum, for stresses direct solving
-        # is recommended -> test showed 10 times faster and even more accurate
+        # according to Elmer tutorial and forum, for stresses direct solving
+        # is recommended -> tests showed 10 times faster and even more accurate
         obj.LinearSolverType = "Direct"
         obj.LinearDirectMethod = "Umfpack"
+        # according to Elmer manual should be true except there is damping
+        # we set damping by default to false
+        obj.EigenSystemComplex = True
+        # according to Elmer manual the default is 300
+        obj.EigenSystemMaxIterations = (300, 1, int(1e8), 1)
+        # according to Elmer manual the default is Smallest magnitude
+        obj.EigenSystemSelect = EIGEN_SYSTEM_SELECT
+        obj.EigenSystemSelect = "Smallest Magnitude"
+        # according to Elmer manual default is 100 times the Linear Tolerance
+        # since this is a small value we must set an expression, see linear.py for background
+        obj.setExpression("EigenSystemTolerance", str(100 * obj.LinearTolerance))
         obj.Variable = "Displacement"
 
 
