@@ -190,7 +190,9 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
 #endif
 
-    Py_DECREF(args);
+    if (args) {
+        Py_DECREF(args);
+    }
     Py_DECREF(func);
 
     if (eval){
