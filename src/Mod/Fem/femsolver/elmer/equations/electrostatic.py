@@ -44,6 +44,19 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+        
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateCapacitanceMatrix",
+            "Electrostatic",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateElectricEnergy",
+            "Electrostatic",
+            ""
+        )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateElectricField",
@@ -58,19 +71,7 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "CalculateElectricEnergy",
-            "Electrostatic",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyBool",
             "CalculateSurfaceCharge",
-            "Electrostatic",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "CalculateCapacitanceMatrix",
             "Electrostatic",
             ""
         )
@@ -82,7 +83,33 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
             ""
         )
         """
+        obj.addProperty(
+            "App::PropertyFile",
+            "CapacitanceMatrixFilename",
+            "Electrostatic",
+            (
+                "File where capacitance matrix is being saved\n"
+                "Only used if 'CalculateCapacitanceMatrix' is true"
+            )
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ConstantWeights",
+            "Electrostatic",
+            "Use constant weighting for results"
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "PotentialDifference",
+            "Electrostatic",
+            (
+                "Potential difference in Volt for which capacitance is\n"
+                "calculated if 'CalculateCapacitanceMatrix' is false"
+            )
+        )
 
+        obj.CapacitanceMatrixFilename = "cmatrix.dat"
+        obj.PotentialDifference = 0.0
         obj.Priority = 10
 
 

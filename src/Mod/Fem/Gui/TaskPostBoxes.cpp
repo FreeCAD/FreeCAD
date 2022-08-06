@@ -1136,6 +1136,9 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     else if (FieldName == "electric energy density") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("J/m^3");
     }
+    else if (FieldName == "electric flux") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("A*s/m^2");
+    }
     // ToDo: set a proper unit once it is known
     else if (FieldName == "potential loads") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");

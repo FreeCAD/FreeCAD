@@ -557,21 +557,66 @@ class Writer(object):
             self._handleElectrostaticMaterial(activeIn)
 
     def _getElectrostaticSolver(self, equation):
+        # check if we need to update the equation
+        self._updateElectrostaticSolver(equation)
+        # output the equation parameters
         s = self._createLinearSolver(equation)
         s["Equation"] = "Stat Elec Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("StatElecSolve/StatElecSolver")
         s["Variable"] = self._getUniqueVarName("Potential")
         s["Variable DOFs"] = 1
-        s["Calculate Electric Field"] = equation.CalculateElectricField
-        # s["Calculate Electric Flux"] = equation.CalculateElectricFlux
-        s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
-        s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
-        s["Calculate Capacitance Matrix"] = equation.CalculateCapacitanceMatrix
-        s["Displace mesh"] = False
+        if equation.CalculateCapacitanceMatrix is True:
+            s["Calculate Capacitance Matrix"] = equation.CalculateCapacitanceMatrix
+            s["Capacitance Matrix Filename"] = equation.CapacitanceMatrixFilename
+        if equation.CalculateElectricEnergy is True:
+            s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
+        if equation.CalculateElectricField is True:
+            s["Calculate Electric Field"] = equation.CalculateElectricField
+        if equation.CalculateElectricFlux is True:
+            s["Calculate Electric Flux"] = equation.CalculateElectricFlux
+        if equation.CalculateSurfaceCharge is True:
+            s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
+        if equation.ConstantWeights is True:
+            s["Constant Weights"] = equation.ConstantWeights
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
+        if equation.CalculateCapacitanceMatrix is False\
+            and (equation.PotentialDifference != 0.0):
+            s["Potential Difference"] = equation.PotentialDifference
         s["Stabilize"] = equation.Stabilize
         return s
+
+    def _updateElectrostaticSolver(self, equation):
+        # updates older Electrostatic equations
+        if not hasattr(equation, "CapacitanceMatrixFilename"):
+            equation.addProperty(
+                "App::PropertyFile",
+                "CapacitanceMatrixFilename",
+                "Electrostatic",
+                (
+                    "File where capacitance matrix is being saved\n"
+                    "Only used if 'CalculateCapacitanceMatrix' is true"
+                )
+            )
+            equation.CapacitanceMatrixFilename = "cmatrix.dat"
+        if not hasattr(equation, "ConstantWeights"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "ConstantWeights",
+                "Electrostatic",
+                "Use constant weighting for results"
+            )
+        if not hasattr(equation, "PotentialDifference"):
+            equation.addProperty(
+                "App::PropertyFloat",
+                "PotentialDifference",
+                "Electrostatic",
+                (
+                    "Potential difference in Volt for which capacitance is\n"
+                    "calculated if 'CalculateCapacitanceMatrix' is false"
+                )
+            )
+            equation.PotentialDifference = 0.0
 
     def _handleElectrostaticConstants(self):
         self._constant(
