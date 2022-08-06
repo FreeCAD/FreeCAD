@@ -53,9 +53,9 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
             "Heat",
             ""
         )
+        
         obj.Bubbles = True
         obj.Stabilize = False
-
         obj.Priority = 20
 
 

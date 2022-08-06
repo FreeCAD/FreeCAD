@@ -309,23 +309,72 @@ class Writer(object):
             )
 
     def _handleSimulation(self):
+        # check if we need to update the equation
+        self._updateSimulation(self.solver)
+        # output the equation parameters
+        # first check what equations we have
+        hasHeat = False
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
+                hasHeat = True
+        if hasHeat:
+           self._simulation("BDF Order", self.solver.BDFOrder)
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
         # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
         # the solver that we have another scale
         self._simulation("Coordinate Scaling", 0.001)
-        self._simulation("Simulation Type", "Steady state")
-        self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)
-        self._simulation("Timestepping Method", "BDF")
-        self._simulation("BDF Order", 1)
+        self._simulation("Simulation Type",
+            self.solver.SimulationType)
+        if self.solver.SimulationType == "Steady State":
+            self._simulation(
+                "Steady State Max Iterations", self.solver.SteadyStateMaxIterations)
+            self._simulation(
+                "Steady State Min Iterations", self.solver.SteadyStateMinIterations)
+        if (self.solver.SimulationType == "Scanning") \
+          or (self.solver.SimulationType == "Transient"):
+            self._simulation("Timestep Intervals", self.solver.TimestepIntervals)
+            self._simulation("Timestep Sizes", self.solver.TimestepSizes)
+        if hasHeat:
+            self._simulation("Timestepping Method", "BDF")
         self._simulation("Use Mesh Names", True)
-        self._simulation(
-            "Steady State Max Iterations",
-            self.solver.SteadyStateMaxIterations)
-        self._simulation(
-            "Steady State Min Iterations",
-            self.solver.SteadyStateMinIterations)
+    
+    def _updateSimulation(self, solver):
+        # updates older simulations
+        if not hasattr(self.solver, "BDFOrder"):
+            solver.addProperty(
+            "App::PropertyIntegerConstraint",
+            "BDFOrder",
+            "Timestepping",
+            "Order of time stepping method 'BDF'"
+            )
+            solver.BDFOrder = (2, 1, 5, 1)
+        if not hasattr(self.solver, "SimulationType"):
+            solver.addProperty(
+            "App::PropertyEnumeration",
+            "SimulationType",
+            "Type",
+            ""
+            )
+            solver.SimulationType = ["Scanning", "Steady State", "Transient"]
+            solver.SimulationType = "Steady State"
+        if not hasattr(self.solver, "TimestepIntervals"):
+            solver.addProperty(
+            "App::PropertyIntegerConstraint",
+            "TimestepIntervals",
+            "Timestepping",
+            "Maximum optimization rounds if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+            )
+            solver.TimestepIntervals = (100, 1, int(1e8), 10)
+        if not hasattr(self.solver, "TimestepSizes"):
+            solver.addProperty(
+            "App::PropertyFloatConstraint",
+            "TimestepSizes",
+            "Timestepping",
+            "Time step of optimization if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+            )
+            solver.TimestepSizes = (0.1, 1e-8, 1e8, 0.1)
 
     def _handleHeat(self):
         activeIn = []

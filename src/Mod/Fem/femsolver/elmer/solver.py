@@ -47,6 +47,7 @@ from femtools import femutils
 if FreeCAD.GuiUp:
     import FemGui
 
+SIMULATION_TYPE = ["Scanning", "Steady State", "Transient"]
 
 def create(doc, name="ElmerSolver"):
     return femutils.createObject(
@@ -71,18 +72,59 @@ class Proxy(solverbase.Proxy):
         super(Proxy, self).__init__(obj)
 
         obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "BDFOrder",
+            "Timestepping",
+            "Order of time stepping method 'BDF'"
+        )
+        # according to the Elmer manual recommended is order 2
+        # possible ranage is 1 - 5
+        obj.BDFOrder = (2, 1, 5, 1)
+
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "TimestepIntervals",
+            "Timestepping",
+            "Maximum optimization rounds if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+        )
+        obj.addProperty(
+            "App::PropertyFloatConstraint",
+            "TimestepSizes",
+            "Timestepping",
+            "Time step of optimization if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+        )
+        # there is no universal default, it all depends on the analysis, however
+        # we have to set something and set 10 seconds in steps of 0.1s
+        # since the Emler manual lacks proper info, here a link to a forum thread:
+        # http://www.elmerfem.org/forum/viewtopic.php?p=18057&sid=73169c4ec544fd7f181f85178bbc8ffe#p18057
+        # -----
+        # Set maximum to 1e8 because on Win the max int is always 32bit (4.29e9)
+        # for TimestepSizes also 1e8 just to set something
+        obj.TimestepIntervals = (100, 1, int(1e8), 10)
+        obj.TimestepSizes = (0.1, 1e-8, 1e8, 0.1)
+
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SimulationType",
+            "Type",
+            ""
+        )
+        obj.SimulationType = SIMULATION_TYPE
+        obj.SimulationType = "Steady State"
+
+        obj.addProperty(
             "App::PropertyInteger",
             "SteadyStateMaxIterations",
-            "Steady State",
-            ""
+            "Type",
+            "Maximal steady state iterations"
         )
         obj.SteadyStateMaxIterations = 1
 
         obj.addProperty(
             "App::PropertyInteger",
             "SteadyStateMinIterations",
-            "Steady State",
-            ""
+            "Type",
+            "Minimal steady state iterations"
         )
         obj.SteadyStateMinIterations = 0
 
