@@ -41,12 +41,15 @@ from FreeCAD import ParamGet
 
 import Fem
 from . import sifio
+from . import solver as solverClass
 from .. import settings
 from femmesh import gmshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
+from .equations import elasticity
 from .equations import flow
+from .equations import heat
 
 
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
@@ -365,7 +368,7 @@ class Writer(object):
                 "Type",
                 ""
             )
-            solver.SimulationType = ["Scanning", "Steady State", "Transient"]
+            solver.SimulationType = solverClass.SIMULATION_TYPE
             solver.SimulationType = "Steady State"
         if not hasattr(self.solver, "TimestepIntervals"):
             solver.addProperty(
@@ -444,8 +447,8 @@ class Writer(object):
                 "Equation",
                 "Type of convection to be used"
             )
-            equation.Convection = ["None", "Computed", "Constant"]
-            equation.Convection = "None"
+            equation.Convection = heat.CONVECTION_TYPE
+            equation.Convection = "Computed"
         if not hasattr(equation, "PhaseChangeModel"):
             equation.addProperty(
                 "App::PropertyEnumeration",
@@ -453,7 +456,7 @@ class Writer(object):
                 "Equation",
                 "Model for phase change"
             )
-            equation.PhaseChangeModel = ["None", "Spatial 1", "Spatial 2", "Temporal"]
+            equation.PhaseChangeModel = heat.PHASE_CHANGE_MODEL
             equation.PhaseChangeModel = "None"
 
     def _handleHeatBndConditions(self):
@@ -900,14 +903,6 @@ class Writer(object):
                 "Max iterations for iterative eigensystem solver"
             )
             equation.EigenSystemMaxIterations = (300, 1, int(1e8), 1)
-        EIGEN_SYSTEM_SELECT = [
-            "Smallest Magnitude",
-            "Largest Magnitude",
-            "Smallest Real Part",
-            "Largest Real Part",
-            "Smallest Imag Part",
-            "Largest Imag Part"
-        ]
         if not hasattr(equation, "EigenSystemSelect"):
             equation.addProperty(
                 "App::PropertyEnumeration",
@@ -915,7 +910,7 @@ class Writer(object):
                 "Eigen Values",
                 "Which eigenvalues are computed"
             )
-            equation.EigenSystemSelect = EIGEN_SYSTEM_SELECT
+            equation.EigenSystemSelect = elasticity.EIGEN_SYSTEM_SELECT
             equation.EigenSystemSelect = "Smallest Magnitude"
         if not hasattr(equation, "EigenSystemTolerance"):
             equation.addProperty(
@@ -1204,7 +1199,7 @@ class Writer(object):
                 "Equation",
                 "Type of convection to be used"
             )
-            equation.Convection = flow.getConvectionType()
+            equation.Convection = flow.CONVECTION_TYPE
             equation.Convection = "Computed"
         if not hasattr(equation, "MagneticInduction"):
             equation.addProperty(
