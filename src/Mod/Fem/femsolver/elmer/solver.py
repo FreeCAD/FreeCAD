@@ -49,6 +49,7 @@ if FreeCAD.GuiUp:
 
 SIMULATION_TYPE = ["Scanning", "Steady State", "Transient"]
 
+
 def create(doc, name="ElmerSolver"):
     return femutils.createObject(
         doc, name, Proxy, ViewProxy)

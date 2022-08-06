@@ -44,7 +44,7 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        
+
         obj.addProperty(
             "App::PropertyBool",
             "CalculateStrains",
@@ -79,7 +79,10 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             "App::PropertyBool",
             "DisplaceMesh",
             "Elasticity",
-            "If mesh is deformed by displacement field.\nSet to False for 'Eigen Analysis'."
+            (
+                "If mesh is deformed by displacement field.\n"
+                "Set to False for 'Eigen Analysis'."
+            )
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -109,7 +112,10 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             "App::PropertyBool",
             "Incompressible",
             "Elasticity",
-            "Computation of incompressible material in connection\nwith viscoelastic Maxwell material and a custom 'Variable'"
+            (
+                "Computation of incompressible material in connection\n"
+                "with viscoelastic Maxwell material and a custom 'Variable'"
+            )
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -133,7 +139,10 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             "App::PropertyBool",
             "StabilityAnalysis",
             "Elasticity",
-            "If true, 'Eigen Analysis' is stability analysis.\nOtherwise modal analysis is performed."
+            (
+                "If true, 'Eigen Analysis' is stability analysis.\n"
+                "Otherwise modal analysis is performed."
+            )
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -145,7 +154,10 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             "App::PropertyString",
             "Variable",
             "Elasticity",
-            "Only change this if 'Incompressible' is set to true\naccording to the Elmer manual."
+            (
+                "Only change this if 'Incompressible' is set to true\n"
+                "according to the Elmer manual."
+            )
         )
 
         obj.EigenSystemValues = 5

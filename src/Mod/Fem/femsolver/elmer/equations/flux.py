@@ -50,7 +50,10 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
             "App::PropertyBool",
             "AverageWithinMaterials",
             "Flux",
-            "Enforces continuity within the same material\nin the 'Discontinuous Galerkin' discretization"
+            (
+                "Enforces continuity within the same material\n"
+                "in the 'Discontinuous Galerkin' discretization"
+            )
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -92,13 +95,19 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
             "App::PropertyBool",
             "DiscontinuousGalerkin",
             "Flux",
-            "Enable if standard Galerkin approximation leads to\nunphysical results when there are discontinuities"
+            (
+                "Enable if standard Galerkin approximation leads to\n"
+                "unphysical results when there are discontinuities"
+            )
         )
         obj.addProperty(
             "App::PropertyBool",
             "EnforcePositiveMagnitude",
             "Flux",
-            "If true, negative values of computed magnitude fields\nare a posteriori set to zero."
+            (
+                "If true, negative values of computed magnitude fields\n"
+                "are a posteriori set to zero."
+            )
         )
         obj.addProperty(
             "App::PropertyString",
@@ -112,7 +121,7 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
             "Flux",
             "Variable name for flux calculation"
         )
-        
+
         obj.Priority = 5
         obj.CalculateFlux = True
         # set defaults according to the Elmer manual

@@ -318,61 +318,72 @@ class Writer(object):
             if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
                 hasHeat = True
         if hasHeat:
-           self._simulation("BDF Order", self.solver.BDFOrder)
+            self._simulation("BDF Order", self.solver.BDFOrder)
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
         # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
         # the solver that we have another scale
         self._simulation("Coordinate Scaling", 0.001)
         self._simulation("Output Intervals", 1)
-        self._simulation("Simulation Type",
-            self.solver.SimulationType)
+        self._simulation("Simulation Type", self.solver.SimulationType)
         if self.solver.SimulationType == "Steady State":
             self._simulation(
-                "Steady State Max Iterations", self.solver.SteadyStateMaxIterations)
+                "Steady State Max Iterations",
+                self.solver.SteadyStateMaxIterations
+            )
             self._simulation(
-                "Steady State Min Iterations", self.solver.SteadyStateMinIterations)
-        if (self.solver.SimulationType == "Scanning") \
-          or (self.solver.SimulationType == "Transient"):
+                "Steady State Min Iterations",
+                self.solver.SteadyStateMinIterations
+            )
+        if (
+            self.solver.SimulationType == "Scanning"
+            or self.solver.SimulationType == "Transient"
+        ):
             self._simulation("Timestep Intervals", self.solver.TimestepIntervals)
             self._simulation("Timestep Sizes", self.solver.TimestepSizes)
         if hasHeat:
             self._simulation("Timestepping Method", "BDF")
         self._simulation("Use Mesh Names", True)
-    
+
     def _updateSimulation(self, solver):
         # updates older simulations
         if not hasattr(self.solver, "BDFOrder"):
             solver.addProperty(
-            "App::PropertyIntegerConstraint",
-            "BDFOrder",
-            "Timestepping",
-            "Order of time stepping method 'BDF'"
+                "App::PropertyIntegerConstraint",
+                "BDFOrder",
+                "Timestepping",
+                "Order of time stepping method 'BDF'"
             )
             solver.BDFOrder = (2, 1, 5, 1)
         if not hasattr(self.solver, "SimulationType"):
             solver.addProperty(
-            "App::PropertyEnumeration",
-            "SimulationType",
-            "Type",
-            ""
+                "App::PropertyEnumeration",
+                "SimulationType",
+                "Type",
+                ""
             )
             solver.SimulationType = ["Scanning", "Steady State", "Transient"]
             solver.SimulationType = "Steady State"
         if not hasattr(self.solver, "TimestepIntervals"):
             solver.addProperty(
-            "App::PropertyIntegerConstraint",
-            "TimestepIntervals",
-            "Timestepping",
-            "Maximum optimization rounds if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+                "App::PropertyIntegerConstraint",
+                "TimestepIntervals",
+                "Timestepping",
+                (
+                    "Maximum optimization rounds if 'Simulation Type'\n"
+                    "is either 'Scanning' or 'Transient'"
+                )
             )
             solver.TimestepIntervals = (100, 1, int(1e8), 10)
         if not hasattr(self.solver, "TimestepSizes"):
             solver.addProperty(
-            "App::PropertyFloatConstraint",
-            "TimestepSizes",
-            "Timestepping",
-            "Time step of optimization if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+                "App::PropertyFloatConstraint",
+                "TimestepSizes",
+                "Timestepping",
+                (
+                    "Time step of optimization if 'Simulation Type'\n"
+                    "is either 'Scanning' or 'Transient'"
+                )
             )
             solver.TimestepSizes = (0.1, 1e-8, 1e8, 0.1)
 
@@ -583,21 +594,21 @@ class Writer(object):
         # output the equation parameters
         s["Equation"] = "Flux Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
-        if equation.AverageWithinMaterials == True:
+        if equation.AverageWithinMaterials is True:
             s["Average Within Materials"] = equation.AverageWithinMaterials
         s["Calculate Flux"] = equation.CalculateFlux
-        if equation.CalculateFluxAbs == True:
+        if equation.CalculateFluxAbs is True:
             s["Calculate Flux Abs"] = equation.CalculateFluxAbs
-        if equation.CalculateFluxMagnitude == True:
+        if equation.CalculateFluxMagnitude is True:
             s["Calculate Flux Magnitude"] = equation.CalculateFluxMagnitude
         s["Calculate Grad"] = equation.CalculateGrad
-        if equation.CalculateGradAbs == True:
+        if equation.CalculateGradAbs is True:
             s["Calculate Grad Abs"] = equation.CalculateGradAbs
-        if equation.CalculateGradMagnitude == True:
+        if equation.CalculateGradMagnitude is True:
             s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
-        if equation.DiscontinuousGalerkin == True:
+        if equation.DiscontinuousGalerkin is True:
             s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
-        if equation.EnforcePositiveMagnitude == True:
+        if equation.EnforcePositiveMagnitude is True:
             s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
         s["Flux Coefficient"] = equation.FluxCoefficient
         s["Flux Variable"] = equation.FluxVariable
@@ -608,62 +619,71 @@ class Writer(object):
         # updates older Flux equations
         if not hasattr(equation, "AverageWithinMaterials"):
             equation.addProperty(
-            "App::PropertyBool",
-            "AverageWithinMaterials",
-            "Flux",
-            "Enforces continuity within the same material\nin the 'Discontinuous Galerkin' discretization"
+                "App::PropertyBool",
+                "AverageWithinMaterials",
+                "Flux",
+                (
+                    "Enforces continuity within the same material\n"
+                    "in the 'Discontinuous Galerkin' discretization"
+                )
             )
         if hasattr(equation, "Bubbles"):
             # Bubbles was removed because it is unused by Elmer for the flux solver
             equation.removeProperty("Bubbles")
         if not hasattr(equation, "CalculateFluxAbs"):
             equation.addProperty(
-            "App::PropertyBool",
-            "CalculateFluxAbs",
-            "Flux",
-            "Computes absolute of flux vector"
+                "App::PropertyBool",
+                "CalculateFluxAbs",
+                "Flux",
+                "Computes absolute of flux vector"
             )
         if not hasattr(equation, "CalculateFluxMagnitude"):
             equation.addProperty(
-            "App::PropertyBool",
-            "CalculateFluxMagnitude",
-            "Flux",
-            "Computes magnitude of flux vector field"
+                "App::PropertyBool",
+                "CalculateFluxMagnitude",
+                "Flux",
+                "Computes magnitude of flux vector field"
             )
         if not hasattr(equation, "CalculateGradAbs"):
             equation.addProperty(
-            "App::PropertyBool",
-            "CalculateGradAbs",
-            "Flux",
-            "Computes absolute of gradient field"
+                "App::PropertyBool",
+                "CalculateGradAbs",
+                "Flux",
+                "Computes absolute of gradient field"
             )
         if not hasattr(equation, "CalculateGradMagnitude"):
             equation.addProperty(
-            "App::PropertyBool",
-            "CalculateGradMagnitude",
-            "Flux",
-            "Computes magnitude of gradient field"
+                "App::PropertyBool",
+                "CalculateGradMagnitude",
+                "Flux",
+                "Computes magnitude of gradient field"
             )
         if not hasattr(equation, "DiscontinuousGalerkin"):
             equation.addProperty(
-            "App::PropertyBool",
-            "DiscontinuousGalerkin",
-            "Flux",
-            "Enable if standard Galerkin approximation leads to\nunphysical results when there are discontinuities"
+                "App::PropertyBool",
+                "DiscontinuousGalerkin",
+                "Flux",
+                (
+                    "Enable if standard Galerkin approximation leads to\n"
+                    "unphysical results when there are discontinuities"
+                )
             )
         if not hasattr(equation, "EnforcePositiveMagnitude"):
             equation.addProperty(
-            "App::PropertyBool",
-            "EnforcePositiveMagnitude",
-            "Flux",
-            "If true, negative values of computed magnitude fields\nare a posteriori set to zero."
+                "App::PropertyBool",
+                "EnforcePositiveMagnitude",
+                "Flux",
+                (
+                    "If true, negative values of computed magnitude fields\n"
+                    "are a posteriori set to zero."
+                )
             )
         if not hasattr(equation, "FluxCoefficient"):
             equation.addProperty(
-            "App::PropertyString",
-            "FluxCoefficient",
-            "Flux",
-            "Name of proportionality coefficient\nto compute the flux"
+                "App::PropertyString",
+                "FluxCoefficient",
+                "Flux",
+                "Name of proportionality coefficient\nto compute the flux"
             )
 
     def _handleElectricforce(self):
@@ -708,38 +728,38 @@ class Writer(object):
         # check if we need to update the equation
         self._updateElasticitySolver(equation)
         # output the equation parameters
-        s["Equation"] = "Stress Solver" # equation.Name
+        s["Equation"] = "Stress Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("StressSolve/StressSolver")
-        if equation.CalculateStrains == True:
+        if equation.CalculateStrains is True:
             s["Calculate Strains"] = equation.CalculateStrains
-        if equation.CalculateStresses == True:
+        if equation.CalculateStresses is True:
             s["Calculate Stresses"] = equation.CalculateStresses
-        if equation.CalculatePrincipal == True:
+        if equation.CalculatePrincipal is True:
             s["Calculate Principal"] = equation.CalculatePrincipal
-        if equation.CalculatePangle == True:
+        if equation.CalculatePangle is True:
             s["Calculate Pangle"] = equation.CalculatePangle
-        if equation.ConstantBulkSystem == True:
+        if equation.ConstantBulkSystem is True:
             s["Constant Bulk System"] = equation.ConstantBulkSystem
         s["Displace mesh"] = equation.DisplaceMesh
         s["Eigen Analysis"] = equation.EigenAnalysis
-        if equation.EigenAnalysis == True:
+        if equation.EigenAnalysis is True:
             s["Eigen System Values"] = equation.EigenSystemValues
-        if equation.FixDisplacement == True:
+        if equation.FixDisplacement is True:
             s["Fix Displacement"] = equation.FixDisplacement
         s["Geometric Stiffness"] = equation.GeometricStiffness
-        if equation.Incompressible == True:
+        if equation.Incompressible is True:
             s["Incompressible"] = equation.Incompressible
-        if equation.MaxwellMaterial == True:
+        if equation.MaxwellMaterial is True:
             s["Maxwell Material"] = equation.MaxwellMaterial
-        if equation.ModelLumping == True:
+        if equation.ModelLumping is True:
             s["Model Lumping"] = equation.ModelLumping
-        if equation.ModelLumping == True:
+        if equation.ModelLumping is True:
             s["Model Lumping Filename"] = equation.ModelLumpingFilename
         s["Optimize Bandwidth"] = True
-        if equation.StabilityAnalysis == True:
+        if equation.StabilityAnalysis is True:
             s["Stability Analysis"] = equation.StabilityAnalysis
         s["Stabilize"] = equation.Stabilize
-        if equation.UpdateTransientSystem == True:
+        if equation.UpdateTransientSystem is True:
             s["Update Transient System"] = equation.UpdateTransientSystem
         s["Variable"] = equation.Variable
         s["Variable DOFs"] = 3
@@ -749,10 +769,13 @@ class Writer(object):
         # updates older Elasticity equations
         if not hasattr(equation, "Variable"):
             equation.addProperty(
-            "App::PropertyString",
-            "Variable",
-            "Elasticity",
-            "Only change this if 'Incompressible' is set to true\naccording to the Elmer manual."
+                "App::PropertyString",
+                "Variable",
+                "Elasticity",
+                (
+                    "Only change this if 'Incompressible' is set to true\n"
+                    "according to the Elmer manual."
+                )
             )
             equation.Variable = "Displacement"
         if hasattr(equation, "Bubbles"):
@@ -760,30 +783,34 @@ class Writer(object):
             equation.removeProperty("Bubbles")
         if not hasattr(equation, "ConstantBulkSystem"):
             equation.addProperty(
-            "App::PropertyBool",
-            "ConstantBulkSystem",
-            "Elasticity",
-            "See Elmer manual for info")
+                "App::PropertyBool",
+                "ConstantBulkSystem",
+                "Elasticity",
+                "See Elmer manual for info"
+            )
         if not hasattr(equation, "DisplaceMesh"):
             equation.addProperty(
-            "App::PropertyBool",
-            "DisplaceMesh",
-            "Elasticity",
-            "If mesh is deformed by displacement field.\nSet to False for 'Eigen Analysis'."
+                "App::PropertyBool",
+                "DisplaceMesh",
+                "Elasticity",
+                (
+                    "If mesh is deformed by displacement field.\n"
+                    "Set to False for 'Eigen Analysis'."
+                )
             )
             # DisplaceMesh is true except if DoFrequencyAnalysis is true
             equation.DisplaceMesh = True
             if hasattr(equation, "DoFrequencyAnalysis"):
-                if equation.DoFrequencyAnalysis == True:
+                if equation.DoFrequencyAnalysis is True:
                     equation.DisplaceMesh = False
         if not hasattr(equation, "EigenAnalysis"):
             # DoFrequencyAnalysis was renamed to EigenAnalysis
             # to follow the Elmer manual
             equation.addProperty(
-            "App::PropertyBool",
-            "EigenAnalysis",
-            "Elasticity",
-            "If true, modal analysis"
+                "App::PropertyBool",
+                "EigenAnalysis",
+                "Elasticity",
+                "If true, modal analysis"
             )
             if hasattr(equation, "DoFrequencyAnalysis"):
                 equation.EigenAnalysis = equation.DoFrequencyAnalysis
@@ -792,69 +819,75 @@ class Writer(object):
             # EigenmodesCount was renamed to EigenSystemValues
             # to follow the Elmer manual
             equation.addProperty(
-            "App::PropertyInteger",
-            "EigenSystemValues",
-            "Elasticity",
-            "Number of lowest eigen modes"
+                "App::PropertyInteger",
+                "EigenSystemValues",
+                "Elasticity",
+                "Number of lowest eigen modes"
             )
             if hasattr(equation, "EigenmodesCount"):
                 equation.EigenSystemValues = equation.EigenmodesCount
                 equation.removeProperty("EigenmodesCount")
         if not hasattr(equation, "FixDisplacement"):
             equation.addProperty(
-            "App::PropertyBool",
-            "FixDisplacement",
-            "Elasticity",
-            "If displacements or forces are set,\nthereby model lumping is used"
+                "App::PropertyBool",
+                "FixDisplacement",
+                "Elasticity",
+                "If displacements or forces are set,\nthereby model lumping is used"
             )
         if not hasattr(equation, "GeometricStiffness"):
             equation.addProperty(
-            "App::PropertyBool",
-            "GeometricStiffness",
-            "Elasticity",
-            "Consider geometric stiffness"
+                "App::PropertyBool",
+                "GeometricStiffness",
+                "Elasticity",
+                "Consider geometric stiffness"
             )
         if not hasattr(equation, "Incompressible"):
             equation.addProperty(
-            "App::PropertyBool",
-            "Incompressible",
-            "Elasticity",
-            "Computation of incompressible material in connection\nwith viscoelastic Maxwell material and a custom 'Variable'"
+                "App::PropertyBool",
+                "Incompressible",
+                "Elasticity",
+                (
+                    "Computation of incompressible material in connection\n"
+                    "with viscoelastic Maxwell material and a custom 'Variable'"
+                )
             )
         if not hasattr(equation, "MaxwellMaterial"):
             equation.addProperty(
-            "App::PropertyBool",
-            "MaxwellMaterial",
-            "Elasticity",
-            "Compute viscoelastic material model"
+                "App::PropertyBool",
+                "MaxwellMaterial",
+                "Elasticity",
+                "Compute viscoelastic material model"
             )
         if not hasattr(equation, "ModelLumping"):
             equation.addProperty(
-            "App::PropertyBool",
-            "ModelLumping",
-            "Elasticity",
-            "Use model lumping"
+                "App::PropertyBool",
+                "ModelLumping",
+                "Elasticity",
+                "Use model lumping"
             )
         if not hasattr(equation, "ModelLumpingFilename"):
             equation.addProperty(
-            "App::PropertyFile",
-            "ModelLumpingFilename",
-            "Elasticity",
-            "File to save results from model lumping to"
+                "App::PropertyFile",
+                "ModelLumpingFilename",
+                "Elasticity",
+                "File to save results from model lumping to"
             )
         if not hasattr(equation, "StabilityAnalysis"):
             equation.addProperty(
-            "App::PropertyBool",
-            "StabilityAnalysis",
-            "Elasticity",
-            "If true, 'Eigen Analysis' is stability analysis.\nOtherwise modal analysis is performed."
+                "App::PropertyBool",
+                "StabilityAnalysis",
+                "Elasticity",
+                (
+                    "If true, 'Eigen Analysis' is stability analysis.\n"
+                    "Otherwise modal analysis is performed."
+                )
             )
         if not hasattr(equation, "UpdateTransientSystem"):
             equation.addProperty(
-            "App::PropertyBool",
-            "UpdateTransientSystem",
-            "Elasticity",
-            "See Elmer manual for info"
+                "App::PropertyBool",
+                "UpdateTransientSystem",
+                "Elasticity",
+                "See Elmer manual for info"
             )
 
     def _handleElasticityConstants(self):
