@@ -1181,9 +1181,17 @@ class Writer(object):
         s = self._createNonlinearSolver(equation)
         s["Equation"] = "Navier-Stokes"
         s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
+        if equation.DivDiscretization is True:
+            s["Div Discretization"] = equation.DivDiscretization
         s["Exec Solver"] = "Always"
+        if equation.FlowModel != "Full":
+            s["Flow Model"] = equation.FlowModel
+        if equation.GradpDiscretization is True:
+            s["Gradp Discretization"] = equation.GradpDiscretization
         s["Stabilize"] = equation.Stabilize
         s["Optimize Bandwidth"] = True
+        if equation.Variable != "Flow Solution[Velocity:3 Pressure:1]":
+            s["Variable"] = equation.Variable
         return s
 
     def _handleFlowConstants(self):
@@ -1201,6 +1209,35 @@ class Writer(object):
             )
             equation.Convection = flow.CONVECTION_TYPE
             equation.Convection = "Computed"
+        if not hasattr(equation, "DivDiscretization"):
+            equation.addProperty(
+            "App::PropertyBool",
+            "DivDiscretization",
+            "Flow",
+                (
+                    "Set to true for incompressible flow for more stable\n"
+                    "discretization when Reynolds number increases"
+                )
+            )
+        if not hasattr(equation, "FlowModel"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "FlowModel",
+                "Flow",
+                "Flow model to be used"
+            )
+            equation.FlowModel = flow.FLOW_MODEL
+            equation.FlowModel = "Full"
+        if not hasattr(equation, "GradpDiscretization"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "GradpDiscretization",
+                "Flow",
+                (
+                    "If true pressure Dirichlet boundary conditions can be used.\n"
+                    "Also mass flux is available as a natural boundary condition."
+                )
+            )
         if not hasattr(equation, "MagneticInduction"):
             equation.addProperty(
                 "App::PropertyBool",
@@ -1211,6 +1248,14 @@ class Writer(object):
                     "along with the Navier-Stokes equations"
                 )
             )
+        if not hasattr(equation, "Variable"):
+            equation.addProperty(
+                "App::PropertyString",
+                "Variable",
+                "Flow",
+                "Only for a 2D model change the '3' to '2'"
+            )
+            equation.Variable = "Flow Solution[Velocity:3 Pressure:1]"
 
     def _handleFlowMaterial(self, bodies):
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")

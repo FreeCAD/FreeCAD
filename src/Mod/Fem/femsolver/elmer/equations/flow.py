@@ -33,6 +33,7 @@ from . import nonlinear
 from ... import equationbase
 
 CONVECTION_TYPE = ["None", "Computed", "Constant"]
+FLOW_MODEL = ["Full", "No convection", "Stokes"]
 
 
 def create(doc, name="Flow"):
@@ -46,6 +47,37 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
+        obj.addProperty(
+            "App::PropertyBool",
+            "DivDiscretization",
+            "Flow",
+            (
+                "Set to true for incompressible flow for more stable\n"
+                "discretization when Reynolds number increases"
+            )
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "FlowModel",
+            "Flow",
+            "Flow model to be used"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "GradpDiscretization",
+            "Flow",
+            (
+                "If true pressure Dirichlet boundary conditions can be used.\n"
+                "Also mass flux is available as a natural boundary condition."
+            )
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "Variable",
+            "Flow",
+            "Only for a 2D model change the '3' to '2'"
+        )
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -62,7 +94,9 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
                 "along with the Navier-Stokes equations"
             )
         )
-
+        obj.FlowModel = FLOW_MODEL
+        obj.FlowModel = "Full"
+        obj.Variable = "Flow Solution[Velocity:3 Pressure:1]"
         obj.Convection = CONVECTION_TYPE
         obj.Convection = "Computed"
         obj.Priority = 10
