@@ -208,7 +208,7 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
                 tokenizer<escaped_list_separator<char> > tok(line, e);
 
                 for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
-                    if ((*i).size() > 0)
+                    if (!i->empty())
                         setCell(CellAddress(row, col), (*i).c_str());
                     col++;
                 }
