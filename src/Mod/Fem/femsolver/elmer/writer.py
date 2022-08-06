@@ -400,6 +400,7 @@ class Writer(object):
                 solverSection = self._getHeatSolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
+                self._handleHeatEquation(activeIn, equation)
         if activeIn:
             self._handleHeatConstants()
             self._handleHeatBndConditions()
@@ -408,6 +409,9 @@ class Writer(object):
             self._handleHeatMaterial(activeIn)
 
     def _getHeatSolver(self, equation):
+        # check if we need to update the equation
+        self._updateHeatSolver(equation)
+        # output the equation parameters
         s = self._createNonlinearSolver(equation)
         s["Equation"] = equation.Name
         s["Procedure"] = sifio.FileAttr("HeatSolve/HeatSolver")
@@ -422,6 +426,34 @@ class Writer(object):
         self._constant(
             "Stefan Boltzmann",
             self._getConstant("StefanBoltzmann", "M/(O^4*T^3)"))
+
+    def _handleHeatEquation(self, bodies, equation):
+        for b in bodies:
+            if equation.Convection != "None":
+                self._equation(b, "Convection", equation.Convection)
+            if equation.PhaseChangeModel != "None":
+                self._equation(b, "Phase Change Model", equation.PhaseChangeModel)
+
+    def _updateHeatSolver(self, equation):
+        # updates older Heat equations
+        if not hasattr(equation, "Convection"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "Convection",
+                "Equation",
+                "Type of convection to be used"
+            )
+            equation.Convection = ["None", "Computed", "Constant"]
+            equation.Convection = "None"
+        if not hasattr(equation, "PhaseChangeModel"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "PhaseChangeModel",
+                "Equation",
+                "Model for phase change"
+            )
+            equation.PhaseChangeModel = ["None", "Spatial 1", "Spatial 2", "Temporal"]
+            equation.PhaseChangeModel = "None"
 
     def _handleHeatBndConditions(self):
         for obj in self._getMember("Fem::ConstraintTemperature"):
@@ -718,6 +750,7 @@ class Writer(object):
                 solverSection = self._getElasticitySolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
+                self._handleElasticityEquation(activeIn, equation)
         if activeIn:
             self._handleElasticityConstants()
             self._handleElasticityBndConditions()
@@ -774,6 +807,11 @@ class Writer(object):
         s["Variable"] = equation.Variable
         s["Variable DOFs"] = 3
         return s
+
+    def _handleElasticityEquation(self, bodies, equation):
+        for b in bodies:
+            if equation.PlaneStress:
+                self._equation(b, "Plane Stress", equation.PlaneStress)
 
     def _updateElasticitySolver(self, equation):
         # updates older Elasticity equations
@@ -945,6 +983,16 @@ class Writer(object):
                 "ModelLumpingFilename",
                 "Elasticity",
                 "File to save results from model lumping to"
+            )
+        if not hasattr(equation, "PlaneStress"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "PlaneStress",
+                "Equation",
+                (
+                    "Computes solution according to plane\nstress situation.\n"
+                    "Applies only for 2D geometry."
+                )
             )
         if not hasattr(equation, "StabilityAnalysis"):
             equation.addProperty(
@@ -1276,10 +1324,8 @@ class Writer(object):
         if self._hasExpression(equation) != equation.NonlinearTolerance:
             equation.setExpression("NonlinearTolerance", str(equation.NonlinearTolerance))
         if self._hasExpression(equation) != equation.NonlinearNewtonAfterTolerance:
-            equation.setExpression(
-                "NonlinearNewtonAfterTolerance",
-                str(equation.NonlinearNewtonAfterTolerance)
-            )
+            equation.setExpression("NonlinearNewtonAfterTolerance",\
+                str(equation.NonlinearNewtonAfterTolerance))
 
     def _createNonlinearSolver(self, equation):
         # first check if we have to update
