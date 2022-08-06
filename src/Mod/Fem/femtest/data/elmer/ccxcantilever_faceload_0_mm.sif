@@ -5,32 +5,20 @@ Header
 End
 
 Solver 1
-  Calculate Pangle = Logical False
   Calculate Principal = Logical True
-  Calculate Strains = Logical False
-  Calculate Stresses = Logical False
-  Constant Bulk System = Logical False
   Displace mesh = Logical True
   Eigen Analysis = Logical False
-  Eigen System Values = Integer 5
   Equation = String "Stress Solver"
-  Fix Displacement = Logical False
   Geometric Stiffness = Logical False
-  Incompressible = Logical False
   Linear System Abort Not Converged = Logical False
   Linear System Direct Method = String "Umfpack"
   Linear System Precondition Recompute = Integer 1
   Linear System Residual Output = Integer 1
   Linear System Solver = String "Direct"
-  Maxwell Material = Logical False
-  Model Lumping = Logical False
-  Model Lumping Filename = String ""
   Optimize Bandwidth = Logical True
   Procedure = File "StressSolve" "StressSolver"
-  Stability Analysis = Logical False
   Stabilize = Logical True
   Steady State Convergence Tolerance = Real 1e-05
-  Update Transient System = Logical False
   Variable = String "Displacement"
   Variable DOFs = Integer 3
 End
