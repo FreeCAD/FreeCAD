@@ -86,13 +86,19 @@ class Proxy(solverbase.Proxy):
             "App::PropertyIntegerList",
             "TimestepIntervals",
             "Timestepping",
-            "List of maximum optimization rounds if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+            (
+                "List of maximum optimization rounds if 'Simulation Type'\n"
+                "is either 'Scanning' or 'Transient'"
+            )
         )
         obj.addProperty(
             "App::PropertyFloatList",
             "TimestepSizes",
             "Timestepping",
-            "List of time steps of optimization if 'Simulation Type'\nis either 'Scanning' or 'Transient'"
+            (
+                "List of time steps of optimization if 'Simulation Type'\n"
+                "is either 'Scanning' or 'Transient'"
+            )
         )
         # there is no universal default, it all depends on the analysis, however
         # we have to set something and set 10 seconds in steps of 0.1s

@@ -32,8 +32,15 @@ from femtools import femutils
 from ... import equationbase
 from . import linear
 
-EIGEN_SYSTEM_SELECT = ["Smallest Magnitude", "Largest Magnitude", "Smallest Real Part",\
-    "Largest Real Part", "Smallest Imag Part", "Largest Imag Part"]
+EIGEN_SYSTEM_SELECT = [
+    "Smallest Magnitude",
+    "Largest Magnitude",
+    "Smallest Real Part",
+    "Largest Real Part",
+    "Smallest Imag Part",
+    "Largest Imag Part"
+]
+
 
 def create(doc, name="Elasticity"):
     return femutils.createObject(

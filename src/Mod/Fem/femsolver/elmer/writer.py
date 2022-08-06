@@ -842,7 +842,7 @@ class Writer(object):
                 "EigenSystemComputeResiduals",
                 "Eigen Values",
                 "Computes residuals of eigen value system"
-                )
+            )
         if not hasattr(equation, "EigenSystemDamped"):
             equation.addProperty(
                 "App::PropertyBool",
@@ -861,8 +861,14 @@ class Writer(object):
                 "Max iterations for iterative eigensystem solver"
             )
             equation.EigenSystemMaxIterations = (300, 1, int(1e8), 1)
-        EIGEN_SYSTEM_SELECT = ["Smallest Magnitude", "Largest Magnitude", "Smallest Real Part",\
-            "Largest Real Part", "Smallest Imag Part", "Largest Imag Part"]
+        EIGEN_SYSTEM_SELECT = [
+            "Smallest Magnitude",
+            "Largest Magnitude",
+            "Smallest Real Part",
+            "Largest Real Part",
+            "Smallest Imag Part",
+            "Largest Imag Part"
+        ]
         if not hasattr(equation, "EigenSystemSelect"):
             equation.addProperty(
                 "App::PropertyEnumeration",
@@ -1270,8 +1276,10 @@ class Writer(object):
         if self._hasExpression(equation) != equation.NonlinearTolerance:
             equation.setExpression("NonlinearTolerance", str(equation.NonlinearTolerance))
         if self._hasExpression(equation) != equation.NonlinearNewtonAfterTolerance:
-            equation.setExpression("NonlinearNewtonAfterTolerance",\
-                str(equation.NonlinearNewtonAfterTolerance))
+            equation.setExpression(
+                "NonlinearNewtonAfterTolerance",
+                str(equation.NonlinearNewtonAfterTolerance)
+            )
 
     def _createNonlinearSolver(self, equation):
         # first check if we have to update
