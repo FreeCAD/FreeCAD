@@ -622,7 +622,7 @@ PyObject* SheetPy::setAlignment(PyObject *args)
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
         for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
-            if(!i->->empty())
+            if(!i->empty())
                 alignment = Cell::decodeAlignment(*i, alignment);
         }
     }
