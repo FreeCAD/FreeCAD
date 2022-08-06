@@ -34,6 +34,7 @@ from ... import equationbase
 
 CONVECTION_TYPE = ["None", "Computed", "Constant"]
 
+
 def create(doc, name="Flow"):
     return femutils.createObject(
         doc, name, Proxy, ViewProxy)

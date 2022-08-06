@@ -35,6 +35,7 @@ from ... import equationbase
 CONVECTION_TYPE = ["None", "Computed", "Constant"]
 PHASE_CHANGE_MODEL = ["None", "Spatial 1", "Spatial 2", "Temporal"]
 
+
 def create(doc, name="Heat"):
     return femutils.createObject(
         doc, name, Proxy, ViewProxy)
@@ -67,7 +68,7 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
             "Equation",
             "Model for phase change"
         )
-        
+
         obj.Bubbles = True
         obj.Stabilize = False
         obj.Convection = CONVECTION_TYPE

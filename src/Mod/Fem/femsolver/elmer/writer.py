@@ -1348,8 +1348,10 @@ class Writer(object):
         if self._hasExpression(equation) != equation.NonlinearTolerance:
             equation.setExpression("NonlinearTolerance", str(equation.NonlinearTolerance))
         if self._hasExpression(equation) != equation.NonlinearNewtonAfterTolerance:
-            equation.setExpression("NonlinearNewtonAfterTolerance",\
-                str(equation.NonlinearNewtonAfterTolerance))
+            equation.setExpression(
+                "NonlinearNewtonAfterTolerance",
+                str(equation.NonlinearNewtonAfterTolerance)
+            )
 
     def _createNonlinearSolver(self, equation):
         # first check if we have to update
