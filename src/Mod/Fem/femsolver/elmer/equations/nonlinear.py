@@ -51,7 +51,7 @@ class Proxy(linear.Proxy):
             "App::PropertyInteger",
             "NonlinearIterations",
             "Nonlinear System",
-            "Maxmimum number of iterations"
+            "Maximum number of iterations"
         )
         obj.addProperty(
             "App::PropertyInteger",
