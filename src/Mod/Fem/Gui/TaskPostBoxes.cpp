@@ -537,7 +537,7 @@ void TaskPostClip::on_CreateButton_triggered(QAction*) {
     int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
 
-    // if a new function was successfuly added use it
+    // if a new function was successfully added use it
     int indexCount = ui->FunctionBox->count();
     if (indexCount > currentItem + 1)
         ui->FunctionBox->setCurrentIndex(indexCount - 1);
@@ -828,15 +828,15 @@ void TaskPostDataAlongLine::resolutionChanged(int val) {
 void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
 {
     const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    PointMarker* pm = reinterpret_cast<PointMarker*>(ud);
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    PointMarker* pm = static_cast<PointMarker*>(ud);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
-        if (point == nullptr) {
+        if (!point) {
             Base::Console().Message("No point picked.\n");
             return;
         }
@@ -1057,15 +1057,15 @@ void TaskPostDataAtPoint::centerChanged(double) {
 void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
 {
     const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    DataMarker* pm = reinterpret_cast<DataMarker*>(ud);
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    DataMarker* pm = static_cast<DataMarker*>(ud);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
-        if (point == nullptr) {
+        if (!point) {
             Base::Console().Message("No point picked.\n");
             return;
         }
@@ -1138,6 +1138,9 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     }
     else if (FieldName == "electric energy density") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("J/m^3");
+    }
+    else if (FieldName == "electric flux") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("A*s/m^2");
     }
     // ToDo: set a proper unit once it is known
     else if (FieldName == "potential loads") {
@@ -1509,7 +1512,7 @@ void TaskPostCut::on_CreateButton_triggered(QAction*) {
     int currentItem = ui->FunctionBox->currentIndex();
     collectImplicitFunctions();
 
-    // if a new function was successfuly added use it
+    // if a new function was successfully added use it
     int indexCount = ui->FunctionBox->count();
     if (indexCount > currentItem + 1)
         ui->FunctionBox->setCurrentIndex(indexCount - 1);
