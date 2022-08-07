@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QGraphicsItem>
+#include <QPen>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -85,12 +86,11 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
     void keyPressEvent(QKeyEvent * event) override;
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
     void getPickedQGIV(QPointF pos);
 
     QColor getTrackerColor();

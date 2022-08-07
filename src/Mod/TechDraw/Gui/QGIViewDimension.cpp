@@ -168,11 +168,6 @@ void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsItem::mousePressEvent(event);
 }
 
-void QGIDatumLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
 void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");

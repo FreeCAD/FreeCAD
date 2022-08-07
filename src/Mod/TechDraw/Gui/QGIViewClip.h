@@ -48,7 +48,6 @@ public:
 
 protected:
     void drawClip();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
     QGCustomRect* m_frame;

@@ -196,11 +196,6 @@ QGIView * QGIProjGroup::getAnchorQItem() const
     return nullptr;
 }
 
-void QGIProjGroup::updateView(bool update)
-{
-    return QGIViewCollection::updateView(update);
-}
-
 //QGIPG does not rotate. Only individual views rotate
 void QGIProjGroup::rotateView()
 {

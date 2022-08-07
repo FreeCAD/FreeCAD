@@ -76,12 +76,6 @@ QGIViewImage::~QGIViewImage()
     // m_imageItem belongs to this group and will be deleted by Qt
 }
 
-QVariant QGIViewImage::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-
-    return QGIView::itemChange(change, value);
-}
-
 void QGIViewImage::setViewImageFeature(TechDraw::DrawViewImage *obj)
 {
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));

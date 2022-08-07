@@ -54,7 +54,6 @@ public:
 
 protected:
     void drawAnnotation();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 

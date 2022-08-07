@@ -64,7 +64,6 @@ public:
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
     virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape(void) const override;
 
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
@@ -86,8 +85,6 @@ public Q_SLOTS:
 
 protected:
     virtual void draw() override;
-    virtual QVariant itemChange( GraphicsItemChange change,
-                                 const QVariant &value ) override;
     void setLineSpacing(int lineSpacing);
     double prefPointSize(void);
     QFont prefFont(void);

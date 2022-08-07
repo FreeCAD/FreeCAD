@@ -66,7 +66,6 @@ protected:
     bool firstTime;
     QGraphicsSvgItem *m_svgItem;
     QSvgRenderer *m_svgRender;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };  // class QGISVGTemplate
 
 }

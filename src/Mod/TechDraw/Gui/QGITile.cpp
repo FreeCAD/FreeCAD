@@ -103,12 +103,6 @@ QGITile::~QGITile()
 
 }
 
-QVariant QGITile::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-//    Base::Console().Message("QGIT::itemChange(%d)\n", change);
-    return QGIDecoration::itemChange(change, value);
-}
-
 void QGITile::draw()
 {
 //    Base::Console().Message("QGIT::draw()\n");
@@ -388,16 +382,6 @@ double QGITile::prefFontSize() const
 QString QGITile::prefTextFont() const
 {
     return Preferences::labelFontQString();
-}
-
-void QGITile::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->setPen(Qt::magenta);
-//    painter->drawRect(boundingRect());          //good for debugging
-    
-    QGIDecoration::paint (painter, &myOption, widget);
 }
 
 QRectF QGITile::boundingRect() const

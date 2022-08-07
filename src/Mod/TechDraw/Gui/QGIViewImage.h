@@ -51,7 +51,6 @@ public:
 
 protected:
     virtual void drawImage();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     QGCustomImage* m_imageItem;
     QGCustomClip*  m_cliparea;

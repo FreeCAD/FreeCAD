@@ -64,7 +64,6 @@ public:
     virtual void draw() = 0;
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     TechDraw::DrawTemplate *pageTemplate;
 
     std::vector<TemplateTextField *> textFields;
