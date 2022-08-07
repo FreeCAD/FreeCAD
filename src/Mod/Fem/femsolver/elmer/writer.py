@@ -915,6 +915,10 @@ class Writer(object):
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)
+        # Since FreeCAD meshes are in mm we let Elmer scale it
+        # _handleSimulation(self).
+        # To get it back in the original size we let Elmer scale it back
+        s["Coordinate Scaling Revert"] = True
         s["Equation"] = "ResultOutput"
         s["Exec Solver"] = "After simulation"
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
