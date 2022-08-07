@@ -252,7 +252,9 @@ class Results(run.Results):
             self.fail()
             return
         self.solver.ElmerResult.read(postPath)
-        self.solver.ElmerResult.scale(1000)
+        # at the moment we scale the mesh back using Elmer
+        # this might be changed in future, therefore leave this
+        #self.solver.ElmerResult.scale(1000)
         self.solver.ElmerResult.getLastPostObject().touch()
         self.solver.Document.recompute()
 
