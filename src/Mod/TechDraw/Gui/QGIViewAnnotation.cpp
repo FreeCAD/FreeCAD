@@ -81,12 +81,6 @@ QGIViewAnnotation::QGIViewAnnotation()
 
 }
 
-
-QVariant QGIViewAnnotation::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGIView::itemChange(change, value);
-}
-
 void QGIViewAnnotation::setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj)
 {
     // called from QGVPage. (once)

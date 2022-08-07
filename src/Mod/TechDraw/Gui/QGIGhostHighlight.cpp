@@ -69,14 +69,6 @@ QGIGhostHighlight::~QGIGhostHighlight()
 
 }
 
-QVariant QGIGhostHighlight::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    if (change == ItemPositionHasChanged && scene()) {
-        // nothing to do here?
-    }
-    return QGIHighlight::itemChange(change, value);
-}
-
 void QGIGhostHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIGhostHighlight::mousePress() - %X\n", this);

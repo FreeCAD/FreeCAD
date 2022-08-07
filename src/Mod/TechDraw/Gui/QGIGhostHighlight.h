@@ -52,7 +52,6 @@ Q_SIGNALS:
     void positionChange(QPointF p);
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 

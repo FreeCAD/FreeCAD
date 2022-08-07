@@ -164,11 +164,6 @@ void QGILeaderLine::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsItem::mousePressEvent(event);
 }
 
-//void QGILeaderLine::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-//{
-//    QGraphicsItem::mouseMoveEvent(event);
-//}
-
 //QGILL isn't draggable so skip QGIV::mouseRelease
 void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
@@ -604,11 +599,6 @@ QColor QGILeaderLine::getNormalColor()
 QRectF QGILeaderLine::boundingRect() const
 {
     return childrenBoundingRect();
-}
-
-QPainterPath QGILeaderLine::shape() const
-{
-    return QGraphicsItemGroup::shape();
 }
 
 void QGILeaderLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

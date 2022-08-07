@@ -120,16 +120,6 @@ QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
 
 }
 
-QVariant QGIRichAnno::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    if (change == ItemSelectedHasChanged && scene()) {
-        //There's nothing special for QGIRA to do when selection changes!
-    } else if(change == ItemSceneChange && scene()) {
-        // nothing special!
-    }
-    return QGIView::itemChange(change, value);
-}
-
 //void QGIRichAnno::select(bool state)
 //{
 //    setSelected(state);
@@ -301,11 +291,6 @@ QRectF QGIRichAnno::boundingRect() const
 {
     QRectF rect = mapFromItem(m_text,m_text->boundingRect()).boundingRect();
     return rect.adjusted(-10.,-10.,10.,10.);
-}
-
-QPainterPath QGIRichAnno::shape() const
-{
-    return QGraphicsItemGroup::shape();
 }
 
 void QGIRichAnno::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

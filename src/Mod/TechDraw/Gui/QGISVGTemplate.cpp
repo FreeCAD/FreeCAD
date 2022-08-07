@@ -79,13 +79,6 @@ QGISVGTemplate::~QGISVGTemplate()
     delete m_svgRender;
 }
 
-QVariant QGISVGTemplate::itemChange(GraphicsItemChange change,
-                                    const QVariant &value)
-{
-    return QGraphicsItemGroup::itemChange(change, value);
-}
-
-
 void QGISVGTemplate::openFile(const QFile &file)
 {
     Q_UNUSED(file);

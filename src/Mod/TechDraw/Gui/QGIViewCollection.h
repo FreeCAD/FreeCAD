@@ -41,13 +41,6 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 110};
     int type() const override { return Type;}
-
-    void updateView(bool update = false) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-
-protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-
 };
 
 } // namespace MDIViewPageGui

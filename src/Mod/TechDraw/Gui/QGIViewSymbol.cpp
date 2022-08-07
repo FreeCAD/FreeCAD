@@ -76,12 +76,6 @@ QGIViewSymbol::~QGIViewSymbol()
     // m_svgItem belongs to this group and will be deleted by Qt
 }
 
-QVariant QGIViewSymbol::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-
-    return QGIView::itemChange(change, value);
-}
-
 void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol *obj)
 {
     // called from QGVPage. (once)

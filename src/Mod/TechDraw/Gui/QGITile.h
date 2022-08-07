@@ -23,15 +23,14 @@
 #ifndef TECHDRAWGUI_QGITILE_H
 #define TECHDRAWGUI_QGITILE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsColorizeEffect>
 #include <QPointF>
 
-#include "QGCustomText.h"
-#include "QGCustomSvg.h"
 #include "QGIDecoration.h"
-
 
 namespace TechDraw {
 class DrawTile;
@@ -40,6 +39,8 @@ class DrawTileWeld;
 
 namespace TechDrawGui
 {
+class QGCustomSvg;
+class QGCustomText;
 class QGIWeldSymbol;
 
 class TechDrawGuiExport QGITile : public QGIDecoration
@@ -51,7 +52,6 @@ public:
     enum {Type = QGraphicsItem::UserType + 325};
     int type(void) const { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual QRectF boundingRect() const;
 
     void setTileTextLeft(std::string s);
@@ -68,8 +68,6 @@ public:
     virtual void draw(void);
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
     QColor getTileColor(void) const;
     void setPrettyNormal();
     void setPrettyPre();

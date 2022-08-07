@@ -119,12 +119,3 @@ QPainterPath QGIEdge::shape() const
     outline = stroker.createStroke(path());
     return outline;
 }
-
-void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    //~ painter->drawRect(boundingRect());          //good for debugging
-
-    QGIPrimPath::paint (painter, &myOption, widget);
-}

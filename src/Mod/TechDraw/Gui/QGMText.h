@@ -69,8 +69,6 @@ Q_SIGNALS:
 
 protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 

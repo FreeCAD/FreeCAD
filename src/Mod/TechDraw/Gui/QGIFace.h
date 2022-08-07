@@ -58,7 +58,6 @@ public:
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
 public:
     enum fillMode {
