@@ -1130,6 +1130,9 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     else if (FieldName == "electric field") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V/m");
     }
+    else if (FieldName == "electric force density") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("N/m^2");
+    }
     else if (FieldName == "potential") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V");
     }
