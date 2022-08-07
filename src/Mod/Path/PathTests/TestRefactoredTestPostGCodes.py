@@ -123,12 +123,18 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         """Test G0 command Generation."""
         self.compare_third_line(
             "G0 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            "G0 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
+            (
+                "G0 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
         self.compare_third_line(
             "G00 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            "G00 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
+            (
+                "G00 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
 
@@ -136,23 +142,35 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         """Test G1 command Generation."""
         self.compare_third_line(
             "G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456",
-            "G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074",
+            (
+                "G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000 F74.074"
+            ),
             "",
         )
         self.compare_third_line(
             "G01 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456",
-            "G01 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074",
+            (
+                "G01 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000 F74.074"
+            ),
             "",
         )
         # Test argument order
         self.compare_third_line(
             "G1 F1.23456 Z30 V80 C60 W90 X10 B50 U70 Y20 A40",
-            "G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074",
+            (
+                "G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000 F74.074"
+            ),
             "",
         )
         self.compare_third_line(
             "G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456",
-            "G1 X0.3937 Y0.7874 Z1.1811 A1.5748 B1.9685 C2.3622 U2.7559 V3.1496 W3.5433 F2.9163",
+            (
+                "G1 X0.3937 Y0.7874 Z1.1811 A1.5748 B1.9685 C2.3622 "
+                "U2.7559 V3.1496 W3.5433 F2.9163"
+            ),
             "--inches",
         )
 
@@ -311,7 +329,10 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         self.compare_third_line("G28", "G28", "")
         self.compare_third_line(
             "G28 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            "G28 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
+            (
+                "G28 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
 
@@ -1233,7 +1254,10 @@ G90
         """Test G92 command Generation."""
         self.compare_third_line(
             "G92 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            "G92 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
+            (
+                "G92 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
 
