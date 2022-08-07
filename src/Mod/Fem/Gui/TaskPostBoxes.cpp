@@ -1142,9 +1142,9 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     else if (FieldName == "electric flux") {
         static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("A*s/m^2");
     }
-    // ToDo: set a proper unit once it is known
+    // potential loads are in Coulomb: https://www.elmerfem.org/forum/viewtopic.php?t=7780
     else if (FieldName == "potential loads") {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("C");
     }
     else {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
