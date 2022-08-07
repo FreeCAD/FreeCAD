@@ -190,8 +190,8 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
 #endif
 
-    Py_DECREF(args);
-    Py_DECREF(func);
+    Py_XDECREF(args);
+    Py_XDECREF(func);
 
     if (eval){
         return eval;
@@ -356,11 +356,10 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
  */
 bool InteractiveInterpreter::push(const char* line)
 {
-    d->buffer.append(QString::fromLatin1(line));
+    d->buffer.append(QString::fromUtf8(line));
     QString source = d->buffer.join(QLatin1String("\n"));
     try {
-        // Source is already UTF-8, so we can use toLatin1()
-        bool more = runSource(source.toLatin1());
+        bool more = runSource(source.toUtf8());
         if (!more)
             d->buffer.clear();
         return more;
