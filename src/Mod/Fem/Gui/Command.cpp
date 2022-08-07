@@ -1199,7 +1199,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
     cmd->doCommand(Gui::Command::Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
     cmd->doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
     cmd->doCommand(Gui::Command::Doc, "del __list__");
-        
+
     // set display to assure the user sees the new object
     cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.DisplayMode = \"Surface\"");
     // Set SelectionStyle to BoundBox because the idea is that the user gets the useful result
@@ -1219,7 +1219,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 }
 
 
-std::string Plot() 
+std::string Plot()
 {
     auto xAxisLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Thickness [mm]", "Plot X-Axis Label").toStdString();
     auto yAxisLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Stress [MPa]", "Plot Y-Axis Label").toStdString();
@@ -1495,7 +1495,7 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
             // names need to match with names in FemVTKTools.cpp, this is not failsafe, but ATM there is no better way for test on a stress result in vtk pipeline
             ) {
             // TODO FIXME only works if the data along the line object has the name DataAlongLine
-            // we should get the selected data along the line object 
+            // we should get the selected data along the line object
             App::DocumentObjectT objT(DataAlongLine);
             std::string ObjName = objT.getObjectPython();
             Gui::doCommandT(Gui::Command::Doc, "t_coords = %s.XAxisData", ObjName);
