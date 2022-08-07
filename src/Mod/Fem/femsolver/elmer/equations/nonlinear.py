@@ -81,7 +81,7 @@ class Proxy(linear.Proxy):
         # the user has to view and edit the tolerance via the property editor and
         # this does not yet allow to view and edit small numbers in scientific notation
         # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
-        obj.setExpression("NonlinearTolerance", "1e-8")
+        obj.setExpression("NonlinearTolerance", "1e-7")
         obj.setExpression("NonlinearNewtonAfterTolerance", "1e-3")
         obj.RelaxationFactor = 1.0
 
