@@ -125,9 +125,7 @@ macro(SetupShibokenAndPyside)
                 "PySide2 Python module not found.\n"
                 "================================\n")
     else()
-        message(STATUS "===============================================\n"
-                       "PySide2 Python module found at ${PRINT_OUTPUT}.\n"
-                       "===============================================\n")
+        message(STATUS "PySide2 Python module found at ${PRINT_OUTPUT}.\n")
     endif()
 
 endmacro(SetupShibokenAndPyside)
