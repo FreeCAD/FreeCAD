@@ -537,6 +537,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
         m_material->transparency.setValue(0.);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();
+        // since there is no field, set the range to the default
+        // range as if a new object is created
+        setRangeOfColorBar(-0.5, 0.5);
         return;
     };
 
