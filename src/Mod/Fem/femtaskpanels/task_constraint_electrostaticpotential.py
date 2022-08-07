@@ -41,12 +41,23 @@ class _TaskPanel(object):
 
     def __init__(self, obj):
         self._obj = obj
-        self._refWidget = selection_widgets.BoundarySelector()
-        self._refWidget.setReferences(obj.References)
+
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElectrostaticPotential.ui")
         self._initParamWidget()
-        self.form = [self._refWidget, self._paramWidget]
+
+        # geometry selection widget
+        # start with Solid in list!
+        self._selectionWidget = selection_widgets.GeometryElementsSelection(
+            obj.References,
+            ["Solid", "Face", "Edge", "Vertex"],
+            True,
+            False
+        )
+
+        # form made from param and selection widget
+        self.form = [self._paramWidget, self._selectionWidget]
+
         analysis = obj.getParentGroup()
         self._mesh = None
         self._part = None
@@ -70,8 +81,8 @@ class _TaskPanel(object):
         return True
 
     def accept(self):
-        if self._obj.References != self._refWidget.references():
-            self._obj.References = self._refWidget.references()
+        if self._obj.References != self._selectionWidget.references:
+            self._obj.References = self._selectionWidget.references
         self._applyWidgetChanges()
         self._obj.Document.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
