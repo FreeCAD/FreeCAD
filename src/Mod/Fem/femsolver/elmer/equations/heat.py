@@ -72,7 +72,7 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
         obj.Bubbles = True
         obj.Stabilize = False
         obj.Convection = CONVECTION_TYPE
-        obj.Convection = "Computed"
+        obj.Convection = "None"
         obj.PhaseChangeModel = PHASE_CHANGE_MODEL
         obj.PhaseChangeModel = "None"
         obj.Priority = 20

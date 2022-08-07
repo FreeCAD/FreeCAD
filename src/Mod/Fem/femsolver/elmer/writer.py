@@ -448,7 +448,7 @@ class Writer(object):
                 "Type of convection to be used"
             )
             equation.Convection = heat.CONVECTION_TYPE
-            equation.Convection = "Computed"
+            equation.Convection = "None"
         if not hasattr(equation, "PhaseChangeModel"):
             equation.addProperty(
                 "App::PropertyEnumeration",
