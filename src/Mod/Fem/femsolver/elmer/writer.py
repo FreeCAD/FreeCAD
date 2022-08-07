@@ -48,6 +48,7 @@ from femtools import constants
 from femtools import femutils
 from femtools import membertools
 from .equations import elasticity
+from .equations import electricforce
 from .equations import flow
 from .equations import heat
 
@@ -784,11 +785,30 @@ class Writer(object):
                     self._addSolver(body, solverSection)
 
     def _getElectricforceSolver(self, equation):
+        # check if we need to update the equation
+        self._updateElectricforceSolver(equation)
+        # output the equation parameters
         s = self._createEmptySolver()
         s["Equation"] = "Electric Force"  # equation.Name
         s["Procedure"] = sifio.FileAttr("ElectricForce/StatElecForce")
+        s["Exec Solver"] = equation.ExecSolver
         s["Stabilize"] = equation.Stabilize
         return s
+
+    def _updateElectricforceSolver(self, equation):
+        # updates older Electricforce equations
+        if not hasattr(equation, "ExecSolver"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "ExecSolver",
+                "Electric Force",
+                (
+                    "That solver is only executed after solution converged\n"
+                    "To execute always, change to 'Always'"
+                )
+            )
+            equation.ExecSolver = electricforce.SOLVER_EXEC_METHODS
+            equation.ExecSolver = "After Timestep"
 
     def _handleElasticity(self):
         activeIn = []
