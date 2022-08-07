@@ -649,7 +649,7 @@ void QGSPage::removeTemplate()
     }
 }
 
-void QGSPage::refreshViews(void)
+void QGSPage::refreshViews()
 {
 //    Base::Console().Message("QGVP::refreshViews()\n");
     QList<QGraphicsItem*> list = items();

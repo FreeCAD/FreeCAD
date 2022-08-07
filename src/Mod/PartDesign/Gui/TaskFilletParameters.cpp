@@ -162,7 +162,7 @@ void TaskFilletParameters::clearButtons(const selectionModes notThis)
     DressUpView->highlightReferences(false);
 }
 
-void TaskFilletParameters::onRefDeleted(void)
+void TaskFilletParameters::onRefDeleted()
 {
     // assure we we are not in selection mode
     exitSelectionMode();
@@ -214,7 +214,7 @@ void TaskFilletParameters::onRefDeleted(void)
     }
 }
 
-void TaskFilletParameters::onAddAllEdges(void)
+void TaskFilletParameters::onAddAllEdges()
 {
     TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
     ui->buttonRefRemove->setEnabled(true);
@@ -231,7 +231,7 @@ void TaskFilletParameters::onLengthChanged(double len)
     hideOnError();   
 }
 
-double TaskFilletParameters::getLength(void) const
+double TaskFilletParameters::getLength() const
 {
     return ui->filletRadius->value().getValue();
 }

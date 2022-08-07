@@ -38,18 +38,18 @@ class PartExport CustomFeature : public Part::Feature
 
 public:
     /// Constructor
-    CustomFeature(void);
+    CustomFeature();
     virtual ~CustomFeature();
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual short mustExecute(void) const;
+    virtual App::DocumentObjectExecReturn *execute();
+    virtual short mustExecute() const;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "PartGui::ViewProviderCustom";
     }
 };

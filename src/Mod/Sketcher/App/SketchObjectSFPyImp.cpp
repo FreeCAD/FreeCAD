@@ -31,7 +31,7 @@
 using namespace Sketcher;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SketchObjectSFPy::representation(void) const
+std::string SketchObjectSFPy::representation() const
 {
     return "<SketchObjectSF object>";
 }

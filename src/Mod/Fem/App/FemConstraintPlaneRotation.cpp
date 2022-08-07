@@ -51,12 +51,12 @@ ConstraintPlaneRotation::ConstraintPlaneRotation()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintPlaneRotation::execute(void)
+App::DocumentObjectExecReturn *ConstraintPlaneRotation::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintPlaneRotation::getViewProviderName(void) const
+const char* ConstraintPlaneRotation::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintPlaneRotation";
 }

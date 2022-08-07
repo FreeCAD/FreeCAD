@@ -73,7 +73,7 @@ void ShapeBinder::onChanged(const App::Property* prop)
     Feature::onChanged(prop);
 }
 
-short int ShapeBinder::mustExecute(void) const {
+short int ShapeBinder::mustExecute() const {
 
     if (Support.isTouched())
         return 1;
@@ -117,7 +117,7 @@ bool ShapeBinder::hasPlacementChanged() const
     return this->Placement.getValue() != placement;
 }
 
-App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
+App::DocumentObjectExecReturn* ShapeBinder::execute() {
 
     if (!this->isRestoring()) {
         Part::TopoShape shape(updatedShape());
@@ -805,7 +805,7 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
     }
 }
 
-App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
+App::DocumentObjectExecReturn* SubShapeBinder::execute() {
 
     setupCopyOnChange();
 
@@ -988,7 +988,7 @@ void SubShapeBinder::handleChangedPropertyType(
 
 namespace App {
     PROPERTY_SOURCE_TEMPLATE(PartDesign::SubShapeBinderPython, PartDesign::SubShapeBinder)
-        template<> const char* PartDesign::SubShapeBinderPython::getViewProviderName(void) const {
+        template<> const char* PartDesign::SubShapeBinderPython::getViewProviderName() const {
         return "PartDesignGui::ViewProviderSubShapeBinderPython";
     }
     template class PartDesignExport FeaturePythonT<PartDesign::SubShapeBinder>;

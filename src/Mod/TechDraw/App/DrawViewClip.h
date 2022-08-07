@@ -41,7 +41,7 @@ class TechDrawExport DrawViewClip: public TechDraw::DrawView
 
 public:
     /// Constructor
-    DrawViewClip(void);
+    DrawViewClip();
     virtual ~DrawViewClip();
 
     App::PropertyLength Width;
@@ -56,19 +56,19 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderViewClip";
     }
     //return PyObject as DrawViewClipPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
 
     std::vector<std::string> getChildViewNames();
     bool isViewInClip(App::DocumentObject* view);
-    virtual QRectF getRect(void) const { return QRectF(0,0,Width.getValue(),Height.getValue()); }
+    virtual QRectF getRect() const { return QRectF(0,0,Width.getValue(),Height.getValue()); }
 
 
 protected:

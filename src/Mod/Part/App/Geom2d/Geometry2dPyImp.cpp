@@ -39,7 +39,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string Geometry2dPy::representation(void) const
+std::string Geometry2dPy::representation() const
 {
     return "<Geometry2d object>";
 }

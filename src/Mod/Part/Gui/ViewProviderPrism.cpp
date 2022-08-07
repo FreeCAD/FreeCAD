@@ -46,7 +46,7 @@ ViewProviderPrism::~ViewProviderPrism()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderPrism::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPrism::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList;
@@ -78,7 +78,7 @@ ViewProviderWedge::~ViewProviderWedge()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderWedge::getDisplayModes(void) const
+std::vector<std::string> ViewProviderWedge::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList;

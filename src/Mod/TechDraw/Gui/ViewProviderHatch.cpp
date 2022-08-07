@@ -86,7 +86,7 @@ bool ViewProviderHatch::setEdit(int ModNum)
     return true;
 }
 
-bool ViewProviderHatch::doubleClicked(void)
+bool ViewProviderHatch::doubleClicked()
 {
     setEdit(0);
     return true;

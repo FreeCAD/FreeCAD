@@ -280,7 +280,7 @@ void ViewProviderPath::attach(App::DocumentObject *pcObj)
     addDisplayMaskMode(pcPathRoot, "Waypoints");
 }
 
-bool ViewProviderPath::useNewSelectionModel(void) const {
+bool ViewProviderPath::useNewSelectionModel() const {
     return SelectionStyle.getValue()!=2;
 }
 
@@ -291,7 +291,7 @@ void ViewProviderPath::setDisplayMode(const char* ModeName)
     inherited::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderPath::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPath::getDisplayModes() const
 {
     std::vector<std::string> StrList;
     StrList.emplace_back("Waypoints");

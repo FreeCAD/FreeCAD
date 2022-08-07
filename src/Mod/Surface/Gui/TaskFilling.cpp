@@ -95,7 +95,7 @@ void ViewProviderFilling::unsetEdit(int ModNum)
     PartGui::ViewProviderSpline::unsetEdit(ModNum);
 }
 
-QIcon ViewProviderFilling::getIcon(void) const
+QIcon ViewProviderFilling::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Surface_Filling");
 }

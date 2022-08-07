@@ -470,7 +470,7 @@ std::vector<edgeSortItem> DrawProjectSplit::sortEdges(std::vector<edgeSortItem>&
 //*************************
 //* edgeSortItem Methods
 //*************************
-std::string edgeSortItem::dump(void)
+std::string edgeSortItem::dump()
 {
     std::string result;
     std::stringstream builder;

@@ -53,12 +53,12 @@ ConstraintPressure::ConstraintPressure()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintPressure::execute(void)
+App::DocumentObjectExecReturn *ConstraintPressure::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintPressure::getViewProviderName(void) const
+const char* ConstraintPressure::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintPressure";
 }

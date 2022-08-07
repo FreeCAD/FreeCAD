@@ -48,7 +48,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// Uses the standard ViewProvider
     //const char* getViewProviderName(void) const {

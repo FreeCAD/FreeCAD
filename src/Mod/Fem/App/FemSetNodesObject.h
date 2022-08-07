@@ -37,20 +37,20 @@ class FemExport FemSetNodesObject : public FemSetObject
 
 public:
     /// Constructor
-    FemSetNodesObject(void);
+    FemSetNodesObject();
     virtual ~FemSetNodesObject();
 
     App::PropertyIntegerSet Nodes;
 
     // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderSetNodes";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    virtual App::DocumentObjectExecReturn *execute() {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    virtual short mustExecute() const;
+    virtual PyObject *getPyObject();
 
 
 };

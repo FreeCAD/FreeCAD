@@ -128,13 +128,13 @@ void ViewProviderInspection::onChanged(const App::Property* prop)
     }
 }
 
-void ViewProviderInspection::hide(void)
+void ViewProviderInspection::hide()
 {
     inherited::hide();
     pcColorStyle->style = SoDrawStyle::INVISIBLE;
 }
 
-void ViewProviderInspection::show(void)
+void ViewProviderInspection::show()
 {
     inherited::show();
     pcColorStyle->style = SoDrawStyle::FILLED;
@@ -296,7 +296,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
     }
 }
 
-SoSeparator* ViewProviderInspection::getFrontRoot(void) const
+SoSeparator* ViewProviderInspection::getFrontRoot() const
 {
     return pcColorRoot;
 }
@@ -376,7 +376,7 @@ void ViewProviderInspection::setDisplayMode(const char* ModeName)
     inherited::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderInspection::getDisplayModes(void) const
+std::vector<std::string> ViewProviderInspection::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;

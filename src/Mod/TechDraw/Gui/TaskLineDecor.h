@@ -50,20 +50,20 @@ public:
 public:
     virtual bool accept();
     virtual bool reject();
-    bool apply(void) { return m_apply; }
+    bool apply() { return m_apply; }
     void apply(bool b) { m_apply = b; }
 
 protected Q_SLOTS:
-    void onStyleChanged(void);
-    void onColorChanged(void);
-    void onWeightChanged(void);
-    void onVisibleChanged(void);
+    void onStyleChanged();
+    void onColorChanged();
+    void onWeightChanged();
+    void onVisibleChanged();
 
 protected:
     void changeEvent(QEvent *e);
-    void initUi(void);
-    void applyDecorations(void);
-    void getDefaults(void);
+    void initUi();
+    void applyDecorations();
+    void getDefaults();
 
 private:
     std::unique_ptr<Ui_TaskLineDecor> ui;
@@ -90,22 +90,22 @@ public:
     virtual bool reject();
 
 protected Q_SLOTS:
-    void onAllPressed(void);
-    void onGeometryPressed(void);
-    void onCosmeticPressed(void);
-    void onCenterPressed(void);
+    void onAllPressed();
+    void onGeometryPressed();
+    void onCosmeticPressed();
+    void onCenterPressed();
 
 protected:
     void changeEvent(QEvent *e);
-    void initUi(void);
-    int countInvisibleLines(void);
-    int countInvisibleGeoms(void);
-    int countInvisibleCosmetics(void);
-    int countInvisibleCenters(void);
-    void restoreInvisibleLines(void);
-    void restoreInvisibleGeoms(void);
-    void restoreInvisibleCosmetics(void);
-    void restoreInvisibleCenters(void);
+    void initUi();
+    int countInvisibleLines();
+    int countInvisibleGeoms();
+    int countInvisibleCosmetics();
+    int countInvisibleCenters();
+    void restoreInvisibleLines();
+    void restoreInvisibleGeoms();
+    void restoreInvisibleCosmetics();
+    void restoreInvisibleCenters();
 
 private:
     std::unique_ptr<Ui_TaskRestoreLines> ui;
@@ -134,7 +134,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return false; }
 
 protected:

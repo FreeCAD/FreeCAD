@@ -123,7 +123,7 @@ void CmdPathArea::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPathArea::isActive(void)
+bool CmdPathArea::isActive()
 {
     return hasActiveDocument();
 }
@@ -210,7 +210,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPathAreaWorkplane::isActive(void)
+bool CmdPathAreaWorkplane::isActive()
 {
     return !getSelection().getSelectionEx(nullptr, Path::FeatureArea::getClassTypeId()).empty();
 }
@@ -263,7 +263,7 @@ void CmdPathCompound::activated(int iMsg)
     }
 }
 
-bool CmdPathCompound::isActive(void)
+bool CmdPathCompound::isActive()
 {
     return hasActiveDocument();
 }
@@ -332,14 +332,14 @@ void CmdPathShape::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPathShape::isActive(void)
+bool CmdPathShape::isActive()
 {
     return hasActiveDocument();
 }
 
 
 
-void CreatePathCommands(void)
+void CreatePathCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPathCompound());

@@ -469,7 +469,7 @@ void ViewProviderPartExt::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderPartExt::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPartExt::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();

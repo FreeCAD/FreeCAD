@@ -50,7 +50,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string BSplineCurvePy::representation(void) const
+std::string BSplineCurvePy::representation() const
 {
     return "<BSplineCurve object>";
 }
@@ -682,35 +682,35 @@ PyObject* BSplineCurvePy::getMultiplicities(PyObject * args)
         return nullptr;
     }
 }
-Py::Long BSplineCurvePy::getDegree(void) const
+Py::Long BSplineCurvePy::getDegree() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(curve->Degree());
 }
 
-Py::Long BSplineCurvePy::getMaxDegree(void) const
+Py::Long BSplineCurvePy::getMaxDegree() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(curve->MaxDegree());
 }
 
-Py::Long BSplineCurvePy::getNbPoles(void) const
+Py::Long BSplineCurvePy::getNbPoles() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(curve->NbPoles());
 }
 
-Py::Long BSplineCurvePy::getNbKnots(void) const
+Py::Long BSplineCurvePy::getNbKnots() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(curve->NbKnots());
 }
 
-Py::Object BSplineCurvePy::getStartPoint(void) const
+Py::Object BSplineCurvePy::getStartPoint() const
 {
     Handle(Geom_BSplineCurve) c = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
@@ -718,7 +718,7 @@ Py::Object BSplineCurvePy::getStartPoint(void) const
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 }
 
-Py::Object BSplineCurvePy::getEndPoint(void) const
+Py::Object BSplineCurvePy::getEndPoint() const
 {
     Handle(Geom_BSplineCurve) c = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
@@ -726,21 +726,21 @@ Py::Object BSplineCurvePy::getEndPoint(void) const
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 }
 
-Py::Object BSplineCurvePy::getFirstUKnotIndex(void) const
+Py::Object BSplineCurvePy::getFirstUKnotIndex() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(curve->FirstUKnotIndex());
 }
 
-Py::Object BSplineCurvePy::getLastUKnotIndex(void) const
+Py::Object BSplineCurvePy::getLastUKnotIndex() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(curve->LastUKnotIndex());
 }
 
-Py::List BSplineCurvePy::getKnotSequence(void) const
+Py::List BSplineCurvePy::getKnotSequence() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());

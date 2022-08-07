@@ -81,7 +81,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
     }
 }
 
-bool CmdPartSimpleCylinder::isActive(void)
+bool CmdPartSimpleCylinder::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -114,7 +114,7 @@ void CmdPartShapeFromMesh::activated(int iMsg)
     dlg.exec();
 }
 
-bool CmdPartShapeFromMesh::isActive(void)
+bool CmdPartShapeFromMesh::isActive()
 {
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
     return Gui::Selection().countObjectsOfType(meshid) > 0;
@@ -163,7 +163,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdPartPointsFromMesh::isActive(void)
+bool CmdPartPointsFromMesh::isActive()
 {
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
     return Gui::Selection().countObjectsOfType(meshid) > 0;
@@ -239,7 +239,7 @@ void CmdPartSimpleCopy::activated(int iMsg)
     _copyShape("Simple copy",true);
 }
 
-bool CmdPartSimpleCopy::isActive(void)
+bool CmdPartSimpleCopy::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -267,7 +267,7 @@ void CmdPartTransformedCopy::activated(int iMsg)
     _copyShape("Transformed copy",false);
 }
 
-bool CmdPartTransformedCopy::isActive(void)
+bool CmdPartTransformedCopy::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -295,7 +295,7 @@ void CmdPartElementCopy::activated(int iMsg)
     _copyShape("Element copy",false,true);
 }
 
-bool CmdPartElementCopy::isActive(void)
+bool CmdPartElementCopy::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -355,7 +355,7 @@ void CmdPartRefineShape::activated(int iMsg)
     }
 }
 
-bool CmdPartRefineShape::isActive(void)
+bool CmdPartRefineShape::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -421,7 +421,7 @@ void CmdPartDefeaturing::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPartDefeaturing::isActive(void)
+bool CmdPartDefeaturing::isActive()
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
@@ -439,7 +439,7 @@ bool CmdPartDefeaturing::isActive(void)
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void CreateSimplePartCommands(void)
+void CreateSimplePartCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPartSimpleCylinder());

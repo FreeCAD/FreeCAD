@@ -43,7 +43,7 @@ public:
     /// destructor
     virtual ~ViewProviderSymbol();
 
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     virtual void updateData(const App::Property*);
 
     virtual TechDraw::DrawViewSymbol* getViewObject() const;

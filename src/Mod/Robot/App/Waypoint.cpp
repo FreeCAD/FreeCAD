@@ -90,7 +90,7 @@ Waypoint::~Waypoint()
 {
 }
 
-unsigned int Waypoint::getMemSize (void) const
+unsigned int Waypoint::getMemSize () const
 {
 	return 0;
 }

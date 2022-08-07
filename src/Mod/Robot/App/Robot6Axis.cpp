@@ -166,7 +166,7 @@ void Robot6Axis::readKinematic(const char * FileName)
     setKinematic(temp);
 }
 
-unsigned int Robot6Axis::getMemSize (void) const
+unsigned int Robot6Axis::getMemSize () const
 {
     return 0;
 }
@@ -253,14 +253,14 @@ bool Robot6Axis::setTo(const Placement &To)
     }
 }
 
-Base::Placement Robot6Axis::getTcp(void)
+Base::Placement Robot6Axis::getTcp()
 {
     double x,y,z,w;
     Tcp.M.GetQuaternion(x,y,z,w);
     return Base::Placement(Base::Vector3d(Tcp.p[0],Tcp.p[1],Tcp.p[2]),Base::Rotation(x,y,z,w));
 }
 
-bool Robot6Axis::calcTcp(void)
+bool Robot6Axis::calcTcp()
 {
     // Create solver based on kinematic chain
     ChainFkSolverPos_recursive fksolver = ChainFkSolverPos_recursive(Kinematic);

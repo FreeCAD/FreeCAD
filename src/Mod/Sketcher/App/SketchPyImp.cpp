@@ -41,7 +41,7 @@ using namespace Sketcher;
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SketchPy::representation(void) const
+std::string SketchPy::representation() const
 {
     return std::string("<Sketch object>");
 }
@@ -165,13 +165,13 @@ PyObject* SketchPy::movePoint(PyObject *args)
 
 // +++ attributes implementer ++++++++++++++++++++++++++++++++++++++++++++++++
 
-Py::Long SketchPy::getConstraint(void) const
+Py::Long SketchPy::getConstraint() const
 {
     //return Py::Int();
     throw Py::AttributeError("Not yet implemented");
 }
 
-Py::Tuple SketchPy::getConflicts(void) const
+Py::Tuple SketchPy::getConflicts() const
 {
     std::vector<int> c = getSketchPtr()->getConflicting();
     Py::Tuple t(c.size());
@@ -182,7 +182,7 @@ Py::Tuple SketchPy::getConflicts(void) const
     return t;
 }
 
-Py::Tuple SketchPy::getRedundancies(void) const
+Py::Tuple SketchPy::getRedundancies() const
 {
     std::vector<int> c = getSketchPtr()->getRedundant();
     Py::Tuple t(c.size());
@@ -193,12 +193,12 @@ Py::Tuple SketchPy::getRedundancies(void) const
     return t;
 }
 
-Py::Tuple SketchPy::getGeometries(void) const
+Py::Tuple SketchPy::getGeometries() const
 {
     return getSketchPtr()->getPyGeometry();
 }
 
-Py::Object SketchPy::getShape(void) const
+Py::Object SketchPy::getShape() const
 {
     return Py::asObject(new TopoShapePy(new TopoShape(getSketchPtr()->toShape())));
 }

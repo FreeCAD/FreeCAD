@@ -38,7 +38,7 @@ public:
     /// destructor
     virtual ~ViewProviderTile();
 
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     virtual bool canDelete(App::DocumentObject *obj) const;
 
 /*    virtual TechDraw::DrawTile* getViewObject() const;*/

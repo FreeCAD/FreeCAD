@@ -70,10 +70,10 @@ public:
     void setSquareFromPoints(std::vector<QPointF> pts);
     void setCircleFromPoints(std::vector<QPointF> pts);
     void setPoint(std::vector<QPointF> pts);
-    std::vector<Base::Vector3d> convertPoints(void);
-    void terminateDrawing(void);
+    std::vector<Base::Vector3d> convertPoints();
+    void terminateDrawing();
     void sleep(bool b);
-    TrackerMode getTrackerMode(void) { return m_trackerMode; }
+    TrackerMode getTrackerMode() { return m_trackerMode; }
     void setTrackerMode(TrackerMode m) { m_trackerMode = m; }
     QPointF snapToAngle(QPointF pt);
 

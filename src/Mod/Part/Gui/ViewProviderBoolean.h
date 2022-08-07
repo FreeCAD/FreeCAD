@@ -40,8 +40,8 @@ public:
     virtual ~ViewProviderBoolean();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void) const;
-    QIcon getIcon(void) const;
+    std::vector<App::DocumentObject*> claimChildren() const;
+    QIcon getIcon() const;
     void updateData(const App::Property*);
     bool onDelete(const std::vector<std::string> &);
 };
@@ -58,8 +58,8 @@ public:
     virtual ~ViewProviderMultiFuse();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void) const;
-    QIcon getIcon(void) const;
+    std::vector<App::DocumentObject*> claimChildren() const;
+    QIcon getIcon() const;
     void updateData(const App::Property*);
     bool onDelete(const std::vector<std::string> &);
 
@@ -84,8 +84,8 @@ public:
     virtual ~ViewProviderMultiCommon();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void) const;
-    QIcon getIcon(void) const;
+    std::vector<App::DocumentObject*> claimChildren() const;
+    QIcon getIcon() const;
     void updateData(const App::Property*);
     bool onDelete(const std::vector<std::string> &);
 

@@ -36,7 +36,7 @@ class FemExport ConstraintContact : public Fem::Constraint
 
 public:
     /// Constructor
-    ConstraintContact(void);
+    ConstraintContact();
 
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
@@ -57,10 +57,10 @@ public:
 /* */
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const;
+    const char* getViewProviderName() const;
 
 protected:
     virtual void onChanged(const App::Property* prop);

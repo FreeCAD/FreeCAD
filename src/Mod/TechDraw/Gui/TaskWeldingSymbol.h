@@ -73,7 +73,7 @@ public:
     std::string symbolPath;
     std::string symbolString;
     std::string tileName;
-    void init(void) {
+    void init() {
         toBeSaved = false;
         arrowSide = true;
         row = 0;
@@ -188,7 +188,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
                         { return false; }
     void update();
 

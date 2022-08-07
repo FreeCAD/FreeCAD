@@ -112,7 +112,7 @@ void TaskActiveView::blockButtons(bool b)
 }
 
 //******************************************************************************
-TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
+TechDraw::DrawViewSymbol* TaskActiveView::createActiveView()
 {
 //    Base::Console().Message("TAV::createActiveView()\n");
 

@@ -50,11 +50,11 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderBody";
     }
     //@}
@@ -115,7 +115,7 @@ public:
      */
     static Body *findBodyOf(const App::DocumentObject* feature);
 
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     virtual std::vector<std::string> getSubObjects(int reason=0) const override;
     virtual App::DocumentObject *getSubObject(const char *subname,
@@ -138,7 +138,7 @@ public:
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = nullptr);
 
     // a body is solid if it has features that are solid according to member isSolidFeature.
-    bool isSolid(void);
+    bool isSolid();
 
 protected:
     virtual void onSettingDocument() override;

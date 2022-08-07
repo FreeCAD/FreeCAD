@@ -86,14 +86,14 @@ public:
     void onChanged(const App::Property* prop);
 
     //edit handling
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked();
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
 
-    virtual void hide(void);
-    virtual void show(void);
+    virtual void hide();
+    virtual void show();
 
-    virtual SoSeparator* getFrontRoot(void) const;
+    virtual SoSeparator* getFrontRoot() const;
 
     // observer for the color bar
     virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);

@@ -44,7 +44,7 @@ FemSetFacesObject::~FemSetFacesObject()
 {
 }
 
-short FemSetFacesObject::mustExecute(void) const
+short FemSetFacesObject::mustExecute() const
 {
     return 0;
 }

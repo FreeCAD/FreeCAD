@@ -69,7 +69,7 @@ Area &FeatureArea::getArea() {
     return myArea;
 }
 
-App::DocumentObjectExecReturn *FeatureArea::execute(void)
+App::DocumentObjectExecReturn *FeatureArea::execute()
 {
     myInited = true;
 
@@ -143,7 +143,7 @@ const std::vector<TopoDS_Shape> &FeatureArea::getShapes() {
     return myShapes;
 }
 
-short FeatureArea::mustExecute(void) const
+short FeatureArea::mustExecute() const
 {
     if(myInited && !myArea.isBuilt())
         return 1;
@@ -206,7 +206,7 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     return shapes;
 }
 
-App::DocumentObjectExecReturn *FeatureAreaView::execute(void)
+App::DocumentObjectExecReturn *FeatureAreaView::execute()
 {
     App::DocumentObject* pObj = Source.getValue();
     if (!pObj)
@@ -244,10 +244,10 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureAreaPython, Path::FeatureArea)
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureAreaViewPython, Path::FeatureAreaView)
 
-template<> const char* Path::FeatureAreaPython::getViewProviderName(void) const {
+template<> const char* Path::FeatureAreaPython::getViewProviderName() const {
     return "PathGui::ViewProviderAreaPython";
 }
-template<> const char* Path::FeatureAreaViewPython::getViewProviderName(void) const {
+template<> const char* Path::FeatureAreaViewPython::getViewProviderName() const {
     return "PathGui::ViewProviderAreaViewPython";
 }
 /// @endcond

@@ -39,7 +39,7 @@
 
 using namespace TechDrawGui;
 
-QGDisplayArea::QGDisplayArea(void)
+QGDisplayArea::QGDisplayArea()
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);

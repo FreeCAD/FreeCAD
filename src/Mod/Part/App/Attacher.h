@@ -284,7 +284,7 @@ public: //methods
     /**
      * @brief EnableAllModes enables all modes that have shape type lists filled. The function acts on modeEnabled array.
      */
-    void EnableAllSupportedModes(void);
+    void EnableAllSupportedModes();
 
     virtual ~AttachEngine(){};
 

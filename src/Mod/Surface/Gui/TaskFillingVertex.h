@@ -78,7 +78,7 @@ protected:
 private Q_SLOTS:
     void on_buttonVertexAdd_clicked();
     void on_buttonVertexRemove_clicked();
-    void onDeleteVertex(void);
+    void onDeleteVertex();
     void clearSelection();
 };
 

@@ -84,7 +84,7 @@ private Q_SLOTS:
     void on_listUnbound_itemDoubleClicked(QListWidgetItem*);
     void on_buttonUnboundAccept_clicked();
     void on_buttonUnboundIgnore_clicked();
-    void onDeleteUnboundEdge(void);
+    void onDeleteUnboundEdge();
     void clearSelection();
 };
 

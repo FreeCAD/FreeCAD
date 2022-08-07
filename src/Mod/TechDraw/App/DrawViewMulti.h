@@ -54,7 +54,7 @@ class TechDrawExport DrawViewMulti : public DrawViewPart
 
 public:
     /// Constructor
-    DrawViewMulti(void);
+    DrawViewMulti();
     virtual ~DrawViewMulti();
   
     App::PropertyLinkList    Sources;
@@ -63,12 +63,12 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     virtual void onChanged(const App::Property* prop) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
 

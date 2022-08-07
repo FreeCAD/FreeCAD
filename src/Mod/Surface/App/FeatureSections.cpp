@@ -53,7 +53,7 @@ Sections::~Sections()
 {
 }
 
-App::DocumentObjectExecReturn *Sections::execute(void)
+App::DocumentObjectExecReturn *Sections::execute()
 {
     TColGeom_SequenceOfCurve curveSeq;
     auto edge_obj = NSections.getValues();

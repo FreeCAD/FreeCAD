@@ -38,7 +38,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawViewDimensionPy::representation(void) const
+std::string DrawViewDimensionPy::representation() const
 {
     return std::string("<DrawViewDimension object>");
 }

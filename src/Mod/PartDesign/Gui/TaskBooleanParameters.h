@@ -51,13 +51,13 @@ public:
     TaskBooleanParameters(ViewProviderBoolean *BooleanView, QWidget *parent=nullptr);
     ~TaskBooleanParameters();
 
-    const std::vector<std::string> getBodies(void) const;
-    int getType(void) const;
+    const std::vector<std::string> getBodies() const;
+    int getType() const;
 
 private Q_SLOTS:
     void onButtonBodyAdd(const bool checked);
     void onButtonBodyRemove(const bool checked);
-    void onBodyDeleted(void);
+    void onBodyDeleted();
     void onTypeChanged(int index);
 
 protected:
@@ -100,11 +100,11 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
     /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return false; }
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:

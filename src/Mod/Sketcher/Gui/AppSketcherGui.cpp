@@ -43,13 +43,13 @@
 
 
 // create the commands
-void CreateSketcherCommands(void);
-void CreateSketcherCommandsCreateGeo(void);
-void CreateSketcherCommandsConstraints(void);
-void CreateSketcherCommandsConstraintAccel(void);
-void CreateSketcherCommandsAlterGeo(void);
-void CreateSketcherCommandsBSpline(void);
-void CreateSketcherCommandsVirtualSpace(void);
+void CreateSketcherCommands();
+void CreateSketcherCommandsCreateGeo();
+void CreateSketcherCommandsConstraints();
+void CreateSketcherCommandsConstraintAccel();
+void CreateSketcherCommandsAlterGeo();
+void CreateSketcherCommandsBSpline();
+void CreateSketcherCommandsVirtualSpace();
 
 void loadSketcherResource()
 {

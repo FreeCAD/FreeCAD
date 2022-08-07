@@ -42,7 +42,7 @@ class QGCustomRect;
 class TechDrawGuiExport QGIMatting : public QGraphicsItemGroup
 {
 public:
-    explicit QGIMatting(void);
+    explicit QGIMatting();
     ~QGIMatting() {}
 
     enum {Type = QGraphicsItem::UserType + 205};
@@ -54,14 +54,14 @@ public:
     virtual void setSize(double w, double h) {m_height = h; m_width = w;}
     //virtual void setHoleStyle(int hs) {m_holeStyle = hs;}
     virtual void setRadius(double r)  {m_radius = r;}
-    virtual void draw(void);
+    virtual void draw();
 
 protected:
     double m_height;
     double m_width;
     //int    m_holeStyle;    //round or rect
     double m_radius;
-    int getHoleStyle(void);
+    int getHoleStyle();
 
     QGraphicsPathItem* m_mat;
     QGraphicsPathItem* m_border;

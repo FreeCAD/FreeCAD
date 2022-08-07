@@ -42,7 +42,7 @@ namespace TechDrawGui
 class TechDrawGuiExport QGCustomClip : public QGraphicsItemGroup
 {
 public:
-    explicit QGCustomClip(void);
+    explicit QGCustomClip();
     ~QGCustomClip() {}
 
     enum {Type = QGraphicsItem::UserType + 132};

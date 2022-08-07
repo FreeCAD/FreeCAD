@@ -62,7 +62,7 @@ const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle",
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
-DrawProjGroup::DrawProjGroup(void) :
+DrawProjGroup::DrawProjGroup() :
     m_lockScale(false)
 {
     static const char *group = "Base";
@@ -97,7 +97,7 @@ DrawProjGroup::~DrawProjGroup()
 }
 
 //TODO: this duplicates code in DVP
-std::vector<App::DocumentObject*> DrawProjGroup::getAllSources(void) const
+std::vector<App::DocumentObject*> DrawProjGroup::getAllSources() const
 {
 //    Base::Console().Message("DPG::getAllSources()\n");
     const std::vector<App::DocumentObject*> links = Source.getValues();
@@ -164,7 +164,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
+App::DocumentObjectExecReturn *DrawProjGroup::execute()
 {
 //    Base::Console().Message("DPG::execute() - %s\n", getNameInDocument());
     if (!keepUpdated())
@@ -253,7 +253,7 @@ Base::BoundBox3d DrawProjGroup::getBoundingBox() const
     return bbox;
 }
 
-TechDraw::DrawPage * DrawProjGroup::getPage(void) const
+TechDraw::DrawPage * DrawProjGroup::getPage() const
 {
     return findParentPage();
 }
@@ -937,7 +937,7 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
     }
 }
 
-void DrawProjGroup::recomputeChildren(void)
+void DrawProjGroup::recomputeChildren()
 {
 //    Base::Console().Message("DPG::recomputeChildren()\n");
     for( const auto it : Views.getValues() ) {
@@ -949,7 +949,7 @@ void DrawProjGroup::recomputeChildren(void)
     }
 }
 
-void DrawProjGroup::autoPositionChildren(void)
+void DrawProjGroup::autoPositionChildren()
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
@@ -963,7 +963,7 @@ void DrawProjGroup::autoPositionChildren(void)
 /*!
  * tell children DPGIs that parent DPG has changed Scale
  */
-void DrawProjGroup::updateChildrenScale(void)
+void DrawProjGroup::updateChildrenScale()
 {
 //    Base::Console().Message("DPG::updateChildrenScale\n");
     for( const auto it : Views.getValues() ) {
@@ -982,7 +982,7 @@ void DrawProjGroup::updateChildrenScale(void)
 /*!
  * tell children DPGIs that parent DPG has changed Source
  */
-void DrawProjGroup::updateChildrenSource(void)
+void DrawProjGroup::updateChildrenSource()
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
@@ -1006,7 +1006,7 @@ void DrawProjGroup::updateChildrenSource(void)
  * tell children DPGIs that parent DPG has changed LockPosition
  * (really for benefit of QGIV on Gui side)
  */
-void DrawProjGroup::updateChildrenLock(void)
+void DrawProjGroup::updateChildrenLock()
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
@@ -1021,7 +1021,7 @@ void DrawProjGroup::updateChildrenLock(void)
     }
 }
 
-void DrawProjGroup::updateViews(void) {
+void DrawProjGroup::updateViews() {
     // this is intended to update the views in general, e.g. when the spacing changed
     for (const auto it : Views.getValues()) {
         auto view(dynamic_cast<DrawProjGroupItem *>(it));
@@ -1036,7 +1036,7 @@ void DrawProjGroup::updateViews(void) {
     }
 }
 
-void DrawProjGroup::updateChildrenEnforce(void)
+void DrawProjGroup::updateChildrenEnforce()
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
@@ -1051,7 +1051,7 @@ void DrawProjGroup::updateChildrenEnforce(void)
     }
 }
 
-App::Enumeration DrawProjGroup::usedProjectionType(void)
+App::Enumeration DrawProjGroup::usedProjectionType()
 {
     //TODO: Would've been nice to have an Enumeration(const PropertyEnumeration &) constructor
     App::Enumeration ret(ProjectionTypeEnums, ProjectionType.getValueAsString());
@@ -1064,7 +1064,7 @@ App::Enumeration DrawProjGroup::usedProjectionType(void)
     return ret;
 }
 
-bool DrawProjGroup::hasAnchor(void)
+bool DrawProjGroup::hasAnchor()
 {
     bool result = false;
     App::DocumentObject* docObj = Anchor.getValue();
@@ -1074,7 +1074,7 @@ bool DrawProjGroup::hasAnchor(void)
     return result;
 }
 
-TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
+TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor()
 {
     DrawProjGroupItem* result = nullptr;
     App::DocumentObject* docObj = Anchor.getValue();
@@ -1091,7 +1091,7 @@ void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
     item->Direction.setValue(dir);
 }
 
-Base::Vector3d DrawProjGroup::getAnchorDirection(void)
+Base::Vector3d DrawProjGroup::getAnchorDirection()
 {
     Base::Vector3d result;
     App::DocumentObject* docObj = Anchor.getValue();
@@ -1236,7 +1236,7 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
     return result;
 }
 
-int DrawProjGroup::getDefProjConv(void) const
+int DrawProjGroup::getDefProjConv() const
 {
     return Preferences::projectionAngle();
 }
@@ -1260,7 +1260,7 @@ void DrawProjGroup::dumpISO(const char * title)
     }
 }
 
-PyObject *DrawProjGroup::getPyObject(void)
+PyObject *DrawProjGroup::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

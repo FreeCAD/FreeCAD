@@ -61,7 +61,7 @@ class TechDrawExport DrawViewSection : public DrawViewPart
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewSection);
 
 public:
-    DrawViewSection(void);
+    DrawViewSection();
     virtual ~DrawViewSection();
 
     App::PropertyLink   BaseView;
@@ -83,9 +83,9 @@ public:
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
     bool isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const;
 
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     virtual void onChanged(const App::Property* prop) override;
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewSection";
     }
     virtual void unsetupObject() override;
@@ -102,7 +102,7 @@ public:
                              Base::Vector3d axis,
                              double degAngle) const;
     gp_Ax2 getSectionCS() const;
-    virtual Base::Vector3d getXDirection(void) const override;       //don't use XDirection.getValue()
+    virtual Base::Vector3d getXDirection() const override;       //don't use XDirection.getValue()
 
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
@@ -110,18 +110,18 @@ public:
     TopoDS_Compound getSectionFaces() { return sectionFaces;}
 //    std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }   //obs?
     TopoDS_Face getSectionTFace(int i);
-    void makeLineSets(void) ;
+    void makeLineSets() ;
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
-    TopoDS_Shape getCutShape(void) {return m_cutShape;}
+    TopoDS_Shape getCutShape() {return m_cutShape;}
 
     static const char* SectionDirEnums[];
     static const char* CutSurfaceEnums[];
 
-    std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds(void);
+    std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
 
-    bool showSectionEdges(void);
+    bool showSectionEdges();
 
 protected:
     TopoDS_Compound sectionFaces;    //tSectionFaces
@@ -132,16 +132,16 @@ protected:
 
     gp_Pln getSectionPlane() const;
     TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
-    void getParameters(void);
-    bool debugSection(void) const;
-    int prefCutSurface(void) const;
+    void getParameters();
+    bool debugSection() const;
+    int prefCutSurface() const;
 
     TopoDS_Shape m_cutShape;
 
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;
-    void setupSvgIncluded(void);
-    void setupPatIncluded(void);
+    void setupSvgIncluded();
+    void setupPatIncluded();
     void replaceSvgIncluded(std::string newSvgFile);
     void replacePatIncluded(std::string newPatFile);
 

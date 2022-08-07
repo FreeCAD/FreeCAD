@@ -49,10 +49,10 @@ public:
     App::PropertyColor       HatchColor;
     App::PropertyFloatConstraint HatchScale;
 
-    virtual bool useNewSelectionModel(void) const override {return false;}
+    virtual bool useNewSelectionModel() const override {return false;}
     virtual void onChanged(const App::Property* prop) override;
     virtual bool setEdit(int ModNum) override;
-    virtual bool doubleClicked(void) override;
+    virtual bool doubleClicked() override;
     virtual bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawHatch* getViewObject() const;

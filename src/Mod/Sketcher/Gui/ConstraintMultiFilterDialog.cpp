@@ -37,7 +37,7 @@
 
 using namespace SketcherGui;
 
-ConstraintMultiFilterDialog::ConstraintMultiFilterDialog(void)
+ConstraintMultiFilterDialog::ConstraintMultiFilterDialog()
   : QDialog(Gui::getMainWindow()), ui(new Ui_ConstraintMultiFilterDialog)
 {
     ui->setupUi(this);

@@ -33,11 +33,11 @@ class dimAttributes {
 
     public:
 
-    dimAttributes(void);
+    dimAttributes();
     void setCascadeSpacing(double);
-    double getCascadeSpacing(void) {return cascadeSpacing;}
+    double getCascadeSpacing() {return cascadeSpacing;}
     void setLineStretch(double);
-    double getLineStretch(void) {return lineStretch;}
+    double getLineStretch() {return lineStretch;}
 
 }; // class dimAttributes
 
@@ -74,15 +74,15 @@ class lineAttributes {
 
 public:
 
-    lineAttributes(void);
+    lineAttributes();
     void setStyle(int);
-    int getStyle(void) const {return style;}
+    int getStyle() const {return style;}
     void setWidth(int);
-    int getWidth(void) const {return width;}
-    float getWidthValue(void);
+    int getWidth() const {return width;}
+    float getWidthValue();
     void setColor(int);
-    int getColor(void) const {return color;}
-    App::Color getColorValue(void);
+    int getColor() const {return color;}
+    App::Color getColorValue();
 
 }; // class lineAttributes
 
@@ -106,7 +106,7 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent *e);
 
-    void setUiEdit(void);
+    void setUiEdit();
 
 private:
     lineAttributes* activeAttributes;
@@ -132,7 +132,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
                         { return false; }
     void update();
 

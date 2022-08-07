@@ -36,7 +36,7 @@
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PathPy::representation(void) const
+std::string PathPy::representation() const
 {
     std::stringstream str;
     str.precision(5);
@@ -86,7 +86,7 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 // Commands get/set
 
-Py::List PathPy::getCommands(void) const
+Py::List PathPy::getCommands() const
 {
     Py::List list;
     for(unsigned int i = 0; i < getToolpathPtr()->getSize(); i++)
@@ -107,7 +107,7 @@ void PathPy::setCommands(Py::List list)
     }
 }
 
-Py::Object PathPy::getCenter(void) const
+Py::Object PathPy::getCenter() const
 {
     return Py::Vector(getToolpathPtr()->getCenter());
 }
@@ -119,17 +119,17 @@ void PathPy::setCenter(Py::Object obj)
 
 // read-only attributes
 
-Py::Float PathPy::getLength(void) const
+Py::Float PathPy::getLength() const
 {
     return Py::Float(getToolpathPtr()->getLength());
 }
 
-Py::Long PathPy::getSize(void) const
+Py::Long PathPy::getSize() const
 {
     return Py::Long((long)getToolpathPtr()->getSize());
 }
 
-Py::Object PathPy::getBoundBox(void) const
+Py::Object PathPy::getBoundBox() const
 {
     return Py::BoundingBox(getToolpathPtr()->getBoundBox());
 }

@@ -44,9 +44,9 @@ public:
     //@{
     short mustExecute() const;
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderCompound";
     }
     //@}

@@ -92,7 +92,7 @@ Constraint::~Constraint()
 {
 }
 
-App::DocumentObjectExecReturn *Constraint::execute(void)
+App::DocumentObjectExecReturn *Constraint::execute()
 {
     try {
         References.touch();
@@ -483,11 +483,11 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::ConstraintPython, Fem::Constraint)
-template<> const char* Fem::ConstraintPython::getViewProviderName(void) const {
+template<> const char* Fem::ConstraintPython::getViewProviderName() const {
     return "FemGui::ViewProviderFemConstraintPython";
 }
 
-template<> PyObject* Fem::ConstraintPython::getPyObject(void) {
+template<> PyObject* Fem::ConstraintPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);

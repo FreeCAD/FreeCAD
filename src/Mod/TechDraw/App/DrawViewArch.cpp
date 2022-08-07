@@ -52,7 +52,7 @@ const char* DrawViewArch::RenderModeEnums[]= {"Wireframe",
                                               "Coin mono",
                                               nullptr};
 
-DrawViewArch::DrawViewArch(void)
+DrawViewArch::DrawViewArch()
 {
     static const char *group = "Arch view";
 
@@ -97,7 +97,7 @@ short DrawViewArch::mustExecute() const
 }
 
 
-App::DocumentObjectExecReturn *DrawViewArch::execute(void)
+App::DocumentObjectExecReturn *DrawViewArch::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -144,7 +144,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
     return DrawView::execute();
 }
 
-std::string DrawViewArch::getSVGHead(void)
+std::string DrawViewArch::getSVGHead()
 {
     std::string head = std::string("<svg\\n") +
                        std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\\n") +
@@ -152,7 +152,7 @@ std::string DrawViewArch::getSVGHead(void)
     return head;
 }
 
-std::string DrawViewArch::getSVGTail(void)
+std::string DrawViewArch::getSVGTail()
 {
     return "\\n</svg>";
 }

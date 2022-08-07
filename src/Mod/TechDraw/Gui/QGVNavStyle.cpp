@@ -366,7 +366,7 @@ void QGVNavStyle::startClick(Qt::MouseButton b)
     m_clickButton = b;
 }
 
-void QGVNavStyle::stopClick(void)
+void QGVNavStyle::stopClick()
 {
     m_clickPending = false;
     m_clickButton = Qt::MouseButton::NoButton;

@@ -35,7 +35,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string CenterLinePy::representation(void) const
+std::string CenterLinePy::representation() const
 {
     std::stringstream ss;
     ss << "<CenterLine object> at " << std::hex << this;
@@ -110,7 +110,7 @@ PyObject* CenterLinePy::copy(PyObject *args)
     return cpy;
 }
 
-Py::Object CenterLinePy::getFormat(void) const
+Py::Object CenterLinePy::getFormat() const
 {
     TechDraw::CenterLine* cl = this->getCenterLinePtr();
 
@@ -160,20 +160,20 @@ void CenterLinePy::setFormat(Py::Object arg)
     }
 }
 
-Py::String CenterLinePy::getTag(void) const
+Py::String CenterLinePy::getTag() const
 {
     std::string tmp = boost::uuids::to_string(getCenterLinePtr()->getTag());
     return Py::String(tmp);
 }
 
 
-Py::Long CenterLinePy::getType(void) const
+Py::Long CenterLinePy::getType() const
 {
     int tmp = getCenterLinePtr()->m_type;
     return Py::Long(tmp);
 }
 
-Py::Long CenterLinePy::getMode(void) const
+Py::Long CenterLinePy::getMode() const
 {
     int tmp = getCenterLinePtr()->m_mode;
     return Py::Long(tmp);
@@ -192,7 +192,7 @@ void CenterLinePy::setMode(Py::Long arg)
     }
 }
 
-Py::Float CenterLinePy::getHorizShift(void) const
+Py::Float CenterLinePy::getHorizShift() const
 {
     double shift = getCenterLinePtr()->getHShift();
     return  Py::asObject(PyFloat_FromDouble(shift));
@@ -212,7 +212,7 @@ void CenterLinePy::setHorizShift(Py::Float arg)
     }
 }
 
-Py::Float CenterLinePy::getVertShift(void) const
+Py::Float CenterLinePy::getVertShift() const
 {
     double shift = getCenterLinePtr()->getVShift();
     return  Py::asObject(PyFloat_FromDouble(shift));
@@ -232,7 +232,7 @@ void CenterLinePy::setVertShift(Py::Float arg)
     }
 }
 
-Py::Float CenterLinePy::getRotation(void) const
+Py::Float CenterLinePy::getRotation() const
 {
     double rot = getCenterLinePtr()->getRotate();
     return  Py::asObject(PyFloat_FromDouble(rot));
@@ -251,7 +251,7 @@ void CenterLinePy::setRotation(Py::Float arg)
     }
 }
 
-Py::Float CenterLinePy::getExtension(void) const
+Py::Float CenterLinePy::getExtension() const
 {
     double rot = getCenterLinePtr()->getExtend();
     return  Py::asObject(PyFloat_FromDouble(rot));
@@ -270,7 +270,7 @@ void CenterLinePy::setExtension(Py::Float arg)
     }
 }
 
-Py::Boolean CenterLinePy::getFlip(void) const
+Py::Boolean CenterLinePy::getFlip() const
 {
     bool flip = getCenterLinePtr()->getFlip();
     return Py::Boolean(flip);
@@ -292,7 +292,7 @@ void CenterLinePy::setFlip(Py::Boolean arg)
     }
 }
 
-Py::Object CenterLinePy::getEdges(void) const
+Py::Object CenterLinePy::getEdges() const
 {
 //    Base::Console().Message("CLP::getEdges()\n");
     TechDraw::CenterLine* cl = this->getCenterLinePtr();
@@ -331,7 +331,7 @@ void CenterLinePy::setEdges(Py::Object arg)
         Base::Console().Error("CLPI::setEdges - input not a list!\n");
     }
 }
-Py::Object CenterLinePy::getFaces(void) const
+Py::Object CenterLinePy::getFaces() const
 {
 //    Base::Console().Message("CLP::getFaces()\n");
     TechDraw::CenterLine* cl = this->getCenterLinePtr();
@@ -371,7 +371,7 @@ void CenterLinePy::setFaces(Py::Object arg)
     }
 }
 
-Py::Object CenterLinePy::getPoints(void) const
+Py::Object CenterLinePy::getPoints() const
 {
 //    Base::Console().Message("CLP::getPoints()\n");
     TechDraw::CenterLine* cl = this->getCenterLinePtr();

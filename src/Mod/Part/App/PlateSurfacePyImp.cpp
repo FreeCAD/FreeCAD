@@ -41,7 +41,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PlateSurfacePy::representation(void) const
+std::string PlateSurfacePy::representation() const
 {
     return "<PlateSurface object>";
 }

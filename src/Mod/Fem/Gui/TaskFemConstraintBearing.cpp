@@ -235,7 +235,7 @@ void TaskFemConstraintBearing::onCheckAxial(const bool pressed)
     pcConstraint->AxialFree.setValue(pressed);
 }
 
-double TaskFemConstraintBearing::getDistance(void) const
+double TaskFemConstraintBearing::getDistance() const
 {
     return ui->spinDistance->value();
 }
@@ -250,7 +250,7 @@ const std::string TaskFemConstraintBearing::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-const std::string TaskFemConstraintBearing::getLocationName(void) const
+const std::string TaskFemConstraintBearing::getLocationName() const
 {
     std::string loc = ui->lineLocation->text().toStdString();
     if (loc.empty())
@@ -260,7 +260,7 @@ const std::string TaskFemConstraintBearing::getLocationName(void) const
     return loc.substr(0, pos).c_str();
 }
 
-const std::string TaskFemConstraintBearing::getLocationObject(void) const
+const std::string TaskFemConstraintBearing::getLocationObject() const
 {
     std::string loc = ui->lineLocation->text().toStdString();
     if (loc.empty())

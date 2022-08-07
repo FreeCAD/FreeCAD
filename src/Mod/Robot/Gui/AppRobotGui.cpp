@@ -39,10 +39,10 @@
 
 
 // use a different name to CreateCommand()
-void CreateRobotCommands(void);
-void CreateRobotCommandsExport(void);
-void CreateRobotCommandsInsertRobots(void);
-void CreateRobotCommandsTrajectory(void);
+void CreateRobotCommands();
+void CreateRobotCommandsExport();
+void CreateRobotCommandsInsertRobots();
+void CreateRobotCommandsTrajectory();
 
 void loadRobotResource()
 {

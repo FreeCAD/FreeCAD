@@ -75,7 +75,7 @@ Placement Command::getPlacement (const Base::Vector3d pos) const
     return plac;
 }
 
-Vector3d Command::getCenter (void) const
+Vector3d Command::getCenter () const
 {
     static const std::string i = "I";
     static const std::string j = "J";
@@ -301,7 +301,7 @@ void Command::scaleBy(double factor)
 
 // Reimplemented from base class
 
-unsigned int Command::getMemSize (void) const
+unsigned int Command::getMemSize () const
 {
     return toGCode().size();
 }

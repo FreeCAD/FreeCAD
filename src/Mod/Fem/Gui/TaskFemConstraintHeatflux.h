@@ -42,14 +42,14 @@ class TaskFemConstraintHeatflux : public TaskFemConstraintOnBoundary
 public:
     TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView,QWidget *parent = nullptr);
     virtual ~TaskFemConstraintHeatflux();
-    double getAmbientTemp(void) const;
+    double getAmbientTemp() const;
     /*double getFaceTemp(void) const;*/
-    double getFilmCoef(void) const;
-    std::string get_constraint_type(void) const;
+    double getFilmCoef() const;
+    std::string get_constraint_type() const;
     virtual const std::string getReferences() const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void onAmbientTempChanged(double val);
     /*void onFaceTempChanged(double val);*/
     void onFilmCoefChanged(double val);

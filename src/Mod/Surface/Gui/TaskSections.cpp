@@ -99,7 +99,7 @@ void ViewProviderSections::unsetEdit(int ModNum)
     }
 }
 
-QIcon ViewProviderSections::getIcon(void) const
+QIcon ViewProviderSections::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Surface_Sections");
 }

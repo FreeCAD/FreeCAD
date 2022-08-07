@@ -40,7 +40,7 @@
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
-std::string CommandPy::representation(void) const
+std::string CommandPy::representation() const
 {
     std::stringstream str;
     str.precision(5);
@@ -137,7 +137,7 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 
 // Name attribute
 
-Py::String CommandPy::getName(void) const
+Py::String CommandPy::getName() const
 {
     return Py::String(getCommandPtr()->Name.c_str());
 }
@@ -151,7 +151,7 @@ void CommandPy::setName(Py::String arg)
 
 // Parameters attribute get/set
 
-Py::Dict CommandPy::getParameters(void) const
+Py::Dict CommandPy::getParameters() const
 {
     // dict now a class member , https://forum.freecadweb.org/viewtopic.php?f=15&t=50583
     if (parameters_copy_dict.length()==0) {    
@@ -224,7 +224,7 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
 
 // Placement attribute get/set
 
-Py::Object CommandPy::getPlacement(void) const
+Py::Object CommandPy::getPlacement() const
 {
     return Py::asObject(new Base::PlacementPy(new Base::Placement(getCommandPtr()->getPlacement())));
 }

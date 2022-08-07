@@ -46,18 +46,18 @@ public:
     App::PropertyLength      FontSize;
     App::PropertyLength      TileFontSize;
 
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     virtual void onChanged(const App::Property* p);
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
+    virtual std::vector<App::DocumentObject*> claimChildren() const;
     virtual bool setEdit(int ModNum);
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked();
 
     virtual TechDraw::DrawWeldSymbol* getViewObject() const;
     virtual TechDraw::DrawWeldSymbol* getFeature() const;
 
-    std::string prefFontName(void);
-    double prefFontSize(void);
-    double prefTileTextAdjust(void);
+    std::string prefFontName();
+    double prefFontSize();
+    double prefTileTextAdjust();
     virtual bool onDelete(const std::vector<std::string> &);
     virtual bool canDelete(App::DocumentObject* obj) const;
     

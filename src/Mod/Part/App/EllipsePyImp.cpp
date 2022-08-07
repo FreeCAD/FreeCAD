@@ -39,7 +39,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string EllipsePy::representation(void) const
+std::string EllipsePy::representation() const
 {
     return "<Ellipse object>";
 }
@@ -125,7 +125,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float EllipsePy::getMajorRadius(void) const
+Py::Float EllipsePy::getMajorRadius() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     return Py::Float(ellipse->MajorRadius()); 
@@ -137,7 +137,7 @@ void EllipsePy::setMajorRadius(Py::Float arg)
     ellipse->SetMajorRadius((double)arg);
 }
 
-Py::Float EllipsePy::getMinorRadius(void) const
+Py::Float EllipsePy::getMinorRadius() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     return Py::Float(ellipse->MinorRadius()); 
@@ -149,20 +149,20 @@ void EllipsePy::setMinorRadius(Py::Float arg)
     ellipse->SetMinorRadius((double)arg);
 }
 
-Py::Float EllipsePy::getFocal(void) const
+Py::Float EllipsePy::getFocal() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     return Py::Float(ellipse->Focal()); 
 }
 
-Py::Object EllipsePy::getFocus1(void) const
+Py::Object EllipsePy::getFocus1() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     gp_Pnt loc = ellipse->Focus1();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
-Py::Object EllipsePy::getFocus2(void) const
+Py::Object EllipsePy::getFocus2() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
     gp_Pnt loc = ellipse->Focus2();

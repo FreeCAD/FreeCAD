@@ -497,7 +497,7 @@ void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos)
     setPositionText(Pos,text);
 }
 
-void EditModeCoinManager::resetPositionText(void)
+void EditModeCoinManager::resetPositionText()
 {
     editModeScenegraphNodes.textX->string = "";
 }

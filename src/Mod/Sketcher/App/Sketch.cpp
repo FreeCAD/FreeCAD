@@ -88,7 +88,7 @@ Sketch::~Sketch()
     clear();
 }
 
-void Sketch::clear(void)
+void Sketch::clear()
 {
     // clear all internal data sets
     Points.clear();
@@ -425,12 +425,12 @@ bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &block
 }
 
 
-void Sketch::clearTemporaryConstraints(void)
+void Sketch::clearTemporaryConstraints()
 {
     GCSsys.clearByTag(GCS::DefaultTemporaryConstraint);
 }
 
-void Sketch::calculateDependentParametersElements(void)
+void Sketch::calculateDependentParametersElements()
 {
     // initialize solve extensions to a know state
     solverExtensions.resize(Geoms.size());
@@ -1477,7 +1477,7 @@ void Sketch::updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension>
 
 }
 
-Py::Tuple Sketch::getPyGeometry(void) const
+Py::Tuple Sketch::getPyGeometry() const
 {
     Py::Tuple tuple(Geoms.size());
     int i=0;
@@ -3577,7 +3577,7 @@ bool Sketch::updateNonDrivingConstraints()
 
 // solving ==========================================================
 
-int Sketch::solve(void)
+int Sketch::solve()
 {
     Base::TimeInfo start_time;
     std::string solvername;
@@ -4226,7 +4226,7 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos) const
     return Base::Vector3d();
 }
 
-TopoShape Sketch::toShape(void) const
+TopoShape Sketch::toShape() const
 {
     TopoShape result;
     std::vector<GeoDef>::const_iterator it=Geoms.begin();
@@ -4333,7 +4333,7 @@ TopoShape Sketch::toShape(void) const
 
 // Persistence implementer -------------------------------------------------
 
-unsigned int Sketch::getMemSize(void) const
+unsigned int Sketch::getMemSize() const
 {
     return 0;
 }

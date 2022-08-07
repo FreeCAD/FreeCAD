@@ -64,7 +64,7 @@ void SvgString::addText(int xText, int yText, std::string text)
     svgStream << "' style='font-size:18px'>" << text << "</text>\n";
 }
 
-std::string SvgString::finish(void)
+std::string SvgString::finish()
 {
     svgStream << "</svg>\n";
     return svgStream.str();
@@ -112,7 +112,7 @@ QPixmap TaskSurfaceFinishSymbols::baseSymbol(symbolType type)
     return QPixmap::fromImage(img);
 }
 
-std::string TaskSurfaceFinishSymbols::completeSymbol(void)
+std::string TaskSurfaceFinishSymbols::completeSymbol()
 // return string showing the complete symbol
 {
     SvgString symbol(150,64);

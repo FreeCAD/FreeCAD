@@ -233,7 +233,7 @@ void CmdTechDrawDimension::activated(int iMsg)
 //    objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawDimension::isActive(void)
+bool CmdTechDrawDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -349,7 +349,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawRadiusDimension::isActive(void)
+bool CmdTechDrawRadiusDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -460,7 +460,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawDiameterDimension::isActive(void)
+bool CmdTechDrawDiameterDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -564,7 +564,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawLengthDimension::isActive(void)
+bool CmdTechDrawLengthDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -669,7 +669,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawHorizontalDimension::isActive(void)
+bool CmdTechDrawHorizontalDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -773,7 +773,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawVerticalDimension::isActive(void)
+bool CmdTechDrawVerticalDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -861,7 +861,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawAngleDimension::isActive(void)
+bool CmdTechDrawAngleDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -950,7 +950,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDraw3PtAngleDimension::isActive(void)
+bool CmdTechDraw3PtAngleDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1026,7 +1026,7 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
     page->getDocument()->recompute();                                  //still need to recompute in Gui. why?
 }
 
-bool CmdTechDrawLinkDimension::isActive(void)
+bool CmdTechDrawLinkDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1079,7 +1079,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
     };
 }
 
-Gui::Action * CmdTechDrawExtentGroup::createAction(void)
+Gui::Action * CmdTechDrawExtentGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1123,7 +1123,7 @@ void CmdTechDrawExtentGroup::languageChange()
     arc2->setStatusTip(arc2->toolTip());
 }
 
-bool CmdTechDrawExtentGroup::isActive(void)
+bool CmdTechDrawExtentGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1162,7 +1162,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
     execHExtent(this);
 }
 
-bool CmdTechDrawHorizontalExtentDimension::isActive(void)
+bool CmdTechDrawHorizontalExtentDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1249,7 +1249,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
     execVExtent(this);
 }
 
-bool CmdTechDrawVerticalExtentDimension::isActive(void)
+bool CmdTechDrawVerticalExtentDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1390,7 +1390,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     dvp->X.setValue(x);
 }
 
-bool CmdTechDrawLandmarkDimension::isActive(void)
+bool CmdTechDrawLandmarkDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1399,7 +1399,7 @@ bool CmdTechDrawLandmarkDimension::isActive(void)
 
 
 //------------------------------------------------------------------------------
-void CreateTechDrawCommandsDims(void)
+void CreateTechDrawCommandsDims()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

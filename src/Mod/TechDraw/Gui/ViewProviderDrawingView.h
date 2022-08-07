@@ -53,17 +53,17 @@ public:
     App::PropertyBool  KeepLabel;
 
     virtual void attach(App::DocumentObject *) override;
-    virtual bool useNewSelectionModel(void) const override {return false;}
+    virtual bool useNewSelectionModel() const override {return false;}
     /// Hide the object in the view
-    virtual void hide(void) override;
+    virtual void hide() override;
     /// Show the object in the view
-    virtual void show(void) override;
-    virtual bool isShow(void) const override;
+    virtual void show() override;
+    virtual bool isShow() const override;
 
     virtual void onChanged(const App::Property *prop) override;
     virtual void updateData(const App::Property*) override;
 
-    QGIView* getQView(void);
+    QGIView* getQView();
     MDIViewPage* getMDIViewPage() const;
     virtual Gui::MDIView *getMDIView() const override;
 

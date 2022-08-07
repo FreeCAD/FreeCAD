@@ -583,7 +583,7 @@ public:
         return true;
     }
 
-    virtual void quit(void) override {
+    virtual void quit() override {
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 

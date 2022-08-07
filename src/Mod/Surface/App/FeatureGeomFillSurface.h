@@ -45,7 +45,7 @@ protected:
 
 public:
     ShapeValidator();
-    void initValidator(void);
+    void initValidator();
     void checkEdge(const TopoDS_Shape& shape);
     void checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD = nullptr);
     void checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWire = nullptr);
@@ -70,10 +70,10 @@ public:
 
     short mustExecute() const;
     void onChanged(const App::Property*);
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "SurfaceGui::ViewProviderGeomFillSurface";
     }
 

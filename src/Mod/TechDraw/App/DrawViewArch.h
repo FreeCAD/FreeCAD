@@ -39,7 +39,7 @@ class TechDrawExport DrawViewArch : public TechDraw::DrawViewSymbol
 
 public:
     /// Constructor
-    DrawViewArch(void);
+    DrawViewArch();
     virtual ~DrawViewArch();
 
     App::PropertyLink         Source;
@@ -56,11 +56,11 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderArch";
     }
 
@@ -70,8 +70,8 @@ public:
 protected:
 /*    virtual void onChanged(const App::Property* prop) override;*/
     Base::BoundBox3d bbox;
-    std::string getSVGHead(void);
-    std::string getSVGTail(void);
+    std::string getSVGHead();
+    std::string getSVGTail();
 
 private:
     static const char* RenderModeEnums[];

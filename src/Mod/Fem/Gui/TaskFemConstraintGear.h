@@ -37,12 +37,12 @@ public:
     TaskFemConstraintGear(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,
                           const char* pixmapname = "FEM_ConstraintGear");
 
-    double getDiameter(void) const;
-    double getForce(void) const;
-    double getForceAngle(void) const;
-    const std::string getDirectionName(void) const;
-    const std::string getDirectionObject(void) const;
-    bool getReverse(void) const;
+    double getDiameter() const;
+    double getForce() const;
+    double getForceAngle() const;
+    const std::string getDirectionName() const;
+    const std::string getDirectionObject() const;
+    bool getReverse() const;
 
 private Q_SLOTS:
     void onDiameterChanged(double dia);

@@ -48,7 +48,7 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawTileWeld, TechDraw::DrawTile)
 
-DrawTileWeld::DrawTileWeld(void)
+DrawTileWeld::DrawTileWeld()
 {
     static const char *group = "TileWeld";
 
@@ -92,7 +92,7 @@ short DrawTileWeld::mustExecute() const
     return DrawTile::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawTileWeld::execute(void)
+App::DocumentObjectExecReturn *DrawTileWeld::execute()
 { 
 //    Base::Console().Message("DTW::execute()\n");
     return DrawTile::execute();
@@ -135,7 +135,7 @@ void DrawTileWeld::setupObject()
     DrawTile::setupObject();
 }
 
-void DrawTileWeld::setupSymbolIncluded(void)
+void DrawTileWeld::setupSymbolIncluded()
 {
 //    Base::Console().Message("DTW::setupSymbolIncluded()\n");
     App::Document* doc = getDocument();
@@ -161,14 +161,14 @@ void DrawTileWeld::setupSymbolIncluded(void)
 }
 
 //standard preference getter (really a default in this case)
-std::string DrawTileWeld::prefSymbol(void)
+std::string DrawTileWeld::prefSymbol()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/";
     std::string defaultFileName = defaultDir + "blankTile.svg";
     return defaultFileName;
 }
 
-PyObject *DrawTileWeld::getPyObject(void)
+PyObject *DrawTileWeld::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -182,7 +182,7 @@ PyObject *DrawTileWeld::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTileWeldPython, TechDraw::DrawTileWeld)
-template<> const char* TechDraw::DrawTileWeldPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawTileWeldPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderTile";
 }
 /// @endcond

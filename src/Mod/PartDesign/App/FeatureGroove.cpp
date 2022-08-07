@@ -70,7 +70,7 @@ short Groove::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Groove::execute(void)
+App::DocumentObjectExecReturn *Groove::execute()
 {
     // Validate parameters
     double angle = Angle.getValue();
@@ -187,13 +187,13 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     }
 }
 
-bool Groove::suggestReversed(void)
+bool Groove::suggestReversed()
 {
     updateAxis();
     return ProfileBased::getReversedAngle(Base.getValue(), Axis.getValue()) > 0.0;
 }
 
-void Groove::updateAxis(void)
+void Groove::updateAxis()
 {
     App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();

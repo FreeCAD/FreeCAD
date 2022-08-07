@@ -42,7 +42,7 @@ QIcon ViewProviderPathShape::getIcon() const
     return Gui::BitmapFactory().pixmap("Path_Shape");
 }
 
-std::vector<App::DocumentObject*> ViewProviderPathShape::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderPathShape::claimChildren() const
 {
     return std::vector<App::DocumentObject*>(
             static_cast<Path::FeatureShape*>(getObject())->Sources.getValues());

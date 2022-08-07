@@ -236,9 +236,9 @@ public:
     SolverGeometryExtension();
     virtual ~SolverGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    virtual std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
     virtual void notifyAttachment(Part::Geometry * geo) override;
 

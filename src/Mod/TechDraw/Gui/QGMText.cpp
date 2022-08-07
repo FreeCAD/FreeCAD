@@ -93,19 +93,19 @@ void QGMText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     QGCustomText::hoverLeaveEvent(event);
 }
 
-void QGMText::setPrettySel(void)
+void QGMText::setPrettySel()
 {
     m_prettyState = "Sel";
     QGCustomText::setPrettySel();
 }
 
-void QGMText::setPrettyPre(void)
+void QGMText::setPrettyPre()
 {
     m_prettyState = "Pre";
     QGCustomText::setPrettyPre();
 }
 
-void QGMText::setPrettyNormal(void)
+void QGMText::setPrettyNormal()
 {
     m_prettyState = "Normal";
     QGCustomText::setPrettyNormal();

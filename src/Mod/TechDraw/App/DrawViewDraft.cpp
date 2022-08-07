@@ -47,7 +47,7 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewDraft, TechDraw::DrawViewSymbol)
 
 
-DrawViewDraft::DrawViewDraft(void)
+DrawViewDraft::DrawViewDraft()
 {
     static const char *group = "Draft view";
 
@@ -86,7 +86,7 @@ short DrawViewDraft::mustExecute() const
 
 
 
-App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
+App::DocumentObjectExecReturn *DrawViewDraft::execute()
 {
 //    Base::Console().Message("DVDr::execute() \n");
     if (!keepUpdated()) {
@@ -130,7 +130,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
     return DrawView::execute();
 }
 
-std::string DrawViewDraft::getSVGHead(void)
+std::string DrawViewDraft::getSVGHead()
 {
     std::string head = std::string("<svg\\n") +
                        std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\\n") +
@@ -138,7 +138,7 @@ std::string DrawViewDraft::getSVGHead(void)
     return head;
 }
 
-std::string DrawViewDraft::getSVGTail(void)
+std::string DrawViewDraft::getSVGTail()
 {
     std::string tail = "\\n</svg>";
     return tail;
@@ -149,7 +149,7 @@ std::string DrawViewDraft::getSVGTail(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewDraftPython, TechDraw::DrawViewDraft)
-template<> const char* TechDraw::DrawViewDraftPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewDraftPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderDraft";
 }
 /// @endcond

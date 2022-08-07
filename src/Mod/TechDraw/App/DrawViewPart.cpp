@@ -126,7 +126,7 @@ using namespace std;
 PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, 
                                 TechDraw::DrawView)
 
-DrawViewPart::DrawViewPart(void) :
+DrawViewPart::DrawViewPart() :
     geometryObject(nullptr)
 {
     static const char *group = "Projection";
@@ -180,7 +180,7 @@ DrawViewPart::~DrawViewPart()
     delete geometryObject;
 }
 
-std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d(void) const
+std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d() const
 {
 //    Base::Console().Message("DVP::getSourceShape2d()\n");
     std::vector<TopoDS_Shape> result;
@@ -190,7 +190,7 @@ std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d(void) const
 }
 
 
-TopoDS_Shape DrawViewPart::getSourceShape(void) const
+TopoDS_Shape DrawViewPart::getSourceShape() const
 {
 //    Base::Console().Message("DVP::getSourceShape()\n");
     TopoDS_Shape result;
@@ -210,7 +210,7 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
     return result;
 }
 
-TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
+TopoDS_Shape DrawViewPart::getSourceShapeFused() const
 {
 //    Base::Console().Message("DVP::getSourceShapeFused()\n");
     TopoDS_Shape result;
@@ -231,7 +231,7 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
     return result;
 }
 
-std::vector<App::DocumentObject*> DrawViewPart::getAllSources(void) const
+std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
 {
 //    Base::Console().Message("DVP::getAllSources()\n");
     const std::vector<App::DocumentObject*> links = Source.getValues();
@@ -246,7 +246,7 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources(void) const
     return result;
 }
 
-App::DocumentObjectExecReturn *DrawViewPart::execute(void)
+App::DocumentObjectExecReturn *DrawViewPart::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -379,7 +379,7 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
     addReferencesToGeom();
 }
 
-void DrawViewPart::addShapes2d(void)
+void DrawViewPart::addShapes2d()
 {
     std::vector<TopoDS_Shape> shapes = getSourceShape2d();
     for (auto& s: shapes) {
@@ -814,13 +814,13 @@ Base::BoundBox3d DrawViewPart::getBoundingBox() const
     return bbox;
 }
 
-double DrawViewPart::getBoxX(void) const
+double DrawViewPart::getBoxX() const
 {
     Base::BoundBox3d bbx = getBoundingBox();   //bbox is already scaled & centered!
     return (bbx.MaxX - bbx.MinX);
 }
 
-double DrawViewPart::getBoxY(void) const
+double DrawViewPart::getBoxY() const
 {
     Base::BoundBox3d bbx = getBoundingBox();
     return (bbx.MaxY - bbx.MinY);
@@ -871,7 +871,7 @@ BaseGeomPtr DrawViewPart::projectEdge(const TopoDS_Edge& e) const
     return result;
 }
 
-bool DrawViewPart::hasGeometry(void) const
+bool DrawViewPart::hasGeometry() const
 {
     bool result = false;
     if (!geometryObject)
@@ -926,12 +926,12 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
 
 //TODO: make saveShape a property
 
-Base::Vector3d DrawViewPart::getOriginalCentroid(void) const
+Base::Vector3d DrawViewPart::getOriginalCentroid() const
 {
     return m_saveCentroid;
 }
 
-Base::Vector3d DrawViewPart::getCurrentCentroid(void) const
+Base::Vector3d DrawViewPart::getCurrentCentroid() const
 {
     TopoDS_Shape shape = getSourceShape();
     gp_Ax2 cs = getProjectionCS(Base::Vector3d(0.0, 0.0, 0.0));
@@ -939,7 +939,7 @@ Base::Vector3d DrawViewPart::getCurrentCentroid(void) const
     return center;
 }
 
-std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
+std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
 {
     std::vector<DrawViewSection*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
@@ -951,7 +951,7 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
     return result;
 }
 
-std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs(void) const
+std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
 {
     std::vector<DrawViewDetail*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
@@ -970,7 +970,7 @@ const BaseGeomPtrVector DrawViewPart::getVisibleFaceEdges() const
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 }
 
-bool DrawViewPart::handleFaces(void)
+bool DrawViewPart::handleFaces()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
@@ -1037,7 +1037,7 @@ void DrawViewPart::unsetupObject()
 }
 
 //! is this an Isometric projection?
-bool DrawViewPart::isIso(void) const
+bool DrawViewPart::isIso() const
 {
     bool result = false;
     Base::Vector3d dir = Direction.getValue();
@@ -1048,7 +1048,7 @@ bool DrawViewPart::isIso(void) const
     return result;
 }
 
-bool DrawViewPart::checkXDirection(void) const
+bool DrawViewPart::checkXDirection() const
 {
 //    Base::Console().Message("DVP::checkXDirection()\n");
     Base::Vector3d xDir = XDirection.getValue();
@@ -1066,7 +1066,7 @@ bool DrawViewPart::checkXDirection(void) const
 }
 
 //
-Base::Vector3d DrawViewPart::getXDirection(void) const
+Base::Vector3d DrawViewPart::getXDirection() const
 {
 //    Base::Console().Message("DVP::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
@@ -1114,7 +1114,7 @@ void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
     }
 }
 
-void DrawViewPart::addReferencesToGeom(void)
+void DrawViewPart::addReferencesToGeom()
 {
 //    Base::Console().Message("DVP::addReferencesToGeom() - %s\n", getNameInDocument());
     std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
@@ -1179,14 +1179,14 @@ void DrawViewPart::resetReferenceVerts()
 //* Cosmetics
 //********
 
-void DrawViewPart::clearCosmeticVertexes(void)
+void DrawViewPart::clearCosmeticVertexes()
 {
     std::vector<CosmeticVertex*> noVerts;
     CosmeticVertexes.setValues(noVerts);
 }
 
 //add the cosmetic verts to geometry vertex list
-void DrawViewPart::addCosmeticVertexesToGeom(void)
+void DrawViewPart::addCosmeticVertexesToGeom()
 {
 //    Base::Console().Message("DVP::addCosmeticVertexesToGeom()\n");
     const std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
@@ -1212,7 +1212,7 @@ int DrawViewPart::add1CVToGV(std::string tag)
 }
 
 //update Vertex geometry with current CV's 
-void DrawViewPart::refreshCVGeoms(void)
+void DrawViewPart::refreshCVGeoms()
 {
 //    Base::Console().Message("DVP::refreshCVGeoms()\n");
 
@@ -1266,14 +1266,14 @@ int DrawViewPart::getCVIndex(std::string tag)
 //CosmeticEdges -------------------------------------------------------------------
 
 //for completeness.  not actually used anywhere?
-void DrawViewPart::clearCosmeticEdges(void)
+void DrawViewPart::clearCosmeticEdges()
 {
     std::vector<CosmeticEdge*> noEdges;
     CosmeticEdges.setValues(noEdges);
 }
 
 //add the cosmetic edges to geometry edge list
-void DrawViewPart::addCosmeticEdgesToGeom(void)
+void DrawViewPart::addCosmeticEdgesToGeom()
 {
 //    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
     const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
@@ -1303,7 +1303,7 @@ int DrawViewPart::add1CEToGE(std::string tag)
 }
 
 //update Edge geometry with current CE's 
-void DrawViewPart::refreshCEGeoms(void)
+void DrawViewPart::refreshCEGeoms()
 {
 //    Base::Console().Message("DVP::refreshCEGeoms()\n");
     std::vector<TechDraw::BaseGeomPtr> gEdges = getEdgeGeometry();
@@ -1319,7 +1319,7 @@ void DrawViewPart::refreshCEGeoms(void)
 
 
 // CenterLines -----------------------------------------------------------------
-void DrawViewPart::clearCenterLines(void)
+void DrawViewPart::clearCenterLines()
 {
     std::vector<CenterLine*> noLines;
     CenterLines.setValues(noLines);
@@ -1341,7 +1341,7 @@ int DrawViewPart::add1CLToGE(std::string tag)
 }
 
 //update Edge geometry with current CL's 
-void DrawViewPart::refreshCLGeoms(void)
+void DrawViewPart::refreshCLGeoms()
 {
 //    Base::Console().Message("DVP::refreshCLGeoms()\n");
     std::vector<TechDraw::BaseGeomPtr> gEdges = getEdgeGeometry();
@@ -1356,7 +1356,7 @@ void DrawViewPart::refreshCLGeoms(void)
 }
 
 //add the center lines to geometry Edges list
-void DrawViewPart::addCenterLinesToGeom(void)
+void DrawViewPart::addCenterLinesToGeom()
 {
 //   Base::Console().Message("DVP::addCenterLinesToGeom()\n");
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
@@ -1373,7 +1373,7 @@ void DrawViewPart::addCenterLinesToGeom(void)
 
 // GeomFormats -----------------------------------------------------------------
 
-void DrawViewPart::clearGeomFormats(void)
+void DrawViewPart::clearGeomFormats()
 {
     std::vector<GeomFormat*> noFormats;
     std::vector<GeomFormat*> fmts = GeomFormats.getValues();
@@ -1429,7 +1429,7 @@ void DrawViewPart::onDocumentRestored()
     DrawView::onDocumentRestored();
 }
 
-PyObject *DrawViewPart::getPyObject(void)
+PyObject *DrawViewPart::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -1444,7 +1444,7 @@ void DrawViewPart::handleChangedPropertyName(Base::XMLReader &reader, const char
     DrawView::handleChangedPropertyName(reader, TypeName, PropName);
 }
 
-bool DrawViewPart::prefHardViz(void)
+bool DrawViewPart::prefHardViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1452,7 +1452,7 @@ bool DrawViewPart::prefHardViz(void)
     return result;
 }
 
-bool DrawViewPart::prefSeamViz(void)
+bool DrawViewPart::prefSeamViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1460,7 +1460,7 @@ bool DrawViewPart::prefSeamViz(void)
     return result;
 }
 
-bool DrawViewPart::prefSmoothViz(void)
+bool DrawViewPart::prefSmoothViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1468,7 +1468,7 @@ bool DrawViewPart::prefSmoothViz(void)
     return result;
 }
 
-bool DrawViewPart::prefIsoViz(void)
+bool DrawViewPart::prefIsoViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1476,7 +1476,7 @@ bool DrawViewPart::prefIsoViz(void)
     return result;
 }
 
-bool DrawViewPart::prefHardHid(void)
+bool DrawViewPart::prefHardHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1484,7 +1484,7 @@ bool DrawViewPart::prefHardHid(void)
     return result;
 }
 
-bool DrawViewPart::prefSeamHid(void)
+bool DrawViewPart::prefSeamHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1492,7 +1492,7 @@ bool DrawViewPart::prefSeamHid(void)
     return result;
 }
 
-bool DrawViewPart::prefSmoothHid(void)
+bool DrawViewPart::prefSmoothHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1500,7 +1500,7 @@ bool DrawViewPart::prefSmoothHid(void)
     return result;
 }
 
-bool DrawViewPart::prefIsoHid(void)
+bool DrawViewPart::prefIsoHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1508,7 +1508,7 @@ bool DrawViewPart::prefIsoHid(void)
     return result;
 }
 
-int DrawViewPart::prefIsoCount(void)
+int DrawViewPart::prefIsoCount()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1522,7 +1522,7 @@ int DrawViewPart::prefIsoCount(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewPartPython, TechDraw::DrawViewPart)
-template<> const char* TechDraw::DrawViewPartPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewPartPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderViewPart";
 }
 /// @endcond

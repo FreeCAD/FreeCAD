@@ -75,7 +75,7 @@ public:
     /// Returns the BaseFeature property's TopoShape (if any)
     Part::TopoShape getBaseTopoShape(bool silent=false) const;
 
-    virtual PyObject* getPyObject(void);
+    virtual PyObject* getPyObject();
 
     virtual const char* getViewProviderName() const {
         return "PartDesignGui::ViewProvider";

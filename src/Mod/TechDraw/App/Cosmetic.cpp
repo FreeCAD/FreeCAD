@@ -91,7 +91,7 @@ void LineFormat::dump(const char* title)
     Base::Console().Message("LF::dump - %s \n",toString().c_str());
 }
 
-std::string LineFormat::toString(void) const
+std::string LineFormat::toString() const
 {
     std::stringstream ss;
     ss << m_style << "," <<
@@ -180,7 +180,7 @@ void CosmeticVertex::moveRelative(Base::Vector3d movement)
     permaPoint += movement;
 }
 
-std::string CosmeticVertex::toString(void) const
+std::string CosmeticVertex::toString() const
 {
     std::stringstream ss;
     ss << permaPoint.x << "," <<
@@ -205,7 +205,7 @@ std::string CosmeticVertex::toString(void) const
 }
 
 // Persistence implementers
-unsigned int CosmeticVertex::getMemSize (void) const
+unsigned int CosmeticVertex::getMemSize () const
 {
     return 1;
 }
@@ -265,7 +265,7 @@ boost::uuids::uuid CosmeticVertex::getTag() const
     return tag;
 }
 
-std::string CosmeticVertex::getTagAsString(void) const
+std::string CosmeticVertex::getTagAsString() const
 {
     return boost::uuids::to_string(getTag());
 }
@@ -293,13 +293,13 @@ void CosmeticVertex::assignTag(const TechDraw::CosmeticVertex * cv)
         throw Base::TypeError("CosmeticVertex tag can not be assigned as types do not match.");
 }
 
-CosmeticVertex* CosmeticVertex::copy(void) const
+CosmeticVertex* CosmeticVertex::copy() const
 {
 //    Base::Console().Message("CV::copy()\n");
     return new CosmeticVertex(this);
 }
 
-CosmeticVertex* CosmeticVertex::clone(void) const
+CosmeticVertex* CosmeticVertex::clone() const
 {
 //    Base::Console().Message("CV::clone()\n");
     CosmeticVertex* cpy = this->copy();
@@ -307,7 +307,7 @@ CosmeticVertex* CosmeticVertex::clone(void) const
     return cpy;
 }
 
-PyObject* CosmeticVertex::getPyObject(void)
+PyObject* CosmeticVertex::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -377,12 +377,12 @@ CosmeticEdge::CosmeticEdge(TechDraw::BaseGeomPtr g)
     initialize();
 }
 
-CosmeticEdge::~CosmeticEdge(void)
+CosmeticEdge::~CosmeticEdge()
 {
     //shared pointer will delete m_geometry when ref count goes to zero.
 }
 
-void CosmeticEdge::initialize(void)
+void CosmeticEdge::initialize()
 {
     m_geometry->classOfEdge = ecHARD;
     m_geometry->hlrVisible = true;
@@ -418,7 +418,7 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(double scale)
     return newGeom;
 }
 
-std::string CosmeticEdge::toString(void) const
+std::string CosmeticEdge::toString() const
 {
     std::stringstream ss;
     ss << getTagAsString() << ", $$$, ";
@@ -439,7 +439,7 @@ void CosmeticEdge::dump(const char* title)
 }
 
 // Persistence implementers
-unsigned int CosmeticEdge::getMemSize (void) const
+unsigned int CosmeticEdge::getMemSize () const
 {
     return 1;
 }
@@ -518,7 +518,7 @@ boost::uuids::uuid CosmeticEdge::getTag() const
     return tag;
 }
 
-std::string CosmeticEdge::getTagAsString(void) const
+std::string CosmeticEdge::getTagAsString() const
 {
     return boost::uuids::to_string(getTag());
 }
@@ -546,7 +546,7 @@ void CosmeticEdge::assignTag(const TechDraw::CosmeticEdge * ce)
         throw Base::TypeError("CosmeticEdge tag can not be assigned as types do not match.");
 }
 
-CosmeticEdge* CosmeticEdge::copy(void) const
+CosmeticEdge* CosmeticEdge::copy() const
 {
 //    Base::Console().Message("CE::copy()\n");
     CosmeticEdge* newCE = new CosmeticEdge();
@@ -556,7 +556,7 @@ CosmeticEdge* CosmeticEdge::copy(void) const
     return newCE;
 }
 
-CosmeticEdge* CosmeticEdge::clone(void) const
+CosmeticEdge* CosmeticEdge::clone() const
 {
 //    Base::Console().Message("CE::clone()\n");
     CosmeticEdge* cpy = this->copy();
@@ -564,7 +564,7 @@ CosmeticEdge* CosmeticEdge::clone(void) const
     return cpy;
 }
 
-PyObject* CosmeticEdge::getPyObject(void)
+PyObject* CosmeticEdge::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -578,7 +578,7 @@ PyObject* CosmeticEdge::getPyObject(void)
 
 TYPESYSTEM_SOURCE(TechDraw::CenterLine,Base::Persistence)
 
-CenterLine::CenterLine(void)
+CenterLine::CenterLine()
 {
     m_start = Base::Vector3d(0.0, 0.0, 0.0);
     m_end = Base::Vector3d(0.0, 0.0, 0.0);
@@ -788,7 +788,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
     return newGeom;
 }
 
-std::string CenterLine::toString(void) const
+std::string CenterLine::toString() const
 {
     std::stringstream ss;
     ss << m_start.x << "," <<
@@ -1172,7 +1172,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
 }
 
 // Persistence implementers
-unsigned int CenterLine::getMemSize (void) const
+unsigned int CenterLine::getMemSize () const
 {
     return 1;
 }
@@ -1368,7 +1368,7 @@ void CenterLine::Restore(Base::XMLReader &reader)
     } 
 }
 
-CenterLine* CenterLine::copy(void) const
+CenterLine* CenterLine::copy() const
 {
     CenterLine* newCL = new CenterLine();
     newCL->m_start = m_start;
@@ -1398,7 +1398,7 @@ boost::uuids::uuid CenterLine::getTag() const
     return tag;
 }
 
-std::string CenterLine::getTagAsString(void) const
+std::string CenterLine::getTagAsString() const
 {
     return boost::uuids::to_string(getTag());
 }
@@ -1427,7 +1427,7 @@ void CenterLine::assignTag(const TechDraw::CenterLine * ce)
         throw Base::TypeError("CenterLine tag can not be assigned as types do not match.");
 }
 
-CenterLine *CenterLine::clone(void) const
+CenterLine *CenterLine::clone() const
 {
     CenterLine* cpy = this->copy();
     cpy->tag = this->tag;
@@ -1435,7 +1435,7 @@ CenterLine *CenterLine::clone(void) const
     return cpy;
 }
 
-PyObject* CenterLine::getPyObject(void)
+PyObject* CenterLine::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -1451,12 +1451,12 @@ void CenterLine::setShifts(double h, double v)
     m_vShift = v;
 }
 
-double CenterLine::getHShift(void)
+double CenterLine::getHShift()
 {
     return m_hShift;
 }
 
-double CenterLine::getVShift(void)
+double CenterLine::getVShift()
 {
     return m_vShift;
 }
@@ -1466,7 +1466,7 @@ void CenterLine::setRotate(double r)
     m_rotate = r;
 }
 
-double CenterLine::getRotate(void)
+double CenterLine::getRotate()
 {
     return m_rotate;
 }
@@ -1476,7 +1476,7 @@ void CenterLine::setExtend(double e)
     m_extendBy = e;
 }
 
-double CenterLine::getExtend(void)
+double CenterLine::getExtend()
 {
     return m_extendBy;
 }
@@ -1486,7 +1486,7 @@ void CenterLine::setFlip(bool f)
     m_flip2Line = f;
 }
 
-bool CenterLine::getFlip(void)
+bool CenterLine::getFlip()
 {
     return m_flip2Line;
 }
@@ -1538,7 +1538,7 @@ void GeomFormat::dump(const char* title) const
     Base::Console().Message("GF::dump - %s \n",toString().c_str());
 }
 
-std::string GeomFormat::toString(void) const
+std::string GeomFormat::toString() const
 {
     std::stringstream ss;
     ss << m_geomIndex << ",$$$," <<
@@ -1547,7 +1547,7 @@ std::string GeomFormat::toString(void) const
 }
 
 // Persistence implementer
-unsigned int GeomFormat::getMemSize (void) const
+unsigned int GeomFormat::getMemSize () const
 {
     return 1;
 }
@@ -1588,7 +1588,7 @@ boost::uuids::uuid GeomFormat::getTag() const
     return tag;
 }
 
-std::string GeomFormat::getTagAsString(void) const
+std::string GeomFormat::getTagAsString() const
 {
     return boost::uuids::to_string(getTag());
 }
@@ -1616,7 +1616,7 @@ void GeomFormat::assignTag(const TechDraw::GeomFormat * ce)
         throw Base::TypeError("GeomFormat tag can not be assigned as types do not match.");
 }
 
-GeomFormat *GeomFormat::clone(void) const
+GeomFormat *GeomFormat::clone() const
 {
     GeomFormat* cpy = this->copy();
     cpy->tag = this->tag;
@@ -1624,7 +1624,7 @@ GeomFormat *GeomFormat::clone(void) const
     return cpy;
 }
 
-GeomFormat* GeomFormat::copy(void) const
+GeomFormat* GeomFormat::copy() const
 {
     GeomFormat* newFmt = new GeomFormat();
     newFmt->m_geomIndex = m_geomIndex;
@@ -1635,7 +1635,7 @@ GeomFormat* GeomFormat::copy(void) const
     return newFmt;
 }
 
-PyObject* GeomFormat::getPyObject(void)
+PyObject* GeomFormat::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -1644,7 +1644,7 @@ PyObject* GeomFormat::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-bool CosmeticVertex::restoreCosmetic(void)
+bool CosmeticVertex::restoreCosmetic()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");

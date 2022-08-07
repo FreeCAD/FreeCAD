@@ -48,7 +48,7 @@ FeatureCompound::~FeatureCompound()
 {
 }
 
-App::DocumentObjectExecReturn *FeatureCompound::execute(void)
+App::DocumentObjectExecReturn *FeatureCompound::execute()
 {
     const std::vector<DocumentObject*> &Paths = Group.getValues();
     Path::Toolpath result;
@@ -121,7 +121,7 @@ PyObject *FeatureCompound::getPyObject()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureCompoundPython, Path::FeatureCompound)
-template<> const char* Path::FeatureCompoundPython::getViewProviderName(void) const {
+template<> const char* Path::FeatureCompoundPython::getViewProviderName() const {
     return "PathGui::ViewProviderPathCompoundPython";
 }
 /// @endcond

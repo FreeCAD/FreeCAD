@@ -44,7 +44,7 @@ public:
     TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView, QWidget *parent=nullptr);
     ~TaskWidgetPathCompound();
 
-    std::vector<std::string> getList(void) const;
+    std::vector<std::string> getList() const;
 
 protected:
     void changeEvent(QEvent *e);

@@ -90,18 +90,18 @@ public:
     void load(const char* URL);
     void load(const QUrl & url);
     void setHtml(const QString& HtmlCode,const QUrl & BaseUrl);
-    void stop(void);
+    void stop();
     QUrl url() const;
 
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
-    const char *getName(void) const {return "BrowserView";}
-    virtual PyObject *getPyObject(void);
+    const char *getName() const {return "BrowserView";}
+    virtual PyObject *getPyObject();
 
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
-    bool canClose (void);
+    bool canClose ();
 
 #ifdef QTWEBENGINE
 public Q_SLOTS:

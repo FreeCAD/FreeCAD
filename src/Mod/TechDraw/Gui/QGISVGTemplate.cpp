@@ -145,7 +145,7 @@ void QGISVGTemplate::updateView(bool update)
     draw();
 }
 
-void QGISVGTemplate::createClickHandles(void)
+void QGISVGTemplate::createClickHandles()
 {
     TechDraw::DrawSVGTemplate *svgTemplate = getSVGTemplate();
     QString templateFilename(QString::fromUtf8(svgTemplate->PageResult.getValue()));

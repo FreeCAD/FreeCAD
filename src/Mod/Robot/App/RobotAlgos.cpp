@@ -64,7 +64,7 @@ using namespace KDL;
 
 
 
-RobotAlgos::RobotAlgos(void) 
+RobotAlgos::RobotAlgos()
 {
 	
 }
@@ -73,7 +73,7 @@ RobotAlgos::~RobotAlgos()
 {
 }
 
-void RobotAlgos::Test(void)
+void RobotAlgos::Test()
 {
 	    //Definition of a kinematic chain & add segments to the chain
     KDL::Chain chain;

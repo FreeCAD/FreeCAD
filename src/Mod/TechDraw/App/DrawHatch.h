@@ -50,34 +50,34 @@ public:
     App::PropertyFile        HatchPattern;
     App::PropertyFileIncluded SvgIncluded;
 
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     virtual short mustExecute() const override;
 
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderHatch";
     }
-    virtual void unsetupObject(void) override;
+    virtual void unsetupObject() override;
 
     //return PyObject as DrawHatchPy
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
-    DrawViewPart* getSourceView(void) const;
+    DrawViewPart* getSourceView() const;
     bool affectsFace(int i);
     bool removeSub(std::string toRemove);
     bool removeSub(int i);
-    bool empty(void);
+    bool empty();
     static bool faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs);
-    static std::string prefSvgHatch(void);
-    static App::Color prefSvgHatchColor(void);
+    static std::string prefSvgHatch();
+    static App::Color prefSvgHatchColor();
     
-    bool isSvgHatch(void) const;
-    bool isBitmapHatch(void) const;
+    bool isSvgHatch() const;
+    bool isBitmapHatch() const;
 
 protected:
     void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;
-    void setupFileIncluded(void);
+    void setupFileIncluded();
     void replaceFileIncluded(std::string newSvgFile);
 
 private:

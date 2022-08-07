@@ -496,12 +496,12 @@ Base::Vector3d Measurement::massCenter() const
     return result;
 }
 
-unsigned int Measurement::getMemSize(void) const
+unsigned int Measurement::getMemSize() const
 {
     return 0;
 }
 
-PyObject *Measurement::getPyObject(void)
+PyObject *Measurement::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

@@ -69,7 +69,7 @@ using namespace Part;
 
 PROPERTY_SOURCE_ABSTRACT_WITH_EXTENSIONS(Part::Primitive, Part::Feature)
 
-Primitive::Primitive(void)
+Primitive::Primitive()
 {
     AttachExtension::initExtension(this);
     touch();
@@ -79,12 +79,12 @@ Primitive::~Primitive()
 {
 }
 
-short Primitive::mustExecute(void) const
+short Primitive::mustExecute() const
 {
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Primitive::execute(void) {
+App::DocumentObjectExecReturn* Primitive::execute() {
     return Part::Feature::execute();
 }
 
@@ -183,7 +183,7 @@ short Vertex::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Vertex::execute(void)
+App::DocumentObjectExecReturn *Vertex::execute()
 {
     gp_Pnt point;
     point.SetX(this->X.getValue());
@@ -241,7 +241,7 @@ short Line::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Line::execute(void)
+App::DocumentObjectExecReturn *Line::execute()
 {
     gp_Pnt point1;
     point1.SetX(this->X1.getValue());
@@ -293,7 +293,7 @@ short Plane::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Plane::execute(void)
+App::DocumentObjectExecReturn *Plane::execute()
 {
     double L = this->Length.getValue();
     double W = this->Width.getValue();
@@ -341,7 +341,7 @@ App::DocumentObjectExecReturn *Plane::execute(void)
 
 PROPERTY_SOURCE(Part::Sphere, Part::Primitive)
 
-Sphere::Sphere(void)
+Sphere::Sphere()
 {
     ADD_PROPERTY_TYPE(Radius,(5.0),"Sphere",App::Prop_None,"The radius of the sphere");
     Radius.setConstraints(&quantityRange);
@@ -366,7 +366,7 @@ short Sphere::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Sphere::execute(void)
+App::DocumentObjectExecReturn *Sphere::execute()
 {
     // Build a sphere
     if (Radius.getValue() < Precision::Confusion())
@@ -389,7 +389,7 @@ App::DocumentObjectExecReturn *Sphere::execute(void)
 
 PROPERTY_SOURCE(Part::Ellipsoid, Part::Primitive)
 
-Ellipsoid::Ellipsoid(void)
+Ellipsoid::Ellipsoid()
 {
     ADD_PROPERTY_TYPE(Radius1,(2.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
     Radius1.setConstraints(&quantityRange);
@@ -422,7 +422,7 @@ short Ellipsoid::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Ellipsoid::execute(void)
+App::DocumentObjectExecReturn *Ellipsoid::execute()
 {
     // Build a sphere
     if (Radius1.getValue() < Precision::Confusion())
@@ -471,7 +471,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
 
 PROPERTY_SOURCE(Part::Cylinder, Part::Primitive)
 
-Cylinder::Cylinder(void)
+Cylinder::Cylinder()
 {
     ADD_PROPERTY_TYPE(Radius,(2.0),"Cylinder",App::Prop_None,"The radius of the cylinder");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Cylinder",App::Prop_None,"The height of the cylinder");
@@ -492,7 +492,7 @@ short Cylinder::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Cylinder::execute(void)
+App::DocumentObjectExecReturn *Cylinder::execute()
 {
     // Build a cylinder
     if (Radius.getValue() < Precision::Confusion())
@@ -522,7 +522,7 @@ App::PropertyIntegerConstraint::Constraints Prism::polygonRange = {3,INT_MAX,1};
 
 PROPERTY_SOURCE(Part::Prism, Part::Primitive)
 
-Prism::Prism(void)
+Prism::Prism()
 {
     ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
     ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
@@ -543,7 +543,7 @@ short Prism::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Prism::execute(void)
+App::DocumentObjectExecReturn *Prism::execute()
 {
     // Build a prism
     if (Polygon.getValue() < 3)
@@ -581,7 +581,7 @@ App::PropertyIntegerConstraint::Constraints RegularPolygon::polygon = {3,INT_MAX
 
 PROPERTY_SOURCE(Part::RegularPolygon, Part::Primitive)
 
-RegularPolygon::RegularPolygon(void)
+RegularPolygon::RegularPolygon()
 {
     ADD_PROPERTY_TYPE(Polygon,(6.0),"RegularPolygon",App::Prop_None,"Number of sides in the regular polygon");
     ADD_PROPERTY_TYPE(Circumradius,(2.0),"RegularPolygon",App::Prop_None,"Circumradius (centre to vertex) of the polygon");
@@ -597,7 +597,7 @@ short RegularPolygon::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *RegularPolygon::execute(void)
+App::DocumentObjectExecReturn *RegularPolygon::execute()
 {
     // Build a regular polygon
     if (Polygon.getValue() < 3)
@@ -632,7 +632,7 @@ App::DocumentObjectExecReturn *RegularPolygon::execute(void)
 
 PROPERTY_SOURCE(Part::Cone, Part::Primitive)
 
-Cone::Cone(void)
+Cone::Cone()
 {
     ADD_PROPERTY_TYPE(Radius1,(2.0),"Cone",App::Prop_None,"The radius of the cone");
     ADD_PROPERTY_TYPE(Radius2,(4.0),"Cone",App::Prop_None,"The radius of the cone");
@@ -654,7 +654,7 @@ short Cone::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Cone::execute(void)
+App::DocumentObjectExecReturn *Cone::execute()
 {
     if (Radius1.getValue() < 0)
         return new App::DocumentObjectExecReturn("Radius of cone too small");
@@ -681,7 +681,7 @@ App::DocumentObjectExecReturn *Cone::execute(void)
 
 PROPERTY_SOURCE(Part::Torus, Part::Primitive)
 
-Torus::Torus(void)
+Torus::Torus()
 {
     ADD_PROPERTY_TYPE(Radius1,(10.0),"Torus",App::Prop_None,"The radius of the torus");
     Radius1.setConstraints(&quantityRange);
@@ -710,7 +710,7 @@ short Torus::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Torus::execute(void)
+App::DocumentObjectExecReturn *Torus::execute()
 {
     if (Radius1.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
@@ -736,7 +736,7 @@ PROPERTY_SOURCE(Part::Helix, Part::Primitive)
 const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",nullptr};
 const char* Part::Helix::StyleEnums  []= {"Old style","New style",nullptr};
 
-Helix::Helix(void)
+Helix::Helix()
 {
     ADD_PROPERTY_TYPE(Pitch, (1.0),"Helix",App::Prop_None,"The pitch of the helix");
     Pitch.setConstraints(&quantityRange);
@@ -788,7 +788,7 @@ short Helix::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Helix::execute(void)
+App::DocumentObjectExecReturn *Helix::execute()
 {
     try {
         Standard_Real myPitch  = Pitch.getValue();
@@ -816,7 +816,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
 
 PROPERTY_SOURCE(Part::Spiral, Part::Primitive)
 
-Spiral::Spiral(void)
+Spiral::Spiral()
 {
     ADD_PROPERTY_TYPE(Growth, (1.0),"Spiral",App::Prop_None,"The growth of the spiral per rotation");
     Growth.setConstraints(&quantityRange);
@@ -855,7 +855,7 @@ short Spiral::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Spiral::execute(void)
+App::DocumentObjectExecReturn *Spiral::execute()
 {
     try {
         Standard_Real myNumRot = Rotations.getValue();
@@ -907,7 +907,7 @@ short Wedge::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Wedge::execute(void)
+App::DocumentObjectExecReturn *Wedge::execute()
 {
     double xmin = Xmin.getValue();
     double ymin = Ymin.getValue();
@@ -1002,7 +1002,7 @@ short Ellipse::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Ellipse::execute(void)
+App::DocumentObjectExecReturn *Ellipse::execute()
 {
     if (this->MinorRadius.getValue() > this->MajorRadius.getValue())
         return new App::DocumentObjectExecReturn("Minor radius greater than major radius");

@@ -72,7 +72,7 @@ public:
     bool get_rotzfree()const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void x_changed(double);
     void y_changed(double);
     void z_changed(double);

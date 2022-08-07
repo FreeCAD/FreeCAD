@@ -59,7 +59,7 @@ ViewProvider::~ViewProvider()
 {
 }
 
-bool ViewProvider::doubleClicked(void)
+bool ViewProvider::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));

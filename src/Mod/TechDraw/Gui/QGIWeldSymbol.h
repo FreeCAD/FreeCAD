@@ -68,24 +68,24 @@ public:
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
     virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape(void) const override;
-    double getEdgeFuzz(void) const;
+    virtual QPainterPath shape() const override;
+    double getEdgeFuzz() const;
 
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
 
-    virtual TechDraw::DrawWeldSymbol* getFeature(void);
+    virtual TechDraw::DrawWeldSymbol* getFeature();
     virtual void setFeature(TechDraw::DrawWeldSymbol* feat);
 
-    QPointF getTileOrigin(void);
-    QPointF getKinkPoint(void);
-    QPointF getTailPoint(void);
+    QPointF getTileOrigin();
+    QPointF getKinkPoint();
+    QPointF getTailPoint();
 
     virtual void setPrettyNormal();
     virtual void setPrettySel();
     virtual void setPrettyPre();
 
-    void getTileFeats(void);
+    void getTileFeats();
 
 protected:
     virtual QVariant itemChange( GraphicsItemChange change,
@@ -95,17 +95,17 @@ protected:
 
     virtual void draw() override;
     void drawTile(TechDraw::DrawTileWeld* tileFeat);
-    void drawAllAround(void);
-    void drawTailText(void);
+    void drawAllAround();
+    void drawTailText();
     void drawFieldFlag();
 
 protected:
-    void removeQGITiles(void);
-    std::vector<QGITile*> getQGITiles(void) const;
+    void removeQGITiles();
+    std::vector<QGITile*> getQGITiles() const;
 
     virtual QColor prefNormalColor();
     double prefArrowSize();
-    double prefFontSize(void) const;
+    double prefFontSize() const;
 
     TechDraw::DrawWeldSymbol* m_weldFeat;
     TechDraw::DrawLeaderLine* m_leadFeat;

@@ -83,7 +83,7 @@ void CmdWebBrowserBack::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('Back')");
 }
 
-bool CmdWebBrowserBack::isActive(void)
+bool CmdWebBrowserBack::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Back");
 }
@@ -112,7 +112,7 @@ void CmdWebBrowserNext::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('Next')");
 }
 
-bool CmdWebBrowserNext::isActive(void)
+bool CmdWebBrowserNext::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Next");
 }
@@ -141,7 +141,7 @@ void CmdWebBrowserRefresh::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('Refresh')");
 }
 
-bool CmdWebBrowserRefresh::isActive(void)
+bool CmdWebBrowserRefresh::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Refresh");
 }
@@ -170,7 +170,7 @@ void CmdWebBrowserStop::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('Stop')");
 }
 
-bool CmdWebBrowserStop::isActive(void)
+bool CmdWebBrowserStop::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Stop");
 }
@@ -199,7 +199,7 @@ void CmdWebBrowserZoomIn::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('ZoomIn')");
 }
 
-bool CmdWebBrowserZoomIn::isActive(void)
+bool CmdWebBrowserZoomIn::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("ZoomIn");
 }
@@ -228,7 +228,7 @@ void CmdWebBrowserZoomOut::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('ZoomOut')");
 }
 
-bool CmdWebBrowserZoomOut::isActive(void)
+bool CmdWebBrowserZoomOut::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("ZoomOut");
 }
@@ -257,14 +257,14 @@ void CmdWebBrowserSetURL::activated(int iMsg)
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('SetURL')");
 }
 
-bool CmdWebBrowserSetURL::isActive(void)
+bool CmdWebBrowserSetURL::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("SetURL");
 }
 
 
 
-void CreateWebCommands(void)
+void CreateWebCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

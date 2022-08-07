@@ -93,12 +93,12 @@ ViewProviderFemPostFunctionProvider::~ViewProviderFemPostFunctionProvider() {
 
 }
 
-std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren(void) const {
+std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren() const {
 
     return static_cast<Fem::FemPostFunctionProvider*>(getObject())->Functions.getValues();
 }
 
-std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren3D(void) const {
+std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren3D() const {
     return claimChildren();
 }
 
@@ -276,7 +276,7 @@ bool ViewProviderFemPostFunction::findScaleFactor(double& scale) const
     return false;
 }
 
-bool ViewProviderFemPostFunction::doubleClicked(void) {
+bool ViewProviderFemPostFunction::doubleClicked() {
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
 }
@@ -286,7 +286,7 @@ SoTransformManip* ViewProviderFemPostFunction::setupManipulator() {
     return new SoCenterballManip;
 }
 
-std::vector<std::string> ViewProviderFemPostFunction::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFemPostFunction::getDisplayModes() const
 {
     std::vector<std::string> StrList;
     StrList.emplace_back("Default");

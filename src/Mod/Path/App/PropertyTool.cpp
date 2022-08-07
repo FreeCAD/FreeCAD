@@ -58,12 +58,12 @@ void PropertyTool::setValue(const Tool& tt)
 }
 
 
-const Tool &PropertyTool::getValue(void)const
+const Tool &PropertyTool::getValue()const
 {
     return _Tool;
 }
 
-PyObject *PropertyTool::getPyObject(void)
+PyObject *PropertyTool::getPyObject()
 {
     return new ToolPy(new Tool(_Tool));
 }
@@ -81,7 +81,7 @@ void PropertyTool::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyTool::Copy(void) const
+App::Property *PropertyTool::Copy() const
 {
     PropertyTool *prop = new PropertyTool();
     prop->_Tool = this->_Tool;
@@ -96,7 +96,7 @@ void PropertyTool::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyTool::getMemSize (void) const
+unsigned int PropertyTool::getMemSize () const
 {
     return _Tool.getMemSize();
 }

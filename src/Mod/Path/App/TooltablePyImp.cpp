@@ -39,7 +39,7 @@ using namespace Path;
 #define PYINT_ASLONG(o)           PyLong_AsLong(o)
 
 // returns a string which represents the object e.g. when printed in python
-std::string TooltablePy::representation(void) const
+std::string TooltablePy::representation() const
 {
     std::stringstream str;
     str.precision(5);
@@ -94,7 +94,7 @@ int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 // Commands get/set
 
-Py::Dict TooltablePy::getTools(void) const
+Py::Dict TooltablePy::getTools() const
 {
     Py::Dict dict;
     for(std::map<int,Path::ToolPtr>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
@@ -230,7 +230,7 @@ int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-Py::Int TooltablePy::getVersion(void) const
+Py::Int TooltablePy::getVersion() const
 {
     return Py::Int(getTooltablePtr()->Version);
 }
@@ -239,7 +239,7 @@ void TooltablePy::setVersion(Py::Int version) {
     getTooltablePtr()->Version = version;
 }
 
-Py::String TooltablePy::getName(void) const
+Py::String TooltablePy::getName() const
 {
     return Py::String(getTooltablePtr()->Name.c_str());
 }

@@ -48,7 +48,7 @@ ViewProviderPointParametric::~ViewProviderPointParametric()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderPointParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPointParametric::getDisplayModes() const
 {
   // get the modes of the father
   std::vector<std::string> StrList;

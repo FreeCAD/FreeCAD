@@ -36,7 +36,7 @@ class PartGuiExport ViewProviderAttachExtension : public Gui::ViewProviderExtens
 
 public:
     /// Constructor
-    ViewProviderAttachExtension(void);
+    ViewProviderAttachExtension();
     virtual ~ViewProviderAttachExtension() = default;
 
     virtual QIcon extensionMergeColorfullOverlayIcons (const QIcon & orig) const override;

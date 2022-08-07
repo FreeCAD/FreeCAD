@@ -55,19 +55,19 @@ public:
       * If Reversed is true then the direction of revolution will be reversed.
       * The created material will be fused with the sketch support (if there is one)
       */
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartDesignGui::ViewProviderRevolution";
     }
     //@}
 
     /// suggests a value for Reversed flag so that material is always added to the support
-    bool suggestReversed(void);
+    bool suggestReversed();
 protected:
     /// updates Axis from ReferenceAxis
-    void updateAxis(void);
+    void updateAxis();
 
     static const App::PropertyAngle::Constraints floatAngle;
 };

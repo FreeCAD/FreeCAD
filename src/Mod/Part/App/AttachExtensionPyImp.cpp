@@ -31,7 +31,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string AttachExtensionPy::representation(void) const
+std::string AttachExtensionPy::representation() const
 {
     return std::string("<Part::AttachableObject>");
 }
@@ -71,7 +71,7 @@ PyObject* AttachExtensionPy::changeAttacherType(PyObject *args)
     return Py::new_reference_to(Py::Boolean(ret));
 }
 
-Py::Object AttachExtensionPy::getAttacher(void) const
+Py::Object AttachExtensionPy::getAttacher() const
 {
     try {
         this->getAttachExtensionPtr()->attacher(); //throws if attacher is not set

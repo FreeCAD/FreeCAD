@@ -47,7 +47,7 @@ protected:
     void loadSettings();
     void changeEvent(QEvent *e);
 
-    int prefBalloonArrow(void) const;
+    int prefBalloonArrow() const;
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;

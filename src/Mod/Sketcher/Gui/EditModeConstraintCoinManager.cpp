@@ -1394,7 +1394,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(const std::vector<Sket
     }
 }
 
-void EditModeConstraintCoinManager::rebuildConstraintNodes(void)
+void EditModeConstraintCoinManager::rebuildConstraintNodes()
 {
     auto geolistfacade = ViewProviderSketchCoinAttorney::getGeoListFacade(viewProvider);
 

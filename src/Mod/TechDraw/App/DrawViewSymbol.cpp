@@ -52,7 +52,7 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewSymbol, TechDraw::DrawView)
 
 
-DrawViewSymbol::DrawViewSymbol(void)
+DrawViewSymbol::DrawViewSymbol()
 {
     static const char *vgroup = "Drawing view";
 
@@ -83,7 +83,7 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
     TechDraw::DrawView::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
+App::DocumentObjectExecReturn *DrawViewSymbol::execute()
 {
     //nothing to do. DVS is just a container for properties.
     //the action takes place on the Gui side.
@@ -205,7 +205,7 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
     return rc;
 }
 
-PyObject *DrawViewSymbol::getPyObject(void)
+PyObject *DrawViewSymbol::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -219,7 +219,7 @@ PyObject *DrawViewSymbol::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewSymbolPython, TechDraw::DrawViewSymbol)
-template<> const char* TechDraw::DrawViewSymbolPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewSymbolPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderSymbol";
 }
 /// @endcond

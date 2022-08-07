@@ -39,7 +39,7 @@ using namespace Path;
 
 
 // returns a string which represents the object e.g. when printed in python
-std::string ToolPy::representation(void) const
+std::string ToolPy::representation() const
 {
     std::stringstream str;
     str.precision(5);
@@ -111,7 +111,7 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
 
 // attributes get/setters
 
-Py::String ToolPy::getName(void) const
+Py::String ToolPy::getName() const
 {
     return Py::String(getToolPtr()->Name.c_str());
 }
@@ -122,7 +122,7 @@ void ToolPy::setName(Py::String arg)
     getToolPtr()->Name = name;
 }
 
-Py::String ToolPy::getToolType(void) const
+Py::String ToolPy::getToolType() const
 {
   return Py::String(Tool::TypeName(getToolPtr()->Type));
 }
@@ -134,7 +134,7 @@ void ToolPy::setToolType(Py::String arg)
 
 }
 
-Py::String ToolPy::getMaterial(void) const
+Py::String ToolPy::getMaterial() const
 {
   return Py::String(Tool::MaterialName(getToolPtr()->Material));
 }
@@ -145,7 +145,7 @@ void ToolPy::setMaterial(Py::String arg)
     getToolPtr()->Material = Tool::getToolMaterial(matStr);
 }
 
-Py::Float ToolPy::getDiameter(void) const
+Py::Float ToolPy::getDiameter() const
 {
     return Py::Float(getToolPtr()->Diameter);
 }
@@ -155,7 +155,7 @@ void  ToolPy::setDiameter(Py::Float arg)
     getToolPtr()->Diameter = arg.operator double();
 }
 
-Py::Float ToolPy::getLengthOffset(void) const
+Py::Float ToolPy::getLengthOffset() const
 {
     return Py::Float(getToolPtr()->LengthOffset);
 }
@@ -165,7 +165,7 @@ void  ToolPy::setLengthOffset(Py::Float arg)
     getToolPtr()->LengthOffset = arg.operator double();
 }
 
-Py::Float ToolPy::getFlatRadius(void) const
+Py::Float ToolPy::getFlatRadius() const
 {
     return Py::Float(getToolPtr()->FlatRadius);
 }
@@ -175,7 +175,7 @@ void  ToolPy::setFlatRadius(Py::Float arg)
     getToolPtr()->FlatRadius = arg.operator double();
 }
 
-Py::Float ToolPy::getCornerRadius(void) const
+Py::Float ToolPy::getCornerRadius() const
 {
     return Py::Float(getToolPtr()->CornerRadius);
 }
@@ -185,7 +185,7 @@ void  ToolPy::setCornerRadius(Py::Float arg)
     getToolPtr()->CornerRadius = arg.operator double();
 }
 
-Py::Float ToolPy::getCuttingEdgeAngle(void) const
+Py::Float ToolPy::getCuttingEdgeAngle() const
 {
     return Py::Float(getToolPtr()->CuttingEdgeAngle);
 }
@@ -195,7 +195,7 @@ void  ToolPy::setCuttingEdgeAngle(Py::Float arg)
     getToolPtr()->CuttingEdgeAngle = arg.operator double();
 }
 
-Py::Float ToolPy::getCuttingEdgeHeight(void) const
+Py::Float ToolPy::getCuttingEdgeHeight() const
 {
     return Py::Float(getToolPtr()->CuttingEdgeHeight);
 }

@@ -59,7 +59,7 @@ short Thickness::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Thickness::execute(void)
+App::DocumentObjectExecReturn *Thickness::execute()
 {
     // Base shape
     Part::TopoShape TopShape;

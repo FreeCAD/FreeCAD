@@ -53,12 +53,12 @@ ConstraintSpring::ConstraintSpring()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintSpring::execute(void)
+App::DocumentObjectExecReturn *ConstraintSpring::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintSpring::getViewProviderName(void) const
+const char* ConstraintSpring::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintSpring";
 }

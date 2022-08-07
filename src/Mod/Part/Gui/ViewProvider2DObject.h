@@ -46,7 +46,7 @@ public:
     ViewProvider2DObject();
     /// destructor
     virtual ~ViewProvider2DObject();
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
     virtual const char* getDefaultDisplayMode() const;
 };
 
@@ -74,7 +74,7 @@ public:
     virtual void updateData(const App::Property*);
 
     /// creates the grid
-    SoSeparator* createGrid(void);
+    SoSeparator* createGrid();
 
 protected:
     virtual bool setEdit(int ModNum);

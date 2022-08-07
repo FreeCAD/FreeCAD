@@ -84,7 +84,7 @@ public:
     
 protected:
     void changeEvent(QEvent *e);
-    void startDragger(void);
+    void startDragger();
 
     void createDetail();
     void updateDetail();
@@ -92,7 +92,7 @@ protected:
     void editByHighlight();
 
     void blockButtons(bool b);
-    void setUiFromFeat(void);
+    void setUiFromFeat();
     void updateUi(QPointF p);
     void enableInputFields(bool b);
 
@@ -157,7 +157,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
                         { return false; }
     void update();
 

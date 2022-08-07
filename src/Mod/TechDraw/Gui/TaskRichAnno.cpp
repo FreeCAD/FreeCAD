@@ -310,7 +310,7 @@ void TaskRichAnno::onSaveAndExit(QString qs)
     m_rte = nullptr;
 }
 
-void TaskRichAnno::onEditorExit(void)
+void TaskRichAnno::onEditorExit()
 {
     m_textDialog->reject();
     m_textDialog = nullptr;
@@ -322,7 +322,7 @@ double TaskRichAnno::prefWeight() const
     return TechDraw::LineGroup::getDefaultWidth("Graphic");
 }
 
-App::Color TaskRichAnno::prefLineColor(void)
+App::Color TaskRichAnno::prefLineColor()
 {
     return PreferencesGui::leaderColor();
 }
@@ -408,7 +408,7 @@ void TaskRichAnno::updateAnnoFeature()
     m_annoFeat->requestPaint();
 }
 
-void TaskRichAnno::commonFeatureUpdate(void)
+void TaskRichAnno::commonFeatureUpdate()
 {
 //    Base::Console().Message("TRA::commonFeatureUpdate()\n");
     m_annoFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
@@ -417,7 +417,7 @@ void TaskRichAnno::commonFeatureUpdate(void)
     m_annoFeat->ShowFrame.setValue(ui->cbShowFrame->isChecked());
 }
 
-void TaskRichAnno::removeFeature(void)
+void TaskRichAnno::removeFeature()
 {
 //    Base::Console().Message("TRA::removeFeature()\n");
     if (!m_annoFeat)

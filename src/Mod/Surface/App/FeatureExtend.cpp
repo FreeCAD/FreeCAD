@@ -90,7 +90,7 @@ short Extend::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Extend::execute(void)
+App::DocumentObjectExecReturn *Extend::execute()
 {
     App::DocumentObject* part = Face.getValue();
     if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))

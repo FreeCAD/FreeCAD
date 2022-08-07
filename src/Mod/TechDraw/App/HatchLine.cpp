@@ -45,35 +45,35 @@
 
 using namespace TechDraw;
 
-double LineSet::getMinX(void)
+double LineSet::getMinX()
 {
     double xMin,yMin,zMin,xMax,yMax,zMax;
     m_box.Get(xMin,yMin,zMin,xMax,yMax,zMax);
     return xMin;
 }
 
-double LineSet::getMinY(void)
+double LineSet::getMinY()
 {
     double xMin,yMin,zMin,xMax,yMax,zMax;
     m_box.Get(xMin,yMin,zMin,xMax,yMax,zMax);
     return yMin;
 }
 
-double LineSet::getMaxX(void)
+double LineSet::getMaxX()
 {
     double xMin,yMin,zMin,xMax,yMax,zMax;
     m_box.Get(xMin,yMin,zMin,xMax,yMax,zMax);
     return xMax;
 }
 
-double LineSet::getMaxY(void)
+double LineSet::getMaxY()
 {
     double xMin,yMin,zMin,xMax,yMax,zMax;
     m_box.Get(xMin,yMin,zMin,xMax,yMax,zMax);
     return yMax;
 }
 
-bool LineSet::isDashed(void)
+bool LineSet::isDashed()
 {
     bool result = m_hatchLine.isDashed();
     return result;
@@ -99,7 +99,7 @@ Base::Vector3d LineSet::calcApparentStart(TechDraw::BaseGeomPtr g)
     return result;
 }
 
-Base::Vector3d LineSet::getUnitDir(void)
+Base::Vector3d LineSet::getUnitDir()
 {
     Base::Vector3d result;
     Base::Vector3d start(m_geoms.at(0)->getStartPoint().x,
@@ -133,7 +133,7 @@ Base::Vector3d LineSet::getUnitOrtho()
 }
 
 
-Base::Vector3d LineSet::findAtomStart(void)
+Base::Vector3d LineSet::findAtomStart()
 {
     Base::Vector3d result;
     Base::Vector3d origin = getOrigin();
@@ -239,7 +239,7 @@ PATLineSpec::~PATLineSpec()
 {
 }
 
-void PATLineSpec::init(void)
+void PATLineSpec::init()
 {
     m_angle = 0.0;
     m_origin = Base::Vector3d(0.0,0.0,0.0);
@@ -411,7 +411,7 @@ std::vector<std::string> PATLineSpec::getPatternList(std::string& parmFile)
     return result;
 }
 
-double PATLineSpec::getSlope(void)
+double PATLineSpec::getSlope()
 {
     double angle = getAngle();
 
@@ -425,14 +425,14 @@ double PATLineSpec::getSlope(void)
     return slope;
 }
 
-bool PATLineSpec::isDashed(void)
+bool PATLineSpec::isDashed()
 {
     bool result = !m_dashParms.empty();
     return result;
 }
 
 //! X component of distance between lines
-double PATLineSpec::getIntervalX(void)
+double PATLineSpec::getIntervalX()
 {
     if (getAngle() == 0.0) {
         return 0.0;
@@ -445,7 +445,7 @@ double PATLineSpec::getIntervalX(void)
 }
 
 //! Y component of distance between lines
-double PATLineSpec::getIntervalY(void)
+double PATLineSpec::getIntervalY()
 {
     if (getAngle() == 0.0) {
         return getInterval();
@@ -460,7 +460,7 @@ double PATLineSpec::getIntervalY(void)
 
 //********************************************************
 
-double DashSpec::length(void)
+double DashSpec::length()
 {
     double result = 0.0;
     for (auto& c: get()) {
@@ -469,7 +469,7 @@ double DashSpec::length(void)
     return result;
 }
 
-DashSpec DashSpec::reversed(void)
+DashSpec DashSpec::reversed()
 {
     std::vector<double> p = get();
     std::reverse(p.begin(),p.end());

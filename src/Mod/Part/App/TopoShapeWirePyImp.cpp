@@ -63,7 +63,7 @@ namespace Part {
 
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeWirePy::representation(void) const
+std::string TopoShapeWirePy::representation() const
 {
     std::stringstream str;
     str << "<Wire object at " << getTopoShapePtr() << ">";
@@ -612,7 +612,7 @@ Py::String TopoShapeWirePy::getContinuity() const
     return Py::String(cont);
 }
 
-Py::Object TopoShapeWirePy::getMass(void) const
+Py::Object TopoShapeWirePy::getMass() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -620,7 +620,7 @@ Py::Object TopoShapeWirePy::getMass(void) const
     return Py::Float(c);
 }
 
-Py::Object TopoShapeWirePy::getCenterOfMass(void) const
+Py::Object TopoShapeWirePy::getCenterOfMass() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -628,7 +628,7 @@ Py::Object TopoShapeWirePy::getCenterOfMass(void) const
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
 }
 
-Py::Object TopoShapeWirePy::getMatrixOfInertia(void) const
+Py::Object TopoShapeWirePy::getMatrixOfInertia() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -642,7 +642,7 @@ Py::Object TopoShapeWirePy::getMatrixOfInertia(void) const
     return Py::Matrix(mat);
 }
 
-Py::Object TopoShapeWirePy::getStaticMoments(void) const
+Py::Object TopoShapeWirePy::getStaticMoments() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -655,7 +655,7 @@ Py::Object TopoShapeWirePy::getStaticMoments(void) const
     return tuple;
 }
 
-Py::Dict TopoShapeWirePy::getPrincipalProperties(void) const
+Py::Dict TopoShapeWirePy::getPrincipalProperties() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -688,7 +688,7 @@ Py::Dict TopoShapeWirePy::getPrincipalProperties(void) const
     return dict;
 }
 
-Py::List TopoShapeWirePy::getOrderedEdges(void) const
+Py::List TopoShapeWirePy::getOrderedEdges() const
 {
     Py::List ret;
 
@@ -701,7 +701,7 @@ Py::List TopoShapeWirePy::getOrderedEdges(void) const
     return ret;
 }
 
-Py::List TopoShapeWirePy::getOrderedVertexes(void) const
+Py::List TopoShapeWirePy::getOrderedVertexes() const
 {
     Py::List ret;
 

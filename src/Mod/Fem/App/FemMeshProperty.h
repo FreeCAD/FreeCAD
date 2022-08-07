@@ -49,9 +49,9 @@ public:
     /// set the FemMesh shape
     void setValue(const FemMesh&);
     /// does nothing, for add property macro
-    void setValue(void){}
+    void setValue(){}
     /// get the FemMesh shape
-    const FemMesh &getValue(void) const;
+    const FemMesh &getValue() const;
     const Data::ComplexGeoData* getComplexData() const;
     //@}
 
@@ -69,7 +69,7 @@ public:
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
+    PyObject* getPyObject();
     void setPyObject(PyObject *value);
     //@}
 
@@ -80,10 +80,10 @@ public:
     void SaveDocFile (Base::Writer &writer) const;
     void RestoreDocFile(Base::Reader &reader);
 
-    App::Property *Copy(void) const;
+    App::Property *Copy() const;
     void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
-    const char* getEditorName(void) const { return "FemGui::PropertyFemMeshItem"; }
+    unsigned int getMemSize () const;
+    const char* getEditorName() const { return "FemGui::PropertyFemMeshItem"; }
     //@}
 
 private:

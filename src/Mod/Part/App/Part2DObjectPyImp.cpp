@@ -33,7 +33,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string Part2DObjectPy::representation(void) const
+std::string Part2DObjectPy::representation() const
 {
     return std::string("<Part::Part2DObject>");
 }

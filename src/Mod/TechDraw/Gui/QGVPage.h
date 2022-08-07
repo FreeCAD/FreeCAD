@@ -84,8 +84,8 @@ public:
 
     QGSPage* getScene() {return m_scene; }
 
-    void startBalloonPlacing(void);
-    void cancelBalloonPlacing(void);
+    void startBalloonPlacing();
+    void cancelBalloonPlacing();
 
     TechDraw::DrawPage * getDrawPage();
 
@@ -93,7 +93,7 @@ public:
 
     void makeGrid(int width, int height, double step);
     void showGrid(bool state) {m_showGrid = state;}
-    void updateViewport(void) {viewport()->repaint();}
+    void updateViewport() {viewport()->repaint();}
 
     bool isBalloonPlacing() {return balloonPlacing; }
     void setBalloonPlacing(bool s) {balloonPlacing = s;}

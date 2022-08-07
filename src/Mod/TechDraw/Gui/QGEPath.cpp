@@ -332,7 +332,7 @@ void QGEPath::onDoubleClick(QPointF pos, int markerIndex)
     onEndEdit();
 }
 
-void QGEPath::onEndEdit(void)
+void QGEPath::onEndEdit()
 {
 //    Base::Console().Message("QGEPath::onEndEdit()\n");
     if (m_ghost) {
@@ -344,7 +344,7 @@ void QGEPath::onEndEdit(void)
     clearMarkers();
 }
 
-std::vector<QPointF> QGEPath::getDeltasFromLeader(void)
+std::vector<QPointF> QGEPath::getDeltasFromLeader()
 {
     std::vector<QPointF> qDeltas;
     if (!m_parentLeader) {
@@ -371,7 +371,7 @@ std::vector<QPointF> QGEPath::getDeltasFromLeader(void)
 }
 
 //announce points editing is finished
-void QGEPath::updateParent(void)
+void QGEPath::updateParent()
 {
 //    Base::Console().Message("QGEPath::updateParent() - inEdit: %d pts: %d\n",inEdit(), m_ghostPoints.size());
 //    dumpGhostPoints("QGEP::updateParent");
@@ -382,7 +382,7 @@ void QGEPath::updateParent(void)
 }
 
 //the ghost is the red line drawn when creating or editing the Leader points
-void QGEPath::drawGhost(void)
+void QGEPath::drawGhost()
 {
 //    Base::Console().Message("QGEPath::drawGhost()\n");
     if (!m_ghost->scene()) {
@@ -421,7 +421,7 @@ QPainterPath QGEPath::shape() const
     return outline;
 }
 
- double QGEPath::getEdgeFuzz(void) const
+ double QGEPath::getEdgeFuzz() const
 {
     return PreferencesGui::edgeFuzz();
 }

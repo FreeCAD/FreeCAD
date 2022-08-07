@@ -34,7 +34,7 @@ using namespace App;
 
 PROPERTY_SOURCE(Fem::FemPostFunctionProvider, App::DocumentObject)
 
-FemPostFunctionProvider::FemPostFunctionProvider(void) : DocumentObject() {
+FemPostFunctionProvider::FemPostFunctionProvider() : DocumentObject() {
 
     ADD_PROPERTY(Functions, (nullptr));
 }
@@ -58,7 +58,7 @@ FemPostFunction::~FemPostFunction()
 {
 }
 
-DocumentObjectExecReturn* FemPostFunction::execute(void) {
+DocumentObjectExecReturn* FemPostFunction::execute() {
 
     return DocumentObject::StdReturn;
 }
@@ -68,7 +68,7 @@ DocumentObjectExecReturn* FemPostFunction::execute(void) {
 // plane function
 PROPERTY_SOURCE(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
 
-FemPostPlaneFunction::FemPostPlaneFunction(void) : FemPostFunction() {
+FemPostPlaneFunction::FemPostPlaneFunction() : FemPostFunction() {
 
     ADD_PROPERTY(Origin, (Base::Vector3d(0.0, 0.0, 0.0)));
     ADD_PROPERTY(Normal, (Base::Vector3d(0.0, 0.0, 1.0)));
@@ -108,7 +108,7 @@ void FemPostPlaneFunction::onDocumentRestored() {
 // sphere function
 PROPERTY_SOURCE(Fem::FemPostSphereFunction, Fem::FemPostFunction)
 
-FemPostSphereFunction::FemPostSphereFunction(void) : FemPostFunction() {
+FemPostSphereFunction::FemPostSphereFunction() : FemPostFunction() {
 
     ADD_PROPERTY(Radius, (5));
     ADD_PROPERTY(Center, (Base::Vector3d(1.0, 0.0, 0.0)));

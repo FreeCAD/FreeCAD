@@ -74,12 +74,12 @@ Constraint::Constraint()
     tag = gen();
 }
 
-Constraint *Constraint::clone(void) const
+Constraint *Constraint::clone() const
 {
     return new Constraint(*this);
 }
 
-Constraint *Constraint::copy(void) const
+Constraint *Constraint::copy() const
 {
     Constraint *temp = new Constraint();
     temp->Value = this->Value;
@@ -102,7 +102,7 @@ Constraint *Constraint::copy(void) const
     return temp;
 }
 
-PyObject *Constraint::getPyObject(void)
+PyObject *Constraint::getPyObject()
 {
     return new ConstraintPy(new Constraint(*this));
 }
@@ -140,7 +140,7 @@ Quantity Constraint::getPresentationValue() const
     return quantity;
 }
 
-unsigned int Constraint::getMemSize (void) const
+unsigned int Constraint::getMemSize () const
 {
     return 0;
 }

@@ -177,7 +177,7 @@ public:
     virtual ~PropertyDistanceList();
     
     virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    virtual int getSize() const;
 
     /** Sets the property 
      */
@@ -189,9 +189,9 @@ public:
     void set1Value (const int idx, float value){_lValueList.operator[] (idx) = value;}
     void setValues (const std::vector<float>& values);
     
-    const std::vector<float> &getValues(void) const{return _lValueList;}
+    const std::vector<float> &getValues() const{return _lValueList;}
     
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual void setPyObject(PyObject *);
     
     virtual void Save (Base::Writer &writer) const;
@@ -200,9 +200,9 @@ public:
     virtual void SaveDocFile (Base::Writer &writer) const;
     virtual void RestoreDocFile(Base::Reader &reader);
     
-    virtual Property *Copy(void) const;
+    virtual Property *Copy() const;
     virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
 
 private:
     std::vector<float> _lValueList;
@@ -219,7 +219,7 @@ class InspectionExport Feature : public App::DocumentObject
 
 public:
     /// Constructor
-    Feature(void);
+    Feature();
     virtual ~Feature();
 
     /** @name Properties */
@@ -235,11 +235,11 @@ public:
     //@{
     short mustExecute() const;
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute(void);
+    App::DocumentObjectExecReturn* execute();
     //@}
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const 
+    const char* getViewProviderName() const
     { return "InspectionGui::ViewProviderInspection"; }
 };
 
@@ -249,11 +249,11 @@ class InspectionExport Group : public App::DocumentObjectGroup
 
 public:
     /// Constructor
-    Group(void);
+    Group();
     virtual ~Group();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const 
+    const char* getViewProviderName() const
     { return "InspectionGui::ViewProviderInspectionGroup"; }
 };
 

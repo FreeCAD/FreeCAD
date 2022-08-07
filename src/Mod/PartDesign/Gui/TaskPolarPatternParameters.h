@@ -62,7 +62,7 @@ private Q_SLOTS:
     void onAngle(const double a);
     void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    virtual void onFeatureDeleted();
 
 protected:
     virtual void addObject(App::DocumentObject*);
@@ -71,11 +71,11 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     virtual void clearButtons();
     void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-    const std::string getStdAxis(void) const;
-    const std::string getAxis(void) const;
-    bool getReverse(void) const;
-    double getAngle(void) const;
-    unsigned getOccurrences(void) const;
+    const std::string getStdAxis() const;
+    const std::string getAxis() const;
+    bool getReverse() const;
+    double getAngle() const;
+    unsigned getOccurrences() const;
 
 private:
     void connectSignals();

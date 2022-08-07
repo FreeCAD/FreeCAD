@@ -90,8 +90,8 @@ public:
     virtual bool canDelete(App::DocumentObject* obj) const;
 
 protected:
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
-    virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
+    virtual std::vector< App::DocumentObject* > claimChildren() const;
+    virtual std::vector< App::DocumentObject* > claimChildren3D() const;
     virtual void onChanged(const App::Property* prop);
     virtual void updateData(const App::Property*);
 
@@ -112,7 +112,7 @@ public:
     App::PropertyFloat AutoScaleFactorZ;
 
     void attach(App::DocumentObject *pcObject);
-    bool doubleClicked(void);
+    bool doubleClicked();
     std::vector<std::string> getDisplayModes() const;
 
     //creates the widget used in the task dalogs, either for the function itself or for

@@ -70,7 +70,7 @@ ViewProviderBalloon::~ViewProviderBalloon()
 {
 }
 
-bool ViewProviderBalloon::doubleClicked(void)
+bool ViewProviderBalloon::doubleClicked()
 {
     startDefaultEditMode();
     return true;

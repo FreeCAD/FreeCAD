@@ -57,7 +57,7 @@ public:
     virtual bool reject();
 
 protected Q_SLOTS:
-    void onFileChanged(void);
+    void onFileChanged();
     void onScaleChanged();
     void onColorChanged();
 
@@ -65,8 +65,8 @@ protected:
     void changeEvent(QEvent *e);
     void apply(bool forceUpdate = false);
 
-    void createHatch(void);
-    void updateHatch(void);
+    void createHatch();
+    void updateHatch();
 
     void setUiPrimary();
     void setUiEdit();
@@ -112,7 +112,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return false; }
 
     void update();

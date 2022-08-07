@@ -40,8 +40,8 @@ public:
     ViewProviderFemPostPipeline();
     ~ViewProviderFemPostPipeline();
 
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
-    virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
+    virtual std::vector< App::DocumentObject* > claimChildren() const;
+    virtual std::vector< App::DocumentObject* > claimChildren3D() const;
     virtual void updateData(const App::Property* prop);
     virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
     void updateColorBars();

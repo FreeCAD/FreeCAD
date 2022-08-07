@@ -60,12 +60,12 @@ ConstraintTemperature::ConstraintTemperature()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintTemperature::execute(void)
+App::DocumentObjectExecReturn *ConstraintTemperature::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintTemperature::getViewProviderName(void) const
+const char* ConstraintTemperature::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintTemperature";
 }

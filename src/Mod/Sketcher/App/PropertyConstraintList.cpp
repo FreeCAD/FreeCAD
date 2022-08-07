@@ -110,7 +110,7 @@ void PropertyConstraintList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyConstraintList::getSize(void) const
+int PropertyConstraintList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -242,7 +242,7 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
         delete v;
 }
 
-PyObject *PropertyConstraintList::getPyObject(void)
+PyObject *PropertyConstraintList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -345,7 +345,7 @@ void PropertyConstraintList::Restore(Base::XMLReader &reader)
     setValues(std::move(values));
 }
 
-Property *PropertyConstraintList::Copy(void) const
+Property *PropertyConstraintList::Copy() const
 {
     PropertyConstraintList *p = new PropertyConstraintList();
     p->applyValidGeometryKeys(validGeometryKeys);
@@ -360,7 +360,7 @@ void PropertyConstraintList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyConstraintList::getMemSize(void) const
+unsigned int PropertyConstraintList::getMemSize() const
 {
     int size = sizeof(PropertyConstraintList);
     for (int i = 0; i < getSize(); i++)

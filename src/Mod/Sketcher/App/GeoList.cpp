@@ -224,7 +224,7 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry * geo, Sketcher::P
 }
 
 template <typename T>
-void GeoListModel<T>::rebuildVertexIndex(void) const
+void GeoListModel<T>::rebuildVertexIndex() const
 {
     VertexId2GeoElementId.clear();
     GeoElementId2VertexId.clear();

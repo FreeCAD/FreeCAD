@@ -32,7 +32,7 @@
 using namespace Spreadsheet;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PropertyColumnWidthsPy::representation(void) const
+std::string PropertyColumnWidthsPy::representation() const
 {
     return std::string("<PropertyColumnWidths object>");
 }

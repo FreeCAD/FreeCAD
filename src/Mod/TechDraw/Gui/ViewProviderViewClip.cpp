@@ -50,7 +50,7 @@ ViewProviderViewClip::~ViewProviderViewClip()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren() const
 {
     // Collect any child views
     // for Clip, valid children are any View in Views
@@ -58,7 +58,7 @@ std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) cons
     return views;
 }
 
-void ViewProviderViewClip::show(void)
+void ViewProviderViewClip::show()
 {
     //TODO: not sure that clip members need to be touched when hiding clip group
     App::DocumentObject* obj = getObject();
@@ -73,7 +73,7 @@ void ViewProviderViewClip::show(void)
 
 }
 
-void ViewProviderViewClip::hide(void)
+void ViewProviderViewClip::hide()
 {
     //TODO: not sure that clip members need to be touched when hiding clip group
     App::DocumentObject* obj = getObject();

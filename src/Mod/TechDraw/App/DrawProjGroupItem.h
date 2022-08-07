@@ -64,31 +64,31 @@ public:
     virtual void onDocumentRestored() override;
     virtual void unsetupObject() override;
 
-    DrawProjGroup* getPGroup(void) const;
+    DrawProjGroup* getPGroup() const;
     double getRotateAngle();
-    virtual Base::Vector3d getXDirection(void) const override;
+    virtual Base::Vector3d getXDirection() const override;
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
                                       const Base::Vector3d& axis,
                                       const bool flip = true)  const override;
 
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual const char* getViewProviderName(void) const override {
+    virtual App::DocumentObjectExecReturn *execute() override;
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderProjGroupItem";
     }
     //return PyObject as DrawProjGroupItemPy
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
     //this doesn't override for dvp pointer??
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction, 
                                const bool flip=true) const override;
 
-    virtual double getScale(void) const override;
-    void autoPosition(void);
-    bool isAnchor(void) const;
+    virtual double getScale() const override;
+    void autoPosition();
+    bool isAnchor() const;
 
     //DPGI always fits on page since DPG handles scaling
-    virtual bool checkFit(void) const override { return true; }
+    virtual bool checkFit() const override { return true; }
     virtual bool checkFit(DrawPage*) const override { return true; }
 
     virtual int countParentPages() const override;
@@ -97,8 +97,8 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-    virtual bool isLocked(void) const override;
-    virtual bool showLock(void) const override;
+    virtual bool isLocked() const override;
+    virtual bool showLock() const override;
 
 private:
     static const char* TypeEnums[];

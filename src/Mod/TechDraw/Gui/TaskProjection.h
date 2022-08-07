@@ -51,7 +51,7 @@ public:
     bool accept();
     bool reject();
 
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return true; }
 
 private:

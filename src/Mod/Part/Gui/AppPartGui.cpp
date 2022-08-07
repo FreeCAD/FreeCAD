@@ -65,9 +65,9 @@
 
 
 // use a different name to CreateCommand()
-void CreatePartCommands(void);
-void CreateSimplePartCommands(void);
-void CreateParamPartCommands(void);
+void CreatePartCommands();
+void CreateSimplePartCommands();
+void CreateParamPartCommands();
 
 void loadPartResource()
 {

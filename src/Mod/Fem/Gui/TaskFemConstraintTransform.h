@@ -47,11 +47,11 @@ public:
     double get_X_rot()const;
     double get_Y_rot()const;
     double get_Z_rot()const;
-    std::string get_transform_type(void) const;
+    std::string get_transform_type() const;
     static std::string getSurfaceReferences(const std::string showConstr);
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void Rect();
     void Cyl();
     void addToSelection();

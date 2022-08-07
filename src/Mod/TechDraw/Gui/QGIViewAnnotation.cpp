@@ -176,7 +176,7 @@ void QGIViewAnnotation::drawAnnotation()
     m_textItem->centerAt(0.,0.);
 }
 
-void QGIViewAnnotation::rotateView(void)
+void QGIViewAnnotation::rotateView()
 {
     QRectF r = m_textItem->boundingRect();
     m_textItem->setTransformOriginPoint(r.center());

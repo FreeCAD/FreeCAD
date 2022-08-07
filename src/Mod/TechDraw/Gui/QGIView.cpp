@@ -152,7 +152,7 @@ void QGIView::isVisible(bool state)
     }
 }
 
-bool QGIView::isVisible(void)
+bool QGIView::isVisible()
 {
     bool result = false;
     auto feat = getViewObject();
@@ -321,7 +321,7 @@ double QGIView::getYInClip(double y)
     return -y;
 }
 
-QGIViewClip* QGIView::getClipGroup(void)
+QGIViewClip* QGIView::getClipGroup()
 {
     if (!getViewObject()->isInClip()) {
         Base::Console().Log( "Logic Error - getClipGroup called for child "
@@ -362,7 +362,7 @@ void QGIView::updateView(bool update)
 }
 
 //QGIVP derived classes do not need a rotate view method as rotation is handled on App side.
-void QGIView::rotateView(void)
+void QGIView::rotateView()
 {
 //NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
 //Scale is handled in GeometryObject for DVP & descendents
@@ -642,7 +642,7 @@ QGSPage* QGIView::getGraphicsScene(TechDraw::DrawView* dv)
     return graphicsScene;
 }
 
-MDIViewPage* QGIView::getMDIViewPage(void) const
+MDIViewPage* QGIView::getMDIViewPage() const
 {
     QGSPage* qgsp = static_cast<QGSPage*>(scene());
     return MDIViewPage::getFromScene(qgsp);
@@ -657,7 +657,7 @@ void QGIView::removeChild(QGIView* child)
     }
 }
 
-bool QGIView::getFrameState(void)
+bool QGIView::getFrameState()
 {
 //    Base::Console().Message("QGIV::getFrameState() - %s\n",getViewName());
     bool result = true;

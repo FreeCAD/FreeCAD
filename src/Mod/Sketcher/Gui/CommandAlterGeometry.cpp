@@ -192,14 +192,14 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     }
 }
 
-bool CmdSketcherToggleConstruction::isActive(void)
+bool CmdSketcherToggleConstruction::isActive()
 {
     return isAlterGeoActive( getActiveGuiDocument() );
 }
 
 }
 
-void CreateSketcherCommandsAlterGeo(void)
+void CreateSketcherCommandsAlterGeo()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

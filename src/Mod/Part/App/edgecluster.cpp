@@ -42,7 +42,7 @@ Edgecluster::Edgecluster(const std::vector<TopoDS_Edge>& unsorted_edges)
     m_final_cluster.clear();
 }
 
-Edgecluster::~Edgecluster(void)
+Edgecluster::~Edgecluster()
 {
 }
 

@@ -41,7 +41,7 @@ class FemExport ConstraintFluidBoundary: public Fem::Constraint
 
 public:
     /// Constructor
-    ConstraintFluidBoundary(void);
+    ConstraintFluidBoundary();
     //
     App::PropertyEnumeration BoundaryType;
     App::PropertyEnumeration Subtype;
@@ -64,10 +64,10 @@ public:
     App::PropertyVector DirectionVector;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemConstraintFluidBoundary";
     }
 

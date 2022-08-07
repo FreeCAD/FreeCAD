@@ -76,7 +76,7 @@ void CmdRobotInsertKukaIR500::activated(int)
 
 }
 
-bool CmdRobotInsertKukaIR500::isActive(void)
+bool CmdRobotInsertKukaIR500::isActive()
 {
     return hasActiveDocument();
 }
@@ -117,7 +117,7 @@ void CmdRobotInsertKukaIR16::activated(int)
 
 }
 
-bool CmdRobotInsertKukaIR16::isActive(void)
+bool CmdRobotInsertKukaIR16::isActive()
 {
     return hasActiveDocument();
 }
@@ -158,7 +158,7 @@ void CmdRobotInsertKukaIR210::activated(int)
 
 }
 
-bool CmdRobotInsertKukaIR210::isActive(void)
+bool CmdRobotInsertKukaIR210::isActive()
 {
     return hasActiveDocument();
 }
@@ -198,7 +198,7 @@ void CmdRobotInsertKukaIR125::activated(int)
 
 }
 
-bool CmdRobotInsertKukaIR125::isActive(void)
+bool CmdRobotInsertKukaIR125::isActive()
 {
     return hasActiveDocument();
 }
@@ -250,13 +250,13 @@ void CmdRobotAddToolShape::activated(int)
     commitCommand();
 }
 
-bool CmdRobotAddToolShape::isActive(void)
+bool CmdRobotAddToolShape::isActive()
 {
     //return false; // not yet implemetned thus not active
     return hasActiveDocument();
 }
 
-void CreateRobotCommandsInsertRobots(void)
+void CreateRobotCommandsInsertRobots()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

@@ -68,19 +68,19 @@ public:
 
     //virtual PyObject *getPyObject(void);
 
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
 
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderBalloon";
     }
 
     static const char* balloonTypeEnums[];
 
-    void handleXYLock(void) override;
+    void handleXYLock() override;
 
-    double prefKinkLength(void) const;
-    int prefShape(void) const;
-    int prefEnd(void) const;
+    double prefKinkLength() const;
+    int prefShape() const;
+    int prefEnd() const;
     void setOrigin(Base::Vector3d newOrigin);
 
     Base::Vector3d getOriginOffset() const;

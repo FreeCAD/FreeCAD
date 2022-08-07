@@ -79,7 +79,7 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent *e);
 
-    void setUiEdit(void);
+    void setUiEdit();
 
 private:
     App::DocumentObject* selectedObject;
@@ -107,7 +107,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
                         { return false; }
     void update();
 

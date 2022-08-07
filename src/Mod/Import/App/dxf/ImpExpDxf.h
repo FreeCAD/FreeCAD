@@ -55,7 +55,7 @@ namespace Import
 
         std::string getOptionSource() { return m_optionSource; }
         void setOptionSource(std::string s) { m_optionSource = s; }
-        void setOptions(void);
+        void setOptions();
 
     private:
         gp_Pnt makePoint(const double* p);
@@ -78,7 +78,7 @@ namespace Import
         void exportShape(const TopoDS_Shape input);
         std::string getOptionSource() { return m_optionSource; }
         void setOptionSource(std::string s) { m_optionSource = s; }
-        void setOptions(void);
+        void setOptions();
         
         void exportText(const char* text, Base::Vector3d position1, Base::Vector3d position2, double size, int just);
         void exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 

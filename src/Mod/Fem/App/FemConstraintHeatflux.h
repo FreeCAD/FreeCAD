@@ -36,7 +36,7 @@ class FemExport ConstraintHeatflux : public Fem::Constraint
     PROPERTY_HEADER(Fem::ConstraintHeatflux);
 
 public:
-    ConstraintHeatflux(void);
+    ConstraintHeatflux();
 
     App::PropertyFloat AmbientTemp;
     /*App::PropertyFloat FaceTemp;*/
@@ -48,10 +48,10 @@ public:
     App::PropertyVectorList Normals;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const;
+    const char* getViewProviderName() const;
 
 protected:
     virtual void onChanged(const App::Property* prop);

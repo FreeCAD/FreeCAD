@@ -78,7 +78,7 @@ public:
       * If Originals is empty, execute() returns immediately without doing anything as
       * the actual processing will happen in the MultiTransform feature
       */
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     //@}
 
@@ -90,7 +90,7 @@ public:
 protected:
     void Restore(Base::XMLReader &reader);
     void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
-    virtual void positionBySupport(void);
+    virtual void positionBySupport();
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
                      TopoDS_Compound &compoundOut) const;

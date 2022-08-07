@@ -90,7 +90,7 @@ public:
     virtual void stopPan();
 
     virtual void startClick(Qt::MouseButton b);
-    virtual void stopClick(void);
+    virtual void stopClick();
 
     virtual void placeBalloon(QPoint p);
 

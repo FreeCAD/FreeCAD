@@ -90,7 +90,7 @@ void Mirroring::handleChangedPropertyType(Base::XMLReader &reader, const char *T
     }
 }
 
-App::DocumentObjectExecReturn *Mirroring::execute(void)
+App::DocumentObjectExecReturn *Mirroring::execute()
 {
     App::DocumentObject* link = Source.getValue();
     if (!link)

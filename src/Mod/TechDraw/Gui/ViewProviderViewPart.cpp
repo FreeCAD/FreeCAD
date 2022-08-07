@@ -167,7 +167,7 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
     ViewProviderDrawingView::attach(pcFeat);
 }
 
-std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
     // valid children of a ViewPart are:
@@ -246,7 +246,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     return true;
 }
 
-bool ViewProviderViewPart::doubleClicked(void)
+bool ViewProviderViewPart::doubleClicked()
 {
     setEdit(ViewProvider::Default);
     return true;
@@ -344,12 +344,12 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
     return true;
 }
 
-App::Color ViewProviderViewPart::prefSectionColor(void)
+App::Color ViewProviderViewPart::prefSectionColor()
 {
     return PreferencesGui::sectionLineColor();
 }
 
-App::Color ViewProviderViewPart::prefHighlightColor(void)
+App::Color ViewProviderViewPart::prefHighlightColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
@@ -358,7 +358,7 @@ App::Color ViewProviderViewPart::prefHighlightColor(void)
     return fcColor;
 }
 
-int ViewProviderViewPart::prefHighlightStyle(void)
+int ViewProviderViewPart::prefHighlightStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");

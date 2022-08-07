@@ -44,7 +44,7 @@ public:
     virtual ~TaskFeatureParameters() {}
 
     /// save field history
-    virtual void saveHistory(void) {}
+    virtual void saveHistory() {}
     /// apply changes made in the parameters input to the model via commands
     virtual void apply() {}
 

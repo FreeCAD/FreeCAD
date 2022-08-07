@@ -31,7 +31,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawHatchPy::representation(void) const
+std::string DrawHatchPy::representation() const
 {
     return std::string("<DrawHatch object>");
 }

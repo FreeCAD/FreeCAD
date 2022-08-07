@@ -38,7 +38,7 @@
 
 using namespace SketcherGui;
 
-ConstraintSettingsDialog::ConstraintSettingsDialog(void)
+ConstraintSettingsDialog::ConstraintSettingsDialog()
   : QDialog(Gui::getMainWindow()), ui(new Ui_ConstraintSettingsDialog)
 {
     ui->setupUi(this);

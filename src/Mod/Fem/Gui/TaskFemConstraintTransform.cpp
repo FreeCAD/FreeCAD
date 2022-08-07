@@ -446,7 +446,7 @@ double TaskFemConstraintTransform::get_X_rot() const { return ui->sp_X->value();
 double TaskFemConstraintTransform::get_Y_rot() const { return ui->sp_Y->value(); }
 double TaskFemConstraintTransform::get_Z_rot() const { return ui->sp_Z->value(); }
 
-std::string TaskFemConstraintTransform::get_transform_type(void) const {
+std::string TaskFemConstraintTransform::get_transform_type() const {
     std::string transform;
     if (ui->rb_rect->isChecked()) {
         transform = "\"Rectangular\"";

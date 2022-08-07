@@ -35,7 +35,7 @@ using namespace RobotGui;
 
 PROPERTY_SOURCE(RobotGui::ViewProviderEdge2TracObject, RobotGui::ViewProviderTrajectory)
 
-bool ViewProviderEdge2TracObject::doubleClicked(void)
+bool ViewProviderEdge2TracObject::doubleClicked()
 {
     Gui::TaskView::TaskDialog* dlg = new TaskDlgEdge2Trac(static_cast<Robot::Edge2TracObject *>(getObject()));
     Gui::Control().showDialog(dlg);

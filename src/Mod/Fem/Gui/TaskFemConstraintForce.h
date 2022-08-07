@@ -50,14 +50,14 @@ class TaskFemConstraintForce : public TaskFemConstraintOnBoundary
 public:
     TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent = nullptr);
     virtual ~TaskFemConstraintForce();
-    double getForce(void) const;
+    double getForce() const;
     const std::string getReferences() const;
-    const std::string getDirectionName(void) const;
-    const std::string getDirectionObject(void) const;
-    bool getReverse(void) const;
+    const std::string getDirectionName() const;
+    const std::string getDirectionObject() const;
+    bool getReverse() const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void onForceChanged(double);
     void onButtonDirection(const bool pressed = false);
     void onCheckReverse(bool);

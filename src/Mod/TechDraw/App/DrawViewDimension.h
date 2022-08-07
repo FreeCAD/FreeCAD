@@ -163,29 +163,29 @@ public:
 
 
     short mustExecute() const override;
-    virtual bool has2DReferences(void) const;
-    virtual bool has3DReferences(void) const;
-    bool hasOverUnderTolerance(void) const;
+    virtual bool has2DReferences() const;
+    virtual bool has3DReferences() const;
+    bool hasOverUnderTolerance() const;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDimension";
     }
     //return PyObject as DrawViewDimensionPy
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
     virtual std::string getFormattedToleranceValue(int partial);
     virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
     virtual std::string getFormattedDimensionValue(int partial = 0);
     virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0, bool isDim = true);
 
-    virtual bool haveTolerance(void);
+    virtual bool haveTolerance();
 
     virtual double getDimValue();
     QStringList getPrefixSuffixSpec(QString fSpec);
@@ -195,18 +195,18 @@ public:
     virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
     static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
-    void clear3DMeasurements(void);
-    virtual bool checkReferences2D(void) const;
-    pointPair getLinearPoints(void) {return m_linearPoints; }
-    arcPoints getArcPoints(void) {return m_arcPoints; }
-    anglePoints getAnglePoints(void) {return m_anglePoints; }
+    void clear3DMeasurements();
+    virtual bool checkReferences2D() const;
+    pointPair getLinearPoints() {return m_linearPoints; }
+    arcPoints getArcPoints() {return m_arcPoints; }
+    anglePoints getAnglePoints() {return m_anglePoints; }
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
 
-    bool isMultiValueSchema(void) const;
+    bool isMultiValueSchema() const;
 
     std::string getBaseLengthUnit(Base::UnitSystem system);
 
-    pointPair getArrowPositions(void);
+    pointPair getArrowPositions();
     void saveArrowPositions(const Base::Vector2d positions[]);
 
     bool showUnits() const;
@@ -235,9 +235,9 @@ protected:
     pointPair   m_linearPoints;
     pointPair   m_arrowPositions;
 
-    void resetLinear(void);
-    void resetAngular(void);
-    void resetArc(void);
+    void resetLinear();
+    void resetAngular();
+    void resetArc();
 
 private:
     static const char* TypeEnums[];

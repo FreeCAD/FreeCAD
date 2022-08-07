@@ -92,7 +92,7 @@ bool ViewProviderGeomHatch::setEdit(int ModNum)
     return true;
 }
 
-bool ViewProviderGeomHatch::doubleClicked(void)
+bool ViewProviderGeomHatch::doubleClicked()
 {
     setEdit(0);
     return true;
@@ -121,7 +121,7 @@ void ViewProviderGeomHatch::updateData(const App::Property* prop)
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-void ViewProviderGeomHatch::updateGraphic(void)
+void ViewProviderGeomHatch::updateGraphic()
 {
     TechDraw::DrawGeomHatch* dc = getViewObject();
     if (!dc) {
@@ -147,7 +147,7 @@ void ViewProviderGeomHatch::updateGraphic(void)
     qgiv->updateView(true);
 }
 
-void ViewProviderGeomHatch::getParameters(void)
+void ViewProviderGeomHatch::getParameters()
 {
     double weight = TechDraw::LineGroup::getDefaultWidth("Graphic");
     WeightPattern.setValue(weight);

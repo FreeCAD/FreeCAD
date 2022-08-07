@@ -42,7 +42,7 @@ public:
     /// destructor
     virtual ~ViewProviderAnnotation();
 
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     virtual void updateData(const App::Property*);
 
     virtual TechDraw::DrawViewAnnotation* getViewObject() const;

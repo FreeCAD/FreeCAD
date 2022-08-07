@@ -95,7 +95,7 @@ short Draft::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Draft::execute(void)
+App::DocumentObjectExecReturn *Draft::execute()
 {
     // Get parameters
     // Base shape

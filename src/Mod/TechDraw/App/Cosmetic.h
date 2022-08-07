@@ -75,20 +75,20 @@ public:
     void move(Base::Vector3d newPos);
     void moveRelative(Base::Vector3d movement);
 
-    std::string toString(void) const;
+    std::string toString() const;
     void dump(const char* title);
     Base::Vector3d scaled(double factor);
 
-    static bool restoreCosmetic(void);
+    static bool restoreCosmetic();
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
+    virtual unsigned int getMemSize() const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
 
-    virtual PyObject *getPyObject(void);
-    CosmeticVertex* copy(void) const;
-    CosmeticVertex* clone(void) const;
+    virtual PyObject *getPyObject();
+    CosmeticVertex* copy() const;
+    CosmeticVertex* clone() const;
 
     Base::Vector3d permaPoint;           //permanent, unscaled value
     int            linkGeom;             //connection to corresponding "geom" Vertex (fragile - index based!)
@@ -99,7 +99,7 @@ public:
     bool           visible;              //base class vertex also has visible property
 
     boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString(void) const;
+    virtual std::string getTagAsString() const;
 
 protected:
     //Uniqueness
@@ -130,21 +130,21 @@ public:
     CosmeticEdge(TechDraw::BaseGeomPtr g);
     virtual ~CosmeticEdge();
 
-    void initialize(void);
+    void initialize();
     TopoDS_Edge TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
     TechDraw::BaseGeomPtr scaledGeometry(double scale);
 
-    virtual std::string toString(void) const;
+    virtual std::string toString() const;
     void dump(const char* title);
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
+    virtual unsigned int getMemSize() const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
 
-    virtual PyObject *getPyObject(void);
-    CosmeticEdge* copy(void) const;
-    CosmeticEdge* clone(void) const;
+    virtual PyObject *getPyObject();
+    CosmeticEdge* copy() const;
+    CosmeticEdge* clone() const;
 
     Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
     Base::Vector3d permaEnd; 
@@ -154,7 +154,7 @@ public:
     LineFormat m_format;
 
     boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString(void) const;
+    virtual std::string getTagAsString() const;
 
 protected:
     //Uniqueness
@@ -206,15 +206,15 @@ public:
     TechDraw::BaseGeomPtr BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
+    virtual unsigned int getMemSize() const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
 
-    virtual PyObject *getPyObject(void);
-    CenterLine* copy(void) const;
-    CenterLine* clone(void) const;
+    virtual PyObject *getPyObject();
+    CenterLine* copy() const;
+    CenterLine* clone() const;
 
-    std::string toString(void) const;
+    std::string toString() const;
 
     static CenterLine* CenterLineBuilder(TechDraw::DrawViewPart* partFeat,
                                          std::vector<std::string> subs,
@@ -254,14 +254,14 @@ public:
                                           double rotate, bool flip);
     void dump(const char* title);
     void setShifts(double h, double v);
-    double getHShift(void);
-    double getVShift(void);
+    double getHShift();
+    double getVShift();
     void setRotate(double r);
-    double getRotate(void);
+    double getRotate();
     void setExtend(double e);
-    double getExtend(void);
+    double getExtend();
     void setFlip(bool f);
-    bool getFlip(void);
+    bool getFlip();
 
     Base::Vector3d m_start;
     Base::Vector3d m_end;
@@ -283,7 +283,7 @@ public:
 
     //Uniqueness
     boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString(void) const;
+    virtual std::string getTagAsString() const;
 
 protected:
     void initialize();
@@ -312,15 +312,15 @@ public:
     ~GeomFormat();
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
+    virtual unsigned int getMemSize() const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
 
-    virtual PyObject *getPyObject(void);
-    GeomFormat* copy(void) const;
-    GeomFormat* clone(void) const;
+    virtual PyObject *getPyObject();
+    GeomFormat* copy() const;
+    GeomFormat* clone() const;
 
-    std::string toString(void) const;
+    std::string toString() const;
     void dump(const char* title) const;
 
     //std::string linkTag;
@@ -329,7 +329,7 @@ public:
 
     //Uniqueness
     boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString(void) const;
+    virtual std::string getTagAsString() const;
 
 protected:
     void createNewTag();

@@ -66,7 +66,7 @@ QPainterPath QGIDimLines::shape() const
     return outline;
 }
 
-double QGIDimLines::getEdgeFuzz(void) const
+double QGIDimLines::getEdgeFuzz() const
 {
     return PreferencesGui::edgeFuzz();
 }

@@ -67,7 +67,7 @@ public:
     void compute();
 
     // from base class
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
     virtual void Save (Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
     void SaveDocFile (Base::Writer &writer) const;
@@ -79,7 +79,7 @@ public:
      *  List of different subelement types
      *  it is NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes(void) const;
+    virtual std::vector<const char*> getElementTypes() const;
     virtual unsigned long countSubElements(const char* Type) const;
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
@@ -108,9 +108,9 @@ public:
     /// retrieving volume IDs and CalculiX face number by face
     std::map<int, int> getccxVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving IDs of edges not belonging to any face (and thus not belonging to any volume too)
-    std::set<int> getEdgesOnly(void) const;
+    std::set<int> getEdgesOnly() const;
     /// retrieving IDs of faces not belonging to any volume
-    std::set<int> getFacesOnly(void) const;
+    std::set<int> getFacesOnly() const;
      //@}
 
     /** @name Placement control */
@@ -118,11 +118,11 @@ public:
     /// set the transformation
     void setTransform(const Base::Matrix4D& rclTrf);
     /// get the transformation
-    Base::Matrix4D getTransform(void) const;
+    Base::Matrix4D getTransform() const;
     /// Bound box from the shape
-    Base::BoundBox3d getBoundBox(void)const;
+    Base::BoundBox3d getBoundBox()const;
     /// get the volume (when there are volume elements)
-    Base::Quantity getVolume(void)const;
+    Base::Quantity getVolume()const;
     //@}
 
     /** @name Modification */
@@ -157,7 +157,7 @@ public:
     };
 
     ///
-    struct FemMeshInfo getInfo(void) const;
+    struct FemMeshInfo getInfo() const;
 
     /// import from files
     void read(const char *FileName);

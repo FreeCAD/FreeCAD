@@ -97,7 +97,7 @@ void Simulation::setToTime(float t)
 
 }
 
-void Simulation::reset(void)
+void Simulation::reset()
 {
     Rob.setAxis(0,startAxis[0]);
     Rob.setAxis(1,startAxis[1]);

@@ -1633,10 +1633,10 @@ void PropertySpreadsheetQuantity::Paste(const Property &from)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
-template<> const char* Spreadsheet::SheetPython::getViewProviderName(void) const {
+template<> const char* Spreadsheet::SheetPython::getViewProviderName() const {
     return "SpreadsheetGui::ViewProviderSheet";
 }
-template<> PyObject* Spreadsheet::SheetPython::getPyObject(void) {
+template<> PyObject* Spreadsheet::SheetPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<Spreadsheet::SheetPy>(this),true);

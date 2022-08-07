@@ -59,9 +59,9 @@ public:
     virtual ~ViewProviderFemAnalysis();
 
     virtual void attach(App::DocumentObject*);
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked();
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
+    virtual std::vector<App::DocumentObject*> claimChildren()const;
 
     // handling when object is deleted
     virtual bool onDelete(const std::vector<std::string>&);
@@ -72,15 +72,15 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     /// A list of all possible display modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
     // shows solid in the tree
-    virtual bool isShow(void) const {
+    virtual bool isShow() const {
         return Visibility.getValue();
     }
     /// Hide the object in the view
-    virtual void hide(void);
+    virtual void hide();
     /// Show the object in the view
-    virtual void show(void);
+    virtual void show();
 
     void highlightView(Gui::ViewProviderDocumentObject*);
 

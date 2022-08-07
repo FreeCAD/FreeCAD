@@ -97,7 +97,7 @@ enum class EdgeColor {
 // managing global line attributes
 //===========================================================================
 
-lineAttributes::lineAttributes(void)
+lineAttributes::lineAttributes()
 {
     style = int(EdgeStyle::dotted);
     width = int(EdgeWidth::middle);
@@ -114,7 +114,7 @@ void lineAttributes::setWidth(int newWidth)
     width = newWidth;
 }
 
-float lineAttributes::getWidthValue(void)
+float lineAttributes::getWidthValue()
 {
     switch(EdgeWidth(width)) {
         case EdgeWidth::small:
@@ -136,7 +136,7 @@ void lineAttributes::setColor(int newColor)
     color = newColor;
 }
 
-App::Color lineAttributes::getColorValue(void)
+App::Color lineAttributes::getColorValue()
 {
     switch (EdgeColor(color)) {
     case EdgeColor::black:
@@ -164,7 +164,7 @@ App::Color lineAttributes::getColorValue(void)
 // managing global dimension attributes
 //===========================================================================
 
-dimAttributes::dimAttributes(void)
+dimAttributes::dimAttributes()
 {
     cascadeSpacing = 7.0;
     lineStretch = 2.0;

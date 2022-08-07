@@ -41,7 +41,7 @@ using namespace Part;
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
 
-Boolean::Boolean(void)
+Boolean::Boolean()
 {
     ADD_PROPERTY(Base,(nullptr));
     ADD_PROPERTY(Tool,(nullptr));
@@ -68,7 +68,7 @@ short Boolean::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Boolean::execute(void)
+App::DocumentObjectExecReturn *Boolean::execute()
 {
     try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)

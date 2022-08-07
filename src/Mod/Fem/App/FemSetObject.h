@@ -37,7 +37,7 @@ class FemExport FemSetObject : public App::DocumentObject
 
 public:
     /// Constructor
-    FemSetObject(void);
+    FemSetObject();
     virtual ~FemSetObject();
 
     App::PropertyLink FemMesh;
@@ -46,11 +46,11 @@ public:
     //virtual const char* getViewProviderName(void) const {
     //    return "FemGui::ViewProviderFemSet";
     //}
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    virtual App::DocumentObjectExecReturn *execute() {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    virtual short mustExecute() const;
+    virtual PyObject *getPyObject();
 
 
 };

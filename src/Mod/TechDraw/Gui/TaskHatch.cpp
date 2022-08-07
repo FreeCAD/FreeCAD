@@ -134,7 +134,7 @@ void TaskHatch::restoreHatchState()
     }
 }
 
-void TaskHatch::onFileChanged(void)
+void TaskHatch::onFileChanged()
 {
     m_file = Base::Tools::toStdString(ui->fcFile->fileName());
     apply();

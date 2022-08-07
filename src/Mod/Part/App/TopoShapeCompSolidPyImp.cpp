@@ -39,7 +39,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeCompSolidPy::representation(void) const
+std::string TopoShapeCompSolidPy::representation() const
 {
     std::stringstream str;
     str << "<CompSolid object at " << getTopoShapePtr() << ">";

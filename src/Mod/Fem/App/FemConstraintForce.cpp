@@ -57,7 +57,7 @@ ConstraintForce::ConstraintForce()
     Points.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintForce::execute(void)
+App::DocumentObjectExecReturn *ConstraintForce::execute()
 {
     return Constraint::execute();
 }

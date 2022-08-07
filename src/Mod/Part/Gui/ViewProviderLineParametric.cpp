@@ -48,7 +48,7 @@ ViewProviderLineParametric::~ViewProviderLineParametric()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderLineParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderLineParametric::getDisplayModes() const
 {
   // get the modes of the father
   std::vector<std::string> StrList;

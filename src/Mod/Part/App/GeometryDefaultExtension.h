@@ -41,9 +41,9 @@ namespace Part {
         inline void setValue(const T& val) {value = val;};
         inline const T &getValue() const {return value;};
 
-        virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+        virtual std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-        virtual PyObject *getPyObject(void) override;
+        virtual PyObject *getPyObject() override;
 
     protected:
         virtual void copyAttributes(Part::GeometryExtension * cpy) const override;

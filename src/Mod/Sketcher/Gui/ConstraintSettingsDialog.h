@@ -37,7 +37,7 @@ class ConstraintSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    ConstraintSettingsDialog(void);
+    ConstraintSettingsDialog();
     ~ConstraintSettingsDialog();
 
 Q_SIGNALS:

@@ -802,7 +802,7 @@ void QGIViewPart::removeDecorations()
      }
 }
 
-void QGIViewPart::drawAllSectionLines(void)
+void QGIViewPart::drawAllSectionLines()
 {
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
     if (!viewPart)
@@ -1213,11 +1213,11 @@ void QGIViewPart::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 }
 
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
-void QGIViewPart::rotateView(void)
+void QGIViewPart::rotateView()
 {
 }
 
-bool QGIViewPart::prefFaceEdges(void)
+bool QGIViewPart::prefFaceEdges()
 {
     bool result = false;
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -1226,7 +1226,7 @@ bool QGIViewPart::prefFaceEdges(void)
     return result;
 }
 
-bool QGIViewPart::prefPrintCenters(void)
+bool QGIViewPart::prefPrintCenters()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");

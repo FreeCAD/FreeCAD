@@ -35,7 +35,7 @@ class SketcherGuiExport SketchOrientationDialog : public QDialog
     Q_OBJECT
 
 public:
-    SketchOrientationDialog(void);
+    SketchOrientationDialog();
     ~SketchOrientationDialog();
 
     Base::Placement Pos;

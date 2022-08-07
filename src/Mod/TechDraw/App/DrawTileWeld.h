@@ -49,21 +49,21 @@ public:
     App::PropertyFileIncluded SymbolIncluded;
 
     virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     virtual void onDocumentRestored();
     virtual void setupObject();
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderTile";
     }
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
 
     void replaceSymbolIncluded(std::string newSymbolFile);
-    void setupSymbolIncluded(void);
+    void setupSymbolIncluded();
 //    void replaceSymbol(std::string newSymbolFile);
 
-    std::string prefSymbol(void);
+    std::string prefSymbol();
 
 protected:
     virtual void onChanged(const App::Property* prop);

@@ -68,7 +68,7 @@ public:
     virtual bool accept();
     virtual bool reject();
     virtual void setCreateMode(bool b) { m_createMode = b; }
-    virtual bool getCreateMode(void) { return m_createMode; }
+    virtual bool getCreateMode() { return m_createMode; }
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
@@ -77,25 +77,25 @@ public:
 
 protected Q_SLOTS:
     void onSaveAndExit(QString);
-    void onEditorExit(void);
+    void onEditorExit();
 
 protected:
     void changeEvent(QEvent *e);
 
-    void createAnnoFeature(void);
-    void updateAnnoFeature(void);
-    void commonFeatureUpdate(void);
-    void removeFeature(void);
+    void createAnnoFeature();
+    void updateAnnoFeature();
+    void commonFeatureUpdate();
+    void removeFeature();
 
     QPointF calcTextStartPos(double scale);
 
     void blockButtons(bool b);
-    void setUiPrimary(void);
-    void setUiEdit(void);
+    void setUiPrimary();
+    void setUiEdit();
     void enableTextUi(bool b);
     void enableVPUi(bool b);
     double prefWeight() const;
-    App::Color prefLineColor(void);
+    App::Color prefLineColor();
 
 private:
     std::unique_ptr<Ui_TaskRichAnno> ui;
@@ -150,7 +150,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
                         { return false; }
     void update();
 

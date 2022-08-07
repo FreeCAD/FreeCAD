@@ -112,12 +112,12 @@ void QGCustomText::justifyRightAt(double cX, double cY, bool vCenter)
     setPos(newX,newY);
 }
 
-double QGCustomText::getHeight(void)
+double QGCustomText::getHeight()
 {
     return boundingRect().height();
 }
 
-double QGCustomText::getWidth(void)
+double QGCustomText::getWidth()
 {
     return boundingRect().width();
 }

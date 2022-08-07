@@ -80,7 +80,7 @@ TaskTrajectoryDressUpParameter::~TaskTrajectoryDressUpParameter()
     delete ui;
 }
 
-void TaskTrajectoryDressUpParameter::writeValues(void)
+void TaskTrajectoryDressUpParameter::writeValues()
 {
     pcObject->Speed.setValue          ( ui->doubleSpinBoxSpeed->value()*1000.0);
     pcObject->Acceleration.setValue   ( ui->doubleSpinBoxAccel->value()*1000.0);
@@ -91,7 +91,7 @@ void TaskTrajectoryDressUpParameter::writeValues(void)
     pcObject->PosAdd.setValue(PosAdd);
 }
 
-void TaskTrajectoryDressUpParameter::createPlacementDlg(void)
+void TaskTrajectoryDressUpParameter::createPlacementDlg()
 {
     Gui::Dialog::Placement plc;
     plc.setPlacement(PosAdd);
@@ -103,7 +103,7 @@ void TaskTrajectoryDressUpParameter::createPlacementDlg(void)
 }
 
 
-void TaskTrajectoryDressUpParameter::viewPlacement(void)
+void TaskTrajectoryDressUpParameter::viewPlacement()
 {
     double A,B,C;
     Base::Vector3d pos = PosAdd.getPosition();

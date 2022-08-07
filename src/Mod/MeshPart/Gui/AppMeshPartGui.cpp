@@ -34,7 +34,7 @@
 #include "Workbench.h"
 
 // use a different name to CreateCommand()
-void CreateMeshPartCommands(void);
+void CreateMeshPartCommands();
 
 void loadMeshPartResource()
 {

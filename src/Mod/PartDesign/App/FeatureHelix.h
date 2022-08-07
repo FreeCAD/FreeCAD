@@ -64,20 +64,20 @@ public:
 
     /** @name methods override feature */
     //@{
-    App::DocumentObjectExecReturn* execute(void);
+    App::DocumentObjectExecReturn* execute();
     short mustExecute() const;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartDesignGui::ViewProviderHelix";
     }
     //@}
 
     void proposeParameters(bool force = false);
-    double safePitch(void);
+    double safePitch();
 
 protected:
     /// updates Axis from ReferenceAxis
-    void updateAxis(void);
+    void updateAxis();
 
     /// generate helix and move it to the right location.
     TopoDS_Shape generateHelixPath(double startOffset0 = 0.0);

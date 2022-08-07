@@ -52,7 +52,7 @@ short Box::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Box::execute(void)
+App::DocumentObjectExecReturn *Box::execute()
 {
     double L = Length.getValue();
     double W = Width.getValue();

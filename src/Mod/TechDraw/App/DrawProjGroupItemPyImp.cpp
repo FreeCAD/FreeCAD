@@ -10,7 +10,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawProjGroupItemPy::representation(void) const
+std::string DrawProjGroupItemPy::representation() const
 {
     return std::string("<DrawProjGroupItem object>");
 }

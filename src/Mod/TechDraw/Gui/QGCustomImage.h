@@ -44,7 +44,7 @@ namespace TechDrawGui
 class TechDrawGuiExport QGCustomImage : public QGraphicsPixmapItem
 {
 public:
-    explicit QGCustomImage(void);
+    explicit QGCustomImage();
     ~QGCustomImage();
 
     enum {Type = QGraphicsItem::UserType + 201};
@@ -57,7 +57,7 @@ public:
     virtual void centerAt(double cX, double cY);
     virtual bool load(QString fileSpec);
     virtual bool load(QPixmap map);
-    virtual QSize imageSize(void);
+    virtual QSize imageSize();
 
 protected:
     QPixmap m_px;

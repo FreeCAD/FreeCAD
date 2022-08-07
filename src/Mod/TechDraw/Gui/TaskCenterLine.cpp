@@ -311,7 +311,7 @@ void TaskCenterLine::onStyleChanged()
 }
 
 //******************************************************************************
-void TaskCenterLine::createCenterLine(void)
+void TaskCenterLine::createCenterLine()
 {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create CenterLine"));
 
@@ -361,7 +361,7 @@ void TaskCenterLine::createCenterLine(void)
     m_cl = cl;
 }
 
-void TaskCenterLine::updateOrientation(void)
+void TaskCenterLine::updateOrientation()
 {
     // When the orientation was changed, it can be that the centerline becomes invalid
     // this can lead to a crash, see e.g.
@@ -447,7 +447,7 @@ QColor TaskCenterLine::getCenterColor()
     return PreferencesGui::centerQColor();
 }
 
-double TaskCenterLine::getExtendBy(void)
+double TaskCenterLine::getExtendBy()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");

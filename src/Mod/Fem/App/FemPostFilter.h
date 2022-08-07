@@ -46,12 +46,12 @@ class FemExport FemPostFilter : public Fem::FemPostObject
 
 public:
     /// Constructor
-    FemPostFilter(void);
+    FemPostFilter();
     virtual ~FemPostFilter();
 
     App::PropertyLink Input;
 
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual App::DocumentObjectExecReturn* execute();
 
 protected:
     vtkDataObject* getInputData();
@@ -77,18 +77,18 @@ class FemExport FemPostClipFilter : public FemPostFilter {
     PROPERTY_HEADER(Fem::FemPostClipFilter);
 
 public:
-    FemPostClipFilter(void);
+    FemPostClipFilter();
     virtual ~FemPostClipFilter();
 
     App::PropertyLink           Function;
     App::PropertyBool           InsideOut;
     App::PropertyBool           CutCells;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostClip";
     }
-    virtual short int mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual short int mustExecute() const;
+    virtual App::DocumentObjectExecReturn* execute();
 
 protected:
     virtual void onChanged(const App::Property* prop);
@@ -103,7 +103,7 @@ class FemExport FemPostDataAlongLineFilter : public FemPostFilter {
     PROPERTY_HEADER(Fem::FemPostDataAlongLineFilter);
 
 public:
-    FemPostDataAlongLineFilter(void);
+    FemPostDataAlongLineFilter();
     virtual ~FemPostDataAlongLineFilter();
 
     App::PropertyVectorDistance Point1;
@@ -113,14 +113,14 @@ public:
     App::PropertyFloatList      YAxisData;
     App::PropertyString         PlotData;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostDataAlongLine";
     }
-    virtual short int mustExecute(void) const;
+    virtual short int mustExecute() const;
     void GetAxisData();
 
 protected:
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual App::DocumentObjectExecReturn* execute();
     virtual void onChanged(const App::Property* prop);
     virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
 
@@ -136,7 +136,7 @@ class FemExport FemPostDataAtPointFilter : public FemPostFilter {
     PROPERTY_HEADER(Fem::FemPostDataAtPointFilter);
 
 public:
-    FemPostDataAtPointFilter(void);
+    FemPostDataAtPointFilter();
     virtual ~FemPostDataAtPointFilter();
 
     App::PropertyVectorDistance   Center;
@@ -145,13 +145,13 @@ public:
     App::PropertyFloatList        PointData;
     App::PropertyString           Unit;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostDataAtPoint";
     }
-    virtual short int mustExecute(void) const;
+    virtual short int mustExecute() const;
 
 protected:
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual App::DocumentObjectExecReturn* execute();
     virtual void onChanged(const App::Property* prop);
     void GetPointData();
 
@@ -167,20 +167,20 @@ class FemExport FemPostScalarClipFilter : public FemPostFilter {
     PROPERTY_HEADER(Fem::FemPostScalarClipFilter);
 
 public:
-    FemPostScalarClipFilter(void);
+    FemPostScalarClipFilter();
     virtual ~FemPostScalarClipFilter();
 
     App::PropertyBool            InsideOut;
     App::PropertyFloatConstraint Value;
     App::PropertyEnumeration     Scalars;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostScalarClip";
     }
-    virtual short int mustExecute(void) const;
+    virtual short int mustExecute() const;
 
 protected:
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual App::DocumentObjectExecReturn* execute();
     virtual void onChanged(const App::Property* prop);
     void setConstraintForField();
 
@@ -195,19 +195,19 @@ class FemExport FemPostWarpVectorFilter : public FemPostFilter {
     PROPERTY_HEADER(Fem::FemPostWarpVectorFilter);
 
 public:
-    FemPostWarpVectorFilter(void);
+    FemPostWarpVectorFilter();
     virtual ~FemPostWarpVectorFilter();
 
     App::PropertyFloat        Factor;
     App::PropertyEnumeration  Vector;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostWarpVector";
     }
-    virtual short int mustExecute(void) const;
+    virtual short int mustExecute() const;
 
 protected:
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual App::DocumentObjectExecReturn* execute();
     virtual void onChanged(const App::Property* prop);
 
 private:
@@ -220,16 +220,16 @@ class FemExport FemPostCutFilter : public FemPostFilter {
     PROPERTY_HEADER(Fem::FemPostCutFilter);
 
 public:
-    FemPostCutFilter(void);
+    FemPostCutFilter();
     virtual ~FemPostCutFilter();
 
     App::PropertyLink  Function;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostCut";
     }
-    virtual short int mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual short int mustExecute() const;
+    virtual App::DocumentObjectExecReturn* execute();
 
 protected:
     virtual void onChanged(const App::Property* prop);

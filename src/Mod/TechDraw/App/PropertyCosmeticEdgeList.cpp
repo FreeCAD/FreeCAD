@@ -72,7 +72,7 @@ void PropertyCosmeticEdgeList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyCosmeticEdgeList::getSize(void) const
+int PropertyCosmeticEdgeList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -98,7 +98,7 @@ void PropertyCosmeticEdgeList::setValues(const std::vector<CosmeticEdge*>& lValu
     hasSetValue();
 }
 
-PyObject *PropertyCosmeticEdgeList::getPyObject(void)
+PyObject *PropertyCosmeticEdgeList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -192,7 +192,7 @@ void PropertyCosmeticEdgeList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-App::Property *PropertyCosmeticEdgeList::Copy(void) const
+App::Property *PropertyCosmeticEdgeList::Copy() const
 {
     PropertyCosmeticEdgeList *p = new PropertyCosmeticEdgeList();
     p->setValues(_lValueList);
@@ -205,7 +205,7 @@ void PropertyCosmeticEdgeList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyCosmeticEdgeList::getMemSize(void) const
+unsigned int PropertyCosmeticEdgeList::getMemSize() const
 {
     int size = sizeof(PropertyCosmeticEdgeList);
     for (int i = 0; i < getSize(); i++)

@@ -39,7 +39,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string CirclePy::representation(void) const
+std::string CirclePy::representation() const
 {
     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
     gp_Ax1 axis = circle->Axis();
@@ -161,7 +161,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float CirclePy::getRadius(void) const
+Py::Float CirclePy::getRadius() const
 {
     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
     return Py::Float(circle->Radius()); 

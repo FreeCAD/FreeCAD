@@ -48,7 +48,7 @@ class FemGuiExport ViewProviderFemConstraint : public Gui::ViewProviderGeometryO
 
 public:
     /// Constructor
-    ViewProviderFemConstraint(void);
+    ViewProviderFemConstraint();
     virtual ~ViewProviderFemConstraint();
 
     // Display properties
@@ -61,10 +61,10 @@ public:
 
     void attach(App::DocumentObject *);
     virtual void updateData(const App::Property* prop) { Gui::ViewProviderGeometryObject::updateData(prop); }
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
     void setDisplayMode(const char* ModeName);
 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    std::vector<App::DocumentObject*> claimChildren()const;
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     /// Highlight the references that have been selected

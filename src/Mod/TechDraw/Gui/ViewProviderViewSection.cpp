@@ -104,7 +104,7 @@ void ViewProviderViewSection::updateData(const App::Property* prop)
     ViewProviderViewPart::updateData(prop);
 }
 
-void ViewProviderViewSection::updateGraphic(void)
+void ViewProviderViewSection::updateGraphic()
 {
     // redraw QGIVP
     QGIView* qgiv = getQView();
@@ -127,14 +127,14 @@ bool ViewProviderViewSection::setEdit(int ModNum)
     return true;
 }
 
-bool ViewProviderViewSection::doubleClicked(void)
+bool ViewProviderViewSection::doubleClicked()
 {
     setEdit(ViewProvider::Default);
     return true;
 }
 
 
-void ViewProviderViewSection::getParameters(void)
+void ViewProviderViewSection::getParameters()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");

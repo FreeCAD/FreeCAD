@@ -68,12 +68,12 @@ public:
     App::PropertyFloat GapFactorASME;
 
     virtual void attach(App::DocumentObject *);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property* p);
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
     virtual bool setEdit(int ModNum);
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked();
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;
 

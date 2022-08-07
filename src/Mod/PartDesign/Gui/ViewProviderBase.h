@@ -38,7 +38,7 @@ public:
     /// destructor
     virtual ~ViewProviderBase();
 
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked();
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
 
 protected:

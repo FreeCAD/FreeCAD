@@ -278,7 +278,7 @@ double TaskFemConstraintTemperature::get_cflux() const {
     return cflux_in_watt;
 }
 
-std::string TaskFemConstraintTemperature::get_constraint_type(void) const {
+std::string TaskFemConstraintTemperature::get_constraint_type() const {
     std::string type;
     if (ui->rb_temperature->isChecked()) {
         type = "\"Temperature\"";

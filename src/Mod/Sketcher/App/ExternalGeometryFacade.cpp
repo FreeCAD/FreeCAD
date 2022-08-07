@@ -140,7 +140,7 @@ void ExternalGeometryFacade::copyId(const Part::Geometry * src, Part::Geometry *
     gfdst->setId(gfsrc->getId());
 }
 
-PyObject * ExternalGeometryFacade::getPyObject(void)
+PyObject * ExternalGeometryFacade::getPyObject()
 {
     return new ExternalGeometryFacadePy(new ExternalGeometryFacade(this->Geo));
 }

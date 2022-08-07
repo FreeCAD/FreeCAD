@@ -47,8 +47,8 @@ public:
     double get_Friction()const;
 
 private Q_SLOTS:
-    void onReferenceDeletedSlave(void);
-    void onReferenceDeletedMaster(void);
+    void onReferenceDeletedSlave();
+    void onReferenceDeletedMaster();
     void addToSelectionSlave();
     void removeFromSelectionSlave();
     void addToSelectionMaster();

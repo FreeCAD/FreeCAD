@@ -36,7 +36,7 @@
 using namespace Robot;
 
 // returns a string which represents the object e.g. when printed in python
-std::string Robot6AxisPy::representation(void) const
+std::string Robot6AxisPy::representation() const
 {
 	std::stringstream str;
 
@@ -78,7 +78,7 @@ PyObject* Robot6AxisPy::check(PyObject * /*args*/)
 
 
 
-Py::Float Robot6AxisPy::getAxis1(void) const
+Py::Float Robot6AxisPy::getAxis1() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(0));
 }
@@ -88,7 +88,7 @@ void Robot6AxisPy::setAxis1(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(0,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis2(void) const
+Py::Float Robot6AxisPy::getAxis2() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(1));
 }
@@ -98,7 +98,7 @@ void Robot6AxisPy::setAxis2(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(1,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis3(void) const
+Py::Float Robot6AxisPy::getAxis3() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(2));
 }
@@ -108,7 +108,7 @@ void Robot6AxisPy::setAxis3(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(2,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis4(void) const
+Py::Float Robot6AxisPy::getAxis4() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(3));
 }
@@ -118,7 +118,7 @@ void Robot6AxisPy::setAxis4(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(3,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis5(void) const
+Py::Float Robot6AxisPy::getAxis5() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(4));
 }
@@ -128,7 +128,7 @@ void Robot6AxisPy::setAxis5(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(4,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis6(void) const
+Py::Float Robot6AxisPy::getAxis6() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(5));
 }
@@ -138,7 +138,7 @@ void Robot6AxisPy::setAxis6(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(5,(float)arg.operator double());
 }
 
-Py::Object Robot6AxisPy::getTcp(void) const
+Py::Object Robot6AxisPy::getTcp() const
 {
 	return Py::asObject(new Base::PlacementPy(new Base::Placement(getRobot6AxisPtr()->getTcp())));
 }
@@ -164,7 +164,7 @@ void Robot6AxisPy::setTcp(Py::Object value)
 
 }
 
-Py::Object Robot6AxisPy::getBase(void) const
+Py::Object Robot6AxisPy::getBase() const
 {
     return Py::Object();
 }

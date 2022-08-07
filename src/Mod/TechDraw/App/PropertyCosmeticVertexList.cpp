@@ -72,7 +72,7 @@ void PropertyCosmeticVertexList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyCosmeticVertexList::getSize(void) const
+int PropertyCosmeticVertexList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -96,7 +96,7 @@ void PropertyCosmeticVertexList::setValues(const std::vector<CosmeticVertex*>& l
     hasSetValue();
 }
 
-PyObject *PropertyCosmeticVertexList::getPyObject(void)
+PyObject *PropertyCosmeticVertexList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -192,7 +192,7 @@ void PropertyCosmeticVertexList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-App::Property *PropertyCosmeticVertexList::Copy(void) const
+App::Property *PropertyCosmeticVertexList::Copy() const
 {
     PropertyCosmeticVertexList *p = new PropertyCosmeticVertexList();
     p->setValues(_lValueList);
@@ -205,7 +205,7 @@ void PropertyCosmeticVertexList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyCosmeticVertexList::getMemSize(void) const
+unsigned int PropertyCosmeticVertexList::getMemSize() const
 {
     int size = sizeof(PropertyCosmeticVertexList);
     for (int i = 0; i < getSize(); i++)

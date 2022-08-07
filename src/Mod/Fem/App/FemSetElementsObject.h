@@ -36,18 +36,18 @@ class FemExport FemSetElementsObject : public FemSetObject
 
 public:
     /// Constructor
-    FemSetElementsObject(void);
+    FemSetElementsObject();
     virtual ~FemSetElementsObject();
 
     // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderSetElements";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    virtual App::DocumentObjectExecReturn *execute() {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    virtual short mustExecute() const;
+    virtual PyObject *getPyObject();
 
 
 };

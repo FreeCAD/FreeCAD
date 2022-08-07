@@ -45,7 +45,7 @@ void ViewProviderSketchGeometryExtension::copyAttributes(Part::GeometryExtension
     static_cast<ViewProviderSketchGeometryExtension *>(cpy)->RepresentationFactor = this->RepresentationFactor;
 }
 
-std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::copy(void) const
+std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::copy() const
 {
     auto cpy = std::make_unique<ViewProviderSketchGeometryExtension>();
 
@@ -58,7 +58,7 @@ std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::co
 #endif
 }
 
-PyObject * ViewProviderSketchGeometryExtension::getPyObject(void)
+PyObject * ViewProviderSketchGeometryExtension::getPyObject()
 {
     THROWM(Base::NotImplementedError, "ViewProviderSketchGeometryExtension does not have a Python counterpart");
 }

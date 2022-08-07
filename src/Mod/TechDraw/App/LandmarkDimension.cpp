@@ -68,7 +68,7 @@ using namespace TechDraw;
 PROPERTY_SOURCE(TechDraw::LandmarkDimension, TechDraw::DrawViewDimension)
 
 
-LandmarkDimension::LandmarkDimension(void)
+LandmarkDimension::LandmarkDimension()
 {
     static const char *group = "Landmark";
     //this leaves a blank entry in position 1.
@@ -100,7 +100,7 @@ short LandmarkDimension::mustExecute() const
     return DrawViewDimension::mustExecute();
 }
 
-App::DocumentObjectExecReturn *LandmarkDimension::execute(void)
+App::DocumentObjectExecReturn *LandmarkDimension::execute()
 {
 //    Base::Console().Message("LD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
@@ -172,7 +172,7 @@ Base::Vector3d LandmarkDimension::projectPoint(const Base::Vector3d& pt, DrawVie
     return result;
 }
 
-std::vector<Base::Vector3d> LandmarkDimension::get2DPoints(void) const
+std::vector<Base::Vector3d> LandmarkDimension::get2DPoints() const
 {
 //    Base::Console().Message("LD::get2DPoints()\n");
     std::vector<Base::Vector3d> result;
@@ -187,7 +187,7 @@ std::vector<Base::Vector3d> LandmarkDimension::get2DPoints(void) const
 }
 
 //! References2D are only used to store ParentView
-bool LandmarkDimension::has2DReferences(void) const
+bool LandmarkDimension::has2DReferences() const
 {
     bool result = false;
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();

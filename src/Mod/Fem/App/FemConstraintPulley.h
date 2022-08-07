@@ -39,7 +39,7 @@ class FemExport ConstraintPulley : public Fem::ConstraintGear
 
 public:
     /// Constructor
-    ConstraintPulley(void);
+    ConstraintPulley();
 
     /// Other pulley diameter
     App::PropertyFloat OtherDiameter;
@@ -55,10 +55,10 @@ public:
     App::PropertyFloat BeltForce2;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemConstraintPulley";
     }
 

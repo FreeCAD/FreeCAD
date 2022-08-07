@@ -38,7 +38,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfParabolaPy::representation(void) const
+std::string ArcOfParabolaPy::representation() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfParabolaPtr()->handle());
@@ -112,7 +112,7 @@ int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     return -1;
 }
 
-Py::Float ArcOfParabolaPy::getFocal(void) const
+Py::Float ArcOfParabolaPy::getFocal() const
 {
     return Py::Float(getGeomArcOfParabolaPtr()->getFocal()); 
 }
@@ -122,7 +122,7 @@ void  ArcOfParabolaPy::setFocal(Py::Float arg)
     getGeomArcOfParabolaPtr()->setFocal((double)arg);
 }
 
-Py::Object ArcOfParabolaPy::getParabola(void) const
+Py::Object ArcOfParabolaPy::getParabola() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfParabolaPtr()->handle());

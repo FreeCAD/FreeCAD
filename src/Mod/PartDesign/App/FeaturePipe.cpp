@@ -96,7 +96,7 @@ short Pipe::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Pipe::execute(void)
+App::DocumentObjectExecReturn *Pipe::execute()
 {
     auto getSectionShape =
         [](App::DocumentObject* feature, const std::vector<std::string> &subs) -> TopoDS_Shape {
