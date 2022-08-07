@@ -82,7 +82,7 @@ DocumentObjectExecReturn* FemPostFilter::execute(void) {
         }
         else {
             pipe.source->SetInputDataObject(getInputData());
-            pipe.target->Update();       
+            pipe.target->Update();
             Data.setValue(pipe.target->GetOutputDataObject(0));
         }
 

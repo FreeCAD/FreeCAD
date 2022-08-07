@@ -33,7 +33,7 @@ namespace Fem {
 
 /**
  * @brief Container of objects relevant to one simulation.
- * 
+ *
  * @details
  *  A Analysis contains all objects necessary for a complete specification
  *  of a simulation. After computing it also contains the result of the

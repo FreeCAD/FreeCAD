@@ -1674,7 +1674,7 @@ void FemMesh::readNastran95(const std::string &Filename)
             node = std::make_shared<GRIDNastran95Element>();
             node->read(line1, "");
         }
-        
+
         //1D
         else if (line1.substr(0,6)=="CBAR")
         {
@@ -1699,40 +1699,40 @@ void FemMesh::readNastran95(const std::string &Filename)
         else if (line1.substr(0, 6) == "CQUAD1")
         {
             //D06
-            //CTRMEM  322     1       179     180     185                                     
+            //CTRMEM  322     1       179     180     185
             elem = std::make_shared<CQUAD1Element>();
             elem->read(line1, "");
         }
-        
+
         //3d element
         else if (line1.find("CTETRA")!= std::string::npos)
         {
-            //d011121a.inp    
-            //CTETRA  3       200     104     114     3       103                             
+            //d011121a.inp
+            //CTETRA  3       200     104     114     3       103
             elem = std::make_shared<CTETRANastran95Element>();
             elem->read(line1, "");
         }
         else if (line1.find("CWEDGE")!= std::string::npos)
         {
-            //d011121a.inp    
-            //CWEDGE  11      200     6       17      16      106     117     116             
+            //d011121a.inp
+            //CWEDGE  11      200     6       17      16      106     117     116
             elem = std::make_shared<CTETRANastran95Element>();
             elem->read(line1, "");
         }
         else if (line1.find("CHEXA1")!= std::string::npos)
         {
-            //d011121a.inp    
-            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1   
-            //+SOL1   113     112                                                             
+            //d011121a.inp
+            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1
+            //+SOL1   113     112
             std::getline(inputfile,line2);
             elem = std::make_shared<CHEXA1Element>();
             elem->read(line1, line2);
         }
         else if (line1.find("CHEXA2")!= std::string::npos)
         {
-            //d011121a.inp    
-            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1   
-            //+SOL1   113     112                                                             
+            //d011121a.inp
+            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1
+            //+SOL1   113     112
             std::getline(inputfile,line2);
             elem = std::make_shared<CHEXA2Element>();
             elem->read(line1, line2);
