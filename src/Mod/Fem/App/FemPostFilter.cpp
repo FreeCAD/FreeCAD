@@ -28,10 +28,10 @@
 # include <vtkPointData.h>
 #endif
 
+#include <App/Document.h>
+
 #include "FemPostFilter.h"
 #include "FemPostPipeline.h"
-#include <Base/Console.h>
-#include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 
 
@@ -459,10 +459,10 @@ FemPostScalarClipFilter::~FemPostScalarClipFilter() {
 DocumentObjectExecReturn* FemPostScalarClipFilter::execute(void) {
 
     std::string val;
-    if (m_scalarFields.getEnums() && Scalars.getValue() >= 0)
+    if (Scalars.getValue() >= 0)
         val = Scalars.getValueAsString();
 
-    std::vector<std::string> array;
+    std::vector<std::string> ScalarsArray;
 
     vtkSmartPointer<vtkDataObject> data = getInputData();
     if (!data || !data->IsA("vtkDataSet"))
@@ -471,18 +471,21 @@ DocumentObjectExecReturn* FemPostScalarClipFilter::execute(void) {
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     vtkPointData* pd = dset->GetPointData();
 
+    // get all scalar fields
     for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
         if (pd->GetArray(i)->GetNumberOfComponents() == 1)
-            array.push_back(pd->GetArrayName(i));
+            ScalarsArray.emplace_back(pd->GetArrayName(i));
     }
 
     App::Enumeration empty;
     Scalars.setValue(empty);
-    m_scalarFields.setEnums(array);
+    m_scalarFields.setEnums(ScalarsArray);
     Scalars.setValue(m_scalarFields);
 
-    std::vector<std::string>::iterator it = std::find(array.begin(), array.end(), val);
-    if (!val.empty() && it != array.end())
+    // search if the current field is in the available ones and set it
+    std::vector<std::string>::iterator it =
+        std::find(ScalarsArray.begin(), ScalarsArray.end(), val);
+    if (!val.empty() && it != ScalarsArray.end())
         Scalars.setValue(val.c_str());
 
     //recalculate the filter
@@ -510,11 +513,10 @@ short int FemPostScalarClipFilter::mustExecute(void) const {
 
     if (Value.isTouched() ||
         InsideOut.isTouched() ||
-        Scalars.isTouched()) {
-
+        Scalars.isTouched())
         return 1;
-    }
-    else return App::DocumentObject::mustExecute();
+    else
+        return App::DocumentObject::mustExecute();
 }
 
 void FemPostScalarClipFilter::setConstraintForField() {
@@ -562,10 +564,10 @@ FemPostWarpVectorFilter::~FemPostWarpVectorFilter() {
 DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
 
     std::string val;
-    if (m_vectorFields.getEnums() && Vector.getValue() >= 0)
+    if (Vector.getValue() >= 0)
         val = Vector.getValueAsString();
 
-    std::vector<std::string> array;
+    std::vector<std::string> VectorArray;
 
     vtkSmartPointer<vtkDataObject> data = getInputData();
     if (!data || !data->IsA("vtkDataSet"))
@@ -574,18 +576,21 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     vtkPointData* pd = dset->GetPointData();
 
+    // get all vector fields
     for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
         if (pd->GetArray(i)->GetNumberOfComponents() == 3)
-            array.push_back(pd->GetArrayName(i));
+            VectorArray.emplace_back(pd->GetArrayName(i));
     }
 
     App::Enumeration empty;
     Vector.setValue(empty);
-    m_vectorFields.setEnums(array);
+    m_vectorFields.setEnums(VectorArray);
     Vector.setValue(m_vectorFields);
 
-    std::vector<std::string>::iterator it = std::find(array.begin(), array.end(), val);
-    if (!val.empty() && it != array.end())
+    // search if the current field is in the available ones and set it
+    std::vector<std::string>::iterator it =
+        std::find(VectorArray.begin(), VectorArray.end(), val);
+    if (!val.empty() && it != VectorArray.end())
         Vector.setValue(val.c_str());
 
     //recalculate the filter
@@ -594,13 +599,11 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
 
 void FemPostWarpVectorFilter::onChanged(const Property* prop) {
 
-    if (prop == &Factor) {
+    if (prop == &Factor)
         m_warp->SetScaleFactor(Factor.getValue());
-    }
-    else if (prop == &Vector && (Vector.getValue() >= 0)) {
+    else if (prop == &Vector && (Vector.getValue() >= 0))
         m_warp->SetInputArrayToProcess(0, 0, 0,
             vtkDataObject::FIELD_ASSOCIATION_POINTS, Vector.getValueAsString());
-    }
 
     Fem::FemPostFilter::onChanged(prop);
 }
@@ -608,11 +611,10 @@ void FemPostWarpVectorFilter::onChanged(const Property* prop) {
 short int FemPostWarpVectorFilter::mustExecute(void) const {
 
     if (Factor.isTouched() ||
-        Vector.isTouched()) {
-
+        Vector.isTouched())
         return 1;
-    }
-    else return App::DocumentObject::mustExecute();
+    else
+        return App::DocumentObject::mustExecute();
 }
 
 
