@@ -47,6 +47,7 @@
 #endif
 #define slots
 #include <bitset>
+#include <cstring>
 
 #include "Exception.h"
 #ifndef PYCXX_PYTHON_2TO3
@@ -120,6 +121,10 @@ inline void Assert(int expr, char *msg)         // C++ assert
       fprintf(stderr, "%s\n", msg);
       exit(-1);
     };
+}
+
+inline bool asBoolean(PyObject *obj) {
+    return PyObject_IsTrue(obj) != 0;
 }
 
 }
