@@ -64,11 +64,12 @@ public:
     void load(FemResultObject* res);
 
     //Pipeline handling
-    FemPostObject* getLastPostObject();
-    bool           holdsPostObject(FemPostObject* obj);
+    void recomputeChildren();
+    FemPostObject *getLastPostObject();
+    bool holdsPostObject(FemPostObject *obj);
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property *prop);
 
 private:
     static const char* ModeEnums[];

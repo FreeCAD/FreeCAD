@@ -225,6 +225,12 @@ void FemPostPipeline::onChanged(const Property* prop)
 
 }
 
+void FemPostPipeline::recomputeChildren()
+{
+    for (const auto &obj : Filter.getValues())
+        obj->touch();
+}
+
 FemPostObject* FemPostPipeline::getLastPostObject() {
 
     if (Filter.getValues().empty())

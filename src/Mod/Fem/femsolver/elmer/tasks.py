@@ -236,6 +236,7 @@ class Results(run.Results):
         self.solver.ElmerResult.read(postPath)
         self.solver.ElmerResult.scale(1000)
         self.solver.ElmerResult.getLastPostObject().touch()
+        self.solver.ElmerResult.recomputeChildren()
         self.solver.Document.recompute()
 
     def _createResults(self):

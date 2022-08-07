@@ -77,6 +77,15 @@ PyObject* FemPostPipelinePy::load(PyObject *args)
     Py_Return;
 }
 
+PyObject *FemPostPipelinePy::recomputeChildren(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    getFemPostPipelinePtr()->recomputeChildren();
+    Py_Return;
+}
+
 PyObject* FemPostPipelinePy::getLastPostObject(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
