@@ -124,7 +124,7 @@ class CHAMFERGate(PathBaseGate):
 class DRILLGate(PathBaseGate):
     def allow(self, doc, obj, sub):
         PathLog.debug("obj: {} sub: {}".format(obj, sub))
-        if not hasattr(obj, "Shape") and sub:
+        if not hasattr(obj, "Shape"):
             return False
         shape = obj.Shape
         subobj = shape.getElement(sub)
