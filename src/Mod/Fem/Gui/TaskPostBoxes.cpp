@@ -436,7 +436,7 @@ void TaskPostDisplay::applyPythonCode() {
 // ***************************************************************************
 // ?
 // the icon fem-post-geo-plane might be wrong but I do not know any better since the plane is one of the implicit functions
-TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent) 
+TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent)
 {
 
@@ -1101,7 +1101,7 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
 
     // Set the unit for the different known result types.
-    
+
     //  CCX names
     if ( (FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
         || (FieldName == "Major Principal Stress") || (FieldName == "Minor Principal Stress")
@@ -1214,7 +1214,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
     // sync the slider
     // slider min = 0%, slider max = 100%
     //
-    //                 scalar_factor 
+    //                 scalar_factor
     // slider_value = --------------- x 100
     //                      max
     //

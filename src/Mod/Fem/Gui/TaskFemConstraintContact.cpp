@@ -94,12 +94,12 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
 
     // QMessageBox::warning(this, tr("Objects.size"), QString::number(Objects.size()));
     if (Objects.size() == 1) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Only one face in object! - moved to master face")); 
+        QMessageBox::warning(this, tr("Selection error"), tr("Only one face in object! - moved to master face"));
         ui->lw_referencesMaster->addItem(makeRefText(Objects[0], SubElements[0]));
     }
 
     if (Objects.size() == 2 ) {
-        ui->lw_referencesMaster->addItem(makeRefText(Objects[1], SubElements[1]));		
+        ui->lw_referencesMaster->addItem(makeRefText(Objects[1], SubElements[1]));
         ui->lw_referencesSlave->addItem(makeRefText(Objects[0], SubElements[0]));
     }
 

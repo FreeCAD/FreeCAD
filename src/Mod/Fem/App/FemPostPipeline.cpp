@@ -120,7 +120,7 @@ bool FemPostPipeline::canRead(Base::FileInfo File) {
         File.hasExtension("vtr") ||
         File.hasExtension("vti") ||
         File.hasExtension("vtu") ||
-        File.hasExtension("pvtu")) 
+        File.hasExtension("pvtu"))
         return true;
 
     return false;
