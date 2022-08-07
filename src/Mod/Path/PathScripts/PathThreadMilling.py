@@ -48,6 +48,104 @@ else:
 
 translate = FreeCAD.Qt.translate
 
+# Constants
+LeftHand = "LeftHand"
+RightHand = "RightHand"
+ThreadTypeCustomExternal = "CustomExternal"
+ThreadTypeCustomInternal = "CustomInternal"
+ThreadTypeImperialExternal2A = "ImperialExternal2A"
+ThreadTypeImperialExternal3A = "ImperialExternal3A"
+ThreadTypeImperialInternal2B = "ImperialInternal2B"
+ThreadTypeImperialInternal3B = "ImperialInternal3B"
+ThreadTypeMetricExternal4G6G = "MetricExternal4G6G"
+ThreadTypeMetricExternal6G = "MetricExternal6G"
+ThreadTypeMetricInternal6H = "MetricInternal6H"
+DirectionClimb = "Climb"
+DirectionConventional = "Conventional"
+
+ThreadOrientations = [LeftHand, RightHand]
+
+ThreadTypeData = {
+    ThreadTypeImperialExternal2A: "imperial-external-2A.csv",
+    ThreadTypeImperialExternal3A: "imperial-external-3A.csv",
+    ThreadTypeImperialInternal2B: "imperial-internal-2B.csv",
+    ThreadTypeImperialInternal3B: "imperial-internal-3B.csv",
+    ThreadTypeMetricExternal4G6G: "metric-external-4G6G.csv",
+    ThreadTypeMetricExternal6G: "metric-external-6G.csv",
+    ThreadTypeMetricInternal6H: "metric-internal-6H.csv",
+}
+
+ThreadTypesExternal = [
+    ThreadTypeCustomExternal,
+    ThreadTypeImperialExternal2A,
+    ThreadTypeImperialExternal3A,
+    ThreadTypeMetricExternal4G6G,
+    ThreadTypeMetricExternal6G,
+]
+ThreadTypesInternal = [
+    ThreadTypeCustomInternal,
+    ThreadTypeImperialInternal2B,
+    ThreadTypeImperialInternal3B,
+    ThreadTypeMetricInternal6H,
+]
+ThreadTypesImperial = [
+    ThreadTypeImperialExternal2A,
+    ThreadTypeImperialExternal3A,
+    ThreadTypeImperialInternal2B,
+    ThreadTypeImperialInternal3B,
+]
+ThreadTypesMetric = [
+    ThreadTypeMetricExternal4G6G,
+    ThreadTypeMetricExternal6G,
+    ThreadTypeMetricInternal6H,
+]
+ThreadTypes = ThreadTypesInternal + ThreadTypesExternal
+Directions = [DirectionClimb, DirectionConventional]
+
+def _isThreadInternal(obj):
+    return obj.ThreadType in ThreadTypesInternal
+
+def threadSetupInternal(obj, zTop, zBottom):
+    PathLog.track()
+    if obj.ThreadOrientation == RightHand:
+        # Right hand thread, G2, top down -> conventional milling
+        if obj.Direction == DirectionConventional:
+            return ("G2", zTop, zBottom)
+        # For climb milling we need to cut the thread from the bottom up
+        # in the opposite direction -> G3
+        return ("G3", zBottom, zTop)
+    # Left hand thread, G3, top down -> climb milling
+    if obj.Direction == DirectionClimb:
+        return ("G3", zTop, zBottom)
+    # for conventional milling, cut bottom up with G2
+    return ("G2", zBottom, zTop)
+
+def threadSetupExternal(obj, zTop, zBottom):
+    PathLog.track()
+    if obj.ThreadOrientation == RightHand:
+        # right hand thread, G2, top down -> climb milling
+        if obj.Direction == DirectionClimb:
+            return ("G2", zTop, zBottom)
+        # for conventional, mill bottom up the other way around
+        return ("G3", zBottom, zTop)
+    # left hand thread, G3, top down -> conventional milling
+    if obj.Direction == DirectionConventional:
+        return ("G3", zTop, zBottom)
+    # for climb milling need to go bottom up and the other way
+    return ("G2", zBottom, zTop)
+
+def threadSetup(obj):
+    """Return (cmd, zbegin, zend) of thread milling operation"""
+    PathLog.track()
+
+    zTop = obj.StartDepth.Value
+    zBottom = obj.FinalDepth.Value
+
+    if _isThreadInternal(obj):
+        return threadSetupInternal(obj, zTop, zBottom)
+    else:
+        return threadSetupExternal(obj, zTop, zBottom)
+
 
 def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
     """threadRadii(majorDia, minorDia, toolDia, toolCrest) ... returns the minimum and maximum radius for thread."""
@@ -121,59 +219,6 @@ def elevatorRadius(obj, center, internal, tool):
 class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
     """Proxy object for thread milling operation."""
 
-    LeftHand = "LeftHand"
-    RightHand = "RightHand"
-    ThreadTypeCustomExternal = "CustomExternal"
-    ThreadTypeCustomInternal = "CustomInternal"
-    ThreadTypeImperialExternal2A = "ImperialExternal2A"
-    ThreadTypeImperialExternal3A = "ImperialExternal3A"
-    ThreadTypeImperialInternal2B = "ImperialInternal2B"
-    ThreadTypeImperialInternal3B = "ImperialInternal3B"
-    ThreadTypeMetricExternal4G6G = "MetricExternal4G6G"
-    ThreadTypeMetricExternal6G = "MetricExternal6G"
-    ThreadTypeMetricInternal6H = "MetricInternal6H"
-    DirectionClimb = "Climb"
-    DirectionConventional = "Conventional"
-
-    ThreadOrientations = [LeftHand, RightHand]
-
-    ThreadTypeData = {
-        ThreadTypeImperialExternal2A: "imperial-external-2A.csv",
-        ThreadTypeImperialExternal3A: "imperial-external-3A.csv",
-        ThreadTypeImperialInternal2B: "imperial-internal-2B.csv",
-        ThreadTypeImperialInternal3B: "imperial-internal-3B.csv",
-        ThreadTypeMetricExternal4G6G: "metric-external-4G6G.csv",
-        ThreadTypeMetricExternal6G: "metric-external-6G.csv",
-        ThreadTypeMetricInternal6H: "metric-internal-6H.csv",
-    }
-
-    ThreadTypesExternal = [
-        ThreadTypeCustomExternal,
-        ThreadTypeImperialExternal2A,
-        ThreadTypeImperialExternal3A,
-        ThreadTypeMetricExternal4G6G,
-        ThreadTypeMetricExternal6G,
-    ]
-    ThreadTypesInternal = [
-        ThreadTypeCustomInternal,
-        ThreadTypeImperialInternal2B,
-        ThreadTypeImperialInternal3B,
-        ThreadTypeMetricInternal6H,
-    ]
-    ThreadTypesImperial = [
-        ThreadTypeImperialExternal2A,
-        ThreadTypeImperialExternal3A,
-        ThreadTypeImperialInternal2B,
-        ThreadTypeImperialInternal3B,
-    ]
-    ThreadTypesMetric = [
-        ThreadTypeMetricExternal4G6G,
-        ThreadTypeMetricExternal6G,
-        ThreadTypeMetricInternal6H,
-    ]
-    ThreadTypes = ThreadTypesInternal + ThreadTypesExternal
-    Directions = [DirectionClimb, DirectionConventional]
-
     @classmethod
     def propertyEnumerations(self, dataType="data"):
         """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
@@ -191,59 +236,59 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             "ThreadType": [
                 (
                     translate("Path_ThreadMilling", "Custom External"),
-                    ObjectThreadMilling.ThreadTypeCustomExternal,
+                    ThreadTypeCustomExternal,
                 ),
                 (
                     translate("Path_ThreadMilling", "Custom Internal"),
-                    ObjectThreadMilling.ThreadTypeCustomInternal,
+                    ThreadTypeCustomInternal,
                 ),
                 (
                     translate("Path_ThreadMilling", "Imperial External (2A)"),
-                    ObjectThreadMilling.ThreadTypeImperialExternal2A,
+                    ThreadTypeImperialExternal2A,
                 ),
                 (
                     translate("Path_ThreadMilling", "Imperial External (3A)"),
-                    ObjectThreadMilling.ThreadTypeImperialExternal3A,
+                    ThreadTypeImperialExternal3A,
                 ),
                 (
                     translate("Path_ThreadMilling", "Imperial Internal (2B)"),
-                    ObjectThreadMilling.ThreadTypeImperialInternal2B,
+                    ThreadTypeImperialInternal2B,
                 ),
                 (
                     translate("Path_ThreadMilling", "Imperial Internal (3B)"),
-                    ObjectThreadMilling.ThreadTypeImperialInternal3B,
+                    ThreadTypeImperialInternal3B,
                 ),
                 (
                     translate("Path_ThreadMilling", "Metric External (4G6G)"),
-                    ObjectThreadMilling.ThreadTypeMetricExternal4G6G,
+                    ThreadTypeMetricExternal4G6G,
                 ),
                 (
                     translate("Path_ThreadMilling", "Metric External (6G)"),
-                    ObjectThreadMilling.ThreadTypeMetricExternal6G,
+                    ThreadTypeMetricExternal6G,
                 ),
                 (
                     translate("Path_ThreadMilling", "Metric Internal (6H)"),
-                    ObjectThreadMilling.ThreadTypeMetricInternal6H,
+                    ThreadTypeMetricInternal6H,
                 ),
             ],
             "ThreadOrientation": [
                 (
                     translate("Path_ThreadMilling", "LeftHand"),
-                    ObjectThreadMilling.LeftHand,
+                    LeftHand,
                 ),
                 (
                     translate("Path_ThreadMilling", "RightHand"),
-                    ObjectThreadMilling.RightHand,
+                    RightHand,
                 ),
             ],
             "Direction": [
                 (
                     translate("Path_ThreadMilling", "Climb"),
-                    ObjectThreadMilling.DirectionClimb,
+                    DirectionClimb,
                 ),
                 (
                     translate("Path_ThreadMilling", "Conventional"),
-                    ObjectThreadMilling.DirectionConventional,
+                    DirectionConventional,
                 ),
             ],
         }
@@ -274,14 +319,14 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             "Thread",
             QT_TRANSLATE_NOOP("App::Property", "Set thread orientation"),
         )
-        # obj.ThreadOrientation = self.ThreadOrientations
+        # obj.ThreadOrientation = ThreadOrientations
         obj.addProperty(
             "App::PropertyEnumeration",
             "ThreadType",
             "Thread",
             QT_TRANSLATE_NOOP("App::Property", "Currently only internal"),
         )
-        # obj.ThreadType = self.ThreadTypes
+        # obj.ThreadType = ThreadTypes
         obj.addProperty(
             "App::PropertyString",
             "ThreadName",
@@ -362,32 +407,6 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
-    def _isThreadInternal(self, obj):
-        return obj.ThreadType in self.ThreadTypesInternal
-
-    def _threadSetupInternal(self, obj):
-        PathLog.track()
-        # the thing to remember is that Climb, for an internal thread must always be G3
-        if obj.Direction == self.DirectionClimb:
-            if obj.ThreadOrientation == self.RightHand:
-                return ("G3", obj.FinalDepth.Value, obj.StartDepth.Value)
-            return ("G3", obj.StartDepth.Value, obj.FinalDepth.Value)
-        if obj.ThreadOrientation == self.RightHand:
-            return ("G2", obj.StartDepth.Value, obj.FinalDepth.Value)
-        return ("G2", obj.FinalDepth.Value, obj.StartDepth.Value)
-
-    def threadSetup(self, obj):
-        PathLog.track()
-        cmd, zbegin, zend = self._threadSetupInternal(obj)
-
-        if obj.ThreadType in self.ThreadTypesInternal:
-            return (cmd, zbegin, zend)
-
-        # need to reverse direction for external threads
-        if cmd == "G2":
-            return ("G3", zbegin, zend)
-        return ("G2", zbegin, zend)
-
     def threadPassRadii(self, obj):
         PathLog.track(obj.Label)
         rMajor = (obj.MajorDiameter.Value - self.tool.Diameter) / 2.0
@@ -402,7 +421,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
     def executeThreadMill(self, obj, loc, gcode, zStart, zFinal, pitch):
         PathLog.track(obj.Label, loc, gcode, zStart, zFinal, pitch)
-        elevator = elevatorRadius(obj, loc, self._isThreadInternal(obj), self.tool)
+        elevator = elevatorRadius(obj, loc, _isThreadInternal(obj), self.tool)
 
         move2clearance = Path.Command(
             "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
@@ -413,7 +432,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         for radius in threadPasses(
             obj.Passes,
             threadRadii,
-            self._isThreadInternal(obj),
+            _isThreadInternal(obj),
             obj.MajorDiameter.Value,
             obj.MinorDiameter.Value,
             float(self.tool.Diameter),
@@ -421,7 +440,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         ):
             if (
                 not start is None
-                and not self._isThreadInternal(obj)
+                and not _isThreadInternal(obj)
                 and not obj.LeadInOut
             ):
                 # external thread without lead in/out have to go up and over
@@ -459,7 +478,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         if self.isToolSupported(obj, self.tool):
             self.commandlist.append(Path.Command("(Begin Thread Milling)"))
 
-            (cmd, zStart, zFinal) = self.threadSetup(obj)
+            (cmd, zStart, zFinal) = threadSetup(obj)
             pitch = obj.Pitch.Value
             if obj.TPI > 0:
                 pitch = 25.4 / obj.TPI
@@ -482,13 +501,13 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
     def opSetDefaultValues(self, obj, job):
         PathLog.track()
-        obj.ThreadOrientation = self.RightHand
-        obj.ThreadType = self.ThreadTypeMetricInternal6H
+        obj.ThreadOrientation = RightHand
+        obj.ThreadType = ThreadTypeMetricInternal6H
         obj.ThreadFit = 50
         obj.Pitch = 1
         obj.TPI = 0
         obj.Passes = 1
-        obj.Direction = self.DirectionClimb
+        obj.Direction = DirectionClimb
         obj.LeadInOut = False
 
     def isToolSupported(self, obj, tool):
