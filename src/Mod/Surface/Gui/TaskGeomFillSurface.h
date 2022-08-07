@@ -46,7 +46,7 @@ public:
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
-    QIcon getIcon(void) const;
+    QIcon getIcon() const;
     void highlightReferences(bool on);
 };
 
@@ -96,7 +96,7 @@ private Q_SLOTS:
     void on_buttonEdgeAdd_clicked();
     void on_buttonEdgeRemove_clicked();
     void on_listWidget_itemDoubleClicked(QListWidgetItem*);
-    void onDeleteEdge(void);
+    void onDeleteEdge();
     void onFlipOrientation();
     void clearSelection();
 };

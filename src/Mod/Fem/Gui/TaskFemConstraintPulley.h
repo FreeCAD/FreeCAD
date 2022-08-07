@@ -36,11 +36,11 @@ class TaskFemConstraintPulley : public TaskFemConstraintGear
 public:
     TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = nullptr);
 
-    double getOtherDiameter(void) const;
-    double getCenterDistance(void) const;
-    double getTensionForce(void) const;
-    double getTorque(void) const;
-    bool getIsDriven(void) const;
+    double getOtherDiameter() const;
+    double getCenterDistance() const;
+    double getTensionForce() const;
+    double getTorque() const;
+    bool getIsDriven() const;
 
 private Q_SLOTS:
     void onOtherDiameterChanged(double dia);

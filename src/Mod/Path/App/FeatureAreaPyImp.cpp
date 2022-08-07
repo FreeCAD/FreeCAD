@@ -36,7 +36,7 @@ using namespace Path;
 
 
 // returns a string which represent the object e.g. when printed in python
-std::string FeatureAreaPy::representation(void) const
+std::string FeatureAreaPy::representation() const
 {
     return std::string("<Path::FeatureArea>");
 }
@@ -81,7 +81,7 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     return Py_None;
 }
 
-Py::Object FeatureAreaPy::getWorkPlane(void) const {
+Py::Object FeatureAreaPy::getWorkPlane() const {
     return Part::shape2pyshape(getFeatureAreaPtr()->getArea().getPlane());
 }
 

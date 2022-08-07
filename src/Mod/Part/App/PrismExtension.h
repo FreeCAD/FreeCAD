@@ -46,8 +46,8 @@ public:
 
     TopoDS_Shape makePrism(double height, const TopoDS_Face& face) const;
 
-    virtual short int extensionMustExecute(void);
-    virtual App::DocumentObjectExecReturn *extensionExecute(void);
+    virtual short int extensionMustExecute();
+    virtual App::DocumentObjectExecReturn *extensionExecute();
 
 protected:
     virtual void extensionOnChanged(const App::Property* /*prop*/);

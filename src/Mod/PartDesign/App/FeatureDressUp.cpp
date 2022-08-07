@@ -63,7 +63,7 @@ short DressUp::mustExecute() const
     return PartDesign::FeatureAddSub::mustExecute();
 }
 
-void DressUp::positionByBaseFeature(void)
+void DressUp::positionByBaseFeature()
 {
     Part::Feature *base = static_cast<Part::Feature*>(BaseFeature.getValue());
     if (base && base->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))

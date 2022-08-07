@@ -40,9 +40,9 @@ public:
     TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskDraftParameters();
 
-    double getAngle(void) const;
-    bool getReversed(void) const;
-    const std::vector<std::string> getFaces(void) const;
+    double getAngle() const;
+    bool getReversed() const;
+    const std::vector<std::string> getFaces() const;
     void getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     void getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
@@ -51,7 +51,7 @@ private Q_SLOTS:
     void onReversedChanged(bool reversed);
     void onButtonPlane(const bool checked);
     void onButtonLine(const bool checked);
-    void onRefDeleted(void);
+    void onRefDeleted();
 
 protected:
     virtual void clearButtons(const selectionModes notThis);

@@ -96,7 +96,7 @@ bool ViewProviderRuledSurface::onDelete(const std::vector<std::string> &)
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderRuledSurface::getDisplayModes(void) const
+std::vector<std::string> ViewProviderRuledSurface::getDisplayModes() const
 {
   // get the modes of the father
   std::vector<std::string> StrList;

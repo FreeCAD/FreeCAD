@@ -89,7 +89,7 @@ void CmdRobotSetHomePos::activated(int)
 
 }
 
-bool CmdRobotSetHomePos::isActive(void)
+bool CmdRobotSetHomePos::isActive()
 {
     return hasActiveDocument();
 }
@@ -143,7 +143,7 @@ void CmdRobotRestoreHomePos::activated(int)
 
 }
 
-bool CmdRobotRestoreHomePos::isActive(void)
+bool CmdRobotRestoreHomePos::isActive()
 {
     return hasActiveDocument();
 }
@@ -183,7 +183,7 @@ void CmdRobotConstraintAxle::activated(int)
 
 }
 
-bool CmdRobotConstraintAxle::isActive(void)
+bool CmdRobotConstraintAxle::isActive()
 {
     return hasActiveDocument();
 }
@@ -260,7 +260,7 @@ void CmdRobotSimulate::activated(int)
 #endif
 }
 
-bool CmdRobotSimulate::isActive(void)
+bool CmdRobotSimulate::isActive()
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -271,7 +271,7 @@ bool CmdRobotSimulate::isActive(void)
 
 
 
-void CreateRobotCommands(void)
+void CreateRobotCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

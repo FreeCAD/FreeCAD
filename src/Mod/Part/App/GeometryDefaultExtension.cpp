@@ -66,7 +66,7 @@ void GeometryDefaultExtension<T>::saveAttributes(Base::Writer &writer) const
 }
 
 template <typename T>
-std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void) const
+std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy() const
 {
     std::unique_ptr<GeometryDefaultExtension<T>> cpy = std::make_unique<GeometryDefaultExtension<T>>();
 
@@ -93,7 +93,7 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void)
 }
 
 template <typename T>
-PyObject * GeometryDefaultExtension<T>::getPyObject(void)
+PyObject * GeometryDefaultExtension<T>::getPyObject()
 {
     THROWM(Base::NotImplementedError,"Python object not implemented for default geometry extension template type. Template Specialisation missing."); // use template specialisation to provide the actual object
 }
@@ -108,7 +108,7 @@ namespace Part {
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryPersistenceExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<long>::getPyObject(void)
+PyObject * GeometryDefaultExtension<long>::getPyObject()
 {
     return new GeometryIntExtensionPy(new GeometryIntExtension(*this));
 }
@@ -125,7 +125,7 @@ void GeometryDefaultExtension<long>::restoreAttributes(Base::XMLReader &reader)
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension,Part::GeometryPersistenceExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
+PyObject * GeometryDefaultExtension<std::string>::getPyObject()
 {
     return new GeometryStringExtensionPy(new GeometryStringExtension(*this));
 }
@@ -134,7 +134,7 @@ PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension,Part::GeometryPersistenceExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<bool>::getPyObject(void)
+PyObject * GeometryDefaultExtension<bool>::getPyObject()
 {
     return new GeometryBoolExtensionPy(new GeometryBoolExtension(*this));
 }
@@ -151,7 +151,7 @@ void GeometryDefaultExtension<bool>::restoreAttributes(Base::XMLReader &reader)
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension,Part::GeometryPersistenceExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<double>::getPyObject(void)
+PyObject * GeometryDefaultExtension<double>::getPyObject()
 {
     return new GeometryDoubleExtensionPy(new GeometryDoubleExtension(*this));
 }

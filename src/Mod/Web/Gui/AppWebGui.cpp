@@ -38,7 +38,7 @@
 
 
 // use a different name to CreateCommand()
-void CreateWebCommands(void);
+void CreateWebCommands();
 
 void loadWebResource()
 {

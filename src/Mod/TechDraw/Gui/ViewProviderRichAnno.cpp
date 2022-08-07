@@ -86,7 +86,7 @@ bool ViewProviderRichAnno::setEdit(int ModNum)
     return true;
 }
 
-bool ViewProviderRichAnno::doubleClicked(void)
+bool ViewProviderRichAnno::doubleClicked()
 {
 //    Base::Console().Message("VPRA::doubleClicked()\n");
     setEdit(ViewProvider::Default);
@@ -135,12 +135,12 @@ TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
     return dynamic_cast<TechDraw::DrawRichAnno*>(pcObject);
 }
 
-App::Color ViewProviderRichAnno::getDefLineColor(void)
+App::Color ViewProviderRichAnno::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }
 
-std::string ViewProviderRichAnno::getDefFont(void)
+std::string ViewProviderRichAnno::getDefFont()
 {
     return Preferences::labelFont();
 }
@@ -150,7 +150,7 @@ double ViewProviderRichAnno::getDefFontSize()
     return Preferences::dimFontSizeMM();
 }
 
-double ViewProviderRichAnno::getDefLineWeight(void)
+double ViewProviderRichAnno::getDefLineWeight()
 {
     return TechDraw::LineGroup::getDefaultWidth("Graphics");
 }

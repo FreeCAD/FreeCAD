@@ -100,7 +100,7 @@ Qt::PenStyle QGIEdge::getHiddenStyle()
     return hidStyle;
 }
 
- double QGIEdge::getEdgeFuzz(void) const
+ double QGIEdge::getEdgeFuzz() const
 {
     return PreferencesGui::edgeFuzz();
 }

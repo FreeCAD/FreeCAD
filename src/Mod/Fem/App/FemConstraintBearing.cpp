@@ -57,7 +57,7 @@ ConstraintBearing::ConstraintBearing()
                       "Axis of bearing seat");
 }
 
-App::DocumentObjectExecReturn *ConstraintBearing::execute(void)
+App::DocumentObjectExecReturn *ConstraintBearing::execute()
 {
     return Constraint::execute();
 }

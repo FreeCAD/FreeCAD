@@ -72,9 +72,9 @@ protected:
     void changeEvent(QEvent *e) override;
     bool updateView() const;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
-    double getAngle(void) const;
-    bool getMidplane(void) const;
-    bool getReversed(void) const;
+    double getAngle() const;
+    bool getMidplane() const;
+    bool getReversed() const;
 
     //mirrors of revolution's or groove's properties
     //should have been done by inheriting revolution and groove from common class...

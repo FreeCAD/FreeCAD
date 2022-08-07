@@ -62,18 +62,18 @@ public:
     /// Sets the viewing mode
     void setDisplayMode(const char* ModeName);
     /// Returns a list of all possible modes
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
     /// Update colorbar after recomputation of distances.
     void updateData(const App::Property*);
     /// Once the color bar settings has been changed this method gets called to update the feature's representation
     void OnChange(Base::Subject<int> &rCaller,int rcReason);
     QIcon getIcon() const;
     /// Returns a color bar
-    SoSeparator* getFrontRoot(void) const;
+    SoSeparator* getFrontRoot() const;
     /// Hide the object in the view
-    virtual void hide(void);
+    virtual void hide();
     /// Show the object in the view
-    virtual void show(void);
+    virtual void show();
 
     static void inspectCallback(void * ud, SoEventCallback * n);
 

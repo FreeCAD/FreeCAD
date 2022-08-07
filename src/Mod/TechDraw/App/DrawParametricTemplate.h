@@ -53,20 +53,20 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     //@}
 
 
     short mustExecute() const;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderTemplate";
     }
 
     // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
+    virtual PyObject *getPyObject();
+    virtual unsigned int getMemSize() const;
 
 public:
     std::vector<TechDraw::BaseGeomPtr> getGeometry() { return geom; }

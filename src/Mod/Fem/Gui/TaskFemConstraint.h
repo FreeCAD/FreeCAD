@@ -47,7 +47,7 @@ public:
     TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,const char* pixmapname = "");
     virtual ~TaskFemConstraint() {}
 
-    virtual const std::string getReferences(void) const {return std::string();}
+    virtual const std::string getReferences() const {return std::string();}
     const std::string getReferences(const std::vector<std::string>& items) const;
     const std::string getScale() const;
 
@@ -98,11 +98,11 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return false; }
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
     ViewProviderFemConstraint* getConstraintView() const

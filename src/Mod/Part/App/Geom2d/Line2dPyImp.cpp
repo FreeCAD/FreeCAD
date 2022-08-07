@@ -39,7 +39,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string Line2dPy::representation(void) const
+std::string Line2dPy::representation() const
 {
     return "<Line2d object>";
 }
@@ -118,7 +118,7 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Object Line2dPy::getLocation(void) const
+Py::Object Line2dPy::getLocation() const
 {
     Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
@@ -166,7 +166,7 @@ void Line2dPy::setLocation(Py::Object arg)
     }
 }
 
-Py::Object Line2dPy::getDirection(void) const
+Py::Object Line2dPy::getDirection() const
 {
     Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());

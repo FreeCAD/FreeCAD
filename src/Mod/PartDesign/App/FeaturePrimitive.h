@@ -49,7 +49,7 @@ public:
     
     FeaturePrimitive();
     
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPrimitive";
     }
     Type         getPrimitiveType() {return primitiveType;}
@@ -80,7 +80,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     
 protected:
@@ -119,7 +119,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
 };
 
@@ -156,7 +156,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     
 protected:
@@ -195,7 +195,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     
 protected:
@@ -237,7 +237,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     
 protected:
@@ -278,7 +278,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     
 protected:
@@ -316,7 +316,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
 };
 
@@ -359,7 +359,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     
 protected:

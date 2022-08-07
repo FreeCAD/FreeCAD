@@ -35,7 +35,7 @@
 using namespace Robot;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TrajectoryPy::representation(void) const
+std::string TrajectoryPy::representation() const
 {
     std::stringstream str;
     str.precision(5);
@@ -145,12 +145,12 @@ PyObject* TrajectoryPy::deleteLast(PyObject *args)
 
 
 
-Py::Float TrajectoryPy::getDuration(void) const
+Py::Float TrajectoryPy::getDuration() const
 {
     return Py::Float(getTrajectoryPtr()->getDuration());
 }
 
-Py::List TrajectoryPy::getWaypoints(void) const
+Py::List TrajectoryPy::getWaypoints() const
 {
     Py::List list;
     for(unsigned int i = 0; i < getTrajectoryPtr()->getSize(); i++)
@@ -159,7 +159,7 @@ Py::List TrajectoryPy::getWaypoints(void) const
     return list;
 }
 
-Py::Float TrajectoryPy::getLength(void) const
+Py::Float TrajectoryPy::getLength() const
 {
     return Py::Float(getTrajectoryPtr()->getLength());
 }

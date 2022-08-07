@@ -40,19 +40,19 @@ class PathExport FeatureArea : public Part::Feature
 
 public:
     /// Constructor
-    FeatureArea(void);
+    FeatureArea();
     virtual ~FeatureArea();
 
     Area &getArea();
     const std::vector<TopoDS_Shape> &getShapes();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "PathGui::ViewProviderArea";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    virtual App::DocumentObjectExecReturn *execute();
+    virtual short mustExecute() const;
+    virtual PyObject *getPyObject();
 
     App::PropertyLinkList   Sources;
     Part::PropertyPartShape WorkPlane;
@@ -78,14 +78,14 @@ class PathExport FeatureAreaView : public Part::Feature
 
 public:
     /// Constructor
-    FeatureAreaView(void);
+    FeatureAreaView();
 
     std::list<TopoDS_Shape> getShapes();
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "PathGui::ViewProviderAreaView";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     App::PropertyLink       Source;
     App::PropertyInteger    SectionIndex;

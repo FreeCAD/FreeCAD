@@ -43,7 +43,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometryPy::representation(void) const
+std::string GeometryPy::representation() const
 {
     return "<Geometry object>";
 }
@@ -425,7 +425,7 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
 
 }
 
-Py::String GeometryPy::getTag(void) const
+Py::String GeometryPy::getTag() const
 {
     std::string tmp = boost::uuids::to_string(getGeometryPtr()->getTag());
     return Py::String(tmp);

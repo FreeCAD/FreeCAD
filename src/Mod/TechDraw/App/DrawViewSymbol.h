@@ -44,7 +44,7 @@ class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 
 public:
     /// Constructor
-    DrawViewSymbol(void);
+    DrawViewSymbol();
     virtual ~DrawViewSymbol();
 
     App::PropertyString       Symbol;
@@ -53,18 +53,18 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderSymbol";
     }
     virtual QRectF getRect() const override;
     virtual bool checkFit(TechDraw::DrawPage* p) const override;
 
     //return PyObject as DrawViewSymbolPy
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
 protected:
     virtual void onChanged(const App::Property* prop) override;

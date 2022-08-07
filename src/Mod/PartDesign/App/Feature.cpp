@@ -239,10 +239,10 @@ Body* Feature::getFeatureBody() const {
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeaturePython, PartDesign::Feature)
-template<> const char* PartDesign::FeaturePython::getViewProviderName(void) const {
+template<> const char* PartDesign::FeaturePython::getViewProviderName() const {
     return "PartDesignGui::ViewProviderPython";
 }
-template<> PyObject* PartDesign::FeaturePython::getPyObject(void) {
+template<> PyObject* PartDesign::FeaturePython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);

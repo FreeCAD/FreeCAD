@@ -441,7 +441,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     }
 }
 
-void TaskLeaderLine::updateLeaderFeature(void)
+void TaskLeaderLine::updateLeaderFeature()
 {
 //    Base::Console().Message("TTL::updateLeaderFeature()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
@@ -462,7 +462,7 @@ void TaskLeaderLine::updateLeaderFeature(void)
     m_lineFeat->requestPaint();
 }
 
-void TaskLeaderLine::commonFeatureUpdate(void)
+void TaskLeaderLine::commonFeatureUpdate()
 {
     int start = ui->cboxStartSym->currentIndex();
     int end   = ui->cboxEndSym->currentIndex();
@@ -470,7 +470,7 @@ void TaskLeaderLine::commonFeatureUpdate(void)
     m_lineFeat->EndSymbol.setValue(end);
 }
 
-void TaskLeaderLine::removeFeature(void)
+void TaskLeaderLine::removeFeature()
 {
 //    Base::Console().Message("TTL::removeFeature()\n");
     if (!m_lineFeat)
@@ -600,7 +600,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
     }
 }
 
-void TaskLeaderLine::startTracker(void)
+void TaskLeaderLine::startTracker()
 {
 //    Base::Console().Message("TTL::startTracker()\n");
     if (!m_haveMdi) {
@@ -660,7 +660,7 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgPare
     setEditCursor(Qt::ArrowCursor);
 }
 
-void TaskLeaderLine::removeTracker(void)
+void TaskLeaderLine::removeTracker()
 {
 //    Base::Console().Message("TTL::removeTracker()\n");
     if (!m_haveMdi) {
@@ -727,7 +727,7 @@ void TaskLeaderLine::trackerPointsFromQPoints(std::vector<QPointF> pts)
 
 //******************************************************************************
 //void TaskLeaderLine::onPointEditComplete(std::vector<QPointF> pts, QGIView* parent)
-void TaskLeaderLine::onPointEditComplete(void)
+void TaskLeaderLine::onPointEditComplete()
 {
 //    Base::Console().Message("TTL::onPointEditComplete()\n");
     m_inProgressLock = false;
@@ -739,7 +739,7 @@ void TaskLeaderLine::onPointEditComplete(void)
     enableTaskButtons(true);
 }
 
-void TaskLeaderLine::abandonEditSession(void)
+void TaskLeaderLine::abandonEditSession()
 {
 //    Base::Console().Message("TTL::abandonEditSession()\n");
     if (m_qgLine) {
@@ -781,7 +781,7 @@ double TaskLeaderLine::prefWeight() const
     return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
-App::Color TaskLeaderLine::prefLineColor(void)
+App::Color TaskLeaderLine::prefLineColor()
 {
     return PreferencesGui::leaderColor();
 }

@@ -112,7 +112,7 @@ public:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    void slotElementsChanged(void);
+    void slotElementsChanged();
     void updateIcons(int element);
     void updatePreselection();
     void updateVisibility(int filterindex);
@@ -120,7 +120,7 @@ private:
     void clearWidget();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemSelectionChanged(void);
+    void on_listWidgetElements_itemSelectionChanged();
     void on_listWidgetElements_itemEntered(QListWidgetItem *item);
     void on_listWidgetElements_filterShortcutPressed();
     void on_listWidgetElements_currentFilterChanged ( int index );

@@ -225,7 +225,7 @@ TaskDlgPost::~TaskDlgPost()
 
 }
 
-QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons(void) const {
+QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const {
 
     //check if we only have gui task boxes
     bool guionly = true;

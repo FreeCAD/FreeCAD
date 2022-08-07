@@ -43,7 +43,7 @@ void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
-std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren() const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
     if (!pcMultiTransform)

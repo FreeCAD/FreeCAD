@@ -44,7 +44,7 @@ ViewProviderBase::~ViewProviderBase()
 
 }
 
-bool ViewProviderBase::doubleClicked(void)
+bool ViewProviderBase::doubleClicked()
 {
     // If the Placement is mutable then open the transform panel.
     // If the Placement can't be modified then just do nothing on double-click.

@@ -43,7 +43,7 @@ FemSetElementsObject::~FemSetElementsObject()
 {
 }
 
-short FemSetElementsObject::mustExecute(void) const
+short FemSetElementsObject::mustExecute() const
 {
     return 0;
 }

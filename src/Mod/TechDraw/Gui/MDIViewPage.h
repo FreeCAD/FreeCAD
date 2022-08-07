@@ -63,7 +63,7 @@ public:
     MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = nullptr);
     virtual ~MDIViewPage();
 
-    void addChildrenToPage(void);
+    void addChildrenToPage();
 
 
     /// Observer message from the Tree Selection mechanism
@@ -78,7 +78,7 @@ public:
     void attachTemplate(TechDraw::DrawTemplate *obj);
     void updateTemplate(bool force = false);
     void fixOrphans(bool force = false);
-    void matchSceneRectToTemplate(void);
+    void matchSceneRectToTemplate();
     
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
@@ -98,14 +98,14 @@ public:
     PyObject* getPyObject();
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
-    QGVPage* getQGVPage(void) {return m_view;}
-    QGSPage* getQGSPage(void) {return m_scene;}
+    QGVPage* getQGVPage() {return m_view;}
+    QGSPage* getQGSPage() {return m_scene;}
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
 
     QPointF getTemplateCenter(TechDraw::DrawTemplate *obj);
-    void centerOnPage(void);
+    void centerOnPage();
 
-    void redrawAllViews(void);
+    void redrawAllViews();
     void redraw1View(TechDraw::DrawView* dv);
     
     void setTabText(std::string t);
@@ -117,11 +117,11 @@ public:
 
 public Q_SLOTS:
     void viewAll();
-    void saveSVG(void);
-    void saveDXF(void);
-    void savePDF(void);
-    void toggleFrame(void);
-    void toggleKeepUpdated(void);
+    void saveSVG();
+    void saveDXF();
+    void savePDF();
+    void toggleFrame();
+    void toggleKeepUpdated();
 //    void testAction(void);
     void sceneSelectionChanged();
     void onTimer();
@@ -136,9 +136,9 @@ protected:
 
     void closeEvent(QCloseEvent*);
 
-    void setDimensionGroups(void);
-    void setBalloonGroups(void);
-    void setLeaderGroups(void);
+    void setDimensionGroups();
+    void setBalloonGroups();
+    void setLeaderGroups();
     void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
     
     void onDeleteObject(const App::DocumentObject& obj);
@@ -147,8 +147,8 @@ protected:
     Connection connectDeletedObject;
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel,QList<QGraphicsItem*> sceneSel);
-    void setTreeToSceneSelect(void);
-    void sceneSelectionManager(void);
+    void setTreeToSceneSelect();
+    void sceneSelectionManager();
 
 
 private:

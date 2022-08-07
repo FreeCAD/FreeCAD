@@ -85,7 +85,7 @@ const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c)
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometrySurfacePy::representation(void) const
+std::string GeometrySurfacePy::representation() const
 {
     return "<Surface object>";
 }
@@ -687,7 +687,7 @@ PyObject* GeometrySurfacePy::VPeriod(PyObject * args)
     }
 }
 
-Py::String GeometrySurfacePy::getContinuity(void) const
+Py::String GeometrySurfacePy::getContinuity() const
 {
     GeomAbs_Shape c = Handle(Geom_Surface)::DownCast
         (getGeometryPtr()->handle())->Continuity();
@@ -876,7 +876,7 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
     return nullptr;
 }
 
-Py::Object GeometrySurfacePy::getRotation(void) const
+Py::Object GeometrySurfacePy::getRotation() const
 {
     Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeometryPtr()->handle());

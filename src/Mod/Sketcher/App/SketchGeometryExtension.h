@@ -86,9 +86,9 @@ public:
     SketchGeometryExtension(long cid);
     virtual ~SketchGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    virtual std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
     virtual long getId() const override {return Id;}
     virtual void setId(long id) override {Id = id;}

@@ -261,7 +261,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     }
 }
 
-App::DocumentObjectExecReturn *Filling::execute(void)
+App::DocumentObjectExecReturn *Filling::execute()
 {
     //Assign Variables
     unsigned int degree  = Degree.getValue();

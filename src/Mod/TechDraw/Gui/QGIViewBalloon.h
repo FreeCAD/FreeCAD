@@ -75,18 +75,18 @@ public:
     double Y() const { return posY; }              //minus posY?
     
     void setFont(QFont f);
-    QFont getFont(void) { return m_labelText->font(); }
+    QFont getFont() { return m_labelText->font(); }
     void setDimString(QString t);
     void setDimString(QString t, qreal maxWidth);
-    void setPrettySel(void);
-    void setPrettyPre(void);
-    void setPrettyNormal(void);
+    void setPrettySel();
+    void setPrettyPre();
+    void setPrettyNormal();
     void setColor(QColor c);
 
     bool verticalSep;
     std::vector<int> seps;
 
-    QGCustomText* getDimText(void) { return m_labelText; }
+    QGCustomText* getDimText() { return m_labelText; }
     void setDimText(QGCustomText* newText) { m_labelText = newText; }
 
     bool hasHover;
@@ -140,24 +140,24 @@ public:
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
 
-    QString getLabelText(void);
+    QString getLabelText();
     void placeBalloon(QPointF pos);
     TechDraw::DrawViewBalloon *dvBalloon;
-    void setPrettyPre(void);
-    void setPrettySel(void);
-    void setPrettyNormal(void);
+    void setPrettyPre();
+    void setPrettySel();
+    void setPrettyNormal();
 
     virtual void setGroupSelection(bool b) override;
-    virtual QGIBalloonLabel* getBalloonLabel(void) { return balloonLabel; }
+    virtual QGIBalloonLabel* getBalloonLabel() { return balloonLabel; }
 
-    virtual QColor getNormalColor(void) override;
+    virtual QColor getNormalColor() override;
     int prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
 
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
-    void balloonLabelDragFinished(void);
+    void balloonLabelDragFinished();
     void select(bool state);
     void hover(bool state);
     void updateBalloon(bool obtuse = false);
@@ -171,9 +171,9 @@ protected:
     void drawBalloon(bool dragged = false);
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
-    virtual void setSvgPens(void);
-    virtual void setPens(void);
-    QString getPrecision(void);
+    virtual void setSvgPens();
+    virtual void setPens();
+    QString getPrecision();
 
 protected:
     bool hasHover;

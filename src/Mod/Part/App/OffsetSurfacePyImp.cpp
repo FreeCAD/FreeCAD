@@ -34,7 +34,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string OffsetSurfacePy::representation(void) const
+std::string OffsetSurfacePy::representation() const
 {
     return "<OffsetSurface object>";
 }
@@ -75,7 +75,7 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-Py::Float OffsetSurfacePy::getOffsetValue(void) const
+Py::Float OffsetSurfacePy::getOffsetValue() const
 {
     Handle(Geom_OffsetSurface) surf = Handle(Geom_OffsetSurface)::DownCast(getGeometryPtr()->handle());
     return Py::Float(surf->Offset());
@@ -87,7 +87,7 @@ void  OffsetSurfacePy::setOffsetValue(Py::Float arg)
     surf->SetOffsetValue((double)arg);
 }
 
-Py::Object OffsetSurfacePy::getBasisSurface(void) const
+Py::Object OffsetSurfacePy::getBasisSurface() const
 {
     Handle(Geom_OffsetSurface) surf = Handle(Geom_OffsetSurface)::DownCast
         (getGeometryPtr()->handle());

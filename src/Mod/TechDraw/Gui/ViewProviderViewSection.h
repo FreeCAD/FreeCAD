@@ -51,10 +51,10 @@ public:
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property *prop);
     virtual bool setEdit(int ModNum);
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked();
 
-    void updateGraphic(void);
-    void getParameters(void);
+    void updateGraphic();
+    void getParameters();
     virtual bool canDelete(App::DocumentObject* obj) const;
 
     virtual TechDraw::DrawViewSection* getViewObject() const;

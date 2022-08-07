@@ -42,7 +42,7 @@ class TechDrawExport DrawViewImage : public TechDraw::DrawView
 
 public:
     /// Constructor
-    DrawViewImage(void);
+    DrawViewImage();
     virtual ~DrawViewImage();
 
     App::PropertyFile         ImageFile;
@@ -53,19 +53,19 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     short mustExecute() const override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderImage";
     }
     QRectF getRect() const override;
 
 protected:
-    void setupImageIncluded(void);
+    void setupImageIncluded();
     void replaceImageIncluded(std::string newFileName);
 
     void onChanged(const App::Property* prop) override;

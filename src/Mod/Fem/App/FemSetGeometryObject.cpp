@@ -44,7 +44,7 @@ FemSetGeometryObject::~FemSetGeometryObject()
 {
 }
 
-short FemSetGeometryObject::mustExecute(void) const
+short FemSetGeometryObject::mustExecute() const
 {
     return 0;
 }

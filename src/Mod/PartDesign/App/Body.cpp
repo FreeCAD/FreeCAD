@@ -373,7 +373,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
 }
 
 
-App::DocumentObjectExecReturn *Body::execute(void)
+App::DocumentObjectExecReturn *Body::execute()
 {
     /*
     Base::Console().Error("Body '%s':\n", getNameInDocument());
@@ -476,7 +476,7 @@ void Body::unsetupObject () {
     Part::BodyBase::unsetupObject ();
 }
 
-PyObject *Body::getPyObject(void)
+PyObject *Body::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
         // ref counter is set to 1

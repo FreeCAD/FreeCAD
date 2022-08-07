@@ -67,7 +67,7 @@ public:
             const char *subname, const std::vector<std::string> &elements) const override;
     std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *, 
             const std::vector<std::string> &) override;
-    std::vector<App::DocumentObject*> claimChildren(void) const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
     virtual bool doubleClicked() override;
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;

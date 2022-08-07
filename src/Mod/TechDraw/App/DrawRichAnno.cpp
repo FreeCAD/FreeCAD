@@ -43,7 +43,7 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawRichAnno, TechDraw::DrawView)
 
-DrawRichAnno::DrawRichAnno(void)
+DrawRichAnno::DrawRichAnno()
 {
     static const char *group = "Text Block";
 
@@ -86,7 +86,7 @@ short DrawRichAnno::mustExecute() const
     return DrawView::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawRichAnno::execute(void)
+App::DocumentObjectExecReturn *DrawRichAnno::execute()
 { 
 //    Base::Console().Message("DRA::execute() - @ (%.3f, %.3f)\n", X.getValue(), Y.getValue());
     if (!keepUpdated()) {
@@ -95,14 +95,14 @@ App::DocumentObjectExecReturn *DrawRichAnno::execute(void)
     return DrawView::execute();
 }
 
-DrawView* DrawRichAnno::getBaseView(void) const
+DrawView* DrawRichAnno::getBaseView() const
 {
 //    Base::Console().Message("DRA::getBaseView() - %s\n", getNameInDocument());
     return dynamic_cast<DrawView*>(AnnoParent.getValue());
 }
 
 
-PyObject *DrawRichAnno::getPyObject(void)
+PyObject *DrawRichAnno::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -116,7 +116,7 @@ PyObject *DrawRichAnno::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawRichAnnoPython, TechDraw::DrawRichAnno)
-template<> const char* TechDraw::DrawRichAnnoPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawRichAnnoPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderRichAnno";
 }
 /// @endcond

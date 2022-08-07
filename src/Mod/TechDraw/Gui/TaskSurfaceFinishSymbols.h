@@ -66,7 +66,7 @@ public:
     void addLine(int x1, int y1, int x2, int y2);
     void addCircle(int xCenter, int yCenter, int radius);
     void addText(int xText, int yText, std::string text);
-    std::string finish(void);
+    std::string finish();
 
 }; // SvgString
 
@@ -95,7 +95,7 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent *e);
 
-    void setUiEdit(void);
+    void setUiEdit();
 
 private:
     enum symbolType {anyMethod=0, removeProhibit, removeRequired,
@@ -132,7 +132,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
                         { return false; }
     void update();
 

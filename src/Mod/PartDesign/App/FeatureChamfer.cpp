@@ -102,7 +102,7 @@ short Chamfer::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Chamfer::execute(void)
+App::DocumentObjectExecReturn *Chamfer::execute()
 {
     // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
     // The only difference is that the Base property also stores the edges that are to be chamfered

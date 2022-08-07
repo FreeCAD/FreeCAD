@@ -50,9 +50,9 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     virtual short mustExecute() const override;
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "PartGui::ViewProviderOffset";
     }
     //@}
@@ -72,9 +72,9 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     virtual short mustExecute() const override;
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "PartGui::ViewProviderOffset2D";
     }
     //@}

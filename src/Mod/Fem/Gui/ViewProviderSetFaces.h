@@ -34,7 +34,7 @@ class ViewProviderSetFaces : public Gui::ViewProviderGeometryObject
     PROPERTY_HEADER(RobotGui::ViewProviderSetFaces);
 
 public:
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked();
 
 protected:
     virtual bool setEdit(int ModNum);

@@ -50,7 +50,7 @@ int HLRToShapePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string HLRToShapePy::representation(void) const
+std::string HLRToShapePy::representation() const
 {
     return std::string("<HLRBRep_HLRToShape object>");
 }

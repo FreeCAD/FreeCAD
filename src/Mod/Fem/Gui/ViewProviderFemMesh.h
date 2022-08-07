@@ -87,7 +87,7 @@ public:
      */
     //@{
     /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const {return true;}
+    virtual bool useNewSelectionModel() const {return true;}
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail*) const;
     virtual SoDetail* getDetail(const char*) const;
@@ -98,7 +98,7 @@ public:
     // interface methods
     void setHighlightNodes(const std::set<long>&);
     std::set<long> getHighlightNodes() const;
-    void resetHighlightNodes(void);
+    void resetHighlightNodes();
 
     /** @name Postprocessing
       * this interfaces apply post processing stuff to the View-
@@ -112,21 +112,21 @@ public:
     void setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color>  &NodeColors);
 
     /// reset the view of the node colors
-    void resetColorByNodeId(void);
+    void resetColorByNodeId();
     /// set the displacement for each node
     void setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap);
     void setDisplacementByNodeId(const std::vector<long> &NodeIds,const std::vector<Base::Vector3d> &NodeDisps);
     /// reset the view of the node displacement
-    void resetDisplacementByNodeId(void);
+    void resetDisplacementByNodeId();
     /// reaply the node displacement with a certain factor and do a redraw
     void applyDisplacementToNodes(double factor);
     /// set the color for each element
     void setColorByElementId(const std::map<long,App::Color> &ElementColorMap);
     /// reset the view of the element colors
-    void resetColorByElementId(void);
+    void resetColorByElementId();
     //@}
 
-    const std::vector<unsigned long> &getVisibleElementFaces(void)const{return vFaceElementIdx;}
+    const std::vector<unsigned long> &getVisibleElementFaces()const{return vFaceElementIdx;}
 
     PyObject *getPyObject();
 

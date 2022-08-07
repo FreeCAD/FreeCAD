@@ -32,7 +32,7 @@
 using namespace Robot;
 
 // returns a string which represents the object e.g. when printed in python
-std::string RobotObjectPy::representation(void) const
+std::string RobotObjectPy::representation() const
 {
     return std::string("<RobotObject object>");
 }

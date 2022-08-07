@@ -43,14 +43,14 @@ class FemExport FemPostFunction : public App::DocumentObject
 
 public:
     /// Constructor
-    FemPostFunction(void);
+    FemPostFunction();
     virtual ~FemPostFunction();
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostFunction";
     }
 
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual App::DocumentObjectExecReturn* execute();
 
     //bound box handling
     void setBoundingBox(vtkBoundingBox b) {m_boundingBox = b;};
@@ -68,10 +68,10 @@ class FemExport FemPostFunctionProvider : public App::DocumentObject {
     PROPERTY_HEADER(Fem::FemPostFunctionProvider);
 
 public:
-    FemPostFunctionProvider(void);
+    FemPostFunctionProvider();
     virtual ~FemPostFunctionProvider();
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostFunctionProvider";
     }
 
@@ -90,13 +90,13 @@ class FemExport FemPostPlaneFunction : public FemPostFunction
 
 public:
 
-    FemPostPlaneFunction(void);
+    FemPostPlaneFunction();
     virtual ~FemPostPlaneFunction();
 
     App::PropertyVector           Normal;
     App::PropertyVectorDistance   Origin;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostPlaneFunction";
     }
 
@@ -116,13 +116,13 @@ class FemExport FemPostSphereFunction : public FemPostFunction
 
 public:
 
-    FemPostSphereFunction(void);
+    FemPostSphereFunction();
     virtual ~FemPostSphereFunction();
 
     App::PropertyDistance         Radius;
     App::PropertyVectorDistance   Center;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostSphereFunction";
     }
 

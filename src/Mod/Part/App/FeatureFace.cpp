@@ -57,7 +57,7 @@ void Face::setupObject()
     Feature::setupObject();
 }
 
-App::DocumentObjectExecReturn *Face::execute(void)
+App::DocumentObjectExecReturn *Face::execute()
 {
     std::vector<App::DocumentObject*> links = Sources.getValues();
     if (links.empty())

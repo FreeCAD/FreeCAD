@@ -734,7 +734,7 @@ void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl)
 #endif
 }
 
-void BrowserView::stop(void)
+void BrowserView::stop()
 {
     view->stop();
 }
@@ -867,12 +867,12 @@ bool BrowserView::onHasMsg(const char* pMsg) const
 }
 
 /** Checking on close state. */
-bool BrowserView::canClose(void)
+bool BrowserView::canClose()
 {
     return true;
 }
 
-PyObject* BrowserView::getPyObject(void)
+PyObject* BrowserView::getPyObject()
 {
     static bool init = false;
     if (!init) {

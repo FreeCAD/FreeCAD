@@ -48,21 +48,21 @@ public:
 
     int addView(DrawView *view);
     int removeView(DrawView *view);
-    void rebuildViewList(void);
-    bool isUnsetting(void) { return nowUnsetting; }
+    void rebuildViewList();
+    bool isUnsetting() { return nowUnsetting; }
 
     int countChildren();
-    void lockChildren(void);
+    void lockChildren();
 
     virtual void onDocumentRestored();
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     virtual void unsetupObject();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderViewCollection";
     }
-    virtual QRectF getRect(void) const;
+    virtual QRectF getRect() const;
 
 protected:
     void onChanged(const App::Property* prop);

@@ -41,7 +41,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
     PyObject* getPyObject() override;
     //@}
@@ -68,11 +68,11 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     void onChanged(const App::Property*);
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderPointParametric";
     }
     //@}
@@ -96,11 +96,11 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     void onChanged(const App::Property*);
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderLineParametric";
     }
     //@}
@@ -119,10 +119,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderPlaneParametric";
     }
     //@}
@@ -143,10 +143,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderSphereParametric";
     }
     //@}
@@ -169,10 +169,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     //@}
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "PartGui::ViewProviderEllipsoid";
     }
 };
@@ -192,10 +192,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderCylinderParametric";
     }
     //@}
@@ -216,10 +216,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderPrism";
     }
     //@}
@@ -240,10 +240,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderRegularPolygon";
     }
     //@}
@@ -266,10 +266,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderConeParametric";
     }
     //@}
@@ -291,10 +291,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderTorusParametric";
     }
     //@}
@@ -318,10 +318,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderHelixParametric";
     }
     //@}
@@ -349,10 +349,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderSpiralParametric";
     }
     //@}
@@ -382,10 +382,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderWedge";
     }
     //@}
@@ -410,11 +410,11 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     void onChanged(const App::Property*);
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderEllipseParametric";
     }
     //@}

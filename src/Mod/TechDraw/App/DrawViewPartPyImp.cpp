@@ -67,7 +67,7 @@ using namespace TechDraw;
 //TODO: errors to PyErrors
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawViewPartPy::representation(void) const
+std::string DrawViewPartPy::representation() const
 {
     return std::string("<DrawViewPart object>");
 }

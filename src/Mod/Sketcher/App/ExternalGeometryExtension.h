@@ -68,9 +68,9 @@ public:
     ExternalGeometryExtension() = default;
     virtual ~ExternalGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    virtual std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
     virtual bool testFlag(int flag) const override { return Flags.test((size_t)(flag)); }

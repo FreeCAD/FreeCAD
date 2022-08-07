@@ -48,7 +48,7 @@ public:
     App::PropertyBool Nonmanifold;     //Option for non-manifold processing
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
 };
 

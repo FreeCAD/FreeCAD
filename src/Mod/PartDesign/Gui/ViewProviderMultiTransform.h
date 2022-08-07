@@ -39,7 +39,7 @@ public:
         sPixmap = "PartDesign_MultiTransform.svg";
     }
 
-    std::vector<App::DocumentObject*> claimChildren(void) const;
+    std::vector<App::DocumentObject*> claimChildren() const;
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual bool onDelete(const std::vector<std::string> &);

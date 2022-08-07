@@ -48,18 +48,18 @@ public:
     ~Sketch();
 
     // from base class
-    virtual unsigned int getMemSize(void) const;
+    virtual unsigned int getMemSize() const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
 
     /// solve the actual set up sketch
-    int solve(void);
+    int solve();
     /// resets the solver
     int resetSolver();
     /// get standard (aka fine) solver precision
     double getSolverPrecision(){ return GCSsys.getFinePrecision(); }
     /// delete all geometry and constraints, leave an empty sketch
-    void clear(void);
+    void clear();
     /** set the sketch up with geoms and constraints
       *
       * returns the degree of freedom of a sketch and calculates a list of
@@ -76,7 +76,7 @@ public:
     int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
                     int extGeoCount=0);
     /// return the actual geometry of the sketch a TopoShape
-    Part::TopoShape toShape(void) const;
+    Part::TopoShape toShape() const;
     /// add unspecified geometry
     int addGeometry(const Part::Geometry *geo, bool fixed=false);
     /// add unspecified geometry
@@ -96,7 +96,7 @@ public:
 
     void updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext);
     /// get the geometry as python objects
-    Py::Tuple getPyGeometry(void) const;
+    Py::Tuple getPyGeometry() const;
 
     /// retrieves the index of a point
     int getPointId(int geoId, PointPos pos) const;
@@ -104,17 +104,17 @@ public:
     Base::Vector3d getPoint(int geoId, PointPos pos) const;
 
     // Inline methods
-    inline bool hasConflicts(void) const { return !Conflicting.empty(); }
-    inline const std::vector<int> &getConflicting(void) const { return Conflicting; }
-    inline bool hasRedundancies(void) const { return !Redundant.empty(); }
-    inline const std::vector<int> &getRedundant(void) const { return Redundant; }
-    inline bool hasPartialRedundancies(void) const { return !PartiallyRedundant.empty(); }
-    inline const std::vector<int> &getPartiallyRedundant(void) const { return PartiallyRedundant; }
+    inline bool hasConflicts() const { return !Conflicting.empty(); }
+    inline const std::vector<int> &getConflicting() const { return Conflicting; }
+    inline bool hasRedundancies() const { return !Redundant.empty(); }
+    inline const std::vector<int> &getRedundant() const { return Redundant; }
+    inline bool hasPartialRedundancies() const { return !PartiallyRedundant.empty(); }
+    inline const std::vector<int> &getPartiallyRedundant() const { return PartiallyRedundant; }
 
     inline float getSolveTime() const { return SolveTime; }
 
-    inline bool hasMalformedConstraints(void) const { return !MalformedConstraints.empty(); }
-    inline const std::vector<int> &getMalformedConstraints(void) const { return MalformedConstraints; }
+    inline bool hasMalformedConstraints() const { return !MalformedConstraints.empty(); }
+    inline const std::vector<int> &getMalformedConstraints() const { return MalformedConstraints; }
 public:
     std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
 
@@ -394,7 +394,7 @@ public:
     double calculateConstraintError(int icstr) { return GCSsys.calculateConstraintErrorByTag(icstr);}
 
     /// Returns the size of the Geometry
-    int getGeometrySize(void) const {return Geoms.size();}
+    int getGeometrySize() const {return Geoms.size();}
 
     enum GeoType {
         None    = 0,
@@ -486,7 +486,7 @@ public:
     GCS::Algorithm defaultSolverRedundant;
     inline void setDogLegGaussStep(GCS::DogLegGaussStep mode){GCSsys.dogLegGaussStep=mode;}
     inline void setDebugMode(GCS::DebugMode mode) {debugMode=mode;GCSsys.debugMode=mode;}
-    inline GCS::DebugMode getDebugMode(void) {return debugMode;}
+    inline GCS::DebugMode getDebugMode() {return debugMode;}
     inline void setMaxIter(int maxiter){GCSsys.maxIter=maxiter;}
     inline void setMaxIterRedundant(int maxiter){GCSsys.maxIterRedundant=maxiter;}
     inline void setSketchSizeMultiplier(bool mult){GCSsys.sketchSizeMultiplier=mult;}
@@ -514,12 +514,12 @@ protected:
 
 private:
 
-    bool updateGeometry(void);
-    bool updateNonDrivingConstraints(void);
+    bool updateGeometry();
+    bool updateNonDrivingConstraints();
 
-    void calculateDependentParametersElements(void);
+    void calculateDependentParametersElements();
 
-    void clearTemporaryConstraints(void);
+    void clearTemporaryConstraints();
 
     int internalSolve(std::string & solvername, int level = 0);
 

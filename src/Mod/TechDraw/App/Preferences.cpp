@@ -303,7 +303,7 @@ std::string Preferences::patFile()
     return result;
 }
 
-std::string Preferences::bitmapFill(void)
+std::string Preferences::bitmapFill()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");

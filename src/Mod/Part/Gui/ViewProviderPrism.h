@@ -40,7 +40,7 @@ public:
     /// destructor
     virtual ~ViewProviderPrism();
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
 
 protected:
 
@@ -56,7 +56,7 @@ public:
     /// destructor
     virtual ~ViewProviderWedge();
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
 
 protected:
 

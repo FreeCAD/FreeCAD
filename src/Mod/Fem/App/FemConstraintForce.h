@@ -40,7 +40,7 @@ class FemExport ConstraintForce : public Fem::Constraint
 
 public:
     /// Constructor
-    ConstraintForce(void);
+    ConstraintForce();
 
     App::PropertyFloat Force;
     App::PropertyLinkSub Direction;
@@ -50,10 +50,10 @@ public:
     App::PropertyVector DirectionVector;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemConstraintForce";
     }
 

@@ -54,7 +54,7 @@ LineGroup::~LineGroup()
 {
 }
 
-void LineGroup::init(void)
+void LineGroup::init()
 {
     m_name    = "Default";
     m_thin    = 0.35;

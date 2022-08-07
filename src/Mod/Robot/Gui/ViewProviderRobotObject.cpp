@@ -146,7 +146,7 @@ void ViewProviderRobotObject::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderRobotObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderRobotObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
     StrList.emplace_back("VRML");

@@ -35,7 +35,7 @@
 using namespace Sketcher;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SketchGeometryExtensionPy::representation(void) const
+std::string SketchGeometryExtensionPy::representation() const
 {
     std::stringstream str;
     str << "<SketchGeometryExtension (";
@@ -79,7 +79,7 @@ int SketchGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Long SketchGeometryExtensionPy::getId(void) const
+Py::Long SketchGeometryExtensionPy::getId() const
 {
     return Py::Long(this->getSketchGeometryExtensionPtr()->getId());
 }
@@ -89,7 +89,7 @@ void SketchGeometryExtensionPy::setId(Py::Long Id)
     this->getSketchGeometryExtensionPtr()->setId(long(Id));
 }
 
-Py::String SketchGeometryExtensionPy::getInternalType(void) const
+Py::String SketchGeometryExtensionPy::getInternalType() const
 {
     int internaltypeindex = (int)this->getSketchGeometryExtensionPtr()->getInternalType();
 
@@ -114,7 +114,7 @@ void SketchGeometryExtensionPy::setInternalType(Py::String arg)
     throw Py::ValueError("Argument is not a valid internal geometry type.");
 }
 
-Py::Boolean SketchGeometryExtensionPy::getBlocked(void) const
+Py::Boolean SketchGeometryExtensionPy::getBlocked() const
 {
     return Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(GeometryMode::Blocked));
 }
@@ -124,7 +124,7 @@ void SketchGeometryExtensionPy::setBlocked(Py::Boolean arg)
     getSketchGeometryExtensionPtr()->setGeometryMode(GeometryMode::Blocked, arg);
 }
 
-Py::Boolean SketchGeometryExtensionPy::getConstruction(void) const
+Py::Boolean SketchGeometryExtensionPy::getConstruction() const
 {
      return Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(GeometryMode::Construction));
 }
@@ -173,7 +173,7 @@ PyObject* SketchGeometryExtensionPy::setGeometryMode(PyObject *args)
     Py_Return;
 }
 
-Py::Long SketchGeometryExtensionPy::getGeometryLayerId(void) const
+Py::Long SketchGeometryExtensionPy::getGeometryLayerId() const
 {
     return Py::Long(this->getSketchGeometryExtensionPtr()->getGeometryLayerId());
 }

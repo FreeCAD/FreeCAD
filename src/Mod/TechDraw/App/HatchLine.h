@@ -56,12 +56,12 @@ public:
       ~DashSpec() {}
 
       double              get(int i)  {return m_parms.at(i); }
-      std::vector<double> get(void)   {return m_parms;}
-      bool                empty(void) {return m_parms.empty();}
-      int                 size(void)  {return m_parms.size();}
-      double              length(void);
+      std::vector<double> get()   {return m_parms;}
+      bool                empty() {return m_parms.empty();}
+      int                 size()  {return m_parms.size();}
+      double              length();
       void                dump(const char* title);
-      DashSpec            reversed(void);
+      DashSpec            reversed();
 
 private:
     std::vector<double> m_parms;
@@ -77,27 +77,27 @@ public:
 
     void load(std::string& lineSpec);
 
-    double getAngle(void)  {return m_angle;}
-    Base::Vector3d getOrigin(void) {return m_origin;}
-    double getInterval(void) {return m_interval;}
-    double getIntervalX(void);
-    double getIntervalY(void);
-    double getOffset(void)  {return m_offset;}
-    double getSlope(void);
-    double getLength(void) {return m_dashParms.length(); }
-    DashSpec getDashParms(void) {return m_dashParms;}
+    double getAngle()  {return m_angle;}
+    Base::Vector3d getOrigin() {return m_origin;}
+    double getInterval() {return m_interval;}
+    double getIntervalX();
+    double getIntervalY();
+    double getOffset()  {return m_offset;}
+    double getSlope();
+    double getLength() {return m_dashParms.length(); }
+    DashSpec getDashParms() {return m_dashParms;}
 
     static std::vector<PATLineSpec> getSpecsForPattern(std::string& parmFile, std::string& parmName);
     static bool  findPatternStart(std::ifstream& inFile, std::string& parmName);
     static std::vector<std::string> loadPatternDef(std::ifstream& inFile);
     static std::vector<std::string> getPatternList(std::string& parmFile);
 
-    bool isDashed(void);
+    bool isDashed();
 
     void dump(const char* title);
 
 private:
-    void init(void);
+    void init();
     std::vector<double> split(std::string line);
     //PAT line extracted tokens
     double m_angle;
@@ -119,34 +119,34 @@ public:
     void setGeoms(std::vector<TechDraw::BaseGeomPtr>  g) {m_geoms = g;}
     void setBBox(const Bnd_Box& bb) {m_box = bb;}
 
-    std::vector<TopoDS_Edge>    getEdges(void) { return m_edges; }
+    std::vector<TopoDS_Edge>    getEdges() { return m_edges; }
     TopoDS_Edge                 getEdge(int i) {return m_edges.at(i);}
-    std::vector<TechDraw::BaseGeomPtr> getGeoms(void) { return m_geoms; }
+    std::vector<TechDraw::BaseGeomPtr> getGeoms() { return m_geoms; }
 
-    PATLineSpec       getPATLineSpec(void) { return m_hatchLine; }
-    double            getOffset(void) { return m_hatchLine.getOffset(); }      //delta X offset
-    double            getAngle(void)  { return m_hatchLine.getAngle(); }
-    Base::Vector3d    getOrigin(void) { return m_hatchLine.getOrigin(); }
-    double            getInterval(void) {return m_hatchLine.getInterval(); }   //space between lines
-    double            getIntervalX(void) { return m_hatchLine.getIntervalX(); }      //interval X-component
-    double            getIntervalY(void) { return m_hatchLine.getIntervalY(); }      //interval Y-component
-    double            getSlope(void)  { return m_hatchLine.getSlope(); }
-    double            getPatternLength(void) { return m_hatchLine.getLength(); }
-    Base::Vector3d    getUnitDir(void);
-    Base::Vector3d    getUnitOrtho(void);
-    DashSpec          getDashSpec(void) { return m_hatchLine.getDashParms();}
+    PATLineSpec       getPATLineSpec() { return m_hatchLine; }
+    double            getOffset() { return m_hatchLine.getOffset(); }      //delta X offset
+    double            getAngle()  { return m_hatchLine.getAngle(); }
+    Base::Vector3d    getOrigin() { return m_hatchLine.getOrigin(); }
+    double            getInterval() {return m_hatchLine.getInterval(); }   //space between lines
+    double            getIntervalX() { return m_hatchLine.getIntervalX(); }      //interval X-component
+    double            getIntervalY() { return m_hatchLine.getIntervalY(); }      //interval Y-component
+    double            getSlope()  { return m_hatchLine.getSlope(); }
+    double            getPatternLength() { return m_hatchLine.getLength(); }
+    Base::Vector3d    getUnitDir();
+    Base::Vector3d    getUnitOrtho();
+    DashSpec          getDashSpec() { return m_hatchLine.getDashParms();}
     Base::Vector3d    calcApparentStart(TechDraw::BaseGeomPtr g);
-    Base::Vector3d    findAtomStart(void);
-    Base::Vector3d    getLineOrigin(void);                              //point corresponding to pattern origin for this line (O + n*intervalX)
+    Base::Vector3d    findAtomStart();
+    Base::Vector3d    getLineOrigin();                              //point corresponding to pattern origin for this line (O + n*intervalX)
     Base::Vector3d    getPatternStartPoint(TechDraw::BaseGeomPtr g, double &offset, double scale = 1.0);
 
-    Bnd_Box getBBox(void) {return m_box;}
-    double getMinX(void);
-    double getMaxX(void);
-    double getMinY(void);
-    double getMaxY(void);
+    Bnd_Box getBBox() {return m_box;}
+    double getMinX();
+    double getMaxX();
+    double getMinY();
+    double getMaxY();
 
-    bool isDashed(void);
+    bool isDashed();
 
 private:
     std::vector<TopoDS_Edge> m_edges;

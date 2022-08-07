@@ -47,7 +47,7 @@ ViewProviderLoft::~ViewProviderLoft()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
@@ -173,7 +173,7 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderLoft::getIcon(void) const {
+QIcon ViewProviderLoft::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Loft*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)

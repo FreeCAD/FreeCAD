@@ -37,7 +37,7 @@
 
 using namespace SketcherGui;
 
-SketcherRegularPolygonDialog::SketcherRegularPolygonDialog(void)
+SketcherRegularPolygonDialog::SketcherRegularPolygonDialog()
 : QDialog(Gui::getMainWindow()), ui(new Ui_SketcherRegularPolygonDialog)
 {
     ui->setupUi(this);
@@ -60,7 +60,7 @@ void SketcherRegularPolygonDialog::accept()
     QDialog::accept();
 }
 
-void SketcherRegularPolygonDialog::updateValues(void)
+void SketcherRegularPolygonDialog::updateValues()
 {
     sides = ui->sidesQuantitySpinBox->value();
 }

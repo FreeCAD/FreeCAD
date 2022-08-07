@@ -38,7 +38,7 @@ class FemExport ConstraintDisplacement : public Fem::Constraint
 
 public:
     /// Constructor
-    ConstraintDisplacement(void);
+    ConstraintDisplacement();
 
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
@@ -66,10 +66,10 @@ public:
     //App::PropertyBool element;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const;
+    const char* getViewProviderName() const;
 
 protected:
     virtual void onChanged(const App::Property* prop);

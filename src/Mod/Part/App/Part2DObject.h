@@ -58,7 +58,7 @@ public:
     virtual void transformPlacement(const Base::Placement &transform) override;
 
     /// returns the number of construction lines (to be used as axes)
-    virtual int getAxisCount(void) const;
+    virtual int getAxisCount() const;
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
     virtual Base::Axis getAxis(int axId) const;
     /// verify and accept the assigned geometry
@@ -85,10 +85,10 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProvider2DObject";
     }
     //@}

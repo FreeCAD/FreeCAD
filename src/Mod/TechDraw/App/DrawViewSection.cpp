@@ -227,7 +227,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
     DrawView::onChanged(prop);
 }
 
-void DrawViewSection::makeLineSets(void) 
+void DrawViewSection::makeLineSets()
 {
 //    Base::Console().Message("DVS::makeLineSets()\n");
     if (!PatIncluded.isEmpty())  {
@@ -282,7 +282,7 @@ void DrawViewSection::replacePatIncluded(std::string newPatFile)
     }
 }
 
-App::DocumentObjectExecReturn *DrawViewSection::execute(void)
+App::DocumentObjectExecReturn *DrawViewSection::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -582,7 +582,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 }
 
 //calculate the ends of the section line in BaseView's coords
-std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds(void)
+std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds()
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
@@ -639,7 +639,7 @@ bool DrawViewSection::isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const
     return !bb.IsOut(p);
 }
 
-Base::Vector3d DrawViewSection::getXDirection(void) const
+Base::Vector3d DrawViewSection::getXDirection() const
 {
 //    Base::Console().Message("DVS::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
@@ -737,7 +737,7 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
 }
 
 //returns current section cs
-gp_Ax2 DrawViewSection::getSectionCS(void) const
+gp_Ax2 DrawViewSection::getSectionCS() const
 {
 //    Base::Console().Message("DVS::getSectionCS()\n");
     Base::Vector3d vNormal = SectionNormal.getValue();
@@ -848,7 +848,7 @@ void DrawViewSection::getParameters()
     FuseBeforeCut.setValue(fuseFirst);
 }
 
-bool DrawViewSection::debugSection(void) const
+bool DrawViewSection::debugSection() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
@@ -857,7 +857,7 @@ bool DrawViewSection::debugSection(void) const
     return result;
 }
 
-int DrawViewSection::prefCutSurface(void) const
+int DrawViewSection::prefCutSurface() const
 {
 //    Base::Console().Message("DVS::prefCutSurface()\n");
     Base::Reference<ParameterGrp>hGrp = App::GetApplication().GetUserParameter()
@@ -867,7 +867,7 @@ int DrawViewSection::prefCutSurface(void) const
     return result;
 }
 
-bool DrawViewSection::showSectionEdges(void)
+bool DrawViewSection::showSectionEdges()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
@@ -911,7 +911,7 @@ void DrawViewSection::setupObject()
     DrawViewPart::setupObject();
 }
 
-void DrawViewSection::setupSvgIncluded(void)
+void DrawViewSection::setupSvgIncluded()
 {
 //    Base::Console().Message("DVS::setupSvgIncluded()\n");
     App::Document* doc = getDocument();
@@ -935,7 +935,7 @@ void DrawViewSection::setupSvgIncluded(void)
     }
 }
 
-void DrawViewSection::setupPatIncluded(void)
+void DrawViewSection::setupPatIncluded()
 {
 //    Base::Console().Message("DVS::setupPatIncluded()\n");
     App::Document* doc = getDocument();
@@ -961,7 +961,7 @@ void DrawViewSection::setupPatIncluded(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewSectionPython, TechDraw::DrawViewSection)
-template<> const char* TechDraw::DrawViewSectionPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewSectionPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderDrawingView";
 }
 /// @endcond

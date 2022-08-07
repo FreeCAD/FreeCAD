@@ -58,7 +58,7 @@ public:
     ~Robot6Axis();
 
     // from base class
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
     virtual void Save (Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
 
@@ -75,8 +75,8 @@ public:
     double getMaxAngle(int Axis);
     double getMinAngle(int Axis);
     /// calculate the new Tcp out of the Axis
-    bool calcTcp(void);
-    Base::Placement getTcp(void);
+    bool calcTcp();
+    Base::Placement getTcp();
 
     //void setKinematik(const std::vector<std::vector<float> > &KinTable);
 

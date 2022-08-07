@@ -116,11 +116,11 @@ public:
     /// set the transformation of the CasCade Shape
     void setShapePlacement(const Base::Placement& rclTrf);
     /// get the transformation of the CasCade Shape
-    Base::Placement getShapePlacement(void) const;
+    Base::Placement getShapePlacement() const;
     /// get the transformation of the CasCade Shape
-    Base::Matrix4D getTransform(void) const;
+    Base::Matrix4D getTransform() const;
     /// Bound box from the CasCade shape
-    Base::BoundBox3d getBoundBox(void)const;
+    Base::BoundBox3d getBoundBox()const;
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
     static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
@@ -134,7 +134,7 @@ public:
      *  List of different subelement types
      *  it is NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes(void) const;
+    virtual std::vector<const char*> getElementTypes() const;
     virtual unsigned long countSubElements(const char* Type) const;
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
@@ -171,7 +171,7 @@ public:
 
     void SaveDocFile (Base::Writer &writer) const;
     void RestoreDocFile(Base::Reader &reader);
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     //@}
 
     /** @name Input/Output */

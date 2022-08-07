@@ -44,7 +44,7 @@ protected:
     void loadSettings();
     void changeEvent(QEvent *e);
 
-    int prefArrowStyle(void) const;
+    int prefArrowStyle() const;
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawDimensionsImp> ui;

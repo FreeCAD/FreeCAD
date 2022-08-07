@@ -65,7 +65,7 @@ TaskEdge2TracParameter::TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,
     setHideShowObject();
 
 }
-void TaskEdge2TracParameter::setHideShowObject(void)
+void TaskEdge2TracParameter::setHideShowObject()
 {
     HideShowObj = pcObject->Source.getValue();
 
@@ -77,7 +77,7 @@ void TaskEdge2TracParameter::setHideShowObject(void)
     }
 }
 
-void TaskEdge2TracParameter::hideShow(void)
+void TaskEdge2TracParameter::hideShow()
 {
     setHideShowObject();
 

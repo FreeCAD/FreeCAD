@@ -231,7 +231,7 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
     tile->draw();
 }
 
-void QGIWeldSymbol::drawAllAround(void)
+void QGIWeldSymbol::drawAllAround()
 {
 //    Base::Console().Message("QGIWS::drawAllAround()\n");
     QPointF allAroundPos = getKinkPoint();
@@ -255,7 +255,7 @@ void QGIWeldSymbol::drawAllAround(void)
     m_allAround->setZValue(ZVALUE::DIMENSION);
 }
 
-void QGIWeldSymbol::drawTailText(void)
+void QGIWeldSymbol::drawTailText()
 {
 //    Base::Console().Message("QGIWS::drawTailText()\n");
     QPointF textPos = getTailPoint();
@@ -335,7 +335,7 @@ void QGIWeldSymbol::drawFieldFlag()
     m_fieldFlag->setPath(path);
 }
 
-void QGIWeldSymbol::getTileFeats(void)
+void QGIWeldSymbol::getTileFeats()
 {
     std::vector<TechDraw::DrawTileWeld*> tiles = getFeature()->getTiles();
     m_arrowFeat = nullptr;
@@ -359,7 +359,7 @@ void QGIWeldSymbol::getTileFeats(void)
     }
 }
 
-void QGIWeldSymbol::removeQGITiles(void) 
+void QGIWeldSymbol::removeQGITiles()
 {
     std::vector<QGITile*> tiles = getQGITiles();
     for (auto t: tiles) {
@@ -375,7 +375,7 @@ void QGIWeldSymbol::removeQGITiles(void)
     }
 }
 
-std::vector<QGITile*> QGIWeldSymbol::getQGITiles(void) const
+std::vector<QGITile*> QGIWeldSymbol::getQGITiles() const
 {
     std::vector<QGITile*> result;
     QList<QGraphicsItem*> children = childItems();
@@ -470,21 +470,21 @@ void QGIWeldSymbol::setPrettySel()
     m_tailText->setPrettySel();
 }
 
-QPointF QGIWeldSymbol::getTileOrigin(void)
+QPointF QGIWeldSymbol::getTileOrigin()
 {
     Base::Vector3d org = m_leadFeat->getTileOrigin();
     QPointF result(org.x, org.y);
     return result;
 }
 
-QPointF QGIWeldSymbol::getKinkPoint(void)
+QPointF QGIWeldSymbol::getKinkPoint()
 {
     Base::Vector3d org = m_leadFeat->getKinkPoint();
     QPointF result(org.x, org.y);
     return result;
 }
 
-QPointF QGIWeldSymbol::getTailPoint(void)
+QPointF QGIWeldSymbol::getTailPoint()
 {
     Base::Vector3d org = m_leadFeat->getTailPoint();
     QPointF result(org.x, org.y);
@@ -498,7 +498,7 @@ void QGIWeldSymbol::setFeature(TechDraw::DrawWeldSymbol* feat)
     m_weldFeatName = feat->getNameInDocument();
 }
 
-TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature(void)
+TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature()
 {
     return m_weldFeat;
 }
@@ -515,7 +515,7 @@ double QGIWeldSymbol::prefArrowSize()
     return PreferencesGui::dimArrowSize();
 }
 
-double QGIWeldSymbol::prefFontSize(void) const
+double QGIWeldSymbol::prefFontSize() const
 {
     return Preferences::labelFontSizeMM();
 }

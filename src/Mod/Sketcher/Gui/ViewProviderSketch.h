@@ -415,7 +415,7 @@ public:
     /// sets an DrawSketchHandler in control
     void activateHandler(DrawSketchHandler *newHandler);
     /// removes the active handler
-    void purgeHandler(void);
+    void purgeHandler();
     //@}
 
 
@@ -443,7 +443,7 @@ public:
     /// is called by GuiCommands to set the drawing mode
     void setSketchMode(SketchMode mode) {Mode = mode;}
     /// get the sketch mode
-    SketchMode getSketchMode(void) const {return Mode;}
+    SketchMode getSketchMode() const {return Mode;}
     //@}
 
     /** @name Drawing functions */
@@ -454,13 +454,13 @@ public:
     void draw(bool temp=false, bool rebuildinformationoverlay=true);
 
     /// helper change the color of the sketch according to selection and solver status
-    void updateColor(void);
+    void updateColor();
     //@}
 
     /** @name Selection functions */
     //@{
     /// Is the view provider selectable
-    bool isSelectable(void) const override;
+    bool isSelectable() const override;
 
     /// Observer message from the Selection
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -469,7 +469,7 @@ public:
     /** @name Access to Sketch and Solver objects */
     //@{
     /// get the pointer to the sketch document object
-    Sketcher::SketchObject *getSketchObject(void) const;
+    Sketcher::SketchObject *getSketchObject() const;
 
     /** returns a const reference to the last solved sketch object. It guarantees that
      *  the solver object does not lose synchronisation with the SketchObject properties.
@@ -481,7 +481,7 @@ public:
      * -> inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false)
      * -> inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
      */
-    const Sketcher::Sketch &getSolvedSketch(void) const;
+    const Sketcher::Sketch &getSolvedSketch() const;
     //@}
 
     /** @name miscelanea utilities */
@@ -495,11 +495,11 @@ public:
     /** @name constraint Virtual Space visibility management */
     //@{
     /// updates the visibility of the virtual space of constraints
-    void updateVirtualSpace(void);
+    void updateVirtualSpace();
     /// determines whether the constraints in the normal space or the ones in the virtual are to be shown
     void setIsShownVirtualSpace(bool isshownvirtualspace);
     /// returns whether the virtual space is being shown
-    bool getIsShownVirtualSpace(void) const;
+    bool getIsShownVirtualSpace() const;
     //@}
 
     /** @name base class implementer */
@@ -515,7 +515,7 @@ public:
     /// If null is returned then no transaction will be opened.
     virtual const char* getTransactionText() const override { return nullptr; }
     /// is called by the tree if the user double clicks on the object
-    virtual bool doubleClicked(void) override;
+    virtual bool doubleClicked() override;
     /// is called when the Provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer) override;
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
@@ -558,13 +558,13 @@ protected:
     /// purges the DrawHandler if existing and tidies up
     void deactivateHandler();
     /// get called if a subelement is double clicked while editing
-    void editDoubleClicked(void);
+    void editDoubleClicked();
     //@}
 
     /** @name Solver Information */
     //@{
     /// update solver information based on last solving at SketchObject
-    void UpdateSolverInformation(void);
+    void UpdateSolverInformation();
 
     /// Auxiliary function to generate messages about conflicting, redundant and malformed constraints
     static QString appendConstraintMsg( const QString & singularmsg,
@@ -606,12 +606,12 @@ private:
     //@{
     /// helper to detect preselection
     bool detectAndShowPreselection (SoPickedPoint * Point, const SbVec2s &cursorPos);
-    int getPreselectPoint(void) const;
-    int getPreselectCurve(void) const;
-    int getPreselectCross(void) const;
+    int getPreselectPoint() const;
+    int getPreselectCurve() const;
+    int getPreselectCross() const;
     void setPreselectPoint(int PreselectPoint);
     void setPreselectRootPoint();
-    void resetPreselectPoint(void);
+    void resetPreselectPoint();
 
     bool setPreselect(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0);
     //@}
@@ -624,7 +624,7 @@ private:
 
     void addSelectPoint(int SelectPoint);
     void removeSelectPoint(int SelectPoint);
-    void clearSelectPoints(void);
+    void clearSelectPoints();
 
     bool isSelected(const std::string & ss) const;
     void rmvSelection(const std::string &subNameSuffix);
@@ -703,7 +703,7 @@ private:
     void setConstraintSelectability(bool enabled = true);
     void setPositionText(const Base::Vector2d &Pos, const SbString &txt);
     void setPositionText(const Base::Vector2d &Pos);
-    void resetPositionText(void);
+    void resetPositionText();
 
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);

@@ -881,7 +881,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
 }
 
 
-std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices(void) const
+std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices() const
 {
     std::vector<Base::Vector3d> points;
     TopoDS_Shape shape = sketch->Shape.getValue();

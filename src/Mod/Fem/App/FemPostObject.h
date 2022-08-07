@@ -39,7 +39,7 @@ class FemExport FemPostObject : public App::GeoFeature
 
 public:
     /// Constructor
-    FemPostObject(void);
+    FemPostObject();
     virtual ~FemPostObject();
 
     Fem::PropertyPostDataObject Data;

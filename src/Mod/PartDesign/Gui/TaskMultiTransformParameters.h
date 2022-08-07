@@ -54,10 +54,10 @@ public:
     TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent = nullptr);
     virtual ~TaskMultiTransformParameters();
 
-    const std::vector<App::DocumentObject*> getTransformFeatures(void) const;
+    const std::vector<App::DocumentObject*> getTransformFeatures() const;
 
     /// Return the currently active subFeature
-    PartDesign::Transformed* getSubFeature(void) {
+    PartDesign::Transformed* getSubFeature() {
         return subFeature;
     }
 
@@ -78,7 +78,7 @@ private Q_SLOTS:
     // Note: There is no Cancel button because I couldn't work out how to save the state of
     // a subFeature so as to revert the changes of an edit operation
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    virtual void onFeatureDeleted();
     /** Notifies when the object is about to be removed. */
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
 

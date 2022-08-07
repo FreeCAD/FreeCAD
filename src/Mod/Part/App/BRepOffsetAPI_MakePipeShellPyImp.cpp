@@ -66,7 +66,7 @@ int BRepOffsetAPI_MakePipeShellPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string BRepOffsetAPI_MakePipeShellPy::representation(void) const
+std::string BRepOffsetAPI_MakePipeShellPy::representation() const
 {
     return std::string("<BRepOffsetAPI_MakePipeShell object>");
 }

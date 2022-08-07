@@ -75,7 +75,7 @@ class TechDrawExport WalkerEdge
 public:
     static bool weCompare(WalkerEdge i, WalkerEdge j);
     bool isEqual(WalkerEdge w);
-    std::string dump(void);
+    std::string dump();
 
     std::size_t v1;
     std::size_t v2;
@@ -91,7 +91,7 @@ public:
     std::vector<WalkerEdge>  wedges;      //[WE] representing 1 wire
     void push_back(WalkerEdge w);
     void clear() {wedges.clear();}
-    int size(void);
+    int size();
 };
 
 class TechDrawExport ewWireList
@@ -101,7 +101,7 @@ public:
 
     std::vector<ewWire> wires;
     void push_back(ewWire e);
-    int size(void);
+    int size();
 };
 
 
@@ -113,7 +113,7 @@ public:
     void next_edge(Edge e);
     void begin_face();
     void end_face();
-    ewWireList getResult(void);     //a list of many wires
+    ewWireList getResult();     //a list of many wires
     void setGraph(graph& g);
 
 private:
@@ -145,7 +145,7 @@ public:
 
     int iVertex;
     std::vector<incidenceItem> incidenceList;
-    std::string dump(void);
+    std::string dump();
     static std::vector<incidenceItem> sortIncidenceList (std::vector<incidenceItem> &list, bool ascend);
 };
 
@@ -153,7 +153,7 @@ public:
 class TechDrawExport EdgeWalker
 {
 public:
-    EdgeWalker(void);
+    EdgeWalker();
     virtual ~EdgeWalker();
 
     bool loadEdges(std::vector<TechDraw::WalkerEdge>& edges);

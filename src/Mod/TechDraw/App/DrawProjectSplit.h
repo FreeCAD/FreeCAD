@@ -65,7 +65,7 @@ public:
 
     static bool edgeLess(const edgeSortItem& e1, const edgeSortItem& e2);
     static bool edgeEqual(const edgeSortItem& e1, const edgeSortItem& e2);
-    std::string dump(void);
+    std::string dump();
 };
 class TechDrawExport DrawProjectSplit
 {

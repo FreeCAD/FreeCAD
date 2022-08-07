@@ -48,7 +48,7 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawParametricTemplate, TechDraw::DrawTemplate)
 
-DrawParametricTemplate::DrawParametricTemplate(void)
+DrawParametricTemplate::DrawParametricTemplate()
 {
     static const char *group = "Page";
     ADD_PROPERTY_TYPE(Template ,(""),group, (App::PropertyType) App::Prop_None,"Template script");
@@ -59,7 +59,7 @@ DrawParametricTemplate::~DrawParametricTemplate()
 }
 
 
-PyObject *DrawParametricTemplate::getPyObject(void)
+PyObject *DrawParametricTemplate::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -68,7 +68,7 @@ PyObject *DrawParametricTemplate::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-unsigned int DrawParametricTemplate::getMemSize(void) const
+unsigned int DrawParametricTemplate::getMemSize() const
 {
     return 0;
 }
@@ -94,7 +94,7 @@ void DrawParametricTemplate::onChanged(const App::Property* prop)
     App::DocumentObject::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawParametricTemplate::execute(void)
+App::DocumentObjectExecReturn *DrawParametricTemplate::execute()
 {
     std::string temp = Template.getValue();
     if (!temp.empty()) {
@@ -139,7 +139,7 @@ int DrawParametricTemplate::clearGeometry()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawParametricTemplatePython, TechDraw::DrawParametricTemplate)
-template<> const char* TechDraw::DrawParametricTemplatePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawParametricTemplatePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderPython";
 }
 /// @endcond

@@ -195,7 +195,7 @@ std::ostream& operator<<(std::ostream& os, const Voronoi::segment_type &s) {
 
 
 // returns a string which represents the object e.g. when printed in python
-std::string VoronoiEdgePy::representation(void) const
+std::string VoronoiEdgePy::representation() const
 {
   std::stringstream ss;
   ss.precision(5);
@@ -274,7 +274,7 @@ VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = nullp
   return self;
 }
 
-Py::Long VoronoiEdgePy::getIndex(void) const {
+Py::Long VoronoiEdgePy::getIndex() const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
     return Py::Long(e->dia->index(e->ptr));
@@ -282,7 +282,7 @@ Py::Long VoronoiEdgePy::getIndex(void) const {
   return Py::Long(-1);
 }
 
-Py::Long VoronoiEdgePy::getColor(void) const {
+Py::Long VoronoiEdgePy::getColor() const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
     Voronoi::color_type color = e->ptr->color() & Voronoi::ColorMask;
@@ -295,7 +295,7 @@ void VoronoiEdgePy::setColor(Py::Long color) {
   getEdgeFromPy(this)->color(long(color) & Voronoi::ColorMask);
 }
 
-Py::List VoronoiEdgePy::getVertices(void) const
+Py::List VoronoiEdgePy::getVertices() const
 {
   Py::List list;
   VoronoiEdge *e = getVoronoiEdgePtr();
@@ -318,37 +318,37 @@ Py::List VoronoiEdgePy::getVertices(void) const
   return list;
 }
 
-Py::Object VoronoiEdgePy::getTwin(void) const
+Py::Object VoronoiEdgePy::getTwin() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->twin())));
 }
 
-Py::Object VoronoiEdgePy::getNext(void) const
+Py::Object VoronoiEdgePy::getNext() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->next())));
 }
 
-Py::Object VoronoiEdgePy::getPrev(void) const
+Py::Object VoronoiEdgePy::getPrev() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->prev())));
 }
 
-Py::Object VoronoiEdgePy::getRotNext(void) const
+Py::Object VoronoiEdgePy::getRotNext() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->rot_next())));
 }
 
-Py::Object VoronoiEdgePy::getRotPrev(void) const
+Py::Object VoronoiEdgePy::getRotPrev() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->rot_prev())));
 }
 
-Py::Object VoronoiEdgePy::getCell(void) const
+Py::Object VoronoiEdgePy::getCell() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiCellPy(new VoronoiCell(e->dia, e->ptr->cell())));

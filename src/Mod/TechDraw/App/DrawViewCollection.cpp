@@ -69,7 +69,7 @@ short DrawViewCollection::mustExecute() const
     }
 }
 
-App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
+App::DocumentObjectExecReturn *DrawViewCollection::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -155,7 +155,7 @@ void DrawViewCollection::onDocumentRestored()
     DrawView::execute();
 }
 
-void DrawViewCollection::lockChildren(void) 
+void DrawViewCollection::lockChildren()
 {
 //    Base::Console().Message("DVC::lockChildren()\n");
     for (auto& v:Views.getValues()) {

@@ -109,13 +109,13 @@ TrajectorySimulate::~TrajectorySimulate()
 {
 }
 
-void TrajectorySimulate::setTo(void)
+void TrajectorySimulate::setTo()
 {
     sim.setToTime(timePos);
     ViewProv->setAxisTo(sim.Axis[0],sim.Axis[1],sim.Axis[2],sim.Axis[3],sim.Axis[4],sim.Axis[5],sim.Rob.getTcp());
 }
 
-void TrajectorySimulate::start(void)
+void TrajectorySimulate::start()
 {
     timePos = 0.0f;
     ui->timeSpinBox->setValue(timePos);
@@ -123,23 +123,23 @@ void TrajectorySimulate::start(void)
     setTo();
 
 }
-void TrajectorySimulate::stop(void)
+void TrajectorySimulate::stop()
 {
     timer->stop();
     Run = false;
 }
-void TrajectorySimulate::run(void)
+void TrajectorySimulate::run()
 {
     timer->start();
     Run = true;
 }
-void TrajectorySimulate::back(void)
+void TrajectorySimulate::back()
 {
 }
-void TrajectorySimulate::forward(void)
+void TrajectorySimulate::forward()
 {
 }
-void TrajectorySimulate::end(void)
+void TrajectorySimulate::end()
 {
     timePos = duration;
     ui->timeSpinBox->setValue(timePos);
@@ -147,7 +147,7 @@ void TrajectorySimulate::end(void)
     setTo();
 }
 
-void TrajectorySimulate::timerDone(void)
+void TrajectorySimulate::timerDone()
 {
     if(timePos < duration){
         timePos += .1f;

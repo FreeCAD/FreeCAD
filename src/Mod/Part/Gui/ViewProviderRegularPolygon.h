@@ -40,7 +40,7 @@ public:
     /// destructor
     virtual ~ViewProviderRegularPolygon();
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
 
 protected:
 

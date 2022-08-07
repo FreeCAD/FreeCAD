@@ -60,7 +60,7 @@ public:
 private Q_SLOTS:
     void onPlaneChanged(int num);
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    virtual void onFeatureDeleted();
 
 protected:
     virtual void addObject(App::DocumentObject*);

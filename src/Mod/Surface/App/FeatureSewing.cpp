@@ -65,7 +65,7 @@ short Sewing::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Sewing::execute(void)
+App::DocumentObjectExecReturn *Sewing::execute()
 {
     //Assign Variables
     double atol = Tolerance.getValue();

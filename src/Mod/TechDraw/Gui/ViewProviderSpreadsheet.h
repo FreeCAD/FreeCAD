@@ -41,7 +41,7 @@ public:
     /// destructor
     virtual ~ViewProviderSpreadsheet();
 
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
 
     virtual TechDraw::DrawViewSpreadsheet* getViewObject() const;
 };

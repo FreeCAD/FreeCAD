@@ -42,7 +42,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string CosmeticVertexPy::representation(void) const
+std::string CosmeticVertexPy::representation() const
 {
     return "<CosmeticVertex object>";
 }
@@ -117,13 +117,13 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
     return cpy;
 }
 
-Py::String CosmeticVertexPy::getTag(void) const
+Py::String CosmeticVertexPy::getTag() const
 {
     std::string tmp = boost::uuids::to_string(getCosmeticVertexPtr()->getTag());
     return Py::String(tmp);
 }
 
-Py::Object CosmeticVertexPy::getPoint(void) const
+Py::Object CosmeticVertexPy::getPoint() const
 {
     Base::Vector3d point = getCosmeticVertexPtr()->permaPoint;
     point = DrawUtil::invertY(point);
@@ -150,7 +150,7 @@ void CosmeticVertexPy::setPoint(Py::Object arg)
     }
 }
 
-Py::Boolean CosmeticVertexPy::getShow(void) const
+Py::Boolean CosmeticVertexPy::getShow() const
 {
     bool show = getCosmeticVertexPtr()->visible;
     return Py::Boolean(show);
@@ -168,7 +168,7 @@ void CosmeticVertexPy::setShow(Py::Boolean arg)
     }
 }
 
-Py::Object CosmeticVertexPy::getColor(void) const
+Py::Object CosmeticVertexPy::getColor() const
 {
     App::Color color = getCosmeticVertexPtr()->color;
     PyObject* pyColor = DrawUtil::colorToPyTuple(color);
@@ -192,7 +192,7 @@ void CosmeticVertexPy::setColor(Py::Object arg)
     }
 }
 
-Py::Object CosmeticVertexPy::getSize(void) const
+Py::Object CosmeticVertexPy::getSize() const
 {
     CosmeticVertex* cv = getCosmeticVertexPtr();
     double size = cv->size;
@@ -215,7 +215,7 @@ void CosmeticVertexPy::setSize(Py::Object arg)
     cv->size = size;
 }
 
-Py::Object CosmeticVertexPy::getStyle(void) const
+Py::Object CosmeticVertexPy::getStyle() const
 {
     CosmeticVertex* cv = getCosmeticVertexPtr();
     double style = cv->style;

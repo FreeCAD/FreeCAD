@@ -41,7 +41,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfCircle2dPy::representation(void) const
+std::string ArcOfCircle2dPy::representation() const
 {
     return "<Arc of circle2d object>";
 }
@@ -108,7 +108,7 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     return -1;
 }
 
-Py::Float ArcOfCircle2dPy::getRadius(void) const
+Py::Float ArcOfCircle2dPy::getRadius() const
 {
     return Py::Float(getGeom2dArcOfCirclePtr()->getRadius());
 }
@@ -118,7 +118,7 @@ void  ArcOfCircle2dPy::setRadius(Py::Float arg)
     getGeom2dArcOfCirclePtr()->setRadius((double)arg);
 }
 
-Py::Object ArcOfCircle2dPy::getCircle(void) const
+Py::Object ArcOfCircle2dPy::getCircle() const
 {
     Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(curve->BasisCurve());

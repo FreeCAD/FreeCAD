@@ -62,7 +62,7 @@ ConstraintPulley::ConstraintPulley()
     onChanged(&Force);
 }
 
-App::DocumentObjectExecReturn *ConstraintPulley::execute(void)
+App::DocumentObjectExecReturn *ConstraintPulley::execute()
 {
     return ConstraintGear::execute();
 }

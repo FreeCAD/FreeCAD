@@ -68,9 +68,9 @@ private Q_SLOTS:
     void on_pushButtonSolve_clicked(bool checked = false);
 
 protected:
-    void updateDefaultMethodParameters(void);
-    void updateRedundantMethodParameters(void);
-    void updateSketchObject(void); 
+    void updateDefaultMethodParameters();
+    void updateRedundantMethodParameters();
+    void updateSketchObject();
 protected:
     ViewProviderSketch *sketchView;
 

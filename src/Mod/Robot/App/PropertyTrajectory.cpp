@@ -58,7 +58,7 @@ void PropertyTrajectory::setValue(const Trajectory& sh)
 }
 
 
-const Trajectory &PropertyTrajectory::getValue(void)const 
+const Trajectory &PropertyTrajectory::getValue()const
 {
     return _Trajectory;
 }
@@ -91,7 +91,7 @@ Base::BoundBox3d PropertyTrajectory::getBoundingBox() const
 }
 
 
-PyObject *PropertyTrajectory::getPyObject(void)
+PyObject *PropertyTrajectory::getPyObject()
 {
     return new TrajectoryPy(new Trajectory(_Trajectory));
 }
@@ -109,7 +109,7 @@ void PropertyTrajectory::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyTrajectory::Copy(void) const
+App::Property *PropertyTrajectory::Copy() const
 {
     PropertyTrajectory *prop = new PropertyTrajectory();
     prop->_Trajectory = this->_Trajectory;
@@ -124,7 +124,7 @@ void PropertyTrajectory::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyTrajectory::getMemSize (void) const
+unsigned int PropertyTrajectory::getMemSize () const
 {
     return _Trajectory.getMemSize();
 }

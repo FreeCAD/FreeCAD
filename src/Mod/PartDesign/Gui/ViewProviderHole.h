@@ -40,7 +40,7 @@ public:
     virtual ~ViewProviderHole();
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    std::vector<App::DocumentObject*> claimChildren()const;
     void setupContextMenu(QMenu *menu, QObject *receiver, const char *member);
     bool onDelete(const std::vector<std::string> &s);
 protected:

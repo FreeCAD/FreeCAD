@@ -57,7 +57,7 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewSpreadsheet, TechDraw::DrawViewSymbol)
 
-DrawViewSpreadsheet::DrawViewSpreadsheet(void)
+DrawViewSpreadsheet::DrawViewSpreadsheet()
 {
     static const char *vgroup = "Spreadsheet";
 
@@ -103,7 +103,7 @@ void DrawViewSpreadsheet::onChanged(const App::Property* prop)
     TechDraw::DrawView::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute(void)
+App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute()
 {
     App::DocumentObject* link = Source.getValue();
     std::string scellstart = CellStart.getValue();
@@ -120,7 +120,7 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute(void)
     return TechDraw::DrawView::execute();
 }
 
-std::vector<std::string> DrawViewSpreadsheet::getAvailColumns(void)
+std::vector<std::string> DrawViewSpreadsheet::getAvailColumns()
 {
     // build a list of available columns: A, B, C, ... AA, AB, ... ZY, ZZ.
     std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -140,19 +140,19 @@ std::vector<std::string> DrawViewSpreadsheet::getAvailColumns(void)
     return availcolumns;
 }
 
-std::string DrawViewSpreadsheet::getSVGHead(void)
+std::string DrawViewSpreadsheet::getSVGHead()
 {
     return std::string("<svg\n") +
            std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n") +
            std::string("	xmlns:freecad=\"http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace\">\n");
 }
 
-std::string DrawViewSpreadsheet::getSVGTail(void)
+std::string DrawViewSpreadsheet::getSVGTail()
 {
     return "\n</svg>";
 }
 
-std::string DrawViewSpreadsheet::getSheetImage(void)
+std::string DrawViewSpreadsheet::getSheetImage()
 {
     App::DocumentObject* link = Source.getValue();
     link->recomputeFeature();   //make sure s/s is up to date
@@ -385,7 +385,7 @@ int DrawViewSpreadsheet::colInList(const std::vector<std::string>& list,
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewSpreadsheetPython, TechDraw::DrawViewSpreadsheet)
-template<> const char* TechDraw::DrawViewSpreadsheetPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewSpreadsheetPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderSpreadsheet";
 }
 /// @endcond

@@ -48,7 +48,7 @@ ViewProviderEllipseParametric::~ViewProviderEllipseParametric()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderEllipseParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderEllipseParametric::getDisplayModes() const
 {
   // get the modes of the father
   std::vector<std::string> StrList;

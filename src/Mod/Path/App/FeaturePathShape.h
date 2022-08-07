@@ -47,7 +47,7 @@ class PathExport FeatureShape : public Path::Feature
 
 public:
     /// Constructor
-    FeatureShape(void);
+    FeatureShape();
     virtual ~FeatureShape();
     
     // Part::PropertyPartShape Shape;
@@ -58,11 +58,11 @@ public:
 
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "PathGui::ViewProviderPathShape";
     }
     

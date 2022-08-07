@@ -40,9 +40,9 @@ class PartExport GeometryExtension: public Base::BaseClass
 public:
     virtual ~GeometryExtension() = default;
 
-    virtual std::unique_ptr<GeometryExtension> copy(void) const = 0;
+    virtual std::unique_ptr<GeometryExtension> copy() const = 0;
 
-    virtual PyObject *getPyObject(void) = 0;
+    virtual PyObject *getPyObject() = 0;
     PyObject* copyPyObject() const;
 
     inline void setName(const std::string& str) {name = str;}

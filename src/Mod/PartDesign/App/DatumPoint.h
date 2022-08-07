@@ -39,7 +39,7 @@ public:
     Point();
     virtual ~Point();
 
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderDatumPoint";
     }
 

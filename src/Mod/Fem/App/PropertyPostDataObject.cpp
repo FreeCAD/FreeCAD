@@ -127,7 +127,7 @@ void PropertyPostDataObject::setValue(const vtkSmartPointer<vtkDataObject> &ds)
     hasSetValue();
 }
 
-const vtkSmartPointer<vtkDataObject> &PropertyPostDataObject::getValue(void) const
+const vtkSmartPointer<vtkDataObject> &PropertyPostDataObject::getValue() const
 {
     return m_dataObject;
 }
@@ -154,7 +154,7 @@ int PropertyPostDataObject::getDataType()
 }
 
 
-PyObject *PropertyPostDataObject::getPyObject(void)
+PyObject *PropertyPostDataObject::getPyObject()
 {
     //TODO: fetch the vtk python object from the data set and return it
     return Py::new_reference_to(Py::None());
@@ -164,7 +164,7 @@ void PropertyPostDataObject::setPyObject(PyObject * /*value*/)
 {
 }
 
-App::Property *PropertyPostDataObject::Copy(void) const
+App::Property *PropertyPostDataObject::Copy() const
 {
     PropertyPostDataObject *prop = new PropertyPostDataObject();
     if (m_dataObject) {
@@ -218,7 +218,7 @@ void PropertyPostDataObject::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyPostDataObject::getMemSize(void) const
+unsigned int PropertyPostDataObject::getMemSize() const
 {
     return m_dataObject ? m_dataObject->GetActualMemorySize() : 0;
 }

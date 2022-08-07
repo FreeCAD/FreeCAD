@@ -122,7 +122,7 @@ void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
     addDisplayMaskMode(sep, "Base");
 }
 
-std::vector<std::string> ViewProviderFemConstraint::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFemConstraint::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;
@@ -137,7 +137,7 @@ void ViewProviderFemConstraint::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren()const
 {
     return std::vector<App::DocumentObject*>();
 }

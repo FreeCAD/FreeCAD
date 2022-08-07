@@ -36,9 +36,9 @@ public:
     ViewProviderSketchGeometryExtension();
     virtual ~ViewProviderSketchGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    virtual std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
     // Data Members
 

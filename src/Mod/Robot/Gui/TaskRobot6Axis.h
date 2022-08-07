@@ -64,7 +64,7 @@ private Q_SLOTS:
     void changeSliderA4(int value);
     void changeSliderA5(int value);
     void changeSliderA6(int value);
-    void createPlacementDlg(void);
+    void createPlacementDlg();
 
 protected:
     Robot::RobotObject *pcRobot;

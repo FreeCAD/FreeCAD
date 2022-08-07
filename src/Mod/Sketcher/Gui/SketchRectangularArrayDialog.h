@@ -34,7 +34,7 @@ class SketchRectangularArrayDialog : public QDialog
     Q_OBJECT
 
 public:
-    SketchRectangularArrayDialog(void);
+    SketchRectangularArrayDialog();
     ~SketchRectangularArrayDialog();
 
     void accept();
@@ -46,7 +46,7 @@ public:
     bool Clone;
 
 protected:
-    void updateValues(void);
+    void updateValues();
 private:
     std::unique_ptr<Ui_SketchRectangularArrayDialog> ui;
 };

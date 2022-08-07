@@ -79,7 +79,7 @@ TaskWidgetPathCompound::~TaskWidgetPathCompound()
     delete ui;
 }
 
-std::vector<std::string> TaskWidgetPathCompound::getList(void) const {
+std::vector<std::string> TaskWidgetPathCompound::getList() const {
     std::vector<std::string> names;
     for(int i = 0; i < ui->PathsList->count(); i++)
     {

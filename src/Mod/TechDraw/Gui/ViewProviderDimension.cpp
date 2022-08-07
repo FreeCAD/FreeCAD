@@ -102,7 +102,7 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
     }
 }
 
-bool ViewProviderDimension::doubleClicked(void)
+bool ViewProviderDimension::doubleClicked()
 {
     startDefaultEditMode();
     return true;

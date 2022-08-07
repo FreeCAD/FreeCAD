@@ -48,10 +48,10 @@ public:
     const std::string getReferences() const;
     double get_temperature()const;
     double get_cflux() const;
-    std::string get_constraint_type(void) const;
+    std::string get_constraint_type() const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void onTempCfluxChanged(double val);
     void Temp();
     void Flux();

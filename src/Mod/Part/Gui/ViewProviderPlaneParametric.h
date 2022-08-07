@@ -46,7 +46,7 @@ public:
     /// destructor
     virtual ~ViewProviderPlaneParametric();
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
 
 protected:
 
@@ -60,7 +60,7 @@ public:
     ViewProviderFace();
     virtual ~ViewProviderFace();
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
+    virtual std::vector<App::DocumentObject*> claimChildren() const;
     virtual bool canDragObjects() const;
     virtual bool canDragObject(App::DocumentObject*) const;
     virtual void dragObject(App::DocumentObject*);

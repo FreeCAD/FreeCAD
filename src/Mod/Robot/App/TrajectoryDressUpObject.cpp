@@ -69,7 +69,7 @@ TrajectoryDressUpObject::~TrajectoryDressUpObject()
 {
 }
 
-App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute(void)
+App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute()
 {
     Robot::Trajectory result;
 

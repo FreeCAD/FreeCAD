@@ -72,7 +72,7 @@ void PropertyCenterLineList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyCenterLineList::getSize(void) const
+int PropertyCenterLineList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -96,7 +96,7 @@ void PropertyCenterLineList::setValues(const std::vector<CenterLine*>& lValue)
     hasSetValue();
 }
 
-PyObject *PropertyCenterLineList::getPyObject(void)
+PyObject *PropertyCenterLineList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -190,7 +190,7 @@ void PropertyCenterLineList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-App::Property *PropertyCenterLineList::Copy(void) const
+App::Property *PropertyCenterLineList::Copy() const
 {
     PropertyCenterLineList *p = new PropertyCenterLineList();
     p->setValues(_lValueList);
@@ -203,7 +203,7 @@ void PropertyCenterLineList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyCenterLineList::getMemSize(void) const
+unsigned int PropertyCenterLineList::getMemSize() const
 {
     int size = sizeof(PropertyCenterLineList);
     for (int i = 0; i < getSize(); i++)

@@ -34,7 +34,7 @@
 
 
 // use a different name to CreateCommand()
-void CreateStartCommands(void);
+void CreateStartCommands();
 
 void loadStartResource()
 {

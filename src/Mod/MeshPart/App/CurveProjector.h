@@ -72,7 +72,7 @@ public:
   typedef std::map<TopoDS_Edge, std::vector<FaceSplitEdge>,TopoDSLess<TopoDS_Edge> > result_type;
 
 
-  result_type &result(void) {return  mvEdgeSplitPoints;}
+  result_type &result() {return  mvEdgeSplitPoints;}
 
   void writeIntersectionPointsToFile(const char *name="export_pts.asc");
 

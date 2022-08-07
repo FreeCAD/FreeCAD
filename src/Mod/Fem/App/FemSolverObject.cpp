@@ -47,7 +47,7 @@ FemSolverObject::~FemSolverObject()
 {
 }
 
-short FemSolverObject::mustExecute(void) const
+short FemSolverObject::mustExecute() const
 {
     return 0;
 }
@@ -66,11 +66,11 @@ PyObject *FemSolverObject::getPyObject()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemSolverObjectPython, Fem::FemSolverObject)
-template<> const char* Fem::FemSolverObjectPython::getViewProviderName(void) const {
+template<> const char* Fem::FemSolverObjectPython::getViewProviderName() const {
     return "FemGui::ViewProviderSolverPython";
 }
 
-template<> PyObject* Fem::FemSolverObjectPython::getPyObject(void) {
+template<> PyObject* Fem::FemSolverObjectPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);

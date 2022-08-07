@@ -62,7 +62,7 @@ private Q_SLOTS:
     void onLength(const double l);
     void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    virtual void onFeatureDeleted();
 
 protected:
     virtual void addObject(App::DocumentObject*);
@@ -71,9 +71,9 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     virtual void clearButtons();
     void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-    bool getReverse(void) const;
-    double getLength(void) const;
-    unsigned getOccurrences(void) const;
+    bool getReverse() const;
+    double getLength() const;
+    unsigned getOccurrences() const;
 
 private:
     void connectSignals();

@@ -85,7 +85,7 @@ ImpExpDxfRead::ImpExpDxfRead(std::string filepath, App::Document *pcDoc) : CDxfR
     setOptions();
 }
 
-void ImpExpDxfRead::setOptions(void)
+void ImpExpDxfRead::setOptions()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
     optionGroupLayers = hGrp->GetBool("groupLayers",false);
@@ -473,7 +473,7 @@ ImpExpDxfWrite::~ImpExpDxfWrite()
 {
 }
 
-void ImpExpDxfWrite::setOptions(void)
+void ImpExpDxfWrite::setOptions()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
     optionMaxLength = hGrp->GetFloat("maxsegmentlength",5.0);

@@ -1630,7 +1630,7 @@ static gp_Pnt toPnt(gp_Vec dir)
     return gp_Pnt(dir.X(), dir.Y(), dir.Z());
 }
 
-App::DocumentObjectExecReturn* Hole::execute(void)
+App::DocumentObjectExecReturn* Hole::execute()
 {
      TopoDS_Shape profileshape;
     try {

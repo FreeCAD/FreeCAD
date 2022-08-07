@@ -47,7 +47,7 @@ ViewProviderPipe::~ViewProviderPipe()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
@@ -174,7 +174,7 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderPipe::getIcon(void) const {
+QIcon ViewProviderPipe::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Pipe*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)

@@ -68,7 +68,7 @@ FeatureProjection::~FeatureProjection()
 {
 }
 
-App::DocumentObjectExecReturn *FeatureProjection::execute(void)
+App::DocumentObjectExecReturn *FeatureProjection::execute()
 {
     App::DocumentObject* link = Source.getValue();
     if (!link)

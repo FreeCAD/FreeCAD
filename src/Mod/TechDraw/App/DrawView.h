@@ -51,7 +51,7 @@ class TechDrawExport DrawView : public App::DocumentObject
 
 public:
     /// Constructor
-    DrawView(void);
+    DrawView();
     virtual ~DrawView();
 
     App::PropertyDistance X;
@@ -66,7 +66,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     virtual void onDocumentRestored() override;
     virtual short mustExecute() const override;
     //@}
@@ -74,34 +74,34 @@ public:
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     bool isInClip();
-    DrawViewClip* getClipGroup(void);
+    DrawViewClip* getClipGroup();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDrawingView";
     }
     //return PyObject as DrawViewPy
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
     virtual DrawPage* findParentPage() const;
     virtual std::vector<DrawPage*> findAllParentPages() const;
     virtual int countParentPages() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
-    virtual double autoScale(void) const;
+    virtual double autoScale() const;
     virtual double autoScale(double w, double h) const;
-    virtual bool checkFit(void) const;
+    virtual bool checkFit() const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y, bool force = false);
-    virtual bool keepUpdated(void);
+    virtual bool keepUpdated();
     boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
-    virtual double getScale(void) const;
-    void checkScale(void);
-    void requestPaint(void);
-    virtual void handleXYLock(void);
-    virtual bool isLocked(void) const;
-    virtual bool showLock(void) const;
+    virtual double getScale() const;
+    void checkScale();
+    void requestPaint();
+    virtual void handleXYLock();
+    virtual bool isLocked() const;
+    virtual bool showLock() const;
 
-    std::vector<TechDraw::DrawLeaderLine*> getLeaders(void) const;
+    std::vector<TechDraw::DrawLeaderLine*> getLeaders() const;
     void setScaleAttribute();
 
 protected:
@@ -111,8 +111,8 @@ protected:
     bool autoPos;
     bool mouseMove;
 
-    int prefScaleType(void);
-    double prefScale(void);
+    int prefScaleType();
+    double prefScale();
 
 private:
     static const char* ScaleTypeEnums[];

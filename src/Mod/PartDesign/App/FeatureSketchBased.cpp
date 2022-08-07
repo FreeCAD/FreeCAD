@@ -91,7 +91,7 @@ void ProfileBased::setupObject()
     AllowMultiFace.setValue(true);
 }
 
-void ProfileBased::positionByPrevious(void)
+void ProfileBased::positionByPrevious()
 {
     Part::Feature* feat = getBaseObject(/* silent = */ true);
     if (feat) {
@@ -357,7 +357,7 @@ TopoDS_Face ProfileBased::getSupportFace(const App::PropertyLinkSub& link) const
     return face;
 }
 
-int ProfileBased::getSketchAxisCount(void) const
+int ProfileBased::getSketchAxisCount() const
 {
     Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(Profile.getValue());
     if (!sketch)

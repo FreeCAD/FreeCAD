@@ -73,7 +73,7 @@ FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject()
 {
 }
 
-App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
+App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute()
 {
 #ifdef FCWithNetgen
 

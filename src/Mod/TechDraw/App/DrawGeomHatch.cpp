@@ -91,7 +91,7 @@ App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {Precision
 PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
 
 
-DrawGeomHatch::DrawGeomHatch(void)
+DrawGeomHatch::DrawGeomHatch()
 {
     static const char *vgroup = "GeomHatch";
 
@@ -159,7 +159,7 @@ short DrawGeomHatch::mustExecute() const
 }
 
 
-App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
+App::DocumentObjectExecReturn *DrawGeomHatch::execute()
 {
 //    Base::Console().Message("DGH::execute()\n");
     makeLineSets();
@@ -171,7 +171,7 @@ App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
 }
 
 
-void DrawGeomHatch::makeLineSets(void)
+void DrawGeomHatch::makeLineSets()
 {
 //    Base::Console().Message("DGH::makeLineSets()\n");
     if ((!PatIncluded.isEmpty())  &&
@@ -187,7 +187,7 @@ void DrawGeomHatch::makeLineSets(void)
     }
 }
 
-DrawViewPart* DrawGeomHatch::getSourceView(void) const
+DrawViewPart* DrawGeomHatch::getSourceView() const
 {
     App::DocumentObject* obj = Source.getValue();
     DrawViewPart* result = dynamic_cast<DrawViewPart*>(obj);
@@ -536,7 +536,7 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
     return result;
 }
 
-PyObject *DrawGeomHatch::getPyObject(void)
+PyObject *DrawGeomHatch::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         PythonObject = Py::Object(new DrawGeomHatchPy(this),true);
@@ -580,7 +580,7 @@ void DrawGeomHatch::setupObject()
     App::DocumentObject::setupObject();
 }
 
-void DrawGeomHatch::setupPatIncluded(void)
+void DrawGeomHatch::setupPatIncluded()
 {
 //    Base::Console().Message("DGH::setupPatIncluded()\n");
     App::Document* doc = getDocument();
@@ -601,7 +601,7 @@ void DrawGeomHatch::setupPatIncluded(void)
     }
 }
 
-void DrawGeomHatch::unsetupObject(void)
+void DrawGeomHatch::unsetupObject()
 {
 //    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
@@ -612,7 +612,7 @@ void DrawGeomHatch::unsetupObject(void)
     App::DocumentObject::unsetupObject();
 }
 
-std::string DrawGeomHatch::prefGeomHatchFile(void)
+std::string DrawGeomHatch::prefGeomHatchFile()
 {
     return Preferences::patFile();
 }
@@ -645,7 +645,7 @@ App::Color DrawGeomHatch::prefGeomHatchColor()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawGeomHatchPython, TechDraw::DrawGeomHatch)
-template<> const char* TechDraw::DrawGeomHatchPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawGeomHatchPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderGeomHatch";
 }
 /// @endcond

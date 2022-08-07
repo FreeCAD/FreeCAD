@@ -48,7 +48,7 @@ ViewProviderRegularPolygon::~ViewProviderRegularPolygon()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderRegularPolygon::getDisplayModes(void) const
+std::vector<std::string> ViewProviderRegularPolygon::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList;

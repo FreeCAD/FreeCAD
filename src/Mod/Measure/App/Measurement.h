@@ -66,8 +66,8 @@ public:
     MeasureType getType();
 
      // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
+    virtual PyObject *getPyObject();
+    virtual unsigned int getMemSize() const;
 
 public:
   // Methods for distances (edge length, two points, edge and a point

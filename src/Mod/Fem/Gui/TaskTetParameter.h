@@ -58,7 +58,7 @@ public:
     TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent = nullptr);
     ~TaskTetParameter();
 
-    void setInfo(void);
+    void setInfo();
     bool touched;
 
 private Q_SLOTS:

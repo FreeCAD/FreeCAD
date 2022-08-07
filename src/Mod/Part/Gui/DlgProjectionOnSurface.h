@@ -55,8 +55,8 @@ public:
     explicit DlgProjectionOnSurface(QWidget *parent = nullptr);
     ~DlgProjectionOnSurface();
 
-    void apply(void);
-    void reject(void);
+    void apply();
+    void reject();
 
 private Q_SLOTS:
 
@@ -100,7 +100,7 @@ private:
   virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 
-  void get_camera_direction(void);
+  void get_camera_direction();
   void store_current_selected_parts(std::vector<SShapeStore>& iStoreVec, const unsigned int iColor);
   bool store_part_in_vector(SShapeStore& iCurrentShape, std::vector<SShapeStore>& iStoreVec);
   void create_projection_wire(std::vector<SShapeStore>& iCurrentShape);

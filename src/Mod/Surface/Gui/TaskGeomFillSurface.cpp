@@ -97,7 +97,7 @@ void ViewProviderGeomFillSurface::unsetEdit(int ModNum)
     }
 }
 
-QIcon ViewProviderGeomFillSurface::getIcon(void) const
+QIcon ViewProviderGeomFillSurface::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Surface_BSplineSurface");
 }

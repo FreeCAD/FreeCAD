@@ -43,7 +43,7 @@ public:
 
     App::PropertyBool  Crop;              //crop to feature width x height
 
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     /// returns a list of all possible modes
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property *prop);

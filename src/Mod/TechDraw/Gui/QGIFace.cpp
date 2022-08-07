@@ -247,7 +247,7 @@ void QGIFace::setOutline(const QPainterPath & path)
     m_outline = path;
 }
 
-void QGIFace::clearLineSets(void) 
+void QGIFace::clearLineSets()
 {
     m_dashSpecs.clear();
     clearFillItems();
@@ -356,7 +356,7 @@ QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeomPtr base, double
     return fillItem;
 }
 
-QPen QGIFace::setGeomPen(void)
+QPen QGIFace::setGeomPen()
 {
     QPen result;
     result.setWidthF(Rez::guiX(m_geomWeight));
@@ -488,7 +488,7 @@ double QGIFace::dashRemain(const std::vector<double> dv, const double offset)
 
 //! get zoom level (scale) from QGraphicsView
 // not used currently
-double QGIFace::getXForm(void)
+double QGIFace::getXForm()
 {
     //try to keep the pattern the same when View scales
     double result = 1.0;
@@ -504,7 +504,7 @@ double QGIFace::getXForm(void)
     return result;
 }
 
-void QGIFace::clearFillItems(void)
+void QGIFace::clearFillItems()
 {
     for (auto& f: m_fillItems) {
         f->setParentItem(nullptr);
@@ -704,7 +704,7 @@ void QGIFace::setLineWeight(double w) {
     m_geomWeight = w;
 }
 
-void QGIFace::getParameters(void)
+void QGIFace::getParameters()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");

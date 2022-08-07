@@ -190,7 +190,7 @@ void DrawViewDetail::onChanged(const App::Property* prop)
     DrawView::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
+App::DocumentObjectExecReturn *DrawViewDetail::execute()
 {
 //    Base::Console().Message("DVD::execute() - %s\n", Label.getValue());
     if (!keepUpdated()) {
@@ -522,7 +522,7 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS
 
 //we don't want to paint detail highlights on top of detail views,
 //so tell the Gui that there are no details for this view
-std::vector<DrawViewDetail*> DrawViewDetail::getDetailRefs(void) const
+std::vector<DrawViewDetail*> DrawViewDetail::getDetailRefs() const
 {
     return std::vector<DrawViewDetail*>();
 }
@@ -532,7 +532,7 @@ double DrawViewDetail::getFudgeRadius()
     return Radius.getValue() * m_fudge;
 }
 
-bool DrawViewDetail::debugDetail(void) const
+bool DrawViewDetail::debugDetail() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
@@ -559,7 +559,7 @@ void DrawViewDetail::getParameters()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewDetailPython, TechDraw::DrawViewDetail)
-template<> const char* TechDraw::DrawViewDetailPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewDetailPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderViewPart";
 }
 /// @endcond

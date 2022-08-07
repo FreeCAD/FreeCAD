@@ -68,7 +68,7 @@ public:
      * this one is made from: either from Base, if there is one, or from sketch,
      * if there is no base.
      */
-    void positionByPrevious(void);
+    void positionByPrevious();
 
     /** applies a transform on the Placement of the Sketch or its
      *  support if it has one
@@ -110,7 +110,7 @@ public:
     Part::TopoShape getProfileShape() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
-    int getSketchAxisCount(void) const;
+    int getSketchAxisCount() const;
 
     virtual Part::Feature* getBaseObject(bool silent=false) const;
 

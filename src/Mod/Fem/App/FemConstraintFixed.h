@@ -39,17 +39,17 @@ class FemExport ConstraintFixed : public Fem::Constraint
 
 public:
     /// Constructor
-    ConstraintFixed(void);
+    ConstraintFixed();
 
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemConstraintFixed";
     }
 

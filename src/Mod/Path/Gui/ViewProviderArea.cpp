@@ -42,7 +42,7 @@ ViewProviderArea::~ViewProviderArea()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderArea::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderArea::claimChildren() const
 {
     return std::vector<App::DocumentObject*>(
             static_cast<Path::FeatureArea*>(getObject())->Sources.getValues());
@@ -126,7 +126,7 @@ ViewProviderAreaView::~ViewProviderAreaView()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderAreaView::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderAreaView::claimChildren() const
 {
     std::vector<App::DocumentObject*> ret;
     Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());

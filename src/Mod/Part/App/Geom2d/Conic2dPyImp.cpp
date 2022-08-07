@@ -35,7 +35,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string Conic2dPy::representation(void) const
+std::string Conic2dPy::representation() const
 {
     return "<Conic2d object>";
 }
@@ -54,7 +54,7 @@ int Conic2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
     return 0;
 }
 
-Py::Object Conic2dPy::getLocation(void) const
+Py::Object Conic2dPy::getLocation() const
 {
     Base::Vector2d loc = getGeom2dConicPtr()->getLocation();
     return Base::Vector2dPy::create(loc);
@@ -66,13 +66,13 @@ void  Conic2dPy::setLocation(Py::Object arg)
     getGeom2dConicPtr()->setLocation(loc);
 }
 
-Py::Float Conic2dPy::getEccentricity(void) const
+Py::Float Conic2dPy::getEccentricity() const
 {
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     return Py::Float(conic->Eccentricity());
 }
 
-Py::Object Conic2dPy::getXAxis(void) const
+Py::Object Conic2dPy::getXAxis() const
 {
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     gp_Dir2d xdir = conic->XAxis().Direction();
@@ -88,7 +88,7 @@ void  Conic2dPy::setXAxis(Py::Object arg)
     conic->SetXAxis(xaxis);
 }
 
-Py::Object Conic2dPy::getYAxis(void) const
+Py::Object Conic2dPy::getYAxis() const
 {
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     gp_Dir2d ydir = conic->YAxis().Direction();

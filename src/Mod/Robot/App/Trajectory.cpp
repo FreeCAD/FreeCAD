@@ -146,7 +146,7 @@ void Trajectory::deleteLast(unsigned int n)
 
 }
 
-void Trajectory::generateTrajectory(void)
+void Trajectory::generateTrajectory()
 {
     if (vpcWaypoints.empty())
         return;
@@ -293,7 +293,7 @@ void Trajectory::addWaypoint(const Waypoint &WPnt)
 
 
 
-unsigned int Trajectory::getMemSize (void) const
+unsigned int Trajectory::getMemSize () const
 {
 	return 0;
 }

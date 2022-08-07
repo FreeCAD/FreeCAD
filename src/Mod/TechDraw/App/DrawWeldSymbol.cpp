@@ -49,7 +49,7 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawWeldSymbol, TechDraw::DrawView)
 
-DrawWeldSymbol::DrawWeldSymbol(void)
+DrawWeldSymbol::DrawWeldSymbol()
 {
     static const char *group = "Weld Symbol";
 
@@ -116,7 +116,7 @@ short DrawWeldSymbol::mustExecute() const
     return DrawView::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
+App::DocumentObjectExecReturn *DrawWeldSymbol::execute()
 {
 //    Base::Console().Message("DWS::execute()\n");
     if (!keepUpdated()) {
@@ -126,7 +126,7 @@ App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
     return DrawView::execute();
 }
 
-std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles(void) const
+std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles() const
 {
 //    Base::Console().Message("DWS::getTiles()\n");
     std::vector<DrawTileWeld*> result;
@@ -161,7 +161,7 @@ bool DrawWeldSymbol::isTailRightSide()
 }
 
 
-PyObject *DrawWeldSymbol::getPyObject(void)
+PyObject *DrawWeldSymbol::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -175,7 +175,7 @@ PyObject *DrawWeldSymbol::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawWeldSymbolPython, TechDraw::DrawWeldSymbol)
-template<> const char* TechDraw::DrawWeldSymbolPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawWeldSymbolPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderWeld";
 }
 /// @endcond

@@ -64,21 +64,21 @@ public:
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
     virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape(void) const override;
+    virtual QPainterPath shape() const override;
 
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
 
-    virtual TechDraw::DrawLeaderLine* getFeature(void);
+    virtual TechDraw::DrawLeaderLine* getFeature();
 
-    void startPathEdit(void);
+    void startPathEdit();
     void setArrows(std::vector<QPointF> pathPoints);
 
-    void abandonEdit(void);
-    void closeEdit(void);
+    void abandonEdit();
+    void closeEdit();
     
-    double getLineWidth(void);
-    double getEdgeFuzz(void) const;
+    double getLineWidth();
+    double getEdgeFuzz() const;
 
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
     //void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
@@ -97,20 +97,20 @@ public Q_SLOTS:
     virtual void onSourceChange(TechDraw::DrawView* newParent) override;
 
 Q_SIGNALS:
-    void editComplete(void);  //tell caller that edit session is finished
+    void editComplete();  //tell caller that edit session is finished
 
 protected:
     virtual void draw() override;
     QPainterPath makeLeaderPath(std::vector<QPointF> qPoints);
-    std::vector<QPointF> getWayPointsFromFeature(void);
-    QPointF getAttachFromFeature(void);
+    std::vector<QPointF> getWayPointsFromFeature();
+    QPointF getAttachFromFeature();
 
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     std::vector<QPointF> m_pathPoints;
     
-    void saveState(void);
-    void restoreState(void);
+    void saveState();
+    void restoreState();
 
 protected:
     QColor getNormalColor() override;

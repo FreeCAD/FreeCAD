@@ -39,7 +39,7 @@ class TechDrawExport DrawPage: public App::DocumentObject
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawPage);
 
 public:
-    DrawPage(void);
+    DrawPage();
     virtual ~DrawPage();
 
     App::PropertyLinkList Views;
@@ -54,7 +54,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute() override;
     //@}
     virtual void handleChangedPropertyType(
             Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
@@ -65,11 +65,11 @@ public:
     boost::signals2::signal<void (const DrawPage*)> signalGuiPaint;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderPage";
     }
 
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
 //App::DocumentObjectExecReturn * recompute(void);
 
@@ -89,18 +89,18 @@ public:
      */
     double getPageHeight() const;
     const char* getPageOrientation() const;
-    bool isUnsetting(void) { return nowUnsetting; }
-    void requestPaint(void);
-    std::vector<App::DocumentObject*> getAllViews(void) ;
+    bool isUnsetting() { return nowUnsetting; }
+    void requestPaint();
+    std::vector<App::DocumentObject*> getAllViews() ;
     DrawViewPart *balloonParent;    //could be many balloons on page? 
     
-    int getNextBalloonIndex(void);
+    int getNextBalloonIndex();
     
-    void updateAllViews(void);
-    static bool GlobalUpdateDrawings(void);
-    static bool AllowPageOverride(void);
+    void updateAllViews();
+    static bool GlobalUpdateDrawings();
+    static bool AllowPageOverride();
     void forceRedraw(bool b) { m_forceRedraw = b; }
-    bool forceRedraw(void)   { return m_forceRedraw; }
+    bool forceRedraw()   { return m_forceRedraw; }
     void redrawCommand();
 
     bool canUpdate() const;

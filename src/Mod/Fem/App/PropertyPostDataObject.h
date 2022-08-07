@@ -52,7 +52,7 @@ public:
     /// set the dataset
     void setValue(const vtkSmartPointer<vtkDataObject>&);
     /// get the part shape
-    const vtkSmartPointer<vtkDataObject>& getValue(void) const;
+    const vtkSmartPointer<vtkDataObject>& getValue() const;
     /// check if we hold a dataset or a dataobject (which would mean a composite data structure)
     bool isDataSet();
     bool isComposite();
@@ -61,7 +61,7 @@ public:
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
+    PyObject* getPyObject();
     void setPyObject(PyObject *value);
     //@}
 
@@ -73,9 +73,9 @@ public:
     void SaveDocFile (Base::Writer &writer) const;
     void RestoreDocFile(Base::Reader &reader);
 
-    App::Property *Copy(void) const;
+    App::Property *Copy() const;
     void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     //@}
 
     /// Get valid paths for this property; used by auto completer

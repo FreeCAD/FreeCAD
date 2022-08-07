@@ -70,12 +70,12 @@
 
 
 // use a different name to CreateCommand()
-void CreateTechDrawCommands(void);
-void CreateTechDrawCommandsDims(void);
-void CreateTechDrawCommandsDecorate(void);
-void CreateTechDrawCommandsAnnotate(void);
-void CreateTechDrawCommandsExtensionDims(void);
-void CreateTechDrawCommandsExtensions(void);
+void CreateTechDrawCommands();
+void CreateTechDrawCommandsDims();
+void CreateTechDrawCommandsDecorate();
+void CreateTechDrawCommandsAnnotate();
+void CreateTechDrawCommandsExtensionDims();
+void CreateTechDrawCommandsExtensions();
 
 void loadTechDrawResource()
 {

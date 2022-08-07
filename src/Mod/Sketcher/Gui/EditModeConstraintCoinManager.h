@@ -112,7 +112,7 @@ public:
     //@}
 
     /** @name coin nodes creation*/
-    void rebuildConstraintNodes(void);
+    void rebuildConstraintNodes();
     //@}
 
     /** @name change constraints selectability*/

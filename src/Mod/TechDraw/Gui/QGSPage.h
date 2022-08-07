@@ -113,7 +113,7 @@ public:
     TechDraw::DrawPage * getDrawPage();
 
     void setExporting(bool enable);
-    virtual void refreshViews(void);
+    virtual void refreshViews();
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);

@@ -46,7 +46,7 @@ public:
     ~TaskWatcherRobot();
 
     /// is called when the document or the selection changes. 
-    virtual bool shouldShow(void);
+    virtual bool shouldShow();
 
 protected:
     TaskRobot6Axis    *rob; 

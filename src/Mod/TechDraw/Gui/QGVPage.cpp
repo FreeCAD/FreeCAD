@@ -339,7 +339,7 @@ void QGVPage::setNavigationStyle(std::string navParm)
     }
 }
 
-void QGVPage::startBalloonPlacing(void)
+void QGVPage::startBalloonPlacing()
 {
     balloonPlacing = true;
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
@@ -349,7 +349,7 @@ void QGVPage::startBalloonPlacing(void)
 #endif
 }
 
-void QGVPage::cancelBalloonPlacing(void)
+void QGVPage::cancelBalloonPlacing()
 {
     balloonPlacing = false;
     balloonCursor->hide();

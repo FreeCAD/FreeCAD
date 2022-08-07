@@ -37,7 +37,7 @@ class PartDesignExport FeatureBase : public PartDesign::Feature
 public:
     FeatureBase();
       
-    virtual short int mustExecute(void) const;
+    virtual short int mustExecute() const;
     
     virtual Part::Feature* getBaseObject(bool silent=false) const;
         
@@ -46,7 +46,7 @@ public:
     }
     
     virtual void onChanged(const App::Property* prop);
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual App::DocumentObjectExecReturn* execute();
     virtual void onDocumentRestored();
 };
 

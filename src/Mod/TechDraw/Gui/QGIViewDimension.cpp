@@ -396,7 +396,7 @@ void QGIDatumLabel::setUnitString(QString t)
 } 
 
 
-int QGIDatumLabel::getPrecision(void)
+int QGIDatumLabel::getPrecision()
 {
     int precision;
     bool global = false;
@@ -412,7 +412,7 @@ int QGIDatumLabel::getPrecision(void)
     return precision;
 }
 
-double QGIDatumLabel::getTolAdjust(void)
+double QGIDatumLabel::getTolAdjust()
 {
     double adjust;
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -422,7 +422,7 @@ double QGIDatumLabel::getTolAdjust(void)
 }
 
 
-void QGIDatumLabel::setPrettySel(void)
+void QGIDatumLabel::setPrettySel()
 {
 //    Base::Console().Message("QGIDL::setPrettySel()\n");
     m_dimText->setPrettySel();
@@ -432,7 +432,7 @@ void QGIDatumLabel::setPrettySel(void)
     Q_EMIT setPretty(SEL);
 }
 
-void QGIDatumLabel::setPrettyPre(void)
+void QGIDatumLabel::setPrettyPre()
 {
 //    Base::Console().Message("QGIDL::setPrettyPre()\n");
     m_dimText->setPrettyPre();
@@ -442,7 +442,7 @@ void QGIDatumLabel::setPrettyPre(void)
     Q_EMIT setPretty(PRE);
 }
 
-void QGIDatumLabel::setPrettyNormal(void)
+void QGIDatumLabel::setPrettyNormal()
 {
 //    Base::Console().Message("QGIDL::setPrettyNormal()\n");
     m_dimText->setPrettyNormal();
@@ -691,7 +691,7 @@ void QGIViewDimension::datumLabelDragFinished()
 }
 
 //this is for formatting and finding centers, not display
-QString QGIViewDimension::getLabelText(void)
+QString QGIViewDimension::getLabelText()
 {
     QString result;
     QString first = datumLabel->getDimText()->toPlainText();
@@ -1201,7 +1201,7 @@ bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, do
     return flipArrows;
 }
 
-void QGIViewDimension::resetArrows(void) const
+void QGIViewDimension::resetArrows() const
 {
     aHead1->setDirMode(true);
     aHead1->setRotation(0.0);
@@ -2452,28 +2452,28 @@ void QGIViewDimension::onPrettyChanged(int state)
     }
 }
 
-void QGIViewDimension::setPrettyPre(void)
+void QGIViewDimension::setPrettyPre()
 {
     aHead1->setPrettyPre();
     aHead2->setPrettyPre();
     dimLines->setPrettyPre();
 }
 
-void QGIViewDimension::setPrettySel(void)
+void QGIViewDimension::setPrettySel()
 {
     aHead1->setPrettySel();
     aHead2->setPrettySel();
     dimLines->setPrettySel();
 }
 
-void QGIViewDimension::setPrettyNormal(void)
+void QGIViewDimension::setPrettyNormal()
 {
     aHead1->setPrettyNormal();
     aHead2->setPrettyNormal();
     dimLines->setPrettyNormal();
 }
 
-void QGIViewDimension::drawBorder(void)
+void QGIViewDimension::drawBorder()
 {
 //Dimensions have no border!
 //    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
@@ -2546,7 +2546,7 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     setPens();
 }
 
-void QGIViewDimension::setSvgPens(void)
+void QGIViewDimension::setSvgPens()
 {
     double svgLineFactor = 3.0;                     //magic number.  should be a setting somewhere.
     dimLines->setWidth(m_lineWidth/svgLineFactor);
@@ -2554,7 +2554,7 @@ void QGIViewDimension::setSvgPens(void)
     aHead2->setWidth(aHead2->getWidth()/svgLineFactor);
 }
 
-void QGIViewDimension::setPens(void)
+void QGIViewDimension::setPens()
 {
     dimLines->setWidth(m_lineWidth);
     aHead1->setWidth(m_lineWidth);

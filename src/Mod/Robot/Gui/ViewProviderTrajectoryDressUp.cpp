@@ -58,7 +58,7 @@ void ViewProviderTrajectoryDressUp::unsetEdit(int)
 
 }
 
-std::vector<App::DocumentObject*> ViewProviderTrajectoryDressUp::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderTrajectoryDressUp::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Robot::TrajectoryDressUpObject*>(getObject())->Source.getValue());

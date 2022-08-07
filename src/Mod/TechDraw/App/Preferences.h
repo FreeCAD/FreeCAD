@@ -74,7 +74,7 @@ static int         mattingStyle();
 static std::string svgFile();
 static std::string patFile();
 
-static std::string bitmapFill(void);
+static std::string bitmapFill();
 
 static double      GapISO();
 static double      GapASME();

@@ -34,7 +34,7 @@ class SketchMirrorDialog : public QDialog
     Q_OBJECT
 
 public:
-    SketchMirrorDialog(void);
+    SketchMirrorDialog();
     ~SketchMirrorDialog();
 
     int RefGeoid;

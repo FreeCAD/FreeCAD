@@ -40,7 +40,7 @@ class FemExport ConstraintBearing : public Fem::Constraint
 
 public:
     /// Constructor
-    ConstraintBearing(void);
+    ConstraintBearing();
 
     /// Location reference
     App::PropertyLinkSub Location;
@@ -55,10 +55,10 @@ public:
     App::PropertyVector Axis;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemConstraintBearing";
     }
 

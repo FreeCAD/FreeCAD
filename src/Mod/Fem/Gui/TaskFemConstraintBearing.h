@@ -51,14 +51,14 @@ public:
                              const char* pixmapname = "FEM_ConstraintBearing");
     virtual ~TaskFemConstraintBearing();
 
-    double getDistance(void) const;
+    double getDistance() const;
     virtual const std::string getReferences() const;
-    const std::string getLocationName(void) const;
-    const std::string getLocationObject(void) const;
-    bool getAxial(void) const;
+    const std::string getLocationName() const;
+    const std::string getLocationObject() const;
+    bool getAxial() const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void onDistanceChanged(double l);
     void onButtonLocation(const bool pressed = true);
     void onCheckAxial(bool);

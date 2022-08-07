@@ -41,16 +41,16 @@ public:
     /// destructor
     virtual ~ViewProviderViewClip();
 
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
 
     virtual TechDraw::DrawViewClip* getViewObject() const;
     TechDraw::DrawViewClip* getObject() const;
 
     /// Hide the object in the view
-    virtual void hide(void);
+    virtual void hide();
     /// Show the object in the view
-    virtual void show(void);
-    std::vector<App::DocumentObject*> claimChildren(void) const;
+    virtual void show();
+    std::vector<App::DocumentObject*> claimChildren() const;
 
     virtual bool canDelete(App::DocumentObject* obj) const;
 

@@ -39,15 +39,15 @@ public:
      ViewProviderProjGroup();  /// constructor
      ~ViewProviderProjGroup(); /// destructor
 
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
 
     /// Claim all the views for the page
-    std::vector<App::DocumentObject*> claimChildren(void) const;
+    std::vector<App::DocumentObject*> claimChildren() const;
 
     /// Is called by the tree if the user double click on the object
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked();
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     TechDraw::DrawProjGroup* getObject() const;

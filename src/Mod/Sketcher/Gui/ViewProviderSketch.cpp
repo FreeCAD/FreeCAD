@@ -376,7 +376,7 @@ void ViewProviderSketch::deactivateHandler()
 }
 
 /// removes the active handler
-void ViewProviderSketch::purgeHandler(void)
+void ViewProviderSketch::purgeHandler()
 {
     deactivateHandler();
     Gui::Selection().clearSelection();
@@ -1043,7 +1043,7 @@ bool ViewProviderSketch::mouseWheelEvent(int delta, const SbVec2s &cursorPos, co
     return true;
 }
 
-void ViewProviderSketch::editDoubleClicked(void)
+void ViewProviderSketch::editDoubleClicked()
 {
     if (preselection.isPreselectPointValid()) {
         Base::Console().Log("double click point:%d\n",preselection.PreselectPoint);
@@ -1551,7 +1551,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
     draw(true,false);
 }
 
-bool ViewProviderSketch::isSelectable(void) const
+bool ViewProviderSketch::isSelectable() const
 {
     if (isEditing())
         return false;
@@ -2429,14 +2429,14 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     }
 }
 
-void ViewProviderSketch::updateColor(void)
+void ViewProviderSketch::updateColor()
 {
     assert(isInEditMode());
 
     editCoinManager->updateColor();
 }
 
-bool ViewProviderSketch::doubleClicked(void)
+bool ViewProviderSketch::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this);
     return true;
@@ -3122,21 +3122,21 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 }
 
-int ViewProviderSketch::getPreselectPoint(void) const
+int ViewProviderSketch::getPreselectPoint() const
 {
     if (isInEditMode())
         return preselection.PreselectPoint;
     return -1;
 }
 
-int ViewProviderSketch::getPreselectCurve(void) const
+int ViewProviderSketch::getPreselectCurve() const
 {
     if (isInEditMode())
         return preselection.PreselectCurve;
     return -1;
 }
 
-int ViewProviderSketch::getPreselectCross(void) const
+int ViewProviderSketch::getPreselectCross() const
 {
     // TODO: This function spreads over several files. It should be refactored into something less "numeric" at a second stage.
     if (isInEditMode())
@@ -3144,12 +3144,12 @@ int ViewProviderSketch::getPreselectCross(void) const
     return -1;
 }
 
-Sketcher::SketchObject *ViewProviderSketch::getSketchObject(void) const
+Sketcher::SketchObject *ViewProviderSketch::getSketchObject() const
 {
     return dynamic_cast<Sketcher::SketchObject *>(pcObject);
 }
 
-const Sketcher::Sketch &ViewProviderSketch::getSolvedSketch(void) const
+const Sketcher::Sketch &ViewProviderSketch::getSolvedSketch() const
 {
     return const_cast<const Sketcher::SketchObject *>(getSketchObject())->getSolvedSketch();
 }
@@ -3379,7 +3379,7 @@ void ViewProviderSketch::setPositionText(const Base::Vector2d &Pos)
     editCoinManager->setPositionText(Pos);
 }
 
-void ViewProviderSketch::resetPositionText(void)
+void ViewProviderSketch::resetPositionText()
 {
     editCoinManager->resetPositionText();
 }
@@ -3401,7 +3401,7 @@ void ViewProviderSketch::setPreselectRootPoint()
 }
 
 
-void ViewProviderSketch::resetPreselectPoint(void)
+void ViewProviderSketch::resetPreselectPoint()
 {
     preselection.PreselectPoint = Preselection::InvalidPoint;
     preselection.PreselectCurve = Preselection::InvalidCurve;
@@ -3419,7 +3419,7 @@ void ViewProviderSketch::removeSelectPoint(int SelectPoint)
     selection.SelPointSet.erase(SelectPoint);
 }
 
-void ViewProviderSketch::clearSelectPoints(void)
+void ViewProviderSketch::clearSelectPoints()
 {
     selection.SelPointSet.clear();
 }

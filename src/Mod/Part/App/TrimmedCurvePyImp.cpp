@@ -33,7 +33,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TrimmedCurvePy::representation(void) const
+std::string TrimmedCurvePy::representation() const
 {
     return "<Curve object>";
 }

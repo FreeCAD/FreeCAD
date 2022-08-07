@@ -48,7 +48,7 @@ ViewProviderCylinderParametric::~ViewProviderCylinderParametric()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderCylinderParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderCylinderParametric::getDisplayModes() const
 {
   // get the modes of the father
   std::vector<std::string> StrList;

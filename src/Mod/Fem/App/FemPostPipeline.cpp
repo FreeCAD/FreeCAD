@@ -70,7 +70,7 @@ FemPostPipeline::~FemPostPipeline()
 {
 }
 
-short FemPostPipeline::mustExecute(void) const
+short FemPostPipeline::mustExecute() const
 {
     if (Mode.isTouched())
         return 1;
@@ -78,7 +78,7 @@ short FemPostPipeline::mustExecute(void) const
     return FemPostFilter::mustExecute();
 }
 
-DocumentObjectExecReturn* FemPostPipeline::execute(void) {
+DocumentObjectExecReturn* FemPostPipeline::execute() {
 
     //if we are the toplevel pipeline our data object is not created by filters, we are the main source
     if (!Input.getValue())
@@ -274,7 +274,7 @@ void FemPostPipeline::load(FemResultObject* res) {
     Data.setValue(grid);
 }
 
-PyObject* FemPostPipeline::getPyObject(void)
+PyObject* FemPostPipeline::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

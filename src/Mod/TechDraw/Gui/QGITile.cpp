@@ -98,7 +98,7 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     m_colCurrent = m_colNormal;
 }
 
-QGITile::~QGITile(void)
+QGITile::~QGITile()
 {
 
 }
@@ -109,7 +109,7 @@ QVariant QGITile::itemChange(GraphicsItemChange change, const QVariant &value)
     return QGIDecoration::itemChange(change, value);
 }
 
-void QGITile::draw(void)
+void QGITile::draw()
 {
 //    Base::Console().Message("QGIT::draw()\n");
 
@@ -150,7 +150,7 @@ void QGITile::draw(void)
     }
 }
 
-void QGITile::makeSymbol(void)
+void QGITile::makeSymbol()
 {
 //    Base::Console().Message("QGIT::makeSymbol()\n");
 //    m_effect->setColor(m_colCurrent);
@@ -169,7 +169,7 @@ void QGITile::makeSymbol(void)
    m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
 }
 
-void QGITile::makeText(void)
+void QGITile::makeText()
 {
 //    Base::Console().Message("QGIT::makeText()\n");
     prepareGeometryChange();
@@ -323,18 +323,18 @@ void QGITile::setPrettySel() {
     draw();
 }
 
-bool QGITile::isTailRight(void) 
+bool QGITile::isTailRight()
 {
     return m_tailRight;
 }
 
-bool QGITile::getAltWeld(void) 
+bool QGITile::getAltWeld()
 {
     return m_altWeld;
 }
 
 //TODO: this is Pen, not Brush. sb Brush to colour background
-QColor QGITile::getTileColor(void) const
+QColor QGITile::getTileColor() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
@@ -342,7 +342,7 @@ QColor QGITile::getTileColor(void) const
     return fcColor.asValue<QColor>();
 }
 
-double QGITile::getSymbolWidth(void) const
+double QGITile::getSymbolWidth() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
@@ -356,7 +356,7 @@ double QGITile::getSymbolWidth(void) const
     return w;
 }
 
-double QGITile::getSymbolHeight(void) const
+double QGITile::getSymbolHeight() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
@@ -369,7 +369,7 @@ double QGITile::getSymbolHeight(void) const
 }
 
 //make symbols larger or smaller than standard
-double QGITile::getSymbolFactor(void) const
+double QGITile::getSymbolFactor() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
@@ -378,14 +378,14 @@ double QGITile::getSymbolFactor(void) const
     return s;
 }
 
-double QGITile::prefFontSize(void) const
+double QGITile::prefFontSize() const
 {
 //    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
 //                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     return Preferences::dimFontSizeMM();
 }
 
-QString QGITile::prefTextFont(void) const
+QString QGITile::prefTextFont() const
 {
     return Preferences::labelFontQString();
 }

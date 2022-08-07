@@ -297,7 +297,7 @@ TopoShape::TopoShape(const TopoShape& shape)
     Tag = shape.Tag;
 }
 
-std::vector<const char*> TopoShape::getElementTypes(void) const
+std::vector<const char*> TopoShape::getElementTypes() const
 {
     static const std::vector<const char*> temp = {"Face","Edge","Vertex"};
     return temp;
@@ -642,7 +642,7 @@ void TopoShape::setTransform(const Base::Matrix4D& rclTrf)
     _Shape.Location(loc);
 }
 
-Base::Matrix4D TopoShape::getTransform(void) const
+Base::Matrix4D TopoShape::getTransform() const
 {
     Base::Matrix4D mtrx;
     gp_Trsf Trf = _Shape.Location().Transformation();
@@ -670,7 +670,7 @@ void TopoShape::setShapePlacement(const Base::Placement& rclTrf)
 /*!
  * \obsolete
  */
-Base::Placement TopoShape::getShapePlacement(void) const
+Base::Placement TopoShape::getShapePlacement() const
 {
     TopLoc_Location loc = _Shape.Location();
     gp_Trsf trsf = loc.Transformation();
@@ -1136,7 +1136,7 @@ void TopoShape::exportLineSet(std::ostream& str) const
     }
 }
 
-Base::BoundBox3d TopoShape::getBoundBox(void) const
+Base::BoundBox3d TopoShape::getBoundBox() const
 {
     Base::BoundBox3d box;
     try {
@@ -1218,7 +1218,7 @@ unsigned int TopoShape_RefCountShapes(const TopoDS_Shape& aShape)
     return size;
 }
 
-unsigned int TopoShape::getMemSize (void) const
+unsigned int TopoShape::getMemSize () const
 {
     if (!_Shape.IsNull()) {
         // Count total amount of references of TopoDS_Shape objects

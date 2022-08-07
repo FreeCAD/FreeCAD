@@ -49,7 +49,7 @@
 using namespace Sketcher;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometryFacadePy::representation(void) const
+std::string GeometryFacadePy::representation() const
 {
     std::stringstream str;
     str << "<GeometryFacade ( Id=";
@@ -82,7 +82,7 @@ int GeometryFacadePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Long GeometryFacadePy::getId(void) const
+Py::Long GeometryFacadePy::getId() const
 {
     return Py::Long(this->getGeometryFacadePtr()->getId());
 }
@@ -92,7 +92,7 @@ void GeometryFacadePy::setId(Py::Long Id)
     this->getGeometryFacadePtr()->setId(long(Id));
 }
 
-Py::String GeometryFacadePy::getInternalType(void) const
+Py::String GeometryFacadePy::getInternalType() const
 {
     int internaltypeindex = (int)this->getGeometryFacadePtr()->getInternalType();
 
@@ -117,7 +117,7 @@ void GeometryFacadePy::setInternalType(Py::String arg)
     throw Py::ValueError("Argument is not a valid internal geometry type.");
 }
 
-Py::Boolean GeometryFacadePy::getBlocked(void) const
+Py::Boolean GeometryFacadePy::getBlocked() const
 {
     return Py::Boolean(getGeometryFacadePtr()->getBlocked());
 }
@@ -473,7 +473,7 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
 
 }
 
-Py::Boolean GeometryFacadePy::getConstruction(void) const
+Py::Boolean GeometryFacadePy::getConstruction() const
 {
     return Py::Boolean(getGeometryFacadePtr()->getConstruction());
 }
@@ -483,7 +483,7 @@ void  GeometryFacadePy::setConstruction(Py::Boolean arg)
     getGeometryFacadePtr()->setConstruction(arg);
 }
 
-Py::Long GeometryFacadePy::getGeometryLayerId(void) const
+Py::Long GeometryFacadePy::getGeometryLayerId() const
 {
     return Py::Long(this->getGeometryFacadePtr()->getGeometryLayerId());
 }
@@ -493,13 +493,13 @@ void GeometryFacadePy::setGeometryLayerId(Py::Long Id)
     this->getGeometryFacadePtr()->setGeometryLayerId(long(Id));
 }
 
-Py::String GeometryFacadePy::getTag(void) const
+Py::String GeometryFacadePy::getTag() const
 {
     std::string tmp = boost::uuids::to_string(getGeometryFacadePtr()->getTag());
     return Py::String(tmp);
 }
 
-Py::Object GeometryFacadePy::getGeometry(void) const
+Py::Object GeometryFacadePy::getGeometry() const
 {
     // We return a clone
     std::unique_ptr<Part::Geometry> geo(getGeometryFacadePtr()->getGeometry()->clone());

@@ -52,7 +52,7 @@ const char* DrawTemplate::OrientationEnums[]= {"Portrait",
 
 
 
-DrawTemplate::DrawTemplate(void)
+DrawTemplate::DrawTemplate()
 {
     const char *group = "Page Properties";
 
@@ -74,7 +74,7 @@ DrawTemplate::~DrawTemplate()
 }
 
 
-PyObject *DrawTemplate::getPyObject(void)
+PyObject *DrawTemplate::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -83,7 +83,7 @@ PyObject *DrawTemplate::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-unsigned int DrawTemplate::getMemSize(void) const
+unsigned int DrawTemplate::getMemSize() const
 {
     return 0;
 }
@@ -109,7 +109,7 @@ void DrawTemplate::onChanged(const App::Property* prop)
     App::DocumentObject::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawTemplate::execute(void)
+App::DocumentObjectExecReturn *DrawTemplate::execute()
 {
     DrawPage *page = nullptr;
     std::vector<App::DocumentObject*> parent = getInList();
@@ -143,7 +143,7 @@ DrawPage* DrawTemplate::getParentPage() const
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTemplatePython, TechDraw::DrawTemplate)
-template<> const char* TechDraw::DrawTemplatePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawTemplatePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderPython";
 }
 /// @endcond

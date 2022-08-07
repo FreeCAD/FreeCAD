@@ -82,7 +82,7 @@ Toolpath &Toolpath::operator=(const Toolpath& otherPath)
     return *this;
 }
 
-void Toolpath::clear(void)
+void Toolpath::clear()
 {
     for(std::vector<Command*>::iterator it = vpcCommands.begin();it!=vpcCommands.end();++it)
         delete ( *it );
@@ -357,7 +357,7 @@ void Toolpath::setFromGCode(const std::string instr)
     recalculate();
 }
 
-std::string Toolpath::toGCode(void) const
+std::string Toolpath::toGCode() const
 {
     std::string result;
     for (std::vector<Command*>::const_iterator it=vpcCommands.begin();it!=vpcCommands.end();++it) {
@@ -367,7 +367,7 @@ std::string Toolpath::toGCode(void) const
     return result;
 }
 
-void Toolpath::recalculate(void) // recalculates the path cache
+void Toolpath::recalculate() // recalculates the path cache
 {
 
     if(vpcCommands.empty())
@@ -432,7 +432,7 @@ void Toolpath::recalculate(void) // recalculates the path cache
 
 // reimplemented from base class
 
-unsigned int Toolpath::getMemSize (void) const
+unsigned int Toolpath::getMemSize () const
 {
     return toGCode().size();
 }

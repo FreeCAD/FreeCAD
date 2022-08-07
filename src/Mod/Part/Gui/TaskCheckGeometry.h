@@ -147,7 +147,7 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
         {return QDialogButtonBox::Ok | QDialogButtonBox::Close;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
         {return false;}
     virtual bool needsFullSpace() const {return true;}
 

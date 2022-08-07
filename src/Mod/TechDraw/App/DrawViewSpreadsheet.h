@@ -38,7 +38,7 @@ class TechDrawExport DrawViewSpreadsheet : public TechDraw::DrawViewSymbol
     PROPERTY_HEADER(TechDraw::DrawViewSpreadsheet);
 
 public:
-    DrawViewSpreadsheet(void);
+    DrawViewSpreadsheet();
     virtual ~DrawViewSpreadsheet();
     App::PropertyLink         Source;
     App::PropertyString       CellStart;
@@ -49,19 +49,19 @@ public:
     App::PropertyFloat        TextSize;
 
 
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     virtual short mustExecute() const;
-    std::string getSheetImage(void);
+    std::string getSheetImage();
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderSpreadsheet";
     }
 
 protected:
     virtual void onChanged(const App::Property* prop);
-    std::vector<std::string> getAvailColumns(void);
-    std::string getSVGHead(void);
-    std::string getSVGTail(void);
+    std::vector<std::string> getAvailColumns();
+    std::string getSVGHead();
+    std::string getSVGTail();
     int colInList(const std::vector<std::string>& list,
                    const std::string& toFind);
 

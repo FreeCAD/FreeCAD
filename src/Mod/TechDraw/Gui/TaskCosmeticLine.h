@@ -72,11 +72,11 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent *e);
 
-    void setUiPrimary(void);
-    void setUiEdit(void);
+    void setUiPrimary();
+    void setUiEdit();
 
-    void createCosmeticLine(void);
-    void updateCosmeticLine(void);
+    void createCosmeticLine();
+    void updateCosmeticLine();
 
 private:
     std::unique_ptr<Ui_TaskCosmeticLine> ui;
@@ -116,7 +116,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
                         { return false; }
     void update();
 

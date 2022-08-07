@@ -85,7 +85,7 @@ void edgeVisitor::end_face()
     graphWires.push_back(wireEdges);
 }
 
-TechDraw::ewWireList edgeVisitor::getResult(void)
+TechDraw::ewWireList edgeVisitor::getResult()
 {
     return graphWires;
 }
@@ -488,7 +488,7 @@ bool WalkerEdge::isEqual(WalkerEdge w)
     return (i.idx < j.idx);
 }
 
-std::string WalkerEdge::dump(void)
+std::string WalkerEdge::dump()
 {
     std::string result;
     std::stringstream builder;
@@ -523,7 +523,7 @@ void ewWire::push_back(WalkerEdge w)
     wedges.push_back(w);
 }
 
-int ewWire::size(void)
+int ewWire::size()
 {
     return wedges.size();
 }
@@ -560,7 +560,7 @@ void ewWireList::push_back(ewWire w)
     wires.push_back(w);
 }
 
-int ewWireList::size(void)
+int ewWireList::size()
 {
     return wires.size();
 }
@@ -569,7 +569,7 @@ int ewWireList::size(void)
 //* embedItem Methods
 //*************************************
 
-std::string embedItem::dump(void)
+std::string embedItem::dump()
 {
     std::string result;
     std::stringstream builder;

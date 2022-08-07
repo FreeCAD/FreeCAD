@@ -48,18 +48,18 @@ public:
     App::PropertyInteger           DirExtent;                    //Horizontal, Vertical, TBD
     App::PropertyStringList        CosmeticTags;                 //id of cosmetic end points.
 
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     virtual short mustExecute() const;
     virtual void unsetupObject();
 
-    virtual bool checkReferences2D(void) const;
+    virtual bool checkReferences2D() const;
 
     //return PyObject as DrawViewDimExtentPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
 
 protected:
     virtual void onChanged(const App::Property* prop);
-    std::vector<std::string> getSubNames(void);
+    std::vector<std::string> getSubNames();
     virtual pointPair getPointsTwoVerts();
 
 private:

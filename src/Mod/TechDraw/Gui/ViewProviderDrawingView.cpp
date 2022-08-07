@@ -108,7 +108,7 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
-void ViewProviderDrawingView::show(void)
+void ViewProviderDrawingView::show()
 {
     TechDraw::DrawView* obj = getViewObject();
     if (!obj || obj->isRestoring())
@@ -124,7 +124,7 @@ void ViewProviderDrawingView::show(void)
     ViewProviderDocumentObject::show();
 }
 
-void ViewProviderDrawingView::hide(void)
+void ViewProviderDrawingView::hide()
 {
     TechDraw::DrawView* obj = getViewObject();
     if (!obj || obj->isRestoring())
@@ -149,7 +149,7 @@ void ViewProviderDrawingView::hide(void)
     }
 }
 
-QGIView* ViewProviderDrawingView::getQView(void)
+QGIView* ViewProviderDrawingView::getQView()
 {
     QGIView *qView = nullptr;
     if (m_docReady){
@@ -173,7 +173,7 @@ QGIView* ViewProviderDrawingView::getQView(void)
     return qView;
 }
 
-bool ViewProviderDrawingView::isShow(void) const
+bool ViewProviderDrawingView::isShow() const
 {
     return Visibility.getValue();
 }

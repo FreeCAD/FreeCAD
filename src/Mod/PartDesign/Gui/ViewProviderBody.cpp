@@ -136,7 +136,7 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
-bool ViewProviderBody::doubleClicked(void)
+bool ViewProviderBody::doubleClicked()
 {
     //first, check if the body is already active.
     auto activeDoc = Gui::Application::Instance->activeDocument();
@@ -442,7 +442,7 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     }
 }
 
-std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
+std::vector< std::string > ViewProviderBody::getDisplayModes() const {
 
     //we get all display modes and remove the "Group" mode, as this is what we use for "Through"
     //body display mode

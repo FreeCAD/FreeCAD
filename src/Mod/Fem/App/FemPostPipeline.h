@@ -40,18 +40,18 @@ class FemExport FemPostPipeline : public Fem::FemPostFilter
 
 public:
     /// Constructor
-    FemPostPipeline(void);
+    FemPostPipeline();
     virtual ~FemPostPipeline();
 
     App::PropertyLinkList       Filter;
     App::PropertyLink           Functions;
     App::PropertyEnumeration    Mode;
 
-    short mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
+    short mustExecute() const;
+    virtual App::DocumentObjectExecReturn* execute();
     PyObject* getPyObject();
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemPostPipeline";
     }
 

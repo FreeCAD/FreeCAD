@@ -69,7 +69,7 @@ protected Q_SLOTS:
     void viewToggled(bool toggle);
 
     /// Requests appropriate rotation of our DrawProjGroup
-    void rotateButtonClicked(void);
+    void rotateButtonClicked();
 
 //    void onResetClicked(void);
 /*    void projectionTypeChanged(int index);*/
@@ -77,7 +77,7 @@ protected Q_SLOTS:
     void scaleTypeChanged(int index);
     void AutoDistributeClicked(bool b);
     /// Updates item spacing
-    void spacingChanged(void);
+    void spacingChanged();
     void scaleManuallyChanged(int i);
 
 protected:
@@ -89,7 +89,7 @@ protected:
      * between checkboxes and viewToggled()
      */
     void setupViewCheckboxes(bool addConnections = false);
-    void setUiPrimary(void);
+    void setUiPrimary();
     void saveGroupState();
     void restoreGroupState();
 
@@ -149,7 +149,7 @@ public:
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return false; }
     void setCreateMode(bool b);
 

@@ -55,12 +55,12 @@ ConstraintContact::ConstraintContact()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintContact::execute(void)
+App::DocumentObjectExecReturn *ConstraintContact::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintContact::getViewProviderName(void) const
+const char* ConstraintContact::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintContact";
 }

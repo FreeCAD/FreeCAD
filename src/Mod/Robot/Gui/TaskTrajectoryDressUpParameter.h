@@ -48,17 +48,17 @@ public:
     ~TaskTrajectoryDressUpParameter();
 
     /// this methode write the values from the Gui to the object, usually in accept()
-    void writeValues(void);
+    void writeValues();
  
 private Q_SLOTS:
     /// edit the placement
-    void createPlacementDlg(void);
+    void createPlacementDlg();
 
    
 protected:
     Base::Placement PosAdd;
 
-    void viewPlacement(void);
+    void viewPlacement();
 
 private:
     QWidget* proxy;

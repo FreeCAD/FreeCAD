@@ -33,7 +33,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Cut, Part::Boolean)
 
 
-Cut::Cut(void)
+Cut::Cut()
 {
 }
 

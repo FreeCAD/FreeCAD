@@ -41,7 +41,7 @@ class TechDrawExport DrawViewAnnotation : public TechDraw::DrawView
 
 public:
     /// Constructor
-    DrawViewAnnotation(void);
+    DrawViewAnnotation();
     virtual ~DrawViewAnnotation();
 
     App::PropertyStringList   Text;
@@ -57,11 +57,11 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderAnnotation";
     }
 

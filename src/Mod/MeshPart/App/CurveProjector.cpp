@@ -101,7 +101,7 @@ CurveProjectorShape::CurveProjectorShape(const TopoDS_Shape &aShape, const MeshK
   Do();
 }
 
-void CurveProjectorShape::Do(void)
+void CurveProjectorShape::Do()
 {
   TopExp_Explorer Ex;
   TopoDS_Shape Edge;
@@ -269,7 +269,7 @@ CurveProjectorSimple::CurveProjectorSimple(const TopoDS_Shape &aShape, const Mes
 }
 
 
-void CurveProjectorSimple::Do(void)
+void CurveProjectorSimple::Do()
 {
   TopExp_Explorer Ex;
   TopoDS_Shape Edge;
@@ -583,7 +583,7 @@ CurveProjectorWithToolMesh::CurveProjectorWithToolMesh(const TopoDS_Shape &aShap
 }
 
 
-void CurveProjectorWithToolMesh::Do(void)
+void CurveProjectorWithToolMesh::Do()
 {
   TopExp_Explorer Ex;
   TopoDS_Shape Edge;

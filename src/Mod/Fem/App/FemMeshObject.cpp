@@ -45,7 +45,7 @@ FemMeshObject::~FemMeshObject()
 {
 }
 
-short FemMeshObject::mustExecute(void) const
+short FemMeshObject::mustExecute() const
 {
     return 0;
 }
@@ -75,11 +75,11 @@ void FemMeshObject::onChanged(const Property* prop)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemMeshObjectPython, Fem::FemMeshObject)
-template<> const char* Fem::FemMeshObjectPython::getViewProviderName(void) const {
+template<> const char* Fem::FemMeshObjectPython::getViewProviderName() const {
     return "FemGui::ViewProviderFemMeshPython";
 }
 
-template<> PyObject* Fem::FemMeshObjectPython::getPyObject(void) {
+template<> PyObject* Fem::FemMeshObjectPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);

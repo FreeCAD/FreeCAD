@@ -60,12 +60,12 @@ void PropertyPath::setValue(const Toolpath& pa)
 }
 
 
-const Toolpath &PropertyPath::getValue(void)const
+const Toolpath &PropertyPath::getValue()const
 {
     return _Path;
 }
 
-PyObject *PropertyPath::getPyObject(void)
+PyObject *PropertyPath::getPyObject()
 {
     return new PathPy(new Toolpath(_Path));
 }
@@ -83,7 +83,7 @@ void PropertyPath::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyPath::Copy(void) const
+App::Property *PropertyPath::Copy() const
 {
     PropertyPath *prop = new PropertyPath();
     prop->_Path = this->_Path;
@@ -98,7 +98,7 @@ void PropertyPath::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyPath::getMemSize (void) const
+unsigned int PropertyPath::getMemSize () const
 {
     return _Path.getMemSize();
 }

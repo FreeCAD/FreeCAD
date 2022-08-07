@@ -290,7 +290,7 @@ void QGIRichAnno::setLineSpacing(int lineSpacing)
 //}
 
 
-TechDraw::DrawRichAnno* QGIRichAnno::getFeature(void)
+TechDraw::DrawRichAnno* QGIRichAnno::getFeature()
 {
     TechDraw::DrawRichAnno* result = 
          static_cast<TechDraw::DrawRichAnno*>(getViewObject());
@@ -338,12 +338,12 @@ QPen QGIRichAnno::rectPen() const
     return pen;
 }
 
-QFont QGIRichAnno::prefFont(void)
+QFont QGIRichAnno::prefFont()
 {
     return PreferencesGui::labelFontQFont();
 }
 
-double QGIRichAnno::prefPointSize(void)
+double QGIRichAnno::prefPointSize()
 {
 //    Base::Console().Message("QGIRA::prefPointSize()\n");
     double fontSize = Preferences::dimFontSizeMM();

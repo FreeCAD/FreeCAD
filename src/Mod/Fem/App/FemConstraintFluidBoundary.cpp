@@ -113,7 +113,7 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintFluidBoundary::execute(void)
+App::DocumentObjectExecReturn *ConstraintFluidBoundary::execute()
 {
     return Constraint::execute();
 }

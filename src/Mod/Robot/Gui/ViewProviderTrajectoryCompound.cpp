@@ -60,7 +60,7 @@ void ViewProviderTrajectoryCompound::unsetEdit(int)
 
 }
 
-std::vector<App::DocumentObject*> ViewProviderTrajectoryCompound::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderTrajectoryCompound::claimChildren()const
 {
     return std::vector<App::DocumentObject*>(static_cast<Robot::TrajectoryCompound *>(getObject())->Source.getValues());
 }

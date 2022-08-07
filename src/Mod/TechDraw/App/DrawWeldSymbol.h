@@ -49,17 +49,17 @@ public:
     App::PropertyString       TailText;
 
     virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onSettingDocument(void);
+    virtual App::DocumentObjectExecReturn *execute();
+    virtual void onSettingDocument();
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderWeld";
     }
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
 
     bool isTailRightSide();
-    std::vector<DrawTileWeld*> getTiles(void) const;
+    std::vector<DrawTileWeld*> getTiles() const;
 
 protected:
     virtual void onChanged(const App::Property* prop);

@@ -46,7 +46,7 @@ public:
     ProjectionAlgos(const TopoDS_Shape &Input,const Base::Vector3d &Dir);
     virtual ~ProjectionAlgos();
 
-    void execute(void);
+    void execute();
 
     enum ExtractionType {
         Plain = 0,

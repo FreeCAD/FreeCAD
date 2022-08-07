@@ -230,13 +230,13 @@ void PartGui::DlgProjectionOnSurface::slotDeletedObject(const App::DocumentObjec
   }
 }
 
-void PartGui::DlgProjectionOnSurface::apply(void)
+void PartGui::DlgProjectionOnSurface::apply()
 {
   if (m_partDocument)
     m_partDocument->commitTransaction();
 }
 
-void PartGui::DlgProjectionOnSurface::reject(void)
+void PartGui::DlgProjectionOnSurface::reject()
 {
   if (m_partDocument)
     m_partDocument->abortTransaction();
@@ -338,7 +338,7 @@ void PartGui::DlgProjectionOnSurface::onSelectionChanged(const Gui::SelectionCha
   }
 }
 
-void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
+void PartGui::DlgProjectionOnSurface::get_camera_direction()
 {
   auto mainWindow = Gui::getMainWindow();
 

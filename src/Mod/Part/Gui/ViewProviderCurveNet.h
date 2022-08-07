@@ -54,7 +54,7 @@ public:
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
 
     /// Update the Part representation
     virtual void updateData(const App::Property*);

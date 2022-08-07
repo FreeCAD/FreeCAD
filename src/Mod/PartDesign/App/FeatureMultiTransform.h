@@ -44,7 +44,7 @@ public:
     short mustExecute() const;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartDesignGui::ViewProviderMultiTransform";
     }
     //@}
@@ -59,7 +59,7 @@ public:
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> originals);
 
 protected:
-    virtual void positionBySupport(void);
+    virtual void positionBySupport();
 };
 
 } //namespace PartDesign

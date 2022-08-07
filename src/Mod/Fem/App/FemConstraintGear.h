@@ -40,7 +40,7 @@ class FemExport ConstraintGear : public Fem::ConstraintBearing
 
 public:
     /// Constructor
-    ConstraintGear(void);
+    ConstraintGear();
 
     App::PropertyFloat Diameter;
     App::PropertyFloat Force;
@@ -51,10 +51,10 @@ public:
     App::PropertyVector DirectionVector;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "FemGui::ViewProviderFemConstraintGear";
     }
 

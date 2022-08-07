@@ -63,7 +63,7 @@ ShapeValidator::ShapeValidator()
    initValidator();
 }
 
-void ShapeValidator::initValidator(void)
+void ShapeValidator::initValidator()
 {
     willBezier = true;
     edgeCount = 0;
@@ -162,7 +162,7 @@ void GeomFillSurface::onChanged(const App::Property* prop)
     Part::Spline::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
+App::DocumentObjectExecReturn *GeomFillSurface::execute()
 {
     try {
         TopoDS_Wire aWire;

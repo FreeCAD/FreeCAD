@@ -50,7 +50,7 @@ short SketchObjectSF::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *SketchObjectSF::execute(void)
+App::DocumentObjectExecReturn *SketchObjectSF::execute()
 {
     Base::Console().Warning("%s: This feature is deprecated and won't be longer supported in future FreeCAD versions\n",this->getNameInDocument());
     // do nothing 

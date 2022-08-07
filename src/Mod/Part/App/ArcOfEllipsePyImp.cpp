@@ -38,7 +38,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfEllipsePy::representation(void) const
+std::string ArcOfEllipsePy::representation() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfEllipsePtr()->handle());
@@ -114,7 +114,7 @@ int ArcOfEllipsePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     return -1;
 }
 
-Py::Float ArcOfEllipsePy::getMajorRadius(void) const
+Py::Float ArcOfEllipsePy::getMajorRadius() const
 {
     return Py::Float(getGeomArcOfEllipsePtr()->getMajorRadius()); 
 }
@@ -124,7 +124,7 @@ void  ArcOfEllipsePy::setMajorRadius(Py::Float arg)
     getGeomArcOfEllipsePtr()->setMajorRadius((double)arg);
 }
 
-Py::Float ArcOfEllipsePy::getMinorRadius(void) const
+Py::Float ArcOfEllipsePy::getMinorRadius() const
 {
     return Py::Float(getGeomArcOfEllipsePtr()->getMinorRadius()); 
 }
@@ -134,7 +134,7 @@ void  ArcOfEllipsePy::setMinorRadius(Py::Float arg)
     getGeomArcOfEllipsePtr()->setMinorRadius((double)arg);
 }
 
-Py::Object ArcOfEllipsePy::getEllipse(void) const
+Py::Object ArcOfEllipsePy::getEllipse() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfEllipsePtr()->handle());

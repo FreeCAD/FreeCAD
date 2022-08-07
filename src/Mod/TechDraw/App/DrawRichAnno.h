@@ -46,14 +46,14 @@ public:
     App::PropertyFloat        MaxWidth;
 
     virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderRichAnno";
     }
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
-    DrawView* getBaseView(void) const;
+    DrawView* getBaseView() const;
 
 protected:
     virtual void onChanged(const App::Property* prop);

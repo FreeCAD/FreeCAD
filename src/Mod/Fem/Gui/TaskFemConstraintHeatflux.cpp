@@ -321,21 +321,21 @@ const std::string TaskFemConstraintHeatflux::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-double TaskFemConstraintHeatflux::getAmbientTemp(void) const
+double TaskFemConstraintHeatflux::getAmbientTemp() const
 {
     Base::Quantity temperature = ui->if_ambienttemp->getQuantity();
     double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
     return temperature_in_kelvin;
 }
 
-double TaskFemConstraintHeatflux::getFilmCoef(void) const
+double TaskFemConstraintHeatflux::getFilmCoef() const
 {
     Base::Quantity filmcoef = ui->if_filmcoef->getQuantity();
     double filmcoef_in_units = filmcoef.getValueAs(Base::Quantity(1.0, Base::Unit::ThermalTransferCoefficient));
     return filmcoef_in_units;
 }
 
-std::string TaskFemConstraintHeatflux::get_constraint_type(void) const {
+std::string TaskFemConstraintHeatflux::get_constraint_type() const {
     std::string type;
     if (ui->rb_convection->isChecked()) {
         type = "\"Convection\"";

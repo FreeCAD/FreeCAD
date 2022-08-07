@@ -68,7 +68,7 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return true; }
 
 private:
