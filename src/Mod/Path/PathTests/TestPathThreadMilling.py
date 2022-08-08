@@ -38,7 +38,9 @@ class TestObject(object):
 
 def radii(internal, major, minor, toolDia, toolCrest):
     """test radii function for simple testing"""
-    return (minor, major)
+    if internal:
+        return (minor, major)
+    return (major, minor)
 
 
 class TestPathThreadMilling(PathTestBase):

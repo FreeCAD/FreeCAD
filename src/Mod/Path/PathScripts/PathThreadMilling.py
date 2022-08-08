@@ -149,7 +149,7 @@ def threadSetup(obj):
 
 def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
     """threadRadii(majorDia, minorDia, toolDia, toolCrest) ... returns the minimum and maximum radius for thread."""
-    PathLog.track(majorDia, minorDia, toolDia, toolCrest)
+    PathLog.track(internal, majorDia, minorDia, toolDia, toolCrest)
     if toolCrest is None:
         toolCrest = 0.0
     # As it turns out metric and imperial standard threads follow the same rules.
@@ -164,12 +164,15 @@ def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
         outerTip = majorDia / 2.0 + H / 8.0
         # Compensate for the crest of the tool
         toolTip = outerTip - toolCrest * SQRT_3_DIVIDED_BY_2
-        return ((minorDia - toolDia) / 2.0, toolTip - toolDia / 2.0)
-    # mill outside in
-    innerTip = minorDia / 2.0 - H / 4.0
-    # Compensate for the crest of the tool
-    toolTip = innerTip - toolCrest * SQRT_3_DIVIDED_BY_2
-    return ((majorDia + toolDia) / 2.0, toolTip + toolDia / 2.0)
+        radii = ((minorDia - toolDia) / 2.0, toolTip - toolDia / 2.0)
+    else:
+        # mill outside in
+        innerTip = minorDia / 2.0 - H / 4.0
+        # Compensate for the crest of the tool
+        toolTip = innerTip - toolCrest * SQRT_3_DIVIDED_BY_2
+        radii = ((majorDia + toolDia) / 2.0, toolTip + toolDia / 2.0)
+    PathLog.track(radii)
+    return radii
 
 
 def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest):
@@ -190,11 +193,14 @@ def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
     minor, major = radii(internal, majorDia, minorDia, toolDia, toolCrest)
     H = float(major - minor)
     Hi = [H * math.sqrt((i + 1) / count) for i in range(count)]
-    PathLog.debug("threadPasses({}, {}) -> H={} : {}".format(minor, major, H, Hi))
 
-    if internal:
-        return [minor + h for h in Hi]
-    return [major - h for h in Hi]
+    # For external threads threadRadii returns the radii in reverse order because that's
+    # the order in which they have to get milled. As a result H ends up being negative
+    # and the math for internal and external threads is identical.
+    passes = [minor + h for h in Hi]
+    PathLog.debug(f"threadPasses({minor}, {major}) -> H={H} : {Hi}  --> {passes}")
+
+    return passes
 
 
 def elevatorRadius(obj, center, internal, tool):
