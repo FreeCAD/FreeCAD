@@ -29,6 +29,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
+import math
 import time
 
 
@@ -867,7 +868,7 @@ class ObjectOp(object):
         # Get the cycle time in seconds
         seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
 
-        if not seconds:
+        if not seconds or math.isnan(seconds):
             return translate("Path", "Cycletime Error")
 
         # Convert the cycle time to a HH:MM:SS format
