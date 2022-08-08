@@ -47,7 +47,6 @@ Constraint::Constraint()
 : Value(0.0),
   Type(None),
   AlignmentType(Undef),
-  Name(""),
   First(GeoEnum::GeoUndef),
   FirstPos(PointPos::none),
   Second(GeoEnum::GeoUndef),

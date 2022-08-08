@@ -1212,7 +1212,7 @@ private:
             throw Py::Exception();
 
         std::string svg(svgcode);
-        std::string empty = "";
+        std::string empty;
         std::string endline = "--endOfLine--";
         std::string linebreak = "\\n";
         // removing linebreaks for regex to work

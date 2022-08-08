@@ -50,7 +50,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-:oldWb(""), oldTip(nullptr), isSetTipIcon(false)
+: oldTip(nullptr), isSetTipIcon(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
 }

@@ -2157,7 +2157,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
 
 
     // write volumes to file
-    std::string elsetname = "";
+    std::string elsetname;
     if (!elementsMapVol.empty()) {
         for (ElementsMap::iterator it = elementsMapVol.begin(); it != elementsMapVol.end(); ++it) {
             anABAQUS_Output << "** Volume elements" << std::endl;
