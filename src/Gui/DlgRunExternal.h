@@ -25,6 +25,7 @@
 
 #include <QDialog>
 #include <QProcess>
+#include <FCGlobal.h>
 
 namespace Gui {
 namespace Dialog {

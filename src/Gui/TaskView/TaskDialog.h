@@ -28,6 +28,7 @@
 #include <vector>
 
 #include <QDialogButtonBox>
+#include <FCGlobal.h>
 
 
 namespace App {
