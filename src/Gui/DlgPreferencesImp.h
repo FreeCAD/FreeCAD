@@ -143,6 +143,7 @@ private:
     void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
     void applyChanges();
     void restoreDefaults();
+    QString longestGroupName() const;
     //@}
 
 private:
