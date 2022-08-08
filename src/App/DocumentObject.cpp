@@ -103,7 +103,7 @@ App::DocumentObjectExecReturn *DocumentObject::recompute()
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very long.
         std::vector<App::DocumentObject*> invalid_linkobjs;
-        std::string objnames = "", scopenames = "";
+        std::string objnames, scopenames;
         GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
         for (auto& obj : invalid_linkobjs) {
             objnames += obj->getNameInDocument();
