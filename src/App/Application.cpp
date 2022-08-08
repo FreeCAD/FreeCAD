@@ -214,7 +214,7 @@ init_freecad_base_module(void)
 }
 
 // Set in inside Application
-static PyMethodDef* __AppMethods = nullptr;
+static PyMethodDef* ApplicationMethods = nullptr;
 
 PyMODINIT_FUNC
 init_freecad_module(void)
@@ -222,7 +222,7 @@ init_freecad_module(void)
     static struct PyModuleDef FreeCADModuleDef = {
         PyModuleDef_HEAD_INIT,
         "FreeCAD", FreeCAD_doc, -1,
-        __AppMethods,
+        ApplicationMethods,
         nullptr, nullptr, nullptr, nullptr
     };
     return PyModule_Create(&FreeCADModuleDef);
@@ -248,7 +248,7 @@ void Application::setupPythonTypes()
     Base::PyGILStateLocker lock;
     PyObject* modules = PyImport_GetModuleDict();
 
-    __AppMethods = Application::Methods;
+    ApplicationMethods = Application::Methods;
     PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
     if (!pAppModule) {
         PyErr_Clear();

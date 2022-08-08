@@ -328,7 +328,7 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute() {
         PropertyPythonObject *proxy = nullptr;
         if(getLinkExecuteProperty()
                 && !boost::iequals(getLinkExecuteValue(), "none")
-                && (!_LinkOwner.getValue() 
+                && (!_LinkOwner.getValue()
                     || !container->getDocument()->getObjectByID(_LinkOwner.getValue())))
         {
             // Check if this is an element link. Do not invoke appLinkExecute()
@@ -502,7 +502,7 @@ void LinkBaseExtension::syncCopyOnChange()
     auto parent = getContainer();
 
     auto linked = linkProp->getValue();
-    
+
     std::vector<App::DocumentObjectT> oldObjs;
     std::vector<App::DocumentObject*> objs;
 
@@ -540,7 +540,7 @@ void LinkBaseExtension::syncCopyOnChange()
     // Obtain the original linked object and its dependency in depending order.
     // The last being the original linked object.
     auto srcObjs = getOnChangeCopyObjects();
-    // Refresh signal connection to monitor changes 
+    // Refresh signal connection to monitor changes
     monitorOnChangeCopyObjects(srcObjs);
 
     // Copy the objects. Document::export/importObjects() (called by
@@ -656,7 +656,7 @@ void LinkBaseExtension::syncCopyOnChange()
     // Finally, remove all old copies. oldObjs stores type of DocumentObjectT
     // which stores the object name. Before removing, we need to make sure the
     // object exists, and it is not some new object with the same name, by
-    // checking objs which stores DocumentObject pointer. 
+    // checking objs which stores DocumentObject pointer.
     for (const auto &objT : oldObjs) {
         auto obj = objT.getObject();
         if (obj && std::binary_search(objs.begin(), objs.end(), obj))
@@ -811,8 +811,7 @@ bool LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, DocumentObject
     return res;
 }
 
-void LinkBaseExtension::checkCopyOnChange(
-        App::DocumentObject *parent, const App::Property &prop) 
+void LinkBaseExtension::checkCopyOnChange(App::DocumentObject *parent, const App::Property &prop)
 {
     if(!parent || !parent->getDocument()
                || parent->getDocument()->isPerformingTransaction())
@@ -1829,8 +1828,8 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     if (src != &obj || getLinkCopyOnChangeValue()==CopyOnChangeDisabled)
                         return;
                     if (App::Document::isAnyRestoring()
-                            || obj.testStatus(ObjectStatus::NoTouch) 
-                            || (prop.getType() & Prop_Output) 
+                            || obj.testStatus(ObjectStatus::NoTouch)
+                            || (prop.getType() & Prop_Output)
                             || prop.testStatus(Property::Output))
                         return;
                     if (auto propTouch = getLinkCopyOnChangeTouchedProperty())

@@ -45,7 +45,7 @@ using namespace App;
 //**************************************************************************
 // Python stuff
 
-// Application Methods						// Methods structure
+// Application methods structure
 PyMethodDef Application::Methods[] = {
     {"ParamGet",       (PyCFunction) Application::sGetParam, METH_VARARGS,
      "Get parameters by path"},
@@ -125,7 +125,7 @@ PyMethodDef Application::Methods[] = {
     {"activeDocument", (PyCFunction) Application::sActiveDocument, METH_VARARGS,
      "activeDocument() -> object or None\n\n"
      "Return the active document or None if there is no one."},
-    {"setActiveDocument",(PyCFunction) Application::sSetActiveDocument, METH_VARARGS,
+    {"setActiveDocument", (PyCFunction) Application::sSetActiveDocument, METH_VARARGS,
      "setActiveDocement(string) -> None\n\n"
      "Set the active document by its name."},
     {"getDocument",    (PyCFunction) Application::sGetDocument, METH_VARARGS,
@@ -179,13 +179,15 @@ PyMethodDef Application::Methods[] = {
      "There is an active sequencer during document restore and recomputation. User may\n"
      "abort the operation by pressing the ESC key. Once detected, this function will\n"
      "trigger a Base.FreeCADAbort exception."},
-    {nullptr, nullptr, 0, nullptr}		/* Sentinel */
+    {nullptr, nullptr, 0, nullptr} /* Sentinel */
 };
 
 
 PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 {
-    char *path, *doc="",*mod="";
+    char *path;
+    char *doc="";
+    char *mod="";
     if (!PyArg_ParseTuple(args, "s|ss", &path, &doc, &mod))
         return nullptr;
     try {
@@ -238,7 +240,7 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObje
 {
     char* Name;
     PyObject *hidden = Py_False;
-    static char *kwlist[] = {"name","hidden",nullptr};
+    static char *kwlist[] = {"name", "hidden", nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "et|O!", kwlist,
                 "utf-8", &Name, &PyBool_Type, &hidden))
         return nullptr;
@@ -265,7 +267,7 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
     char *usrName = nullptr;
     PyObject *hidden = Py_False;
     PyObject *temp = Py_False;
-    static char *kwlist[] = {"name","label","hidden","temp",nullptr};
+    static char *kwlist[] = {"name", "label", "hidden", "temp", nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetO!O!", kwlist,
                 "utf-8", &docName, "utf-8", &usrName, &PyBool_Type, &hidden, &PyBool_Type, &temp))
         return nullptr;
@@ -419,7 +421,7 @@ PyObject* Application::sGetConfig(PyObject * /*self*/, PyObject *args)
 
     std::map<std::string, std::string>::const_iterator it = Map.find(pstr);
     if (it != Map.end()) {
-        return Py_BuildValue("s",it->second.c_str());
+        return Py_BuildValue("s", it->second.c_str());
     }
     else {
         // do not set an error because this may break existing python code
@@ -433,8 +435,7 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PyObject *dict = PyDict_New();
-    for (std::map<std::string,std::string>::iterator It= GetApplication()._mConfig.begin();
-         It!=GetApplication()._mConfig.end();++It) {
+    for (auto It= GetApplication()._mConfig.begin(); It != GetApplication()._mConfig.end(); ++It) {
         PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
     }
     return dict;
@@ -442,9 +443,9 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sSetConfig(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr,*pstr2;
+    char *pstr, *pstr2;
 
-    if (!PyArg_ParseTuple(args, "ss", &pstr,&pstr2))
+    if (!PyArg_ParseTuple(args, "ss", &pstr, &pstr2))
         return nullptr;
 
     GetApplication()._mConfig[pstr] = pstr2;
