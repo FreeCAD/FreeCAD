@@ -618,7 +618,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
         const auto& subvals = copied ? _CopiedLink.getSubValues() : l.getSubValues();
         std::set<std::string> subs(subvals.begin(), subvals.end());
-        static std::string none("");
+        static std::string none;
         if (subs.empty())
             subs.insert(none);
         else if (subs.size() > 1)

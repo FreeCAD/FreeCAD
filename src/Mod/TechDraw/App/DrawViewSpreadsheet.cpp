@@ -298,7 +298,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
             int alignment = 0;
             std::string bcolor = "none";
             std::string fcolor = c.asHexString();
-            std::string textstyle = "";
+            std::string textstyle;
             if (cell) {
                 App::Color f,b;
                 std::set<std::string> st;

@@ -511,7 +511,7 @@ const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type, bool silent) {
         return _ShapeNames[type];
     if(!silent)
         FC_THROWM(Base::CADKernelError, "invalid shape type '" << type << "'");
-    static std::string ret("");
+    static std::string ret;
     return ret;
 }
 

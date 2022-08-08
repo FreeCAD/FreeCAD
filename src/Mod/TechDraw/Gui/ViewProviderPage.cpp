@@ -79,7 +79,6 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 ViewProviderPage::ViewProviderPage()
   : m_mdiView(nullptr),
     m_docReady(true),
-    m_pageName(""),
     m_graphicsView(nullptr),
     m_graphicsScene(nullptr)
 {
