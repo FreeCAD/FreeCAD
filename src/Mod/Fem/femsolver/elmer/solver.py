@@ -47,6 +47,8 @@ from femtools import femutils
 if FreeCAD.GuiUp:
     import FemGui
 
+SIMULATION_TYPE = ["Scanning", "Steady State", "Transient"]
+
 
 def create(doc, name="ElmerSolver"):
     return femutils.createObject(
@@ -71,18 +73,60 @@ class Proxy(solverbase.Proxy):
         super(Proxy, self).__init__(obj)
 
         obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "BDFOrder",
+            "Timestepping",
+            "Order of time stepping method 'BDF'"
+        )
+        # according to the Elmer manual recommended is order 2
+        # possible ranage is 1 - 5
+        obj.BDFOrder = (2, 1, 5, 1)
+
+        obj.addProperty(
+            "App::PropertyIntegerList",
+            "TimestepIntervals",
+            "Timestepping",
+            (
+                "List of maximum optimization rounds if 'Simulation Type'\n"
+                "is either 'Scanning' or 'Transient'"
+            )
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "TimestepSizes",
+            "Timestepping",
+            (
+                "List of time steps of optimization if 'Simulation Type'\n"
+                "is either 'Scanning' or 'Transient'"
+            )
+        )
+        # there is no universal default, it all depends on the analysis, however
+        # we have to set something and set 10 seconds in steps of 0.1s
+        obj.TimestepIntervals = [100]
+        obj.TimestepSizes = [0.1]
+
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SimulationType",
+            "Type",
+            ""
+        )
+        obj.SimulationType = SIMULATION_TYPE
+        obj.SimulationType = "Steady State"
+
+        obj.addProperty(
             "App::PropertyInteger",
             "SteadyStateMaxIterations",
-            "Steady State",
-            ""
+            "Type",
+            "Maximal steady state iterations"
         )
         obj.SteadyStateMaxIterations = 1
 
         obj.addProperty(
             "App::PropertyInteger",
             "SteadyStateMinIterations",
-            "Steady State",
-            ""
+            "Type",
+            "Minimal steady state iterations"
         )
         obj.SteadyStateMinIterations = 0
 

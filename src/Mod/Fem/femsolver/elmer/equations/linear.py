@@ -84,14 +84,14 @@ class Proxy(equation.Proxy):
             ""
         )
         obj.LinearIterativeMethod = LINEAR_ITERATIVE
-        obj.LinearIterativeMethod = "BiCGStabl"
+        obj.LinearIterativeMethod = "BiCGStab"
         obj.addProperty(
             "App::PropertyInteger",
             "BiCGstablDegree",
             "Linear System",
             ""
         )
-        obj.BiCGstablDegree = 3
+        obj.BiCGstablDegree = 2
         obj.addProperty(
             "App::PropertyEnumeration",
             "LinearPreconditioning",
@@ -110,7 +110,7 @@ class Proxy(equation.Proxy):
         # view and edit the tolerance via the property editor and this does not
         # yet allow to view and edit small numbers in scientific notation
         # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
-        obj.setExpression('LinearTolerance', "1e-8")
+        obj.setExpression("LinearTolerance", "1e-10")
         obj.addProperty(
             "App::PropertyInteger",
             "LinearIterations",
@@ -125,7 +125,8 @@ class Proxy(equation.Proxy):
             ""
         )
         # same as with LinearTolerance
-        obj.setExpression('SteadyStateTolerance', "1e-5")
+        obj.setExpression("SteadyStateTolerance", "1e-5")
+
         obj.addProperty(
             "App::PropertyBool",
             "Stabilize",
@@ -133,13 +134,6 @@ class Proxy(equation.Proxy):
             ""
         )
         obj.Stabilize = True
-        obj.addProperty(
-            "App::PropertyBool",
-            "Bubbles",
-            "Base",
-            ""
-        )
-        obj.Bubbles = False
 
 
 class ViewProxy(equation.ViewProxy):

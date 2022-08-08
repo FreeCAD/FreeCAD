@@ -32,6 +32,9 @@ from femtools import femutils
 from . import nonlinear
 from ... import equationbase
 
+CONVECTION_TYPE = ["None", "Computed", "Constant"]
+PHASE_CHANGE_MODEL = ["None", "Spatial 1", "Spatial 2", "Temporal"]
+
 
 def create(doc, name="Heat"):
     return femutils.createObject(
@@ -44,6 +47,34 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
+        # according to the Elmer models manual Bubbles is by default True
+        # and Stabilize is False (Stabilize is added in linear.py)
+        obj.addProperty(
+            "App::PropertyBool",
+            "Bubbles",
+            "Heat",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Convection",
+            "Equation",
+            "Type of convection to be used"
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "PhaseChangeModel",
+            "Equation",
+            "Model for phase change"
+        )
+
+        obj.Bubbles = True
+        obj.Stabilize = False
+        obj.Convection = CONVECTION_TYPE
+        obj.Convection = "None"
+        obj.PhaseChangeModel = PHASE_CHANGE_MODEL
+        obj.PhaseChangeModel = "None"
         obj.Priority = 20
 
 
