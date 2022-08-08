@@ -25,6 +25,7 @@
 
 #include <QGraphicsItemGroup>
 #include <QObject>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;

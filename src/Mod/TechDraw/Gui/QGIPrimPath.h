@@ -25,6 +25,7 @@
 
 #include <QGraphicsItem>
 #include <Base/Parameter.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 QT_BEGIN_NAMESPACE
 class QPainter;

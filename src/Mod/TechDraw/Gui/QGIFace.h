@@ -31,6 +31,7 @@
 #include <QPixmap>
 #include <QImage>
 
+#include <App/Material.h>
 #include <Mod/TechDraw/App/HatchLine.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
