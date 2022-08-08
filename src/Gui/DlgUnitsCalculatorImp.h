@@ -56,8 +56,8 @@ protected Q_SLOTS:
     void on_comboBoxScheme_activated(int);
     void on_spinBoxDecimals_valueChanged(int);
 
-    void copy(void);
-    void returnPressed(void);
+    void copy();
+    void returnPressed();
 
     void parseError(const QString& errorText);
 

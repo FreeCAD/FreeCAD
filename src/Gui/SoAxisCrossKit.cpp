@@ -62,7 +62,7 @@ using namespace Gui;
 SO_KIT_SOURCE(SoShapeScale)
 
 //  Constructor.
-SoShapeScale::SoShapeScale(void)
+SoShapeScale::SoShapeScale()
 {
     SO_KIT_CONSTRUCTOR(SoShapeScale);
 
@@ -82,7 +82,7 @@ SoShapeScale::~SoShapeScale()
 }
 
 void
-SoShapeScale::initClass(void)
+SoShapeScale::initClass()
 {
     SO_KIT_INIT_CLASS(SoShapeScale, SoBaseKit, "BaseKit");
 }

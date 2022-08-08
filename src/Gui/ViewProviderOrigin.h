@@ -48,13 +48,13 @@ public:
 
     /// @name Override methods
     ///@{
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
+    virtual std::vector<App::DocumentObject*> claimChildren() const;
+    virtual std::vector<App::DocumentObject*> claimChildren3D() const;
 
-    virtual SoGroup* getChildRoot(void) const {return pcGroupChildren;};
+    virtual SoGroup* getChildRoot() const {return pcGroupChildren;};
 
     virtual void attach(App::DocumentObject* pcObject);
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
     virtual void setDisplayMode(const char* ModeName);
     ///@}
 

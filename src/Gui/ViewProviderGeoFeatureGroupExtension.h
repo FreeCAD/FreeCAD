@@ -37,25 +37,25 @@ class GuiExport ViewProviderGeoFeatureGroupExtension : public ViewProviderGroupE
 
 public:
     /// Constructor
-    ViewProviderGeoFeatureGroupExtension(void);
+    ViewProviderGeoFeatureGroupExtension();
     virtual ~ViewProviderGeoFeatureGroupExtension();
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void)const override;
-    virtual std::vector< App::DocumentObject* > extensionClaimChildren(void) const override;
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D()const override;
+    virtual std::vector< App::DocumentObject* > extensionClaimChildren() const override;
     virtual SoSeparator* extensionGetFrontRoot() const override {return pcGroupFront;}
     virtual SoSeparator* extensionGetBackRoot() const override {return pcGroupBack;}
-    virtual SoGroup* extensionGetChildRoot(void) const override {return pcGroupChildren;}
+    virtual SoGroup* extensionGetChildRoot() const override {return pcGroupChildren;}
     virtual void extensionAttach(App::DocumentObject* pcObject) override;
     virtual void extensionSetDisplayMode(const char* ModeName) override;
-    virtual std::vector<std::string> extensionGetDisplayModes(void) const override;
+    virtual std::vector<std::string> extensionGetDisplayModes() const override;
     virtual void extensionFinishRestoring() override;
 
     /// Show the object in the view: suppresses behavior of DocumentObjectGroup
-    virtual void extensionShow(void) override {
+    virtual void extensionShow() override {
         ViewProviderExtension::extensionShow();
     }
     /// Hide the object in the view: suppresses behavior of DocumentObjectGroup
-    virtual void extensionHide(void) override {
+    virtual void extensionHide() override {
         ViewProviderExtension::extensionHide();
     }
 

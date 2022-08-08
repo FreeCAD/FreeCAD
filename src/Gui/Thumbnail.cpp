@@ -65,7 +65,7 @@ void Thumbnail::setFileName(const char* fn)
     this->uri = QUrl::fromLocalFile(QString::fromUtf8(fn));
 }
 
-unsigned int Thumbnail::getMemSize (void) const
+unsigned int Thumbnail::getMemSize () const
 {
     return 0;
 }

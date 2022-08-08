@@ -414,7 +414,7 @@ StdCmdDownloadOnlineHelp::~StdCmdDownloadOnlineHelp()
     delete wget;
 }
 
-Action * StdCmdDownloadOnlineHelp::createAction(void)
+Action * StdCmdDownloadOnlineHelp::createAction()
 {
     Action *pcAction;
 

@@ -110,11 +110,11 @@ public:
 public:
     bool reject();
 
-    bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const
     { return true; }
-    bool isAllowedAlterView(void) const
+    bool isAllowedAlterView() const
     { return true; }
-    bool isAllowedAlterSelection(void) const
+    bool isAllowedAlterSelection() const
     { return true; }
     QDialogButtonBox::StandardButtons getStandardButtons() const;
 

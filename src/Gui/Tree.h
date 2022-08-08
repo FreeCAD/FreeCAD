@@ -160,12 +160,12 @@ protected Q_SLOTS:
     void onSearchObjects();
 
 private Q_SLOTS:
-    void onItemSelectionChanged(void);
+    void onItemSelectionChanged();
     void onItemChanged(QTreeWidgetItem*, int);
     void onItemEntered(QTreeWidgetItem * item);
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
-    void onUpdateStatus(void);
+    void onUpdateStatus();
 
 Q_SIGNALS:
     void emitSearchObjects();
@@ -274,7 +274,7 @@ public:
     };
     void selectItems(SelectionReason reason=SR_SELECT);
 
-    void testStatus(void);
+    void testStatus();
     void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
     bool populateObject(App::DocumentObject *obj);
@@ -292,7 +292,7 @@ public:
 
     bool isObjectShowable(App::DocumentObject *obj);
 
-    virtual unsigned int getMemSize (void) const override;
+    virtual unsigned int getMemSize () const override;
     virtual void Save (Base::Writer &) const override;
     virtual void Restore(Base::XMLReader &) override;
 

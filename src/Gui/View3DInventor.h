@@ -79,9 +79,9 @@ public:
     virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
     /// get called when the document is updated
     virtual void onRename(Gui::Document *pDoc);
-    virtual void onUpdate(void);
+    virtual void onUpdate();
     virtual void viewAll();
-    virtual const char *getName(void) const;
+    virtual const char *getName() const;
 
     /// print function of the view
     virtual void print();
@@ -89,7 +89,7 @@ public:
     virtual void printPreview();
     virtual void print(QPrinter*);
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     /**
      * If \a b is set to \a FullScreen the MDI view is displayed in full screen mode, if \a b
      * is set to \a TopLevel then it is displayed as an own top-level window, otherwise (\a Normal)
@@ -105,7 +105,7 @@ public:
     void setOverlayWidget(QWidget*);
     void removeOverlayWidget();
 
-    View3DInventorViewer *getViewer(void) const {return _viewer;}
+    View3DInventorViewer *getViewer() const {return _viewer;}
     virtual bool containsViewProvider(const ViewProvider*) const;
 
 public Q_SLOTS:

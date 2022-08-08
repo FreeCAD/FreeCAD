@@ -41,7 +41,7 @@ class GuiExport MergeDocuments : public Base::Persistence
 public:
     MergeDocuments(App::Document* doc);
     ~MergeDocuments();
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     std::vector<App::DocumentObject*> importObjects(std::istream&);
     void importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r);
     void exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer & w);

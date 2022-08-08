@@ -110,7 +110,7 @@ public:
      always returns true.
      */
     virtual bool shouldWrite(const std::string&, const Base::Persistence *) const;
-    virtual void writeFiles(void);
+    virtual void writeFiles();
 
 private:
     AutoSaveProperty& saver;

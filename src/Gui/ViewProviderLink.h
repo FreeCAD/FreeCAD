@@ -52,7 +52,7 @@ public:
     void extensionFinishRestoring() override;
     bool extensionCanDragObject(App::DocumentObject*) const override { return false; }
     bool extensionCanDropObject(App::DocumentObject*) const override { return false; }
-    void extensionModeSwitchChange(void) override;
+    void extensionModeSwitchChange() override;
 
     bool isLinkVisible() const;
     void setLinkVisible(bool);
@@ -78,7 +78,7 @@ public:
     LinkView &operator=(const LinkView&) = delete;
     LinkView(const LinkView&) = delete;
 
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 
     virtual void unlink(LinkInfoPtr) override;
     virtual void onLinkedIconChange(LinkInfoPtr) override;
@@ -201,19 +201,19 @@ public:
     void attach(App::DocumentObject *pcObj) override;
     void reattach(App::DocumentObject *pcObj) override;
 
-    bool isSelectable(void) const override;
+    bool isSelectable() const override;
 
-    bool useNewSelectionModel(void) const override {return true;}
+    bool useNewSelectionModel() const override {return true;}
 
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
-    std::vector<App::DocumentObject*> claimChildren(void) const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
     bool getElementPicked(const SoPickedPoint *, std::string &) const override;
     bool getDetailPath(const char *, SoFullPath *, bool, SoDetail *&) const override;
 
     void finishRestoring() override;
 
-    QIcon getIcon(void) const override;
+    QIcon getIcon() const override;
 
     bool canDragObjects() const override;
     bool canDragObject(App::DocumentObject*) const override;
@@ -228,7 +228,7 @@ public:
     bool onDelete(const std::vector<std::string> &) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
-    std::vector<std::string> getDisplayModes(void) const override;
+    std::vector<std::string> getDisplayModes() const override;
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 

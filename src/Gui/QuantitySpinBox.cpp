@@ -631,7 +631,7 @@ void QuantitySpinBox::setUnitText(const QString& str)
     }
 }
 
-QString QuantitySpinBox::unitText(void)
+QString QuantitySpinBox::unitText()
 {
     Q_D(QuantitySpinBox);
     return d->unitStr;

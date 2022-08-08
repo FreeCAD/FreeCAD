@@ -59,7 +59,7 @@ TaskWatcher::~TaskWatcher()
 
 //==== implementer ===========================================================================
 
-std::vector<QWidget*> &TaskWatcher::getWatcherContent(void)
+std::vector<QWidget*> &TaskWatcher::getWatcherContent()
 {
     return Content;
 }

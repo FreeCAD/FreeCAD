@@ -149,7 +149,7 @@ SoFCUnifiedSelection::~SoFCUnifiedSelection()
 
 // doc from parent
 void
-SoFCUnifiedSelection::initClass(void)
+SoFCUnifiedSelection::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCUnifiedSelection,SoSeparator,"Separator");
 }
@@ -194,7 +194,7 @@ void SoFCUnifiedSelection::applySettings()
     }
 }
 
-const char* SoFCUnifiedSelection::getFileFormatName(void) const
+const char* SoFCUnifiedSelection::getFileFormatName() const
 {
     return "Separator";
 }
@@ -1042,7 +1042,7 @@ void SoFCSeparator::GLRenderBelowPath(SoGLRenderAction * action) {
     inherited::GLRenderBelowPath(action);
 }
 
-void SoFCSeparator::initClass(void)
+void SoFCSeparator::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCSeparator,SoSeparator,"FCSeparator");
 }
@@ -1082,7 +1082,7 @@ static void so_bbox_destruct_data(void * closure)
 static SbStorage * so_bbox_storage = nullptr;
 
 // called from atexit
-static void so_bbox_cleanup(void)
+static void so_bbox_cleanup()
 {
     delete so_bbox_storage;
 }
@@ -1112,7 +1112,7 @@ SoFCSelectionRoot::~SoFCSelectionRoot()
 {
 }
 
-void SoFCSelectionRoot::initClass(void)
+void SoFCSelectionRoot::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCSelectionRoot,SoFCSeparator,"FCSelectionRoot");
 
@@ -1710,7 +1710,7 @@ void SoFCPathAnnotation::finish()
     atexit_cleanup();
 }
 
-void SoFCPathAnnotation::initClass(void)
+void SoFCPathAnnotation::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCPathAnnotation,SoSeparator,"Separator");
 }

@@ -256,7 +256,7 @@ SoSkipBoundingGroup::~SoSkipBoundingGroup()
 }
 
 void
-SoSkipBoundingGroup::initClass(void)
+SoSkipBoundingGroup::initClass()
 {
     SO_NODE_INIT_CLASS(SoSkipBoundingGroup,SoGroup,"Group");
 }

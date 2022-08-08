@@ -76,7 +76,7 @@ void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     ViewProviderDragger::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPart::doubleClicked(void)
+bool ViewProviderPart::doubleClicked()
 {
     //make the part the active one
 
@@ -108,7 +108,7 @@ bool ViewProviderPart::doubleClicked(void)
     return true;
 }
 
-QIcon ViewProviderPart::getIcon(void) const
+QIcon ViewProviderPart::getIcon() const
 {
     // the original Part object for this ViewProviderPart
     App::Part* part = static_cast<App::Part*>(this->getObject());

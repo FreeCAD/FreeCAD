@@ -65,7 +65,7 @@ protected Q_SLOTS:
     void on_tabMacroWidget_currentChanged(int index);
 
 protected:
-    void fillUpList(void);
+    void fillUpList();
 
 protected:
     QString macroPath;

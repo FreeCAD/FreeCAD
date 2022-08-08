@@ -42,11 +42,11 @@ public:
     virtual ~ViewProviderDocumentObjectGroup();
 
     /// returns a list of all possible modes
-    std::vector<std::string> getDisplayModes(void) const override;
-    bool isShow(void) const override;
+    std::vector<std::string> getDisplayModes() const override;
+    bool isShow() const override;
 
     /// deliver the icon shown in the tree view
-    virtual QIcon getIcon(void) const override;
+    virtual QIcon getIcon() const override;
 
 protected:
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;

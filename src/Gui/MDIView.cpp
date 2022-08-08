@@ -183,7 +183,7 @@ bool MDIView::onHasMsg(const char* pMsg) const
     return false;
 }
 
-bool MDIView::canClose(void)
+bool MDIView::canClose()
 {
     if (getAppDocument() && getAppDocument()->testStatus(App::Document::TempDoc))
         return true;

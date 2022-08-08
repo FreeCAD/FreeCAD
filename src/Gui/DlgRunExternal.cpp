@@ -66,7 +66,7 @@ DlgRunExternal::~DlgRunExternal()
     delete ui;
 }
 
-int DlgRunExternal::Do(void)
+int DlgRunExternal::Do()
 {
     QFileInfo ifo (ProcName);
 
@@ -79,23 +79,23 @@ int DlgRunExternal::Do(void)
     return exec();
 }
 
-void DlgRunExternal::reject (void)
+void DlgRunExternal::reject ()
 {
     QDialog::reject();
 }
 
-void DlgRunExternal::accept (void)
+void DlgRunExternal::accept ()
 {
     QDialog::accept();
 }
 
-void DlgRunExternal::abort (void)
+void DlgRunExternal::abort ()
 {
     process.terminate();
     DlgRunExternal::reject();
 }
 
-void DlgRunExternal::advanced (void)
+void DlgRunExternal::advanced ()
 {
     if (advancedHidden){
         ui->extensionWidget->show();

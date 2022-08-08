@@ -97,7 +97,7 @@ void MacroManager::open(MacroType eType, const char *sName)
     Base::Console().Log("CmdM: Open macro: %s\n", sName);
 }
 
-void MacroManager::commit(void)
+void MacroManager::commit()
 {
     QFile file(this->macroName);
     if (file.open(QFile::WriteOnly))
@@ -155,7 +155,7 @@ void MacroManager::commit(void)
     }
 }
 
-void MacroManager::cancel(void)
+void MacroManager::cancel()
 {
     Base::Console().Log("Cancel macro: %s\n",(const char*)this->macroName.toUtf8());
 

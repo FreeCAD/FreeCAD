@@ -937,7 +937,7 @@ ParameterGroupItem::~ParameterGroupItem()
     _hcGrp->ClearObserver();
 }
 
-void ParameterGroupItem::fillUp(void)
+void ParameterGroupItem::fillUp()
 {
     // filling up groups
     std::vector<Base::Reference<ParameterGrp> > vhcParamGrp = _hcGrp->GetGroups();

@@ -88,7 +88,7 @@ public:
 
 BitmapFactoryInst* BitmapFactoryInst::_pcSingleton = nullptr;
 
-BitmapFactoryInst& BitmapFactoryInst::instance(void)
+BitmapFactoryInst& BitmapFactoryInst::instance()
 {
     if (_pcSingleton == nullptr)
     {
@@ -112,7 +112,7 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
     return *_pcSingleton;
 }
 
-void BitmapFactoryInst::destruct (void)
+void BitmapFactoryInst::destruct ()
 {
     if (_pcSingleton != nullptr)
     delete _pcSingleton;

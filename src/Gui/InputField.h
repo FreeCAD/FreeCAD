@@ -83,18 +83,18 @@ public:
     void setValue(const double&);
 
     /// get the current value
-    Base::Quantity getQuantity(void)const{return this->actQuantity;}
+    Base::Quantity getQuantity()const{return this->actQuantity;}
     /// Get the current quantity without unit
     double rawValue() const;
 
     /// get stored, valid quantity as a string (user string - avoid storing)
-    QString getQuantityString(void) const;
+    QString getQuantityString() const;
 
     /// set, validate and display quantity from a string. Must match existing units.
     void setQuantityString(const QString& text);
 
     /// return the quantity in C locale, i.e. decimal separator is a dot.
-    QString rawText(void) const;
+    QString rawText() const;
 
     /// expects the string in C locale and internally converts it into the OS-specific locale
     void setRawText(const QString& text);
@@ -114,37 +114,37 @@ public:
     const Base::Unit& getUnit() const;
 
     /// set the input field to the last used value (works only if the setParamGrpPath() was called)
-    void setToLastUsedValue(void);
+    void setToLastUsedValue();
     /// get the value of the singleStep property
-    double singleStep(void)const;
+    double singleStep()const;
     /// set the value of the singleStep property
     void setSingleStep(double);
     /// get the value of the maximum property
-    double maximum(void)const;
+    double maximum()const;
     /// set the value of the maximum property
     void setMaximum(double);
     /// get the value of the minimum property
-    double minimum(void)const;
+    double minimum()const;
     /// set the value of the minimum property
     void setMinimum(double);
     /// get the value of the minimum property
-    int historySize(void)const;
+    int historySize()const;
     /// set the value of the minimum property
     void setHistorySize(int);
     /// set the unit by a string (can be used in the *.ui file)
     void setUnitText(const QString&);
     /// get the unit as a string (can be used in the *.ui file)
-    QString getUnitText(void);
+    QString getUnitText();
     /// get the value of the precision property
-    int getPrecision(void) const;
+    int getPrecision() const;
     /// set the value of the precision property (can be used in the *.ui file)
     void setPrecision(const int);
     /// get the value of the format property: "f" (fixed), "e" (scientific), "g" (general)
-    QString getFormat(void) const;
+    QString getFormat() const;
     /// set the value of the format property (can be used in the *.ui file)
     void setFormat(const QString&);
     /// set the number portion selected (use after setValue())
-    void selectNumber(void);
+    void selectNumber();
     /// input validation
     void fixup(QString& input) const;
     /// input validation
@@ -159,11 +159,11 @@ public:
     /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToHistory(const QString &valueq = QString());
     /// get the history of the field, newest first
-    std::vector<QString> getHistory(void);
+    std::vector<QString> getHistory();
     /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToSavedValues(const QString &valueq = QString());
     /// get the history of the field, newest first
-    std::vector<QString> getSavedValues(void);
+    std::vector<QString> getSavedValues();
     //@}
 
     void bind(const App::ObjectIdentifier &_path);

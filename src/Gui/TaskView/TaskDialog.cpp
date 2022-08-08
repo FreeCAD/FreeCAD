@@ -55,7 +55,7 @@ TaskDialog::~TaskDialog()
 
 //==== Slots ===============================================================
 
-const std::vector<QWidget*> &TaskDialog::getDialogContent(void) const
+const std::vector<QWidget*> &TaskDialog::getDialogContent() const
 {
     return Content;
 }

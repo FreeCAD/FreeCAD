@@ -34,7 +34,7 @@ namespace TaskView {
 class ControlPy : public Py::PythonExtension<ControlPy> 
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
     static ControlPy* getInstance();
 
     ControlPy();
@@ -73,24 +73,24 @@ public:
     TaskDialogPython(const Py::Object&);
     ~TaskDialogPython();
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const;
     virtual void modifyStandardButtons(QDialogButtonBox*);
 
     /*!
       Indicates whether this task dialog allows other commands to modify
       the document while it is open.
     */
-    virtual bool isAllowedAlterDocument(void) const;
+    virtual bool isAllowedAlterDocument() const;
     /*!
       Indicates whether this task dialog allows other commands to modify
       the 3d view while it is open.
     */
-    virtual bool isAllowedAlterView(void) const;
+    virtual bool isAllowedAlterView() const;
     /*!
       Indicates whether this task dialog allows other commands to modify
       the selection while it is open.
     */
-    virtual bool isAllowedAlterSelection(void) const;
+    virtual bool isAllowedAlterSelection() const;
     virtual bool needsFullSpace() const;
 
 public:

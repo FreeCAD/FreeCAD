@@ -64,7 +64,7 @@ public:
     ValueT unsetEdit(int ModNum);
     ValueT setEditViewer(View3DInventorViewer*, int ModNum);
     ValueT unsetEditViewer(View3DInventorViewer*);
-    ValueT doubleClicked(void);
+    ValueT doubleClicked();
     bool setupContextMenu(QMenu* menu);
 
     /** @name Update data methods*/
@@ -85,7 +85,7 @@ public:
     /// get the default display mode
     bool getDefaultDisplayMode(std::string &mode) const;
     /// returns a list of all possible modes
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
     /// set the display mode
     std::string setDisplayMode(const char* ModeName);
     //@}
@@ -454,7 +454,7 @@ public:
         return ViewProviderT::getDefaultDisplayMode();
     }
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const override {
+    virtual std::vector<std::string> getDisplayModes() const override {
         std::vector<std::string> modes = ViewProviderT::getDisplayModes();
         std::vector<std::string> more_modes = imp->getDisplayModes();
         modes.insert(modes.end(), more_modes.begin(), more_modes.end());
@@ -590,7 +590,7 @@ public:
     }
 
 protected:
-    virtual bool doubleClicked(void) override
+    virtual bool doubleClicked() override
     {
         App::AutoTransaction committer;
         switch (imp->doubleClicked()) {

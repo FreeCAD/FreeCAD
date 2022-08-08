@@ -360,7 +360,7 @@ private:
 
 }
 
-void RecoveryWriter::writeFiles(void)
+void RecoveryWriter::writeFiles()
 {
 #if 0
     FileWriter::writeFiles();

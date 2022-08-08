@@ -42,7 +42,7 @@ public:
     DlgEditFileIncludePropertyExternal( App::PropertyFileIncluded& Prop, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
     virtual ~DlgEditFileIncludePropertyExternal();
 
-    int Do(void);
+    int Do();
 
 protected Q_SLOTS:
 protected:

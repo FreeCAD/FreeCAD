@@ -63,15 +63,15 @@ public:
    */
   //@{
   /// get called when the document is updated
-  virtual void onUpdate(void){}
+  virtual void onUpdate(){}
   /// returns the name of the view (important for messages)
-  virtual const char *getName(void) const { return "DockWindow"; }
+  virtual const char *getName() const { return "DockWindow"; }
   /// Message handler
   virtual bool onMsg(const char* ,const char** ){ return false; }
   /// Message handler test
   virtual bool onHasMsg(const char*) const { return false; }
   /// overwrite when checking on close state
-  virtual bool canClose(void){return true;}
+  virtual bool canClose(){return true;}
   //@}
 
 Q_SIGNALS:

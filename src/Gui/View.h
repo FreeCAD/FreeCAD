@@ -70,7 +70,7 @@ public:
     /// sets the view to another document (called by Application)
     void setDocument(Gui::Document* pcDocument);
     /// is sent from the document in order to close the document
-    void onClose(void);
+    void onClose();
     //@}
 
     /// returns the document the view is attached to
@@ -78,26 +78,26 @@ public:
     /// returns the document the view is attached to
     App::Document* getAppDocument() const;
     /// indicates if the view is in passive mode
-    bool isPassive(void) const {return bIsPassive;}
+    bool isPassive() const {return bIsPassive;}
 
     /** @name methods to override
      */
     //@{
     /// get called when the document is updated
-    virtual void onUpdate(void){}
+    virtual void onUpdate(){}
     /// get called when the document is relabeled (change of its user name)
     virtual void onRelabel(Gui::Document *){}
     /// get called when the document is renamed (change of its internal name)
     virtual void onRename(Gui::Document *){}
     /// returns the name of the view (important for messages)
-    virtual const char *getName(void) const
+    virtual const char *getName() const
     { return "Base view"; }
     /// Message handler
     virtual bool onMsg(const char* pMsg, const char** ppReturn)=0;
     /// Message handler test
     virtual bool onHasMsg(const char* pMsg) const=0;
     /// overwrite when checking on close state
-    virtual bool canClose(void){return true;}
+    virtual bool canClose(){return true;}
     /// delete itself
     virtual void deleteSelf();
     //@}

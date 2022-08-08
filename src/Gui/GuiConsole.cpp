@@ -107,8 +107,8 @@ void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
 #else /* FC_OS_LINUX */
 
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
-GUIConsole::GUIConsole (void) {}
-GUIConsole::~GUIConsole (void) {}
+GUIConsole::GUIConsole () {}
+GUIConsole::~GUIConsole () {}
 void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
 {
     switch(level){

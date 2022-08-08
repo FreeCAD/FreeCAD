@@ -44,7 +44,7 @@ public:
 
     /** @name I/O of the document */
     //@{
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     /// This method is used to save properties or very small amounts of data to an XML document.
     void Save (Base::Writer &writer) const;
     /// This method is used to restore properties from an XML document.

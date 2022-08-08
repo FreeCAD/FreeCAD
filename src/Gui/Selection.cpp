@@ -975,7 +975,7 @@ void SelectionSingleton::rmvPreselect(bool signal)
 
 }
 
-const SelectionChanges &SelectionSingleton::getPreselection(void) const
+const SelectionChanges &SelectionSingleton::getPreselection() const
 {
     return CurrentPreselection;
 }
@@ -991,7 +991,7 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate *gate, ResolveMode 
 }
 
 // remove the active SelectionGate
-void SelectionSingleton::rmvSelectionGate(void)
+void SelectionSingleton::rmvSelectionGate()
 {
     if (ActiveGate) {
         delete ActiveGate;
@@ -1829,14 +1829,14 @@ SelectionSingleton::~SelectionSingleton()
 
 SelectionSingleton* SelectionSingleton::_pcSingleton = nullptr;
 
-SelectionSingleton& SelectionSingleton::instance(void)
+SelectionSingleton& SelectionSingleton::instance()
 {
     if (_pcSingleton == nullptr)
         _pcSingleton = new SelectionSingleton;
     return *_pcSingleton;
 }
 
-void SelectionSingleton::destruct (void)
+void SelectionSingleton::destruct ()
 {
     if (_pcSingleton != nullptr)
         delete _pcSingleton;
@@ -1899,7 +1899,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "obj : App.DocumentObject\n    Object to check.\n"
      "subName : str\n    Name of the subelement.\n"
      "resolve : int\n    Resolve subelement reference."},
-    {"setPreselection",      reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( SelectionSingleton::sSetPreselection )), METH_VARARGS|METH_KEYWORDS,
+    {"setPreselection",      reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( SelectionSingleton::sSetPreselection )), METH_VARARGS|METH_KEYWORDS,
      "setPreselection(obj, subName, x=0, y=0, z=0, type=1) -> None\n"
      "\n"
      "Set preselected object.\n"

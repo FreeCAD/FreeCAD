@@ -72,7 +72,7 @@ public:
     /// Set the unit property
     void setUnitText(const QString&);
     /// Get the unit property
-    QString unitText(void);
+    QString unitText();
 
     /// Get the value of the singleStep property
     double singleStep() const;

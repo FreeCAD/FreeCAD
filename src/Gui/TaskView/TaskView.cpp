@@ -523,7 +523,7 @@ void TaskView::showDialog(TaskDialog *dlg)
     getMainWindow()->updateActions();
 }
 
-void TaskView::removeDialog(void)
+void TaskView::removeDialog()
 {
     getMainWindow()->updateActions();
 
@@ -561,7 +561,7 @@ void TaskView::removeDialog(void)
     }
 }
 
-void TaskView::updateWatcher(void)
+void TaskView::updateWatcher()
 {
     // In case a child of the TaskView has the focus and get hidden we have
     // to make sure to set the focus on a widget that won't be hidden or
@@ -608,7 +608,7 @@ void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
     addTaskWatcher();
 }
 
-void TaskView::clearTaskWatcher(void)
+void TaskView::clearTaskWatcher()
 {
     std::vector<TaskWatcher*> watcher;
     removeTaskWatcher();
@@ -616,7 +616,7 @@ void TaskView::clearTaskWatcher(void)
     addTaskWatcher(watcher);
 }
 
-void TaskView::addTaskWatcher(void)
+void TaskView::addTaskWatcher()
 {
     // add all widgets for all watcher to the task view
     for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it){
@@ -646,7 +646,7 @@ void TaskView::addTaskWatcher(void)
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
 }
 
-void TaskView::removeTaskWatcher(void)
+void TaskView::removeTaskWatcher()
 {
     // In case a child of the TaskView has the focus and get hidden we have
     // to make sure that set the focus on a widget that won't be hidden or
