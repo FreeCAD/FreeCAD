@@ -46,7 +46,7 @@ class GuiExport ViewProviderAnnotation : public ViewProviderDocumentObject
 
 public:
     /// Constructor
-    ViewProviderAnnotation(void);
+    ViewProviderAnnotation();
     virtual ~ViewProviderAnnotation();
 
     // Display properties
@@ -60,7 +60,7 @@ public:
 
     void attach(App::DocumentObject *);
     void updateData(const App::Property*);
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
     void setDisplayMode(const char* ModeName);
 
 protected:
@@ -90,7 +90,7 @@ class GuiExport ViewProviderAnnotationLabel : public ViewProviderDocumentObject
 
 public:
     /// Constructor
-    ViewProviderAnnotationLabel(void);
+    ViewProviderAnnotationLabel();
     virtual ~ViewProviderAnnotationLabel();
 
     // Display properties
@@ -103,12 +103,12 @@ public:
 
     void attach(App::DocumentObject *);
     void updateData(const App::Property*);
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
     void setDisplayMode(const char* ModeName);
 
     /** @name Edit methods */
     //@{
-    bool doubleClicked(void);
+    bool doubleClicked();
     void setupContextMenu(QMenu*, QObject*, const char*);
 protected:
     bool setEdit(int ModNum);

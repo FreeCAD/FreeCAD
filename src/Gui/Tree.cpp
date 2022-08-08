@@ -2446,7 +2446,7 @@ struct UpdateDisabler {
     }
 };
 
-void TreeWidget::onUpdateStatus(void)
+void TreeWidget::onUpdateStatus()
 {
     if (this->state() == DraggingState || App::GetApplication().isRestoring()) {
         _updateStatus();
@@ -3844,7 +3844,7 @@ static unsigned int countExpandedItem(const QTreeWidgetItem* item) {
     return size;
 }
 
-unsigned int DocumentItem::getMemSize(void) const {
+unsigned int DocumentItem::getMemSize() const {
     return countExpandedItem(this);
 }
 
@@ -4046,7 +4046,7 @@ Gui::Document* DocumentItem::document() const
 //    }
 //}
 
-void DocumentItem::testStatus(void)
+void DocumentItem::testStatus()
 {
     for (const auto& v : ObjectMap)
         v.second->testStatus();

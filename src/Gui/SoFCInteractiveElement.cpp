@@ -33,7 +33,7 @@ using namespace Gui;
 
 SO_ELEMENT_SOURCE(SoFCInteractiveElement)
 
-void SoFCInteractiveElement::initClass(void)
+void SoFCInteractiveElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoFCInteractiveElement, inherited);
   SO_ENABLE(SoGLRenderAction, SoFCInteractiveElement);
@@ -74,7 +74,7 @@ const SoFCInteractiveElement * SoFCInteractiveElement::getInstance(SoState * sta
 
 SO_ELEMENT_SOURCE(SoGLWidgetElement)
 
-void SoGLWidgetElement::initClass(void)
+void SoGLWidgetElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoGLWidgetElement, inherited);
   SO_ENABLE(SoGLRenderAction, SoGLWidgetElement);
@@ -120,7 +120,7 @@ SbBool SoGLWidgetElement::matches(const SoElement * /*element*/) const
     return true;
 }
 
-SoElement * SoGLWidgetElement::copyMatchInfo(void) const
+SoElement * SoGLWidgetElement::copyMatchInfo() const
 {
     return nullptr;
 }
@@ -129,7 +129,7 @@ SoElement * SoGLWidgetElement::copyMatchInfo(void) const
 
 SO_ELEMENT_SOURCE(SoGLRenderActionElement)
 
-void SoGLRenderActionElement::initClass(void)
+void SoGLRenderActionElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoGLRenderActionElement, inherited);
   SO_ENABLE(SoGLRenderAction, SoGLRenderActionElement);
@@ -175,7 +175,7 @@ SbBool SoGLRenderActionElement::matches(const SoElement * /*element*/) const
     return true;
 }
 
-SoElement * SoGLRenderActionElement::copyMatchInfo(void) const
+SoElement * SoGLRenderActionElement::copyMatchInfo() const
 {
     return nullptr;
 }
@@ -187,7 +187,7 @@ SO_NODE_SOURCE(SoGLWidgetNode)
 /*!
   Constructor.
 */
-SoGLWidgetNode::SoGLWidgetNode(void) : window(nullptr)
+SoGLWidgetNode::SoGLWidgetNode() : window(nullptr)
 {
     SO_NODE_CONSTRUCTOR(SoGLWidgetNode);
 }
@@ -200,7 +200,7 @@ SoGLWidgetNode::~SoGLWidgetNode()
 }
 
 // Doc from superclass.
-void SoGLWidgetNode::initClass(void)
+void SoGLWidgetNode::initClass()
 {
     SO_NODE_INIT_CLASS(SoGLWidgetNode, SoNode, "Node");
 
@@ -223,7 +223,7 @@ void SoGLWidgetNode::GLRender(SoGLRenderAction * action)
 
 SO_ELEMENT_SOURCE(SoGLVBOActivatedElement)
 
-void SoGLVBOActivatedElement::initClass(void)
+void SoGLVBOActivatedElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoGLVBOActivatedElement, inherited);
   SO_ENABLE(SoGLRenderAction, SoGLVBOActivatedElement);
@@ -279,7 +279,7 @@ SbBool SoGLVBOActivatedElement::matches(const SoElement * /*element*/) const
     return true;
 }
 
-SoElement * SoGLVBOActivatedElement::copyMatchInfo(void) const
+SoElement * SoGLVBOActivatedElement::copyMatchInfo() const
 {
     return nullptr;
 }

@@ -456,7 +456,7 @@ void Workbench::addTaskWatcher(const std::vector<Gui::TaskView::TaskWatcher*> &W
         taskView->addTaskWatcher(Watcher);
 }
 
-void Workbench::removeTaskWatcher(void)
+void Workbench::removeTaskWatcher()
 {
     Gui::TaskView::TaskView* taskView = Control().taskPanel();
     if (taskView)

@@ -35,10 +35,10 @@ class GuiExport ViewProviderGroupExtension : public ViewProviderExtension
 
 public:
     /// Constructor
-    ViewProviderGroupExtension(void);
+    ViewProviderGroupExtension();
     virtual ~ViewProviderGroupExtension();
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren()const override;
     virtual bool extensionCanDragObjects() const override;
     virtual bool extensionCanDragObject(App::DocumentObject*) const override;
     virtual void extensionDragObject(App::DocumentObject*) override;
@@ -46,8 +46,8 @@ public:
     virtual bool extensionCanDropObject(App::DocumentObject*) const override;
     virtual void extensionDropObject(App::DocumentObject*) override;
 
-    virtual void extensionHide(void) override;
-    virtual void extensionShow(void) override;
+    virtual void extensionHide() override;
+    virtual void extensionShow() override;
 
     virtual bool extensionOnDelete(const std::vector<std::string> &) override;
 

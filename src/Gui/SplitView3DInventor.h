@@ -47,13 +47,13 @@ public:
     AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
     ~AbstractSplitView();
 
-    virtual const char *getName(void) const;
+    virtual const char *getName() const;
 
     /// Message handler
     virtual bool onMsg(const char* pMsg, const char** ppReturn);
     virtual bool onHasMsg(const char* pMsg) const;
     virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
-    virtual void onUpdate(void);
+    virtual void onUpdate();
     virtual void deleteSelf();
     virtual void viewAll();
 
@@ -61,7 +61,7 @@ public:
     void setOverrideCursor(const QCursor&);
     virtual bool containsViewProvider(const ViewProvider*) const;
 
-    PyObject *getPyObject(void);
+    PyObject *getPyObject();
     void setPyObject(PyObject *);
     int getSize();
 

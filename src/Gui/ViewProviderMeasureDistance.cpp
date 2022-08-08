@@ -141,7 +141,7 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
     }
 }
 
-std::vector<std::string> ViewProviderMeasureDistance::getDisplayModes(void) const
+std::vector<std::string> ViewProviderMeasureDistance::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;

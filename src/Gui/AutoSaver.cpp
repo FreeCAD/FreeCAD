@@ -360,7 +360,7 @@ private:
 
 }
 
-void RecoveryWriter::writeFiles(void)
+void RecoveryWriter::writeFiles()
 {
     // use a while loop because it is possible that while
     // processing the files new ones can be added

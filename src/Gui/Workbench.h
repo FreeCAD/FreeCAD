@@ -93,7 +93,7 @@ public:
     /// helper to add TaskWatcher to the TaskView
     void addTaskWatcher(const std::vector<Gui::TaskView::TaskWatcher*> &Watcher);
     /// remove the added TaskWatcher
-    void removeTaskWatcher(void);
+    void removeTaskWatcher();
 
     static void createLinkMenu(MenuItem *);
 

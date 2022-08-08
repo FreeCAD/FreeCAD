@@ -66,10 +66,10 @@ public:
 
     bool onMsg(const char* pMsg,const char** ppReturn) override;
 
-    virtual const char *getName(void) const override {return "SelectionView";}
+    virtual const char *getName() const override {return "SelectionView";}
 
     /// get called when the document is changed or updated
-    virtual void onUpdate(void) override;
+    virtual void onUpdate() override;
 
     QListWidget* selectionView;
     QLabel*      countLabel;
@@ -81,17 +81,17 @@ public Q_SLOTS:
     /// get called when text is entered in the search box
     void search(const QString& text);
     /// get called when enter is pressed in the search box
-    void validateSearch(void);
+    void validateSearch();
     /// get called when the list is right-clicked
     void onItemContextMenu(const QPoint& point);
     /// different actions
     void select(QListWidgetItem* item=nullptr);
-    void deselect(void);
-    void zoom(void);
-    void treeSelect(void);
-    void toPython(void);
-    void touch(void);
-    void showPart(void);
+    void deselect();
+    void zoom();
+    void treeSelect();
+    void toPython();
+    void touch();
+    void showPart();
     void onEnablePickList();
     void toggleSelect(QListWidgetItem* item=nullptr);
     void preselect(QListWidgetItem* item=nullptr);

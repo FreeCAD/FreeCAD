@@ -128,7 +128,7 @@ private:
 };
 
 /// Get the global instance
-inline ControlSingleton& Control(void)
+inline ControlSingleton& Control()
 {
     return ControlSingleton::instance();
 }

@@ -143,7 +143,7 @@ const char* ViewProviderExtern::getDefaultDisplayMode() const
     return (modes.empty() ? "" : modes.front().c_str());
 }
 
-std::vector<std::string> ViewProviderExtern::getDisplayModes(void) const
+std::vector<std::string> ViewProviderExtern::getDisplayModes() const
 {
     return modes;
 }

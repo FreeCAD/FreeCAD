@@ -70,9 +70,9 @@ public:
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
     /// Hide the object in the view
-    virtual void hide(void) override;
+    virtual void hide() override;
     /// Show the object in the view
-    virtual void show(void) override;
+    virtual void show() override;
     /// Is called by the tree if the user double clicks on the object. It returns the string
     /// for the transaction that will be shown in the undo/redo dialog.
     /// If null is returned then no transaction will be opened.
@@ -91,7 +91,7 @@ public:
     /// Run a redraw
     void updateView();
     /// Get the object of this ViewProvider object
-    App::DocumentObject *getObject(void) const {return pcObject;}
+    App::DocumentObject *getObject() const {return pcObject;}
     /// Asks the view provider if the given object can be deleted.
     virtual bool canDelete(App::DocumentObject* obj) const override;
     /// Get the GUI document to this ViewProvider object

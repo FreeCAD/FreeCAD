@@ -57,7 +57,7 @@ public:
 
 class SoVectorizePoint : public SoVectorizeItem {
 public:
-    SoVectorizePoint(void) {
+    SoVectorizePoint() {
         this->type = POINT;
         this->vidx = 0;
         this->size = 1.0f;
@@ -70,7 +70,7 @@ public:
 
 class SoVectorizeTriangle : public SoVectorizeItem {
 public:
-    SoVectorizeTriangle(void) {
+    SoVectorizeTriangle() {
         this->type = TRIANGLE;
     }
     int vidx[3];      // indices to BSPtree coordinates
@@ -79,7 +79,7 @@ public:
 
 class SoVectorizeLine : public SoVectorizeItem {
 public:
-    SoVectorizeLine(void) {
+    SoVectorizeLine() {
         this->type = LINE;
         vidx[0] = 0;
         vidx[1] = 0;
@@ -96,7 +96,7 @@ public:
 
 class SoVectorizeText : public SoVectorizeItem {
 public:
-    SoVectorizeText(void) {
+    SoVectorizeText() {
         this->type = TEXT;
         this->fontsize = 10;
         this->col = 0;
@@ -119,7 +119,7 @@ public:
 
 class SoVectorizeImage : public SoVectorizeItem {
 public:
-    SoVectorizeImage(void) {
+    SoVectorizeImage() {
         this->type = IMAGE;
         this->image.data = nullptr;
         this->image.nc = 0;
@@ -158,7 +158,7 @@ SbBool SoSVGVectorOutput::openFile (const char *filename)
     return this->file.is_open();
 }
 
-void SoSVGVectorOutput::closeFile (void)
+void SoSVGVectorOutput::closeFile ()
 {
     if (this->file.is_open())
         this->file.close();
@@ -373,7 +373,7 @@ void SoFCVectorizeSVGActionP::printImage(const SoVectorizeImage * item) const
 
 SO_ACTION_SOURCE(SoFCVectorizeSVGAction)
 
-void SoFCVectorizeSVGAction::initClass(void)
+void SoFCVectorizeSVGAction::initClass()
 {
     SO_ACTION_INIT_CLASS(SoFCVectorizeSVGAction, SoVectorizeAction);
 }
@@ -394,12 +394,12 @@ SoFCVectorizeSVGAction::~SoFCVectorizeSVGAction()
 }
 
 SoSVGVectorOutput *
-SoFCVectorizeSVGAction::getSVGOutput(void) const
+SoFCVectorizeSVGAction::getSVGOutput() const
 {
     return static_cast<SoSVGVectorOutput*>(SoVectorizeAction::getOutput());
 }
 
-void SoFCVectorizeSVGAction::printHeader(void) const
+void SoFCVectorizeSVGAction::printHeader() const
 {
     std::ostream& str = this->getSVGOutput()->getFileStream();
     str << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << std::endl;
@@ -421,18 +421,18 @@ void SoFCVectorizeSVGAction::printHeader(void) const
     str << "<g>" << std::endl;
 }
 
-void SoFCVectorizeSVGAction::printFooter(void) const
+void SoFCVectorizeSVGAction::printFooter() const
 {
     std::ostream& str = this->getSVGOutput()->getFileStream();
     str << "</g>" << std::endl;
     str << "</svg>";
 }
 
-void SoFCVectorizeSVGAction::printViewport(void) const
+void SoFCVectorizeSVGAction::printViewport() const
 {
 }
 
-void SoFCVectorizeSVGAction::printBackground(void) const
+void SoFCVectorizeSVGAction::printBackground() const
 {
     if (!getBackgroundState()) {
         return;

@@ -92,7 +92,7 @@ public:
     virtual void helpRequested();
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
 	{ return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:

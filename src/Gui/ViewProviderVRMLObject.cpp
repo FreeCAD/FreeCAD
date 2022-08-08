@@ -86,7 +86,7 @@ void ViewProviderVRMLObject::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderVRMLObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderVRMLObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
     StrList.emplace_back("VRML");

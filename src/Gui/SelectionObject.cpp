@@ -66,7 +66,7 @@ SelectionObject::~SelectionObject()
 {
 }
 
-const App::DocumentObject * SelectionObject::getObject(void) const
+const App::DocumentObject * SelectionObject::getObject() const
 {
     if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
@@ -76,7 +76,7 @@ const App::DocumentObject * SelectionObject::getObject(void) const
     return nullptr;
 }
 
-App::DocumentObject * SelectionObject::getObject(void)
+App::DocumentObject * SelectionObject::getObject()
 {
     if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
@@ -92,7 +92,7 @@ bool SelectionObject::isObjectTypeOf(const Base::Type& typeId) const
     return (obj && obj->getTypeId().isDerivedFrom(typeId));
 }
 
-std::string SelectionObject::getAsPropertyLinkSubString(void)const
+std::string SelectionObject::getAsPropertyLinkSubString()const
 {
     std::ostringstream str;
     str << "(" << Gui::Command::getObjectCmd(getObject()) << ",[";

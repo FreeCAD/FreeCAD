@@ -67,7 +67,7 @@ public:
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);
 
-    bool isSelectable(void) const {return Selectable.getValue();}
+    bool isSelectable() const {return Selectable.getValue();}
 
     /**
      * Returns a list of picked points from the geometry under \a getRoot().

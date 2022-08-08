@@ -40,12 +40,12 @@ public:
     /// destructor.
     virtual ~ViewProviderMaterialObject();
 
-    QIcon getIcon(void) const;
+    QIcon getIcon() const;
 
-    bool doubleClicked(void);
+    bool doubleClicked();
 
     // shows solid in the tree
-    virtual bool isShow(void) const{return true;}
+    virtual bool isShow() const{return true;}
 
 };
 

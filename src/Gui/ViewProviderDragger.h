@@ -54,7 +54,7 @@ public:
 
     /** @name Edit methods */
     //@{
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     void updateData(const App::Property*) override;
 

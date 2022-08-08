@@ -60,16 +60,16 @@ class GuiExport SoFCUnifiedSelection : public SoSeparator {
     SO_NODE_HEADER(Gui::SoFCUnifiedSelection);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoFCUnifiedSelection(void);
+    static void initClass();
+    static void finish();
+    SoFCUnifiedSelection();
     void applySettings();
 
     enum HighlightModes {
         AUTO, ON, OFF
     };
 
-    const char* getFileFormatName(void) const;
+    const char* getFileFormatName() const;
     void write(SoWriteAction * action);
 
     SoSFColor colorHighlight;
@@ -135,8 +135,8 @@ class GuiExport SoFCPathAnnotation : public SoSeparator {
 
     SO_NODE_HEADER(Gui::SoFCPathAnnotation);
 public:
-    static void initClass(void);
-    static void finish(void);
+    static void initClass();
+    static void finish();
     SoFCPathAnnotation();
 
     void setPath(SoPath *);
@@ -165,8 +165,8 @@ class GuiExport SoFCSeparator : public SoSeparator {
     SO_NODE_HEADER(Gui::SoFCSeparator);
 
 public:
-    static void initClass(void);
-    static void finish(void);
+    static void initClass();
+    static void finish();
     SoFCSeparator(bool trackCacheMode=true);
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
@@ -189,8 +189,8 @@ class GuiExport SoFCSelectionRoot : public SoFCSeparator {
     SO_NODE_HEADER(Gui::SoFCSelectionRoot);
 
 public:
-    static void initClass(void);
-    static void finish(void);
+    static void initClass();
+    static void finish();
     SoFCSelectionRoot(bool trackCacheMode=false);
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);

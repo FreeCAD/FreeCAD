@@ -65,7 +65,7 @@ void StdCmdArrangeIcons::activated(int iMsg)
     getMainWindow()->arrangeIcons ();
 }
 
-bool StdCmdArrangeIcons::isActive(void)
+bool StdCmdArrangeIcons::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -93,7 +93,7 @@ void StdCmdTileWindows::activated(int iMsg)
     getMainWindow()->tile();
 }
 
-bool StdCmdTileWindows::isActive(void)
+bool StdCmdTileWindows::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -121,7 +121,7 @@ void StdCmdCascadeWindows::activated(int iMsg)
     getMainWindow()->cascade();
 }
 
-bool StdCmdCascadeWindows::isActive(void)
+bool StdCmdCascadeWindows::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -153,7 +153,7 @@ void StdCmdCloseActiveWindow::activated(int iMsg)
     getMainWindow()->closeActiveWindow();
 }
 
-bool StdCmdCloseActiveWindow::isActive(void)
+bool StdCmdCloseActiveWindow::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -181,7 +181,7 @@ void StdCmdCloseAllWindows::activated(int iMsg)
     getMainWindow()->closeAllDocuments();
 }
 
-bool StdCmdCloseAllWindows::isActive(void)
+bool StdCmdCloseAllWindows::isActive()
 {
     return !(getMainWindow()->windows().isEmpty()) || !App::GetApplication().getDocuments().empty();
 }
@@ -210,7 +210,7 @@ void StdCmdActivateNextWindow::activated(int iMsg)
     getMainWindow()->activateNextWindow();
 }
 
-bool StdCmdActivateNextWindow::isActive(void)
+bool StdCmdActivateNextWindow::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -239,7 +239,7 @@ void StdCmdActivatePrevWindow::activated(int iMsg)
     getMainWindow()->activatePreviousWindow();
 }
 
-bool StdCmdActivatePrevWindow::isActive(void)
+bool StdCmdActivatePrevWindow::isActive()
 {
     return !(getMainWindow()->windows().isEmpty());
 }
@@ -312,12 +312,12 @@ void StdCmdDockViewMenu::activated(int iMsg)
     Q_UNUSED(iMsg);
 }
 
-bool StdCmdDockViewMenu::isActive(void)
+bool StdCmdDockViewMenu::isActive()
 {
     return true;
 }
 
-Action * StdCmdDockViewMenu::createAction(void)
+Action * StdCmdDockViewMenu::createAction()
 {
     Action *pcAction;
     pcAction = new DockWidgetAction(this, getMainWindow());
@@ -348,12 +348,12 @@ void StdCmdToolBarMenu::activated(int iMsg)
     Q_UNUSED(iMsg);
 }
 
-bool StdCmdToolBarMenu::isActive(void)
+bool StdCmdToolBarMenu::isActive()
 {
     return true;
 }
 
-Action * StdCmdToolBarMenu::createAction(void)
+Action * StdCmdToolBarMenu::createAction()
 {
     Action *pcAction;
     pcAction = new ToolBarAction(this, getMainWindow());
@@ -396,7 +396,7 @@ StdCmdStatusBar::StdCmdStatusBar()
     eType         = 0;
 }
 
-Action * StdCmdStatusBar::createAction(void)
+Action * StdCmdStatusBar::createAction()
 {
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
@@ -448,12 +448,12 @@ void StdCmdWindowsMenu::activated(int iMsg)
     Q_UNUSED(iMsg);
 }
 
-bool StdCmdWindowsMenu::isActive(void)
+bool StdCmdWindowsMenu::isActive()
 {
     return true;
 }
 
-Action * StdCmdWindowsMenu::createAction(void)
+Action * StdCmdWindowsMenu::createAction()
 {
     // Allow to show 10 menu items in the 'Window' menu and one separator.
     // If we have more windows then the user can use the 'Windows...' item.
@@ -483,7 +483,7 @@ Action * StdCmdWindowsMenu::createAction(void)
 
 namespace Gui {
 
-void CreateWindowStdCommands(void)
+void CreateWindowStdCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 

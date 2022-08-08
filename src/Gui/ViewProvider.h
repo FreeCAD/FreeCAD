@@ -128,18 +128,18 @@ public:
     virtual ~ViewProvider();
 
     // returns the root node of the Provider (3D)
-    virtual SoSeparator* getRoot(void) const {return pcRoot;}
+    virtual SoSeparator* getRoot() const {return pcRoot;}
     // return the mode switch node of the Provider (3D)
-    SoSwitch *getModeSwitch(void) const {return pcModeSwitch;}
+    SoSwitch *getModeSwitch() const {return pcModeSwitch;}
     SoTransform *getTransformNode() const {return pcTransform;}
     // returns the root for the Annotations.
-    SoSeparator* getAnnotation(void);
+    SoSeparator* getAnnotation();
     // returns the root node of the Provider (3D)
-    virtual SoSeparator* getFrontRoot(void) const;
+    virtual SoSeparator* getFrontRoot() const;
     // returns the root node where the children gets collected(3D)
-    virtual SoGroup* getChildRoot(void) const;
+    virtual SoGroup* getChildRoot() const;
     // returns the root node of the Provider (3D)
-    virtual SoSeparator* getBackRoot(void) const;
+    virtual SoSeparator* getBackRoot() const;
     ///Indicate whether to be added to scene graph or not
     virtual bool canAddToSceneGraph() const {return true;}
 
@@ -149,7 +149,7 @@ public:
       * scene graph. This affects the visibility and the 3D
       * position of the object.
       */
-    virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
+    virtual std::vector<App::DocumentObject*> claimChildren3D() const;
 
     /** @name Selection handling
       * This group of methods do the selection handling.
@@ -159,8 +159,8 @@ public:
     //@{
 
     /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const;
-    virtual bool isSelectable(void) const {return true;}
+    virtual bool useNewSelectionModel() const;
+    virtual bool isSelectable() const {return true;}
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
     /// return a hit element to the selection path or 0
@@ -241,7 +241,7 @@ public:
      */
     //@{
     /// deliver the icon shown in the tree view
-    virtual QIcon getIcon(void) const;
+    virtual QIcon getIcon() const;
 
      /** @name Methods used by the Tree
      * If you want to take control over the
@@ -258,7 +258,7 @@ public:
       * be used for any kind of grouping needed for a special
       * purpose.
       */
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
+    virtual std::vector<App::DocumentObject*> claimChildren() const;
     //@}
 
     /** @name Drag and drop
@@ -379,19 +379,19 @@ public:
     /** @name Display mode methods
      */
     //@{
-    std::string getActiveDisplayMode(void) const;
+    std::string getActiveDisplayMode() const;
     /// set the display mode
     virtual void setDisplayMode(const char* ModeName);
     /// get the default display mode
     virtual const char* getDefaultDisplayMode() const;
     /// returns a list of all possible display modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
     /// Hides the view provider
-    virtual void hide(void);
+    virtual void hide();
     /// Shows the view provider
-    virtual void show(void);
+    virtual void show();
     /// checks whether the view provider is visible or not
-    virtual bool isShow(void) const;
+    virtual bool isShow() const;
     void setVisible(bool);
     bool isVisible() const;
     void setLinkVisible(bool);
@@ -462,7 +462,7 @@ public:
     /// If null is returned then no transaction will be opened.
     virtual const char* getTransactionText() const { return nullptr; }
     /// is called by the tree if the user double clicks on the object
-    virtual bool doubleClicked(void) { return false; }
+    virtual bool doubleClicked() { return false; }
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &cursorPos, View3DInventorViewer* viewer);
     /// is called when the Provider is in edit and the mouse is clicked

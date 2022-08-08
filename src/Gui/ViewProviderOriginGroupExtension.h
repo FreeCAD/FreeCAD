@@ -36,11 +36,11 @@ class GuiExport ViewProviderOriginGroupExtension : public ViewProviderGeoFeature
 
 public:
     /// Constructor
-    ViewProviderOriginGroupExtension(void);
+    ViewProviderOriginGroupExtension();
     virtual ~ViewProviderOriginGroupExtension();
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void)const override;
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren()const override;
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D()const override;
 
     virtual void extensionAttach(App::DocumentObject *pcObject) override;
     virtual void extensionUpdateData(const App::Property* prop) override;

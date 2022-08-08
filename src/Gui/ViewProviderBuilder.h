@@ -43,7 +43,7 @@ class GuiExport ViewProviderBuilder
 {
 public:
     /// Constructor
-    ViewProviderBuilder(void);
+    ViewProviderBuilder();
     virtual ~ViewProviderBuilder();
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const = 0;
 
@@ -59,7 +59,7 @@ class GuiExport ViewProviderColorBuilder : public ViewProviderBuilder
 {
 public:
     /// Constructor
-    ViewProviderColorBuilder(void);
+    ViewProviderColorBuilder();
     virtual ~ViewProviderColorBuilder();
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
 };

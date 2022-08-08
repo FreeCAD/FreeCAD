@@ -45,7 +45,7 @@ public:
   static void setSource( const QString& );
 
 protected:
-  Action* createAction(void);
+  Action* createAction();
   void activated(int iMsg);
 
 private:

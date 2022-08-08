@@ -307,7 +307,7 @@ void SelectionView::search(const QString& text)
     }
 }
 
-void SelectionView::validateSearch(void)
+void SelectionView::validateSearch()
 {
     if (!searchList.empty()) {
         App::Document* doc = App::GetApplication().getActiveDocument();
@@ -341,7 +341,7 @@ void SelectionView::select(QListWidgetItem* item)
     }
 }
 
-void SelectionView::deselect(void)
+void SelectionView::deselect()
 {
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
@@ -430,7 +430,7 @@ void SelectionView::preselect(QListWidgetItem* item)
     }
 }
 
-void SelectionView::zoom(void)
+void SelectionView::zoom()
 {
     select();
     try {
@@ -440,7 +440,7 @@ void SelectionView::zoom(void)
     }
 }
 
-void SelectionView::treeSelect(void)
+void SelectionView::treeSelect()
 {
     select();
     try {
@@ -450,7 +450,7 @@ void SelectionView::treeSelect(void)
     }
 }
 
-void SelectionView::touch(void)
+void SelectionView::touch()
 {
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
@@ -466,7 +466,7 @@ void SelectionView::touch(void)
     }
 }
 
-void SelectionView::toPython(void)
+void SelectionView::toPython()
 {
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
@@ -499,7 +499,7 @@ void SelectionView::toPython(void)
     }
 }
 
-void SelectionView::showPart(void)
+void SelectionView::showPart()
 {
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
@@ -615,7 +615,7 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     menu.exec(selectionView->mapToGlobal(point));
 }
 
-void SelectionView::onUpdate(void)
+void SelectionView::onUpdate()
 {
 }
 

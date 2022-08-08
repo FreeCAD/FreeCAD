@@ -136,9 +136,9 @@ public:
     /** Gets the one and only instance. */
     static MainWindow* getInstance();
     /** Starts the splasher at startup. */
-    void startSplasher(void);
+    void startSplasher();
     /** Stops the splasher after startup. */
-    void stopSplasher(void);
+    void stopSplasher();
     /* The image of the About dialog, it might be empty. */
     QPixmap aboutImage() const;
     /* The image of the splash screen of the application. */
@@ -357,7 +357,7 @@ public:
     void SendLog(const std::string& msg, Base::LogStyle level) override;
 
     /// name of the observer
-    const char *Name(void) override {return "StatusBar";}
+    const char *Name() override {return "StatusBar";}
 
     friend class MainWindow;
 private:

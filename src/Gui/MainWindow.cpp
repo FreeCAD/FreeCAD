@@ -1107,7 +1107,7 @@ QList<QWidget*> MainWindow::windows(QMdiArea::WindowOrder order) const
     return mdis;
 }
 
-MDIView* MainWindow::activeWindow(void) const
+MDIView* MainWindow::activeWindow() const
 {
     // each activated window notifies this main window when it is activated
     return d->activeView;
@@ -1414,7 +1414,7 @@ void MainWindow::saveWindowSettings()
     ToolBarManager::getInstance()->saveState();
 }
 
-void MainWindow::startSplasher(void)
+void MainWindow::startSplasher()
 {
     // startup splasher
     // when running in verbose mode no splasher
@@ -1432,7 +1432,7 @@ void MainWindow::startSplasher(void)
     }
 }
 
-void MainWindow::stopSplasher(void)
+void MainWindow::stopSplasher()
 {
     if (d->splashscreen) {
         d->splashscreen->finish(this);

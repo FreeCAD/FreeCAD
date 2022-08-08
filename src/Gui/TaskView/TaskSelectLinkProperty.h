@@ -66,16 +66,16 @@ public:
     bool setFilter(const char*);
 
     /// set the TaskSelectLinkProperty active, means setting the selection and control it
-    void activate(void);
+    void activate();
 
     /// call this to accept the changes the user has made and send back to the Property (Ok)
-    bool accept(void);
+    bool accept();
     /// This discards the changes of the user and leaves the Property untouched (Cancel)
-    bool reject(void);
+    bool reject();
     /// send the selection to the Property for e.g. forced recomputation of a feature
-    void sendSelection2Property(void);
+    void sendSelection2Property();
     /// checks if the filter is currently met
-    inline bool isSelectionValid(void) const {return Filter->match();}
+    inline bool isSelectionValid() const {return Filter->match();}
 
 private Q_SLOTS:
     void on_Remove_clicked(bool);
@@ -84,15 +84,15 @@ private Q_SLOTS:
     void on_Help_clicked(bool);
 
 Q_SIGNALS:
-    void emitSelectionFit(void);
-    void emitSelectionMisfit(void);
+    void emitSelectionFit();
+    void emitSelectionMisfit();
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
     // checks for selection and set background color and signals
-    void checkSelectionStatus(void);
+    void checkSelectionStatus();
 
     QWidget* proxy;
     Ui_TaskSelectLinkProperty* ui;

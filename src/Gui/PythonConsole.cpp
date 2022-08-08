@@ -377,7 +377,7 @@ bool InteractiveInterpreter::push(const char* line)
     return false;
 }
 
-bool InteractiveInterpreter::hasPendingInput( void ) const
+bool InteractiveInterpreter::hasPendingInput( ) const
 {
     return (!d->buffer.isEmpty());
 }
@@ -1082,7 +1082,7 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
     }
 }
 
-QTextCursor PythonConsole::inputBegin(void) const
+QTextCursor PythonConsole::inputBegin() const
 {
     // construct cursor at begin of input line ...
     QTextCursor inputLineBegin(this->textCursor());
@@ -1361,7 +1361,7 @@ void PythonConsole::onCopyCommand()
     d->type = PythonConsoleP::Normal;
 }
 
-QString PythonConsole::readline( void )
+QString PythonConsole::readline( )
 {
     QEventLoop loop;
     // output is set to the current prompt which we need to extract
@@ -1574,7 +1574,7 @@ const QStringList& ConsoleHistory::values() const
 /**
  * restart resets the history access to the latest item.
  */
-void ConsoleHistory::restart( void )
+void ConsoleHistory::restart( )
 {
     _it = _history.cend();
 }
@@ -1584,7 +1584,7 @@ void ConsoleHistory::restart( void )
  * Note: with simply remembering a start index, it does not work to nest scratch regions.
  * However, just replace the index keeping by a stack - in case this is be a concern.
  */
-void ConsoleHistory::markScratch( void )
+void ConsoleHistory::markScratch( )
 {
     _scratchBegin = _history.length();
 }
@@ -1592,7 +1592,7 @@ void ConsoleHistory::markScratch( void )
 /**
  * doScratch removes the tail of the history list, starting from the index marked lately.
  */
-void ConsoleHistory::doScratch( void )
+void ConsoleHistory::doScratch( )
 {
     if (_scratchBegin < _history.length())
     {

@@ -305,12 +305,12 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
 }
 
-void AbstractSplitView::onUpdate(void)
+void AbstractSplitView::onUpdate()
 {
     update();
 }
 
-const char *AbstractSplitView::getName(void) const
+const char *AbstractSplitView::getName() const
 {
     return "SplitView3DInventor";
 }
@@ -423,7 +423,7 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
     //_viewer->getWidget()->setCursor(aCursor);
 }
 
-PyObject *AbstractSplitView::getPyObject(void)
+PyObject *AbstractSplitView::getPyObject()
 {
     if (!_viewerPy)
         _viewerPy = new AbstractSplitViewPy(this);

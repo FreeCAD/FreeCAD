@@ -66,7 +66,7 @@ public:
      *  against the filter and returns true if the
      *  described object(s) are selected.
      */
-    bool match(void);
+    bool match();
     /** Test objects
      *  This method tests if a given object is described in the
      *  filter. If SubName is not NULL the Subelement gets also
@@ -81,12 +81,12 @@ public:
     std::vector<std::vector<SelectionObject> > Result;
 
     /// true if a valid filter is set
-    bool isValid(void) const {return Ast ? true : false;}
+    bool isValid() const {return Ast ? true : false;}
 
 protected:
     std::string Filter;
     std::string Errors;
-    bool parse(void);
+    bool parse();
 
     std::shared_ptr<Node_Block> Ast;
 };
@@ -154,7 +154,7 @@ public:
     SelectionFilter filter;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     SelectionFilterPy(const std::string&);
     ~SelectionFilterPy();

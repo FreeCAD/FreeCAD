@@ -161,7 +161,7 @@ SelectionFilter::~SelectionFilter()
 {
 }
 
-bool SelectionFilter::match(void)
+bool SelectionFilter::match()
 {
     if (!Ast)
         return false;
@@ -386,7 +386,7 @@ public:
 
 // show the parser the lexer method
 #define yylex SelectionFilterlex
-int SelectionFilterlex(void);
+int SelectionFilterlex();
 
 // Parser, defined in SelectionFilter.y
 #include "SelectionFilter.tab.c"
@@ -410,7 +410,7 @@ int SelectionFilterlex(void);
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 }
 
-bool SelectionFilter::parse(void)
+bool SelectionFilter::parse()
 {
     Errors = "";
     SelectionParser::YY_BUFFER_STATE my_string_buffer = SelectionParser::SelectionFilter_scan_string (Filter.c_str());

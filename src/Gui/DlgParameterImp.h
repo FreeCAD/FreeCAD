@@ -220,7 +220,7 @@ public:
     void setData ( int column, int role, const QVariant & value );
     QVariant data ( int column, int role ) const;
 
-    void fillUp(void);
+    void fillUp();
     Base::Reference<ParameterGrp> _hcGrp;
 };
 
