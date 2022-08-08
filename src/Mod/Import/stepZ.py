@@ -27,13 +27,11 @@ ___stpZversion___ = "1.3.9"
 # Catia seems to use gz, Inventor zipfile
 # improved import, open and export
 
-if six.PY3:
-    import gzip as gz
-    import builtins as builtin  #py3
-    import importlib
-else:  # six.PY2
-    import gzip_utf8 as gz
-    import __builtin__ as builtin #py2
+
+import gzip as gz
+import builtins as builtin  #py3
+import importlib
+
 
 import zipfile  as zf
 
@@ -41,32 +39,19 @@ import zipfile  as zf
 # import stepZ; import importlib; importlib.reload(stepZ); import gzip_utf8; importlib.reload(gzip_utf8)
 
 def mkz_string(input):
-    if six.PY3:
-        if isinstance(input, str):
-            return input
-        else:
-            input = input.encode('utf-8')
-            return input
-    else:  # six.PY2
-        if isinstance(input, six.text_type):
-            input = input.encode('utf-8')
-            return input
-        else:
-            return input
+    if isinstance(input, str):
+        return input
+    else:
+        input = input.encode('utf-8')
+        return input
 ####
 def mkz_unicode(input):
-    if six.PY3:
-        if isinstance(input, str):
-            return input
-        else:
-            input = input.decode('utf-8')
-            return input
-    else:  # six.PY2
-        if isinstance(input, six.text_type):
-            input = input.decode('utf-8')
-            return input
-        else:
-            return input
+    if isinstance(input, str):
+        return input
+    else:
+        input = input.decode('utf-8')
+        return input
+ 
 ####
 def sayz(msg):
     FreeCAD.Console.PrintMessage(msg)
