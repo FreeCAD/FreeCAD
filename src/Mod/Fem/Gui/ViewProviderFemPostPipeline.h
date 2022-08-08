@@ -44,6 +44,7 @@ public:
     virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
     virtual void updateData(const App::Property* prop);
     virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
+    void updateColorBars();
     void transformField(char *FieldName, double FieldFactor);
     void scaleField(vtkDataSet *dset, vtkDataArray *pdata, double FieldFactor);
     PyObject *getPyObject();

@@ -40,6 +40,16 @@ std::string ViewProviderFemPostPipelinePy::representation(void) const
     return std::string("<ViewProviderFemPostPipeline object>");
 }
 
+PyObject *ViewProviderFemPostPipelinePy::updateColorBars(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    this->getViewProviderFemPostPipelinePtr()->updateColorBars();
+
+    Py_Return;
+}
+
 PyObject *ViewProviderFemPostPipelinePy::transformField(PyObject *args)
 {
     char *FieldName;

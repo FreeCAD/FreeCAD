@@ -95,8 +95,10 @@ public:
 
     virtual SoSeparator* getFrontRoot(void) const;
 
-    //observer for the color bar
+    // observer for the color bar
     virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
+    // update color bar
+    void updateMaterial();
 
     // handling when object is deleted
     virtual bool onDelete(const std::vector<std::string>&);
@@ -123,7 +125,6 @@ protected:
     bool setupPipeline();
     void updateVtk();
     void setRangeOfColorBar(double min, double max);
-    void updateMaterial();
 
     SoCoordinate3*              m_coordinates;
     SoIndexedPointSet*          m_markers;
