@@ -5589,7 +5589,7 @@ CmdSketcherCompConstrainRadDia::CmdSketcherCompConstrainRadDia()
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Constrain arc or circle");
     sToolTipText    = QT_TR_NOOP("Constrain an arc or a circle");
-    sWhatsThis      = "Sketcher_CompCreateCircle";
+    sWhatsThis      = "Sketcher_CompConstrainRadDia";
     sStatusTip      = sToolTipText;
     sAccel          = "R";
     eType           = ForEdit;
