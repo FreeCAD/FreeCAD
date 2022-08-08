@@ -31,7 +31,7 @@ class ExpressionBinding;
 class ExpressionBindingPy : public Py::PythonExtension<ExpressionBindingPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     ExpressionBindingPy(ExpressionBinding*);
     ~ExpressionBindingPy();

@@ -137,7 +137,7 @@ public:
     void SendLog(const std::string& msg, Base::LogStyle level) override;
 
     /// returns the name for observer handling
-    const char* Name(void) override {return "ReportOutput";}
+    const char* Name() override {return "ReportOutput";}
 
     /** Restore the default font settings. */
     void restoreFont ();
@@ -212,7 +212,7 @@ public:
 
 protected:
     QPointer <ReportOutput> reportView;
-    void showReportView(void);
+    void showReportView();
 };
 
 } // namespace DockWnd

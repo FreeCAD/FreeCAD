@@ -35,7 +35,7 @@ class GuiExport ViewProviderPlane : public ViewProviderOriginFeature
     PROPERTY_HEADER(Gui::ViewProviderPlane);
 public:
     /// Constructor
-    ViewProviderPlane(void);
+    ViewProviderPlane();
     virtual ~ViewProviderPlane();
 
     virtual void attach ( App::DocumentObject * );

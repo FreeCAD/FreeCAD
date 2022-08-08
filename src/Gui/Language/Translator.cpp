@@ -113,14 +113,14 @@ public:
 };
 }
 
-Translator* Translator::instance(void)
+Translator* Translator::instance()
 {
     if (!_pcSingleton)
         _pcSingleton = new Translator;
     return _pcSingleton;
 }
 
-void Translator::destruct (void)
+void Translator::destruct ()
 {
     if (_pcSingleton)
         delete _pcSingleton;

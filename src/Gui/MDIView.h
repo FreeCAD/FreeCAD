@@ -79,7 +79,7 @@ public:
     /// Message handler test
     virtual bool onHasMsg(const char* pMsg) const;
     /// overwrite when checking on close state
-    virtual bool canClose(void);
+    virtual bool canClose();
     /// delete itself
     virtual void deleteSelf();
     virtual PyObject *getPyObject();

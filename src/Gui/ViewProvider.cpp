@@ -291,7 +291,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
     }
 }
 
-SoSeparator* ViewProvider::getAnnotation(void)
+SoSeparator* ViewProvider::getAnnotation()
 {
     if (!pcAnnotation) {
         pcAnnotation = new SoSeparator();
@@ -312,7 +312,7 @@ void ViewProvider::update(const App::Property* prop)
     if (vis) ViewProvider::show();
 }
 
-QIcon ViewProvider::getIcon(void) const
+QIcon ViewProvider::getIcon() const
 {
     return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
 }
@@ -436,7 +436,7 @@ const char* ViewProvider::getDefaultDisplayMode() const {
     return nullptr;
 }
 
-vector<std::string> ViewProvider::getDisplayModes(void) const {
+vector<std::string> ViewProvider::getDisplayModes() const {
 
     std::vector< std::string > modes;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -447,12 +447,12 @@ vector<std::string> ViewProvider::getDisplayModes(void) const {
     return modes;
 }
 
-std::string ViewProvider::getActiveDisplayMode(void) const
+std::string ViewProvider::getActiveDisplayMode() const
 {
     return _sCurrentMode;
 }
 
-void ViewProvider::hide(void)
+void ViewProvider::hide()
 {
     auto exts = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 
@@ -467,7 +467,7 @@ void ViewProvider::hide(void)
         ext->extensionHide();
 }
 
-void ViewProvider::show(void)
+void ViewProvider::show()
 {
     setModeSwitch();
 
@@ -477,7 +477,7 @@ void ViewProvider::show(void)
         ext->extensionShow();
 }
 
-bool ViewProvider::isShow(void) const
+bool ViewProvider::isShow() const
 {
     return pcModeSwitch->whichChild.getValue() != -1;
 }
@@ -846,7 +846,7 @@ void ViewProvider::updateData(const App::Property* prop)
         ext->extensionUpdateData(prop);
 }
 
-SoSeparator* ViewProvider::getBackRoot(void) const
+SoSeparator* ViewProvider::getBackRoot() const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
@@ -857,7 +857,7 @@ SoSeparator* ViewProvider::getBackRoot(void) const
     return nullptr;
 }
 
-SoGroup* ViewProvider::getChildRoot(void) const
+SoGroup* ViewProvider::getChildRoot() const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
@@ -868,7 +868,7 @@ SoGroup* ViewProvider::getChildRoot(void) const
     return nullptr;
 }
 
-SoSeparator* ViewProvider::getFrontRoot(void) const
+SoSeparator* ViewProvider::getFrontRoot() const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
@@ -879,7 +879,7 @@ SoSeparator* ViewProvider::getFrontRoot(void) const
     return nullptr;
 }
 
-std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const
+std::vector< App::DocumentObject* > ViewProvider::claimChildren() const
 {
     std::vector< App::DocumentObject* > vec;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -891,7 +891,7 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const
     return vec;
 }
 
-std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const
+std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const
 {
     std::vector< App::DocumentObject* > vec;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();

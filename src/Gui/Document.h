@@ -141,13 +141,13 @@ public:
 
     /** @name I/O of the document */
     //@{
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     /// Save the document
-    bool save(void);
+    bool save();
     /// Save the document under a new file name
-    bool saveAs(void);
+    bool saveAs();
     /// Save a copy of the document under a new file name
-    bool saveCopy(void);
+    bool saveCopy();
     /// Save all open document
     static void saveAll();
     /// This method is used to save properties or very small amounts of data to an XML document.
@@ -170,12 +170,12 @@ public:
     bool isModified() const;
 
     /// Getter for the App Document
-    App::Document*  getDocument(void) const;
+    App::Document*  getDocument() const;
 
     /** @name methods for View handling */
     //@{
     /// Getter for the active view
-    Gui::MDIView* getActiveView(void) const;
+    Gui::MDIView* getActiveView() const;
     void setActiveWindow(Gui::MDIView* view);
     Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfViewProvider(const Gui::ViewProvider*) const;
@@ -207,9 +207,9 @@ public:
     /// Get all view providers along the path and the corresponding node index in the path
     std::vector<std::pair<ViewProviderDocumentObject*,int> > getViewProvidersByPath(SoPath * path) const;
     /// call update on all attached views
-    void onUpdate(void);
+    void onUpdate();
     /// call relabel to all attached views
-    void onRelabel(void);
+    void onRelabel();
     /// returns a list of all attached MDI views
     std::list<MDIView*> getMDIViews() const;
     /// returns a list of all MDI views of a certain type
@@ -244,9 +244,9 @@ public:
     const Base::Matrix4D &getEditingTransform() const;
     void setEditingTransform(const Base::Matrix4D &mat);
     /// reset from edit mode, this cause all document to reset edit
-    void resetEdit(void);
+    void resetEdit();
     /// reset edit of this document
-    void _resetEdit(void);
+    void _resetEdit();
     /// get the in edit ViewProvider or NULL
     ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=nullptr,
             std::string *subname=nullptr, int *mode=nullptr, std::string *subElement=nullptr) const;
@@ -265,15 +265,15 @@ public:
     /// Open a new Undo transaction on the document
     void openCommand(const char* sName=nullptr);
     /// Commit the Undo transaction on the document
-    void commitCommand(void);
+    void commitCommand();
     /// Abort the Undo transaction on the document
-    void abortCommand(void);
+    void abortCommand();
     /// Check if an Undo transaction is open
-    bool hasPendingCommand(void) const;
+    bool hasPendingCommand() const;
     /// Get an Undo string vector with the Undo names
-    std::vector<std::string> getUndoVector(void) const;
+    std::vector<std::string> getUndoVector() const;
     /// Get an Redo string vector with the Redo names
-    std::vector<std::string> getRedoVector(void) const;
+    std::vector<std::string> getRedoVector() const;
     /// Will UNDO one or more steps
     void undo(int iSteps);
     /// Will REDO one or more steps
@@ -288,12 +288,12 @@ public:
 
     /// handles the application close event
     bool canClose(bool checkModify=true, bool checkLink=false);
-    bool isLastView(void);
+    bool isLastView();
 
     /// called by Application before being deleted
     void beforeDelete();
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
 
     const char *getCameraSettings() const;
     bool saveCameraSettings(const char *) const;

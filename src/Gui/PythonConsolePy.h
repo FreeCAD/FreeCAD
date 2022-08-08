@@ -45,7 +45,7 @@ private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     PythonStdout(PythonConsole *pc);
     ~PythonStdout();
@@ -71,7 +71,7 @@ private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     PythonStderr(PythonConsole *pc);
     ~PythonStderr();
@@ -94,7 +94,7 @@ public:
 class OutputStdout : public Py::PythonExtension<OutputStdout>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     OutputStdout();
     ~OutputStdout();
@@ -117,7 +117,7 @@ public:
 class OutputStderr : public Py::PythonExtension<OutputStderr>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     OutputStderr();
     ~OutputStderr();
@@ -139,7 +139,7 @@ private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     PythonStdin(PythonConsole *pc);
     ~PythonStdin();

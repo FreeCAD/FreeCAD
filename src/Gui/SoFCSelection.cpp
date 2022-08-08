@@ -127,7 +127,7 @@ SoFCSelection::~SoFCSelection()
 
 // doc from parent
 void
-SoFCSelection::initClass(void)
+SoFCSelection::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCSelection,SoGroup,"Group");
 }

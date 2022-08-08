@@ -54,7 +54,7 @@ StdCmdDescription::~StdCmdDescription()
 {
 }
 
-Action * StdCmdDescription::createAction(void)
+Action * StdCmdDescription::createAction()
 {
   Action *pcAction = Command::createAction();
   pcAction->setCheckable( true );

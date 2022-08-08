@@ -79,7 +79,7 @@ class GuiExport ViewProviderMeasureDistance : public ViewProviderDocumentObject
 
 public:
     /// Constructor
-    ViewProviderMeasureDistance(void);
+    ViewProviderMeasureDistance();
     virtual ~ViewProviderMeasureDistance();
 
     // Display properties
@@ -91,8 +91,8 @@ public:
 
     void attach(App::DocumentObject *);
     void updateData(const App::Property*);
-    bool useNewSelectionModel(void) const {return true;}
-    std::vector<std::string> getDisplayModes(void) const;
+    bool useNewSelectionModel() const {return true;}
+    std::vector<std::string> getDisplayModes() const;
     void setDisplayMode(const char* ModeName);
 
     static void measureDistanceCallback(void * ud, SoEventCallback * n);

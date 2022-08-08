@@ -66,13 +66,13 @@ public:
     void setDisplayName(DisplayName);
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
-    const char *getName(void) const {return "EditorView";}
-    void onUpdate(void){}
+    const char *getName() const {return "EditorView";}
+    void onUpdate(){}
 
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
-    bool canClose(void);
+    bool canClose();
 
     /** @name Standard actions of the editor */
     //@{

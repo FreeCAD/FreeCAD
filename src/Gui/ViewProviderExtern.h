@@ -50,7 +50,7 @@ public:
     void adjustDocumentName(const char* docname);
 
     virtual const char* getDefaultDisplayMode() const;
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
     virtual void updateData(const App::Property*){}
 
 private:

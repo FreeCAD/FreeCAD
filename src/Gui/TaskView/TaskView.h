@@ -153,7 +153,7 @@ public:
     friend class Gui::ControlSingleton;
 
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
-    void clearTaskWatcher(void);
+    void clearTaskWatcher();
 
     void clearActionStyle();
     void restoreActionStyle();
@@ -168,14 +168,14 @@ protected:
     virtual void keyPressEvent(QKeyEvent*);
     virtual bool event(QEvent*);
 
-    void addTaskWatcher(void);
-    void removeTaskWatcher(void);
+    void addTaskWatcher();
+    void removeTaskWatcher();
     /// update the visibility of the TaskWatcher accordant to the selection
-    void updateWatcher(void);
+    void updateWatcher();
     /// used by Gui::Control to register Dialogs
     void showDialog(TaskDialog *dlg);
     // removes the running dialog after accept() or reject() from the TaskView
-    void removeDialog(void);
+    void removeDialog();
 
     void slotActiveDocument(const App::Document&);
     void slotDeletedDocument();

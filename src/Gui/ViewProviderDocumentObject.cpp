@@ -224,7 +224,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     ViewProvider::onChanged(prop);
 }
 
-void ViewProviderDocumentObject::hide(void)
+void ViewProviderDocumentObject::hide()
 {
     ViewProvider::hide();
     // use this bit to check whether 'Visibility' must be adjusted
@@ -280,7 +280,7 @@ void ViewProviderDocumentObject::setModeSwitch() {
         ViewProvider::setModeSwitch();
 }
 
-void ViewProviderDocumentObject::show(void)
+void ViewProviderDocumentObject::show()
 {
     if(TreeWidget::isObjectShowable(getObject()))
         ViewProvider::show();

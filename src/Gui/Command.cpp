@@ -265,12 +265,12 @@ void Command::addToGroup(ActionGroup* group)
     group->addAction(_pcAction->findChild<QAction*>());
 }
 
-Application *Command::getGuiApplication(void)
+Application *Command::getGuiApplication()
 {
     return Application::Instance;
 }
 
-Gui::Document* Command::getActiveGuiDocument(void) const
+Gui::Document* Command::getActiveGuiDocument() const
 {
     return getGuiApplication()->activeDocument();
 }
@@ -475,7 +475,7 @@ void Command::_invoke(int id, bool disablelog)
 #endif
 }
 
-void Command::testActive(void)
+void Command::testActive()
 {
     if (!_pcAction)
         return;
@@ -525,7 +525,7 @@ void Command::setEnabled(bool on)
 // Helper methods
 //--------------------------------------------------------------------------
 
-bool Command::hasActiveDocument(void) const
+bool Command::hasActiveDocument() const
 {
     return getActiveGuiDocument() != nullptr;
 }
@@ -535,7 +535,7 @@ bool Command::hasObject(const char* Name)
     return getDocument() != nullptr && getDocument()->getObject(Name) != nullptr;
 }
 
-Gui::SelectionSingleton&  Command::getSelection(void)
+Gui::SelectionSingleton&  Command::getSelection()
 {
     return Gui::Selection();
 }
@@ -607,17 +607,17 @@ void Command::openCommand(const char* sCmdName)
     App::GetApplication().setActiveTransaction(sCmdName);
 }
 
-void Command::commitCommand(void)
+void Command::commitCommand()
 {
     App::GetApplication().closeActiveTransaction();
 }
 
-void Command::abortCommand(void)
+void Command::abortCommand()
 {
     App::GetApplication().closeActiveTransaction(true);
 }
 
-bool Command::hasPendingCommand(void)
+bool Command::hasPendingCommand()
 {
     return !!App::GetApplication().getActiveTransaction();
 }
@@ -819,13 +819,13 @@ const std::string Command::strToPython(const char* Str)
 }
 
 /// Updates the (active) document (propagate changes)
-void Command::updateActive(void)
+void Command::updateActive()
 {
     WaitCursor wc;
     doCommand(App,"App.ActiveDocument.recompute()");
 }
 
-bool Command::isActiveObjectValid(void)
+bool Command::isActiveObjectValid()
 {
     Gui::Document* active = Gui::Application::Instance->activeDocument();
     assert(active);
@@ -852,7 +852,7 @@ void Command::updateAll(std::list<Gui::Document*> cList)
 //--------------------------------------------------------------------------
 
 /// returns the begin of a online help page
-const char * Command::beginCmdHelp(void)
+const char * Command::beginCmdHelp()
 {
     return  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n"
             "<html>\n"
@@ -864,7 +864,7 @@ const char * Command::beginCmdHelp(void)
 }
 
 /// returns the end of a online help page
-const char * Command::endCmdHelp(void)
+const char * Command::endCmdHelp()
 {
     return "</body></html>\n\n";
 }
@@ -983,7 +983,7 @@ void Command::printConflictingAccelerators() const
         Base::Console().Warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
 }
 
-Action * Command::createAction(void)
+Action * Command::createAction()
 {
     Action *pcAction;
     pcAction = new Action(this,getMainWindow());
@@ -1030,7 +1030,7 @@ Command *GroupCommand::addCommand(const char *name) {
     return cmd;
 }
 
-Action * GroupCommand::createAction(void) {
+Action * GroupCommand::createAction() {
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setMenuRole(QAction::NoRole);
     pcAction->setDropDownMenu(true);
@@ -1145,7 +1145,7 @@ void MacroCommand::activated(int iMsg)
     }
 }
 
-Action * MacroCommand::createAction(void)
+Action * MacroCommand::createAction()
 {
     Action *pcAction;
     pcAction = new Action(this,getMainWindow());
@@ -1315,7 +1315,7 @@ void PythonCommand::activated(int iMsg)
     }
 }
 
-bool PythonCommand::isActive(void)
+bool PythonCommand::isActive()
 {
     try {
         Base::PyGILStateLocker lock;
@@ -1345,7 +1345,7 @@ void PythonCommand::languageChange()
     }
 }
 
-const char* PythonCommand::getHelpUrl(void) const
+const char* PythonCommand::getHelpUrl() const
 {
     PyObject* pcTemp;
     pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");
@@ -1356,7 +1356,7 @@ const char* PythonCommand::getHelpUrl(void) const
     return PyUnicode_AsUTF8(pcTemp);
 }
 
-Action * PythonCommand::createAction(void)
+Action * PythonCommand::createAction()
 {
     QAction* qtAction = new QAction(nullptr);
     Action *pcAction;
@@ -1523,7 +1523,7 @@ void PythonGroupCommand::activated(int iMsg)
     }
 }
 
-bool PythonGroupCommand::isActive(void)
+bool PythonGroupCommand::isActive()
 {
     try {
         Base::PyGILStateLocker lock;
@@ -1547,7 +1547,7 @@ bool PythonGroupCommand::isActive(void)
     return true;
 }
 
-Action * PythonGroupCommand::createAction(void)
+Action * PythonGroupCommand::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(hasDropDownMenu());
@@ -1657,7 +1657,7 @@ void PythonGroupCommand::languageChange()
     }
 }
 
-const char* PythonGroupCommand::getHelpUrl(void) const
+const char* PythonGroupCommand::getHelpUrl() const
 {
     return "";
 }
@@ -1834,7 +1834,7 @@ std::vector <Command*> CommandManager::getModuleCommands(const char *sModName) c
     return vCmds;
 }
 
-std::vector <Command*> CommandManager::getAllCommands(void) const
+std::vector <Command*> CommandManager::getAllCommands() const
 {
     std::vector <Command*> vCmds;
 
@@ -1871,7 +1871,7 @@ void CommandManager::runCommandByName (const char* sName) const
         pCmd->invoke(0);
 }
 
-void CommandManager::testActive(void)
+void CommandManager::testActive()
 {
     for ( std::map<std::string, Command*>::iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         It->second->testActive();

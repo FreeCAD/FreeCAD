@@ -1086,12 +1086,12 @@ SO_ACTION_SOURCE(SoBoxSelectionRenderAction)
 
 // Overridden from parent class.
 void
-SoBoxSelectionRenderAction::initClass(void)
+SoBoxSelectionRenderAction::initClass()
 {
     SO_ACTION_INIT_CLASS(SoBoxSelectionRenderAction, SoGLRenderAction);
 }
 
-SoBoxSelectionRenderAction::SoBoxSelectionRenderAction(void)
+SoBoxSelectionRenderAction::SoBoxSelectionRenderAction()
   : inherited(SbViewportRegion())
 {
     this->constructorCommon();
@@ -1107,7 +1107,7 @@ SoBoxSelectionRenderAction::SoBoxSelectionRenderAction(const SbViewportRegion & 
 // private. called by both constructors
 //
 void
-SoBoxSelectionRenderAction::constructorCommon(void)
+SoBoxSelectionRenderAction::constructorCommon()
 {
     SO_ACTION_CONSTRUCTOR(SoBoxSelectionRenderAction);
 
@@ -1133,7 +1133,7 @@ SoBoxSelectionRenderAction::constructorCommon(void)
     PRIVATE(this)->highlightPath = nullptr;
 }
 
-SoBoxSelectionRenderAction::~SoBoxSelectionRenderAction(void)
+SoBoxSelectionRenderAction::~SoBoxSelectionRenderAction()
 {
     // clear highlighting node
     if (PRIVATE(this)->highlightPath) {
@@ -1273,7 +1273,7 @@ SoBoxSelectionRenderAction::setColor(const SbColor & color)
 }
 
 const SbColor &
-SoBoxSelectionRenderAction::getColor(void)
+SoBoxSelectionRenderAction::getColor()
 {
     return PRIVATE(this)->basecolor->rgb[0];
 }
@@ -1285,7 +1285,7 @@ SoBoxSelectionRenderAction::setLinePattern(unsigned short pattern)
 }
 
 unsigned short
-SoBoxSelectionRenderAction::getLinePattern(void) const
+SoBoxSelectionRenderAction::getLinePattern() const
 {
     return PRIVATE(this)->drawstyle->linePattern.getValue();
 }
@@ -1297,7 +1297,7 @@ SoBoxSelectionRenderAction::setLineWidth(const float width)
 }
 
 float
-SoBoxSelectionRenderAction::getLineWidth(void) const
+SoBoxSelectionRenderAction::getLineWidth() const
 {
     return PRIVATE(this)->drawstyle->lineWidth.getValue();
 }

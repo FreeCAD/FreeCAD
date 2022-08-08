@@ -34,7 +34,7 @@ class GuiExport ViewProviderLine : public ViewProviderOriginFeature {
     PROPERTY_HEADER(Gui::ViewProviderLine);
 public:
     /// Constructor
-    ViewProviderLine(void);
+    ViewProviderLine();
     virtual ~ViewProviderLine();
 
     virtual void attach ( App::DocumentObject * );

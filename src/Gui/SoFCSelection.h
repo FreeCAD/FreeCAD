@@ -62,9 +62,9 @@ class GuiExport SoFCSelection : public SoGroup {
     SO_NODE_HEADER(Gui::SoFCSelection);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoFCSelection(void);
+    static void initClass();
+    static void finish();
+    SoFCSelection();
 
     /// Load highlight settings from the configuration
     void applySettings ();
@@ -85,7 +85,7 @@ public:
         EMISSIVE, EMISSIVE_DIFFUSE, BOX
     };
 
-    SbBool isHighlighted(void) const {return highlighted;}
+    SbBool isHighlighted() const {return highlighted;}
 
     SoSFColor colorHighlight;
     SoSFColor colorSelection;

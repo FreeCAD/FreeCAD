@@ -76,7 +76,7 @@ public:
     */
     virtual ~ComboView();
 
-    Gui::TaskView::TaskView *getTaskPanel(void){return taskPanel;}
+    Gui::TaskView::TaskView *getTaskPanel(){return taskPanel;}
     QTabWidget* getTabPanel() const { return tabs;}
 
 

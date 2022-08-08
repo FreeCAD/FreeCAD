@@ -50,18 +50,18 @@ ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
 {
 }
 
-std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
+std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes() const
 {
     // empty
     return std::vector<std::string>();
 }
 
-bool ViewProviderDocumentObjectGroup::isShow(void) const
+bool ViewProviderDocumentObjectGroup::isShow() const
 {
     return Visibility.getValue();
 }
 
-QIcon ViewProviderDocumentObjectGroup::getIcon(void) const
+QIcon ViewProviderDocumentObjectGroup::getIcon() const
 {
     return mergeGreyableOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
 }
