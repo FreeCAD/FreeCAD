@@ -37,11 +37,13 @@
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
 #include "DlgPreferencesImp.h"
 #include "ui_DlgPreferences.h"
 #include "BitmapFactory.h"
 #include "MainWindow.h"
+#include "Tools.h"
 #include "WidgetFactory.h"
 
 
@@ -68,7 +70,9 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
       invalidParameter(false), canEmbedScrollArea(true)
 {
     ui->setupUi(this);
-    ui->listBox->setFixedWidth(108);
+    QFontMetrics fm(font());
+    int length = QtTools::horizontalAdvance(fm, longestGroupName());
+    ui->listBox->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
     ui->listBox->setGridSize(QSize(108, 75));
 
     connect(ui->buttonBox,  SIGNAL (helpRequested()),
@@ -107,6 +111,17 @@ void DlgPreferencesImp::setupPages()
 
     // show the first group
     ui->listBox->setCurrentRow(0);
+}
+
+QString DlgPreferencesImp::longestGroupName() const
+{
+    std::string name;
+    for (const auto &group : _pages) {
+        if (group.first.size() > name.size())
+            name = group.first;
+    }
+
+    return QString::fromStdString(name);
 }
 
 /**
