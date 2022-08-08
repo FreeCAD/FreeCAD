@@ -3193,7 +3193,7 @@ static int column;
 
 // show the parser the lexer method
 #define yylex ExpressionParserlex
-int ExpressionParserlex(void);
+int ExpressionParserlex();
 
 // Parser, defined in ExpressionParser.y
 # define YYTOKENTYPE

@@ -104,9 +104,9 @@ PyMethodDef Application::Methods[] = {
      "* If no module is given it will be determined by the file extension.\n"
      "* If more than one module can load a file the first one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
-    {"open",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
+    {"open",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
      "See openDocument(string)"},
-    {"openDocument",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
+    {"openDocument",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
      "openDocument(filepath,hidden=False) -> object\n"
      "Create a document and load the project file into the document.\n\n"
      "filepath: file path to an existing file. If the file doesn't exist\n"
@@ -116,7 +116,7 @@ PyMethodDef Application::Methods[] = {
 //  {"saveDocument",   (PyCFunction) Application::sSaveDocument, METH_VARARGS,
 //   "saveDocument(string) -- Save the document to a file."},
 //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
-    {"newDocument",    reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sNewDocument )), METH_VARARGS|METH_KEYWORDS,
+    {"newDocument",    reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( Application::sNewDocument )), METH_VARARGS|METH_KEYWORDS,
      "newDocument(name, label=None, hidden=False, temp=False) -> object\n"
      "Create a new document with a given name.\n\n"
      "name: unique document name which is checked automatically.\n"
