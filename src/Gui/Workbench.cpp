@@ -205,7 +205,6 @@ using namespace Gui;
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::Workbench, Base::BaseClass)
 
 Workbench::Workbench()
-  : _name("")
 {
 }
 

@@ -268,7 +268,7 @@ PyObject* CommandPy::getInfo(PyObject *args)
         const char* whatsThisTxt = cmd->getWhatsThis();
         const char* statustipTxt = cmd->getStatusTip();
         const char* pixMapTxt = cmd->getPixmap();
-        std::string shortcutTxt = "";
+        std::string shortcutTxt;
         if (action)
             shortcutTxt = action->shortcut().toString().toStdString();
 
