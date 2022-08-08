@@ -129,6 +129,25 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
     }
 }
 
+void ViewProviderFemPostPipeline::updateColorBars()
+{
+    
+    // take all visible childs and update its shape coloring
+    auto children = claimChildren();
+    for (auto& child : children) {
+        if (child->Visibility.getValue()) {
+            auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject *>(
+                Gui::Application::Instance->getViewProvider(child));
+            if (vpObject)
+                vpObject->updateMaterial();
+        }
+    }
+
+    // if pipeline is visible, update it
+    if (this->isVisible())
+        updateMaterial();
+}
+
 void ViewProviderFemPostPipeline::transformField(char *FieldName, double FieldFactor)
 {
     Fem::FemPostPipeline *obj = static_cast<Fem::FemPostPipeline *>(getObject());

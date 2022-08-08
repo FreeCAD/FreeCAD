@@ -256,12 +256,11 @@ class Results(run.Results):
         # this might be changed in future, therefore leave this
         # self.solver.ElmerResult.scale(1000)
 
-        # it might be necessary to scale some result fields
-        # this would be done by this call:
-        # self.solver.ElmerResult.ViewObject.transformField("displacement EigenMode1", 0.001)
-
         self.solver.ElmerResult.recomputeChildren()
         self.solver.Document.recompute()
+        # recompute() updated the result mesh data
+        # but not the shape and bar coloring
+        self.solver.ElmerResult.ViewObject.updateColorBars()
 
     def _createResults(self):
         self.solver.ElmerResult = self.analysis.Document.addObject(
