@@ -597,7 +597,8 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute() {
 void FemPostWarpVectorFilter::onChanged(const Property* prop) {
 
     if (prop == &Factor)
-        m_warp->SetScaleFactor(Factor.getValue());
+        // since our mesh is in mm, we must scale the factor
+        m_warp->SetScaleFactor(1000 * Factor.getValue());
     else if (prop == &Vector && (Vector.getValue() >= 0))
         m_warp->SetInputArrayToProcess(0, 0, 0,
             vtkDataObject::FIELD_ASSOCIATION_POINTS, Vector.getValueAsString());
