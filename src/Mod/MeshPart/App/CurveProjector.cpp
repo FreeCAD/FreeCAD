@@ -104,17 +104,12 @@ CurveProjectorShape::CurveProjectorShape(const TopoDS_Shape &aShape, const MeshK
 void CurveProjectorShape::Do()
 {
   TopExp_Explorer Ex;
-  TopoDS_Shape Edge;
-
-  for (Ex.Init(_Shape, TopAbs_EDGE); Ex.More(); Ex.Next())
-  {
-	  const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
+  for (Ex.Init(_Shape, TopAbs_EDGE); Ex.More(); Ex.Next()) {
+    const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
 
     //std::vector<FaceSplitEdge> vSplitEdges;
     projectCurve(aEdge, mvEdgeSplitPoints[aEdge]);
-
   }
-
 }
 
 
@@ -272,22 +267,18 @@ CurveProjectorSimple::CurveProjectorSimple(const TopoDS_Shape &aShape, const Mes
 void CurveProjectorSimple::Do()
 {
   TopExp_Explorer Ex;
-  TopoDS_Shape Edge;
 
   std::vector<Base::Vector3f> vEdgePolygon;
 
   for (Ex.Init(_Shape, TopAbs_EDGE); Ex.More(); Ex.Next())
   {
-	  const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
+    const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
 //    GetSampledCurves(aEdge,vEdgePolygon,2000);
 
     //std::vector<FaceSplitEdge> vSplitEdges;
     projectCurve(aEdge,vEdgePolygon, mvEdgeSplitPoints[aEdge]);
-
   }
-
 }
-
 
 void CurveProjectorSimple::GetSampledCurves( const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& rclPoints, unsigned long ulNbOfPoints)
 {
@@ -586,23 +577,16 @@ CurveProjectorWithToolMesh::CurveProjectorWithToolMesh(const TopoDS_Shape &aShap
 void CurveProjectorWithToolMesh::Do()
 {
   TopExp_Explorer Ex;
-  TopoDS_Shape Edge;
   std::vector<MeshGeomFacet> cVAry;
-
-  std::vector<Base::Vector3f> vEdgePolygon;
 
   for (Ex.Init(_Shape, TopAbs_EDGE); Ex.More(); Ex.Next())
   {
-	  const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
-
+    const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
     makeToolMesh(aEdge,cVAry);
-
   }
 
   ToolMesh.AddFacets(cVAry);
-
 }
-
 
 //projectToNeighbours(Handle(Geom_Curve) hCurve,float pos
 

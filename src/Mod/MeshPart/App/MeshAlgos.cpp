@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # ifdef FC_OS_LINUX
-#	  include <unistd.h>
+#  include <unistd.h>
 # endif
 #endif
 
@@ -206,7 +206,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
     self_intersects = gts_surface_is_self_intersecting (s1);
     if (self_intersects != NULL) {
 //      if (verbose)
-//	      gts_surface_print_stats (self_intersects, stderr);
+//        gts_surface_print_stats (self_intersects, stderr);
 //      gts_surface_write (self_intersects, stdout);
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
@@ -216,7 +216,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
     self_intersects = gts_surface_is_self_intersecting (s2);
     if (self_intersects != NULL) {
 //      if (verbose)
-//	      gts_surface_print_stats (self_intersects, stderr);
+//        gts_surface_print_stats (self_intersects, stderr);
 //      gts_surface_write (self_intersects, stdout);
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
@@ -234,7 +234,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
   is_open2 = gts_surface_volume (s2) < 0. ? true : false;
 
   si = gts_surface_inter_new (gts_surface_inter_class (),
-			      s1, s2, tree1, tree2, is_open1, is_open2);
+          s1, s2, tree1, tree2, is_open1, is_open2);
   g_assert (gts_surface_inter_check (si, &closed));
   if (!closed) {
     gts_object_destroy (GTS_OBJECT (s1));
@@ -245,9 +245,9 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
   }
 
   s3 = gts_surface_new (gts_surface_class (),
-			gts_face_class (),
-			gts_edge_class (),
-			gts_vertex_class ());
+            gts_face_class (),
+            gts_edge_class (),
+            gts_vertex_class ());
   if (Type==0) { // union
     gts_surface_inter_boolean (si, s3, GTS_1_OUT_2);
     gts_surface_inter_boolean (si, s3, GTS_2_OUT_1);

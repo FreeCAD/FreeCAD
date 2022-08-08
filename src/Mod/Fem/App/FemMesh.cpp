@@ -1676,13 +1676,13 @@ void FemMesh::readNastran95(const std::string &Filename)
         }
 
         //1D
-        else if (line1.substr(0,6)=="CBAR")
+        else if (line1.substr(0, 6) == "CBAR")
         {
             elem = std::make_shared<CBARElement>();
             elem->read(line1, "");
         }
         //2d
-        else if (line1.substr(0,6)=="CTRMEM")
+        else if (line1.substr(0, 6) == "CTRMEM")
         {
             //D06
             //CTRMEM  322     1       179     180     185
