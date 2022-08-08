@@ -1764,33 +1764,33 @@ SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const
 
 std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(const std::vector<SbVec2s>& pnts) const
 {
-    const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
-    const SbVec2s& sz = vp.getWindowSize();
-    short w,h;
-    sz.getValue(w,h);
-    const SbVec2s& sp = vp.getViewportSizePixels();
-    const SbVec2s& op = vp.getViewportOriginPixels();
-    const SbVec2f& siz = vp.getViewportSize();
+    const SbViewportRegion &vp = this->getSoRenderManager()->getViewportRegion();
+    const SbVec2s &winSize = vp.getWindowSize();
+    short w, h;
+    winSize.getValue(w, h);
+    const SbVec2s &sp = vp.getViewportSizePixels();
+    const SbVec2s &op = vp.getViewportOriginPixels();
+    const SbVec2f &vpSize = vp.getViewportSize();
     float dX, dY;
-    siz.getValue(dX, dY);
+    vpSize.getValue(dX, dY);
     float fRatio = vp.getViewportAspectRatio();
 
     std::vector<SbVec2f> poly;
     for (std::vector<SbVec2s>::const_iterator it = pnts.begin(); it != pnts.end(); ++it) {
         SbVec2s loc = *it - op;
-        SbVec2f pos((float)loc[0]/(float)sp[0], (float)loc[1]/(float)sp[1]);
-        float pX,pY;
-        pos.getValue(pX,pY);
+        SbVec2f pos((float)loc[0] / (float)sp[0], (float)loc[1] / (float)sp[1]);
+        float pX, pY;
+        pos.getValue(pX, pY);
 
         // now calculate the real points respecting aspect ratio information
         //
         if (fRatio > 1.0f) {
-            pX = (pX - 0.5f*dX) * fRatio + 0.5f*dX;
-            pos.setValue(pX,pY);
+            pX = (pX - 0.5f * dX) * fRatio + 0.5f * dX;
+            pos.setValue(pX, pY);
         }
         else if (fRatio < 1.0f) {
-            pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
-            pos.setValue(pX,pY);
+            pY = (pY - 0.5f * dY) / fRatio + 0.5f * dY;
+            pos.setValue(pX, pY);
         }
 
         poly.push_back(pos);
