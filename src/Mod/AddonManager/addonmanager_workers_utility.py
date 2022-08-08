@@ -45,6 +45,7 @@ class ConnectionChecker(QtCore.QThread):
         FreeCAD.Console.PrintLog("Checking network connection...\n")
         result = self.check_network_connection()
         if QtCore.QThread.currentThread().isInterruptionRequested():
+            FreeCAD.Console.PrintLog("Connection check cancelled\n")
             return
         if not result:
             self.failure.emit(

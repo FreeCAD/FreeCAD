@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import json
 import unittest
 import os
 import tempfile
@@ -55,7 +56,7 @@ class TestWorkersStartup(unittest.TestCase):
         
         # Populated when the addon list is created in the first test
         self.package_cache = {}
-        self.macro_cache = {}
+        self.macro_cache = []
 
         self.package_cache_file = tempfile.NamedTemporaryFile(mode='w', encoding="utf-8", delete=False)
         self.macro_cache_file = tempfile.NamedTemporaryFile(mode='w', encoding="utf-8", delete=False)
