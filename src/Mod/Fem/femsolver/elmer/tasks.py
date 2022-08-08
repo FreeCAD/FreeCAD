@@ -266,12 +266,12 @@ class Results(run.Results):
         # elmer post file path changed with version x.x
         # see https://forum.freecadweb.org/viewtopic.php?f=18&t=42732
         # workaround
-        possible_post_file_0 = os.path.join(self.directory, "case0001.vtu")
-        possible_post_file_t = os.path.join(self.directory, "case_t0001.vtu")
-        if os.path.isfile(possible_post_file_0):
-            postPath = possible_post_file_0
-        elif os.path.isfile(possible_post_file_t):
-            postPath = possible_post_file_t
+        possible_post_file_old = os.path.join(self.directory, "case0001.vtu")
+        possible_post_file_single = os.path.join(self.directory, "case_t0001.vtu")
+        if os.path.isfile(possible_post_file_old):
+            postPath = possible_post_file_old
+        elif os.path.isfile(possible_post_file_single):
+            postPath = possible_post_file_single
         else:
             self.report.error("Result file not found.")
             self.fail()
