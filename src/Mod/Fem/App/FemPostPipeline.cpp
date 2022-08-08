@@ -23,20 +23,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <SMESH_Mesh.hxx>
+# include <vtkAppendFilter.h>
 # include <vtkDataSetReader.h>
-# include <vtkGeometryFilter.h>
-# include <vtkStructuredGrid.h>
-# include <vtkUnstructuredGrid.h>
 # include <vtkImageData.h>
 # include <vtkRectilinearGrid.h>
-# include <vtkAppendFilter.h>
-# include <vtkXMLUnstructuredGridReader.h>
-# include <vtkXMLPolyDataReader.h>
-# include <vtkXMLStructuredGridReader.h>
-# include <vtkXMLRectilinearGridReader.h>
+# include <vtkStructuredGrid.h>
+# include <vtkUnstructuredGrid.h>
 # include <vtkXMLImageDataReader.h>
+# include <vtkXMLPolyDataReader.h>
+# include <vtkXMLRectilinearGridReader.h>
+# include <vtkXMLStructuredGridReader.h>
+# include <vtkXMLPUnstructuredGridReader.h>
+# include <vtkXMLUnstructuredGridReader.h>
 #endif
 
 #include "FemPostPipeline.h"
@@ -44,11 +43,10 @@
 #include "FemMeshObject.h"
 #include "FemVTKTools.h"
 
-#include <Base/Console.h>
-#include <App/Document.h>
-
 #include <App/DocumentObjectPy.h>
-#include <Mod/Fem/App/FemPostPipelinePy.h>
+#include <Base/Console.h>
+
+#include "FemPostPipelinePy.h"
 
 
 using namespace Fem;
@@ -72,7 +70,7 @@ FemPostPipeline::~FemPostPipeline()
 {
 }
 
-short FemPostPipeline::mustExecute(void) const
+short FemPostPipeline::mustExecute() const
 {
     if (Mode.isTouched())
         return 1;
@@ -80,7 +78,7 @@ short FemPostPipeline::mustExecute(void) const
     return FemPostFilter::mustExecute();
 }
 
-DocumentObjectExecReturn* FemPostPipeline::execute(void) {
+DocumentObjectExecReturn* FemPostPipeline::execute() {
 
     //if we are the toplevel pipeline our data object is not created by filters, we are the main source
     if (!Input.getValue())
@@ -199,7 +197,7 @@ void FemPostPipeline::onChanged(const Property* prop)
         //if we have no input the filters are responsible of grabbing the pipeline data themself
         else {
             //the first filter must always grab the data
-            if (filter->Input.getValue() != nullptr)
+            if (filter->Input.getValue())
                 filter->Input.setValue(nullptr);
 
             //all the others need to be connected to the previous filter or grab the data, dependent on mode
@@ -212,7 +210,7 @@ void FemPostPipeline::onChanged(const Property* prop)
                         nextFilter->Input.setValue(filter);
                 }
                 else { //Parallel mode
-                    if (nextFilter->Input.getValue() != nullptr)
+                    if (nextFilter->Input.getValue())
                         nextFilter->Input.setValue(nullptr);
                 }
 
@@ -273,7 +271,7 @@ void FemPostPipeline::load(FemResultObject* res) {
     Data.setValue(grid);
 }
 
-PyObject* FemPostPipeline::getPyObject(void)
+PyObject* FemPostPipeline::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
