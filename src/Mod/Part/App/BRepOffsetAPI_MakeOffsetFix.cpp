@@ -107,7 +107,11 @@ void BRepOffsetAPI_MakeOffsetFix::Perform (const Standard_Real Offset, const Sta
     mkOffset.Perform(Offset, Alt);
 }
 
+#if OCC_VERSION_HEX >= 0x070600
+void BRepOffsetAPI_MakeOffsetFix::Build(const Message_ProgressRange&)
+#else
 void BRepOffsetAPI_MakeOffsetFix::Build()
+#endif
 {
     mkOffset.Build();
 }
