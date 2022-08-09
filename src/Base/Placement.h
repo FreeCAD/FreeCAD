@@ -66,6 +66,9 @@ public:
     Placement inverse() const;
     void move(const Vector3d& MovVec);
 
+    bool isSame(const Placement&) const;
+    bool isSame(const Placement&, double tol) const;
+
     /** Operators. */
     //@{
     Placement & operator*=(const Placement & p);
@@ -74,6 +77,9 @@ public:
     bool operator != (const Placement&) const;
     Placement& operator = (const Placement&);
     Placement pow(double t, bool shorten = true) const;
+
+    Placement& multRight(const Base::Placement& p);
+    Placement& multLeft(const Base::Placement& p);
 
     void multVec(const Vector3d & src, Vector3d & dst) const;
     void multVec(const Vector3f & src, Vector3f & dst) const;

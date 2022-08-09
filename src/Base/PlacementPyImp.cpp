@@ -171,27 +171,23 @@ PyObject* PlacementPy::rotate(PyObject *args, PyObject *kwds)
     Vector3d axis;
     PyObject* pyComp = Py_False;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "(ddd)(ddd)d|$O!", keywords, &center.x, &center.y, &center.z,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "(ddd)(ddd)d|O!", keywords, &center.x, &center.y, &center.z,
                                      &axis.x, &axis.y, &axis.z, &angle, &PyBool_Type, &pyComp))
         return nullptr;
 
     try {
         /*
-         * if comp is False, we retain the original behaviour that - contrary to the documentation - generates
+         * if comp is False, we retain the original behaviour that - contrary to the (old) documentation - generates
          * Placements different from TopoShape.rotate() to ensure compatibility for existing code
          */
         bool comp = Base::asBoolean(pyComp);
 
         if (!comp) {
-            (*getPlacementPtr()) *= Placement(
-                        Vector3d(),Rotation(axis,toRadians<double>(angle)),center);
-        } else 
-        {
+            getPlacementPtr()->multRight(Placement(Vector3d(), Rotation(axis, toRadians<double>(angle)), center));
+        }
+        else {
             // multiply new Placement the same way TopoShape.rotate() does
-        
-            Placement p = *getPlacementPtr();
-            *getPlacementPtr() = Placement(
-                        Vector3d(),Rotation(axis,toRadians<double>(angle)),center) * p;
+            getPlacementPtr()->multLeft(Placement(Vector3d(), Rotation(axis, toRadians<double>(angle)), center));
         }
 
         Py_Return;
@@ -283,6 +279,19 @@ PyObject* PlacementPy::isIdentity(PyObject *args)
         return nullptr;
     bool none = getPlacementPtr()->isIdentity();
     return Py_BuildValue("O", (none ? Py_True : Py_False));
+}
+
+PyObject* PlacementPy::isSame(PyObject *args)
+{
+    PyObject* plm;
+    double tol = 0.0;
+    if (!PyArg_ParseTuple(args, "O!|d", &PlacementPy::Type, &plm, &tol))
+        return nullptr;
+
+    Base::Placement plm1 = * getPlacementPtr();
+    Base::Placement plm2 = * static_cast<PlacementPy*>(plm)->getPlacementPtr();
+    bool same = tol > 0.0 ? plm1.isSame(plm2, tol) : plm1.isSame(plm2);
+    return Py_BuildValue("O", (same ? Py_True : Py_False));
 }
 
 Py::Object PlacementPy::getBase() const

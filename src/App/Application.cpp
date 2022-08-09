@@ -1990,9 +1990,14 @@ void Application::initTypes()
     App::TransactionalObject       ::init();
     App::DocumentObject            ::init();
     App::GeoFeature                ::init();
+
+    // Test features
     App::FeatureTest               ::init();
     App::FeatureTestException      ::init();
     App::FeatureTestColumn         ::init();
+    App::FeatureTestPlacement      ::init();
+
+    // Feature class
     App::FeaturePython             ::init();
     App::GeometryPython            ::init();
     App::Document                  ::init();
@@ -2004,7 +2009,7 @@ void Application::initTypes()
     App::Annotation                ::init();
     App::AnnotationLabel           ::init();
     App::MeasureDistance           ::init();
-    App ::MaterialObject            ::init();
+    App ::MaterialObject           ::init();
     App::MaterialObjectPython      ::init();
     App::TextDocument              ::init();
     App::Placement                 ::init();

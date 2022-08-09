@@ -152,6 +152,25 @@ public:
     //@}
 };
 
+class FeatureTestPlacement : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestPlacement);
+
+public:
+    FeatureTestPlacement();
+
+    // Standard Properties (PropertyStandard.h)
+    App::PropertyPlacement Input1;
+    App::PropertyPlacement Input2;
+    App::PropertyPlacement MultLeft;
+    App::PropertyPlacement MultRight;
+
+    /** @name methods override Feature */
+    //@{
+    DocumentObjectExecReturn *execute() override;
+    //@}
+};
+
 
 } //namespace App
 

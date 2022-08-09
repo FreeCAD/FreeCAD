@@ -212,3 +212,26 @@ DocumentObjectExecReturn *FeatureTestColumn::execute()
     Value.setValue(decodeColumn(Column.getStrValue(), Silent.getValue()));
     return nullptr;
 }
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(App::FeatureTestPlacement, App::DocumentObject)
+
+
+FeatureTestPlacement::FeatureTestPlacement()
+{
+    ADD_PROPERTY_TYPE(Input1, (Base::Placement()), "Test", Prop_None, "");
+    ADD_PROPERTY_TYPE(Input2, (Base::Placement()), "Test", Prop_None, "");
+    ADD_PROPERTY_TYPE(MultLeft, (Base::Placement()), "Test", Prop_Output, "");
+    ADD_PROPERTY_TYPE(MultRight, (Base::Placement()), "Test", Prop_Output, "");
+}
+
+DocumentObjectExecReturn *FeatureTestPlacement::execute()
+{
+    Base::Placement p1 = Input1.getValue();
+    Base::Placement q1 = Input1.getValue();
+    Base::Placement p2 = Input2.getValue();
+    MultLeft.setValue(p1.multLeft(p2));
+    MultRight.setValue(q1.multRight(p2));
+    return nullptr;
+}

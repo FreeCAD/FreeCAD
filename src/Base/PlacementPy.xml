@@ -149,6 +149,13 @@ Returns True if the placement has no displacement and no rotation.
 Matrix representation is the 4D identity matrix.</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="isSame" Const="true">
+            <Documentation>
+                <UserDocu>isSame(Base.Placement, [tol=0.0]) -> bool\n
+Checks whether this and the given placement are the same.
+The default tolerance is set to 0.0</UserDocu>
+            </Documentation>
+        </Methode>
         <Attribute Name="Base" ReadOnly="false">
             <Documentation>
                 <UserDocu>Vector to the Base Position of the Placement.</UserDocu>
