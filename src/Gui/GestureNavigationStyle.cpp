@@ -94,7 +94,7 @@ class NS::Event : public sc::event<NS::Event>
 {
 public:
     Event():inventor_event(nullptr), modifiers{}, flags(new Flags){}
-    ~Event() override{}
+    virtual ~Event(){}
 
     void log() const {
         if (isPress(1))
@@ -245,7 +245,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> IdleState\n");
     }
-    ~IdleState() override{}
+    virtual ~IdleState(){}
 
     sc::result react(const NS::Event& ev){
         auto &ns = this->outermost_context().ns;
@@ -371,7 +371,7 @@ public:
         // unregisterRecognizer routines failed to affect anything.
 
     }
-    ~AwaitingMoveState() override{
+    virtual ~AwaitingMoveState(){
         //always clear postponed events when leaving this state.
         this->outermost_context().ns.postponedEvents.discardAll();
     }
@@ -494,7 +494,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> RotateState\n");
     }
-    ~RotateState() override{}
+    virtual ~RotateState(){}
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -539,7 +539,7 @@ public:
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
-    ~PanState() override{}
+    virtual ~PanState(){}
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -586,7 +586,7 @@ public:
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
-    ~StickyPanState() override{
+    virtual ~StickyPanState(){
         auto &ns = this->outermost_context().ns;
         ns.button2down = false; //a workaround for dealing with Qt not sending UP event after a tap-hold-drag sequence.
     }
@@ -631,7 +631,7 @@ public:
             Base::Console().Log(" -> TiltState\n");
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
-    ~TiltState() override{}
+    virtual ~TiltState(){}
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -684,7 +684,7 @@ public:
         enableTilt = !(App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
     }
-    ~GestureState() override{
+    virtual ~GestureState(){
         auto &ns = this->outermost_context().ns;
         //a workaround for Qt not always sending release evends during touchecreen gestures on Windows
         ns.button1down = false;
@@ -759,7 +759,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> AwaitingReleaseState\n");
     }
-    ~AwaitingReleaseState() override{}
+    virtual ~AwaitingReleaseState(){}
 
     sc::result react(const NS::Event& ev){
         auto &ns = this->outermost_context().ns;
@@ -810,7 +810,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> InteractState\n");
     }
-    ~InteractState() override{}
+    virtual ~InteractState(){}
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
