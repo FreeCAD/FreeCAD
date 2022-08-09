@@ -1426,6 +1426,8 @@ class Writer(object):
             equation.setExpression("LinearTolerance", str(equation.LinearTolerance))
         if self._hasExpression(equation) != equation.SteadyStateTolerance:
             equation.setExpression("SteadyStateTolerance", str(equation.SteadyStateTolerance))
+        if equation.BiCGstablDegree == 0:
+            equation.BiCGstablDegree = 2
 
     def _createLinearSolver(self, equation):
         # first check if we have to update
